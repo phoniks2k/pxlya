@@ -42,7 +42,7 @@ Usage: `areaDownload.py startX_startY endX_endY filename.png`
 
 ## historyDownload.py
 downloads the history from an canvas area between two dates.
-Useage: `historyDownload.py startX_startY endX_endY start_date end_date
+Useage: `historyDownload.py canvasId startX_startY endX_endY start_date end_date
 This is used for creating timelapses, see the cmd help to know how
 
 ## historyCopy.py

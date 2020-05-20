@@ -7,18 +7,50 @@ import asyncio
 import aiohttp
 import json
 
-canvas_size = 256*256
-canvas_id = 0
+# how many frames to skip
+#  1 means none
+#  2 means that every second frame gets captured
+#  3 means every third
+#  [...]
 frameskip = 1
 
-async def fetch(session, url, offx, offy, image, needed = False):
+canvases = [
+        {
+            "canvas_name": "earth",
+            "canvas_size": 256*256,
+            "canvas_id": 0,
+            "bkg": (202, 227, 255),
+        },
+        {
+            "canvas_name": "moon",
+            "canvas_size": 4096,
+            "canvas_id": 1,
+            "bkg": (49, 46, 47),
+        },
+        {
+        },
+        {
+            "canvas_name": "corona",
+            "canvas_size": 256,
+            "canvas_id": 3,
+            "bkg": (33, 28, 15),
+        },
+        {
+            "canvas_name": "compass",
+            "canvas_size": 1024,
+            "canvas_id": 4,
+            "bkg": (196, 196, 196),
+        },
+    ]
+
+async def fetch(session, url, offx, offy, image, bkg, needed = False):
     attempts = 0
     while True:
         try:
             async with session.get(url) as resp:
                 if resp.status == 404:
                     if needed:
-                        img = PIL.Image.new('RGB', (256, 256), color = (202, 227, 255))
+                        img = PIL.Image.new('RGB', (256, 256), color=bkg)
                         image.paste(img, (offx, offy))
                         img.close()
                     return
@@ -37,7 +69,12 @@ async def fetch(session, url, offx, offy, image, needed = False):
             attempts += 1
             pass
 
-async def get_area(x, y, w, h, start_date, end_date):
+async def get_area(canvas, x, y, w, h, start_date, end_date):
+    canvas_data = canvases[canvas]
+    canvas_id = canvas_data["canvas_id"]
+    canvas_size = canvas_data["canvas_size"]
+    bkg = canvas_data["bkg"]
+
     offset = int(-canvas_size / 2)
     xc = (x - offset) // 256
     wc = (x + w - offset) // 256
@@ -62,7 +99,7 @@ async def get_area(x, y, w, h, start_date, end_date):
                     url = 'https://storage.pixelplanet.fun/%s/%s/tiles/%s/%s.png' % (iter_date, canvas_id, ix, iy)
                     offx = ix * 256 + offset - x
                     offy = iy * 256 + offset - y
-                    tasks.append(fetch(session, url, offx, offy, image, True))
+                    tasks.append(fetch(session, url, offx, offy, image, bkg, True))
             await asyncio.gather(*tasks)
             print('Got start of day')
             cnt += 1
@@ -80,27 +117,34 @@ async def get_area(x, y, w, h, start_date, end_date):
                 i += 1
                 if (i % frameskip) != 0:
                     continue
+                if time == '0000':
+                    # 0000 incremential backups are faulty
+                    continue
                 tasks = []
+                image_rel = image.copy()
                 for iy in range(yc, hc + 1):
                     for ix in range(xc, wc + 1):
                         url = 'https://storage.pixelplanet.fun/%s/%s/%s/%s/%s.png' % (iter_date, canvas_id, time, ix, iy)
                         offx = ix * 256 + offset - x
                         offy = iy * 256 + offset - y
-                        tasks.append(fetch(session, url, offx, offy, image))
+                        tasks.append(fetch(session, url, offx, offy, image_rel, bkg))
                 await asyncio.gather(*tasks)
                 print('Got time %s' % (time))
                 cnt += 1
                 #frames.append(image.copy())
-                image.save('./timelapse/t%s.png' % (cnt))
+                image_rel.save('./timelapse/t%s.png' % (cnt))
+                image_rel.close()
             image.close()
     # this would save a gif right out of the script, but giffs are huge and not good
     #frames[0].save('timelapse.png', save_all=True, append_images=frames[1:], duration=100, loop=0, default_image=False, blend=1)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4 and len(sys.argv) != 5:
+    if len(sys.argv) != 5 and len(sys.argv) != 6:
         print("Download history of an area of pixelplanet - useful for timelapses")
-        print("Usage: historyDownload.py startX_startY endX_endY start_date [end_date]")
+        print("")
+        print("Usage:    historyDownload.py canvasId startX_startY endX_endY start_date [end_date]")
+        print("")
         print("→start_date and end_date are in YYYY-MM-dd formate")
         print("→user R key on pixelplanet to copy coordinates)")
         print("→images will be saved into timelapse folder)")
@@ -108,11 +152,12 @@ if __name__ == "__main__":
         print("You can create a timelapse from the resulting files with ffmpeg like that:")
         print("ffmpeg -framerate 15 -f image2 -i timelapse/t%d.png -c:v libvpx-vp9 -pix_fmt yuva420p output.webm")
     else:
-        start = sys.argv[1].split('_')
-        end = sys.argv[2].split('_')
-        start_date = datetime.date.fromisoformat(sys.argv[3])
-        if len(sys.argv) == 5:
-            end_date = datetime.date.fromisoformat(sys.argv[4])
+        canvas = int(sys.argv[1])
+        start = sys.argv[2].split('_')
+        end = sys.argv[3].split('_')
+        start_date = datetime.date.fromisoformat(sys.argv[4])
+        if len(sys.argv) == 6:
+            end_date = datetime.date.fromisoformat(sys.argv[5])
         else:
             end_date = datetime.date.today()
         x = int(start[0])
@@ -122,7 +167,9 @@ if __name__ == "__main__":
         loop = asyncio.get_event_loop()
         if not os.path.exists('./timelapse'):
             os.mkdir('./timelapse')
-        loop.run_until_complete(get_area(x, y, w, h, start_date, end_date))
+        loop.run_until_complete(get_area(canvas, x, y, w, h, start_date, end_date))
         print("Done!")
         print("to create a timelapse from it:")
         print("ffmpeg -framerate 15 -f image2 -i timelapse/t%d.png -c:v libvpx-vp9 -pix_fmt yuva420p output.webm")
+        print("example with scaling *3 and audio track:")
+        print("ffmpeg -i ./audio.mp3 -framerate 8 -f image2 -i timelapse/t%d.png -map 0:a -map 1:v -vf scale=iw*3:-1 -shortest -c:v libvpx-vp9 -c:a libvorbis -pix_fmt yuva420p output.webm")
