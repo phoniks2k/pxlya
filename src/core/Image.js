@@ -166,3 +166,72 @@ export async function imagemask2Canvas(
   }
   logger.info('Imagemask loading done.');
 }
+
+
+/*
+ * Set an area of the canvas to protected
+ * @param canvasId numerical ID of canvas
+ * @param x X coordinate on canvas
+ * @param y Y coordinate on canvas
+ * @param width Width of image
+ * @param height height of image
+ */
+export async function protectCanvasArea(
+  canvasId: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  protect: boolean = true,
+) {
+  logger.info(
+    // eslint-disable-next-line max-len
+    `Setting protection ${protect} with size ${width} / ${height} to ${x} / ${y}`,
+  );
+  const canvas = canvases[canvasId];
+  const canvasMinXY = -(canvas.size / 2);
+
+  const [ucx, ucy] = getChunkOfPixel(canvas.size, x, y);
+  const [lcx, lcy] = getChunkOfPixel(canvas.size, x + width, y + height);
+
+  let chunk;
+  for (let cx = ucx; cx <= lcx; cx += 1) {
+    for (let cy = ucy; cy <= lcy; cy += 1) {
+      chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
+      if (!chunk) {
+        continue;
+      }
+      chunk = new Uint8Array(chunk);
+      // offset of area in chunk
+      const cOffX = x - cx * TILE_SIZE + canvasMinXY;
+      const cOffY = y - cy * TILE_SIZE + canvasMinXY;
+      const cOffXE = cOffX + width;
+      const cOffYE = cOffY + height;
+      const startX = (cOffX > 0) ? cOffX : 0;
+      const startY = (cOffY > 0) ? cOffY : 0;
+      const endX = (cOffXE >= TILE_SIZE) ? TILE_SIZE : cOffXE;
+      const endY = (cOffYE >= TILE_SIZE) ? TILE_SIZE : cOffYE;
+      let pxlCnt = 0;
+      for (let py = startX; py < endX; py += 1) {
+        for (let px = startY; px < endY; px += 1) {
+          const offset = (px + py * TILE_SIZE) * 3;
+          if (protect) {
+            chunk[offset] |= 0x80;
+          } else {
+            chunk[offset] &= 0x07;
+          }
+          pxlCnt += 1;
+        }
+      }
+      if (pxlCnt) {
+        const ret = await RedisCanvas.setChunk(cx, cy, chunk);
+        if (ret) {
+          // eslint-disable-next-line max-len
+          logger.info(`Set protection for ${pxlCnt} pixels in chunk ${cx}, ${cy}.`);
+        }
+      }
+      chunk = null;
+    }
+  }
+  logger.info('Setting protection for area done.');
+}
