@@ -80,6 +80,9 @@ passport.use(new JsonStrategy({
  *
  */
 async function oauthLogin(email, name, discordid = null) {
+  if (!email) {
+    throw new Error('You don\'t have a mail set in your account.');
+  }
   name = sanitizeName(name);
   let reguser = await RegUser.findOne({ where: { email } });
   if (!reguser) {
@@ -219,6 +222,12 @@ passport.use(new VkontakteStrategy({
     logger.info(profile);
     const { displayName: name } = profile;
     const { email } = params;
+    if (!email) {
+      done(null, false, {
+        // eslint-disable-next-line max-len
+        message: 'Sorry, you can not use vk login with an account that does not have a verified email set.',
+      });
+    }
     const user = await oauthLogin(email, name);
     done(null, user);
   } catch (err) {
