@@ -11,13 +11,22 @@ import PixelUpdate from './packets/PixelUpdateServer';
 
 class WebSockets {
   listeners: Array<Object>;
+  onlineCounter: number;
 
   constructor() {
     this.listeners = [];
+    this.onlineCounter = 0;
   }
 
   addListener(listener) {
     this.listeners.push(listener);
+  }
+
+  remListener(listener) {
+    const index = this.listeners.indexOf(listener);
+    if (index > -1) {
+      this.listeners.splice(index, 1);
+    }
   }
 
   /*
@@ -125,6 +134,7 @@ class WebSockets {
    * @param online Number of users online
    */
   broadcastOnlineCounter(online: number) {
+    this.onlineCounter = online;
     const buffer = OnlineCounter.dehydrate({ online });
     this.listeners.forEach(
       (listener) => listener.broadcastOnlineCounter(buffer),

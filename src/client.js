@@ -36,7 +36,8 @@ function init() {
   ProtocolClient.on('pixelUpdate', ({
     i, j, offset, color,
   }) => {
-    store.dispatch(receivePixelUpdate(i, j, offset, color));
+    // remove protection
+    store.dispatch(receivePixelUpdate(i, j, offset, color & 0x7F));
   });
   ProtocolClient.on('pixelReturn', ({
     retCode, wait, coolDownSeconds,

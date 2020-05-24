@@ -92,6 +92,7 @@ Configuration takes place in the environment variables that are defined in ecosy
 | BACKUP_DIR        | mounted directory of backup server    | "/mnt/backup/"     |
 | GMAIL_USER        | gmail username if used for mails      | "ppfun@gmail.com"  |
 | GMAIL_PW          | gmail password if used for mails      | "lolrofls"         |
+| HOURLY_EVENT      | run hourly void event on main canvas  | 1                  |
 
 Notes:
 
@@ -237,6 +238,10 @@ Alternatively you can run it with pm2, just like pixelplanet. An example ecosyst
 
 Note:
 - You do not have to run backups or historical view, it's optional.
+
+### Hourly Event
+
+Hourly event is an MMORPG style event that launches once in two hours where users have to fight against a growing void that starts at a random position at the main canvas. If they complete it successfully, the whole canvas will have half cooldown for a few minutes.
 
 ### Historical view
 

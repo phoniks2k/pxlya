@@ -20,9 +20,12 @@ function ChatMessage({
   }
 
   const isInfo = (name === 'info');
+  const isEvent = (name === 'event');
   let className = 'msg';
   if (isInfo) {
     className += ' info';
+  } else if (isEvent) {
+    className += ' event';
   } else if (msgArray[0][1].charAt(0) === '>') {
     className += ' greentext';
   }
@@ -30,7 +33,7 @@ function ChatMessage({
   return (
     <p className="chatmsg">
       {
-        (!isInfo)
+        (!isInfo && !isEvent)
         && (
         <span>
           <img

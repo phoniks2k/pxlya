@@ -95,6 +95,9 @@ tr:nth-child(even) {
 .msg.info{
   color: #ff91a6;
 }
+.msg.event{
+  color: #9dc8ff;
+}
 .msg.greentext{
   color: #94ff94;
 }

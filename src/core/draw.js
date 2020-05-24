@@ -5,60 +5,20 @@ import { using } from 'bluebird';
 import type { User } from '../data/models';
 import { redlock } from '../data/redis';
 import {
-  getChunkOfPixel,
-  getOffsetOfPixel,
   getPixelFromChunkOffset,
 } from './utils';
-import webSockets from '../socket/websockets';
 import logger, { pixelLogger } from './logger';
 import RedisCanvas from '../data/models/RedisCanvas';
+import {
+  setPixelByOffset,
+  setPixelByCoords,
+} from './setPixel';
+import rpgEvent from './event';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 
 import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
 
-
-/**
- *
- * @param canvasId
- * @param canvasId
- * @param color
- * @param x
- * @param y
- * @param z optional, if given its 3d canvas
- */
-export function setPixelByCoords(
-  canvasId: number,
-  color: ColorIndex,
-  x: number,
-  y: number,
-  z: number = null,
-) {
-  const canvasSize = canvases[canvasId].size;
-  const [i, j] = getChunkOfPixel(canvasSize, x, y, z);
-  const offset = getOffsetOfPixel(canvasSize, x, y, z);
-  RedisCanvas.setPixelInChunk(i, j, offset, color, canvasId);
-  webSockets.broadcastPixel(canvasId, i, j, offset, color);
-}
-
-/**
- *
- * By Offset is prefered on server side
- * @param canvasId
- * @param i Chunk coordinates
- * @param j
- * @param offset Offset of pixel withing chunk
- */
-export function setPixelByOffset(
-  canvasId: number,
-  color: ColorIndex,
-  i: number,
-  j: number,
-  offset: number,
-) {
-  RedisCanvas.setPixelInChunk(i, j, offset, color, canvasId);
-  webSockets.broadcastPixel(canvasId, i, j, offset, color);
-}
 
 /**
  *
@@ -143,6 +103,14 @@ export async function drawByOffset(
     coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
     if (user.isAdmin()) {
       coolDown = 0.0;
+    } else if (rpgEvent.success) {
+      if (rpgEvent.success === 1) {
+        // if HOURLY_EVENT got won
+        coolDown /= 2;
+      } else {
+        // if HOURLY_EVENT got lost
+        coolDown *= 2;
+      }
     }
 
     const now = Date.now();
@@ -299,6 +267,14 @@ export async function drawByCoords(
   let coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
   if (user.isAdmin()) {
     coolDown = 0.0;
+  } else if (rpgEvent.success) {
+    if (rpgEvent.success === 1) {
+      // if HOURLY_EVENT got won
+      coolDown /= 2;
+    } else {
+      // if HOURLY_EVENT got lost
+      coolDown *= 2;
+    }
   }
 
   const now = Date.now();

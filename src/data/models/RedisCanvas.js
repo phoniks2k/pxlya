@@ -38,7 +38,9 @@ class RedisCanvas {
     i: number,
     j: number,
   ): Promise<Buffer> {
-    // this key is also hardcoded into core/tilesBackup.js
+    // this key is also hardcoded into
+    // core/tilesBackup.js
+    // and ./EventData.js
     const key = `ch:${canvasId}:${i}:${j}`;
     return redis.getAsync(key);
   }

@@ -156,7 +156,7 @@ export async function imagemask2Canvas(
         }
       }
       if (pxlCnt) {
-        const ret = await RedisCanvas.setChunk(cx, cy, chunk);
+        const ret = await RedisCanvas.setChunk(cx, cy, chunk, canvasId);
         if (ret) {
           logger.info(`Loaded ${pxlCnt} pixels into chunk ${cx}, ${cy}.`);
         }
@@ -192,7 +192,10 @@ export async function protectCanvasArea(
   const canvasMinXY = -(canvas.size / 2);
 
   const [ucx, ucy] = getChunkOfPixel(canvas.size, x, y);
-  const [lcx, lcy] = getChunkOfPixel(canvas.size, x + width, y + height);
+  const [lcx, lcy] = getChunkOfPixel(
+    canvas.size, x + width - 1,
+    y + height - 1,
+  );
 
   let chunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
@@ -203,8 +206,8 @@ export async function protectCanvasArea(
       }
       chunk = new Uint8Array(chunk);
       // offset of area in chunk
-      const cOffX = x - cx * TILE_SIZE + canvasMinXY;
-      const cOffY = y - cy * TILE_SIZE + canvasMinXY;
+      const cOffX = x - cx * TILE_SIZE - canvasMinXY;
+      const cOffY = y - cy * TILE_SIZE - canvasMinXY;
       const cOffXE = cOffX + width;
       const cOffYE = cOffY + height;
       const startX = (cOffX > 0) ? cOffX : 0;
@@ -212,19 +215,19 @@ export async function protectCanvasArea(
       const endX = (cOffXE >= TILE_SIZE) ? TILE_SIZE : cOffXE;
       const endY = (cOffYE >= TILE_SIZE) ? TILE_SIZE : cOffYE;
       let pxlCnt = 0;
-      for (let py = startX; py < endX; py += 1) {
-        for (let px = startY; px < endY; px += 1) {
-          const offset = (px + py * TILE_SIZE) * 3;
+      for (let py = startY; py < endY; py += 1) {
+        for (let px = startX; px < endX; px += 1) {
+          const offset = px + py * TILE_SIZE;
           if (protect) {
             chunk[offset] |= 0x80;
           } else {
-            chunk[offset] &= 0x07;
+            chunk[offset] &= 0x7F;
           }
           pxlCnt += 1;
         }
       }
       if (pxlCnt) {
-        const ret = await RedisCanvas.setChunk(cx, cy, chunk);
+        const ret = await RedisCanvas.setChunk(cx, cy, chunk, canvasId);
         if (ret) {
           // eslint-disable-next-line max-len
           logger.info(`Set protection for ${pxlCnt} pixels in chunk ${cx}, ${cy}.`);

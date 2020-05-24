@@ -41,6 +41,9 @@ export const DISCORD_INVITE = process.env.DISCORD_INVITE
 // Logging
 export const LOG_MYSQL = parseInt(process.env.LOG_MYSQL, 10) || false;
 
+// do hourly event
+export const HOURLY_EVENT = parseInt(process.env.HOURLY_EVENT, 10) || false;
+
 // Accounts
 export const APISOCKET_KEY = process.env.APISOCKET_KEY || 'changethis';
 // Comma seperated list of user ids of Admins
