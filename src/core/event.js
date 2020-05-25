@@ -215,7 +215,7 @@ class Event {
         });
         chatProvider.broadcastChatMessage(
           'event',
-          `Alert! Void is rising in 2min near #d,${xNear},${yNear},30`,
+          `Alert! Threat is rising in 2min near #d,${xNear},${yNear},30`,
         );
       }
       if (eventState !== 7) {
@@ -232,7 +232,7 @@ class Event {
         this.eventState = 9;
         chatProvider.broadcastChatMessage(
           'event',
-          'Alert! Threat rising!',
+          'Alert! Danger!',
         );
       }
       if (eventState !== 9) {
@@ -273,7 +273,7 @@ class Event {
           if (now > this.chatTimeout) {
             chatProvider.broadcastChatMessage(
               'event',
-              `Void reached ${percent}% of its max size`,
+              `Clown Void reached ${percent}% of its max size`,
             );
             this.chatTimeout = now + 40000;
           }

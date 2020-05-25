@@ -26,6 +26,7 @@ class Void extends WebSocketEvents {
   msTimeout: number;
   pixelStack: Array;
   area: Object;
+  userArea: Object;
   curRadius: number;
   curAngle: number;
   curAngleDelta: number;
@@ -42,12 +43,13 @@ class Void extends WebSocketEvents {
     const area = TARGET_RADIUS ** 2 * Math.PI;
     const online = webSockets.onlineCounter;
     // require an average of 0.25 px / min / user
-    const requiredSpeed = Math.floor(online / 6);
+    const requiredSpeed = Math.floor(online / 10);
     const ppm = Math.ceil(area / EVENT_DURATION_MIN + requiredSpeed);
     // timeout between pixels
     this.msTimeout = 60 * 1000 / ppm;
     // area where we log placed pixels
     this.area = new Uint8Array(TILE_SIZE * 3 * TILE_SIZE * 3);
+    this.userArea = new Uint8Array(TILE_SIZE * 3 * TILE_SIZE * 3);
     // array of pixels that we place before continue building (instant-defense)
     this.pixelStack = [];
     this.curRadius = 0;
@@ -85,6 +87,15 @@ class Void extends WebSocketEvents {
       return true;
     }
     return false;
+  }
+
+  /*
+   * check if pixel is set by user during event
+   */
+  isUserSet(x, y) {
+    const off = x + y * TILE_SIZE * 3;
+    const clr = this.userArea[off];
+    return clr || false;
   }
 
   static coordsToOffset(x, y) {
@@ -139,6 +150,11 @@ class Void extends WebSocketEvents {
           continue;
         }
         this.sendPixel(x, y, clr);
+        if (this.isUserSet(x, y)) {
+          // if drawing on a user set pixel, wait longer
+          setTimeout(this.voidLoop, this.msTimeout * 4);
+          return;
+        }
         break;
       }
     }
@@ -175,6 +191,8 @@ class Void extends WebSocketEvents {
         const y = vOff + Math.floor(off / TILE_SIZE);
         if (this.isSet(x, y, true)) {
           this.pixelStack.push([x, y]);
+        } else {
+          this.userArea[x + y * TILE_SIZE * 3] = color;
         }
       }
     }
