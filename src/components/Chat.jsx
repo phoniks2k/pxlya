@@ -109,6 +109,7 @@ const Chat = ({
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               ref={inputRef}
+              maxLength="200"
               type="text"
               placeholder="Chat here"
             />
