@@ -43,7 +43,7 @@ class Void extends WebSocketEvents {
     const area = TARGET_RADIUS ** 2 * Math.PI;
     const online = webSockets.onlineCounter;
     // require an average of 0.25 px / min / user
-    const requiredSpeed = Math.floor(online / 2);
+    const requiredSpeed = Math.floor(online / 1.5);
     const ppm = Math.ceil(area / EVENT_DURATION_MIN + requiredSpeed);
     // timeout between pixels
     this.msTimeout = 60 * 1000 / ppm;
@@ -152,7 +152,7 @@ class Void extends WebSocketEvents {
         this.sendPixel(x, y, clr);
         if (this.isUserSet(x, y)) {
           // if drawing on a user set pixel, wait longer
-          setTimeout(this.voidLoop, this.msTimeout * 4);
+          setTimeout(this.voidLoop, this.msTimeout * 3.5);
           return;
         }
         break;
