@@ -84,11 +84,6 @@ export async function incrementialBackupRedis(
     const date = new Date();
     let hours = date.getHours();
     let minutes = date.getMinutes();
-    if (!hours && !minutes) {
-      // eslint-disable-next-line max-len
-      console.log('Incremential Backup was scheduled at 00:00 which in general isn\'t very good, skipping it.');
-      return;
-    }
     if (hours < 10) hours = `0${hours}`;
     if (minutes < 10) minutes = `0${minutes}`;
     const canvasTileBackupDir = `${canvasBackupDir}/${hours}${minutes}`;
