@@ -194,26 +194,39 @@ export async function createPngBackup(
       }
       for (let y = 0; y < chunksXY; y++) {
         const key = `ch:${id}:${x}:${y}`;
-        /*
-         * await on every iteration is fine because less resource usage
-         * in exchange for higher execution time is wanted.
-         */
-        // eslint-disable-next-line no-await-in-loop
-        const chunk = await redisClient.getAsync(key);
-        if (chunk) {
-          const textureBuffer = palette.buffer2RGB(chunk);
-          const filename = `${xBackupDir}/${y}.png`;
+        try {
+          /*
+           * await on every iteration is fine because less resource usage
+           * in exchange for higher execution time is wanted.
+           */
           // eslint-disable-next-line no-await-in-loop
-          await sharp(
-            Buffer.from(textureBuffer.buffer), {
-              raw: {
-                width: TILE_SIZE,
-                height: TILE_SIZE,
-                channels: 3,
-              },
-            },
-          ).toFile(filename);
-          amount += 1;
+          const chunk = await redisClient.getAsync(key);
+          if (chunk) {
+            if (chunk.length === TILE_SIZE * TILE_SIZE) {
+              const textureBuffer = palette.buffer2RGB(chunk);
+              const filename = `${xBackupDir}/${y}.png`;
+              // eslint-disable-next-line no-await-in-loop
+              await sharp(
+                Buffer.from(textureBuffer.buffer), {
+                  raw: {
+                    width: TILE_SIZE,
+                    height: TILE_SIZE,
+                    channels: 3,
+                  },
+                },
+              ).toFile(filename);
+              amount += 1;
+            } else {
+              console.log(
+                // eslint-disable-next-line max-len
+                `Chunk ${x},${y} of canvas ${id} has invalid length ${chunk.length}`,
+              );
+            }
+          }
+        } catch {
+          console.log(
+            `Couldn't create PNG backup of chunk ${x},${y} of canvas ${id}.`,
+          );
         }
       }
     }
