@@ -53,7 +53,7 @@ export async function imageABGR2Canvas(
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
       chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      chunk = (chunk)
+      chunk = (chunk && chunk.length === TILE_SIZE * TILE_SIZE)
         ? new Uint8Array(chunk)
         : new Uint8Array(TILE_SIZE * TILE_SIZE);
       // offset of chunk in image
@@ -130,7 +130,7 @@ export async function imagemask2Canvas(
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
       chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      chunk = (chunk)
+      chunk = (chunk && chunk.length === TILE_SIZE * TILE_SIZE)
         ? new Uint8Array(chunk)
         : new Uint8Array(TILE_SIZE * TILE_SIZE);
       // offset of chunk in image
@@ -201,7 +201,7 @@ export async function protectCanvasArea(
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
       chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      if (!chunk) {
+      if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
         continue;
       }
       chunk = new Uint8Array(chunk);
