@@ -86,6 +86,7 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
     iter_date = None
     cnt = 0
     #frames = []
+    previous_day = PIL.Image.new('RGB', (256, 256), color=bkg)
     while iter_date != end_date:
         iter_date = start_date.strftime("%Y%m%d")
         print('------------------------------------------------')
@@ -102,6 +103,11 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
                     tasks.append(fetch(session, url, offx, offy, image, bkg, True))
             await asyncio.gather(*tasks)
             print('Got start of day')
+            # check if image is all just one color to lazily detect if whole full backup was 404
+            clr = image.getcolors(1)
+            if clr is not None:
+                print("Got faulty full-backup frame, using last frame from previous day instead.")
+                image = previous_day.copy()
             cnt += 1
             #frames.append(image.copy())
             image.save('./timelapse/t%s.png' % (cnt))
@@ -133,8 +139,14 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
                 cnt += 1
                 #frames.append(image.copy())
                 image_rel.save('./timelapse/t%s.png' % (cnt))
+                if time == time_list[-1]:
+                    # if last element of day, copy it to previous_day to reuse it when needed
+                    print("Remembering last frame of day.")
+                    previous_day.close()
+                    previous_day = image_rel.copy();
                 image_rel.close()
             image.close()
+    previous_day.close()
     # this would save a gif right out of the script, but giffs are huge and not good
     #frames[0].save('timelapse.png', save_all=True, append_images=frames[1:], duration=100, loop=0, default_image=False, blend=1)
 
