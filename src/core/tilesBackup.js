@@ -111,22 +111,29 @@ export async function incrementialBackupRedis(
         const curChunk = await canvasRedis.getAsync(key);
         let tileBuffer = null;
         if (curChunk) {
-          // eslint-disable-next-line no-await-in-loop
-          const oldChunk = await backupRedis.getAsync(key);
-          if (oldChunk) {
-            let pxl = 0;
-            while (pxl < curChunk.length) {
-              if (curChunk[pxl] !== oldChunk[pxl]) {
-                if (!tileBuffer) {
-                  tileBuffer = new Uint32Array(TILE_SIZE * TILE_SIZE);
+          if (curChunk.length === TILE_SIZE * TILE_SIZE) {
+            // eslint-disable-next-line no-await-in-loop
+            const oldChunk = await backupRedis.getAsync(key);
+            if (oldChunk && oldChunk.length === TILE_SIZE * TILE_SIZE) {
+              let pxl = 0;
+              while (pxl < curChunk.length) {
+                if (curChunk[pxl] !== oldChunk[pxl]) {
+                  if (!tileBuffer) {
+                    tileBuffer = new Uint32Array(TILE_SIZE * TILE_SIZE);
+                  }
+                  const color = palette.abgr[curChunk[pxl] & 0x3F];
+                  tileBuffer[pxl] = color;
                 }
-                const color = palette.abgr[curChunk[pxl] & 0x3F];
-                tileBuffer[pxl] = color;
+                pxl += 1;
               }
-              pxl += 1;
+            } else {
+              tileBuffer = palette.buffer2ABGR(curChunk);
             }
           } else {
-            tileBuffer = palette.buffer2ABGR(curChunk);
+            console.log(
+              // eslint-disable-next-line max-len
+              `Chunk ${x},${y} of canvas ${id} has invalid length ${curChunk.length}`,
+            );
           }
         }
         if (tileBuffer) {
