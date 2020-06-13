@@ -97,8 +97,13 @@ function getDateFolder() {
   const dir = path.resolve(__dirname, BACKUP_DIR);
   if (!fs.existsSync(dir)) {
     // eslint-disable-next-line max-len
-    console.error(`Backup directory ${BACKUP_DIR} does not exist! Trying to create it`);
-    fs.mkdirSync(BACKUP_DIR);
+    console.info(`Backup directory ${BACKUP_DIR} does not exist! Trying to create it`);
+    try {
+      fs.mkdirSync(dir);
+    } catch {
+      console.error('Couldn\'t create backup dir');
+      process.exit(1);
+    }
   }
   const date = new Date();
   let month = date.getMonth() + 1;
