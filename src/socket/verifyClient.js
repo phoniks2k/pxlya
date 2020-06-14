@@ -21,7 +21,7 @@ function authenticateClient(req) {
   return new Promise(
     ((resolve) => {
       router(req, {}, async () => {
-        const country = req.headers['cf-ipcountry'];
+        const country = req.headers['cf-ipcountry'] || 'xx';
         const user = (req.user) ? req.user
           : new User(null, getIPFromRequest(req));
         user.country = country.toLowerCase();

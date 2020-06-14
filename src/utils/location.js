@@ -12,6 +12,9 @@ import ccCoords from '../data/countrycode-coords-array.json';
  * @return coords X/Y coordinates of the country on the canvas
  */
 export function ccToCoords(cc: string) {
+  if (!cc) {
+    return [0, 0];
+  }
   const country = cc.toLowerCase();
   const coords = ccCoords[country];
   return (coords) || [0, 0];
