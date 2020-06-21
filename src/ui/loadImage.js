@@ -7,7 +7,7 @@
  */
 const corsRegEx = /^([\w]+:)?\/\//;
 function isCors(url) {
-  return corsRegEx && url.indexOf(window.location.host) === -1;
+  return corsRegEx && url.replace(corsRegEx, '').indexOf(window.location.host);
 }
 
 /*
