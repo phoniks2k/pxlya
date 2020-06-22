@@ -39,3 +39,6 @@ for file in ./ocean_tiles*.png; do NUM=`echo $file | sed -e 's/.*ocean_tiles//' 
 ```
 for i in {0..31}; do rm -r $i; done
 ```
+
+# createOceanTiles.js
+createOceanTiles is splitting the generated ocean tiles into 256x256 tiles, skipping the ones that are empty (aka all ocean).
