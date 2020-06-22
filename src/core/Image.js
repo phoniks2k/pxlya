@@ -200,6 +200,7 @@ export async function protectCanvasArea(
     y + height - 1,
   );
 
+  let totalPxlCnt = 0;
   let chunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
@@ -234,10 +235,12 @@ export async function protectCanvasArea(
         if (ret) {
           // eslint-disable-next-line max-len
           logger.info(`Set protection for ${pxlCnt} pixels in chunk ${cx}, ${cy}.`);
+          totalPxlCnt += pxlCnt;
         }
       }
       chunk = null;
     }
   }
   logger.info('Setting protection for area done.');
+  return totalPxlCnt;
 }
