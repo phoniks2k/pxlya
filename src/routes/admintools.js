@@ -29,6 +29,7 @@ import {
   imageABGR2Canvas,
   protectCanvasArea,
 } from '../core/Image';
+import rollbackCanvasArea from '../core/rollback';
 
 
 const router = express.Router();
@@ -229,7 +230,7 @@ async function executeImageAction(
  * Execute actions for protecting areas
  * @param action what to do
  * @param ulcoor coords of upper-left corner in X_Y format
- * @param brcoord coords of bottom-right corner in X_Y format
+ * @param brcoor coords of bottom-right corner in X_Y format
  * @param canvasid numerical canvas id as string
  * @return [ret, msg] http status code and message
  */
@@ -274,8 +275,6 @@ async function executeProtAction(
     error = 'No imageaction given';
   } else if (!canvas) {
     error = 'Invalid canvas selected';
-  } else if (!canvases[canvasid]) {
-    error = 'Invalid canvas selected';
   } else if (action !== 'protect' && action !== 'unprotect') {
     error = 'Invalid action (must be protect or unprotect)';
   }
@@ -319,6 +318,98 @@ async function executeProtAction(
   ];
 }
 
+/*
+ * Execute rollback
+ * @param date in format YYYYMMdd
+ * @param ulcoor coords of upper-left corner in X_Y format
+ * @param brcoor coords of bottom-right corner in X_Y format
+ * @param canvasid numerical canvas id as string
+ * @return [ret, msg] http status code and message
+ */
+async function executeRollback(
+  date: string,
+  ulcoor: string,
+  brcoor: string,
+  canvasid: number,
+) {
+  if (!ulcoor || !brcoor) {
+    return [403, 'Not all coordinates defined'];
+  }
+  if (!canvasid) {
+    return [403, 'canvasid not defined'];
+  }
+
+  let splitCoords = ulcoor.trim().split('_');
+  if (splitCoords.length !== 2) {
+    return [403, 'Invalid Coordinate Format for top-left corner'];
+  }
+  const [x, y] = splitCoords.map((z) => Math.floor(Number(z)));
+  splitCoords = brcoor.trim().split('_');
+  if (splitCoords.length !== 2) {
+    return [403, 'Invalid Coordinate Format for bottom-right corner'];
+  }
+  const [u, v] = splitCoords.map((z) => Math.floor(Number(z)));
+
+  const canvas = canvases[canvasid];
+
+  let error = null;
+  if (Number.isNaN(x)) {
+    error = 'x of top-left corner is not a valid number';
+  } else if (Number.isNaN(y)) {
+    error = 'y of top-left corner is not a valid number';
+  } else if (Number.isNaN(u)) {
+    error = 'x of bottom-right corner is not a valid number';
+  } else if (Number.isNaN(v)) {
+    error = 'y of bottom-right corner is not a valid number';
+  } else if (u < x || v < y) {
+    error = 'Corner coordinates are alligned wrong';
+  } else if (!date) {
+    error = 'No date given';
+  } else if (Number.isNaN(Number(date))) {
+    error = 'Invalid date';
+  } else if (!canvas) {
+    error = 'Invalid canvas selected';
+  }
+  if (error !== null) {
+    return [403, error];
+  }
+
+  const canvasMaxXY = canvas.size / 2;
+  const canvasMinXY = -canvasMaxXY;
+  if (x < canvasMinXY || y < canvasMinXY
+      || x >= canvasMaxXY || y >= canvasMaxXY) {
+    return [403, 'Coordinates of top-left corner are outside of canvas'];
+  }
+  if (u < canvasMinXY || v < canvasMinXY
+      || u >= canvasMaxXY || v >= canvasMaxXY) {
+    return [403, 'Coordinates of bottom-right corner are outside of canvas'];
+  }
+
+  const width = u - x + 1;
+  const height = v - y + 1;
+  if (width * height > 1000000) {
+    return [403, 'Can not rollback more than 1m pixels at onec'];
+  }
+
+  const pxlCount = await rollbackCanvasArea(
+    canvasid,
+    x,
+    y,
+    width,
+    height,
+    date,
+  );
+  logger.info(
+    // eslint-disable-next-line max-len
+    `ADMINTOOLS: Rollback to ${date} for ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
+  );
+  return [
+    200,
+    // eslint-disable-next-line max-len
+    `Successfully rolled back ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
+  ];
+}
+
 
 /*
  * Check for POST parameters,
@@ -345,6 +436,19 @@ router.post('/', upload.single('image'), async (req, res, next) => {
       } = req.body;
       const [ret, msg] = await executeProtAction(
         protaction,
+        ulcoor,
+        brcoor,
+        canvasid,
+      );
+      res.status(ret).send(msg);
+      return;
+    } if (req.body.rollback) {
+      // rollback is date as YYYYMMdd
+      const {
+        rollback, ulcoor, brcoor, canvasid,
+      } = req.body;
+      const [ret, msg] = await executeRollback(
+        rollback,
         ulcoor,
         brcoor,
         canvasid,

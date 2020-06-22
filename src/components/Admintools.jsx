@@ -13,6 +13,8 @@ const keptState = {
   coords: null,
   tlcoords: null,
   brcoords: null,
+  tlrcoords: null,
+  brrcoords: null,
 };
 
 async function submitImageAction(
@@ -57,6 +59,27 @@ async function submitProtAction(
   callback(await resp.text());
 }
 
+async function submitRollback(
+  date,
+  canvas,
+  tlcoords,
+  brcoords,
+  callback,
+) {
+  const data = new FormData();
+  const timeString = date.substr(0, 4) + date.substr(5, 2) + date.substr(8, 2);
+  data.append('rollback', timeString);
+  data.append('canvasid', canvas);
+  data.append('ulcoor', tlcoords);
+  data.append('brcoor', brcoords);
+  const resp = await fetch('./admintools', {
+    credentials: 'include',
+    method: 'POST',
+    body: data,
+  });
+  callback(await resp.text());
+}
+
 async function submitIPAction(
   action,
   callback,
@@ -78,13 +101,23 @@ function Admintools({
   canvasId,
   canvases,
 }) {
+  const curDate = new Date();
+  let day = curDate.getDate();
+  let month = curDate.getMonth() + 1;
+  if (month < 10) month = `0${month}`;
+  if (day < 10) day = `0${day}`;
+  const maxDate = `${curDate.getFullYear()}-${month}-${day}`;
+
   const [selectedCanvas, selectCanvas] = useState(canvasId);
   const [imageAction, selectImageAction] = useState('build');
   const [iPAction, selectIPAction] = useState('ban');
   const [protAction, selectProtAction] = useState('protect');
+  const [date, selectDate] = useState(maxDate);
   const [coords, selectCoords] = useState(keptState.coords);
   const [tlcoords, selectTLCoords] = useState(keptState.tlcoords);
   const [brcoords, selectBRCoords] = useState(keptState.brcoords);
+  const [tlrcoords, selectTLRCoords] = useState(keptState.tlrcoords);
+  const [brrcoords, selectBRRCoords] = useState(keptState.brrcoords);
   const [resp, setResp] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -129,8 +162,6 @@ function Admintools({
           </span>
         </div>
       )}
-      <h3 className="modaltitle">Image Upload</h3>
-      <p className="modalcotext">Upload images to canvas</p>
       <p className="modalcotext">Choose Canvas:&nbsp;
         <select
           onChange={(e) => {
@@ -154,6 +185,10 @@ function Admintools({
         }
         </select>
       </p>
+      <br />
+      <div className="modaldivider" />
+      <h3 className="modaltitle">Image Upload</h3>
+      <p className="modalcotext">Upload images to canvas</p>
       <p className="modalcotext">
         File:&nbsp;
         <input type="file" name="image" id="imgfile" />
@@ -221,29 +256,6 @@ function Admintools({
         (if you need finer grained control,&nbsp;
         use protect with image upload and alpha layers)
       </p>
-      <p className="modalcotext">Choose Canvas:&nbsp;
-        <select
-          onChange={(e) => {
-            const sel = e.target;
-            selectCanvas(sel.options[sel.selectedIndex].value);
-          }}
-        >
-          {
-          Object.keys(canvases).map((canvas) => ((canvases[canvas].v)
-            ? null
-            : (
-              <option
-                selected={canvas === selectedCanvas}
-                value={canvas}
-              >
-                {
-              canvases[canvas].title
-            }
-              </option>
-            )))
-        }
-        </select>
-      </p>
       <select
         onChange={(e) => {
           const sel = e.target;
@@ -307,6 +319,80 @@ function Admintools({
             selectedCanvas,
             tlcoords,
             brcoords,
+            (ret) => {
+              setSubmitting(false);
+              setResp(ret);
+            },
+          );
+        }}
+      >
+        {(submitting) ? '...' : 'Submit'}
+      </button>
+
+      <br />
+      <div className="modaldivider" />
+      <h3 className="modaltitle">Rollback to Date</h3>
+      <p className="modalcotext">
+        Rollback an area of the canvas to a set date (00:00 UTC)
+      </p>
+      <input
+        type="date"
+        value={date}
+        requiredPattern="\d{4}-\d{2}-\d{2}"
+        min={canvases[selectedCanvas].sd}
+        max={maxDate}
+        onChange={(evt) => {
+          selectDate(evt.target.value);
+        }}
+      />
+      <p className="modalcotext">
+        Top-left corner (X_Y):&nbsp;
+        <input
+          value={tlrcoords}
+          style={{
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: '15em',
+          }}
+          type="text"
+          placeholder="X_Y"
+          onChange={(evt) => {
+            const co = evt.target.value.trim();
+            selectTLRCoords(co);
+            keptState.tlrcoords = co;
+          }}
+        />
+      </p>
+      <p className="modalcotext">
+        Bottom-right corner (X_Y):&nbsp;
+        <input
+          value={brrcoords}
+          style={{
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: '15em',
+          }}
+          type="text"
+          placeholder="X_Y"
+          onChange={(evt) => {
+            const co = evt.target.value.trim();
+            selectBRRCoords(co);
+            keptState.brrcoords = co;
+          }}
+        />
+      </p>
+      <button
+        type="button"
+        onClick={() => {
+          if (submitting) {
+            return;
+          }
+          setSubmitting(true);
+          submitRollback(
+            date,
+            selectedCanvas,
+            tlrcoords,
+            brrcoords,
             (ret) => {
               setSubmitting(false);
               setResp(ret);
