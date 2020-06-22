@@ -1,5 +1,6 @@
 /**
  * basic admin api
+ * is used by ../components/Admintools
  *
  * @flow
  *
@@ -15,7 +16,6 @@ import sharp from 'sharp';
 import multer from 'multer';
 
 import { getIPFromRequest, getIPv6Subnet } from '../utils/ip';
-import { getIdFromObject } from '../core/utils';
 import redis from '../data/redis';
 import session from '../core/session';
 import passport from '../core/passport';
@@ -26,8 +26,6 @@ import { MINUTE } from '../core/constants';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import { imageABGR2Canvas } from '../core/Image';
-
-import adminHtml from '../components/Admin';
 
 
 const router = express.Router();
@@ -73,7 +71,7 @@ router.use(async (req, res, next) => {
   }
   if (!req.user.isAdmin()) {
     logger.info(
-      `ADMINTOOLS: ${ip}/${req.user.id} wrongfully tried to access admintools`,
+      `ADMINTOOLS: ${ip} / ${req.user.id} tried to access admintools`,
     );
     res.status(403).send('You are not allowed to access this page');
     return;
@@ -91,7 +89,7 @@ router.use(async (req, res, next) => {
  * @param ip already sanizized ip
  * @return true if successful
  */
-async function executeAction(action: string, ips: string): boolean {
+async function executeIPAction(action: string, ips: string): boolean {
   const ipArray = ips.split('\n');
   let out = '';
   const splitRegExp = /\s+/;
@@ -104,7 +102,7 @@ async function executeAction(action: string, ips: string): boolean {
       ip = ipLine[2];
     }
     if (!ip || ip.length < 8 || ip.indexOf(' ') !== -1) {
-      out += `Couln't parse ${action} ${ip}<br>\n`;
+      out += `Couln't parse ${action} ${ip}\n`;
       continue;
     }
     const ipKey = getIPv6Subnet(ip);
@@ -137,11 +135,86 @@ async function executeAction(action: string, ips: string): boolean {
         await redis.del(key);
         break;
       default:
-        out += `Failed to ${action} ${ip}<br>\n`;
+        out += `Failed to ${action} ${ip}\n`;
     }
-    out += `Succseefully did ${action} ${ip}<br>\n`;
+    out += `Succseefully did ${action} ${ip}\n`;
   }
   return out;
+}
+
+/*
+ * Execute Image based actions (upload, protect, etc.)
+ * @param action what to do with the image
+ * @param file imagefile
+ * @param coords coord sin X_Y format
+ * @param canvasid numerical canvas id
+ * @return [ret, msg] http status code and message
+ */
+async function executeImageAction(
+  action: string,
+  file: Object,
+  coords: string,
+  canvasid: string,
+) {
+  const splitCoords = coords.trim().split('_');
+  if (splitCoords.length !== 2) {
+    return [403, 'Invalid Coordinate Format'];
+  }
+  const [x, y] = splitCoords.map((z) => Math.floor(Number(z)));
+
+  let error = null;
+  if (Number.isNaN(x)) {
+    error = 'x is not a valid number';
+  } else if (Number.isNaN(y)) {
+    error = 'y is not a valid number';
+  } else if (!action) {
+    error = 'No imageaction given';
+  } else if (!canvasid) {
+    error = 'No canvas specified';
+  } else if (!canvases[canvasid]) {
+    error = 'Invalid canvas selected';
+  }
+  if (error !== null) {
+    return [403, error];
+  }
+
+  const canvas = canvases[canvasid];
+
+  if (canvas.v) {
+    return [403, 'Can not upload Image to 3D canvas'];
+  }
+
+  const canvasMaxXY = canvas.size / 2;
+  const canvasMinXY = -canvasMaxXY;
+  if (x < canvasMinXY || y < canvasMinXY
+      || x >= canvasMaxXY || y >= canvasMaxXY) {
+    return [403, 'Coordinates are outside of canvas'];
+  }
+
+  const protect = (action === 'protect');
+  const wipe = (action === 'wipe');
+
+  try {
+    const { data, info } = await sharp(file.buffer)
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    const pxlCount = await imageABGR2Canvas(
+      canvasid,
+      x, y,
+      data,
+      info.width, info.height,
+      wipe, protect,
+    );
+
+    return [
+      200,
+      `Successfully loaded image wth ${pxlCount} pixels to ${x}/${y}`,
+    ];
+  } catch {
+    return [400, 'Can not read image file'];
+  }
 }
 
 
@@ -150,71 +223,18 @@ async function executeAction(action: string, ips: string): boolean {
  */
 router.post('/', upload.single('image'), async (req, res, next) => {
   try {
-    if (req.file) {
-      const { imageaction, canvasident } = req.body;
-
-      let error = null;
-      if (Number.isNaN(req.body.x)) {
-        error = 'x is not a valid number';
-      } else if (Number.isNaN(req.body.y)) {
-        error = 'y is not a valid number';
-      } else if (!imageaction) {
-        error = 'No imageaction given';
-      } else if (!canvasident) {
-        error = 'No canvas specified';
-      }
-      if (error !== null) {
-        res.status(403).send(error);
-        return;
-      }
-      const x = parseInt(req.body.x, 10);
-      const y = parseInt(req.body.y, 10);
-
-      const canvasId = getIdFromObject(canvases, canvasident);
-      if (canvasId === null) {
-        res.status(403).send('This canvas does not exist');
-        return;
-      }
-
-      const canvas = canvases[canvasId];
-
-      if (canvas.v) {
-        res.status(403).send('Can not upload Image to 3D canvas');
-        return;
-      }
-
-      const canvasMaxXY = canvas.size / 2;
-      const canvasMinXY = -canvasMaxXY;
-      if (x < canvasMinXY || y < canvasMinXY
-          || x >= canvasMaxXY || y >= canvasMaxXY) {
-        res.status(403).send('Coordinates are outside of canvas');
-        return;
-      }
-
-      const protect = (imageaction === 'protect');
-      const wipe = (imageaction === 'wipe');
-
-      await sharp(req.file.buffer)
-        .ensureAlpha()
-        .raw()
-        .toBuffer({ resolveWithObject: true })
-        .then(({ err, data, info }) => {
-          if (err) throw err;
-          return imageABGR2Canvas(
-            canvasId,
-            x, y,
-            data,
-            info.width, info.height,
-            wipe, protect,
-          );
-        });
-
-      res.status(200).send('Successfully loaded image');
+    if (req.body.imageaction) {
+      const { imageaction, coords, canvasid } = req.body;
+      const [ret, msg] = await executeImageAction(
+        imageaction,
+        req.file,
+        coords,
+        canvasid,
+      );
+      res.status(ret).send(msg);
       return;
-    }
-
-    if (req.body.ip) {
-      const ret = await executeAction(req.body.action, req.body.ip);
+    } if (req.body.ipaction) {
+      const ret = await executeIPAction(req.body.ipaction, req.body.ip);
       res.status(200).send(ret);
       return;
     }
@@ -231,8 +251,8 @@ router.post('/', upload.single('image'), async (req, res, next) => {
  */
 router.get('/', async (req: Request, res: Response, next) => {
   try {
-    const { ip, action } = req.query;
-    if (!action) {
+    const { ip, ipaction } = req.query;
+    if (!ipaction) {
       next();
       return;
     }
@@ -241,9 +261,9 @@ router.get('/', async (req: Request, res: Response, next) => {
       return;
     }
 
-    const ret = await executeAction(action, ip);
+    const ret = await executeIPAction(ipaction, ip);
 
-    res.json({ action: 'success', messages: ret.split('\n') });
+    res.json({ ipaction: 'success', messages: ret.split('\n') });
   } catch (error) {
     next(error);
   }
@@ -251,10 +271,7 @@ router.get('/', async (req: Request, res: Response, next) => {
 
 
 router.use(async (req: Request, res: Response) => {
-  res.set({
-    'Content-Type': 'text/html',
-  });
-  res.status(200).send(adminHtml);
+  res.status(400).send('Invalid request');
 });
 
 

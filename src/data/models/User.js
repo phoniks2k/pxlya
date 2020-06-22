@@ -148,6 +148,7 @@ class User {
       ranking: regUser.ranking,
       dailyRanking: regUser.dailyRanking,
       mailreg: !!(regUser.password),
+      userlvl: this.isAdmin() ? 1 : 0,
     };
   }
 }

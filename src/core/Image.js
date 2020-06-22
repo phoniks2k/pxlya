@@ -48,6 +48,7 @@ export async function imageABGR2Canvas(
   const [ucx, ucy] = getChunkOfPixel(size, x, y);
   const [lcx, lcy] = getChunkOfPixel(size, x + width, y + height);
 
+  let totalPxlCnt = 0;
   logger.info(`Loading to chunks from ${ucx} / ${ucy} to ${lcx} / ${lcy} ...`);
   let chunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
@@ -83,12 +84,14 @@ export async function imageABGR2Canvas(
         const ret = await RedisCanvas.setChunk(cx, cy, chunk, canvasId);
         if (ret) {
           logger.info(`Loaded ${pxlCnt} pixels into chunk ${cx}, ${cy}.`);
+          totalPxlCnt += pxlCnt;
         }
       }
       chunk = null;
     }
   }
   logger.info('Image loading done.');
+  return totalPxlCnt;
 }
 
 

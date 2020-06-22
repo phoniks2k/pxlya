@@ -492,6 +492,7 @@ export function receiveMe(
     dailyRanking,
     minecraftname,
     canvases,
+    userlvl,
   } = me;
   return {
     type: 'RECEIVE_ME',
@@ -504,6 +505,7 @@ export function receiveMe(
     dailyRanking,
     minecraftname,
     canvases,
+    userlvl,
   };
 }
 

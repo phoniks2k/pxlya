@@ -19,6 +19,8 @@ import Rankings from './Rankings';
 
 // eslint-disable-next-line max-len
 const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ './Converter'));
+// eslint-disable-next-line max-len
+const Admintools = React.lazy(() => import(/* webpackChunkName: "admintools" */ './Admintools'));
 
 const logoStyle = {
   marginRight: 5,
@@ -82,7 +84,14 @@ const LogInArea = ({ register, forgotPassword, me }) => (
 );
 
 const UserAreaModal = ({
-  name, register, forgotPassword, doMe, logout, setUserName, setUserMailreg,
+  name,
+  register,
+  forgotPassword,
+  doMe,
+  logout,
+  setUserName,
+  setUserMailreg,
+  userlvl,
 }) => (
   <p style={{ textAlign: 'center' }}>
     {(name === null)
@@ -110,6 +119,13 @@ const UserAreaModal = ({
               <Converter />
             </Suspense>
           </div>
+          {userlvl && (
+          <div label="Admintools">
+            <Suspense fallback={<div>Loading...</div>}>
+              <Admintools />
+            </Suspense>
+          </div>
+          )}
         </Tabs>
       )}
     <p>Also join our Discord:&nbsp;
@@ -149,8 +165,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state: State) {
-  const { name } = state.user;
-  return { name };
+  const { name, userlvl } = state.user;
+  return { name, userlvl };
 }
 
 const data = {

@@ -79,7 +79,8 @@ export type Action =
     ranking: number,
     dailyRanking: number,
     minecraftname: string,
-    canvases: Object
+    canvases: Object,
+    userlvl: number,
   }
   | { type: 'RECEIVE_STATS', totalRanking: Object, totalDailyRanking: Object }
   | { type: 'SET_NAME', name: string }

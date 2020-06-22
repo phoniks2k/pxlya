@@ -32,6 +32,8 @@ export type UserState = {
   isOnMobile: boolean,
   // small notifications for received cooldown
   notification: string,
+  // 1: Admin, 0: ordinary user
+  userlvl: number,
 };
 
 const initialState: UserState = {
@@ -53,6 +55,7 @@ const initialState: UserState = {
   minecraftname: null,
   isOnMobile: false,
   notification: null,
+  userlvl: 0,
 };
 
 export default function user(
@@ -171,6 +174,7 @@ export default function user(
         ranking,
         dailyRanking,
         minecraftname,
+        userlvl,
       } = action;
       const messages = (action.messages) ? action.messages : [];
       return {
@@ -183,6 +187,7 @@ export default function user(
         ranking,
         dailyRanking,
         minecraftname,
+        userlvl,
       };
     }
 
