@@ -178,6 +178,7 @@ function SettingsModal({
             title="Historical View"
             description="Check out past versions of the canvas."
             value={isHistoricalView}
+            keyBind="H"
             onToggle={onToggleHistoricalView}
           />
         ) : null }

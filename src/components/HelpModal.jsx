@@ -32,6 +32,7 @@ const HelpModal = () => (
     <p className="modaltext">Click a color in palette to select</p>
     <p className="modaltext">Press <kbd>G</kbd> to toggle grid</p>
     <p className="modaltext">Press <kbd>X</kbd> to toggle showing of pixel activity</p>
+    <p className="modaltext">Press <kbd>H</kbd> to toggle historical view</p>
     <p className="modaltext">Press <kbd>R</kbd> to copy coordinates</p>
     <p className="modaltext">Press <kbd>Q</kbd> or <kbd>E</kbd> to zoom</p>
     <p className="modaltext">Press <kbd>W</kbd>,<kbd>A</kbd>,<kbd>S</kbd>, <kbd>D</kbd> to move</p>
@@ -45,6 +46,7 @@ const HelpModal = () => (
     <h3 className="modaltitle">3D Controls</h3>
     <p className="modaltext">Press <kbd>W</kbd>,<kbd>A</kbd>,<kbd>S</kbd>, <kbd>D</kbd> to move</p>
     <p className="modaltext">Press <kbd>↑</kbd>,<kbd>←</kbd>,<kbd>↓</kbd>, <kbd>→</kbd> to move</p>
+    <p className="modaltext">Press <kbd>E</kbd> and <kbd>C</kbd> to fly up and down</p>
     <p className="modaltext">Scroll mouse wheel to zoom</p>
     <p className="modaltext">Left click and drag mouse to rotate</p>
     <p className="modaltext">Middle click and drag mouse to zoom</p>

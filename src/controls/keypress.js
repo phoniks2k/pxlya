@@ -8,6 +8,7 @@ import store from '../ui/store';
 import copy from '../utils/clipboard';
 import {
   toggleGrid,
+  toggleHistoricalView,
   togglePixelNotify,
   toggleMute,
   notify,
@@ -25,6 +26,9 @@ function onKeyPress(event: KeyboardEvent) {
   switch (keycode(event)) {
     case 'g':
       store.dispatch(toggleGrid());
+      break;
+    case 'h':
+      store.dispatch(toggleHistoricalView());
       break;
     case 'x':
       store.dispatch(togglePixelNotify());

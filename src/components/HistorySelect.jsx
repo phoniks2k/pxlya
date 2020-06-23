@@ -14,10 +14,18 @@ function dateToString(date) {
   // YYYYMMDD
   return timeString;
 }
+function stringToDate(timeString) {
+  // YYYYMMDD
+  // eslint-disable-next-line max-len
+  const date = `${timeString.substr(0, 4)}-${timeString.substr(4, 2)}-${timeString.substr(6, 2)}`;
+  // YYYY-MM-DD
+  return date;
+}
 
 async function getTimes(day, canvasId) {
   try {
-    const response = await fetch(`./api/history?day=${day}&id=${canvasId}`);
+    const date = dateToString(day);
+    const response = await fetch(`./api/history?day=${date}&id=${canvasId}`);
     if (response.status !== 200) {
       return [];
     }
@@ -48,6 +56,7 @@ class HistorySelect extends React.Component {
       submitting: false,
       selectedDate: null,
       selectedTime: null,
+      times: [],
       max,
     };
     this.dateSelect = null;
@@ -75,7 +84,7 @@ class HistorySelect extends React.Component {
       canvasId,
       setTime,
     } = this.props;
-    const date = dateToString(evt.target.value);
+    const date = evt.target.value;
     const times = await getTimes(date, canvasId);
     if (times.length === 0) {
       this.setState({
@@ -117,6 +126,7 @@ class HistorySelect extends React.Component {
     if (!selectedTime || times.length === 0) {
       return;
     }
+
     const {
       setTime,
       canvasId,
@@ -129,7 +139,7 @@ class HistorySelect extends React.Component {
       } else {
         this.dateSelect.stepUp(1);
       }
-      selectedDate = dateToString(this.dateSelect.value);
+      selectedDate = this.dateSelect.value;
       this.setState({
         submitting: true,
         times: [],
@@ -162,18 +172,42 @@ class HistorySelect extends React.Component {
     const {
       canvasStartDate,
     } = this.props;
+
     const {
       submitting,
+      max,
+    } = this.state;
+    let {
       times,
       selectedDate,
       selectedTime,
-      max,
     } = this.state;
+
+    if (!selectedDate) {
+      const {
+        historicalDate,
+        historicalTime,
+      } = this.props;
+
+      if (historicalDate && historicalTime) {
+        selectedDate = stringToDate(historicalDate);
+        selectedTime = historicalTime;
+        times = [historicalTime];
+
+        this.setState({
+          selectedDate,
+          selectedTime,
+          times,
+        });
+      }
+    }
+
     return (
       <div id="historyselect">
         <input
           type="date"
           requiredPattern="\d{4}-\d{2}-\d{2}"
+          value={selectedDate}
           min={canvasStartDate}
           max={max}
           ref={(ref) => { this.dateSelect = ref; }}
@@ -193,7 +227,12 @@ class HistorySelect extends React.Component {
                   onChange={this.handleTimeChange}
                 >
                   {times.map((value) => (
-                    <option value={value}>{value}</option>
+                    <option
+                      value={value}
+                      selected={value === selectedTime}
+                    >
+                      {value}
+                    </option>
                   ))}
                 </select>
                 <button
@@ -217,7 +256,8 @@ function mapDispatchToProps(dispatch) {
   return {
     setTime(date: string, time: string) {
       const timeString = time.substr(0, 2) + time.substr(-2, 2);
-      dispatch(selectHistoricalTime(date, timeString));
+      const dateString = dateToString(date);
+      dispatch(selectHistoricalTime(dateString, timeString));
     },
   };
 }
@@ -226,8 +266,12 @@ function mapStateToProps(state: State) {
   const {
     canvasId,
     canvasStartDate,
+    historicalDate,
+    historicalTime,
   } = state.canvas;
-  return { canvasId, canvasStartDate };
+  return {
+    canvasId, canvasStartDate, historicalDate, historicalTime,
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(HistorySelect);
