@@ -128,8 +128,8 @@ const UserAreaModal = ({
           )}
         </Tabs>
       )}
-    <p>Also join our Discord:&nbsp;
-      <a href="./discord" target="_blank">pixelplanet.fun/discord</a>
+    <p>Consider joining us on Guilded:&nbsp;
+      <a href="./guilded" target="_blank">pixelplanet.fun/guilded</a>
     </p>
   </p>
 );

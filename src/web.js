@@ -29,7 +29,7 @@ import globeHtml from './components/Globe';
 import generateMainPage from './components/Main';
 
 import { SECOND, MONTH } from './core/constants';
-import { PORT, DISCORD_INVITE } from './core/config';
+import { PORT, DISCORD_INVITE, GUILDED_INVITE } from './core/config';
 
 import { ccToCoords } from './utils/location';
 import { startAllCanvasLoops } from './core/tileserver';
@@ -110,10 +110,13 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 
 //
-// Redirecct to discord
+// Redirecct to discord and guilded
 // -----------------------------------------------------------------------------
 app.use('/discord', (req, res) => {
   res.redirect(DISCORD_INVITE);
+});
+app.use('/guilded', (req, res) => {
+  res.redirect(GUILDED_INVITE);
 });
 
 

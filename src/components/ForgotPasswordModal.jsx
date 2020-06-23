@@ -16,8 +16,9 @@ const ForgotPasswordModal = ({ login }) => (
     </p><br />
     <p style={{ textAlign: 'center' }}>
       <NewPasswordForm back={login} />
-      <p>Also join our Discord:&nbsp;
-        <a href="./discord" target="_blank">pixelplanet.fun/discord</a></p>
+      <p>Consider joining us on Guilded:&nbsp;
+        <a href="./guilded" target="_blank">pixelplanet.fun/guilded</a>
+      </p>
     </p>
   </p>
 );

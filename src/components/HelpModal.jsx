@@ -20,7 +20,7 @@ const HelpModal = () => (
       pixels and 7s on already set pixels.
       Higher zoomlevels take some time to update, the 3D globe gets updated at least once per day.
       Have fun!</p>
-    <p>Discord: <a href="./discord" target="_blank" rel="noopener noreferrer">pixelplanet.fun/discord</a></p>
+    <p>Guilded (recommended): <a href="./guilded" target="_blank" rel="noopener noreferrer">pixelplanet.fun/guilded</a></p>
     <p>Source on <a href="https://github.com/pixelplanetdev/pixelplanet" target="_blank" rel="noopener noreferrer">github</a></p>
     <p>Reddit: <a href="https://www.reddit.com/r/PixelPlanetFun/" target="_blank" rel="noopener noreferrer">r/PixelPlanetFun</a></p>
     <p className="modaltitle">Map Data</p>

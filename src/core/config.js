@@ -37,6 +37,8 @@ export const MYSQL_PW = process.env.MYSQL_PW || 'password';
 // Social
 export const DISCORD_INVITE = process.env.DISCORD_INVITE
   || 'https://discordapp.com/';
+export const GUILDED_INVITE = process.env.GUILDED_INVITE
+  || 'https://www.guilded.gg/';
 
 // Logging
 export const LOG_MYSQL = parseInt(process.env.LOG_MYSQL, 10) || false;
