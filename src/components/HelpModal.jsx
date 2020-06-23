@@ -56,15 +56,15 @@ const HelpModal = () => (
       ? (
         <p className="modaltext">
           <small>This site is protected by reCAPTCHA and the Google&nbsp;
-            <a href="https://policies.google.com/privacy">Privacy Policy</a> and&nbsp;
-            <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+            <a href="https://policies.google.com/privacy">Privacy Policy</a>&nbsp;and&nbsp;
+            <a href="https://policies.google.com/terms">Terms of Service</a>&nbsp;apply.
           </small>
         </p>
       ) : (
         <p className="modaltext">
           <small>This site is protected by hCAPTCHA and its&nbsp;
-            <a href="https://hcaptcha.com/privacy">Privacy Policy</a>and&nbsp;
-            <a href="https://hcaptcha.com/terms">Terms of Service</a>apply.
+            <a href="https://hcaptcha.com/privacy">Privacy Policy</a>&nbsp;and&nbsp;
+            <a href="https://hcaptcha.com/terms">Terms of Service</a>&nbsp;apply.
           </small>
         </p>
       )}
