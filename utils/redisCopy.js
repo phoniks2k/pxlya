@@ -54,9 +54,15 @@ async function copyChunksByCoords(xMin, xMax, yMin, yMax) {
         const setNXArgs = [newkey, chunk];
         await newredis.sendCommandAsync('SET', setNXArgs);
         console.log("Created Chunk ", newkey);
+      } else {
+        await newredis.delAsync(newkey);
+        console.log("Deleted Chunk ", newkey);
       }
     }
   }
 }
 
-copyChunksByCoords(-160, 60, -60, 160);
+module.exports = copyChunksByCoords;
+
+// copyChunksByCoords(-160, 60, -60, 160);
+
