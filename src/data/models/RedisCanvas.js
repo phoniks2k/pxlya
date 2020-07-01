@@ -57,6 +57,14 @@ class RedisCanvas {
     return true;
   }
 
+  static async delChunk(i: number, j: number, canvasId: number) {
+    const key = `ch:${canvasId}:${i}:${j}`;
+    await redis.delAsync(key);
+    chunks.delete(key);
+    RedisCanvas.registerChunkChange(canvasId, [i, j]);
+    return true;
+  }
+
   static async setPixel(
     canvasId: number,
     color: number,

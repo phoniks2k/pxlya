@@ -65,12 +65,12 @@ export async function clearOldEvent() {
             // eslint-disable-next-line max-len
             `Tiny chunk in event backup, not-generated chunk at ${ic}/${jc}`,
           );
-          await redis.delAsync(`ch:${CANVAS_ID}:${ic}:${jc}`);
+          await RedisCanvas.delChunk(ic, jc, CANVAS_ID);
         } else {
           logger.info(
             `Restoring chunk ${ic}/${jc} from event`,
           );
-          await redis.setAsync(`ch:${CANVAS_ID}:${ic}:${jc}`, chunk);
+          await RedisCanvas.setChunk(ic, jc, chunk, CANVAS_ID);
         }
         await redis.delAsync(chunkKey);
       }
@@ -88,7 +88,7 @@ export async function setNextEvent(minutes: number, i: number, j: number) {
   await clearOldEvent();
   for (let jc = j - 1; jc <= j + 1; jc += 1) {
     for (let ic = i - 1; ic <= i + 1; ic += 1) {
-      let chunk = await redis.getAsync(`ch:${CANVAS_ID}:${ic}:${jc}`);
+      let chunk = await RedisCanvas.getChunk(CANVAS_ID, ic, jc);
       if (!chunk) {
         // place a dummy Array inside to mark chunk as none-existent
         const buff = new Uint8Array(3);
