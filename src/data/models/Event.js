@@ -70,7 +70,8 @@ export async function clearOldEvent() {
           logger.info(
             `Restoring chunk ${ic}/${jc} from event`,
           );
-          await RedisCanvas.setChunk(ic, jc, chunk, CANVAS_ID);
+          const chunkArray = new Uint8Array(chunk);
+          await RedisCanvas.setChunk(ic, jc, chunkArray, CANVAS_ID);
         }
         await redis.delAsync(chunkKey);
       }
