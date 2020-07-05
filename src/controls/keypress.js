@@ -9,6 +9,7 @@ import copy from '../utils/clipboard';
 import {
   toggleGrid,
   toggleHistoricalView,
+  toggleHiddenCanvases,
   togglePixelNotify,
   toggleMute,
   notify,
@@ -42,6 +43,10 @@ function onKeyPress(event: KeyboardEvent) {
       const text = hover.join('_');
       copy(text);
       store.dispatch(notify('Copied!'));
+      break;
+    }
+    case 'p': {
+      store.dispatch(toggleHiddenCanvases());
       break;
     }
     default:

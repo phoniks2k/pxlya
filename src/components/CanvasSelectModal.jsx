@@ -11,7 +11,7 @@ import CanvasItem from './CanvasItem';
 import type { State } from '../reducers';
 
 
-const CanvasSelectModal = ({ canvases }) => (
+const CanvasSelectModal = ({ canvases, showHiddenCanvases }) => (
   <p style={{
     textAlign: 'center',
     paddingLeft: '5%',
@@ -26,15 +26,20 @@ const CanvasSelectModal = ({ canvases }) => (
     </p>
     {
       Object.keys(canvases).map((canvasId) => (
-        <CanvasItem canvasId={canvasId} canvas={canvases[canvasId]} />
+        (canvases[canvasId].hid && !showHiddenCanvases)
+          ? null
+          : <CanvasItem canvasId={canvasId} canvas={canvases[canvasId]} />
       ))
     }
   </p>
 );
 
 function mapStateToProps(state: State) {
-  const { canvases } = state.canvas;
-  return { canvases };
+  const {
+    canvases,
+    showHiddenCanvases,
+  } = state.canvas;
+  return { canvases, showHiddenCanvases };
 }
 
 const data = {

@@ -210,6 +210,7 @@ async function renderOutputImage(opts) {
 function Converter({
   canvasId,
   canvases,
+  showHiddenCanvases,
 }) {
   const [selectedCanvas, selectCanvas] = useState(canvasId);
   const [selectedFile, selectFile] = useState(null);
@@ -270,18 +271,21 @@ function Converter({
           }}
         >
           {
-          Object.keys(canvases).map((canvas) => ((canvases[canvas].v)
-            ? null
-            : (
-              <option
-                selected={canvas === selectedCanvas}
-                value={canvas}
-              >
-                {
+          Object.keys(canvases).map((canvas) => (
+            (canvases[canvas].v
+              || (canvases[canvas].hid && !showHiddenCanvases))
+              ? null
+              : (
+                <option
+                  selected={canvas === selectedCanvas}
+                  value={canvas}
+                >
+                  {
               canvases[canvas].title
             }
-              </option>
-            )))
+                </option>
+              )
+          ))
         }
         </select>
       </p>
@@ -603,8 +607,12 @@ function Converter({
 }
 
 function mapStateToProps(state: State) {
-  const { canvasId, canvases } = state.canvas;
-  return { canvasId, canvases };
+  const {
+    canvasId,
+    canvases,
+    showHiddenCanvases,
+  } = state.canvas;
+  return { canvasId, canvases, showHiddenCanvases };
 }
 
 export default connect(mapStateToProps)(Converter);

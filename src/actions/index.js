@@ -35,6 +35,12 @@ export function toggleHistoricalView(): Action {
   };
 }
 
+export function toggleHiddenCanvases(): Action {
+  return {
+    type: 'TOGGLE_HIDDEN_CANVASES',
+  };
+}
+
 export function toggleGrid(): Action {
   return {
     type: 'TOGGLE_GRID',

@@ -38,6 +38,7 @@ export type CanvasState = {
   historicalTime: string,
   // object with all canvas informations from all canvases like colors and size
   canvases: Object,
+  showHiddenCanvases: boolean,
 };
 
 /*
@@ -140,6 +141,7 @@ const initialState: CanvasState = {
   isHistoricalView: false,
   historicalDate: null,
   historicalTime: null,
+  showHiddenCanvases: false,
 };
 
 
@@ -209,6 +211,13 @@ export default function canvasReducer(
         scale: (scale < 1.0) ? 1.0 : scale,
         viewscale: (viewscale < 1.0) ? 1.0 : viewscale,
         isHistoricalView: !state.is3D && !state.isHistoricalView,
+      };
+    }
+
+    case 'TOGGLE_HIDDEN_CANVASES': {
+      return {
+        ...state,
+        showHiddenCanvases: !state.showHiddenCanvases,
       };
     }
 
