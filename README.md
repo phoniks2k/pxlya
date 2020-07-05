@@ -127,7 +127,7 @@ Meaning of some values:
 
 | Key    | Description                                       |
 |--------|:--------------------------------------------------|
-| itent  | Unique character used in the url                  |
+| ident  | Unique character used in the url                  |
 | title  | Title                                             |
 | size   | canvas size, power of 4 and between 256 and 65536 |
 | bcd    | Base cooldown for unset pixels                    |
@@ -139,6 +139,7 @@ Meaning of some values:
 | sd     | Start-date of the canvas for historical view      |
 | desc   | Small desctiption text                            |
 | v      | If 3D voxel canvas (boolean)                      |
+| hid    | Hidden canvases, can be just seen by pressing P   |
 
 The canvas size limit can be surpassed by changing the websocket packages in src/socket/packages/ to send chunk coordinates in 16bit.
 req is an integer and if >0 is the amount of total pixels placed before being allowed to play there,  if -1 it has no requirement and if 0 it is limited to registered users. 

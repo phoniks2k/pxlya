@@ -60,3 +60,6 @@ center logo of pixelplanet
 
 ## change-canvasbackup
 just a script that got run once to add the missing tiles in historical view when  increasing the size of the moon canvas.
+
+## uploadImage.js
+nodejs script to upload a Image to the canvas without checks and without caring about what was previously there, don't use it for anything other than initially loading a very large image to the canvas.
