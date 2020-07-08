@@ -9,7 +9,8 @@ database.sqlite
 lol.png
 lol-cleaned.png
 clean.png
-
+utils/ocean-tiles/ocean
+utils/osm-tiles/osm
 
 # Created by https://www.gitignore.io/api/node,webstorm
 
@@ -130,7 +131,7 @@ fabric.properties
 
 yarn.lock
 
-osm.tar.xz
+osm.tar.gz
 backup
 backup/*
 ips
