@@ -61,7 +61,7 @@ class User {
 
   async getWait(canvasId: number): Promise<?number> {
     let ttl: number = await redis.pttlAsync(`cd:${canvasId}:ip:${this.ipSub}`);
-    if (this.id != null && ttl < 0) {
+    if (this.id != null) {
       const ttlid: number = await redis.pttlAsync(
         `cd:${canvasId}:id:${this.id}`,
       );
