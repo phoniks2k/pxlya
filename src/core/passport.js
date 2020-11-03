@@ -15,7 +15,7 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import logger from './logger';
 import { sanitizeName } from '../utils/validation';
 
-import { User, RegUser } from '../data/models';
+import { User, RegUser, Channel } from '../data/models';
 import { auth } from './config';
 import { compareToHash } from '../utils/hash';
 import { getIPFromRequest } from '../utils/ip';
@@ -28,13 +28,22 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (req, id, done) => {
   const user = new User(id, getIPFromRequest(req));
   if (id) {
-    RegUser.findOne({ where: { id } }).then((reguser) => {
+    RegUser.findByPk(id, {
+      include: {
+        model: Channel,
+        as: 'channel',
+      },
+    }).then((reguser) => {
       if (reguser) {
         user.regUser = reguser;
         user.id = id;
+        for (let i = 0; i < reguser.channel.length; i += 1) {
+          user.channelIds.push(reguser.channel[i].id);
+        }
       } else {
         user.id = null;
       }
+
       done(null, user);
     });
   } else {

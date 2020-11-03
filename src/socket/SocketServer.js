@@ -16,7 +16,6 @@ import RegisterChunk from './packets/RegisterChunk';
 import RegisterMultipleChunks from './packets/RegisterMultipleChunks';
 import DeRegisterChunk from './packets/DeRegisterChunk';
 import DeRegisterMultipleChunks from './packets/DeRegisterMultipleChunks';
-import RequestChatHistory from './packets/RequestChatHistory';
 import ChangedMe from './packets/ChangedMe';
 import OnlineCounter from './packets/OnlineCounter';
 
@@ -85,7 +84,7 @@ class SocketServer extends WebSocketEvents {
       ws.on('pong', heartbeat);
       const user = await authenticateClient(req);
       ws.user = user;
-      ws.name = (user.regUser) ? user.regUser.name : null;
+      ws.name = user.getName();
       ws.rateLimiter = new RateLimiter(20, 15, true);
       cheapDetector(user.ip);
 
@@ -166,13 +165,16 @@ class SocketServer extends WebSocketEvents {
   broadcastChatMessage(
     name: string,
     message: string,
+    channelId: number,
+    id: number,
     country: string,
-    channelId: number = 0,
   ) {
     const text = JSON.stringify([name, message, country, channelId]);
     this.wss.clients.forEach((ws) => {
       if (ws.readyState === WebSocket.OPEN) {
-        ws.send(text);
+        if (chatProvider.userHasChannelAccess(ws.user, channelId)) {
+          ws.send(text);
+        }
       }
     });
   }
@@ -199,7 +201,9 @@ class SocketServer extends WebSocketEvents {
               // eslint-disable-next-line no-underscore-dangle
               client._socket.write(buffer);
             } catch (error) {
-              logger.error('(!) Catched error on write socket:', error);
+              logger.error(
+                `WebSocket broadcast pixelbuffer error: ${error.message}`,
+              );
             }
           });
         }
@@ -313,8 +317,10 @@ class SocketServer extends WebSocketEvents {
       } else {
         logger.info('Got empty message or message from unidentified ws');
       }
-    } catch {
-      logger.info('Got invalid ws text message');
+    } catch (error) {
+      logger.error('Got invalid ws text message');
+      logger.error(error.message);
+      logger.error(error.stack);
     }
   }
 
@@ -395,11 +401,6 @@ class SocketServer extends WebSocketEvents {
             const chunkid = buffer[posl++] | buffer[posl++] << 8;
             this.deleteChunk(chunkid, ws);
           }
-          break;
-        }
-        case RequestChatHistory.OP_CODE: {
-          const history = JSON.stringify(chatProvider.history);
-          ws.send(history);
           break;
         }
         default:

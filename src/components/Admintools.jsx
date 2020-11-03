@@ -423,7 +423,7 @@ function Admintools({
         ))}
       </select>
       <br />
-      <textarea rows="10" cols="100" id="iparea" /><br />
+      <textarea rows="10" cols="17" id="iparea" /><br />
       <button
         type="button"
         onClick={() => {

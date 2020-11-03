@@ -18,7 +18,7 @@ const CANVAS_MIN_XY = -CANVAS_MAX_XY;
 
 export default async (req: Request, res: Response) => {
   const { user } = req;
-  if (!user) {
+  if (!user.regUser) {
     res.status(401);
     res.json({
       success: false,

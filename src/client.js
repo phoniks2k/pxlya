@@ -16,7 +16,6 @@ import {
   receiveOnline,
   receiveCoolDown,
   receiveChatMessage,
-  receiveChatHistory,
   receivePixelReturn,
   setMobile,
   tryPlacePixel,
@@ -56,9 +55,6 @@ function init() {
   ProtocolClient.on('chatMessage', (name, text, country, channelId) => {
     const isPing = (nameRegExp && text.match(nameRegExp));
     store.dispatch(receiveChatMessage(name, text, country, channelId, isPing));
-  });
-  ProtocolClient.on('chatHistory', (data) => {
-    store.dispatch(receiveChatHistory(data));
   });
   ProtocolClient.on('changedMe', () => {
     store.dispatch(fetchMe());

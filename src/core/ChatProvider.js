@@ -1,25 +1,19 @@
 /* @flow */
-
+import Sequelize from 'sequelize';
 
 import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
 import webSockets from '../socket/websockets';
+import { Channel } from '../data/models';
+import ChatMessageBuffer from './ChatMessageBuffer';
 
 import { CHAT_CHANNELS } from './constants';
 
 export class ChatProvider {
-  /*
-   * TODO:
-   * history really be saved in redis
-   */
-  history: Array;
-
   constructor() {
-    this.history = [];
-    for (let i = 0; i < CHAT_CHANNELS.length; i += 1) {
-      this.history.push([]);
-    }
+    this.defaultChannels = [];
+    this.defaultChannelIds = [];
     this.caseCheck = /^[A-Z !.]*$/;
     this.cyrillic = new RegExp('[\u0436-\u043B]');
     this.filters = [
@@ -47,27 +41,69 @@ export class ChatProvider {
       },
     ];
     this.mutedCountries = [];
+    this.chatMessageBuffer = new ChatMessageBuffer();
   }
 
-  addMessage(name, message, country, channelId = 0) {
-    const channelHistory = this.history[channelId];
-    if (channelHistory.length > 20) {
-      channelHistory.shift();
+  async initialize() {
+    // find or create default channels
+    this.defaultChannels.length = 0;
+    this.defaultChannelIds.length = 0;
+    for (let i = 0; i < CHAT_CHANNELS.length; i += 1) {
+      const { name } = CHAT_CHANNELS[i];
+      // eslint-disable-next-line no-await-in-loop
+      const channel = await Channel.findOrCreate({
+        attributes: [
+          'id',
+          'lastMessage',
+        ],
+        where: { name },
+        defaults: {
+          name,
+          lastMessage: Sequelize.literal('CURRENT_TIMESTAMP'),
+        },
+        raw: true,
+      });
+      const { id } = channel[0];
+      this.defaultChannels.push([
+        id,
+        name,
+      ]);
+      this.defaultChannelIds.push(id);
     }
-    channelHistory.push([name, message, country]);
+  }
+
+  userHasChannelAccess(user, cid, write = false) {
+    if (this.defaultChannelIds.includes(cid)) {
+      if (!write || user.regUser) {
+        return true;
+      }
+    } else if (user.regUser && user.channelIds.includes(cid)) {
+      return true;
+    }
+    return false;
+  }
+
+  getHistory(cid, limit = 30) {
+    return this.chatMessageBuffer.getMessages(cid, limit);
   }
 
   async sendMessage(user, message, channelId: number = 0) {
-    const name = (user.regUser) ? user.regUser.name : null;
-    const country = user.country || 'xx';
+    const { id } = user;
+    const name = user.getName();
+    if (!name || !id) {
+      // eslint-disable-next-line max-len
+      return 'Couldn\'t send your message, pls log out and back in again.';
+    }
+
+    if (!this.userHasChannelAccess(user, channelId)) {
+      return 'You don\'t have access to this channel';
+    }
+
+    const country = user.regUser.flag || 'xx';
     let displayCountry = (name.endsWith('berg') || name.endsWith('stein'))
       ? 'il'
       : country;
 
-    if (!name) {
-      // eslint-disable-next-line max-len
-      return 'Couldn\'t send your message, pls log out and back in again.';
-    }
     if (!user.regUser.verified) {
       return 'Your mail has to be verified in order to chat';
     }
@@ -166,23 +202,49 @@ export class ChatProvider {
       return 'Your country is temporary muted from chat';
     }
 
-    this.addMessage(name, message, displayCountry, channelId);
-    webSockets.broadcastChatMessage(name, message, displayCountry, channelId);
+    this.chatMessageBuffer.addMessage(
+      name,
+      message,
+      channelId,
+      id,
+      displayCountry,
+    );
+    webSockets.broadcastChatMessage(
+      name,
+      message,
+      channelId,
+      id,
+      displayCountry,
+    );
     return null;
   }
 
   broadcastChatMessage(
     name,
     message,
+    channelId: number = 1,
+    id = -1,
     country: string = 'xx',
-    channelId: number = 0,
     sendapi: boolean = true,
   ) {
     if (message.length > 250) {
       return;
     }
-    this.addMessage(name, message, country, channelId);
-    webSockets.broadcastChatMessage(name, message, country, channelId, sendapi);
+    this.chatMessageBuffer.addMessage(
+      name,
+      message,
+      channelId,
+      id,
+      country,
+    );
+    webSockets.broadcastChatMessage(
+      name,
+      message,
+      channelId,
+      id,
+      country,
+      sendapi,
+    );
   }
 
   static automute(name, channelId = 0) {

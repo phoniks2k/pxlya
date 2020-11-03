@@ -25,12 +25,14 @@ class User {
   regUser: Object;
 
   constructor(id: string = null, ip: string = '127.0.0.1') {
-    // id should stay null if unregistered, and user email if registered
+    // id should stay null if unregistered
     this.id = id;
     this.ip = ip;
     this.ipSub = getIPv6Subnet(ip);
     this.wait = null;
+    // following gets populated by passport
     this.regUser = null;
+    this.channelIds = [];
   }
 
   static async name2Id(name: string) {
@@ -46,6 +48,10 @@ class User {
     } catch {
       return null;
     }
+  }
+
+  getName() {
+    return (this.regUser) ? this.regUser.name : null;
   }
 
   async setWait(coolDown: number, canvasId: number): Promise<boolean> {
@@ -112,6 +118,14 @@ class User {
       return userq.totalPixels;
     } catch (err) {
       return 0;
+    }
+  }
+
+  async setCountry(country) {
+    if (this.regUser && this.regUser.flag !== country) {
+      this.regUser.update({
+        flag: country,
+      });
     }
   }
 

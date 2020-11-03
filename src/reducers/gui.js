@@ -30,7 +30,7 @@ const initialState: GUIState = {
   compactPalette: false,
   paletteOpen: true,
   menuOpen: false,
-  chatChannel: 0,
+  chatChannel: 1,
   style: 'default',
 };
 

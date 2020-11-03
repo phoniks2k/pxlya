@@ -11,9 +11,13 @@ import { connect } from 'react-redux';
 
 import type { State } from '../reducers';
 import ChatMessage from './ChatMessage';
+import { MAX_CHAT_MESSAGES } from '../core/constants';
 
-import { showUserAreaModal, setChatChannel } from '../actions';
-import { MAX_CHAT_MESSAGES, CHAT_CHANNELS } from '../core/constants';
+import {
+  showUserAreaModal,
+  setChatChannel,
+  fetchChatMessages,
+} from '../actions';
 import ProtocolClient from '../socket/ProtocolClient';
 import { saveSelection, restoreSelection } from '../utils/storeSelection';
 import splitChatMessage from '../core/chatMessageFilter';
@@ -23,23 +27,30 @@ function escapeRegExp(string) {
 }
 
 const Chat = ({
-  chatMessages,
+  channels,
+  messages,
   chatChannel,
   ownName,
   open,
   setChannel,
+  fetchMessages,
+  fetching,
 }) => {
   const listRef = useRef();
   const inputRef = useRef();
   const [inputMessage, setInputMessage] = useState('');
   const [selection, setSelection] = useState(null);
   const [nameRegExp, setNameRegExp] = useState(null);
+
   const { stayScrolled } = useStayScrolled(listRef, {
     initialScroll: Infinity,
     inaccuracy: 10,
   });
 
-  const channelMessages = chatMessages[chatChannel];
+  const channelMessages = messages[chatChannel] || [];
+  if (!messages[chatChannel] && !fetching) {
+    fetchMessages(chatChannel);
+  }
 
   useLayoutEffect(() => {
     stayScrolled();
@@ -77,6 +88,22 @@ const Chat = ({
     setInputMessage('');
   }
 
+  /*
+   * if selected channel isn't in channel list anymore
+   * for whatever reason (left faction etc.)
+   * set channel to first available one
+   */
+  let i = 0;
+  while (i < channels.length) {
+    // eslint-disable-next-line eqeqeq
+    if (channels[i][0] == chatChannel) {
+      break;
+    }
+    i += 1;
+  }
+  if (i && i === channels.length) {
+    setChannel(channels[0][0]);
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -87,6 +114,17 @@ const Chat = ({
         onMouseUp={() => { setSelection(saveSelection); }}
         role="presentation"
       >
+        {
+          (!channelMessages.length)
+          && (
+          <ChatMessage
+            name="info"
+            msgArray={splitChatMessage('Start chatting here', nameRegExp)}
+            country="xx"
+            insertText={(txt) => padToInputMessage(txt)}
+          />
+          )
+          }
         {
           channelMessages.map((message) => (
             <ChatMessage
@@ -121,11 +159,20 @@ const Chat = ({
             </button>
             <select
               style={{ flexGrow: 0 }}
-              onChange={(evt) => setChannel(evt.target.selectedIndex)}
+              onChange={(evt) => {
+                const sel = evt.target;
+                setChannel(sel.options[sel.selectedIndex].value);
+              }}
             >
               {
-                CHAT_CHANNELS.map((ch) => (
-                  <option selected={ch === chatChannel}>{ch}</option>
+                channels.map((ch) => (
+                  <option
+                    // eslint-disable-next-line eqeqeq
+                    selected={ch[0] == chatChannel}
+                    value={ch[0]}
+                  >
+                    {ch[1]}
+                  </option>
                 ))
               }
             </select>
@@ -147,9 +194,16 @@ const Chat = ({
 };
 
 function mapStateToProps(state: State) {
-  const { chatMessages, name } = state.user;
+  const { name } = state.user;
   const { chatChannel } = state.gui;
-  return { chatMessages, chatChannel, ownName: name };
+  const { channels, messages, fetching } = state.chat;
+  return {
+    channels,
+    messages,
+    fetching,
+    chatChannel,
+    ownName: name,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -159,6 +213,9 @@ function mapDispatchToProps(dispatch) {
     },
     setChannel(channelId) {
       dispatch(setChatChannel(channelId));
+    },
+    fetchMessages(channelId) {
+      dispatch(fetchChatMessages(channelId));
     },
   };
 }

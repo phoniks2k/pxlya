@@ -22,9 +22,10 @@ function authenticateClient(req) {
     ((resolve) => {
       router(req, {}, async () => {
         const country = req.headers['cf-ipcountry'] || 'xx';
+        const countryCode = country.toLowerCase();
         const user = (req.user) ? req.user
           : new User(null, getIPFromRequest(req));
-        user.country = country.toLowerCase();
+        user.setCountry(countryCode);
         resolve(user);
       });
     }),

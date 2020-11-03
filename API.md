@@ -17,8 +17,9 @@ All requests are made as JSON encoded array.
 
 All chat messages, except the once you send with `chat` or `mcchat`, will be sent to you in the form:
 
-```["msg", name, message, country, channelId]```
+```["msg", name, message, id, country, channelId]```
 channelId is an integer, channel 0 is `en` channel 1 is `int` and maybe more to come.
+id is the user id
 country is the [two-letter country code](https://www.nationsonline.org/oneworld/country_code_list.htm) in lowercase
 ### Subscribe to online user counter
 ```["sub", "online"]```

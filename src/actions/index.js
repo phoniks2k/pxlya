@@ -211,13 +211,6 @@ export function receiveChatMessage(
   };
 }
 
-export function receiveChatHistory(data: Array): Action {
-  return {
-    type: 'RECEIVE_CHAT_HISTORY',
-    data,
-  };
-}
-
 let lastNotify = null;
 export function notify(notification: string) {
   return async (dispatch) => {
@@ -233,7 +226,6 @@ export function notify(notification: string) {
 }
 
 let pixelTimeout = null;
-
 export function tryPlacePixel(
   i: number,
   j: number,
@@ -314,7 +306,7 @@ export function receivePixelReturn(
           msg = 'You can not access this canvas yet. You need to place more pixels';
           break;
         case 8:
-          errorTitle = 'Oww noo';
+          errorTitle = 'nope';
           msg = 'This pixel is protected.';
           break;
         case 9:
@@ -498,6 +490,7 @@ export function receiveMe(
     dailyRanking,
     minecraftname,
     canvases,
+    channels,
     userlvl,
   } = me;
   return {
@@ -511,6 +504,7 @@ export function receiveMe(
     dailyRanking,
     minecraftname,
     canvases,
+    channels,
     userlvl,
   };
 }
@@ -575,13 +569,50 @@ export function fetchStats(): PromiseAction {
 
 export function fetchMe(): PromiseAction {
   return async (dispatch) => {
-    const response = await fetch('/api/me', {
+    const response = await fetch('api/me', {
       credentials: 'include',
     });
 
     if (response.ok) {
       const me = await response.json();
       dispatch(receiveMe(me));
+    }
+  };
+}
+
+function receiveChatHistory(
+  cid: number,
+  history: Array,
+) {
+  return {
+    type: 'RECEIVE_CHAT_HISTORY',
+    cid,
+    history,
+  };
+}
+
+function setChatFetching(fetching: boolean): Action {
+  return {
+    type: 'SET_CHAT_FETCHING',
+    fetching,
+  };
+}
+
+export function fetchChatMessages(
+  cid: number,
+): PromiseAction {
+  return async (dispatch) => {
+    dispatch(setChatFetching(true));
+    const response = await fetch(`api/chathistory?cid=${cid}&limit=50`, {
+      credentials: 'include',
+    });
+
+    if (response.ok) {
+      setTimeout(() => { dispatch(setChatFetching(false)); }, 500);
+      const { history } = await response.json();
+      dispatch(receiveChatHistory(cid, history));
+    } else {
+      setTimeout(() => { dispatch(setChatFetching(false)); }, 5000);
     }
   };
 }

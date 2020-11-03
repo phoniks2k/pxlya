@@ -223,7 +223,7 @@ class ChunkLoader {
     this.store.dispatch(requestBigChunk(center));
     chunkRGB.isBasechunk = true;
     try {
-      const url = `/chunks/${this.canvasId}/${cx}/${cy}.bmp`;
+      const url = `chunks/${this.canvasId}/${cx}/${cy}.bmp`;
       const response = await fetch(url);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();
@@ -247,7 +247,7 @@ class ChunkLoader {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
     try {
-      const url = `/tiles/${this.canvasId}/${zoom}/${cx}/${cy}.png`;
+      const url = `tiles/${this.canvasId}/${zoom}/${cx}/${cy}.png`;
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
       this.store.dispatch(receiveBigChunk(center));

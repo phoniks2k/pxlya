@@ -16,7 +16,6 @@ import RegisterCanvas from './packets/RegisterCanvas';
 import RegisterChunk from './packets/RegisterChunk';
 import RegisterMultipleChunks from './packets/RegisterMultipleChunks';
 import DeRegisterChunk from './packets/DeRegisterChunk';
-import RequestChatHistory from './packets/RequestChatHistory';
 import ChangedMe from './packets/ChangedMe';
 
 const chunks = [];
@@ -26,6 +25,7 @@ class ProtocolClient extends EventEmitter {
   ws: WebSocket;
   name: string;
   canvasId: number;
+  channelId: number;
   timeConnected: number;
   isConnected: number;
   isConnecting: boolean;
@@ -39,6 +39,7 @@ class ProtocolClient extends EventEmitter {
     this.ws = null;
     this.name = null;
     this.canvasId = '0';
+    this.channelId = 0;
     this.msgQueue = [];
   }
 
@@ -82,7 +83,6 @@ class ProtocolClient extends EventEmitter {
     this.isConnecting = false;
     this.isConnected = true;
     this.emit('open', {});
-    this.requestChatHistory();
     if (this.canvasId !== null) {
       this.ws.send(RegisterCanvas.dehydrate(this.canvasId));
     }
@@ -143,11 +143,6 @@ class ProtocolClient extends EventEmitter {
     this.sendWhenReady(buffer);
   }
 
-  requestChatHistory() {
-    const buffer = RequestChatHistory.dehydrate();
-    if (this.isConnected) this.ws.send(buffer);
-  }
-
   sendChatMessage(message, channelId) {
     if (this.isConnected) {
       this.ws.send(JSON.stringify([message, channelId]));
@@ -174,11 +169,6 @@ class ProtocolClient extends EventEmitter {
     const data = JSON.parse(message);
 
     if (Array.isArray(data)) {
-      if (Array.isArray(data[0])) {
-        // Array in Array: Chat History
-        this.emit('chatHistory', data);
-        return;
-      }
       if (data.length === 4) {
         // Ordinary array: Chat message
         const [name, text, country, channelId] = data;

@@ -67,8 +67,9 @@ export type Action =
     channel: number,
     isPing: boolean,
   }
-  | { type: 'RECEIVE_CHAT_HISTORY', data: Array }
+  | { type: 'RECEIVE_CHAT_HISTORY', cid: number, history: Array }
   | { type: 'SET_CHAT_CHANNEL', channelId: number }
+  | { type: 'SET_CHAT_FETCHING', fetching: boolean }
   | { type: 'RECEIVE_ME',
     name: string,
     waitSeconds: number,
@@ -80,6 +81,7 @@ export type Action =
     dailyRanking: number,
     minecraftname: string,
     canvases: Object,
+    channels: Object,
     userlvl: number,
   }
   | { type: 'RECEIVE_STATS', totalRanking: Object, totalDailyRanking: Object }

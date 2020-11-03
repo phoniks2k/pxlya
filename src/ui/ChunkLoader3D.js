@@ -99,7 +99,7 @@ class ChunkLoader {
     const center = [0, cx, cz];
     this.store.dispatch(requestBigChunk(center));
     try {
-      const url = `/chunks/${this.canvasId}/${cx}/${cz}.bmp`;
+      const url = `chunks/${this.canvasId}/${cx}/${cz}.bmp`;
       const response = await fetch(url);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();

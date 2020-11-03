@@ -7,6 +7,7 @@
  */
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
+import chatProvider from './ChatProvider';
 
 
 export default async function getMe(user) {
@@ -29,7 +30,10 @@ export default async function getMe(user) {
   delete userdata.mailVerified;
   delete userdata.mcVerified;
 
+  const channels = [...chatProvider.defaultChannels];
+
   userdata.canvases = canvases;
+  userdata.channels = channels;
 
   return userdata;
 }

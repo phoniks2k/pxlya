@@ -17,6 +17,7 @@ import captcha from './captcha';
 import auth from './auth';
 import ranking from './ranking';
 import history from './history';
+import chatHistory from './chathistory';
 
 
 const router = express.Router();
@@ -76,6 +77,8 @@ router.use((req, res, next) => {
 router.get('/me', me);
 
 router.post('/mctp', mctp);
+
+router.get('/chathistory', chatHistory);
 
 router.use('/auth', auth(passport));
 

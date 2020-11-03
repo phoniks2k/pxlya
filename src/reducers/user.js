@@ -1,7 +1,5 @@
 /* @flow */
 
-import { MAX_CHAT_MESSAGES } from '../core/constants';
-
 import type { Action } from '../actions/types';
 
 
@@ -24,8 +22,6 @@ export type UserState = {
   // global stats
   totalRanking: Object,
   totalDailyRanking: Object,
-  // chat
-  chatMessages: Array,
   // minecraft
   minecraftname: string,
   // if user is using touchscreen
@@ -48,10 +44,6 @@ const initialState: UserState = {
   mailreg: false,
   totalRanking: {},
   totalDailyRanking: {},
-  chatMessages: [
-    [['info', 'Welcome to the PixelPlanet Chat', 'il']],
-    [['info', 'Welcome to the PixelPlanet Chat', 'il']],
-  ],
   minecraftname: null,
   isOnMobile: false,
   notification: null,
@@ -135,33 +127,6 @@ export default function user(
       return {
         ...state,
         online,
-      };
-    }
-
-    case 'RECEIVE_CHAT_MESSAGE': {
-      const {
-        name, text, country, channel,
-      } = action;
-      const chatMessages = state.chatMessages.slice();
-      let channelMessages = chatMessages[channel];
-      if (channelMessages.length > MAX_CHAT_MESSAGES) {
-        channelMessages = channelMessages.slice(-50);
-      }
-      channelMessages = channelMessages.concat([
-        [name, text, country],
-      ]);
-      chatMessages[channel] = channelMessages;
-      return {
-        ...state,
-        chatMessages,
-      };
-    }
-
-    case 'RECEIVE_CHAT_HISTORY': {
-      const { data: chatMessages } = action;
-      return {
-        ...state,
-        chatMessages,
       };
     }
 

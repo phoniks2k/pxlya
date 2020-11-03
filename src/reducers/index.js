@@ -7,12 +7,14 @@ import canvas from './canvas';
 import gui from './gui';
 import modal from './modal';
 import user from './user';
+import chat from './chat';
 
 import type { AudioState } from './audio';
 import type { CanvasState } from './canvas';
 import type { GUIState } from './gui';
 import type { ModalState } from './modal';
 import type { UserState } from './user';
+import type { ChatState } from './chat';
 
 export type State = {
   audio: AudioState,
@@ -20,12 +22,13 @@ export type State = {
   gui: GUIState,
   modal: ModalState,
   user: UserState,
+  chat: ChatState,
 };
 
 const config = {
   key: 'primary',
   storage: localForage,
-  blacklist: ['user', 'canvas', 'modal'],
+  blacklist: ['user', 'canvas', 'modal', 'chat'],
 };
 
 export default persistCombineReducers(config, {
@@ -34,4 +37,5 @@ export default persistCombineReducers(config, {
   gui,
   modal,
   user,
+  chat,
 });

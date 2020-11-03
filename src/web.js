@@ -14,6 +14,7 @@ import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import logger from './core/logger';
 import rankings from './core/ranking';
 import models from './data/models';
+import chatProvider from './core/ChatProvider';
 
 import SocketServer from './socket/SocketServer';
 import APISocketServer from './socket/APISocketServer';
@@ -192,10 +193,14 @@ app.get('/', async (req, res) => {
 //
 // ip config
 // -----------------------------------------------------------------------------
-const promise = models.sync().catch((err) => logger.error(err.stack));
+// use this if models changed:
+const promise = models.sync({ alter: { drop: false } })
+// const promise = models.sync()
+  .catch((err) => logger.error(err.stack));
 promise.then(() => {
   server.listen(PORT, () => {
     rankings.updateRanking();
+    chatProvider.initialize();
     const address = server.address();
     logger.log('info', `web is running at http://localhost:${address.port}/`);
   });

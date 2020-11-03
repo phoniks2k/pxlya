@@ -89,6 +89,13 @@ export const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 export const MONTH = 30 * DAY;
 
-// available Chat Channels
-export const CHAT_CHANNELS = ['en', 'int'];
+// available public Chat Channels
+export const CHAT_CHANNELS = [
+  {
+    name: 'en',
+  }, {
+    name: 'int',
+  },
+];
+
 export const MAX_CHAT_MESSAGES = 100;

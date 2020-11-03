@@ -25,7 +25,7 @@ const RegUser = Model.define('User', {
   },
 
   name: {
-    type: DataType.CHAR(32),
+    type: `${DataType.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
     allowNull: false,
   },
 
@@ -89,6 +89,13 @@ const RegUser = Model.define('User', {
   verificationReqAt: {
     type: DataType.DATE,
     allowNull: true,
+  },
+
+  // flag == country code
+  flag: {
+    type: DataType.CHAR(2),
+    defaultValue: 'xx',
+    allowNull: false,
   },
 
   lastLogIn: {
