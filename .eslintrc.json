@@ -31,6 +31,7 @@
     "react/jsx-closing-tag-location":"off",
     "jsx-a11y/click-events-have-key-events":"off",
     "no-continue": "off",
+    "no-multiple-empty-lines": "off",
     "lines-between-class-members":["warn", "always",{"exceptAfterSingleLine": true}]
   }
 }

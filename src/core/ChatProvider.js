@@ -82,6 +82,18 @@ export class ChatProvider {
       return 'Stop shouting';
     }
 
+    const muted = await ChatProvider.checkIfMuted(user);
+    if (muted === -1) {
+      return 'You are permanently muted, join our guilded to apppeal the mute';
+    }
+    if (muted > 0) {
+      if (muted > 120) {
+        const timeMin = Math.round(muted / 60);
+        return `You are muted for another ${timeMin} minutes`;
+      }
+      return `You are muted for another ${muted} seconds`;
+    }
+
     for (let i = 0; i < this.filters.length; i += 1) {
       const filter = this.filters[i];
       const count = (message.match(filter.regexp) || []).length;
@@ -154,17 +166,6 @@ export class ChatProvider {
       return 'Your country is temporary muted from chat';
     }
 
-    const muted = await ChatProvider.checkIfMuted(user);
-    if (muted === -1) {
-      return 'You are permanently muted, join our discord to apppeal the mute';
-    }
-    if (muted > 0) {
-      if (muted > 120) {
-        const timeMin = Math.round(muted / 60);
-        return `You are muted for another ${timeMin} minutes`;
-      }
-      return `You are muted for another ${muted} seconds`;
-    }
     this.addMessage(name, message, displayCountry, channelId);
     webSockets.broadcastChatMessage(name, message, displayCountry, channelId);
     return null;
