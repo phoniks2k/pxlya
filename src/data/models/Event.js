@@ -12,11 +12,27 @@ import redis from '../redis';
 import logger from '../../core/logger';
 import RedisCanvas from './RedisCanvas';
 
+const EVENT_SUCCESS_KEY = 'evt:succ';
 const EVENT_TIMESTAMP_KEY = 'evt:time';
 const EVENT_POSITION_KEY = 'evt:pos';
 const EVENT_BACKUP_PREFIX = 'evt:bck';
 // Note: Events always happen on canvas 0
 export const CANVAS_ID = '0';
+
+
+/*
+ * set success status of event
+ * 0 = waiting
+ * 1 = won
+ * 2 = lost
+ */
+export function setSuccess(success) {
+  return redis.setAsync(EVENT_SUCCESS_KEY, success);
+}
+export async function getSuccess() {
+  const success = await redis.getAsync(EVENT_SUCCESS_KEY);
+  return (success) ? parseInt(success) : 0;
+}
 
 /*
  * @return time till next event in seconds

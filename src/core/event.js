@@ -9,6 +9,8 @@ import logger from './logger';
 import {
   nextEvent,
   setNextEvent,
+  setSuccess,
+  getSuccess,
   getEventArea,
   clearOldEvent,
   CANVAS_ID,
@@ -69,6 +71,9 @@ class Event {
   eventCenter: Array;
   eventCenterC: Array;
   eventArea: Array;
+  // 0 if waiting
+  // 1 if won
+  // 2 if lost
   success: boolean;
   void: Object;
   chatTimeout: number;
@@ -78,10 +83,6 @@ class Event {
     this.eventState = -1;
     this.eventCenterC = null;
     this.void = null;
-    // 0 if waiting
-    // 1 if won
-    // 2 if lost
-    this.success = 0;
     this.chatTimeout = 0;
     this.runEventLoop = this.runEventLoop.bind(this);
     if (HOURLY_EVENT) {
@@ -90,6 +91,7 @@ class Event {
   }
 
   async initEventLoop() {
+    this.success = await getSuccess();
     let eventTimestamp = await nextEvent();
     if (!eventTimestamp) {
       eventTimestamp = await Event.setNextEvent();
@@ -265,6 +267,7 @@ class Event {
             'Threat couldn\'t be contained, abandon area',
           );
           this.success = 2;
+          setSuccess(2);
           this.void = null;
           const [x, y, w, h] = this.eventArea;
           await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
@@ -294,6 +297,7 @@ class Event {
               'Threat successfully defeated. Good work!',
             );
             this.success = 1;
+            setSuccess(1);
           }
           this.void.cancel();
           this.void = null;
@@ -313,6 +317,7 @@ class Event {
             'Void seems to leave again.',
           );
           this.success = 0;
+          setSuccess(0);
         }
         this.eventState = 13;
       }
@@ -330,6 +335,7 @@ class Event {
             'Celebration time over, get back to work.',
           );
           this.success = 0;
+          setSuccess(0);
         }
         this.eventState = 14;
       }
