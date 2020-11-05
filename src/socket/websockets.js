@@ -72,7 +72,7 @@ class WebSockets {
     name: string,
     message: string,
     channelId: number = 1,
-    id: number = 0,
+    id: number = 1,
     country: string = 'xx',
     sendapi: boolean = true,
   ) {

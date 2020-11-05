@@ -253,16 +253,16 @@ class APISocketServer extends WebSocketEvents {
         chatProvider.broadcastChatMessage(
           chatname,
           msg,
-          0,
-          0,
+          1,
+          1,
           'xx',
           false,
         );
         this.broadcastChatMessage(
           chatname,
           msg,
-          0,
-          0,
+          1,
+          1,
           'xx',
           true,
           ws,
@@ -275,7 +275,7 @@ class APISocketServer extends WebSocketEvents {
           name,
           msg,
           channelId,
-          0,
+          1,
           country,
           false,
         );
@@ -283,7 +283,7 @@ class APISocketServer extends WebSocketEvents {
           name,
           msg,
           channelId,
-          0,
+          1,
           country,
           true,
           ws,

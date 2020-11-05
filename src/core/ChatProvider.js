@@ -223,7 +223,7 @@ export class ChatProvider {
     name,
     message,
     channelId: number = 1,
-    id = 0,
+    id = 1,
     country: string = 'xx',
     sendapi: boolean = true,
   ) {
