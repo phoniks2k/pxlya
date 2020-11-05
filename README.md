@@ -163,11 +163,7 @@ pm2 start ecosystem.yml
 
 Notes:
 
-- pixelplanet uses the unix command sendmail for sending verification and password reset mails. If you are on windows, this might not work.
-- It might be neccessary to change the charset and collate of the sql colum names of table Users to support special character names, which can be done with the SQL command:
-```
-ALTER TABLE Users CONVERT TO CHARACTER SET utf8mb4 COLLATE 'utf8mb4_unicode_ci';
-```
+- pixelplanet uses the unix command sendmail for sending verification and password reset mails if no GMAIL account is given. If you are on windows, this might not work.
 
 ### Logging
 General logs are in `~/pm2/log/`, you can view them with
