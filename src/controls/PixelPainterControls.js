@@ -216,7 +216,7 @@ class PixelPlainterControls {
     event.stopPropagation();
     this.clearTabTimeout();
 
-    if (event.changedTouches.length < 2) {
+    if (event.changedTouches.length < 2 && event.touches.length === 0) {
       const { pageX, pageY } = event.changedTouches[0];
       const { clickTabStartCoords, clickTabStartTime } = this;
       const coordsDiff = [
