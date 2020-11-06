@@ -94,7 +94,7 @@ export class ChatProvider {
       },
       raw: true,
     });
-    [this.infoUserId] = infoUser;
+    this.infoUserId = infoUser[0].id;
     name = EVENT_USER_NAME;
     const eventUser = await RegUser.findOrCreate({
       attributes: [
@@ -108,7 +108,7 @@ export class ChatProvider {
       },
       raw: true,
     });
-    [this.eventUserId] = eventUser;
+    this.eventUserId = eventUser[0].id;
   }
 
   userHasChannelAccess(user, cid, write = false) {
@@ -173,7 +173,7 @@ export class ChatProvider {
       const filter = this.filters[i];
       const count = (message.match(filter.regexp) || []).length;
       if (count >= filter.matches) {
-        ChatProvider.mute(name, channelId, 30);
+        this.mute(name, channelId, 30);
         return 'Ow no! Spam protection decided to mute you';
       }
     }
@@ -200,19 +200,19 @@ export class ChatProvider {
       if (cmd === 'mute') {
         const timeMin = Number(args.slice(-1));
         if (Number.isNaN(timeMin)) {
-          return ChatProvider.mute(args.join(' '), channelId);
+          return this.mute(args.join(' '), channelId);
         }
-        return ChatProvider.mute(
+        return this.mute(
           args.slice(0, -1).join(' '),
           channelId,
           timeMin,
         );
       } if (cmd === 'unmute') {
-        return ChatProvider.unmute(args.join(' '), channelId);
+        return this.unmute(args.join(' '), channelId);
       } if (cmd === 'mutec' && args[0]) {
         const cc = args[0].toLowerCase();
         this.mutedCountries.push(cc);
-        webSockets.broadcastChatMessage(
+        this.broadcastChatMessage(
           'info',
           `Country ${cc} has been muted`,
           channelId,
@@ -225,7 +225,7 @@ export class ChatProvider {
           return `Country ${cc} is not muted`;
         }
         this.mutedCountries = this.mutedCountries.filter((c) => c !== cc);
-        webSockets.broadcastChatMessage(
+        this.broadcastChatMessage(
           'info',
           `Country ${cc} has been unmuted`,
           channelId,
@@ -243,14 +243,7 @@ export class ChatProvider {
       return 'Your country is temporary muted from chat';
     }
 
-    this.chatMessageBuffer.addMessage(
-      name,
-      message,
-      channelId,
-      id,
-      displayCountry,
-    );
-    webSockets.broadcastChatMessage(
+    this.broadcastChatMessage(
       name,
       message,
       channelId,
@@ -288,9 +281,9 @@ export class ChatProvider {
     );
   }
 
-  static automute(name, channelId) {
-    ChatProvider.mute(name, channelId, 60);
-    webSockets.broadcastChatMessage(
+  automute(name, channelId) {
+    this.mute(name, channelId, 60);
+    this.broadcastChatMessage(
       'info',
       `${name} has been muted for spam for 60min`,
       channelId,
@@ -304,7 +297,7 @@ export class ChatProvider {
     return ttl;
   }
 
-  static async mute(plainName, channelId, timeMin = null) {
+  async mute(plainName, channelId, timeMin = null) {
     const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
@@ -315,7 +308,7 @@ export class ChatProvider {
       const ttl = timeMin * 60;
       await redis.setAsync(key, '', 'EX', ttl);
       if (timeMin !== 600 && timeMin !== 60) {
-        webSockets.broadcastChatMessage(
+        this.broadcastChatMessage(
           'info',
           `${name} has been muted for ${timeMin}min`,
           channelId,
@@ -324,7 +317,7 @@ export class ChatProvider {
       }
     } else {
       await redis.setAsync(key, '');
-      webSockets.broadcastChatMessage(
+      this.broadcastChatMessage(
         'info',
         `${name} has been muted forever`,
         channelId,
@@ -335,7 +328,7 @@ export class ChatProvider {
     return null;
   }
 
-  static async unmute(plainName, channelId) {
+  async unmute(plainName, channelId) {
     const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
@@ -346,7 +339,7 @@ export class ChatProvider {
     if (delKeys !== 1) {
       return `User ${name} is not muted`;
     }
-    webSockets.broadcastChatMessage(
+    this.broadcastChatMessage(
       'info',
       `${name} has been unmuted`,
       channelId,

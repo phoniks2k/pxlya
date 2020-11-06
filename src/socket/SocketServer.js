@@ -19,7 +19,7 @@ import DeRegisterMultipleChunks from './packets/DeRegisterMultipleChunks';
 import ChangedMe from './packets/ChangedMe';
 import OnlineCounter from './packets/OnlineCounter';
 
-import chatProvider, { ChatProvider } from '../core/ChatProvider';
+import chatProvider from '../core/ChatProvider';
 import authenticateClient from './verifyClient';
 import WebSocketEvents from './WebSocketEvents';
 import webSockets from './websockets';
@@ -301,7 +301,7 @@ class SocketServer extends WebSocketEvents {
             ws.message_repeat += 1;
             if (ws.message_repeat >= 4) {
               logger.info(`User ${ws.name} got automuted`);
-              ChatProvider.automute(ws.name, channelId);
+              chatProvider.automute(ws.name, channelId);
               ws.message_repeat = 0;
             }
           } else {
