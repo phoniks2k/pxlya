@@ -323,6 +323,10 @@ class PixelPlainterControls {
     const { store, isMouseDown } = this;
     const state = store.getState();
     if (isMouseDown) {
+      if (Date.now() < this.clickTabStartTime + 100) {
+        // 100ms treshold till starting to pan
+        return;
+      }
       const { clickTabStartView, clickTabStartCoords } = this;
       const [lastPosX, lastPosY] = clickTabStartView;
       const deltaX = clientX - clickTabStartCoords[0];
