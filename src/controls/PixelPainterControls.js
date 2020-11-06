@@ -79,7 +79,9 @@ class PixelPlainterControls {
       this.clickTabStartView = this.store.getState().canvas.view;
       const { viewport } = this;
       setTimeout(() => {
-        viewport.style.cursor = 'move';
+        if (this.isMouseDown) {
+          viewport.style.cursor = 'move';
+        }
       }, 300);
     }
   }
@@ -308,7 +310,8 @@ class PixelPlainterControls {
   }
 
   onMouseOut() {
-    const { store } = this;
+    const { store, viewport } = this;
+    viewport.style.cursor = 'auto';
     store.dispatch(unsetHover());
   }
 
