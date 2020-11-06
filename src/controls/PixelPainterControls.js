@@ -71,6 +71,7 @@ class PixelPlainterControls {
 
   onMouseDown(event: MouseEvent) {
     event.preventDefault();
+    window.focus();
 
     if (event.button === 0) {
       this.isMouseDown = true;
