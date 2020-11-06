@@ -18,10 +18,7 @@ import {
   renderPlaceholder,
   renderPotatoPlaceholder,
 } from './render2Delements';
-import {
-  initControls,
-  removeControls,
-} from '../controls/PixelPainterControls';
+import PixelPainterControls from '../controls/PixelPainterControls';
 
 
 import ChunkLoader from './ChunkLoader2D';
@@ -90,7 +87,7 @@ class Renderer {
   }
 
   destructor() {
-    removeControls(this.viewport);
+    this.controls.dispose();
     window.removeEventListener('resize', this.resizeHandle);
     this.viewport.remove();
   }
@@ -120,8 +117,8 @@ class Renderer {
       canvasSize,
     } = state.canvas;
     this.updateCanvasData(state);
-    initControls(this, this.viewport, store);
     this.updateScale(viewscale, canvasMaxTiledZoom, view, canvasSize);
+    this.controls = new PixelPainterControls(this, this.viewport, store);
   }
 
   updateCanvasData(state: State) {
