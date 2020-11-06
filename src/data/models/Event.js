@@ -31,7 +31,7 @@ export function setSuccess(success) {
 }
 export async function getSuccess() {
   const success = await redis.getAsync(EVENT_SUCCESS_KEY);
-  return (success) ? parseInt(success) : 0;
+  return (success) ? parseInt(success, 10) : 0;
 }
 
 /*

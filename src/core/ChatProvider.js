@@ -14,6 +14,7 @@ export class ChatProvider {
   constructor() {
     this.defaultChannels = [];
     this.defaultChannelIds = [];
+    this.intChannelId = 0;
     this.caseCheck = /^[A-Z !.]*$/;
     this.cyrillic = new RegExp('[\u0436-\u043B]');
     this.filters = [
@@ -64,6 +65,9 @@ export class ChatProvider {
         raw: true,
       });
       const { id } = channel[0];
+      if (name === 'int') {
+        this.intChannelId = id;
+      }
       this.defaultChannels.push([
         id,
         name,
@@ -194,7 +198,7 @@ export class ChatProvider {
       }
     }
 
-    if (message.match(this.cyrillic) && channelId === 0) {
+    if (message.match(this.cyrillic) && channelId === this.intChannelId) {
       return 'Please use int channel';
     }
 
@@ -247,7 +251,7 @@ export class ChatProvider {
     );
   }
 
-  static automute(name, channelId = 0) {
+  static automute(name, channelId = 1) {
     ChatProvider.mute(name, channelId, 60);
     webSockets.broadcastChatMessage(
       'info',
@@ -262,7 +266,7 @@ export class ChatProvider {
     return ttl;
   }
 
-  static async mute(plainName, channelId = 0, timeMin = null) {
+  static async mute(plainName, channelId = 1, timeMin = null) {
     const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
@@ -291,7 +295,7 @@ export class ChatProvider {
     return null;
   }
 
-  static async unmute(plainName, channelId = 0) {
+  static async unmute(plainName, channelId = 1) {
     const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
