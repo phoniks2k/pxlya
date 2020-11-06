@@ -90,22 +90,24 @@ class ChatMessageBuffer {
       ],
       where: { cid },
       limit,
-      order: ['createdAt'],
+      order: [['createdAt', 'DESC']],
       raw: true,
     });
     const messages = [];
-    messagesModel.forEach((msg) => {
+    let i = messagesModel.length;
+    while (i > 0) {
+      i -= 1;
       const {
         message,
         'user.name': name,
         'user.flag': flag,
-      } = msg;
+      } = messagesModel[i];
       messages.push([
         name,
         message,
         flag,
       ]);
-    });
+    }
     return messages;
   }
 }
