@@ -5,6 +5,7 @@
 import type { Request, Response } from 'express';
 
 import getMe from '../../../core/me';
+import chatProvider from '../../../core/ChatProvider';
 
 export default async (req: Request, res: Response) => {
   const { user } = req;
@@ -25,6 +26,7 @@ export default async (req: Request, res: Response) => {
       name: null,
       waitSeconds: me.waitSeconds,
       canvases: me.canvases,
+      channels: chatProvider.defaultChannels,
     },
   });
 };
