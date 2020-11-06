@@ -235,7 +235,7 @@ export class ChatProvider {
       }
     }
 
-    if (message.match(this.cyrillic) && channelId === this.intChannelId) {
+    if (message.match(this.cyrillic) && channelId === this.enChannelId) {
       return 'Please use int channel';
     }
 
