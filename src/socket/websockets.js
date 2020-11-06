@@ -71,8 +71,8 @@ class WebSockets {
   broadcastChatMessage(
     name: string,
     message: string,
-    channelId: number = 1,
-    id: number = 1,
+    channelId: number,
+    id: number,
     country: string = 'xx',
     sendapi: boolean = true,
   ) {

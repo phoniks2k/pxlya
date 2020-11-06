@@ -181,6 +181,7 @@ class PixelPlainterControls {
 
   onTouchStart(event: TouchEvent) {
     event.preventDefault();
+    event.stopPropagation();
     document.activeElement.blur();
 
     this.clickTabStartTime = Date.now();
@@ -212,6 +213,7 @@ class PixelPlainterControls {
 
   onTouchEnd(event: TouchEvent) {
     event.preventDefault();
+    event.stopPropagation();
     this.clearTabTimeout();
 
     if (event.changedTouches.length < 2) {
@@ -240,6 +242,7 @@ class PixelPlainterControls {
 
   onTouchMove(event: TouchEvent) {
     event.preventDefault();
+    event.stopPropagation();
 
     const multiTouch = (event.touches.length > 1);
 

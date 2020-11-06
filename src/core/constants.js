@@ -90,6 +90,8 @@ export const DAY = 24 * HOUR;
 export const MONTH = 30 * DAY;
 
 // available public Chat Channels
+// at least 'en' and 'int' have to be present,
+// as they get used in core/ChatProvider
 export const CHAT_CHANNELS = [
   {
     name: 'en',
@@ -99,3 +101,6 @@ export const CHAT_CHANNELS = [
 ];
 
 export const MAX_CHAT_MESSAGES = 100;
+
+export const EVENT_USER_NAME = 'event';
+export const INFO_USER_NAME = 'info';

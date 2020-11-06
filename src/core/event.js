@@ -18,7 +18,7 @@ import {
 import Void from './Void';
 import { protectCanvasArea } from './Image';
 import { setPixelByOffset } from './setPixel';
-import { TILE_SIZE } from './constants';
+import { TILE_SIZE, EVENT_USER_NAME } from './constants';
 import chatProvider from './ChatProvider';
 import { HOURLY_EVENT } from './config';
 // eslint-disable-next-line import/no-unresolved
@@ -147,13 +147,21 @@ class Event {
     const timestamp = await nextEvent();
     const x = i * TILE_SIZE - canvasSize / 2;
     const y = j * TILE_SIZE - canvasSize / 2;
-    chatProvider.broadcastChatMessage(
-      'event',
+    Event.broadcastChatMessage(
       `Suspicious activity spotted in ${Event.getDirection(x, y)}`,
     );
     drawCross([i, j], 19, 0, 13);
     logger.info(`Set next Event in 60min at ${x},${y}`);
     return timestamp;
+  }
+
+  static broadcastChatMessage(message) {
+    chatProvider.broadcastChatMessage(
+      EVENT_USER_NAME,
+      message,
+      chatProvider.enChannelId,
+      chatProvider.eventUserId,
+    );
   }
 
   async runEventLoop() {
@@ -181,8 +189,7 @@ class Event {
       if (eventState !== 3 && eventState !== 4) {
         this.eventState = 3;
         const [x, y] = this.eventArea;
-        chatProvider.broadcastChatMessage(
-          'event',
+        Event.broadcastChatMessage(
           `Unstable area at ${Event.getDirection(x, y)} at concerning level`,
         );
       }
@@ -215,8 +222,7 @@ class Event {
           const rand = Math.random() * 3000 - 500;
           return Math.floor(z + TILE_SIZE * 1.5 + rand);
         });
-        chatProvider.broadcastChatMessage(
-          'event',
+        Event.broadcastChatMessage(
           `Alert! Threat is rising in 2min near #d,${xNear},${yNear},30`,
         );
       }
@@ -232,8 +238,7 @@ class Event {
       // 1min till Event: blinking solid cross red small fase
       if (eventState !== 9 && eventState !== 10) {
         this.eventState = 9;
-        chatProvider.broadcastChatMessage(
-          'event',
+        Event.broadcastChatMessage(
           'Alert! Danger!',
         );
       }
@@ -251,8 +256,7 @@ class Event {
         const [x, y, w, h] = this.eventArea;
         await protectCanvasArea(CANVAS_ID, x, y, w, h, false);
         logger.info(`Starting Event at ${x},${y} now`);
-        chatProvider.broadcastChatMessage(
-          'event',
+        Event.broadcastChatMessage(
           'Fight starting!',
         );
         this.void = new Void(this.eventCenterC);
@@ -262,8 +266,7 @@ class Event {
         if (percent === 100) {
           // event lost
           logger.info(`Event got lost after ${Math.abs(eventMinutes)} min`);
-          chatProvider.broadcastChatMessage(
-            'event',
+          Event.broadcastChatMessage(
             'Threat couldn\'t be contained, abandon area',
           );
           this.success = 2;
@@ -274,8 +277,7 @@ class Event {
         } else {
           const now = Date.now();
           if (now > this.chatTimeout) {
-            chatProvider.broadcastChatMessage(
-              'event',
+            Event.broadcastChatMessage(
               `Clown Void reached ${percent}% of its max size`,
             );
             this.chatTimeout = now + 40000;
@@ -292,8 +294,7 @@ class Event {
           if (this.void.checkStatus() !== 100) {
             // event won
             logger.info('Event got won! Cooldown sitewide now half.');
-            chatProvider.broadcastChatMessage(
-              'event',
+            Event.broadcastChatMessage(
               'Threat successfully defeated. Good work!',
             );
             this.success = 1;
@@ -312,8 +313,7 @@ class Event {
         // 5min after last Event
         // end debuff if lost
         if (this.success === 2) {
-          chatProvider.broadcastChatMessage(
-            'event',
+          Event.broadcastChatMessage(
             'Void seems to leave again.',
           );
           this.success = 0;
@@ -330,8 +330,7 @@ class Event {
         logger.info('Restoring old event area');
         await clearOldEvent();
         if (this.success === 1) {
-          chatProvider.broadcastChatMessage(
-            'event',
+          Event.broadcastChatMessage(
             'Celebration time over, get back to work.',
           );
           this.success = 0;

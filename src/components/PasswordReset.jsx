@@ -47,9 +47,9 @@ export default function getPasswordResetHtml(name, code, message = null) {
     : <PasswordReset name={name} code={code} />;
   const index = `<!doctype html>${
     ReactDOM.renderToStaticMarkup(<Html
-      title={title}
-      description={description}
-      body={body}
+        title={title}
+        description={description}
+        body={body}
     />)}`;
   return index;
 }

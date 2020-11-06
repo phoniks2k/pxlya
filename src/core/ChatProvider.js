@@ -5,16 +5,19 @@ import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
 import webSockets from '../socket/websockets';
-import { Channel } from '../data/models';
+import { Channel, RegUser } from '../data/models';
 import ChatMessageBuffer from './ChatMessageBuffer';
 
-import { CHAT_CHANNELS } from './constants';
+import { CHAT_CHANNELS, EVENT_USER_NAME, INFO_USER_NAME } from './constants';
 
 export class ChatProvider {
   constructor() {
     this.defaultChannels = [];
     this.defaultChannelIds = [];
+    this.enChannelId = 0;
     this.intChannelId = 0;
+    this.infoUserId = 1;
+    this.eventUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
     this.cyrillic = new RegExp('[\u0436-\u043B]');
     this.filters = [
@@ -68,12 +71,44 @@ export class ChatProvider {
       if (name === 'int') {
         this.intChannelId = id;
       }
+      if (name === 'en') {
+        this.enChannelId = id;
+      }
       this.defaultChannels.push([
         id,
         name,
       ]);
       this.defaultChannelIds.push(id);
     }
+    // find or create default users
+    let name = INFO_USER_NAME;
+    const infoUser = await RegUser.findOrCreate({
+      attributes: [
+        'id',
+      ],
+      where: { name },
+      defaults: {
+        name,
+        verified: 3,
+        email: 'info@example.com',
+      },
+      raw: true,
+    });
+    [this.infoUserId] = infoUser;
+    name = EVENT_USER_NAME;
+    const eventUser = await RegUser.findOrCreate({
+      attributes: [
+        'id',
+      ],
+      where: { name },
+      defaults: {
+        name,
+        verified: 3,
+        email: 'event@example.com',
+      },
+      raw: true,
+    });
+    [this.eventUserId] = eventUser;
   }
 
   userHasChannelAccess(user, cid, write = false) {
@@ -181,6 +216,7 @@ export class ChatProvider {
           'info',
           `Country ${cc} has been muted`,
           channelId,
+          this.infoUserId,
         );
         return null;
       } if (cmd === 'unmutec' && args[0]) {
@@ -193,6 +229,7 @@ export class ChatProvider {
           'info',
           `Country ${cc} has been unmuted`,
           channelId,
+          this.infoUserId,
         );
         return null;
       }
@@ -226,8 +263,8 @@ export class ChatProvider {
   broadcastChatMessage(
     name,
     message,
-    channelId: number = 1,
-    id = 1,
+    channelId,
+    id,
     country: string = 'xx',
     sendapi: boolean = true,
   ) {
@@ -251,12 +288,13 @@ export class ChatProvider {
     );
   }
 
-  static automute(name, channelId = 1) {
+  static automute(name, channelId) {
     ChatProvider.mute(name, channelId, 60);
     webSockets.broadcastChatMessage(
       'info',
       `${name} has been muted for spam for 60min`,
       channelId,
+      this.infoUserId,
     );
   }
 
@@ -266,7 +304,7 @@ export class ChatProvider {
     return ttl;
   }
 
-  static async mute(plainName, channelId = 1, timeMin = null) {
+  static async mute(plainName, channelId, timeMin = null) {
     const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
@@ -281,6 +319,7 @@ export class ChatProvider {
           'info',
           `${name} has been muted for ${timeMin}min`,
           channelId,
+          this.infoUserId,
         );
       }
     } else {
@@ -289,13 +328,14 @@ export class ChatProvider {
         'info',
         `${name} has been muted forever`,
         channelId,
+        this.infoUserId,
       );
     }
     logger.info(`Muted user ${id}`);
     return null;
   }
 
-  static async unmute(plainName, channelId = 1) {
+  static async unmute(plainName, channelId) {
     const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
@@ -310,6 +350,7 @@ export class ChatProvider {
       'info',
       `${name} has been unmuted`,
       channelId,
+      this.infoUserId,
     );
     logger.info(`Unmuted user ${id}`);
     return null;
