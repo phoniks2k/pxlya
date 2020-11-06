@@ -11,6 +11,12 @@ import chatProvider from '../../core/ChatProvider';
 
 async function chatHistory(req: Request, res: Response) {
   let { cid, limit } = req.query;
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    Pragma: 'no-cache',
+    Expires: '0',
+  });
+
   if (!cid || !limit) {
     res.status(400);
     res.json({
