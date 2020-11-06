@@ -456,13 +456,13 @@ tr:nth-child(even) {
 }
 
 .notifybox {
-  background-color: rgba(226, 226, 226, 0.80);
+  background-color: rgba(199, 206, 36, 0.8);
   position: fixed;
   top: 57px;
   left: 0px;
   right: 0px;
-  height: 30px;
-  width: 50px;
+  min-height: 30px;
+  width: 98px;
   color: black;
   font-size: 14px;
   line-height: 30px;
@@ -470,7 +470,6 @@ tr:nth-child(even) {
   vertical-align: middle;
   border: solid black;
   border-width: thin;
-  padding: 0 24px;
   margin-left: auto;
   margin-right: auto;
   z-index: 2;
@@ -485,7 +484,7 @@ tr:nth-child(even) {
 }
 
 .notifybox.green, .notifybox.red {
-  width: 20px;
+  width: 68px;
 }
 
 .notifybox.green {

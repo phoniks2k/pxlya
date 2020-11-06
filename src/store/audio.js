@@ -40,6 +40,35 @@ export default (store) => (next) => (action) => {
       break;
     }
 
+    case 'SET_NOTIFICATION': {
+      if (mute) break;
+      const { notification } = action;
+      if (typeof notification !== 'string') {
+        break;
+      }
+      const oscillatorNode = context.createOscillator();
+      const gainNode = context.createGain();
+
+      oscillatorNode.type = 'sine';
+      oscillatorNode.detune.value = -1200;
+
+      oscillatorNode.frequency.setValueAtTime(500, context.currentTime);
+      oscillatorNode.frequency.setValueAtTime(600, context.currentTime + 0.1);
+
+      gainNode.gain.setValueAtTime(0.3, context.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.2,
+        context.currentTime + 0.1,
+      );
+
+      oscillatorNode.connect(gainNode);
+      gainNode.connect(context.destination);
+
+      oscillatorNode.start();
+      oscillatorNode.stop(context.currentTime + 0.2);
+      break;
+    }
+
     case 'PIXEL_WAIT': {
       if (mute) break;
       const oscillatorNode = context.createOscillator();

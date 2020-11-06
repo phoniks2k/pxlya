@@ -306,8 +306,7 @@ export function receivePixelReturn(
           msg = 'You can not access this canvas yet. You need to place more pixels';
           break;
         case 8:
-          errorTitle = 'nope';
-          msg = 'This pixel is protected.';
+          dispatch(notify('Pixel protected!'));
           break;
         case 9:
           // pixestack used up
