@@ -51,6 +51,7 @@ class PixelPlainterControls {
     this.startTabScale = this.store.getState().scale;
     this.isMultiTab = false;
     this.isMouseDown = false;
+    this.tabTimeout = null;
 
     document.addEventListener('keydown', this.onKeyPress, false);
     viewport.addEventListener('auxclick', this.onAuxClick, false);
@@ -190,12 +191,26 @@ class PixelPlainterControls {
       this.startTabDist = PixelPlainterControls.getMultiTouchDistance(event);
       this.isMultiTab = true;
     } else {
+      this.isMouseDown = true;
       this.isMultiTab = false;
+      this.tabTimeout = setTimeout(() => {
+        // check for longer tap to select taped color
+        PixelPlainterControls.selectColor(
+          this.store,
+          this.viewport,
+          this.renderer,
+          [
+            this.clickTabStartCoords[0],
+            this.clickTabStartCoords[1],
+          ],
+        );
+      }, 500);
     }
   }
 
   onTouchEnd(event: TouchEvent) {
     event.preventDefault();
+    this.clearTabTimeout();
 
     if (event.changedTouches.length < 2) {
       const { pageX, pageY } = event.changedTouches[0];
@@ -226,7 +241,6 @@ class PixelPlainterControls {
 
     const multiTouch = (event.touches.length > 1);
 
-    // pan
     const [clientX, clientY] = PixelPlainterControls.getTouchCenter(event);
     const { store } = this;
     const state = store.getState();
@@ -244,6 +258,9 @@ class PixelPlainterControls {
 
       const deltaX = clientX - clickTabStartCoords[0];
       const deltaY = clientY - clickTabStartCoords[1];
+      if (deltaX > 2 || deltaY > 2) {
+        this.clearTabTimeout();
+      }
       const { scale } = state.canvas;
       store.dispatch(setViewCoordinates([
         lastPosX - (deltaX / scale),
@@ -252,6 +269,8 @@ class PixelPlainterControls {
 
       // pinch
       if (multiTouch) {
+        this.clearTabTimeout();
+
         const a = event.touches[0];
         const b = event.touches[1];
         const { startTabDist, startTabScale } = this;
@@ -261,6 +280,13 @@ class PixelPlainterControls {
         const pinchScale = dist / startTabDist;
         store.dispatch(setScale(startTabScale * pinchScale));
       }
+    }
+  }
+
+  clearTabTimeout() {
+    if (this.tabTimeout) {
+      clearTimeout(this.tabTimeout);
+      this.tabTimeout = null;
     }
   }
 
@@ -315,24 +341,33 @@ class PixelPlainterControls {
     store.dispatch(unsetHover());
   }
 
+  static selectColor(store, viewport, renderer, center) {
+    const state = store.getState();
+    if (state.canvas.scale < 3) {
+      return;
+    }
+    const coords = screenToWorld(state, viewport, center);
+    const clrIndex = renderer.getColorIndexOfPixel(...coords);
+    if (clrIndex === null) {
+      return;
+    }
+    store.dispatch(selectColor(clrIndex));
+  }
+
   onAuxClick(event: MouseEvent) {
     const { which, clientX, clientY } = event;
-    const { store } = this;
     // middle mouse button
     if (which !== 2) {
       return;
     }
     event.preventDefault();
-    const state = store.getState();
-    if (state.canvas.scale < 3) {
-      return;
-    }
-    const coords = screenToWorld(state, this.viewport, [clientX, clientY]);
-    const clrIndex = this.renderer.getColorIndexOfPixel(...coords);
-    if (clrIndex === null) {
-      return;
-    }
-    store.dispatch(selectColor(clrIndex));
+
+    PixelPlainterControls.selectColor(
+      this.store,
+      this.viewport, 
+      this.renderer,
+      [clientX, clientY],
+    );
   }
 
   onKeyPress(event: KeyboardEvent) {
