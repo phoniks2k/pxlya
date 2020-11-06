@@ -98,8 +98,8 @@ class PixelPlainterControls {
         clickTabStartCoords[1] - clientY,
       ];
       // thresholds for single click / holding
-      if (clickTabStartTime > Date.now() - 300
-        && coordsDiff[0] < 10 && coordsDiff[1] < 10) {
+      if (clickTabStartTime > Date.now() - 250
+        && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         PixelPlainterControls.placePixel(
           this.store,
           this.viewport,
@@ -205,8 +205,8 @@ class PixelPlainterControls {
         clickTabStartCoords[1] - pageY,
       ];
       // thresholds for single click / holding
-      if (clickTabStartTime > Date.now() - 300
-        && coordsDiff[0] < 10 && coordsDiff[1] < 10) {
+      if (clickTabStartTime > Date.now() - 250
+        && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         const { store, viewport } = this;
         PixelPlainterControls.placePixel(
           store,
