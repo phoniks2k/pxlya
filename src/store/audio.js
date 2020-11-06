@@ -204,7 +204,8 @@ export default (store) => (next) => (action) => {
 
       const { isPing } = action;
       const { chatChannel } = state.gui;
-      if (!isPing && action.channel !== chatChannel) {
+      // eslint-disable-next-line eqeqeq
+      if (!isPing && action.channel != chatChannel) {
         break;
       }
 
