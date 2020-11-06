@@ -71,7 +71,7 @@ class PixelPlainterControls {
 
   onMouseDown(event: MouseEvent) {
     event.preventDefault();
-    window.focus();
+    document.activeElement.blur();
 
     if (event.button === 0) {
       this.isMouseDown = true;
@@ -181,6 +181,7 @@ class PixelPlainterControls {
 
   onTouchStart(event: TouchEvent) {
     event.preventDefault();
+    document.activeElement.blur();
 
     this.clickTabStartTime = Date.now();
     this.clickTabStartCoords = PixelPlainterControls.getTouchCenter(event);
@@ -292,6 +293,9 @@ class PixelPlainterControls {
   }
 
   onWheel(event: MouseEvent) {
+    event.preventDefault();
+    document.activeElement.blur();
+
     const { deltaY } = event;
     const { store } = this;
     const state = store.getState();
@@ -365,7 +369,7 @@ class PixelPlainterControls {
 
     PixelPlainterControls.selectColor(
       this.store,
-      this.viewport, 
+      this.viewport,
       this.renderer,
       [clientX, clientY],
     );
