@@ -57,6 +57,8 @@ const Chat = ({
   }, [channelMessages.length]);
 
   useEffect(() => {
+    // TODO this removes focus from chat box, fix this
+    return;
     if (channelMessages.length === MAX_CHAT_MESSAGES) {
       restoreSelection(selection);
     }
