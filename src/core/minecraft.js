@@ -20,8 +20,7 @@ class Minecraft {
     user.minecraftname = minecraftname;
     const reguser = await RegUser.findOne({ where: { minecraftid } });
     if (reguser && reguser.mcVerified) {
-      user.id = reguser.id;
-      user.regUser = reguser;
+      user.setRegUser(reguser);
       reguser.update({ minecraftname });
     }
     this.online[minecraftid] = user;
@@ -86,7 +85,7 @@ class Minecraft {
         if (reguser && reguser.mcVerified) {
           user.id = reguser.id;
           user.minecraftname = reguser.minecraftname;
-          user.regUser = reguser;
+          user.setRegUser(reguser);
         } else {
           user.minecraftname = minecraftid;
         }
@@ -110,7 +109,7 @@ class Minecraft {
       RegUser.findOne({ where: { minecraftname } }).then((reguser) => {
         if (reguser && reguser.mcVerified) {
           user.id = reguser.id;
-          user.regUser = reguser;
+          user.setRegUser(reguser);
           // this.online[reguser.minecraftid] = user;
         }
       });

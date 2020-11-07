@@ -23,11 +23,14 @@ class User {
   ip: string;
   wait: ?number;
   regUser: Object;
+  channels: Array;
 
   constructor(id: string = null, ip: string = '127.0.0.1') {
     // id should stay null if unregistered
     this.id = id;
     this.ip = ip;
+    this.channels = [];
+    this.channelIds = [];
     this.ipSub = getIPv6Subnet(ip);
     this.wait = null;
     // following gets populated by passport
@@ -47,6 +50,18 @@ class User {
       return userq.id;
     } catch {
       return null;
+    }
+  }
+
+  setRegUser(reguser) {
+    this.regUser = reguser;
+    this.id = reguser.id;
+    for (let i = 0; i < reguser.channel.length; i += 1) {
+      this.channelIds.push(reguser.channel[i].id);
+      this.channels.push([
+        reguser.channel[i].id,
+        reguser.channel[i].name,
+      ]);
     }
   }
 
@@ -149,6 +164,7 @@ class User {
     if (this.regUser == null) {
       return {
         name: null,
+        channels: this.channels,
       };
     }
     const { regUser } = this;
@@ -163,6 +179,7 @@ class User {
       dailyRanking: regUser.dailyRanking,
       mailreg: !!(regUser.password),
       userlvl: this.isAdmin() ? 1 : 0,
+      channels: this.channels,
     };
   }
 }

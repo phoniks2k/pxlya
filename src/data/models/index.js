@@ -22,15 +22,7 @@ function sync(...args) {
   return sequelize.sync(...args);
 }
 
-/*
- * makes sure that minimum required rows are present
- *
- */
-function validateTables() {
-
-}
-
-export default { sync, validateTables };
+export default { sync };
 export {
   Whitelist, Blacklist, User, RegUser, Channel, UserChannel, Message,
 };

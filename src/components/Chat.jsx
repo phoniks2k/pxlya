@@ -160,7 +160,7 @@ const Chat = ({
               ‣
             </button>
             <select
-              style={{ flexGrow: 0 }}
+              style={{ width: 50 }}
               onChange={(evt) => {
                 const sel = evt.target;
                 setChannel(sel.options[sel.selectedIndex].value);

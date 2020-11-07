@@ -66,8 +66,7 @@ export default async (req: Request, res: Response) => {
   logger.info(`Created new user ${name} ${email} ${ip}`);
 
   const { user } = req;
-  user.id = newuser.id;
-  user.regUser = newuser;
+  user.setRegUser(newuser);
   const me = await getMe(user);
 
   await req.logIn(user, (err) => {
