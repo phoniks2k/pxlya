@@ -44,14 +44,19 @@ class PixelPlainterControls {
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
 
-    this.clickTabStartView = [0, 0];
-    this.clickTabStartTime = 0;
-    this.clickTabStartCoords = [0, 0];
-    this.startTabDist = 50;
-    this.startTabScale = this.store.getState().scale;
-    this.isMultiTab = false;
+    this.clickTapStartView = [0, 0];
+    this.clickTapStartTime = 0;
+    this.clickTapStartCoords = [0, 0];
+    this.tapStartDist = 50;
+    this.tapStartScale = this.store.getState().scale;
+    // on mouse: true as long as left mouse button is pressed
+    // on touch: set to true when one finger touches the screen
+    //           set to false when second finger touches or touch ends
     this.isClicking = false;
-    this.tabTimeout = null;
+    // on touch: true if more than one finger on screen
+    this.isMultiTab = false;
+    // on touch: timeout to detect long-press
+    this.tapTimeout = null;
 
     document.addEventListener('keydown', this.onKeyPress, false);
     viewport.addEventListener('auxclick', this.onAuxClick, false);
@@ -76,9 +81,9 @@ class PixelPlainterControls {
     if (event.button === 0) {
       this.isClicking = true;
       const { clientX, clientY } = event;
-      this.clickTabStartTime = Date.now();
-      this.clickTabStartCoords = [clientX, clientY];
-      this.clickTabStartView = this.store.getState().canvas.view;
+      this.clickTapStartTime = Date.now();
+      this.clickTapStartCoords = [clientX, clientY];
+      this.clickTapStartView = this.store.getState().canvas.view;
       const { viewport } = this;
       setTimeout(() => {
         if (this.isClicking) {
@@ -94,13 +99,13 @@ class PixelPlainterControls {
     if (event.button === 0) {
       this.isClicking = false;
       const { clientX, clientY } = event;
-      const { clickTabStartCoords, clickTabStartTime } = this;
+      const { clickTapStartCoords, clickTapStartTime } = this;
       const coordsDiff = [
-        clickTabStartCoords[0] - clientX,
-        clickTabStartCoords[1] - clientY,
+        clickTapStartCoords[0] - clientX,
+        clickTapStartCoords[1] - clientY,
       ];
       // thresholds for single click / holding
-      if (clickTabStartTime > Date.now() - 250
+      if (clickTapStartTime > Date.now() - 250
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         PixelPlainterControls.placePixel(
           this.store,
@@ -184,28 +189,28 @@ class PixelPlainterControls {
     event.stopPropagation();
     document.activeElement.blur();
 
-    this.clickTabStartTime = Date.now();
-    this.clickTabStartCoords = PixelPlainterControls.getTouchCenter(event);
+    this.clickTapStartTime = Date.now();
+    this.clickTapStartCoords = PixelPlainterControls.getTouchCenter(event);
     const state = this.store.getState();
-    this.clickTabStartView = state.canvas.view;
+    this.clickTapStartView = state.canvas.view;
 
     if (event.touches.length > 1) {
-      this.startTabScale = state.canvas.scale;
-      this.startTabDist = PixelPlainterControls.getMultiTouchDistance(event);
+      this.tapStartScale = state.canvas.scale;
+      this.tapStartDist = PixelPlainterControls.getMultiTouchDistance(event);
       this.isMultiTab = true;
       this.clearTabTimeout();
     } else {
       this.isClicking = true;
       this.isMultiTab = false;
-      this.tabTimeout = setTimeout(() => {
+      this.tapTimeout = setTimeout(() => {
         // check for longer tap to select taped color
         PixelPlainterControls.selectColor(
           this.store,
           this.viewport,
           this.renderer,
           [
-            this.clickTabStartCoords[0],
-            this.clickTabStartCoords[1],
+            this.clickTapStartCoords[0],
+            this.clickTapStartCoords[1],
           ],
         );
       }, 500);
@@ -218,13 +223,13 @@ class PixelPlainterControls {
 
     if (event.touches.length === 0 && this.isClicking) {
       const { pageX, pageY } = event.changedTouches[0];
-      const { clickTabStartCoords, clickTabStartTime } = this;
+      const { clickTapStartCoords, clickTapStartTime } = this;
       const coordsDiff = [
-        clickTabStartCoords[0] - pageX,
-        clickTabStartCoords[1] - pageY,
+        clickTapStartCoords[0] - pageX,
+        clickTapStartCoords[1] - pageY,
       ];
       // thresholds for single click / holding
-      if (clickTabStartTime > Date.now() - 250
+      if (clickTapStartTime > Date.now() - 250
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         const { store, viewport } = this;
         PixelPlainterControls.placePixel(
@@ -253,17 +258,17 @@ class PixelPlainterControls {
     if (this.isMultiTab !== multiTouch) {
       // if one finger got lifted or added, reset clickTabStart
       this.isMultiTab = multiTouch;
-      this.clickTabStartCoords = [clientX, clientY];
-      this.clickTabStartView = state.canvas.view;
-      this.startTabDist = PixelPlainterControls.getMultiTouchDistance(event);
-      this.startTabScale = state.canvas.scale;
+      this.clickTapStartCoords = [clientX, clientY];
+      this.clickTapStartView = state.canvas.view;
+      this.tapStartDist = PixelPlainterControls.getMultiTouchDistance(event);
+      this.tapStartScale = state.canvas.scale;
     } else {
       // pan
-      const { clickTabStartView, clickTabStartCoords } = this;
-      const [lastPosX, lastPosY] = clickTabStartView;
+      const { clickTapStartView, clickTapStartCoords } = this;
+      const [lastPosX, lastPosY] = clickTapStartView;
 
-      const deltaX = clientX - clickTabStartCoords[0];
-      const deltaY = clientY - clickTabStartCoords[1];
+      const deltaX = clientX - clickTapStartCoords[0];
+      const deltaY = clientY - clickTapStartCoords[1];
       if (deltaX > 2 || deltaY > 2) {
         this.clearTabTimeout();
       }
@@ -279,21 +284,21 @@ class PixelPlainterControls {
 
         const a = event.touches[0];
         const b = event.touches[1];
-        const { startTabDist, startTabScale } = this;
+        const { tapStartDist, tapStartScale } = this;
         const dist = Math.sqrt(
           (b.pageX - a.pageX) ** 2 + (b.pageY - a.pageY) ** 2,
         );
-        const pinchScale = dist / startTabDist;
-        store.dispatch(setScale(startTabScale * pinchScale));
+        const pinchScale = dist / tapStartDist;
+        store.dispatch(setScale(tapStartScale * pinchScale));
       }
     }
   }
 
   clearTabTimeout() {
     this.isClicking = false;
-    if (this.tabTimeout) {
-      clearTimeout(this.tabTimeout);
-      this.tabTimeout = null;
+    if (this.tapTimeout) {
+      clearTimeout(this.tapTimeout);
+      this.tapTimeout = null;
     }
   }
 
@@ -325,14 +330,14 @@ class PixelPlainterControls {
     const { store, isClicking } = this;
     const state = store.getState();
     if (isClicking) {
-      if (Date.now() < this.clickTabStartTime + 100) {
+      if (Date.now() < this.clickTapStartTime + 100) {
         // 100ms treshold till starting to pan
         return;
       }
-      const { clickTabStartView, clickTabStartCoords } = this;
-      const [lastPosX, lastPosY] = clickTabStartView;
-      const deltaX = clientX - clickTabStartCoords[0];
-      const deltaY = clientY - clickTabStartCoords[1];
+      const { clickTapStartView, clickTapStartCoords } = this;
+      const [lastPosX, lastPosY] = clickTapStartView;
+      const deltaX = clientX - clickTapStartCoords[0];
+      const deltaY = clientY - clickTapStartCoords[1];
 
       const { scale } = state.canvas;
       store.dispatch(setViewCoordinates([
