@@ -91,7 +91,7 @@
     "pcd": 15000,
     "cds": 900000,
     "ranked" : true,
-    "req": 8000,
+    "req": 20000,
     "sd": "2020-01-08",
     "desc": "Moon canvas with a pastel tone palette and black background"
   },
@@ -307,5 +307,23 @@
     "req": -1,
     "sd": "2020-07-05",
     "desc": "Mirror of PixelCanvas"
+  },
+  "7": {
+    "indent": "x",
+    "title": "1bit",
+    "colors": [
+      [ 0, 0, 0 ],
+      [ 255, 255, 255 ]
+        ],
+    "size": 4096,
+    "hid": false,
+    "cli": 0,
+    "bcd": 2000,
+    "pcd": 2000,
+    "cds": 80000,
+    "ranked": false,
+    "req": 10000,
+    "sd": "2020-07-05",
+    "desc": "Black and White canvas"
   }
 }
