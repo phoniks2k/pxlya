@@ -15,11 +15,26 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import logger from './logger';
 import { sanitizeName } from '../utils/validation';
 
-import { User, RegUser, Channel } from '../data/models';
+import {
+  User, RegUser, Channel, UserBlock,
+} from '../data/models';
 import { auth } from './config';
 import { compareToHash } from '../utils/hash';
 import { getIPFromRequest } from '../utils/ip';
 
+const include = [{
+  model: Channel,
+  as: 'channel',
+}, {
+  model: RegUser,
+  through: UserBlock,
+  as: 'blocked',
+  foreignKey: 'uid',
+  attributes: [
+    'id',
+    'name',
+  ],
+}];
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -29,10 +44,7 @@ passport.deserializeUser(async (req, id, done) => {
   const user = new User(id, getIPFromRequest(req));
   if (id) {
     RegUser.findByPk(id, {
-      include: {
-        model: Channel,
-        as: 'channel',
-      },
+      include,
     }).then((reguser) => {
       if (reguser) {
         user.setRegUser(reguser);
@@ -64,10 +76,7 @@ passport.use(new JsonStrategy({
       ? { email: nameoremail }
       : { name: nameoremail };
     RegUser.findOne({
-      include: {
-        model: Channel,
-        as: 'channel',
-      },
+      include,
       where: query,
     }).then((reguser) => {
       if (!reguser) {
@@ -96,18 +105,12 @@ async function oauthLogin(email, name, discordid = null) {
   }
   name = sanitizeName(name);
   let reguser = await RegUser.findOne({
-    include: {
-      model: Channel,
-      as: 'channel',
-    },
+    include,
     where: { email },
   });
   if (!reguser) {
     reguser = await RegUser.findOne({
-      include: {
-        model: Channel,
-        as: 'channel',
-      },
+      include,
       where: { name },
     });
     while (reguser) {
@@ -116,10 +119,7 @@ async function oauthLogin(email, name, discordid = null) {
       name = `${name.substring(0, 15)}-${Math.random().toString(36).substring(2, 10)}`;
       // eslint-disable-next-line no-await-in-loop
       reguser = await RegUser.findOne({
-        include: {
-          model: Channel,
-          as: 'channel',
-        },
+        include,
         where: { name },
       });
     }
@@ -214,18 +214,12 @@ passport.use(new RedditStrategy({
     // reddit needs an own login strategy based on its id,
     // because we can not access it's mail
     let reguser = await RegUser.findOne({
-      include: {
-        model: Channel,
-        as: 'channel',
-      },
+      include,
       where: { redditid },
     });
     if (!reguser) {
       reguser = await RegUser.findOne({
-        include: {
-          model: Channel,
-          as: 'channel',
-        },
+        include,
         where: { name },
       });
       while (reguser) {
@@ -234,10 +228,7 @@ passport.use(new RedditStrategy({
         name = `${name.substring(0, 15)}-${Math.random().toString(36).substring(2, 10)}`;
         // eslint-disable-next-line no-await-in-loop
         reguser = await RegUser.findOne({
-          include: {
-            model: Channel,
-            as: 'channel',
-          },
+          include,
           where: { name },
         });
       }
