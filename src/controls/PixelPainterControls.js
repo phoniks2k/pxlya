@@ -68,6 +68,7 @@ class PixelPlainterControls {
     viewport.addEventListener('touchend', this.onTouchEnd, false);
     viewport.addEventListener('touchmove', this.onTouchMove, false);
     viewport.addEventListener('mouseout', this.onMouseOut, false);
+    viewport.addEventListener('touchcancel', this.onMouseOut, false);
   }
 
   dispose() {
@@ -96,6 +97,7 @@ class PixelPlainterControls {
   onMouseUp(event: MouseEvent) {
     event.preventDefault();
 
+    const { store } = this;
     if (event.button === 0) {
       this.isClicking = false;
       const { clientX, clientY } = event;
@@ -108,7 +110,7 @@ class PixelPlainterControls {
       if (clickTapStartTime > Date.now() - 250
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         PixelPlainterControls.placePixel(
-          this.store,
+          store,
           this.viewport,
           this.renderer,
           [clientX, clientY],
@@ -116,6 +118,7 @@ class PixelPlainterControls {
       }
       this.viewport.style.cursor = 'auto';
     }
+    store.dispatch(onViewFinishChange());
   }
 
   static getTouchCenter(event: TouchEvent) {
@@ -213,7 +216,7 @@ class PixelPlainterControls {
             this.clickTapStartCoords[1],
           ],
         );
-      }, 500);
+      }, 800);
     }
   }
 
@@ -221,6 +224,7 @@ class PixelPlainterControls {
     event.preventDefault();
     event.stopPropagation();
 
+    const { store } = this;
     if (event.touches.length === 0 && this.isClicking) {
       const { pageX, pageY } = event.changedTouches[0];
       const { clickTapStartCoords, clickTapStartTime } = this;
@@ -231,7 +235,7 @@ class PixelPlainterControls {
       // thresholds for single click / holding
       if (clickTapStartTime > Date.now() - 250
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
-        const { store, viewport } = this;
+        const { viewport } = this;
         PixelPlainterControls.placePixel(
           store,
           viewport,
@@ -243,6 +247,7 @@ class PixelPlainterControls {
         }, 500);
       }
     }
+    store.dispatch(onViewFinishChange());
     this.clearTabTimeout();
   }
 
@@ -358,6 +363,8 @@ class PixelPlainterControls {
     const { store, viewport } = this;
     viewport.style.cursor = 'auto';
     store.dispatch(unsetHover());
+    store.dispatch(onViewFinishChange());
+    this.clearTabTimeout();
   }
 
   static selectColor(store, viewport, renderer, center) {
