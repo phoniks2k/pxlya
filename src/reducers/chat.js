@@ -5,6 +5,7 @@ import { MAX_CHAT_MESSAGES } from '../core/constants';
 import type { Action } from '../actions/types';
 
 export type ChatState = {
+  inputMessage: string,
   // [[cid, name], [cid2, name2],...]
   channels: Array,
   // { cid: [message1,message2,message2,...]}
@@ -14,6 +15,7 @@ export type ChatState = {
 }
 
 const initialState: ChatState = {
+  inputMessage: '',
   channels: [],
   messages: {},
   fetching: false,
@@ -39,9 +41,33 @@ export default function chat(
       };
     }
 
+    case 'SET_CHAT_INPUT_MSG': {
+      const { message } = action;
+      return {
+        ...state,
+        inputMessage: message,
+      };
+    }
+
+    case 'ADD_CHAT_INPUT_MSG': {
+      const { message } = action;
+      let { inputMessage } = state;
+      const lastChar = inputMessage.substr(-1);
+      const pad = (lastChar && lastChar !== ' ');
+      if (pad) {
+        inputMessage += ' ';
+      }
+      inputMessage += message;
+
+      return {
+        ...state,
+        inputMessage,
+      };
+    }
+
     case 'RECEIVE_CHAT_MESSAGE': {
       const {
-        name, text, country, channel,
+        name, text, country, channel, user,
       } = action;
       if (!state.messages[channel]) {
         return state;
@@ -50,7 +76,7 @@ export default function chat(
         ...state.messages,
         [channel]: [
           ...state.messages[channel],
-          [name, text, country],
+          [name, text, country, user],
         ],
       };
       if (messages[channel].length > MAX_CHAT_MESSAGES) {

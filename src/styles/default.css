@@ -124,6 +124,26 @@ tr:nth-child(even) {
   transition: 0.3s;
 }
 
+.contextmenu {
+  position: absolute;
+  width: 90px;
+  font-size: 12px;
+  z-index: 10;
+  background-color: rgba(226, 226, 226);
+  border: solid black;
+  border-width: thin;
+}
+
+.contextmenu > div {
+  border-width: thin;
+  margin: 2px;
+}
+
+.contextmenu > div:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
 .chatbox.show {
   height: 200px;
   width: 350px;

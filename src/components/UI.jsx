@@ -14,11 +14,28 @@ import PalselButton from './PalselButton';
 import Palette from './Palette';
 import HistorySelect from './HistorySelect';
 import Mobile3DControls from './Mobile3DControls';
+import UserContextMenu from './UserContextMenu';
 
 
-const UI = ({ isHistoricalView, is3D, isOnMobile }) => {
+const CONTEXT_MENUS = {
+  USER: <UserContextMenu />,
+  /* other context menus */
+};
+
+const UI = ({
+  isHistoricalView,
+  is3D,
+  isOnMobile,
+  menuOpen,
+  menuType,
+}) => {
   if (isHistoricalView) {
-    return <HistorySelect />;
+    return (
+      <div>
+        <HistorySelect />
+        {(menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null}
+      </div>
+    );
   }
   return (
     <div>
@@ -28,6 +45,7 @@ const UI = ({ isHistoricalView, is3D, isOnMobile }) => {
       {(is3D && isOnMobile) ? <Mobile3DControls /> : null}
       <CoolDownBox />
       <NotifyBox />
+      {(menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null}
     </div>
   );
 };
@@ -40,10 +58,16 @@ function mapStateToProps(state: State) {
   const {
     isOnMobile,
   } = state.user;
+  const {
+    menuOpen,
+    menuType,
+  } = state.contextMenu;
   return {
     isHistoricalView,
     is3D,
     isOnMobile,
+    menuOpen,
+    menuType,
   };
 }
 

@@ -24,8 +24,6 @@ export default function modal(
   action: Action,
 ): ModalState {
   switch (action.type) {
-    // clear hover when placing a pixel
-    // fixes a bug with iPad
     case 'SHOW_MODAL': {
       const { modalType } = action;
       const chatOpen = (modalType === 'CHAT') ? false : state.chatOpen;

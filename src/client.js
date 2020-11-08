@@ -52,9 +52,22 @@ function init() {
   ProtocolClient.on('setWsName', (name) => {
     nameRegExp = new RegExp(`(^|\\s+)(@${name})(\\s+|$)`, 'g');
   });
-  ProtocolClient.on('chatMessage', (name, text, country, channelId) => {
+  ProtocolClient.on('chatMessage', (
+    name,
+    text,
+    country,
+    channelId,
+    userId,
+  ) => {
     const isPing = (nameRegExp && text.match(nameRegExp));
-    store.dispatch(receiveChatMessage(name, text, country, channelId, isPing));
+    store.dispatch(receiveChatMessage(
+      name,
+      text,
+      country,
+      channelId,
+      userId,
+      isPing,
+    ));
   });
   ProtocolClient.on('changedMe', () => {
     store.dispatch(fetchMe());

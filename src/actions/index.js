@@ -199,6 +199,7 @@ export function receiveChatMessage(
   text: string,
   country: string,
   channel: number,
+  user: number,
   isPing: boolean,
 ): Action {
   return {
@@ -207,6 +208,7 @@ export function receiveChatMessage(
     text,
     country,
     channel,
+    user,
     isPing,
   };
 }
@@ -705,6 +707,35 @@ export function showCanvasSelectionModal(): Action {
   return showModal('CANVAS_SELECTION');
 }
 
+export function showContextMenu(
+  menuType: string,
+  xPos: number,
+  yPos: number,
+  args: Object,
+): Action {
+  return {
+    type: 'SHOW_CONTEXT_MENU',
+    menuType,
+    xPos,
+    yPos,
+    args,
+  };
+}
+
+export function setChatInputMessage(message: string): Action {
+  return {
+    type: 'SET_CHAT_INPUT_MSG',
+    message,
+  };
+}
+
+export function addToChatInputMessage(message: string): Action {
+  return {
+    type: 'ADD_CHAT_INPUT_MSG',
+    message,
+  };
+}
+
 export function showChatModal(forceModal: boolean = false): Action {
   if (window.innerWidth > 604 && !forceModal) { return toggleChatBox(); }
   return showModal('CHAT');
@@ -720,6 +751,12 @@ export function setChatChannel(channelId: number): Action {
 export function hideModal(): Action {
   return {
     type: 'HIDE_MODAL',
+  };
+}
+
+export function hideContextMenu(): Action {
+  return {
+    type: 'HIDE_CONTEXT_MENU',
   };
 }
 

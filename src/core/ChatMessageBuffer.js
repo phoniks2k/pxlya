@@ -68,6 +68,7 @@ class ChatMessageBuffer {
         name,
         message,
         flag,
+        uid,
       ]);
     }
   }
@@ -80,6 +81,7 @@ class ChatMessageBuffer {
           as: 'user',
           foreignKey: 'uid',
           attributes: [
+            'id',
             'name',
             'flag',
           ],
@@ -101,11 +103,13 @@ class ChatMessageBuffer {
         message,
         'user.name': name,
         'user.flag': flag,
+        'user.id': uid,
       } = messagesModel[i];
       messages.push([
         name,
         message,
         flag,
+        uid,
       ]);
     }
     return messages;

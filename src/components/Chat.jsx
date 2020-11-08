@@ -17,6 +17,7 @@ import {
   showUserAreaModal,
   setChatChannel,
   fetchChatMessages,
+  setChatInputMessage,
 } from '../actions';
 import ProtocolClient from '../socket/ProtocolClient';
 import { saveSelection, restoreSelection } from '../utils/storeSelection';
@@ -32,13 +33,13 @@ const Chat = ({
   chatChannel,
   ownName,
   open,
+  inputMessage,
+  setInputMessage,
   setChannel,
   fetchMessages,
   fetching,
 }) => {
   const listRef = useRef();
-  const inputRef = useRef();
-  const [inputMessage, setInputMessage] = useState('');
   const [selection, setSelection] = useState(null);
   const [nameRegExp, setNameRegExp] = useState(null);
 
@@ -56,13 +57,15 @@ const Chat = ({
     stayScrolled();
   }, [channelMessages.length]);
 
+  /*
+   * TODO this removes focus from chat box, fix this
+   *
   useEffect(() => {
-    // TODO this removes focus from chat box, fix this
-    return;
     if (channelMessages.length === MAX_CHAT_MESSAGES) {
       restoreSelection(selection);
     }
   }, [channelMessages]);
+  */
 
   useEffect(() => {
     const regExp = (ownName)
@@ -70,16 +73,6 @@ const Chat = ({
       : null;
     setNameRegExp(regExp);
   }, [ownName]);
-
-  function padToInputMessage(txt) {
-    const lastChar = inputMessage.substr(-1);
-    const pad = (lastChar && lastChar !== ' ');
-    let newMsg = inputMessage;
-    if (pad) newMsg += ' ';
-    newMsg += txt;
-    setInputMessage(newMsg);
-    inputRef.current.focus();
-  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -123,7 +116,7 @@ const Chat = ({
             name="info"
             msgArray={splitChatMessage('Start chatting here', nameRegExp)}
             country="xx"
-            insertText={(txt) => padToInputMessage(txt)}
+            uid={0}
           />
           )
           }
@@ -133,7 +126,7 @@ const Chat = ({
               name={message[0]}
               msgArray={splitChatMessage(message[1], nameRegExp)}
               country={message[2]}
-              insertText={(txt) => padToInputMessage(txt)}
+              uid={message[3]}
             />
           ))
         }
@@ -148,7 +141,7 @@ const Chat = ({
               style={{ flexGrow: 1, minWidth: 40 }}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              ref={inputRef}
+              id="chatmsginput"
               maxLength="200"
               type="text"
               placeholder="Chat here"
@@ -198,11 +191,17 @@ const Chat = ({
 function mapStateToProps(state: State) {
   const { name } = state.user;
   const { chatChannel } = state.gui;
-  const { channels, messages, fetching } = state.chat;
+  const {
+    channels,
+    messages,
+    fetching,
+    inputMessage,
+  } = state.chat;
   return {
     channels,
     messages,
     fetching,
+    inputMessage,
     chatChannel,
     ownName: name,
   };
@@ -218,6 +217,9 @@ function mapDispatchToProps(dispatch) {
     },
     fetchMessages(channelId) {
       dispatch(fetchChatMessages(channelId));
+    },
+    setInputMessage(message) {
+      dispatch(setChatInputMessage(message));
     },
   };
 }

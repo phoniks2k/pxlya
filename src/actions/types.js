@@ -65,11 +65,14 @@ export type Action =
     text: string,
     country: string,
     channel: number,
+    user: number,
     isPing: boolean,
   }
   | { type: 'RECEIVE_CHAT_HISTORY', cid: number, history: Array }
   | { type: 'SET_CHAT_CHANNEL', channelId: number }
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
+  | { type: 'SET_CHAT_INPUT_MSG', message: string }
+  | { type: 'ADD_CHAT_INPUT_MSG', message: string }
   | { type: 'RECEIVE_ME',
     name: string,
     waitSeconds: number,
@@ -90,7 +93,14 @@ export type Action =
   | { type: 'SET_MAILREG', mailreg: boolean }
   | { type: 'REM_FROM_MESSAGES', message: string }
   | { type: 'SHOW_MODAL', modalType: string }
+  | { type: 'SHOW_CONTEXT_MENU',
+    menuType: string,
+    xPos: number,
+    yPos: number,
+    args: Object,
+  }
   | { type: 'HIDE_MODAL' }
+  | { type: 'HIDE_CONTEXT_MENU' }
   | { type: 'RELOAD_URL' }
   | { type: 'SET_HISTORICAL_TIME', date: string, time: string }
   | { type: 'ON_VIEW_FINISH_CHANGE' };

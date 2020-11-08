@@ -169,7 +169,7 @@ class SocketServer extends WebSocketEvents {
     id: number,
     country: string,
   ) {
-    const text = JSON.stringify([name, message, country, channelId]);
+    const text = JSON.stringify([name, message, country, channelId, id]);
     this.wss.clients.forEach((ws) => {
       if (ws.readyState === WebSocket.OPEN) {
         if (chatProvider.userHasChannelAccess(ws.user, channelId)) {

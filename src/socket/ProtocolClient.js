@@ -169,10 +169,10 @@ class ProtocolClient extends EventEmitter {
     const data = JSON.parse(message);
 
     if (Array.isArray(data)) {
-      if (data.length === 4) {
+      if (data.length === 5) {
         // Ordinary array: Chat message
-        const [name, text, country, channelId] = data;
-        this.emit('chatMessage', name, text, country, channelId);
+        const [name, text, country, channelId, userId] = data;
+        this.emit('chatMessage', name, text, country, channelId, userId);
       }
     } else {
       // string = name

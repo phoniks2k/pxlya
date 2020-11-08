@@ -5,14 +5,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { showContextMenu } from '../actions';
 import { colorFromText, setBrightness } from '../core/utils';
 
 
 function ChatMessage({
   name,
-  msgArray,
+  uid,
   country,
-  insertText,
+  msgArray,
+  openUserContextMenu,
   darkMode,
 }) {
   if (!name || !msgArray) {
@@ -54,8 +56,17 @@ function ChatMessage({
             }}
             role="button"
             tabIndex={-1}
-            onClick={() => {
-              insertText(`@${name} `);
+            onClick={(event) => {
+              const {
+                clientX,
+                clientY,
+              } = event;
+              openUserContextMenu(
+                clientX,
+                clientY,
+                uid,
+                name,
+              );
             }}
           >
             {name}
@@ -103,4 +114,15 @@ function mapStateToProps(state: State) {
   return { darkMode };
 }
 
-export default connect(mapStateToProps)(ChatMessage);
+function mapDispatchToProps(dispatch) {
+  return {
+    openUserContextMenu(xPos, yPos, uid, name) {
+      dispatch(showContextMenu('USER', xPos, yPos, {
+        uid,
+        name,
+      }));
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatMessage);
