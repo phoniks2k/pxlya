@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 
 import type { State } from '../reducers';
 import ChatMessage from './ChatMessage';
+import ChannelDropDown from './ChannelDropDown';
 import { MAX_CHAT_MESSAGES } from '../core/constants';
 
 import {
@@ -152,25 +153,7 @@ const Chat = ({
             >
               ‣
             </button>
-            <select
-              style={{ width: 50 }}
-              onChange={(evt) => {
-                const sel = evt.target;
-                setChannel(sel.options[sel.selectedIndex].value);
-              }}
-            >
-              {
-                channels.map((ch) => (
-                  <option
-                    // eslint-disable-next-line eqeqeq
-                    selected={ch[0] == chatChannel}
-                    value={ch[0]}
-                  >
-                    {ch[1]}
-                  </option>
-                ))
-              }
-            </select>
+            <ChannelDropDown />
           </form>
         </div>
       ) : (

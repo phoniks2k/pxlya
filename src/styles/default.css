@@ -152,6 +152,23 @@ tr:nth-child(even) {
   visibility: visible;
 }
 
+.channelbtn {
+  background-color: #d0d0d0;
+  text-align: center;
+  border-style: solid;
+  border-width: thin;
+  border-radius: 4px;
+}
+
+.channelbtn:hover {
+  cursor: pointer;
+  background-color: white;
+}
+
+.channeldd {
+  background-color: rgba(226, 226, 226);
+}
+
 .actionbuttons, .coorbox, .onlinebox, .cooldownbox, #palettebox {
   position: fixed;
   background-color: rgba(226, 226, 226, 0.80);
