@@ -156,12 +156,14 @@ class Event {
   }
 
   static broadcastChatMessage(message) {
-    chatProvider.broadcastChatMessage(
-      EVENT_USER_NAME,
-      message,
-      chatProvider.enChannelId,
-      chatProvider.eventUserId,
-    );
+    if (chatProvier.enChannelId && chatProvider.eventUserId) {
+      chatProvider.broadcastChatMessage(
+        EVENT_USER_NAME,
+        message,
+        chatProvider.enChannelId,
+        chatProvider.eventUserId,
+      );
+    }
   }
 
   async runEventLoop() {
