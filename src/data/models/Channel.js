@@ -7,6 +7,7 @@
  */
 
 import DataType from 'sequelize';
+
 import Model from '../sequelize';
 import RegUser from './RegUser';
 
@@ -37,6 +38,7 @@ const Channel = Model.define('Channel', {
 
   lastMessage: {
     type: DataType.DATE,
+    defaultValue: DataType.literal('CURRENT_TIMESTAMP'),
     allowNull: false,
   },
 }, {
@@ -49,6 +51,7 @@ const Channel = Model.define('Channel', {
  * (associating it here allows us too
  * keep track of users leaving and joining DMs and ending up
  * in the same conversation)
+ * dmu1id < dmu2id
  */
 Channel.belongsTo(RegUser, {
   as: 'dmu1',

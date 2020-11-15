@@ -167,6 +167,13 @@ tr:nth-child(even) {
 
 .channeldd {
   background-color: rgba(226, 226, 226);
+  width: 90px;
+}
+
+.channeldds {
+  height: 120px;
+  overflow-y: scroll;
+  margin: 2px;
 }
 
 .actionbuttons, .coorbox, .onlinebox, .cooldownbox, #palettebox {

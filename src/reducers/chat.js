@@ -33,6 +33,18 @@ export default function chat(
       };
     }
 
+    case 'ADD_CHAT_CHANNEL': {
+      const { channel } = action;
+      const channelId = channel[0];
+      const channels = state.channels
+        .filter((ch) => (ch[0] !== channelId));
+      channels.push(channel);
+      return {
+        ...state,
+        channels,
+      };
+    }
+
     case 'SET_CHAT_FETCHING': {
       const { fetching } = action;
       return {

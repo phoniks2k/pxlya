@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import {
   hideContextMenu,
   addToChatInputMessage,
-  setChatInputMessage,
+  startDm,
 } from '../actions';
 import type { State } from '../reducers';
 
@@ -21,24 +21,24 @@ const UserContextMenu = ({
   yPos,
   uid,
   name,
-  setInput,
   addToInput,
+  dm,
   close,
 }) => {
   const wrapperRef = useRef(null);
 
+
   useEffect(() => {
-    function handleClickOutside(event) {
+    const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         close();
       }
-    }
-
+    };
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('touchstart', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [wrapperRef]);
 
@@ -60,7 +60,8 @@ const UserContextMenu = ({
         role="button"
         tabIndex={0}
         onClick={() => {
-          setInput('loool');
+          dm(uid);
+          close();
         }}
         style={{ borderBottom: 'thin solid' }}
       >
@@ -108,8 +109,8 @@ function mapDispatchToProps(dispatch) {
         input.select();
       }
     },
-    setInput(text) {
-      dispatch(setChatInputMessage(text));
+    dm(userId) {
+      dispatch(startDm({ userId }));
     },
     close() {
       dispatch(hideContextMenu());

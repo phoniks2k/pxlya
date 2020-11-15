@@ -584,7 +584,7 @@ export function fetchMe(): PromiseAction {
 function receiveChatHistory(
   cid: number,
   history: Array,
-) {
+): Action {
   return {
     type: 'RECEIVE_CHAT_HISTORY',
     cid,
@@ -745,6 +745,48 @@ export function setChatChannel(channelId: number): Action {
   return {
     type: 'SET_CHAT_CHANNEL',
     channelId,
+  };
+}
+
+export function addChatChannel(channel: Array): Action {
+  return {
+    type: 'ADD_CHAT_CHANNEL',
+    channel,
+  };
+}
+
+export function startDm(query): PromiseAction {
+  return async (dispatch) => {
+    const response = await fetch('api/startdm', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(query),
+    });
+
+    try {
+      const res = await response.json();
+      if (res.errors) {
+        dispatch(sweetAlert(
+          'Direct Message Error',
+          res.errors[0],
+          'error',
+          'OK',
+        ));
+      }
+      if (response.ok) {
+        const { channel } = res;
+        const channelId = channel[0];
+        if (channelId) {
+          await dispatch(addChatChannel(channel));
+          dispatch(setChatChannel(channelId));
+        }
+      }
+    } catch {
+
+    }
   };
 }
 

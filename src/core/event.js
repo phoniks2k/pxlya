@@ -156,7 +156,7 @@ class Event {
   }
 
   static broadcastChatMessage(message) {
-    if (chatProvier.enChannelId && chatProvider.eventUserId) {
+    if (chatProvider.enChannelId && chatProvider.eventUserId) {
       chatProvider.broadcastChatMessage(
         EVENT_USER_NAME,
         message,

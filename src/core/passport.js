@@ -25,6 +25,23 @@ import { getIPFromRequest } from '../utils/ip';
 const include = [{
   model: Channel,
   as: 'channel',
+  include: [{
+    model: RegUser,
+    as: 'dmu1',
+    foreignKey: 'dmu1id',
+    attributes: [
+      'id',
+      'name',
+    ],
+  }, {
+    model: RegUser,
+    as: 'dmu2',
+    foreignKey: 'dmu2id',
+    attributes: [
+      'id',
+      'name',
+    ],
+  }],
 }, {
   model: RegUser,
   through: UserBlock,

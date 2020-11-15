@@ -1,6 +1,4 @@
 /* @flow */
-import Sequelize from 'sequelize';
-
 import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
@@ -58,16 +56,16 @@ export class ChatProvider {
       const channel = await Channel.findOrCreate({
         attributes: [
           'id',
+          'type',
           'lastMessage',
         ],
         where: { name },
         defaults: {
           name,
-          lastMessage: Sequelize.literal('CURRENT_TIMESTAMP'),
         },
         raw: true,
       });
-      const { id } = channel[0];
+      const { id, type, lastMessage } = channel[0];
       if (name === 'int') {
         this.intChannelId = id;
       }
@@ -77,6 +75,8 @@ export class ChatProvider {
       this.defaultChannels.push([
         id,
         name,
+        type,
+        lastMessage,
       ]);
       this.defaultChannelIds.push(id);
     }

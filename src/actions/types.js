@@ -70,6 +70,7 @@ export type Action =
   }
   | { type: 'RECEIVE_CHAT_HISTORY', cid: number, history: Array }
   | { type: 'SET_CHAT_CHANNEL', channelId: number }
+  | { type: 'ADD_CHAT_CHANNEL', channel: Array }
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
   | { type: 'SET_CHAT_INPUT_MSG', message: string }
   | { type: 'ADD_CHAT_INPUT_MSG', message: string }

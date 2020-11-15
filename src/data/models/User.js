@@ -14,7 +14,6 @@ import logger from '../../core/logger';
 import Model from '../sequelize';
 import RegUser from './RegUser';
 import { getIPv6Subnet } from '../../utils/ip';
-
 import { ADMIN_IDS } from '../../core/config';
 
 
@@ -35,7 +34,6 @@ class User {
     this.wait = null;
     // following gets populated by passport
     this.regUser = null;
-    this.channelIds = [];
   }
 
   static async name2Id(name: string) {
@@ -56,12 +54,28 @@ class User {
   setRegUser(reguser) {
     this.regUser = reguser;
     this.id = reguser.id;
-    for (let i = 0; i < reguser.channel.length; i += 1) {
-      this.channelIds.push(reguser.channel[i].id);
-      this.channels.push([
-        reguser.channel[i].id,
-        reguser.channel[i].name,
-      ]);
+    if (reguser.channel) {
+      for (let i = 0; i < reguser.channel.length; i += 1) {
+        const {
+          id,
+          type,
+          lastMessage,
+          dmu1,
+          dmu2,
+        } = reguser.channel[i];
+        // in DMs the name is the name of the other user
+        let { name } = reguser.channel[i];
+        if (type === 1) {
+          name = (dmu1.id === this.id) ? dmu2.name : dmu1.name;
+        }
+        this.channelIds.push(id);
+        this.channels.push([
+          id,
+          name,
+          type,
+          lastMessage,
+        ]);
+      }
     }
   }
 
