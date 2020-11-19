@@ -5,7 +5,6 @@ import fetch from 'isomorphic-fetch'; // TODO put in the beggining with webpack!
 
 import './styles/font.css';
 
-// import initAds, { requestAds } from './ui/ads';
 import onKeyPress from './controls/keypress';
 import {
   receivePixelUpdate,

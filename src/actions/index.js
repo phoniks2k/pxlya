@@ -437,10 +437,12 @@ export function preLoadedBigChunk(
 
 export function receiveBigChunk(
   center: Cell,
+  chunk: Uint8Array,
 ): Action {
   return {
     type: 'RECEIVE_BIG_CHUNK',
     center,
+    chunk,
   };
 }
 
