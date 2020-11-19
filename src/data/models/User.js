@@ -30,6 +30,7 @@ class User {
     this.ip = ip;
     this.channels = [];
     this.channelIds = [];
+    this.blocked = [];
     this.ipSub = getIPv6Subnet(ip);
     this.wait = null;
     // following gets populated by passport
@@ -75,6 +76,15 @@ class User {
           type,
           lastMessage,
         ]);
+      }
+    }
+    if (reguser.blocked) {
+      for (let i = 0; i < reguser.blocked.length; i += 1) {
+        const {
+          id,
+          name,
+        } = reguser.blocked[i];
+        this.blocked.push([id, name]);
       }
     }
   }
@@ -194,6 +204,7 @@ class User {
       mailreg: !!(regUser.password),
       userlvl: this.isAdmin() ? 1 : 0,
       channels: this.channels,
+      blocked: this.blocked,
     };
   }
 }

@@ -41,6 +41,11 @@ const include = [{
       'id',
       'name',
     ],
+  }, {
+    model: RegUser,
+    as: 'blocked',
+    through: UserBlock,
+    foreignKey: 'uid',
   }],
 }, {
   model: RegUser,

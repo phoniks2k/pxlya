@@ -34,7 +34,7 @@ async function startDm(req: Request, res: Response) {
     errors.push('You are not logged in');
   }
   if (user && userId && user.id === userId) {
-    errors.push('You can not start DM to yourself.');
+    errors.push('You can not  DM yourself.');
   }
   if (errors.length) {
     res.status(400);
@@ -118,6 +118,7 @@ async function startDm(req: Request, res: Response) {
   ];
   await Promise.all(promises);
 
+  // TODO: inform websocket to add channelId to user
   res.json({
     channel: [
       ChannelId,

@@ -61,6 +61,7 @@ const UserContextMenu = ({
         tabIndex={0}
         onClick={() => {
           dm(uid);
+          // TODO if DM Channel with user already exist, just switch
           close();
         }}
         style={{ borderBottom: 'thin solid' }}
