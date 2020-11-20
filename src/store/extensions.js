@@ -18,7 +18,7 @@ export default () => (next) => (action) => {
 
     case 'SET_VIEW_COORDINATES': {
       /*
-       * view: [x, y] canvas coordinates of the center of the screen
+       * view: [x, y] float canvas coordinates of the center of the screen,
        */
       pixelPlanetEvents.emit('setviewcoordinates', action.view);
       break;
@@ -26,34 +26,30 @@ export default () => (next) => (action) => {
 
     case 'SET_HOVER': {
       /*
-       * hover: [x, y] canvas coordinates of cursor
+       * hover: [x, y] integer canvas coordinates of cursor
        * just used on 2D canvas
        */
       pixelPlanetEvents.emit('sethover', action.hover);
       break;
     }
 
-    case 'RECEIVE_BIG_CHUNK': {
+    case 'SET_SCALE': {
       /*
-       * center: Array with [zoom, x, y] on 2D and [0, x, z] on 3D canvas
-       * chunk: ChunkRGB or ChunkRGB3D object,
-       *        see ui/ChunkRGB.js and ui/ChunkRGB3D.js
+       * scale: float of canvas scale aka zoom
+       *        (not logarithmic, doesn't clamp to 1.0)
+       * zoompoint: center of scaling
        */
-      const { center, chunk } = action;
-      pixelPlanetEvents.emit('receivechunk', center, chunk);
+      const { scale, zoompoint } = action;
+      pixelPlanetEvents.emit('setscale', scale, zoompoint);
       break;
     }
 
-    case 'RECEIVE_PIXEL_UPDATE': {
+    case 'RECEIVE_BIG_CHUNK': {
       /*
-       * i, j: chunk coordinates
-       * offset: position of pixel within chunk
-       * color: color index
+       * chunk: ChunkRGB or ChunkRGB3D object,
+       *        see ui/ChunkRGB.js and ui/ChunkRGB3D.js
        */
-      const {
-        i, j, offset, color,
-      } = action;
-      pixelPlanetEvents.emit('pixelupdate', i, j, offset, color);
+      pixelPlanetEvents.emit('receivechunk', action.chunk);
       break;
     }
 
