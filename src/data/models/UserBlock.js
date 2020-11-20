@@ -17,8 +17,8 @@ const UserBlock = Model.define('UserBlock', {
 export async function isUserBlockedBy(userId, blockedById) {
   const exists = await UserBlock.findOne({
     where: {
-      uid: userId,
-      buid: blockedById,
+      uid: blockedById,
+      buid: userId,
     },
     raw: true,
     attributes: ['uid'],

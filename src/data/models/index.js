@@ -24,6 +24,9 @@ Channel.belongsToMany(RegUser, {
 
 /*
  * User blocks of other user
+ *
+ * uid: User that blocks
+ * buid: User that is blocked
  */
 RegUser.belongsToMany(RegUser, {
   as: 'blocked',

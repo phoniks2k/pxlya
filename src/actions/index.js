@@ -785,7 +785,7 @@ export function startDm(query): PromiseAction {
         }
       }
     } catch {
-
+      dispatch(notify('Couldn\'t start DM'));
     }
   };
 }

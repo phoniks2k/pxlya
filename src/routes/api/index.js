@@ -19,6 +19,7 @@ import ranking from './ranking';
 import history from './history';
 import chatHistory from './chathistory';
 import startDm from './startdm';
+import block from './block';
 
 
 const router = express.Router();
@@ -82,6 +83,8 @@ router.post('/mctp', mctp);
 router.get('/chathistory', chatHistory);
 
 router.post('/startdm', startDm);
+
+router.post('/block', block);
 
 router.use('/auth', auth(passport));
 
