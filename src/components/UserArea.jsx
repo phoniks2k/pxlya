@@ -13,6 +13,7 @@ import ChangePassword from './ChangePassword';
 import ChangeName from './ChangeName';
 import ChangeMail from './ChangeMail';
 import DeleteAccount from './DeleteAccount';
+import SocialSettings from './SocialSettings';
 
 import { numberToString } from '../core/utils';
 
@@ -45,6 +46,7 @@ class UserArea extends React.Component {
       changeMailExtended,
       changePasswdExtended,
       deleteAccountExtended,
+      socialSettingsExtended,
     } = this.state;
     return (
       <p style={{ textAlign: 'center' }}>
@@ -84,6 +86,7 @@ class UserArea extends React.Component {
               changeMailExtended: false,
               changePasswdExtended: false,
               deleteAccountExtended: false,
+              socialSettingsExtended: false,
             })}
           > Change Username</span> |
           {(mailreg)
@@ -98,6 +101,7 @@ class UserArea extends React.Component {
                   changeMailExtended: true,
                   changePasswdExtended: false,
                   deleteAccountExtended: false,
+                  socialSettingsExtended: false,
                 })}
               > Change Mail</span> |
             </span>
@@ -111,6 +115,7 @@ class UserArea extends React.Component {
               changeMailExtended: false,
               changePasswdExtended: true,
               deleteAccountExtended: false,
+              socialSettingsExtended: false,
             })}
           > Change Password</span> |
           <span
@@ -122,9 +127,24 @@ class UserArea extends React.Component {
               changeMailExtended: false,
               changePasswdExtended: false,
               deleteAccountExtended: true,
+              socialSettingsExtended: false,
             })}
           > Delete Account</span> )
+          <br />(
+          <span
+            role="button"
+            tabIndex={-1}
+            className="modallink"
+            onClick={() => this.setState({
+              changeNameExtended: false,
+              changeMailExtended: false,
+              changePasswdExtended: false,
+              deleteAccountExtended: false,
+              socialSettingsExtended: true,
+            })}
+          > Social Settings</span> )
         </p>
+        <p className="modaltext" />
         {(changePasswdExtended)
           && (
           <ChangePassword
@@ -154,6 +174,12 @@ class UserArea extends React.Component {
           <DeleteAccount
             setName={setName}
             done={() => { this.setState({ deleteAccountExtended: false }); }}
+          />
+          )}
+        {(socialSettingsExtended)
+          && (
+          <SocialSettings
+            done={() => { this.setState({ socialSettingsExtended: false }); }}
           />
           )}
         {(typeof window.hcaptcha !== 'undefined')

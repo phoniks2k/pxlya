@@ -32,7 +32,6 @@ export type CanvasState = {
   view: Cell,
   scale: number,
   viewscale: number,
-  fetchs: number,
   isHistoricalView: boolean,
   historicalDate: string,
   historicalTime: string,
@@ -137,7 +136,6 @@ function getViewFromURL(canvases: Object) {
 
 const initialState: CanvasState = {
   ...getViewFromURL(DEFAULT_CANVASES),
-  fetchs: 0,
   isHistoricalView: false,
   historicalDate: null,
   historicalTime: null,
@@ -239,35 +237,6 @@ export default function canvasReducer(
       return {
         ...state,
         ...nextstate,
-      };
-    }
-
-    case 'REQUEST_BIG_CHUNK': {
-      const {
-        fetchs,
-      } = state;
-
-      return {
-        ...state,
-        fetchs: fetchs + 1,
-      };
-    }
-
-    case 'RECEIVE_BIG_CHUNK': {
-      const { fetchs } = state;
-
-      return {
-        ...state,
-        fetchs: fetchs + 1,
-      };
-    }
-
-    case 'RECEIVE_BIG_CHUNK_FAILURE': {
-      const { fetchs } = state;
-
-      return {
-        ...state,
-        fetchs: fetchs + 1,
       };
     }
 

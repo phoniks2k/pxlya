@@ -64,6 +64,12 @@ const RegUser = Model.define('User', {
     defaultValue: false,
   },
 
+  blockDm: {
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+
   discordid: {
     type: DataType.CHAR(18),
     allowNull: true,

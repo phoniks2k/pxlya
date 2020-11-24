@@ -8,11 +8,12 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
-import { RegUser, UserBlock } from '../../data/models';
+import { RegUser, UserBlock, Channel } from '../../data/models';
 
 async function block(req: Request, res: Response) {
   let userId = parseInt(req.body.userId, 10);
   let { userName } = req.body;
+  const { block: blocking } = req.body;
   const { user } = req;
 
   const errors = [];
@@ -22,6 +23,9 @@ async function block(req: Request, res: Response) {
       errors.push('Invalid userId');
     }
     query.id = userId;
+  }
+  if (typeof blocking !== 'boolean') {
+    errors.push('Not defined if blocking or unblocking');
   }
   if (userName) {
     query.name = userName;
@@ -33,7 +37,7 @@ async function block(req: Request, res: Response) {
     errors.push('You are not logged in');
   }
   if (user && userId && user.id === userId) {
-    errors.push('You can not  DM yourself.');
+    errors.push('You can not block yourself.');
   }
   if (errors.length) {
     res.status(400);
@@ -61,14 +65,53 @@ async function block(req: Request, res: Response) {
   userId = targetUser.id;
   userName = targetUser.name;
 
-  const ret = await UserBlock.findOrCreate({
+  let ret = null;
+  if (blocking) {
+    ret = await UserBlock.findOrCreate({
+      where: {
+        uid: user.id,
+        buid: userId,
+      },
+      raw: true,
+      attributes: ['uid'],
+    });
+  } else {
+    ret = await UserBlock.destroy({
+      where: {
+        uid: user.id,
+        buid: userId,
+      },
+    });
+  }
+
+  /*
+   * delete possible dm channel
+   */
+  let dmu1id = null;
+  let dmu2id = null;
+  if (user.id > userId) {
+    dmu1id = userId;
+    dmu2id = user.id;
+  } else {
+    dmu1id = user.id;
+    dmu2id = userId;
+  }
+
+  // TODO test if this removes association too
+  const channel = await Channel.findOne({
     where: {
-      uid: user.id,
-      buid: userId,
+      type: 1,
+      dmu1id,
+      dmu2id,
     },
-    raw: true,
-    attributes: ['uid'],
   });
+  if (channel) {
+    const channelId = channel.id;
+    channel.destroy();
+  }
+
+  // TODO notify websocket
+
   if (ret) {
     res.json({
       status: 'ok',
@@ -76,10 +119,10 @@ async function block(req: Request, res: Response) {
   } else {
     res.status(502);
     res.json({
-      errors: ['Could not block user'],
+      errors: ['Could not (un)block user'],
     });
     logger.info(
-      `User ${user.getName()} blocked ${userName}`,
+      `User ${user.getName()} (un)blocked ${userName}`,
     );
   }
 }

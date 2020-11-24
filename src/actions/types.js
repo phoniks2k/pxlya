@@ -74,6 +74,9 @@ export type Action =
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
   | { type: 'SET_CHAT_INPUT_MSG', message: string }
   | { type: 'ADD_CHAT_INPUT_MSG', message: string }
+  | { type: 'BLOCK_USER', userId: number, userName: string }
+  | { type: 'UNBLOCK_USER', userId: number, userName: string }
+  | { type: 'SET_BLOCKING_DM', blockDm: boolean }
   | { type: 'RECEIVE_ME',
     name: string,
     waitSeconds: number,
@@ -84,8 +87,10 @@ export type Action =
     ranking: number,
     dailyRanking: number,
     minecraftname: string,
+    blockDm: boolean,
     canvases: Object,
-    channels: Object,
+    channels: Array,
+    blocked: Array,
     userlvl: number,
   }
   | { type: 'RECEIVE_STATS', totalRanking: Object, totalDailyRanking: Object }

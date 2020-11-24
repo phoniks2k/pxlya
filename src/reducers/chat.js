@@ -6,19 +6,19 @@ import type { Action } from '../actions/types';
 
 export type ChatState = {
   inputMessage: string,
-  // [[cid, name], [cid2, name2],...]
+  // [[cid, name, type, lastMessage], [cid2, name2, type2, lastMessage2],...]
   channels: Array,
-  // { cid: [message1,message2,message2,...]}
+  // [[userId, userName], [userId2, userName2],...]
+  blocked: Array,
+  // { cid: [message1,message2,message3,...]}
   messages: Object,
-  // if currently fetching messages
-  fetching: boolean,
 }
 
 const initialState: ChatState = {
   inputMessage: '',
   channels: [],
+  blocked: [],
   messages: {},
-  fetching: false,
 };
 
 export default function chat(
@@ -30,6 +30,27 @@ export default function chat(
       return {
         ...state,
         channels: action.channels,
+        blocked: action.blocked,
+      };
+    }
+
+    case 'BLOCK_USER': {
+      const { userId, userName } = action;
+      return {
+        ...state,
+        blocked: [
+          ...state.blocked,
+          [userId, userName],
+        ],
+      };
+    }
+
+    case 'UNBLOCK_USER': {
+      const { userId } = action;
+      const blocked = state.blocked.filter((bl) => (bl[0] !== userId));
+      return {
+        ...state,
+        blocked,
       };
     }
 
@@ -42,14 +63,6 @@ export default function chat(
       return {
         ...state,
         channels,
-      };
-    }
-
-    case 'SET_CHAT_FETCHING': {
-      const { fetching } = action;
-      return {
-        ...state,
-        fetching,
       };
     }
 

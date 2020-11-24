@@ -49,6 +49,7 @@ async function startDm(req: Request, res: Response) {
     attributes: [
       'id',
       'name',
+      'blockDm',
     ],
     raw: true,
   });
@@ -58,6 +59,12 @@ async function startDm(req: Request, res: Response) {
       errors: ['Target user does not exist'],
     });
     return;
+  }
+  if (blockDm) {
+    res.status(401);
+    res.json({
+      errors: ['Target user doesn\'t allo DMs'],
+    });
   }
   userId = targetUser.id;
   userName = targetUser.name;

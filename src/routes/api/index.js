@@ -20,6 +20,7 @@ import history from './history';
 import chatHistory from './chathistory';
 import startDm from './startdm';
 import block from './block';
+import blockdm from './blockdm';
 
 
 const router = express.Router();
@@ -85,6 +86,8 @@ router.get('/chathistory', chatHistory);
 router.post('/startdm', startDm);
 
 router.post('/block', block);
+
+router.post('/blockdm', blockdm);
 
 router.use('/auth', auth(passport));
 

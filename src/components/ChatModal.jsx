@@ -18,17 +18,10 @@ const ChatModal = () => (
     right: 10,
   }}
   >
-    <p style={{ textAlign: 'center' }}>
-      <p className="modaltext">Chat with other people here</p>
-    </p>
     <div
       className="inarea"
       style={{
-        position: 'absolute',
-        bottom: 10,
-        top: 50,
-        left: 10,
-        right: 10,
+        height: '95%',
       }}
     >
       <Chat />

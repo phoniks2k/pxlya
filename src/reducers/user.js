@@ -24,6 +24,8 @@ export type UserState = {
   totalDailyRanking: Object,
   // minecraft
   minecraftname: string,
+  // blocking all Dms
+  blockDm: boolean,
   // if user is using touchscreen
   isOnMobile: boolean,
   // small notifications for received cooldown
@@ -45,6 +47,7 @@ const initialState: UserState = {
   totalRanking: {},
   totalDailyRanking: {},
   minecraftname: null,
+  blockDm: false,
   isOnMobile: false,
   notification: null,
   userlvl: 0,
@@ -139,6 +142,7 @@ export default function user(
         ranking,
         dailyRanking,
         minecraftname,
+        blockDm,
         userlvl,
       } = action;
       const messages = (action.messages) ? action.messages : [];
@@ -152,6 +156,7 @@ export default function user(
         ranking,
         dailyRanking,
         minecraftname,
+        blockDm,
         userlvl,
       };
     }
@@ -170,6 +175,14 @@ export default function user(
       return {
         ...state,
         name,
+      };
+    }
+
+    case 'SET_BLOCKING_DM': {
+      const { blockDm } = action;
+      return {
+        ...state,
+        blockDm,
       };
     }
 

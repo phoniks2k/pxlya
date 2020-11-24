@@ -39,10 +39,12 @@ const Chat = ({
   setChannel,
   fetchMessages,
   fetching,
+  blocked,
 }) => {
   const listRef = useRef();
   const [selection, setSelection] = useState(null);
   const [nameRegExp, setNameRegExp] = useState(null);
+  const [blockedIds, setBlockedIds] = useState([]);
 
   const { stayScrolled } = useStayScrolled(listRef, {
     initialScroll: Infinity,
@@ -75,6 +77,14 @@ const Chat = ({
     setNameRegExp(regExp);
   }, [ownName]);
 
+  useEffect(() => {
+    const bl = [];
+    for (let i = 0; i < blocked.length; i += 1) {
+      bl.push(blocked[i][0]);
+    }
+    setBlockedIds(bl);
+  }, [blocked.length]);
+
   function handleSubmit(e) {
     e.preventDefault();
     const msg = inputMessage.trim();
@@ -102,71 +112,74 @@ const Chat = ({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <ul
-        className="chatarea"
-        ref={listRef}
-        style={{ flexGrow: 1 }}
-        onMouseUp={() => { setSelection(saveSelection); }}
-        role="presentation"
-      >
-        {
-          (!channelMessages.length)
-          && (
-          <ChatMessage
-            name="info"
-            msgArray={splitChatMessage('Start chatting here', nameRegExp)}
-            country="xx"
-            uid={0}
-          />
-          )
-          }
-        {
-          channelMessages.map((message) => (
-            <ChatMessage
-              name={message[0]}
-              msgArray={splitChatMessage(message[1], nameRegExp)}
-              country={message[2]}
-              uid={message[3]}
-            />
-          ))
-        }
-      </ul>
-      {(ownName) ? (
-        <div classNam="chatinput">
-          <form
-            onSubmit={(e) => handleSubmit(e)}
-            style={{ display: 'flex', flexDirection: 'row' }}
-          >
-            <input
-              style={{ flexGrow: 1, minWidth: 40 }}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              id="chatmsginput"
-              maxLength="200"
-              type="text"
-              placeholder="Chat here"
-            />
-            <button
-              style={{ flexGrow: 0 }}
-              type="submit"
-            >
-              ‣
-            </button>
-            <ChannelDropDown />
-          </form>
-        </div>
-      ) : (
-        <div
-          className="modallink"
-          onClick={open}
-          style={{ textAlign: 'center', fontSize: 13 }}
-          role="button"
-          tabIndex={0}
+    <div style={{ display: 'relative', width: '100%', height: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <ul
+          className="chatarea"
+          ref={listRef}
+          style={{ flexGrow: 1 }}
+          onMouseUp={() => { setSelection(saveSelection); }}
+          role="presentation"
         >
-          You must be logged in to chat
-        </div>
-      )}
+          {
+            (!channelMessages.length)
+            && (
+            <ChatMessage
+              name="info"
+              msgArray={splitChatMessage('Start chatting here', nameRegExp)}
+              country="xx"
+              uid={0}
+            />
+            )
+            }
+          {
+            channelMessages.map((message) => ((blockedIds.includes(message[3]))
+              ? null : (
+                <ChatMessage
+                  name={message[0]}
+                  msgArray={splitChatMessage(message[1], nameRegExp)}
+                  country={message[2]}
+                  uid={message[3]}
+                />
+              )))
+          }
+        </ul>
+        {(ownName) ? (
+          <div classNam="chatinput">
+            <form
+              onSubmit={(e) => handleSubmit(e)}
+              style={{ display: 'flex', flexDirection: 'row' }}
+            >
+              <input
+                style={{ flexGrow: 1, minWidth: 40 }}
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                id="chatmsginput"
+                maxLength="200"
+                type="text"
+                placeholder="Chat here"
+              />
+              <button
+                style={{ flexGrow: 0 }}
+                type="submit"
+              >
+                ‣
+              </button>
+              <ChannelDropDown />
+            </form>
+          </div>
+        ) : (
+          <div
+            className="modallink"
+            onClick={open}
+            style={{ textAlign: 'center', fontSize: 13 }}
+            role="button"
+            tabIndex={0}
+          >
+            You must be logged in to chat
+          </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -177,13 +190,17 @@ function mapStateToProps(state: State) {
   const {
     channels,
     messages,
-    fetching,
     inputMessage,
+    blocked,
   } = state.chat;
+  const {
+    fetchingChat: fetching,
+  } = state.fetching;
   return {
     channels,
     messages,
     fetching,
+    blocked,
     inputMessage,
     chatChannel,
     ownName: name,

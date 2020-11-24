@@ -10,10 +10,10 @@ const MdToggleButton = ({ value, onToggle }) => (
   <ToggleButton
     inactiveLabel={<MdClose />}
     activeLabel={<MdCheck />}
-    thumbAnimateRange={[-10, 36]}
     value={value}
     onToggle={onToggle}
   />
 );
 
+// thumbAnimateRange={[-10, 36]}
 export default MdToggleButton;

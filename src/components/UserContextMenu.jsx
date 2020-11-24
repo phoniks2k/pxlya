@@ -12,9 +12,9 @@ import {
   hideContextMenu,
   addToChatInputMessage,
   startDm,
+  setUserBlock,
 } from '../actions';
 import type { State } from '../reducers';
-
 
 const UserContextMenu = ({
   xPos,
@@ -23,6 +23,7 @@ const UserContextMenu = ({
   name,
   addToInput,
   dm,
+  block,
   close,
 }) => {
   const wrapperRef = useRef(null);
@@ -53,6 +54,10 @@ const UserContextMenu = ({
     >
       <div
         style={{ borderBottom: 'thin solid' }}
+        onClick={() => {
+          block(uid, name);
+          close();
+        }}
       >
         Block
       </div>
@@ -112,6 +117,9 @@ function mapDispatchToProps(dispatch) {
     },
     dm(userId) {
       dispatch(startDm({ userId }));
+    },
+    block(userId, userName) {
+      dispatch(setUserBlock(userId, userName, true));
     },
     close() {
       dispatch(hideContextMenu());

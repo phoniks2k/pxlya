@@ -197,6 +197,7 @@ class User {
       mailVerified: regUser.mailVerified,
       mcVerified: regUser.mcVerified,
       minecraftname: regUser.minecraftname,
+      blockDm: regUser.blockDm,
       totalPixels: regUser.totalPixels,
       dailyTotalPixels: regUser.dailyTotalPixels,
       ranking: regUser.ranking,

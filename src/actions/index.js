@@ -7,6 +7,11 @@ import type {
 } from './types';
 import type { Cell } from '../core/Cell';
 import type { ColorIndex } from '../core/Palette';
+import {
+  requestStartDm,
+  requestBlock,
+  requestBlockDm,
+} from './fetch';
 
 export function sweetAlert(
   title: string,
@@ -490,8 +495,10 @@ export function receiveMe(
     ranking,
     dailyRanking,
     minecraftname,
+    blockDm,
     canvases,
     channels,
+    blocked,
     userlvl,
   } = me;
   return {
@@ -504,8 +511,10 @@ export function receiveMe(
     ranking,
     dailyRanking,
     minecraftname,
+    blockDm: !!blockDm,
     canvases,
     channels,
+    blocked,
     userlvl,
   };
 }
@@ -599,6 +608,13 @@ function setChatFetching(fetching: boolean): Action {
   };
 }
 
+function setApiFetching(fetching: boolean): Action {
+  return {
+    type: 'SET_API_FETCHING',
+    fetching,
+  };
+}
+
 export function fetchChatMessages(
   cid: number,
 ): PromiseAction {
@@ -608,6 +624,9 @@ export function fetchChatMessages(
       credentials: 'include',
     });
 
+    /*
+     * timeout in order to not spam api requests and get rate limited
+     */
     if (response.ok) {
       setTimeout(() => { dispatch(setChatFetching(false)); }, 500);
       const { history } = await response.json();
@@ -755,38 +774,95 @@ export function addChatChannel(channel: Array): Action {
   };
 }
 
+export function blockUser(userId: number, userName: string): Action {
+  return {
+    type: 'BLOCK_USER',
+    userId,
+    userName,
+  };
+}
+
+export function unblockUser(userId: number, userName: string): Action {
+  return {
+    type: 'UNBLOCK_USER',
+    userId,
+    userName,
+  };
+}
+
+export function blockingDm(blockDm: boolean): Action {
+  return {
+    type: 'SET_BLOCKING_DM',
+    blockDm,
+  };
+}
+
+/*
+ * query: Object with either userId: number or userName: string
+ */
 export function startDm(query): PromiseAction {
   return async (dispatch) => {
-    const response = await fetch('api/startdm', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(query),
-    });
-
-    try {
-      const res = await response.json();
-      if (res.errors) {
-        dispatch(sweetAlert(
-          'Direct Message Error',
-          res.errors[0],
-          'error',
-          'OK',
-        ));
+    dispatch(setApiFetching(true));
+    const res = await requestStartDm(query);
+    if (typeof res === 'string') {
+      dispatch(sweetAlert(
+        'Direct Message Error',
+        res,
+        'error',
+        'OK',
+      ));
+    } else {
+      const channelId = res[0];
+      if (channelId) {
+        dispatch(addChatChannel(res));
+        dispatch(setChatChannel(channelId));
       }
-      if (response.ok) {
-        const { channel } = res;
-        const channelId = channel[0];
-        if (channelId) {
-          await dispatch(addChatChannel(channel));
-          dispatch(setChatChannel(channelId));
-        }
-      }
-    } catch {
-      dispatch(notify('Couldn\'t start DM'));
     }
+    dispatch(setApiFetching(false));
+  };
+}
+
+export function setUserBlock(
+  userId: number,
+  userName: string,
+  block: boolean,
+) {
+  return async (dispatch) => {
+    dispatch(setApiFetching(true));
+    const res = await requestBlock(userId, block);
+    if (res) {
+      dispatch(sweetAlert(
+        'User Block Error',
+        res,
+        'error',
+        'OK',
+      ));
+    } else if (block) {
+      dispatch(blockUser(userId, userName));
+    } else {
+      dispatch(unblockUser(userId, userName));
+    }
+    dispatch(setApiFetching(false));
+  };
+}
+
+export function setBlockingDm(
+  block: boolean,
+) {
+  return async (dispatch) => {
+    dispatch(setApiFetching(true));
+    const res = await requestBlockDm(block);
+    if (res) {
+      dispatch(sweetAlert(
+        'Blocking DMs Error',
+        res,
+        'error',
+        'OK',
+      ));
+    } else {
+      dispatch(blockingDm(block));
+    }
+    dispatch(setApiFetching(false));
   };
 }
 

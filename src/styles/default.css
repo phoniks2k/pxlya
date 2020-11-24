@@ -74,6 +74,8 @@ a:hover {
   padding: 4px;
   margin-top: 4px;
   border-width: 1px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .tab-list {
@@ -550,6 +552,27 @@ tr:nth-child(even) {
   transition: visibility 0.3s, opacity 0.3s linear;
   visibility: hidden;
   opacity: 0;
+}
+
+.unblocklist {
+  display: inline-block;
+  margin: 5px 0px 15px 0px;
+  width: 95%;
+  max-height: 250px;
+  overflow-y: auto;
+  max-width: 340px;
+  border: thin solid;
+}
+
+.unblocklist > div {
+  padding: 4px;
+  font-weight: bold;
+}
+
+.unblocklist > div:hover {
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #db0000;
 }
 
 .actionbuttons {
