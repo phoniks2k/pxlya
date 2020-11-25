@@ -60,7 +60,7 @@ class User {
         const {
           id,
           type,
-          lastMessage,
+          lastTs,
           dmu1,
           dmu2,
         } = reguser.channel[i];
@@ -74,7 +74,7 @@ class User {
           id,
           name,
           type,
-          lastMessage,
+          lastTs,
         ]);
       }
     }

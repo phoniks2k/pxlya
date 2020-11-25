@@ -43,6 +43,17 @@ const Channel = Model.define('Channel', {
   },
 }, {
   updatedAt: false,
+
+  getterMethods: {
+    lastTs(): number {
+      return new Date(this.lastMessage).valueOf();
+    },
+  },
+  setterMethods: {
+    lastTs(ts: number) {
+      this.setDataValue('lastMessage', new Date(ts).toISOString());
+    },
+  },
 });
 
 /*

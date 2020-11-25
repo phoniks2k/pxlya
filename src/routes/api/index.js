@@ -19,6 +19,7 @@ import ranking from './ranking';
 import history from './history';
 import chatHistory from './chathistory';
 import startDm from './startdm';
+import leaveChan from './leavechan';
 import block from './block';
 import blockdm from './blockdm';
 
@@ -84,6 +85,8 @@ router.post('/mctp', mctp);
 router.get('/chathistory', chatHistory);
 
 router.post('/startdm', startDm);
+
+router.post('/leavechan', leaveChan);
 
 router.post('/block', block);
 

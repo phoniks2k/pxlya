@@ -54,18 +54,12 @@ export class ChatProvider {
       const { name } = CHAT_CHANNELS[i];
       // eslint-disable-next-line no-await-in-loop
       const channel = await Channel.findOrCreate({
-        attributes: [
-          'id',
-          'type',
-          'lastMessage',
-        ],
         where: { name },
         defaults: {
           name,
         },
-        raw: true,
       });
-      const { id, type, lastMessage } = channel[0];
+      const { id, type, lastTs } = channel[0];
       if (name === 'int') {
         this.intChannelId = id;
       }
@@ -76,7 +70,7 @@ export class ChatProvider {
         id,
         name,
         type,
-        lastMessage,
+        lastTs,
       ]);
       this.defaultChannelIds.push(id);
     }

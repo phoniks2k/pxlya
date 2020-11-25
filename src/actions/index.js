@@ -11,6 +11,7 @@ import {
   requestStartDm,
   requestBlock,
   requestBlockDm,
+  requestLeaveChan,
 } from './fetch';
 
 export function sweetAlert(
@@ -760,10 +761,10 @@ export function showChatModal(forceModal: boolean = false): Action {
   return showModal('CHAT');
 }
 
-export function setChatChannel(channelId: number): Action {
+export function setChatChannel(cid: number): Action {
   return {
     type: 'SET_CHAT_CHANNEL',
-    channelId,
+    cid,
   };
 }
 
@@ -797,6 +798,13 @@ export function blockingDm(blockDm: boolean): Action {
   };
 }
 
+export function removeChatChannel(cid: number): Action {
+  return {
+    type: 'REMOVE_CHAT_CHANNEL',
+    cid,
+  };
+}
+
 /*
  * query: Object with either userId: number or userName: string
  */
@@ -812,10 +820,10 @@ export function startDm(query): PromiseAction {
         'OK',
       ));
     } else {
-      const channelId = res[0];
-      if (channelId) {
+      const cid = res[0];
+      if (cid) {
         dispatch(addChatChannel(res));
-        dispatch(setChatChannel(channelId));
+        dispatch(setChatChannel(cid));
       }
     }
     dispatch(setApiFetching(false));
@@ -861,6 +869,26 @@ export function setBlockingDm(
       ));
     } else {
       dispatch(blockingDm(block));
+    }
+    dispatch(setApiFetching(false));
+  };
+}
+
+export function setLeaveChannel(
+  cid: number,
+) {
+  return async (dispatch) => {
+    dispatch(setApiFetching(true));
+    const res = await requestLeaveChan(cid);
+    if (res) {
+      dispatch(sweetAlert(
+        'Leaving Channel Error',
+        res,
+        'error',
+        'OK',
+      ));
+    } else {
+      dispatch(removeChatChannel(cid));
     }
     dispatch(setApiFetching(false));
   };

@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import {
   hideContextMenu,
+  setLeaveChannel,
 } from '../actions';
 import type { State } from '../reducers';
 
@@ -18,6 +19,7 @@ const UserContextMenu = ({
   yPos,
   cid,
   channels,
+  leave,
   close,
 }) => {
   const wrapperRef = useRef(null);
@@ -29,13 +31,14 @@ const UserContextMenu = ({
         close();
       }
     };
+    const handleWindowResize = () => close();
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('touchstart', handleClickOutside);
-    window.addEventListener('resize', handleClickOutside);
+    window.addEventListener('resize', handleWindowResize);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
-      window.removeEventListener('resize', handleClickOutside);
+      window.removeEventListener('resize', handleWindowResize);
     };
   }, [wrapperRef]);
 
@@ -62,16 +65,19 @@ const UserContextMenu = ({
         top: yPos,
       }}
     >
-      <div
-        style={{ borderBottom: 'thin solid' }}
-      >
+      <div>
         ✔✘ Mute
       </div>
       {(channelArray[2] !== 0)
         && (
         <div
           role="button"
+          onClick={() => {
+            leave(cid);
+            close();
+          }}
           tabIndex={0}
+          style={{ borderTop: 'thin solid' }}
         >
           Close
         </div>
@@ -104,6 +110,9 @@ function mapDispatchToProps(dispatch) {
   return {
     close() {
       dispatch(hideContextMenu());
+    },
+    leave(cid) {
+      dispatch(setLeaveChannel(cid));
     },
   };
 }

@@ -118,3 +118,32 @@ export async function requestBlockDm(block: boolean) {
     return 'Connection Error';
   }
 }
+
+/*
+ * leaving Chat Channel (i.e. DM channel)
+ * channelId 8nteger id of channel
+ * return error string or null if successful
+ */
+export async function requestLeaveChan(channelId: boolean) {
+  const response = await fetchWithTimeout('api/leavechan', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ channelId }),
+  });
+
+  try {
+    const res = await response.json();
+    if (res.errors) {
+      return res.errors[0];
+    }
+    if (response.ok && res.status === 'ok') {
+      return null;
+    }
+    return 'Unknown Error';
+  } catch {
+    return 'Connection Error';
+  }
+}

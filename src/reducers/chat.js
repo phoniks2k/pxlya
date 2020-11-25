@@ -8,7 +8,7 @@ export type ChatState = {
   inputMessage: string,
   // [[cid, name, type, lastMessage], [cid2, name2, type2, lastMessage2],...]
   channels: Array,
-  // [[userId, userName], [userId2, userName2],...]
+  // [[uId, userName], [userId2, userName2],...]
   blocked: Array,
   // { cid: [message1,message2,message3,...]}
   messages: Object,
@@ -56,10 +56,22 @@ export default function chat(
 
     case 'ADD_CHAT_CHANNEL': {
       const { channel } = action;
-      const channelId = channel[0];
+      const cid = channel[0];
       const channels = state.channels
-        .filter((ch) => (ch[0] !== channelId));
+        .filter((ch) => (ch[0] !== cid));
       channels.push(channel);
+      return {
+        ...state,
+        channels,
+      };
+    }
+
+    case 'REMOVE_CHAT_CHANNEL': {
+      const { cid } = action;
+      const channels = state.channels.filter(
+        // eslint-disable-next-line eqeqeq
+        (chan) => (chan[0] != cid),
+      );
       return {
         ...state,
         channels,

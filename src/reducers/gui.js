@@ -16,6 +16,9 @@ export type GUIState = {
   paletteOpen: boolean,
   menuOpen: boolean,
   chatChannel: number,
+  // timestamps of last read post per channel
+  // { 1: Date.now() }
+  chatRead: {},
   style: string,
 };
 
@@ -31,6 +34,7 @@ const initialState: GUIState = {
   paletteOpen: true,
   menuOpen: false,
   chatChannel: 1,
+  chatRead: {},
   style: 'default',
 };
 
@@ -107,7 +111,7 @@ export default function gui(
     case 'SET_CHAT_CHANNEL': {
       return {
         ...state,
-        chatChannel: action.channelId,
+        chatChannel: action.cid,
       };
     }
 
