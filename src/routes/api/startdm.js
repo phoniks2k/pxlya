@@ -60,7 +60,7 @@ async function startDm(req: Request, res: Response) {
     });
     return;
   }
-  if (blockDm) {
+  if (targetUser.blockDm) {
     res.status(401);
     res.json({
       errors: ['Target user doesn\'t allo DMs'],

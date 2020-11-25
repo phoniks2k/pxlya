@@ -40,13 +40,7 @@ function ChatBox({
         className={(chatOpen && render) ? 'chatbox show' : 'chatbox'}
         onTransitionEnd={onTransitionEnd}
       >
-        <div
-          id="chatlink"
-          onClick={triggerModal}
-          role="button"
-          tabIndex={-1}
-        >↷</div>
-        <Chat />
+        <Chat showExpand={true} />
       </div>
     )
   );

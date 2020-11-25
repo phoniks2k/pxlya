@@ -473,13 +473,15 @@ tr:nth-child(even) {
   margin-left: 5px;
   margin-right: 5px;
 }
-#chatlink {
+.chatlink {
   position: absolute;
-  font-weight: bold;
-  font-size: 20px;
-  right: 17px;
   top: 5px;
+  right: 17px;
+  font-weight: bold;
   color: #4a4a49; 
+  transition: font-size 0.2s;
+}
+.chatlink > span {
   cursor: pointer;
 }
 
