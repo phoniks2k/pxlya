@@ -40,7 +40,7 @@ function ChatBox({
         className={(chatOpen && render) ? 'chatbox show' : 'chatbox'}
         onTransitionEnd={onTransitionEnd}
       >
-        <Chat showExpand={true} />
+        <Chat showExpand />
       </div>
     )
   );

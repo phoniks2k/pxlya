@@ -20,6 +20,7 @@ import {
   setChatChannel,
   fetchChatMessages,
   setChatInputMessage,
+  showContextMenu,
 } from '../actions';
 import ProtocolClient from '../socket/ProtocolClient';
 import { saveSelection, restoreSelection } from '../utils/storeSelection';
@@ -43,6 +44,7 @@ const Chat = ({
   fetching,
   blocked,
   triggerModal,
+  openChannelContextMenu,
 }) => {
   const listRef = useRef();
   const targetRef = useRef();
@@ -111,17 +113,19 @@ const Chat = ({
    * for whatever reason (left faction etc.)
    * set channel to first available one
    */
-  let i = 0;
-  while (i < channels.length) {
-    // eslint-disable-next-line eqeqeq
-    if (channels[i][0] == chatChannel) {
-      break;
+  useEffect(() => {
+    let i = 0;
+    while (i < channels.length) {
+      // eslint-disable-next-line eqeqeq
+      if (channels[i][0] == chatChannel) {
+        break;
+      }
+      i += 1;
     }
-    i += 1;
-  }
-  if (i && i === channels.length) {
-    setChannel(channels[0][0]);
-  }
+    if (i && i === channels.length) {
+      setChannel(channels[0][0]);
+    }
+  }, [chatChannel, channels]);
 
   return (
     <div
@@ -132,7 +136,6 @@ const Chat = ({
         width: '100%',
         height: '100%',
         flexDirection: 'column',
-        height: '100%',
       }}
     >
       <div
@@ -142,17 +145,29 @@ const Chat = ({
         }}
       >
         <span
+          onClick={(event) => {
+            const {
+              clientX,
+              clientY,
+            } = event;
+            openChannelContextMenu(
+              clientX,
+              clientY,
+              chatChannel,
+            );
+          }}
           role="button"
           tabIndex={-1}
         >⚙</span>
         &nbsp;
-        {(showExpand) &&
+        {(showExpand)
+          && (
           <span
             onClick={triggerModal}
             role="button"
             tabIndex={-1}
           >↷</span>
-        }
+          )}
       </div>
       <ul
         className="chatarea"
@@ -262,6 +277,11 @@ function mapDispatchToProps(dispatch) {
     },
     setInputMessage(message) {
       dispatch(setChatInputMessage(message));
+    },
+    openChannelContextMenu(xPos, yPos, cid) {
+      dispatch(showContextMenu('CHANNEL', xPos, yPos, {
+        cid,
+      }));
     },
   };
 }

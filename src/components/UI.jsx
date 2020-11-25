@@ -15,10 +15,12 @@ import Palette from './Palette';
 import HistorySelect from './HistorySelect';
 import Mobile3DControls from './Mobile3DControls';
 import UserContextMenu from './UserContextMenu';
+import ChannelContextMenu from './ChannelContextMenu';
 
 
 const CONTEXT_MENUS = {
   USER: <UserContextMenu />,
+  CHANNEL: <ChannelContextMenu />,
   /* other context menus */
 };
 

@@ -4,30 +4,24 @@
  */
 
 import React, {
-  useRef, useEffect,
+  useRef, useEffect, useState, useLayoutEffect,
 } from 'react';
 import { connect } from 'react-redux';
 
 import {
   hideContextMenu,
-  addToChatInputMessage,
-  startDm,
-  setUserBlock,
 } from '../actions';
 import type { State } from '../reducers';
 
 const UserContextMenu = ({
   xPos,
   yPos,
-  uid,
-  name,
-  addToInput,
-  dm,
-  block,
+  cid,
+  channels,
   close,
 }) => {
   const wrapperRef = useRef(null);
-
+  const [channelArray, setChannelArray] = useState([]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -45,48 +39,43 @@ const UserContextMenu = ({
     };
   }, [wrapperRef]);
 
+  useLayoutEffect(() => {
+    for (let i = 0; i < channels.length; i += 1) {
+      const chan = channels[i];
+      /*
+       * [cid, name, type, lastMessage]
+       */
+      // eslint-disable-next-line eqeqeq
+      if (chan[0] == cid) {
+        setChannelArray(chan);
+        break;
+      }
+    }
+  }, [channels.length]);
+
   return (
     <div
       ref={wrapperRef}
       className="contextmenu"
       style={{
-        left: xPos,
+        right: window.innerWidth - xPos,
         top: yPos,
       }}
     >
       <div
         style={{ borderBottom: 'thin solid' }}
-        onClick={() => {
-          block(uid, name);
-          close();
-        }}
-        role="button"
-        tabIndex={-1}
       >
-        Block
+        ✔✘ Mute
       </div>
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => {
-          dm(uid);
-          // TODO if DM Channel with user already exist, just switch
-          close();
-        }}
-        style={{ borderBottom: 'thin solid' }}
-      >
-        DM
-      </div>
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => {
-          addToInput(`@${name} `);
-          close();
-        }}
-      >
-        Ping
-      </div>
+      {(channelArray[2] !== 0)
+        && (
+        <div
+          role="button"
+          tabIndex={0}
+        >
+          Close
+        </div>
+        )}
     </div>
   );
 };
@@ -98,33 +87,21 @@ function mapStateToProps(state: State) {
     args,
   } = state.contextMenu;
   const {
-    name,
-    uid,
+    channels,
+  } = state.chat;
+  const {
+    cid,
   } = args;
   return {
     xPos,
     yPos,
-    name,
-    uid,
+    cid,
+    channels,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addToInput(text) {
-      dispatch(addToChatInputMessage(text));
-      const input = document.getElementById('chatmsginput');
-      if (input) {
-        input.focus();
-        input.select();
-      }
-    },
-    dm(userId) {
-      dispatch(startDm({ userId }));
-    },
-    block(userId, userName) {
-      dispatch(setUserBlock(userId, userName, true));
-    },
     close() {
       dispatch(hideContextMenu());
     },
