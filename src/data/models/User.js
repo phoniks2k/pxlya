@@ -28,7 +28,7 @@ class User {
     // id should stay null if unregistered
     this.id = id;
     this.ip = ip;
-    this.channels = [];
+    this.channels = {};
     this.channelIds = [];
     this.blocked = [];
     this.ipSub = getIPv6Subnet(ip);
@@ -70,12 +70,11 @@ class User {
           name = (dmu1.id === this.id) ? dmu2.name : dmu1.name;
         }
         this.channelIds.push(id);
-        this.channels.push([
-          id,
+        this.channels[id] = [
           name,
           type,
           lastTs,
-        ]);
+        ];
       }
     }
     if (reguser.blocked) {

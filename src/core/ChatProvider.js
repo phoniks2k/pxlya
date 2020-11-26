@@ -10,8 +10,7 @@ import { CHAT_CHANNELS, EVENT_USER_NAME, INFO_USER_NAME } from './constants';
 
 export class ChatProvider {
   constructor() {
-    this.defaultChannels = [];
-    this.defaultChannelIds = [];
+    this.defaultChannels = {};
     this.enChannelId = 0;
     this.intChannelId = 0;
     this.infoUserId = 1;
@@ -48,8 +47,6 @@ export class ChatProvider {
 
   async initialize() {
     // find or create default channels
-    this.defaultChannels.length = 0;
-    this.defaultChannelIds.length = 0;
     for (let i = 0; i < CHAT_CHANNELS.length; i += 1) {
       const { name } = CHAT_CHANNELS[i];
       // eslint-disable-next-line no-await-in-loop
@@ -66,13 +63,11 @@ export class ChatProvider {
       if (name === 'en') {
         this.enChannelId = id;
       }
-      this.defaultChannels.push([
-        id,
+      this.defaultChannels[id] = [
         name,
         type,
         lastTs,
-      ]);
-      this.defaultChannelIds.push(id);
+      ];
     }
     // find or create default users
     let name = INFO_USER_NAME;
@@ -106,7 +101,7 @@ export class ChatProvider {
   }
 
   userHasChannelAccess(user, cid, write = false) {
-    if (this.defaultChannelIds.includes(cid)) {
+    if (this.defaultChannels[cid]) {
       if (!write || user.regUser) {
         return true;
       }

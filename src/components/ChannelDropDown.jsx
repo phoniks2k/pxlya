@@ -5,7 +5,7 @@
  */
 
 import React, {
-  useRef, useState, useEffect, useCallback,
+  useRef, useState, useEffect, useCallback, useLayoutEffect,
 } from 'react';
 import { connect } from 'react-redux';
 import { MdChat } from 'react-icons/md';
@@ -44,8 +44,12 @@ const ChannelDropDown = ({
     }
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (show) {
+      if (channels[chatChannel]) {
+        const chType = (channels[chatChannel][1] === 1) ? 1 : 0;
+        setType(chType);
+      }
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
     } else {
@@ -55,12 +59,10 @@ const ChannelDropDown = ({
   }, [show]);
 
   useEffect(() => {
-    for (let i = 0; i < channels.length; i += 1) {
-      if (channels[i][0] === chatChannel) {
-        setChatChannelName(channels[i][1]);
-      }
+    if (channels[chatChannel]) {
+      setChatChannelName(channels[chatChannel][0]);
     }
-  }, [chatChannel, channels]);
+  }, [chatChannel]);
 
   return (
     <div
@@ -104,8 +106,8 @@ const ChannelDropDown = ({
             className="channeldds"
           >
             {
-              channels.filter((ch) => {
-                const chType = ch[2];
+              Object.keys(channels).filter((cid) => {
+                const chType = channels[cid][1];
                 if (type === 1 && chType === 1) {
                   return true;
                 }
@@ -113,24 +115,27 @@ const ChannelDropDown = ({
                   return true;
                 }
                 return false;
-              }).map((ch) => (
-                <div
-                  onClick={() => setChannel(ch[0])}
-                  style={(ch[0] === chatChannel) ? {
-                    fontWeight: 'bold',
-                    fontSize: 17,
-                  } : null}
-                  className={
-                    `chn${
-                      (ch[0] === chatChannel) ? ' selected' : ''
-                    }${
-                      (chatRead[ch[0]] < ch[3]) ? ' unread' : ''
-                    }`
-                  }
-                >
-                  {ch[1]}
-                </div>
-              ))
+              }).map((cid) => {
+                const [name,, lastTs] = channels[cid];
+                console.log(`name ${name} lastTC ${lastTs} compare to ${chatRead[cid]}`);
+                return (
+                  <div
+                    onClick={() => setChannel(cid)}
+                    className={
+                      `chn${
+                        (cid === chatChannel) ? ' selected' : ''
+                      }`
+                    }
+                  >
+                    {
+                      (chatRead[cid] < lastTs) ? (
+                        <span className="chnunread">※</span>
+                      ) : null
+                    }
+                    {name}
+                  </div>
+                );
+              })
             }
           </div>
         </div>

@@ -4,7 +4,7 @@
  */
 
 import React, {
-  useRef, useEffect, useState, useLayoutEffect,
+  useRef, useEffect,
 } from 'react';
 import { connect } from 'react-redux';
 
@@ -23,7 +23,6 @@ const UserContextMenu = ({
   close,
 }) => {
   const wrapperRef = useRef(null);
-  const [channelArray, setChannelArray] = useState([]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -42,20 +41,6 @@ const UserContextMenu = ({
     };
   }, [wrapperRef]);
 
-  useLayoutEffect(() => {
-    for (let i = 0; i < channels.length; i += 1) {
-      const chan = channels[i];
-      /*
-       * [cid, name, type, lastMessage]
-       */
-      // eslint-disable-next-line eqeqeq
-      if (chan[0] == cid) {
-        setChannelArray(chan);
-        break;
-      }
-    }
-  }, [channels.length]);
-
   return (
     <div
       ref={wrapperRef}
@@ -68,7 +53,7 @@ const UserContextMenu = ({
       <div>
         ✔✘ Mute
       </div>
-      {(channelArray[2] !== 0)
+      {(channels[cid][1] !== 0)
         && (
         <div
           role="button"

@@ -105,7 +105,6 @@ async function startDm(req: Request, res: Response) {
     raw: true,
   });
   const ChannelId = channel[0].id;
-  const { lastMessage } = channel[0];
 
   const promises = [
     UserChannel.findOrCreate({
@@ -127,12 +126,13 @@ async function startDm(req: Request, res: Response) {
 
   // TODO: inform websocket to add channelId to user
   res.json({
-    channel: [
-      ChannelId,
-      userName,
-      1,
-      lastMessage,
-    ],
+    channel: {
+      [ChannelId]: [
+        userName,
+        1,
+        Date.now(),
+      ],
+    },
   });
 }
 

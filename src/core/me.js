@@ -31,10 +31,10 @@ export default async function getMe(user) {
   delete userdata.mcVerified;
 
   userdata.canvases = canvases;
-  userdata.channels = [
+  userdata.channels = {
     ...chatProvider.defaultChannels,
     ...userdata.channels,
-  ];
+  };
 
   return userdata;
 }

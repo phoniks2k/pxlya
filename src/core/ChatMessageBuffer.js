@@ -4,9 +4,10 @@
  *
  * @flow
  */
+import Sequelize from 'sequelize';
 import logger from './logger';
 
-import { RegUser, Message } from '../data/models';
+import { RegUser, Message, Channel } from '../data/models';
 
 const MAX_BUFFER_TIME = 120000;
 
@@ -61,6 +62,13 @@ class ChatMessageBuffer {
       cid,
       uid,
       message,
+    });
+    Channel.update({
+      lastMessage: Sequelize.literal('CURRENT_TIMESTAMP'),
+    }, {
+      where: {
+        id: cid,
+      },
     });
     const messages = this.buffer.get(cid);
     if (messages) {

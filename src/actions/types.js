@@ -90,7 +90,7 @@ export type Action =
     minecraftname: string,
     blockDm: boolean,
     canvases: Object,
-    channels: Array,
+    channels: Object,
     blocked: Array,
     userlvl: number,
   }

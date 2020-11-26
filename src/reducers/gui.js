@@ -109,9 +109,15 @@ export default function gui(
     }
 
     case 'SET_CHAT_CHANNEL': {
+      const { cid } = action;
+
       return {
         ...state,
-        chatChannel: action.cid,
+        chatChannel: cid,
+        chatRead: {
+          ...state.chatRead,
+          cid: Date.now(),
+        }
       };
     }
 
@@ -138,6 +144,42 @@ export default function gui(
         hover,
       };
     }
+
+    case 'RECEIVE_ME': {
+      const { channels } = action;
+      const cids = Object.keys(channels);
+      const chatRead = {...state.chatRead};
+      for (let i = 0; i < cids.length; i += 1) {
+        const cid = cids[i];
+        chatRead[cid] = 0;
+      }
+      return {
+        ...state,
+        chatRead,
+      };
+    }
+
+    case 'ADD_CHAT_CHANNEL': {
+      const [cid] = Object.keys(action.channel);
+      return {
+        ...state,
+        chatRead: {
+          ...state.chatRead,
+          [cid]: 0,
+        },
+      };
+    }
+
+    case 'REMOVE_CHAT_CHANNEL': {
+      const { cid } = action;
+      const chatRead = { ...state.chatRead };
+      delete chatRead[cid];
+      return {
+        ...state,
+        chatRead,
+      };
+    }
+
 
     case 'PLACE_PIXEL': {
       let { pixelsPlaced } = state;

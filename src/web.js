@@ -194,7 +194,7 @@ app.get('/', async (req, res) => {
 // ip config
 // -----------------------------------------------------------------------------
 // use this if models changed:
-const promise = models.sync({ alter: { drop: true } })
+const promise = models.sync({ alter: { drop: false } })
 // const promise = models.sync()
   .catch((err) => logger.error(err.stack));
 promise.then(() => {

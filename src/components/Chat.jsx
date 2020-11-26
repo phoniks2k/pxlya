@@ -114,16 +114,11 @@ const Chat = ({
    * set channel to first available one
    */
   useEffect(() => {
-    let i = 0;
-    while (i < channels.length) {
-      // eslint-disable-next-line eqeqeq
-      if (channels[i][0] == chatChannel) {
-        break;
+    if (!channels[chatChannel]) {
+      const cids = Object.keys(channels);
+      if (cids.length) {
+        setChannel(cids[0]);
       }
-      i += 1;
-    }
-    if (i && i === channels.length) {
-      setChannel(channels[0][0]);
     }
   }, [chatChannel, channels]);
 

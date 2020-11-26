@@ -6,7 +6,21 @@ import type { Action } from '../actions/types';
 
 export type ChatState = {
   inputMessage: string,
-  // [[cid, name, type, lastMessage], [cid2, name2, type2, lastMessage2],...]
+  /*
+   * {
+   *   cid: [
+   *     name,
+   *     type,
+   *     lastTs,
+   *   ],
+   *   cid2: [
+   *     name,
+   *     type,
+   *     lastTs,
+   *   ],
+   *   ...
+   * }
+   */
   channels: Array,
   // [[uId, userName], [userId2, userName2],...]
   blocked: Array,
@@ -16,7 +30,7 @@ export type ChatState = {
 
 const initialState: ChatState = {
   inputMessage: '',
-  channels: [],
+  channels: {},
   blocked: [],
   messages: {},
 };
@@ -56,22 +70,19 @@ export default function chat(
 
     case 'ADD_CHAT_CHANNEL': {
       const { channel } = action;
-      const cid = channel[0];
-      const channels = state.channels
-        .filter((ch) => (ch[0] !== cid));
-      channels.push(channel);
       return {
         ...state,
-        channels,
+        channels: {
+          ...state.channels,
+          ...channel,
+        },
       };
     }
 
     case 'REMOVE_CHAT_CHANNEL': {
       const { cid } = action;
-      const channels = state.channels.filter(
-        // eslint-disable-next-line eqeqeq
-        (chan) => (chan[0] != cid),
-      );
+      const channels = { ...state.channels };
+      delete channels[cid];
       return {
         ...state,
         channels,
@@ -106,7 +117,7 @@ export default function chat(
       const {
         name, text, country, channel, user,
       } = action;
-      if (!state.messages[channel]) {
+      if (!state.messages[channel] || !state.channels[channel]) {
         return state;
       }
       const messages = {
@@ -119,8 +130,19 @@ export default function chat(
       if (messages[channel].length > MAX_CHAT_MESSAGES) {
         messages[channel].shift();
       }
+
+      /*
+       * update timestamp of last message
+       */
+      const channelArray = [...state.channels[channel]];
+      channelArray[2] = Date.now();
+
       return {
         ...state,
+        channels: {
+          ...state.channels,
+          [channel]: channelArray,
+        },
         messages,
       };
     }
