@@ -24,6 +24,21 @@ class WebSocketEvents {
   broadcastMinecraftLink(name: string, minecraftid: string, accepted: boolean) {
   }
 
+  broadcastAddChatChannel(
+    userId: number,
+    channelId: number,
+    channelArray: Array,
+    notify: boolean,
+  ) {
+  }
+
+  broadcastRemoveChatChannel(
+    userId: number,
+    channelId: number,
+    notify: boolean,
+  ) {
+  }
+
   notifyChangedMe(name: string) {
   }
 

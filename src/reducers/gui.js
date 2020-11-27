@@ -117,7 +117,7 @@ export default function gui(
         chatRead: {
           ...state.chatRead,
           cid: Date.now(),
-        }
+        },
       };
     }
 
@@ -148,7 +148,7 @@ export default function gui(
     case 'RECEIVE_ME': {
       const { channels } = action;
       const cids = Object.keys(channels);
-      const chatRead = {...state.chatRead};
+      const chatRead = { ...state.chatRead };
       for (let i = 0; i < cids.length; i += 1) {
         const cid = cids[i];
         chatRead[cid] = 0;

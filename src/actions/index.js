@@ -369,7 +369,6 @@ export function move([dx, dy]: Cell): ThunkAction {
 }
 
 export function moveDirection([vx, vy]: Cell): ThunkAction {
-  // TODO check direction is unitary vector
   return (dispatch, getState) => {
     const { viewscale } = getState().canvas;
 
@@ -768,7 +767,7 @@ export function setChatChannel(cid: number): Action {
   };
 }
 
-export function addChatChannel(channel: Array): Action {
+export function addChatChannel(channel: Object): Action {
   return {
     type: 'ADD_CHAT_CHANNEL',
     channel,

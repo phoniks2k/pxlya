@@ -17,6 +17,7 @@ export type ChatState = {
    *     name,
    *     type,
    *     lastTs,
+   *     dmUserId,
    *   ],
    *   ...
    * }
@@ -50,12 +51,29 @@ export default function chat(
 
     case 'BLOCK_USER': {
       const { userId, userName } = action;
+      const blocked = [
+        ...state.blocked,
+        [userId, userName],
+      ];
+      /*
+       * remove DM channel if exists
+       */
+      const channels = { ...state.channels };
+      const chanKeys = Object.keys(channels);
+      for (let i = 0; i < chanKeys; i += 1) {
+        const cid = chanKeys[i];
+        if (channels[cid][1] === 1 && channels[cid][3] === userId) {
+          delete channels[cid];
+          return {
+            ...state,
+            channels,
+            blocked,
+          };
+        }
+      }
       return {
         ...state,
-        blocked: [
-          ...state.blocked,
-          [userId, userName],
-        ],
+        blocked,
       };
     }
 

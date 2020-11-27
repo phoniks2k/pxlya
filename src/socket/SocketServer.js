@@ -19,7 +19,7 @@ import DeRegisterMultipleChunks from './packets/DeRegisterMultipleChunks';
 import ChangedMe from './packets/ChangedMe';
 import OnlineCounter from './packets/OnlineCounter';
 
-import chatProvider from '../core/ChatProvider';
+import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './verifyClient';
 import WebSocketEvents from './WebSocketEvents';
 import webSockets from './websockets';
@@ -179,6 +179,52 @@ class SocketServer extends WebSocketEvents {
     });
   }
 
+  findWsByUserId(userId) {
+    const { clients } = this.wss;
+    for (let i = 0; i < clients.length; i += 1) {
+      const ws = clients[i];
+      if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
+        return ws;
+      }
+    }
+    return null;
+  }
+
+  broadcastAddChatChannel(
+    userId: number,
+    channelId: number,
+    channelArray: Array,
+    notify: boolean,
+  ) {
+    const ws = this.findWsByUserId(userId);
+    if (ws) {
+      ws.user.channels[channelId] = channelArray;
+      const text = JSON.stringify([
+        'addch', {
+          [channelId]: channelArray,
+        },
+      ]);
+      if (notify) {
+        ws.send(text);
+      }
+    }
+  }
+
+  broadcastRemoveChatChannel(
+    userId: number,
+    channelId: number,
+    notify: boolean,
+  ) {
+    const ws = this.findWsByUserId(userId);
+    if (ws) {
+      delete ws.user.channels[channelId];
+      const text = JSON.stringify('remch', channelId);
+      if (notify) {
+        ws.send(text);
+      }
+    }
+  }
+
   broadcastPixelBuffer(canvasId: number, chunkid, data: Buffer) {
     const frame = WebSocket.Sender.frame(data, {
       readOnly: true,
@@ -245,6 +291,10 @@ class SocketServer extends WebSocketEvents {
   }
 
   static async onTextMessage(text, ws) {
+    /*
+     * all client -> server text messages are
+     * chat messages in [message, channelId] format
+     */
     try {
       let message;
       let channelId;
@@ -263,6 +313,9 @@ class SocketServer extends WebSocketEvents {
       }
       message = message.trim();
 
+      /*
+       * just if logged in
+       */
       if (ws.name && message) {
         const { user } = ws;
         const waitLeft = ws.rateLimiter.tick();
@@ -276,44 +329,38 @@ class SocketServer extends WebSocketEvents {
           ]));
           return;
         }
-        // check proxy
-        if (!user.isAdmin() && await cheapDetector(user.ip)) {
-          logger.info(
-            `${ws.name} / ${user.ip} tried to send chat message with proxy`,
-          );
-          ws.send(JSON.stringify([
-            'info',
-            'You can not send chat messages with a proxy',
-            'il',
-            channelId,
-          ]));
-          return;
+
+        /*
+         * if DM channel, make sure that other user has DM open
+         * (needed because we allow user to leave one-sided
+         *  and auto-join on message)
+         */
+        const dmUserId = chatProvider.checkIfDm(user, channelId);
+        if (dmUserId) {
+          const dmWs = this.findWsByUserId(dmUserId);
+          if (dmWs) {
+            const { user: dmUser } = dmWs;
+            if (!dmUser || !dmUser.userHasChannelAccess(channelId)) {
+              ChatProvider.addUserToChannel(
+                dmUserId,
+                channelId,
+                [ws.name, 1, Date.now(), user.id],
+              );
+            }
+          }
         }
-        //
+
+        /*
+         * send chat message
+         */
         const errorMsg = await chatProvider.sendMessage(
           user,
           message,
           channelId,
         );
-        if (!errorMsg) {
-          // automute on repeated message spam
-          if (ws.last_message && ws.last_message === message) {
-            ws.message_repeat += 1;
-            if (ws.message_repeat >= 4) {
-              logger.info(`User ${ws.name} got automuted`);
-              chatProvider.automute(ws.name, channelId);
-              ws.message_repeat = 0;
-            }
-          } else {
-            ws.message_repeat = 0;
-            ws.last_message = message;
-          }
-        } else {
+        if (errorMsg) {
           ws.send(JSON.stringify(['info', errorMsg, 'il', channelId]));
         }
-        logger.info(
-          `Received chat message ${message} from ${ws.name} / ${ws.user.ip}`,
-        );
       } else {
         logger.info('Got empty message or message from unidentified ws');
       }

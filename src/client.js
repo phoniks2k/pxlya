@@ -17,6 +17,8 @@ import {
   receiveCoolDown,
   receiveChatMessage,
   receivePixelReturn,
+  addChatChannel,
+  removeChatChannel,
   setMobile,
   tryPlacePixel,
 } from './actions';
@@ -31,7 +33,6 @@ import ProtocolClient from './socket/ProtocolClient';
 function init() {
   initRenderer(store, false);
 
-  let nameRegExp = null;
   ProtocolClient.on('pixelUpdate', ({
     i, j, offset, color,
   }) => {
@@ -49,9 +50,6 @@ function init() {
   ProtocolClient.on('onlineCounter', ({ online }) => {
     store.dispatch(receiveOnline(online));
   });
-  ProtocolClient.on('setWsName', (name) => {
-    nameRegExp = new RegExp(`(^|\\s+)(@${name})(\\s+|$)`, 'g');
-  });
   ProtocolClient.on('chatMessage', (
     name,
     text,
@@ -59,6 +57,8 @@ function init() {
     channelId,
     userId,
   ) => {
+    const state = store.getState();
+    const { nameRegExp } = state.user;
     const isPing = (nameRegExp && text.match(nameRegExp));
     store.dispatch(receiveChatMessage(
       name,
@@ -71,6 +71,12 @@ function init() {
   });
   ProtocolClient.on('changedMe', () => {
     store.dispatch(fetchMe());
+  });
+  ProtocolClient.on('remch', (cid) => {
+    store.dispatch(removeChatChannel(cid));
+  });
+  ProtocolClient.on('addch', (channel) => {
+    store.dispatch(addChatChannel(channel));
   });
 
   window.addEventListener('hashchange', () => {

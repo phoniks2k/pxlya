@@ -22,7 +22,6 @@ export default function audio(
     case 'TOGGLE_MUTE':
       return {
         ...state,
-        // TODO error prone
         mute: !state.mute,
       };
 

@@ -8,7 +8,8 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
-import { Channel, UserChannel, RegUser } from '../../data/models';
+import { ChatProvider } from '../../core/ChatProvider';
+import { Channel, RegUser } from '../../data/models';
 import { isUserBlockedBy } from '../../data/models/UserBlock';
 
 async function startDm(req: Request, res: Response) {
@@ -107,30 +108,18 @@ async function startDm(req: Request, res: Response) {
   const ChannelId = channel[0].id;
 
   const promises = [
-    UserChannel.findOrCreate({
-      where: {
-        UserId: dmu1id,
-        ChannelId,
-      },
-      raw: true,
-    }),
-    UserChannel.findOrCreate({
-      where: {
-        UserId: dmu2id,
-        ChannelId,
-      },
-      raw: true,
-    }),
+    ChatProvider.addUserToChannel(user.id, ChannelId, false),
+    ChatProvider.addUserToChannel(userId, ChannelId, true),
   ];
   await Promise.all(promises);
 
-  // TODO: inform websocket to add channelId to user
   res.json({
     channel: {
       [ChannelId]: [
         userName,
         1,
         Date.now(),
+        userId,
       ],
     },
   });

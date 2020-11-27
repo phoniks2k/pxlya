@@ -260,3 +260,13 @@ export function setBrightness(hex, dark: boolean = false) {
   }
   return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
 }
+
+/*
+ * create RegExp to search for ping in chat messages
+ * @param name name
+ * @return regular expression to search for name in message
+ */
+export function createNameRegExp(name: string) {
+  if (!name) return null;
+  return new RegExp(`(^|\\s+)(@${name})(\\s+|$)`, 'g');
+}

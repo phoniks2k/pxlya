@@ -3,8 +3,9 @@ import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
 import webSockets from '../socket/websockets';
-import { Channel, RegUser } from '../data/models';
+import { Channel, RegUser, UserChannel } from '../data/models';
 import ChatMessageBuffer from './ChatMessageBuffer';
+import { cheapDetector } from './isProxy';
 
 import { CHAT_CHANNELS, EVENT_USER_NAME, INFO_USER_NAME } from './constants';
 
@@ -100,6 +101,34 @@ export class ChatProvider {
     this.eventUserId = eventUser[0].id;
   }
 
+  static async addUserToChannel(
+    userId,
+    channelId,
+    channelArray,
+    notify = true,
+  ) {
+    /*
+     * since UserId and ChannelId are primary keys,
+     * this will throw if already exists
+     */
+    const relation = await UserChannel.create({
+      UserId: userId,
+      ChannelId: channelId,
+    }, {
+      raw: true,
+    });
+
+    console.log('HEREEEEE HHEEERRREEE');
+    console.log(relation);
+
+    webSockets.broadcastAddChatChannel(
+      userId,
+      channelId,
+      channelArray,
+      notify,
+    );
+  }
+
   userHasChannelAccess(user, cid, write = false) {
     if (this.defaultChannels[cid]) {
       if (!write || user.regUser) {
@@ -111,16 +140,108 @@ export class ChatProvider {
     return false;
   }
 
+  checkIfDm(user, cid) {
+    if (this.defaultChannels[cid]) {
+      return null;
+    }
+    const channelArray = user.channels[cid];
+    if (channelArray && channelArray.length === 4) {
+      return user.channels[cid][4];
+    }
+    return null;
+  }
+
   getHistory(cid, limit = 30) {
     return this.chatMessageBuffer.getMessages(cid, limit);
+  }
+
+  adminCommands(message: string, channelId: number) {
+    // admin commands
+    const cmdArr = message.split(' ');
+    const cmd = cmdArr[0].substr(1);
+    const args = cmdArr.slice(1);
+    switch (cmd) {
+      case 'mute': {
+        const timeMin = Number(args.slice(-1));
+        if (Number.isNaN(timeMin)) {
+          return this.mute(args.join(' '), channelId);
+        }
+        return this.mute(
+          args.slice(0, -1).join(' '),
+          channelId,
+          timeMin,
+        );
+      }
+
+      case 'unmute':
+        return this.unmute(args.join(' '), channelId);
+
+      case 'mutec': {
+        if (args[0]) {
+          const cc = args[0].toLowerCase();
+          this.mutedCountries.push(cc);
+          this.broadcastChatMessage(
+            'info',
+            `Country ${cc} has been muted`,
+            channelId,
+            this.infoUserId,
+          );
+          return null;
+        }
+        return 'No country defined for mutec';
+      }
+
+      case 'unmutec': {
+        if (args[0]) {
+          const cc = args[0].toLowerCase();
+          if (!this.mutedCountries.includes(cc)) {
+            return `Country ${cc} is not muted`;
+          }
+          this.mutedCountries = this.mutedCountries.filter((c) => c !== cc);
+          this.broadcastChatMessage(
+            'info',
+            `Country ${cc} has been unmuted`,
+            channelId,
+            this.infoUserId,
+          );
+          return null;
+        }
+        if (this.mutedCountries.length) {
+          this.broadcastChatMessage(
+            'info',
+            `Countries ${this.mutedCountries} have been unmuted`,
+            channelId,
+            this.infoUserId,
+          );
+          this.mutedCountries = [];
+          return null;
+        }
+        return 'No country is currently muted';
+      }
+
+      default:
+        return `Couln't parse command ${cmd}`;
+    }
   }
 
   async sendMessage(user, message, channelId: number = 0) {
     const { id } = user;
     const name = user.getName();
+
+    if (!user.isAdmin() && await cheapDetector(user.ip)) {
+      logger.info(
+        `${name} / ${user.ip} tried to send chat message with proxy`,
+      );
+      return 'You can not send chat messages with proxy';
+    }
+
     if (!name || !id) {
       // eslint-disable-next-line max-len
       return 'Couldn\'t send your message, pls log out and back in again.';
+    }
+
+    if (user.isAdmin() && message.charAt(0) === '/') {
+      return this.adminCommands(message, channelId);
     }
 
     if (!this.userHasChannelAccess(user, channelId)) {
@@ -181,49 +302,6 @@ export class ChatProvider {
       return 'You can\'t send a message this long :(';
     }
 
-    if (user.isAdmin() && message.charAt(0) === '/') {
-      // admin commands
-      const cmdArr = message.split(' ');
-      const cmd = cmdArr[0].substr(1);
-      const args = cmdArr.slice(1);
-      if (cmd === 'mute') {
-        const timeMin = Number(args.slice(-1));
-        if (Number.isNaN(timeMin)) {
-          return this.mute(args.join(' '), channelId);
-        }
-        return this.mute(
-          args.slice(0, -1).join(' '),
-          channelId,
-          timeMin,
-        );
-      } if (cmd === 'unmute') {
-        return this.unmute(args.join(' '), channelId);
-      } if (cmd === 'mutec' && args[0]) {
-        const cc = args[0].toLowerCase();
-        this.mutedCountries.push(cc);
-        this.broadcastChatMessage(
-          'info',
-          `Country ${cc} has been muted`,
-          channelId,
-          this.infoUserId,
-        );
-        return null;
-      } if (cmd === 'unmutec' && args[0]) {
-        const cc = args[0].toLowerCase();
-        if (!this.mutedCountries.includes(cc)) {
-          return `Country ${cc} is not muted`;
-        }
-        this.mutedCountries = this.mutedCountries.filter((c) => c !== cc);
-        this.broadcastChatMessage(
-          'info',
-          `Country ${cc} has been unmuted`,
-          channelId,
-          this.infoUserId,
-        );
-        return null;
-      }
-    }
-
     if (message.match(this.cyrillic) && channelId === this.enChannelId) {
       return 'Please use int channel';
     }
@@ -232,6 +310,21 @@ export class ChatProvider {
       return 'Your country is temporary muted from chat';
     }
 
+    if (user.last_message && user.last_message === message) {
+      user.message_repeat += 1;
+      if (user.message_repeat >= 4) {
+        this.mute(name, channelId, 60);
+        user.message_repeat = 0;
+        return 'Stop flooding.';
+      }
+    } else {
+      user.message_repeat = 0;
+      user.last_message = message;
+    }
+
+    logger.info(
+      `Received chat message ${message} from ${name} / ${user.ip}`,
+    );
     this.broadcastChatMessage(
       name,
       message,
@@ -270,16 +363,6 @@ export class ChatProvider {
     );
   }
 
-  automute(name, channelId) {
-    this.mute(name, channelId, 60);
-    this.broadcastChatMessage(
-      'info',
-      `${name} has been muted for spam for 60min`,
-      channelId,
-      this.infoUserId,
-    );
-  }
-
   static async checkIfMuted(user) {
     const key = `mute:${user.id}`;
     const ttl: number = await redis.ttlAsync(key);
@@ -296,14 +379,12 @@ export class ChatProvider {
     if (timeMin) {
       const ttl = timeMin * 60;
       await redis.setAsync(key, '', 'EX', ttl);
-      if (timeMin !== 600 && timeMin !== 60) {
-        this.broadcastChatMessage(
-          'info',
-          `${name} has been muted for ${timeMin}min`,
-          channelId,
-          this.infoUserId,
-        );
-      }
+      this.broadcastChatMessage(
+        'info',
+        `${name} has been muted for ${timeMin}min`,
+        channelId,
+        this.infoUserId,
+      );
     } else {
       await redis.setAsync(key, '');
       this.broadcastChatMessage(

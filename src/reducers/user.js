@@ -2,6 +2,9 @@
 
 import type { Action } from '../actions/types';
 
+import { createNameRegExp } from '../core/utils';
+
+
 
 export type UserState = {
   name: string,
@@ -32,6 +35,8 @@ export type UserState = {
   notification: string,
   // 1: Admin, 0: ordinary user
   userlvl: number,
+  // regExp for detecting ping
+  nameRegExp: RegExp,
 };
 
 const initialState: UserState = {
@@ -51,6 +56,7 @@ const initialState: UserState = {
   isOnMobile: false,
   notification: null,
   userlvl: 0,
+  nameRegExp: null,
 };
 
 export default function user(
@@ -145,6 +151,7 @@ export default function user(
         blockDm,
         userlvl,
       } = action;
+      const nameRegExp = createNameRegExp(name);
       const messages = (action.messages) ? action.messages : [];
       return {
         ...state,
@@ -158,6 +165,7 @@ export default function user(
         minecraftname,
         blockDm,
         userlvl,
+        nameRegExp,
       };
     }
 
@@ -172,9 +180,11 @@ export default function user(
 
     case 'SET_NAME': {
       const { name } = action;
+      const nameRegExp = createNameRegExp(name);
       return {
         ...state,
         name,
+        nameRegExp,
       };
     }
 

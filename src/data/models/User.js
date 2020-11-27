@@ -64,17 +64,28 @@ class User {
           dmu1,
           dmu2,
         } = reguser.channel[i];
-        // in DMs the name is the name of the other user
-        let { name } = reguser.channel[i];
-        if (type === 1) {
-          name = (dmu1.id === this.id) ? dmu2.name : dmu1.name;
-        }
         this.channelIds.push(id);
-        this.channels[id] = [
-          name,
-          type,
-          lastTs,
-        ];
+        if (type === 1) {
+          /* in DMs:
+           * the name is the name of the other user
+           * id also gets grabbed
+           */
+          const name = (dmu1.id === this.id) ? dmu2.name : dmu1.name;
+          const dmu = (dmu1.id === this.id) ? dmu2.id : dmu1.id;
+          this.channels[id] = [
+            name,
+            type,
+            lastTs,
+            dmu,
+          ];
+        } else {
+          const { name } = reguser.channel[i];
+          this.channels[id] = [
+            name,
+            type,
+            lastTs,
+          ];
+        }
       }
     }
     if (reguser.blocked) {

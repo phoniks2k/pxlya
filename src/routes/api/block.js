@@ -8,6 +8,7 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
+import webSockets from '../../socket/websockets';
 import { RegUser, UserBlock, Channel } from '../../data/models';
 
 async function block(req: Request, res: Response) {
@@ -108,9 +109,9 @@ async function block(req: Request, res: Response) {
   if (channel) {
     const channelId = channel.id;
     channel.destroy();
+    webSockets.broadcastRemoveChatChannel(user.id, channelId, false);
+    webSockets.broadcastRemoveChatChannel(userId, channelId, true);
   }
-
-  // TODO notify websocket
 
   if (ret) {
     res.json({

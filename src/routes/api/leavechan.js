@@ -8,6 +8,7 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
+import webSockets from '../../socket/websockets';
 
 async function leaveChan(req: Request, res: Response) {
   const channelId = parseInt(req.body.channelId, 10);
@@ -61,9 +62,11 @@ async function leaveChan(req: Request, res: Response) {
   logger.info(
     `Removing user ${user.getName()} from channel ${channel.name || channelId}`,
   );
+
   user.regUser.removeChannel(channel);
 
-  // TODO: inform websocket to remove channelId from user
+  webSockets.broadcastRemoveChatChannel(user.id, channelId, false);
+
   res.json({
     status: 'ok',
   });

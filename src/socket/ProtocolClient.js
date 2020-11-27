@@ -169,15 +169,25 @@ class ProtocolClient extends EventEmitter {
     const data = JSON.parse(message);
 
     if (Array.isArray(data)) {
-      if (data.length === 5) {
-        // Ordinary array: Chat message
-        const [name, text, country, channelId, userId] = data;
-        this.emit('chatMessage', name, text, country, channelId, userId);
+      switch (data.length) {
+        case 5: {
+          // chat message
+          const [name, text, country, channelId, userId] = data;
+          this.emit('chatMessage', name, text, country, channelId, userId);
+          return;
+        }
+
+        case 2: {
+          // signal
+          const [signal, args] = data;
+          this.emit(signal, args);
+        }
+        default:
+          // nothing
       }
     } else {
       // string = name
       this.name = data;
-      this.emit('setWsName', data);
     }
   }
 
