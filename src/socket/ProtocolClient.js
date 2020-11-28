@@ -23,7 +23,6 @@ const chunks = [];
 class ProtocolClient extends EventEmitter {
   url: string;
   ws: WebSocket;
-  name: string;
   canvasId: number;
   channelId: number;
   timeConnected: number;
@@ -37,7 +36,6 @@ class ProtocolClient extends EventEmitter {
     this.isConnecting = false;
     this.isConnected = false;
     this.ws = null;
-    this.name = null;
     this.canvasId = '0';
     this.channelId = 0;
     this.msgQueue = [];
@@ -94,14 +92,6 @@ class ProtocolClient extends EventEmitter {
   onError(err) {
     console.error('Socket encountered error, closing socket', err);
     this.ws.close();
-  }
-
-  setName(name) {
-    if (this.isConnected && this.name !== name) {
-      console.log('Name change requieres WebSocket restart');
-      this.name = name;
-      this.reconnect();
-    }
   }
 
   setCanvas(canvasId) {
@@ -181,13 +171,11 @@ class ProtocolClient extends EventEmitter {
           // signal
           const [signal, args] = data;
           this.emit(signal, args);
+          break;
         }
         default:
           // nothing
       }
-    } else {
-      // string = name
-      this.name = data;
     }
   }
 

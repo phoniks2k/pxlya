@@ -137,7 +137,6 @@ export function getCellInsideChunk(
   canvasSize: number,
   pixel: Cell,
 ): Cell {
-  // TODO assert is positive!
   return pixel.map((x) => mod(x + canvasSize / 2, TILE_SIZE));
 }
 

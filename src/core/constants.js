@@ -71,16 +71,6 @@ export const TILE_SIZE = 256;
 // how much to scale for a new tiled zoomlevel
 export const TILE_ZOOM_LEVEL = 4;
 
-// TODO get rid of those or use it myself
-export const social = {
-  facebook: 'https://www.facebook.com/pixelplanetfun/',
-  reddit: 'https://reddit.com/r/PixelPlanetFun',
-  twitter: 'https://twitter.com/pixelplanetfun',
-  discord: 'https://pixelplanet.fun/discord',
-  telegram: 'https://telegram.me/pixelplanetfun',
-  youtube: 'https://www.youtube.com/c/PixelPlanetFun',
-};
-
 export const COOKIE_SESSION_NAME = 'pixelplanet.session';
 
 export const SECOND = 1000;

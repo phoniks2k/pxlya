@@ -98,7 +98,6 @@ async function block(req: Request, res: Response) {
     dmu2id = userId;
   }
 
-  // TODO test if this removes association too
   const channel = await Channel.findOne({
     where: {
       type: 1,

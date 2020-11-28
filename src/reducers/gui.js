@@ -145,7 +145,8 @@ export default function gui(
       };
     }
 
-    case 'RECEIVE_ME': {
+    case 'RECEIVE_ME':
+    case 'LOGIN': {
       const { channels } = action;
       const cids = Object.keys(channels);
       const chatRead = { ...state.chatRead };

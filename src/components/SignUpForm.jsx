@@ -9,7 +9,7 @@ import {
   validateEMail, validateName, validatePassword, parseAPIresponse,
 } from '../utils/validation';
 
-import { showUserAreaModal, receiveMe } from '../actions';
+import { showUserAreaModal, loginUser } from '../actions';
 
 
 function validate(name, email, password, confirmPassword) {
@@ -94,8 +94,8 @@ class SignUpForm extends React.Component {
       });
       return;
     }
-    const { doMe, userarea } = this.props;
-    doMe(me);
+    const { login, userarea } = this.props;
+    login(me);
     userarea();
   }
 
@@ -163,8 +163,8 @@ class SignUpForm extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    doMe(me) {
-      dispatch(receiveMe(me));
+    login(me) {
+      dispatch(loginUser(me));
     },
     userarea() {
       dispatch(showUserAreaModal());

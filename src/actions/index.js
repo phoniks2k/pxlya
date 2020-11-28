@@ -483,39 +483,29 @@ export function receivePixelUpdate(
   };
 }
 
+export function loginUser(
+  me: Object,
+): Action {
+  console.log('login', me);
+  return {
+    type: 'LOGIN',
+    ...me,
+  };
+}
+
 export function receiveMe(
   me: Object,
 ): Action {
-  const {
-    name,
-    messages,
-    mailreg,
-    totalPixels,
-    dailyTotalPixels,
-    ranking,
-    dailyRanking,
-    minecraftname,
-    blockDm,
-    canvases,
-    channels,
-    blocked,
-    userlvl,
-  } = me;
   return {
     type: 'RECEIVE_ME',
-    name: (name) || null,
-    messages: (messages) || [],
-    mailreg: (mailreg) || false,
-    totalPixels,
-    dailyTotalPixels,
-    ranking,
-    dailyRanking,
-    minecraftname,
-    blockDm: !!blockDm,
-    canvases,
-    channels,
-    blocked,
-    userlvl,
+    ...me,
+  };
+}
+
+export function logoutUser(
+): Action {
+  return {
+    type: 'LOGOUT',
   };
 }
 
@@ -819,11 +809,9 @@ export function startDm(query): PromiseAction {
         'OK',
       ));
     } else {
-      const cid = res[0];
-      if (cid) {
-        dispatch(addChatChannel(res));
-        dispatch(setChatChannel(cid));
-      }
+      const cid = Object.keys(res)[0];
+      dispatch(addChatChannel(res));
+      dispatch(setChatChannel(cid));
     }
     dispatch(setApiFetching(false));
   };

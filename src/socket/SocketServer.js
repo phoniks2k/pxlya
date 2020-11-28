@@ -88,10 +88,6 @@ class SocketServer extends WebSocketEvents {
       ws.rateLimiter = new RateLimiter(20, 15, true);
       cheapDetector(user.ip);
 
-      if (ws.name) {
-        ws.send(`"${ws.name}"`);
-      }
-
       ws.send(OnlineCounter.dehydrate({
         online: this.wss.clients.size || 0,
       }));
@@ -337,16 +333,17 @@ class SocketServer extends WebSocketEvents {
          */
         const dmUserId = chatProvider.checkIfDm(user, channelId);
         if (dmUserId) {
+          console.log('is dm');
           const dmWs = this.findWsByUserId(dmUserId);
-          if (dmWs) {
-            const { user: dmUser } = dmWs;
-            if (!dmUser || !dmUser.userHasChannelAccess(channelId)) {
-              ChatProvider.addUserToChannel(
-                dmUserId,
-                channelId,
-                [ws.name, 1, Date.now(), user.id],
-              );
-            }
+          if (!dmWs 
+            || !chatProvider.userHasChannelAccess(dmWs.user, channelId)
+          ) {
+            console.log('adding channel')
+            ChatProvider.addUserToChannel(
+              dmUserId,
+              channelId,
+              [ws.name, 1, Date.now(), user.id],
+            );
           }
         }
 

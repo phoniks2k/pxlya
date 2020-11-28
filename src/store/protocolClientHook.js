@@ -18,19 +18,10 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    /*
-     * TODO
-     * make LOGIN / LOGOUT Actions instead of comparing name changes
-     */
-    case 'RECEIVE_ME': {
-      const { name } = action;
-      ProtocolClient.setName(name);
-      break;
-    }
-
-    case 'SET_NAME': {
-      const { name } = action;
-      ProtocolClient.setName(name);
+    case 'SET_NAME':
+    case 'LOGIN:':
+    case 'LOGOUT': {
+      ProtocolClient.reconnect();
       break;
     }
 

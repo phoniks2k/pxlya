@@ -198,7 +198,18 @@ class User {
     if (this.regUser == null) {
       return {
         name: null,
+        mailVerified: false,
+        mcVerified: false,
+        minecraftname: null,
+        blockDm: false,
+        totalPixels: 0,
+        dailyTotalPixels: 0,
+        ranking: null,
+        dailyRanking: null,
+        mailreg: false,
+        userlvl: 0,
         channels: this.channels,
+        blocked: this.blocked,
       };
     }
     const { regUser } = this;

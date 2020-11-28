@@ -49,12 +49,10 @@ export default function modal(
       };
     }
 
-    case 'RECEIVE_ME': {
-      const { name } = action;
-      const chatOpen = (name) ? state.chatOpen : false;
+    case 'LOGOUT': {
       return {
         ...state,
-        chatOpen,
+        chatOpen: false,
       };
     }
 

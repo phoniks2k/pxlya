@@ -4,7 +4,10 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { validatePassword, parseAPIresponse } from '../utils/validation';
+
+import { logoutUser } from '../actions';
 
 function validate(password) {
   const errors = [];
@@ -64,8 +67,8 @@ class DeleteAccount extends React.Component {
       });
       return;
     }
-    const { setName } = this.props;
-    setName(null);
+    const { logout } = this.props;
+    logout();
   }
 
   render() {
@@ -94,4 +97,12 @@ class DeleteAccount extends React.Component {
   }
 }
 
-export default DeleteAccount;
+function mapDispatchToProps(dispatch) {
+  return {
+    async logout() {
+      dispatch(logoutUser());
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(DeleteAccount);

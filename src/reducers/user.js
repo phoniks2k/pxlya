@@ -139,7 +139,8 @@ export default function user(
       };
     }
 
-    case 'RECEIVE_ME': {
+    case 'RECEIVE_ME':
+    case 'LOGIN': {
       const {
         name,
         mailreg,
@@ -166,6 +167,19 @@ export default function user(
         blockDm,
         userlvl,
         nameRegExp,
+      };
+    }
+
+    case 'LOGOUT': {
+      return {
+        ...state,
+        name: null,
+        messages: [],
+        mailreg: false,
+        minecraftname: null,
+        blockDm: false,
+        userlvl: 0,
+        nameRegExp: null,
       };
     }
 

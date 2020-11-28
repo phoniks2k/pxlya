@@ -10,7 +10,7 @@ import type { State } from '../reducers';
 
 
 import {
-  showRegisterModal, showForgotPasswordModal, setName, setMailreg, receiveMe,
+  showRegisterModal, showForgotPasswordModal, setName, setMailreg,
 } from '../actions';
 import LogInForm from './LogInForm';
 import Tabs from './Tabs';
@@ -87,8 +87,6 @@ const UserAreaModal = ({
   name,
   register,
   forgotPassword,
-  doMe,
-  logout,
   setUserName,
   setUserMailreg,
   userlvl,
@@ -99,14 +97,12 @@ const UserAreaModal = ({
         <LogInArea
           register={register}
           forgotPassword={forgotPassword}
-          me={doMe}
         />
       )
       : (
         <Tabs>
           <div label="Profile">
             <UserArea
-              logout={logout}
               setName={setUserName}
               setMailreg={setUserMailreg}
             />
@@ -142,24 +138,11 @@ function mapDispatchToProps(dispatch) {
     forgotPassword() {
       dispatch(showForgotPasswordModal());
     },
-    doMe(me) {
-      dispatch(receiveMe(me));
-    },
     setUserName(name) {
       dispatch(setName(name));
     },
     setUserMailreg(mailreg) {
       dispatch(setMailreg(mailreg));
-    },
-    async logout() {
-      const response = await fetch(
-        './api/auth/logout',
-        { credentials: 'include' },
-      );
-      if (response.ok) {
-        const resp = await response.json();
-        dispatch(receiveMe(resp.me));
-      }
     },
   };
 }

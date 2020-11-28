@@ -94,6 +94,23 @@ export type Action =
     blocked: Array,
     userlvl: number,
   }
+  | { type: 'LOGIN',
+    name: string,
+    waitSeconds: number,
+    messages: Array,
+    mailreg: boolean,
+    totalPixels: number,
+    dailyTotalPixels: number,
+    ranking: number,
+    dailyRanking: number,
+    minecraftname: string,
+    blockDm: boolean,
+    canvases: Object,
+    channels: Object,
+    blocked: Array,
+    userlvl: number,
+  }
+  | { type: 'LOGOUT' }
   | { type: 'RECEIVE_STATS', totalRanking: Object, totalDailyRanking: Object }
   | { type: 'SET_NAME', name: string }
   | { type: 'SET_MINECRAFT_NAME', minecraftname: string }

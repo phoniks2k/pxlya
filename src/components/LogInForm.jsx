@@ -3,9 +3,11 @@
  * @flow
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   validateEMail, validateName, validatePassword, parseAPIresponse,
 } from '../utils/validation';
+import { loginUser } from '../actions';
 
 
 function validate(nameoremail, password) {
@@ -60,7 +62,7 @@ class LogInForm extends React.Component {
     e.preventDefault();
 
     const { nameoremail, password, submitting } = this.state;
-    const { me: setMe } = this.props;
+    const { login } = this.props;
     if (submitting) return;
 
     const errors = validate(nameoremail, password);
@@ -80,7 +82,7 @@ class LogInForm extends React.Component {
       });
       return;
     }
-    setMe(me);
+    login(me);
   }
 
   render() {
@@ -116,4 +118,12 @@ class LogInForm extends React.Component {
   }
 }
 
-export default LogInForm;
+function mapDispatchToProps(dispatch) {
+  return {
+    login(me) {
+      dispatch(loginUser(me));
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(LogInForm);

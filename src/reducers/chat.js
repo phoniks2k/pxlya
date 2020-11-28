@@ -41,11 +41,32 @@ export default function chat(
   action: Action,
 ): ChatState {
   switch (action.type) {
-    case 'RECEIVE_ME': {
+    case 'RECEIVE_ME':
+    case 'LOGIN': {
       return {
         ...state,
         channels: action.channels,
         blocked: action.blocked,
+      };
+    }
+
+    case 'LOGOUT': {
+      const channels = { ...state.channels };
+      const messages = { ...state.messages };
+      const keys = Object.keys(channels);
+      for (let i = 0; i < messages.length; i += 1) {
+        const cid = keys[i];
+        if (channels[cid][1] === 0) {
+          delete messages[cid];
+          delete channels[cid];
+        }
+      }
+      return {
+        ...state,
+        inputMessage: '',
+        channels,
+        blocked: [],
+        messages,
       };
     }
 
@@ -88,6 +109,7 @@ export default function chat(
 
     case 'ADD_CHAT_CHANNEL': {
       const { channel } = action;
+      console.log('adding channel', channel);
       return {
         ...state,
         channels: {

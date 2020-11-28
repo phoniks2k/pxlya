@@ -4,9 +4,6 @@
  */
 import type { Request, Response } from 'express';
 
-import getMe from '../../../core/me';
-import chatProvider from '../../../core/ChatProvider';
-
 export default async (req: Request, res: Response) => {
   const { user } = req;
   if (!user) {
@@ -17,16 +14,9 @@ export default async (req: Request, res: Response) => {
     return;
   }
 
-  const me = await getMe(user);
   req.logout();
   res.status(200);
   res.json({
     success: true,
-    me: {
-      name: null,
-      waitSeconds: me.waitSeconds,
-      canvases: me.canvases,
-      channels: chatProvider.defaultChannels,
-    },
   });
 };

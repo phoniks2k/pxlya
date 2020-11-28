@@ -14,6 +14,7 @@ import ChangeName from './ChangeName';
 import ChangeMail from './ChangeMail';
 import DeleteAccount from './DeleteAccount';
 import SocialSettings from './SocialSettings';
+import { logoutUser } from '../actions';
 
 import { numberToString } from '../core/utils';
 
@@ -172,7 +173,6 @@ class UserArea extends React.Component {
         {(deleteAccountExtended)
           && (
           <DeleteAccount
-            setName={setName}
             done={() => { this.setState({ deleteAccountExtended: false }); }}
           />
           )}
@@ -226,4 +226,18 @@ function mapStateToProps(state: State) {
   return { name, mailreg, stats };
 }
 
-export default connect(mapStateToProps)(UserArea);
+function mapDispatchToProps(dispatch) {
+  return {
+    async logout() {
+      const response = await fetch(
+        './api/auth/logout',
+        { credentials: 'include' },
+      );
+      if (response.ok) {
+        dispatch(logoutUser());
+      }
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserArea);
