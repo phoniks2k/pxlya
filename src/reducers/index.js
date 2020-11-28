@@ -9,6 +9,7 @@ import modal from './modal';
 import user from './user';
 import chat from './chat';
 import contextMenu from './contextMenu';
+import chatRead from './chatRead';
 import fetching from './fetching';
 
 import type { AudioState } from './audio';
@@ -28,6 +29,7 @@ export type State = {
   user: UserState,
   chat: ChatState,
   contextMenu: ContextMenuState,
+  chatRead: ChatReadState,
   fetching: FetchingState,
 };
 
@@ -52,5 +54,6 @@ export default persistCombineReducers(config, {
   user,
   chat,
   contextMenu,
+  chatRead,
   fetching,
 });

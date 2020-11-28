@@ -94,20 +94,17 @@ class WebSockets {
    * @param userId numerical id of user
    * @param channelId numerical id of chat channel
    * @param channelArray array with channel info [name, type, lastTs]
-   * @param notify if user should get notified over websocket
-   *        (i.e. false if the user already gets it via api response)
    */
   broadcastAddChatChannel(
     userId: number,
     channelId: number,
     channelArray: Array,
-    notify: boolean = true,
   ) {
     this.listeners.forEach(
       (listener) => listener.broadcastAddChatChannel(
         userId,
+        channelId,
         channelArray,
-        notify,
       ),
     );
   }
@@ -116,19 +113,16 @@ class WebSockets {
    * broadcast Removing chat channel from user
    * @param userId numerical id of user
    * @param channelId numerical id of chat channel
-   * @param notify if user should get notified over websocket
    *        (i.e. false if the user already gets it via api response)
    */
   broadcastRemoveChatChannel(
     userId: number,
     channelId: number,
-    notify: boolean = true,
   ) {
     this.listeners.forEach(
       (listener) => listener.broadcastRemoveChatChannel(
         userId,
         channelId,
-        notify,
       ),
     );
   }

@@ -1,5 +1,9 @@
-.chatbox {
+.chatbox, .channeldd, .contextmenu {
   border-radius: 8px;
+}
+
+.chntop {
+  margin-top: 4px;
 }
 
 .actionbuttons, .coorbox, .onlinebox, .cooldownbox, #historyselect {

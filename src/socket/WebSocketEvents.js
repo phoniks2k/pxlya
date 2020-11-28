@@ -28,14 +28,12 @@ class WebSocketEvents {
     userId: number,
     channelId: number,
     channelArray: Array,
-    notify: boolean,
   ) {
   }
 
   broadcastRemoveChatChannel(
     userId: number,
     channelId: number,
-    notify: boolean,
   ) {
   }
 

@@ -30,11 +30,13 @@ const Message = Model.define('Message', {
 Message.belongsTo(Channel, {
   as: 'channel',
   foreignKey: 'cid',
+  onDelete: 'cascade',
 });
 
 Message.belongsTo(RegUser, {
   as: 'user',
   foreignKey: 'uid',
+  onDelete: 'cascade',
 });
 
 export default Message;

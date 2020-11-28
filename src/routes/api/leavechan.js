@@ -65,7 +65,7 @@ async function leaveChan(req: Request, res: Response) {
 
   user.regUser.removeChannel(channel);
 
-  webSockets.broadcastRemoveChatChannel(user.id, channelId, false);
+  webSockets.broadcastRemoveChatChannel(user.id, channelId);
 
   res.json({
     status: 'ok',

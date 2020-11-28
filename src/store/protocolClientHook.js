@@ -19,7 +19,7 @@ export default (store) => (next) => (action) => {
     }
 
     case 'SET_NAME':
-    case 'LOGIN:':
+    case 'LOGIN':
     case 'LOGOUT': {
       ProtocolClient.reconnect();
       break;

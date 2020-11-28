@@ -15,10 +15,6 @@ export type GUIState = {
   compactPalette: boolean,
   paletteOpen: boolean,
   menuOpen: boolean,
-  chatChannel: number,
-  // timestamps of last read post per channel
-  // { 1: Date.now() }
-  chatRead: {},
   style: string,
 };
 
@@ -33,8 +29,6 @@ const initialState: GUIState = {
   compactPalette: false,
   paletteOpen: true,
   menuOpen: false,
-  chatChannel: 1,
-  chatRead: {},
   style: 'default',
 };
 
@@ -108,19 +102,6 @@ export default function gui(
       };
     }
 
-    case 'SET_CHAT_CHANNEL': {
-      const { cid } = action;
-
-      return {
-        ...state,
-        chatChannel: cid,
-        chatRead: {
-          ...state.chatRead,
-          cid: Date.now(),
-        },
-      };
-    }
-
     case 'SELECT_COLOR': {
       const {
         compactPalette,
@@ -144,43 +125,6 @@ export default function gui(
         hover,
       };
     }
-
-    case 'RECEIVE_ME':
-    case 'LOGIN': {
-      const { channels } = action;
-      const cids = Object.keys(channels);
-      const chatRead = { ...state.chatRead };
-      for (let i = 0; i < cids.length; i += 1) {
-        const cid = cids[i];
-        chatRead[cid] = 0;
-      }
-      return {
-        ...state,
-        chatRead,
-      };
-    }
-
-    case 'ADD_CHAT_CHANNEL': {
-      const [cid] = Object.keys(action.channel);
-      return {
-        ...state,
-        chatRead: {
-          ...state.chatRead,
-          [cid]: 0,
-        },
-      };
-    }
-
-    case 'REMOVE_CHAT_CHANNEL': {
-      const { cid } = action;
-      const chatRead = { ...state.chatRead };
-      delete chatRead[cid];
-      return {
-        ...state,
-        chatRead,
-      };
-    }
-
 
     case 'PLACE_PIXEL': {
       let { pixelsPlaced } = state;

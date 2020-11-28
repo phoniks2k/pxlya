@@ -47,12 +47,6 @@ async function startDm(req: Request, res: Response) {
 
   const targetUser = await RegUser.findOne({
     where: query,
-    attributes: [
-      'id',
-      'name',
-      'blockDm',
-    ],
-    raw: true,
   });
   if (!targetUser) {
     res.status(401);
@@ -61,14 +55,15 @@ async function startDm(req: Request, res: Response) {
     });
     return;
   }
+  userId = targetUser.id;
+  userName = targetUser.name;
   if (targetUser.blockDm) {
     res.status(401);
     res.json({
-      errors: ['Target user doesn\'t allo DMs'],
+      errors: [`${userName} doesn't allow DMs`],
     });
+    return;
   }
-  userId = targetUser.id;
-  userName = targetUser.name;
 
   /*
    * check if blocked
@@ -76,7 +71,7 @@ async function startDm(req: Request, res: Response) {
   if (await isUserBlockedBy(user.id, userId)) {
     res.status(401);
     res.json({
-      errors: ['You are blocked by this user'],
+      errors: [`${userName} has blocked you.`],
     });
     return;
   }
@@ -106,10 +101,19 @@ async function startDm(req: Request, res: Response) {
     raw: true,
   });
   const ChannelId = channel[0].id;
+  const curTime = Date.now();
 
   const promises = [
-    ChatProvider.addUserToChannel(user.id, ChannelId, false),
-    ChatProvider.addUserToChannel(userId, ChannelId, true),
+    ChatProvider.addUserToChannel(
+      user.id,
+      ChannelId,
+      [userName, 1, curTime, userId],
+    ),
+    ChatProvider.addUserToChannel(
+      userId,
+      ChannelId,
+      [user.getName(), 1, curTime, user.id],
+    ),
   ];
   await Promise.all(promises);
 

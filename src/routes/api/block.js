@@ -108,8 +108,8 @@ async function block(req: Request, res: Response) {
   if (channel) {
     const channelId = channel.id;
     channel.destroy();
-    webSockets.broadcastRemoveChatChannel(user.id, channelId, false);
-    webSockets.broadcastRemoveChatChannel(userId, channelId, true);
+    webSockets.broadcastRemoveChatChannel(user.id, channelId);
+    webSockets.broadcastRemoveChatChannel(userId, channelId);
   }
 
   if (ret) {

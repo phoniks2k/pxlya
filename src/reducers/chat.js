@@ -54,7 +54,7 @@ export default function chat(
       const channels = { ...state.channels };
       const messages = { ...state.messages };
       const keys = Object.keys(channels);
-      for (let i = 0; i < messages.length; i += 1) {
+      for (let i = 0; i < keys.length; i += 1) {
         const cid = keys[i];
         if (channels[cid][1] === 0) {
           delete messages[cid];
@@ -81,7 +81,7 @@ export default function chat(
        */
       const channels = { ...state.channels };
       const chanKeys = Object.keys(channels);
-      for (let i = 0; i < chanKeys; i += 1) {
+      for (let i = 0; i < chanKeys.length; i += 1) {
         const cid = chanKeys[i];
         if (channels[cid][1] === 1 && channels[cid][3] === userId) {
           delete channels[cid];
@@ -109,7 +109,10 @@ export default function chat(
 
     case 'ADD_CHAT_CHANNEL': {
       const { channel } = action;
-      console.log('adding channel', channel);
+      const [cid] = Object.keys(channel);
+      if (state.channels[cid]) {
+        return state;
+      }
       return {
         ...state,
         channels: {
@@ -121,11 +124,17 @@ export default function chat(
 
     case 'REMOVE_CHAT_CHANNEL': {
       const { cid } = action;
+      if (!state.channels[cid]) {
+        return state;
+      }
       const channels = { ...state.channels };
+      const messages = { ...state.messages };
+      delete messages[cid];
       delete channels[cid];
       return {
         ...state,
         channels,
+        messages,
       };
     }
 

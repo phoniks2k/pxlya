@@ -19,7 +19,6 @@ import ChatBox from './ChatBox';
 import Menu from './Menu';
 import UI from './UI';
 import ExpandMenuButton from './ExpandMenuButton';
-import MinecraftTPButton from './MinecraftTPButton';
 import ModalRoot from './ModalRoot';
 
 const App = () => (
@@ -34,7 +33,6 @@ const App = () => (
       <OnlineBox />
       <CoordinatesBox />
       <ExpandMenuButton />
-      <MinecraftTPButton />
       <UI />
       <ModalRoot />
     </IconContext.Provider>

@@ -135,7 +135,7 @@ function SettingsModal({
       <SettingsItem
         title="Disable Game Sounds"
         // eslint-disable-next-line max-len
-        description="All sound effects except Chat Notification will be disabled."
+        description="All sound effects will be disabled."
         keyBind="M"
         value={isMuted}
         onToggle={onMute}

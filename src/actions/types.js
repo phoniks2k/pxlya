@@ -72,6 +72,8 @@ export type Action =
   | { type: 'SET_CHAT_CHANNEL', cid: number }
   | { type: 'ADD_CHAT_CHANNEL', channel: Object }
   | { type: 'REMOVE_CHAT_CHANNEL', cid: number }
+  | { type: 'MUTE_CHAT_CHANNEL', cid: number }
+  | { type: 'UNMUTE_CHAT_CHANNEL', cid: number }
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
   | { type: 'SET_CHAT_INPUT_MSG', message: string }
   | { type: 'ADD_CHAT_INPUT_MSG', message: string }

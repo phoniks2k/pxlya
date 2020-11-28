@@ -11,7 +11,13 @@ import HelpButton from './HelpButton';
 import SettingsButton from './SettingsButton';
 import LogInButton from './LogInButton';
 import DownloadButton from './DownloadButton';
-import MinecraftButton from './MinecraftButton';
+/*
+ * removed MinecraftButton cause it didn't get used in over a year
+ * also CSS rule got removed
+ * and MinecraftModal from ModalRoot
+ * and MinecraftTPButton from App
+ * (support for it will be otherwise still kept)
+ */
 
 function Menu({
   menuOpen,
@@ -37,7 +43,6 @@ function Menu({
         <SettingsButton />
         <LogInButton />
         <DownloadButton />
-        <MinecraftButton />
         <HelpButton />
       </div>
     )

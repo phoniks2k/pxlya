@@ -486,7 +486,6 @@ export function receivePixelUpdate(
 export function loginUser(
   me: Object,
 ): Action {
-  console.log('login', me);
   return {
     type: 'LOGIN',
     ...me,
@@ -790,6 +789,20 @@ export function blockingDm(blockDm: boolean): Action {
 export function removeChatChannel(cid: number): Action {
   return {
     type: 'REMOVE_CHAT_CHANNEL',
+    cid,
+  };
+}
+
+export function muteChatChannel(cid: number): Action {
+  return {
+    type: 'MUTE_CHAT_CHANNEL',
+    cid,
+  };
+}
+
+export function unmuteChatChannel(cid: number): Action {
+  return {
+    type: 'UNMUTE_CHAT_CHANNEL',
     cid,
   };
 }

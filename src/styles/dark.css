@@ -65,6 +65,20 @@ tr:nth-child(even) {
   background-color: hsla(216, 4%, 74%, .3);
 }
 
+.channeldd, .contextmenu {
+  background-color: #535356;
+  color: #efefef;
+}
+
+.chn, .chntype, .contextmenu > div {
+  background-color: #5f5f5f;
+}
+
+.chn.selected, .chn:hover, .chntype.selected, .chntype:hover,
+.contextmenu > div:hover {
+  background-color: #404040;
+}
+
 .modalinfo {
   color: #ddd;
 }

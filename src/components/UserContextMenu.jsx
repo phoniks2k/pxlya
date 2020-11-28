@@ -13,6 +13,7 @@ import {
   addToChatInputMessage,
   startDm,
   setUserBlock,
+  setChatChannel,
 } from '../actions';
 import type { State } from '../reducers';
 
@@ -24,6 +25,9 @@ const UserContextMenu = ({
   addToInput,
   dm,
   block,
+  channels,
+  fetching,
+  setChannel,
   close,
 }) => {
   const wrapperRef = useRef(null);
@@ -56,13 +60,13 @@ const UserContextMenu = ({
       }}
     >
       <div
-        style={{ borderBottom: 'thin solid' }}
         onClick={() => {
           block(uid, name);
           close();
         }}
         role="button"
         tabIndex={-1}
+        style={{ borderTop: 'none' }}
       >
         Block
       </div>
@@ -70,11 +74,24 @@ const UserContextMenu = ({
         role="button"
         tabIndex={0}
         onClick={() => {
-          dm(uid);
-          // TODO if DM Channel with user already exist, just switch
+          /*
+           * if dm channel already exists,
+           * just switch
+           */
+          const cids = Object.keys(channels);
+          for (let i = 0; i < cids.length; i += 1) {
+            const cid = cids[i];
+            if (channels[cid].length === 4 && channels[cid][3] === uid) {
+              setChannel(cid);
+              close();
+              return;
+            }
+          }
+          if (!fetching) {
+            dm(uid);
+          }
           close();
         }}
-        style={{ borderBottom: 'thin solid' }}
       >
         DM
       </div>
@@ -99,14 +116,22 @@ function mapStateToProps(state: State) {
     args,
   } = state.contextMenu;
   const {
+    channels,
+  } = state.chat;
+  const {
     name,
     uid,
   } = args;
+  const {
+    fetchingApi: fetching,
+  } = state.fetching;
   return {
     xPos,
     yPos,
+    channels,
     name,
     uid,
+    fetching,
   };
 }
 
@@ -128,6 +153,9 @@ function mapDispatchToProps(dispatch) {
     },
     close() {
       dispatch(hideContextMenu());
+    },
+    setChannel(channelId) {
+      dispatch(setChatChannel(channelId));
     },
   };
 }

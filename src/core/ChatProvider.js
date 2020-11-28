@@ -105,28 +105,22 @@ export class ChatProvider {
     userId,
     channelId,
     channelArray,
-    notify = true,
   ) {
-    /*
-     * since UserId and ChannelId are primary keys,
-     * this will throw if already exists
-     */
-    const relation = await UserChannel.create({
-      UserId: userId,
-      ChannelId: channelId,
-    }, {
+    const [, created] = await UserChannel.findOrCreate({
+      where: {
+        UserId: userId,
+        ChannelId: channelId,
+      },
       raw: true,
     });
 
-    console.log('HEREEEEE HHEEERRREEE');
-    console.log(relation);
-
-    webSockets.broadcastAddChatChannel(
-      userId,
-      channelId,
-      channelArray,
-      notify,
-    );
+    if (created) {
+      webSockets.broadcastAddChatChannel(
+        userId,
+        channelId,
+        channelArray,
+      );
+    }
   }
 
   userHasChannelAccess(user, cid, write = false) {
@@ -134,7 +128,7 @@ export class ChatProvider {
       if (!write || user.regUser) {
         return true;
       }
-    } else if (user.regUser && user.channelIds.includes(cid)) {
+    } else if (user.regUser && user.channels[cid]) {
       return true;
     }
     return false;
@@ -146,7 +140,7 @@ export class ChatProvider {
     }
     const channelArray = user.channels[cid];
     if (channelArray && channelArray.length === 4) {
-      return user.channels[cid][4];
+      return user.channels[cid][3];
     }
     return null;
   }

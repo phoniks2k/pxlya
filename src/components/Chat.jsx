@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import type { State } from '../reducers';
 import ChatMessage from './ChatMessage';
 import ChannelDropDown from './ChannelDropDown';
-import { MAX_CHAT_MESSAGES } from '../core/constants';
 
 import {
   showUserAreaModal,
@@ -23,7 +22,6 @@ import {
   showContextMenu,
 } from '../actions';
 import ProtocolClient from '../socket/ProtocolClient';
-import { saveSelection, restoreSelection } from '../utils/storeSelection';
 import splitChatMessage from '../core/chatMessageFilter';
 
 function escapeRegExp(string) {
@@ -48,7 +46,6 @@ const Chat = ({
 }) => {
   const listRef = useRef();
   const targetRef = useRef();
-  const [selection, setSelection] = useState(null);
   const [nameRegExp, setNameRegExp] = useState(null);
   const [blockedIds, setBlockedIds] = useState([]);
   const [btnSize, setBtnSize] = useState(20);
@@ -59,23 +56,13 @@ const Chat = ({
   });
 
   const channelMessages = messages[chatChannel] || [];
-  if (!messages[chatChannel] && !fetching) {
+  if (channels[chatChannel] && !messages[chatChannel] && !fetching) {
     fetchMessages(chatChannel);
   }
 
   useLayoutEffect(() => {
     stayScrolled();
   }, [channelMessages.length]);
-
-  /*
-   * TODO this removes focus from chat box, fix this
-   *
-  useEffect(() => {
-    if (channelMessages.length === MAX_CHAT_MESSAGES) {
-      restoreSelection(selection);
-    }
-  }, [channelMessages]);
-  */
 
   useEffect(() => {
     const regExp = (ownName)
@@ -168,7 +155,6 @@ const Chat = ({
         className="chatarea"
         ref={listRef}
         style={{ flexGrow: 1 }}
-        onMouseUp={() => { setSelection(saveSelection); }}
         role="presentation"
       >
         {
@@ -204,6 +190,7 @@ const Chat = ({
               style={{ flexGrow: 1, minWidth: 40 }}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
+              autoComplete="off"
               id="chatmsginput"
               maxLength="200"
               type="text"
@@ -235,7 +222,7 @@ const Chat = ({
 
 function mapStateToProps(state: State) {
   const { name } = state.user;
-  const { chatChannel } = state.gui;
+  const { chatChannel } = state.chatRead;
   const {
     channels,
     messages,

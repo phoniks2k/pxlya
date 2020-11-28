@@ -29,7 +29,6 @@ class User {
     this.id = id;
     this.ip = ip;
     this.channels = {};
-    this.channelIds = [];
     this.blocked = [];
     this.ipSub = getIPv6Subnet(ip);
     this.wait = null;
@@ -64,7 +63,6 @@ class User {
           dmu1,
           dmu2,
         } = reguser.channel[i];
-        this.channelIds.push(id);
         if (type === 1) {
           /* in DMs:
            * the name is the name of the other user
@@ -72,19 +70,19 @@ class User {
            */
           const name = (dmu1.id === this.id) ? dmu2.name : dmu1.name;
           const dmu = (dmu1.id === this.id) ? dmu2.id : dmu1.id;
-          this.channels[id] = [
+          this.addChannel(id, [
             name,
             type,
             lastTs,
             dmu,
-          ];
+          ]);
         } else {
           const { name } = reguser.channel[i];
-          this.channels[id] = [
+          this.addChannel(id, [
             name,
             type,
             lastTs,
-          ];
+          ]);
         }
       }
     }
@@ -97,6 +95,14 @@ class User {
         this.blocked.push([id, name]);
       }
     }
+  }
+
+  addChannel(cid, channelArray) {
+    this.channels[cid] = channelArray;
+  }
+
+  removeChannel(cid) {
+    delete this.channels[cid];
   }
 
   getName() {

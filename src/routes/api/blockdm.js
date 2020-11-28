@@ -45,10 +45,10 @@ async function blockdm(req: Request, res: Response) {
     const channel = channels[i];
     if (channel.type === 1) {
       const channelId = channel.id;
-      channel.destroy();
       const { dmu1id, dmu2id } = channel;
-      webSockets.broadcastRemoveChatChannel(dmu1id, channelId, true);
-      webSockets.broadcastRemoveChatChannel(dmu2id, channelId, true);
+      channel.destroy();
+      webSockets.broadcastRemoveChatChannel(dmu1id, channelId);
+      webSockets.broadcastRemoveChatChannel(dmu2id, channelId);
     }
   }
 

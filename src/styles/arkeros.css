@@ -22,8 +22,12 @@ tr:nth-child(odd) {
   color: #ff91a6;
 }
 
-.actionbuttons:hover, .menu > div:hover {
+.actionbuttons:hover, .menu > div:hover, .channeldd, .contextmenu {
   background: linear-gradient(160deg, #61dcea , #ffb1e1, #ecffec, #ffb1e1, #61dcea);
+}
+
+.chn, .chntype, .contextmenu > div {
+  background-color: #ebebeb80;
 }
 
 #chatbutton {

@@ -21,7 +21,6 @@ import RegisterModal from './RegisterModal';
 import CanvasSelectModal from './CanvasSelectModal';
 import ChatModal from './ChatModal';
 import ForgotPasswordModal from './ForgotPasswordModal';
-import MinecraftModal from './MinecraftModal';
 
 
 const MODAL_COMPONENTS = {
@@ -32,7 +31,6 @@ const MODAL_COMPONENTS = {
   REGISTER: RegisterModal,
   FORGOT_PASSWORD: ForgotPasswordModal,
   CHAT: ChatModal,
-  MINECRAFT: MinecraftModal,
   CANVAS_SELECTION: CanvasSelectModal,
   /* other modals */
 };

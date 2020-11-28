@@ -35,6 +35,25 @@ tr:nth-child(even) {
   border-radius: 8px;
 }
 
+.channeldd, .contextmenu {
+  background-color: #535356;
+  color: #efefef;
+  border-radius: 8px;
+}
+
+.chntop {
+  margin-top: 4px;
+}
+
+.chn, .chntype, .contextmenu > div {
+  background-color: #5f5f5f;
+}
+
+.chn.selected, .chn:hover, .chntype.selected, .chntype:hover,
+.contextmenu > div:hover {
+  background-color: #404040;
+}
+
 .actionbuttons, .coorbox, .onlinebox, .cooldownbox, #historyselect {
   background-color: rgba(59, 59, 59, 0.8);
   color: #f4f4f4;

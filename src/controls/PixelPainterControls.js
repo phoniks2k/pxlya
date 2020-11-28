@@ -211,10 +211,7 @@ class PixelPlainterControls {
           this.store,
           this.viewport,
           this.renderer,
-          [
-            this.clickTapStartCoords[0],
-            this.clickTapStartCoords[1],
-          ],
+          this.clickTapStartCoords,
         );
       }, 800);
     }

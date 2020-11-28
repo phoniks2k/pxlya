@@ -104,7 +104,7 @@ class SocketServer extends WebSocketEvents {
       });
       ws.on('message', (message) => {
         if (typeof message === 'string') {
-          SocketServer.onTextMessage(message, ws);
+          this.onTextMessage(message, ws);
         } else {
           this.onBinaryMessage(message, ws);
         }
@@ -175,13 +175,19 @@ class SocketServer extends WebSocketEvents {
     });
   }
 
+  /*
+   * keep in mind that a user could
+   * be connected from multiple devices
+   */
   findWsByUserId(userId) {
-    const { clients } = this.wss;
-    for (let i = 0; i < clients.length; i += 1) {
-      const ws = clients[i];
+    const it = this.wss.clients.keys();
+    let client = it.next();
+    while (!client.done) {
+      const ws = client.value;
       if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
         return ws;
       }
+      client = it.next();
     }
     return null;
   }
@@ -190,35 +196,31 @@ class SocketServer extends WebSocketEvents {
     userId: number,
     channelId: number,
     channelArray: Array,
-    notify: boolean,
   ) {
-    const ws = this.findWsByUserId(userId);
-    if (ws) {
-      ws.user.channels[channelId] = channelArray;
-      const text = JSON.stringify([
-        'addch', {
-          [channelId]: channelArray,
-        },
-      ]);
-      if (notify) {
+    this.wss.clients.forEach((ws) => {
+      if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
+        ws.user.addChannel(channelId, channelArray);
+        const text = JSON.stringify([
+          'addch', {
+            [channelId]: channelArray,
+          },
+        ]);
         ws.send(text);
       }
-    }
+    });
   }
 
   broadcastRemoveChatChannel(
     userId: number,
     channelId: number,
-    notify: boolean,
   ) {
-    const ws = this.findWsByUserId(userId);
-    if (ws) {
-      delete ws.user.channels[channelId];
-      const text = JSON.stringify('remch', channelId);
-      if (notify) {
+    this.wss.clients.forEach((ws) => {
+      if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
+        ws.user.removeChannel(channelId);
+        const text = JSON.stringify(['remch', channelId]);
         ws.send(text);
       }
-    }
+    });
   }
 
   broadcastPixelBuffer(canvasId: number, chunkid, data: Buffer) {
@@ -286,7 +288,7 @@ class SocketServer extends WebSocketEvents {
     webSockets.broadcastOnlineCounter(online);
   }
 
-  static async onTextMessage(text, ws) {
+  async onTextMessage(text, ws) {
     /*
      * all client -> server text messages are
      * chat messages in [message, channelId] format
@@ -333,13 +335,11 @@ class SocketServer extends WebSocketEvents {
          */
         const dmUserId = chatProvider.checkIfDm(user, channelId);
         if (dmUserId) {
-          console.log('is dm');
           const dmWs = this.findWsByUserId(dmUserId);
-          if (!dmWs 
+          if (!dmWs
             || !chatProvider.userHasChannelAccess(dmWs.user, channelId)
           ) {
-            console.log('adding channel')
-            ChatProvider.addUserToChannel(
+            await ChatProvider.addUserToChannel(
               dmUserId,
               channelId,
               [ws.name, 1, Date.now(), user.id],

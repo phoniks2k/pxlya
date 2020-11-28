@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import {
   hideContextMenu,
   setLeaveChannel,
+  muteChatChannel,
+  unmuteChatChannel,
 } from '../actions';
 import type { State } from '../reducers';
 
@@ -20,6 +22,9 @@ const UserContextMenu = ({
   cid,
   channels,
   leave,
+  muteArr,
+  mute,
+  unmute,
   close,
 }) => {
   const wrapperRef = useRef(null);
@@ -41,6 +46,8 @@ const UserContextMenu = ({
     };
   }, [wrapperRef]);
 
+  const isMuted = muteArr.includes(cid);
+
   return (
     <div
       ref={wrapperRef}
@@ -50,8 +57,19 @@ const UserContextMenu = ({
         top: yPos,
       }}
     >
-      <div>
-        ✔✘ Mute
+      <div
+        role="button"
+        onClick={() => {
+          if (isMuted) {
+            unmute(cid);
+          } else {
+            mute(cid);
+          }
+        }}
+        tabIndex={0}
+        style={{ borderTop: 'none' }}
+      >
+        {`${(isMuted) ? '✔' : '✘'} Mute`}
       </div>
       {(channels[cid][1] !== 0)
         && (
@@ -62,7 +80,6 @@ const UserContextMenu = ({
             close();
           }}
           tabIndex={0}
-          style={{ borderTop: 'thin solid' }}
         >
           Close
         </div>
@@ -83,11 +100,13 @@ function mapStateToProps(state: State) {
   const {
     cid,
   } = args;
+  const { mute: muteArr } = state.chatRead;
   return {
     xPos,
     yPos,
     cid,
     channels,
+    muteArr,
   };
 }
 
@@ -98,6 +117,12 @@ function mapDispatchToProps(dispatch) {
     },
     leave(cid) {
       dispatch(setLeaveChannel(cid));
+    },
+    mute(cid) {
+      dispatch(muteChatChannel(cid));
+    },
+    unmute(cid) {
+      dispatch(unmuteChatChannel(cid));
     },
   };
 }

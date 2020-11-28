@@ -19,7 +19,9 @@ import {
 const ChannelDropDown = ({
   channels,
   chatChannel,
-  chatRead,
+  unread,
+  chatNotify,
+  mute,
   setChannel,
 }) => {
   const [show, setShow] = useState(false);
@@ -27,7 +29,9 @@ const ChannelDropDown = ({
   // 1: DMs
   const [type, setType] = useState(0);
   const [offset, setOffset] = useState(0);
+  const [unreadAny, setUnreadAny] = useState(false);
   const [chatChannelName, setChatChannelName] = useState('...');
+  const [hasDm, setHasDm] = useState(false);
   const wrapperRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -44,6 +48,10 @@ const ChannelDropDown = ({
     }
   }, []);
 
+  const handleWindowResize = useCallback(() => {
+    setShow(false);
+  }, []);
+
   useLayoutEffect(() => {
     if (show) {
       if (channels[chatChannel]) {
@@ -52,11 +60,44 @@ const ChannelDropDown = ({
       }
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
+      window.addEventListener('resize', handleWindowResize);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
+      window.removeEventListener('resize', handleWindowResize);
     }
   }, [show]);
+
+  useEffect(() => {
+    const cids = Object.keys(channels);
+    let i = 0;
+    while (i < cids.length) {
+      const cid = cids[i];
+      if (
+        channels[cid][1] !== 0
+        && unread[cid]
+        && !mute.includes(cid)
+      ) {
+        setUnreadAny(true);
+        break;
+      }
+      i += 1;
+    }
+    if (i === cids.length) {
+      setUnreadAny(false);
+    }
+  }, [unread]);
+
+  useEffect(() => {
+    const cids = Object.keys(channels);
+    for (let i = 0; i < cids.length; i += 1) {
+      if (channels[cids[i]][1] === 1) {
+        setHasDm(true);
+        return;
+      }
+    }
+    setHasDm(false);
+  }, [channels]);
 
   useEffect(() => {
     if (channels[chatChannel]) {
@@ -70,12 +111,14 @@ const ChannelDropDown = ({
     >
       <div
         ref={buttonRef}
-        style={{
-          width: 50,
-        }}
+        role="button"
+        tabIndex={-1}
         onClick={() => setShow(!show)}
-        className="channelbtn"
+        className={`channelbtn${(show) ? ' selected' : ''}`}
       >
+        {(unreadAny && chatNotify && !show) && (
+          <div style={{ top: -4 }} className="chnunread">⦿</div>
+        )}
         {chatChannelName}
       </div>
       {(show)
@@ -84,23 +127,41 @@ const ChannelDropDown = ({
           ref={wrapperRef}
           style={{
             position: 'absolute',
-            bottom: offset + 5,
+            bottom: offset,
             right: 9,
           }}
           className="channeldd"
         >
-          <div>
+          <div
+            className="chntop"
+          >
             <span
+              style={{ borderLeft: 'none' }}
+              className={`chntype${(type === 0) ? ' selected' : ''}`}
               onClick={() => setType(0)}
+              role="button"
+              tabIndex={-1}
             >
               <MdChat />
             </span>
-            |
-            <span
-              onClick={() => setType(1)}
-            >
-              <FaUserFriends />
-            </span>
+            {(hasDm)
+              && (
+              <span
+                className={
+                  `chntype${
+                    (type === 1) ? ' selected' : ''
+                  }`
+                }
+                onClick={() => setType(1)}
+                role="button"
+                tabIndex={-1}
+              >
+                {(unreadAny && chatNotify && type !== 1) && (
+                  <div className="chnunread">⦿</div>
+                )}
+                <FaUserFriends />
+              </span>
+              )}
           </div>
           <div
             className="channeldds"
@@ -116,8 +177,7 @@ const ChannelDropDown = ({
                 }
                 return false;
               }).map((cid) => {
-                const [name,, lastTs] = channels[cid];
-                console.log(`name ${name} lastTC ${lastTs} compare to ${chatRead[cid]}`);
+                const [name] = channels[cid];
                 return (
                   <div
                     onClick={() => setChannel(cid)}
@@ -126,10 +186,12 @@ const ChannelDropDown = ({
                         (cid === chatChannel) ? ' selected' : ''
                       }`
                     }
+                    role="button"
+                    tabIndex={-1}
                   >
                     {
-                      (chatRead[cid] < lastTs) ? (
-                        <span className="chnunread">※</span>
+                      (unread[cid] && chatNotify && !mute.includes(cid)) ? (
+                        <div className="chnunread">⦿</div>
                       ) : null
                     }
                     {name}
@@ -145,15 +207,19 @@ const ChannelDropDown = ({
 };
 
 function mapStateToProps(state: State) {
+  const { channels } = state.chat;
   const {
     chatChannel,
-    chatRead,
-  } = state.gui;
-  const { channels } = state.chat;
+    unread,
+    mute,
+  } = state.chatRead;
+  const { chatNotify } = state.audio;
   return {
     channels,
     chatChannel,
-    chatRead,
+    unread,
+    mute,
+    chatNotify,
   };
 }
 

@@ -200,21 +200,31 @@ export default (store) => (next) => (action) => {
     }
 
     case 'RECEIVE_CHAT_MESSAGE': {
-      if (!chatNotify) break;
+      if (mute || !chatNotify) break;
 
-      const { isPing } = action;
-      const { chatChannel } = state.gui;
-      // eslint-disable-next-line eqeqeq
-      if (!isPing && action.channel != chatChannel) {
-        break;
-      }
+      const { isPing, channel } = action;
+      const { mute: muteCh, chatChannel } = state.chatRead;
+      if (muteCh.includes(channel)) break;
+      if (muteCh.includes(`${channel}`)) break;
+      const { channels } = state.chat;
 
       const oscillatorNode = context.createOscillator();
       const gainNode = context.createGain();
 
       oscillatorNode.type = 'sine';
       oscillatorNode.frequency.setValueAtTime(310, context.currentTime);
-      const freq = (isPing) ? 540 : 355;
+      /*
+       * ping if user mention or
+       * message in DM channel that is not currently open
+       */
+      const freq = (isPing
+        || (
+          channels[channel]
+          && channels[channel][1] === 1
+          // eslint-disable-next-line eqeqeq
+          && channel != chatChannel
+        )
+      ) ? 540 : 355;
       oscillatorNode.frequency.exponentialRampToValueAtTime(
         freq,
         context.currentTime + 0.025,

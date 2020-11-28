@@ -70,7 +70,7 @@ const SocialSettings = ({
                 }
               }}
             >
-              {bl[1]}
+              {`⦸ ${bl[1]}`}
             </div>
           ))
         }

@@ -64,10 +64,11 @@ const RegUser = Model.define('User', {
     defaultValue: false,
   },
 
-  blockDm: {
-    type: DataType.BOOLEAN,
+  // currently just blockDm
+  blocks: {
+    type: DataType.TINYINT,
     allowNull: false,
-    defaultValue: false,
+    defaultValue: 0,
   },
 
   discordid: {
@@ -120,6 +121,10 @@ const RegUser = Model.define('User', {
     mcVerified(): boolean {
       return this.verified & 0x02;
     },
+
+    blockDm(): boolean {
+      return this.blocks & 0x01;
+    },
   },
 
   setterMethods: {
@@ -131,6 +136,11 @@ const RegUser = Model.define('User', {
     mcVerified(num: boolean) {
       const val = (num) ? (this.verified | 0x02) : (this.verified & ~0x02);
       this.setDataValue('verified', val);
+    },
+
+    blockDm(num: boolean) {
+      const val = (num) ? (this.blocks | 0x01) : (this.blocks & ~0x01);
+      this.setDataValue('blocks', val);
     },
 
     password(value: string) {
