@@ -3,6 +3,7 @@ import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
 import webSockets from '../socket/websockets';
+import RateLimiter from '../utils/RateLimiter';
 import { Channel, RegUser, UserChannel } from '../data/models';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import { cheapDetector } from './isProxy';
@@ -238,20 +239,26 @@ export class ChatProvider {
       return this.adminCommands(message, channelId);
     }
 
+    if (!user.rateLimiter) {
+      user.rateLimiter = new RateLimiter(20, 15, true);
+    }
+    const waitLeft = user.rateLimiter.tick();
+    if (waitLeft) {
+      // eslint-disable-next-line max-len
+      return `You are sending messages too fast, you have to wait ${Math.floor(waitLeft / 1000)}s :(`;
+    }
+
     if (!this.userHasChannelAccess(user, channelId)) {
       return 'You don\'t have access to this channel';
     }
 
     const country = user.regUser.flag || 'xx';
-    let displayCountry = (name.endsWith('berg') || name.endsWith('stein'))
+    const displayCountry = (name.endsWith('berg') || name.endsWith('stein'))
       ? 'il'
       : country;
 
     if (!user.regUser.verified) {
       return 'Your mail has to be verified in order to chat';
-    }
-    if (name === 'Aquila') {
-      displayCountry = 'ug';
     }
 
     if (message.length > 2

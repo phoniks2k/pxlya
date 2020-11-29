@@ -5,7 +5,6 @@ import WebSocket from 'ws';
 
 import logger from '../core/logger';
 import Counter from '../utils/Counter';
-import RateLimiter from '../utils/RateLimiter';
 import { getIPFromRequest } from '../utils/ip';
 
 import CoolDownPacket from './packets/CoolDownPacket';
@@ -85,7 +84,6 @@ class SocketServer extends WebSocketEvents {
       const user = await authenticateClient(req);
       ws.user = user;
       ws.name = user.getName();
-      ws.rateLimiter = new RateLimiter(20, 15, true);
       cheapDetector(user.ip);
 
       ws.send(OnlineCounter.dehydrate({
@@ -316,18 +314,6 @@ class SocketServer extends WebSocketEvents {
        */
       if (ws.name && message) {
         const { user } = ws;
-        const waitLeft = ws.rateLimiter.tick();
-        if (waitLeft) {
-          ws.send(JSON.stringify([
-            'info',
-            // eslint-disable-next-line max-len
-            `You are sending messages too fast, you have to wait ${Math.floor(waitLeft / 1000)}s :(`,
-            'il',
-            channelId,
-          ]));
-          return;
-        }
-
         /*
          * if DM channel, make sure that other user has DM open
          * (needed because we allow user to leave one-sided
@@ -356,7 +342,13 @@ class SocketServer extends WebSocketEvents {
           channelId,
         );
         if (errorMsg) {
-          ws.send(JSON.stringify(['info', errorMsg, 'il', channelId]));
+          ws.send(JSON.stringify([
+            'info',
+            errorMsg,
+            'il',
+            channelId,
+            chatProvider.infoUserId,
+          ]));
         }
       } else {
         logger.info('Got empty message or message from unidentified ws');
