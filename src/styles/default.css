@@ -193,11 +193,11 @@ tr:nth-child(even) {
 
 /* won't be needed anymore with chrome 90+ */
 .channeldds::-webkit-scrollbar {
-  width: 11px;
+  width: 6px;
 }
 .channeldds::-webkit-scrollbar-thumb {
-  border-radius: 6px;
-  border: 3px solid;
+  border-radius: 10px;
+  border: 1px solid;
 }
 
 .chntop {
