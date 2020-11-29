@@ -60,15 +60,14 @@ const UserContextMenu = ({
       }}
     >
       <div
+        role="button"
+        tabIndex={0}
         onClick={() => {
-          block(uid, name);
+          addToInput(`@${name} `);
           close();
         }}
-        role="button"
-        tabIndex={-1}
-        style={{ borderTop: 'none' }}
       >
-        Block
+        Ping
       </div>
       <div
         role="button"
@@ -96,14 +95,15 @@ const UserContextMenu = ({
         DM
       </div>
       <div
-        role="button"
-        tabIndex={0}
         onClick={() => {
-          addToInput(`@${name} `);
+          block(uid, name);
           close();
         }}
+        role="button"
+        tabIndex={-1}
+        style={{ borderTop: 'none' }}
       >
-        Ping
+        Block
       </div>
     </div>
   );
