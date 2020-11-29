@@ -66,6 +66,7 @@ const UserContextMenu = ({
           addToInput(`@${name} `);
           close();
         }}
+        style={{ borderTop: 'none' }}
       >
         Ping
       </div>
@@ -101,7 +102,6 @@ const UserContextMenu = ({
         }}
         role="button"
         tabIndex={-1}
-        style={{ borderTop: 'none' }}
       >
         Block
       </div>
