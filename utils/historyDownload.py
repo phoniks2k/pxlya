@@ -86,7 +86,7 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
     iter_date = None
     cnt = 0
     #frames = []
-    previous_day = PIL.Image.new('RGB', (256, 256), color=bkg)
+    previous_day = PIL.Image.new('RGB', (w, h), color=bkg)
     while iter_date != end_date:
         iter_date = start_date.strftime("%Y%m%d")
         print('------------------------------------------------')
@@ -174,8 +174,8 @@ if __name__ == "__main__":
             end_date = datetime.date.today()
         x = int(start[0])
         y = int(start[1])
-        w = int(end[0]) - x
-        h =int( end[1]) - y
+        w = int(end[0]) - x + 1
+        h = int( end[1]) - y + 1
         loop = asyncio.get_event_loop()
         if not os.path.exists('./timelapse'):
             os.mkdir('./timelapse')
