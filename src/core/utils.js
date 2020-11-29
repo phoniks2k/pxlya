@@ -183,7 +183,7 @@ export function durationToString(
   return timestring;
 }
 
-const postfix = ['k', 'm', 'M'];
+const postfix = ['k', 'M', 'B'];
 export function numberToString(num: number): string {
   if (!num) {
     return 'N/A';
