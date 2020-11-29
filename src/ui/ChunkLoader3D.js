@@ -109,7 +109,7 @@ class ChunkLoader {
         } else {
           throw new Error('Chunk response was invalid');
         }
-        this.store.dispatch(receiveBigChunk(center));
+        this.store.dispatch(receiveBigChunk(center, chunk));
       } else {
         throw new Error('Network response was not ok.');
       }

@@ -14,6 +14,7 @@ import array from './array';
 import promise from './promise';
 import notifications from './notifications';
 import title from './title';
+import extensions from './extensions';
 import reducers from '../reducers';
 
 
@@ -39,7 +40,7 @@ const store = createStore(
       title,
       protocolClientHook,
       rendererHook,
-      // ads,
+      extensions,
       logger,
     ),
   ),

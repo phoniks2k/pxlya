@@ -194,7 +194,8 @@ class ChunkLoader {
     historicalTime: string,
     chunkRGB,
   ) {
-    const { canvasId } = this;
+    const { canvasId, canvasMaxTiledZoom } = this;
+    const center = [canvasMaxTiledZoom, cx, cy];
     let url = `${window.backupurl}/${historicalDate}/`;
     if (historicalTime) {
       // incremential tiles
@@ -203,13 +204,13 @@ class ChunkLoader {
       // full tiles
       url += `${canvasId}/tiles/${cx}/${cy}.png`;
     }
-    this.store.dispatch(requestBigChunk(null));
+    this.store.dispatch(requestBigChunk(center));
     try {
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
-      this.store.dispatch(receiveBigChunk(null));
+      this.store.dispatch(receiveBigChunk(center, chunkRGB));
     } catch (error) {
-      this.store.dispatch(receiveBigChunkFailure(null, error));
+      this.store.dispatch(receiveBigChunkFailure(center, error));
       if (historicalTime) {
         chunkRGB.empty(true);
       } else {
@@ -233,7 +234,7 @@ class ChunkLoader {
         } else {
           throw new Error('Chunk response was invalid');
         }
-        this.store.dispatch(receiveBigChunk(center));
+        this.store.dispatch(receiveBigChunk(center, chunkRGB));
       } else {
         throw new Error('Network response was not ok.');
       }
@@ -250,7 +251,7 @@ class ChunkLoader {
       const url = `tiles/${this.canvasId}/${zoom}/${cx}/${cy}.png`;
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
-      this.store.dispatch(receiveBigChunk(center));
+      this.store.dispatch(receiveBigChunk(center, chunkRGB));
     } catch (error) {
       this.store.dispatch(receiveBigChunkFailure(center, error));
       chunkRGB.empty();
