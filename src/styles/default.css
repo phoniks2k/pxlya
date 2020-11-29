@@ -188,6 +188,16 @@ tr:nth-child(even) {
   overflow-y: auto;
   overflow-x: hidden;
   margin: 2px;
+  scrollbar-width: thin;
+}
+
+/* won't be needed anymore with chrome 90+ */
+.channeldds::-webkit-scrollbar {
+  width: 11px;
+}
+.channeldds::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  border: 3px solid;
 }
 
 .chntop {
