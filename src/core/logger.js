@@ -48,5 +48,19 @@ export const proxyLogger = createLogger({
   ],
 });
 
+export const admintoolsLogger = createLogger({
+  format: format.printf(({ message }) => message),
+  transports: [
+    new DailyRotateFile({
+      level: 'info',
+      filename: './log/admintools-%DATE%.log',
+      maxSize: '20m',
+      maxFiles: '14d',
+      colorize: false,
+    }),
+  ],
+});
+
+
 
 export default logger;

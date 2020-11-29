@@ -88,20 +88,22 @@ export async function drawByOffset(
       }
     }
 
+    const isAdmin = (user.userlvl === 1);
     const setColor = await RedisCanvas.getPixelByOffset(canvasId, i, j, offset);
+
     if (setColor & 0x80
       /* 3D Canvas Minecraft Avatars */
       // && x >= 96 && x <= 128 && z >= 35 && z <= 100
       // 96 - 128 on x
       // 32 - 128 on z
-      || (canvas.v && i === 19 && j >= 17 && j < 20 && !user.isAdmin())
+      || (canvas.v && i === 19 && j >= 17 && j < 20 && !isAdmin)
     ) {
       // protected pixel
       throw new Error(8);
     }
 
     coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
-    if (user.isAdmin()) {
+    if (isAdmin) {
       coolDown = 0.0;
     } else if (rpgEvent.success) {
       if (rpgEvent.success === 1) {
@@ -262,10 +264,11 @@ export async function drawByCoords(
     }
   }
 
+  const isAdmin = (user.userlvl === 1);
   const setColor = await RedisCanvas.getPixel(canvasId, x, y, z);
 
   let coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
-  if (user.isAdmin()) {
+  if (isAdmin) {
     coolDown = 0.0;
   } else if (rpgEvent.success) {
     if (rpgEvent.success === 1) {
@@ -293,7 +296,7 @@ export async function drawByCoords(
   if (setColor & 0x80
     || (canvas.v
       && x >= 96 && x <= 128 && z >= 35 && z <= 100
-      && !user.isAdmin())
+      && !isAdmin)
   ) {
     logger.info(`${user.ip} tried to set on protected pixel (${x}, ${y})`);
     return {
@@ -338,10 +341,6 @@ export function drawSafeByCoords(
   y: number,
   z: number = null,
 ): Promise<Cell> {
-  if (user.isAdmin()) {
-    return drawByCoords(user, canvasId, color, x, y, z);
-  }
-
   // can just check for one unique occurence,
   // we use ip, because id for logged out users is
   // always null
@@ -379,10 +378,6 @@ export function drawSafeByOffset(
   j: number,
   offset: number,
 ): Promise<Cell> {
-  if (user.isAdmin()) {
-    return drawByOffset(user, canvasId, color, i, j, offset);
-  }
-
   // can just check for one unique occurence,
   // we use ip, because id for logged out users is
   // always null

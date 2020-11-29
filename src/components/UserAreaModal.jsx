@@ -116,7 +116,7 @@ const UserAreaModal = ({
             </Suspense>
           </div>
           {userlvl && (
-          <div label="Admintools">
+          <div label={(userlvl === 1) ? 'Admintools' : 'Modtools'}>
             <Suspense fallback={<div>Loading...</div>}>
               <Admintools />
             </Suspense>

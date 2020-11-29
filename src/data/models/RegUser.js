@@ -29,6 +29,13 @@ const RegUser = Model.define('User', {
     allowNull: false,
   },
 
+  // currently just moderator
+  roles: {
+    type: DataType.TINYINT,
+    allowNull: false,
+    defaultValue: 0,
+  },
+
   // null if external oauth authentification
   password: {
     type: DataType.CHAR(60),
@@ -125,6 +132,10 @@ const RegUser = Model.define('User', {
     blockDm(): boolean {
       return this.blocks & 0x01;
     },
+
+    isMod(): boolean {
+      return this.roles & 0x01;
+    },
   },
 
   setterMethods: {
@@ -141,6 +152,11 @@ const RegUser = Model.define('User', {
     blockDm(num: boolean) {
       const val = (num) ? (this.blocks | 0x01) : (this.blocks & ~0x01);
       this.setDataValue('blocks', val);
+    },
+
+    isMod(num: boolean) {
+      const val = (num) ? (this.roles | 0x01) : (this.roles & ~0x01);
+      this.setDataValue('roles', val);
     },
 
     password(value: string) {

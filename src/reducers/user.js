@@ -33,7 +33,7 @@ export type UserState = {
   isOnMobile: boolean,
   // small notifications for received cooldown
   notification: string,
-  // 1: Admin, 0: ordinary user
+  // 1: Admin, 2: Mod, 0: ordinary user
   userlvl: number,
   // regExp for detecting ping
   nameRegExp: RegExp,

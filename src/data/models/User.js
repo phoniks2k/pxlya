@@ -22,7 +22,14 @@ class User {
   ip: string;
   wait: ?number;
   regUser: Object;
-  channels: Array;
+  channels: Object;
+  blocked: Array;
+  /*
+   * 0: nothing
+   * 1: Admin
+   * 2: Mod
+   */
+  userlvl: number;
 
   constructor(id: string = null, ip: string = '127.0.0.1') {
     // id should stay null if unregistered
@@ -30,6 +37,7 @@ class User {
     this.ip = ip;
     this.channels = {};
     this.blocked = [];
+    this.userlvl = 0;
     this.ipSub = getIPv6Subnet(ip);
     this.wait = null;
     // following gets populated by passport
@@ -54,6 +62,14 @@ class User {
   setRegUser(reguser) {
     this.regUser = reguser;
     this.id = reguser.id;
+
+    if (this.regUser.isMod) {
+      this.userlvl = 2;
+    }
+    if (ADMIN_IDS.includes(this.id)) {
+      this.userlvl = 1;
+    }
+
     if (reguser.channel) {
       for (let i = 0; i < reguser.channel.length; i += 1) {
         const {
@@ -139,7 +155,7 @@ class User {
   async incrementPixelcount(): Promise<boolean> {
     const { id } = this;
     if (!id) return false;
-    if (this.isAdmin()) return false;
+    if (this.userlvl === 1) return false;
     try {
       await RegUser.update({
         totalPixels: Sequelize.literal('totalPixels + 1'),
@@ -156,7 +172,7 @@ class User {
   async getTotalPixels(): Promise<number> {
     const { id } = this;
     if (!id) return 0;
-    if (this.isAdmin()) return 100000;
+    if (this.userlvl === 1) return 100000;
     if (this.regUser) {
       return this.regUser.totalPixels;
     }
@@ -196,10 +212,6 @@ class User {
     return true;
   }
 
-  isAdmin(): boolean {
-    return ADMIN_IDS.includes(this.id);
-  }
-
   getUserData(): Object {
     if (this.regUser == null) {
       return {
@@ -218,7 +230,9 @@ class User {
         blocked: this.blocked,
       };
     }
-    const { regUser } = this;
+    const {
+      regUser, userlvl, channels, blocked,
+    } = this;
     return {
       name: regUser.name,
       mailVerified: regUser.mailVerified,
@@ -230,9 +244,9 @@ class User {
       ranking: regUser.ranking,
       dailyRanking: regUser.dailyRanking,
       mailreg: !!(regUser.password),
-      userlvl: this.isAdmin() ? 1 : 0,
-      channels: this.channels,
-      blocked: this.blocked,
+      userlvl,
+      channels,
+      blocked,
     };
   }
 }

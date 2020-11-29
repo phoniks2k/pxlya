@@ -223,7 +223,7 @@ export class ChatProvider {
     const { id } = user;
     const name = user.getName();
 
-    if (!user.isAdmin() && await cheapDetector(user.ip)) {
+    if (!user.userlvl && await cheapDetector(user.ip)) {
       logger.info(
         `${name} / ${user.ip} tried to send chat message with proxy`,
       );
@@ -235,7 +235,7 @@ export class ChatProvider {
       return 'Couldn\'t send your message, pls log out and back in again.';
     }
 
-    if (user.isAdmin() && message.charAt(0) === '/') {
+    if (message.charAt(0) === '/' && user.userlvl) {
       return this.adminCommands(message, channelId);
     }
 
