@@ -130,12 +130,13 @@ async def fetch(session, ix, iy, target_matrix):
                     for b in data:
                         tx = off_x + i % 256 
                         ty = off_y + i // 256
-                        if b == 0:
+                        bcl = b & 0x7F
+                        if bcl == 0:
                             c = 23
-                        elif b == 1:
+                        elif bcl == 1:
                             c = 0
                         else:
-                            c = b - 2;
+                            c = bcl - 2;
                         target_matrix.set_pixel(tx, ty, EnumColorPixelplanet.index(c))
                         i += 1
                 print("Loaded %s  with %s pixels" %  (url, i))
@@ -175,8 +176,8 @@ if __name__ == "__main__":
         filename = sys.argv[3]
         x = int(start[0])
         y = int(start[1])
-        w = int(end[0]) - x
-        h =int( end[1]) - y
+        w = int(end[0]) - x + 1
+        h =int( end[1]) - y + 1
         loop = asyncio.get_event_loop()
         matrix = loop.run_until_complete(get_area(x, y, w, h))
         matrix.create_image(filename)
