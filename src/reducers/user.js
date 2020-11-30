@@ -91,9 +91,9 @@ export default function user(
 
     case 'SET_WAIT': {
       const { wait: duration } = action;
-
-      const wait = duration ? new Date(Date.now() + duration) : null;
-
+      const wait = duration
+        ? new Date(Date.now() + duration)
+        : null;
       return {
         ...state,
         wait,

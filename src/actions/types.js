@@ -36,6 +36,7 @@ export type Action =
   | { type: 'SET_MOBILE', mobile: boolean }
   | { type: 'COOLDOWN_END' }
   | { type: 'COOLDOWN_SET', coolDown: number }
+  | { type: 'COOLDOWN_DELTA', delta: number }
   | { type: 'SELECT_COLOR', color: ColorIndex }
   | { type: 'SELECT_CANVAS', canvasId: number }
   | { type: 'REQUEST_PLACE_PIXEL',

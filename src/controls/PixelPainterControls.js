@@ -34,7 +34,8 @@ class PixelPlainterControls {
     this.viewport = viewport;
 
     this.onMouseDown = this.onMouseDown.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.onAuxClick = this.onAuxClick.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -57,8 +58,13 @@ class PixelPlainterControls {
     this.isMultiTab = false;
     // on touch: timeout to detect long-press
     this.tapTimeout = null;
+    // if we are shift-hold-painting
+    this.holdPainting = false;
+    // if we are waiting before placeing pixel via holdPainting again
+    this.coolDownDelta = false;
 
-    document.addEventListener('keydown', this.onKeyPress, false);
+    document.addEventListener('keydown', this.onKeyDown, false);
+    document.addEventListener('keyup', this.onKeyUp, false);
     viewport.addEventListener('auxclick', this.onAuxClick, false);
     viewport.addEventListener('mousedown', this.onMouseDown, false);
     viewport.addEventListener('mousemove', this.onMouseMove, false);
@@ -72,7 +78,15 @@ class PixelPlainterControls {
   }
 
   dispose() {
-    document.removeEventListener('keydown', this.onKeyPress, false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
+    document.removeEventListener('keyup', this.onKeyUp, false);
+  }
+
+  gotCoolDownDelta(delta) {
+    this.coolDownDelta = true;
+    setTimeout(() => {
+      this.coolDownDelta = false;
+    }, delta * 1000);
   }
 
   onMouseDown(event: MouseEvent) {
@@ -109,11 +123,16 @@ class PixelPlainterControls {
       // thresholds for single click / holding
       if (clickTapStartTime > Date.now() - 250
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
+        const state = store.getState();
+        const cell = screenToWorld(
+          state,
+          this.viewport,
+          [clientX, clientY],
+        );
         PixelPlainterControls.placePixel(
           store,
-          this.viewport,
           this.renderer,
-          [clientX, clientY],
+          cell,
         );
       }
       this.viewport.style.cursor = 'auto';
@@ -140,7 +159,7 @@ class PixelPlainterControls {
     return null;
   }
 
-  static placePixel(store, viewport, renderer, center) {
+  static placePixel(store, renderer, cell) {
     const state = store.getState();
     const { autoZoomIn } = state.gui;
     const { placeAllowed } = state.user;
@@ -151,8 +170,6 @@ class PixelPlainterControls {
     } = state.canvas;
 
     if (isHistoricalView) return;
-
-    const cell = screenToWorld(state, viewport, center);
 
     if (autoZoomIn && scale < 8) {
       store.dispatch(setViewCoordinates(cell));
@@ -233,11 +250,16 @@ class PixelPlainterControls {
       if (clickTapStartTime > Date.now() - 250
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         const { viewport } = this;
+        const state = store.getState();
+        const cell = screenToWorld(
+          state,
+          viewport,
+          [pageX, pageY],
+        );
         PixelPlainterControls.placePixel(
           store,
-          viewport,
           this.renderer,
-          [pageX, pageY],
+          cell,
         );
         setTimeout(() => {
           store.dispatch(unsetHover());
@@ -347,12 +369,18 @@ class PixelPlainterControls {
         lastPosY - (deltaY / scale),
       ]));
     } else {
+      const { hover } = state.gui;
       const screenCoor = screenToWorld(
         state,
         this.viewport,
         [clientX, clientY],
       );
-      store.dispatch(setHover(screenCoor));
+      if (!hover || hover[0] !== screenCoor[0] || hover[1] !== screenCoor[1]) {
+        store.dispatch(setHover(screenCoor));
+      }
+      if (this.holdPainting && !this.coolDownDelta) {
+        PixelPlainterControls.placePixel(store, this.renderer, screenCoor);
+      }
     }
   }
 
@@ -361,6 +389,7 @@ class PixelPlainterControls {
     viewport.style.cursor = 'auto';
     store.dispatch(unsetHover());
     store.dispatch(onViewFinishChange());
+    this.holdPainting = false;
     this.clearTabTimeout();
   }
 
@@ -393,7 +422,13 @@ class PixelPlainterControls {
     );
   }
 
-  onKeyPress(event: KeyboardEvent) {
+  onKeyUp(event: KeyboardEvent) {
+    if (keycode(event) === 'shift') {
+      this.holdPainting = false;
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
     // ignore key presses if modal is open or chat is used
     if (event.target.nodeName === 'INPUT'
       || event.target.nodeName === 'TEXTAREA'
@@ -419,11 +454,6 @@ class PixelPlainterControls {
       case 'd':
         store.dispatch(moveEast());
         break;
-      /*
-      case 'space':
-        if ($viewport) $viewport.click();
-        return;
-      */
       case '+':
       case 'e':
         store.dispatch(zoomIn());
@@ -432,6 +462,15 @@ class PixelPlainterControls {
       case 'q':
         store.dispatch(zoomOut());
         break;
+      case 'shift': {
+        const state = store.getState();
+        const { hover } = state.gui;
+        if (hover) {
+          this.holdPainting = true;
+          PixelPlainterControls.placePixel(store, this.renderer, hover);
+        }
+        break;
+      }
       default:
     }
   }

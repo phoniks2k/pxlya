@@ -233,6 +233,13 @@ export function notify(notification: string) {
   };
 }
 
+function gotCoolDownDelta(delta: number) {
+  return {
+    type: 'COOLDOWN_DELTA',
+    delta,
+  };
+}
+
 let pixelTimeout = null;
 export function tryPlacePixel(
   i: number,
@@ -271,11 +278,18 @@ export function receivePixelReturn(
 ): ThunkAction {
   return (dispatch) => {
     try {
+      /*
+       * the terms coolDown is used in a different meaning here
+       * coolDown is the delta seconds  of the placed pixel
+       */
       if (wait) {
         dispatch(setWait(wait));
       }
       if (coolDownSeconds) {
         dispatch(notify(coolDownSeconds));
+        if (coolDownSeconds < 0) {
+          dispatch(gotCoolDownDelta(coolDownSeconds));
+        }
       }
 
       let errorTitle = null;

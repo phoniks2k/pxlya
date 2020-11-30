@@ -85,6 +85,15 @@ export default (store) => (next) => (action) => {
       break;
     }
 
+    case 'COOLDOWN_DELTA': {
+      const { delta } = action;
+      const renderer = getRenderer();
+      if (renderer && renderer.controls && renderer.controls.gotCoolDownDelta) {
+        renderer.controls.gotCoolDownDelta(delta * -1);
+      }
+      break;
+    }
+
     default:
       // nothing
   }
