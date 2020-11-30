@@ -261,7 +261,7 @@ export class ChatProvider {
       return 'Your mail has to be verified in order to chat';
     }
 
-    if (message.length > 2
+    if (message.length > 4
       && message === message.toUpperCase()
       && message !== message.toLowerCase()
     ) {
