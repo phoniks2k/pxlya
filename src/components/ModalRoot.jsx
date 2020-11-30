@@ -19,6 +19,7 @@ import SettingsModal from './SettingsModal';
 import UserAreaModal from './UserAreaModal';
 import RegisterModal from './RegisterModal';
 import CanvasSelectModal from './CanvasSelectModal';
+import ArchiveModal from './ArchiveModal';
 import ChatModal from './ChatModal';
 import ForgotPasswordModal from './ForgotPasswordModal';
 
@@ -32,6 +33,7 @@ const MODAL_COMPONENTS = {
   FORGOT_PASSWORD: ForgotPasswordModal,
   CHAT: ChatModal,
   CANVAS_SELECTION: CanvasSelectModal,
+  ARCHIVE: ArchiveModal,
   /* other modals */
 };
 

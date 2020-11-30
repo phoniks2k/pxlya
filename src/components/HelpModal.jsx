@@ -4,9 +4,6 @@
  */
 
 import React from 'react';
-// import FaFacebook from 'react-icons/lib/fa/facebook';
-// import FaTwitter from 'react-icons/lib/fa/twitter';
-// import FaRedditAlien from 'react-icons/lib/fa/reddit-alien';
 
 /* eslint-disable max-len */
 

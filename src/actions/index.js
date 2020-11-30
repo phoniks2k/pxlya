@@ -712,6 +712,9 @@ export function showForgotPasswordModal(): Action {
 export function showHelpModal(): Action {
   return showModal('HELP');
 }
+export function showArchiveModal(): Action {
+  return showModal('ARCHIVE');
+}
 
 export function showCanvasSelectionModal(): Action {
   return showModal('CANVAS_SELECTION');

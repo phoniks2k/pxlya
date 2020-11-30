@@ -7,11 +7,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import CanvasItem from './CanvasItem';
+import { showArchiveModal } from '../actions';
 
 import type { State } from '../reducers';
 
 
-const CanvasSelectModal = ({ canvases, showHiddenCanvases }) => (
+const CanvasSelectModal = ({
+  canvases,
+  showHiddenCanvases,
+  showArchive,
+}) => (
   <p style={{
     textAlign: 'center',
     paddingLeft: '5%',
@@ -22,7 +27,14 @@ const CanvasSelectModal = ({ canvases, showHiddenCanvases }) => (
     <p className="modaltext">
       Select the canvas you want to use.
       Every canvas is unique and has different palettes,
-      cooldown and requirements.
+      cooldown and requirements. Archive of closed canvases can be
+      accessed&nbsp;
+      <span
+        role="button"
+        tabIndex={0}
+        className="modallink"
+        onClick={showArchive}
+      >here</span>.
     </p>
     {
       Object.keys(canvases).map((canvasId) => (
@@ -34,6 +46,14 @@ const CanvasSelectModal = ({ canvases, showHiddenCanvases }) => (
   </p>
 );
 
+function mapDispatchToProps(dispatch) {
+  return {
+    showArchive() {
+      dispatch(showArchiveModal());
+    },
+  };
+}
+
 function mapStateToProps(state: State) {
   const {
     canvases,
@@ -43,7 +63,7 @@ function mapStateToProps(state: State) {
 }
 
 const data = {
-  content: connect(mapStateToProps)(CanvasSelectModal),
+  content: connect(mapStateToProps, mapDispatchToProps)(CanvasSelectModal),
   title: 'Canvas Selection',
 };
 

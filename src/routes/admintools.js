@@ -67,7 +67,9 @@ router.use(passport.session());
 router.use(async (req, res, next) => {
   const ip = getIPFromRequest(req);
   if (!req.user) {
-    admintoolsLogger.info(`ADMINTOOLS: ${ip} tried to access admintools without login`);
+    admintoolsLogger.info(
+      `ADMINTOOLS: ${ip} tried to access admintools without login`,
+    );
     res.status(403).send('You are not logged in');
     return;
   }
