@@ -34,7 +34,7 @@ export default (store) => (next) => (action) => {
             // eslint-disable-next-line no-new
             new Notification('Your next pixels are ready', {
               icon: '/tile.png',
-              silent: true,
+              silent: false,
               vibrate: [200, 100],
               body: 'You can now place more on pixelplanet.fun :)',
             });
@@ -55,7 +55,7 @@ export default (store) => (next) => (action) => {
             // eslint-disable-next-line no-new
             new Notification(`${name} mentioned you`, {
               icon: '/tile.png',
-              silent: true,
+              silent: false,
               vibrate: [200, 100],
               body: 'You have new messages in chat',
             });
