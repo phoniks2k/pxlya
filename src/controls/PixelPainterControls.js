@@ -423,8 +423,12 @@ class PixelPlainterControls {
   }
 
   onKeyUp(event: KeyboardEvent) {
-    if (keycode(event) === 'shift') {
-      this.holdPainting = false;
+    switch (keycode(event)) {
+      case 'shift':
+      case 'caps lock':
+        this.holdPainting = false;
+        break;
+      default:
     }
   }
 
