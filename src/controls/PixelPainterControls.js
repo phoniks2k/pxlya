@@ -400,10 +400,9 @@ class PixelPlainterControls {
     }
     const coords = screenToWorld(state, viewport, center);
     const clrIndex = renderer.getColorIndexOfPixel(...coords);
-    if (clrIndex === null) {
-      return;
+    if (clrIndex !== null) {
+      store.dispatch(selectColor(clrIndex));
     }
-    store.dispatch(selectColor(clrIndex));
   }
 
   onAuxClick(event: MouseEvent) {
@@ -440,8 +439,9 @@ class PixelPlainterControls {
       return;
     }
     const { store } = this;
+    const key = keycode(event);
 
-    switch (keycode(event)) {
+    switch (key) {
       case 'up':
       case 'w':
         store.dispatch(moveNorth());
@@ -466,12 +466,20 @@ class PixelPlainterControls {
       case 'q':
         store.dispatch(zoomOut());
         break;
+      case 'ctrl':
       case 'shift': {
         const state = store.getState();
         const { hover } = state.gui;
         if (hover) {
-          this.holdPainting = true;
-          PixelPlainterControls.placePixel(store, this.renderer, hover);
+          if (key === 'ctrl') {
+            const clrIndex = this.renderer.getColorIndexOfPixel(...hover);
+            if (clrIndex !== null) {
+              store.dispatch(selectColor(clrIndex));
+            }
+          } else {
+            this.holdPainting = true;
+            PixelPlainterControls.placePixel(store, this.renderer, hover);
+          }
         }
         break;
       }
