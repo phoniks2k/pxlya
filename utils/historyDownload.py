@@ -163,6 +163,8 @@ if __name__ == "__main__":
         print("-----------")
         print("You can create a timelapse from the resulting files with ffmpeg like that:")
         print("ffmpeg -framerate 15 -f image2 -i timelapse/t%d.png -c:v libvpx-vp9 -pix_fmt yuva420p output.webm")
+        print("or lossless example:")
+        print("ffmpeg -framerate 15 -f image2 -i timelapse/t%d.png -c:v libvpx-vp9 -pix_fmt yuv444p -qmin 0 -qmax 0 -lossless 1 -an output.webm")
     else:
         canvas = int(sys.argv[1])
         start = sys.argv[2].split('_')
@@ -185,3 +187,5 @@ if __name__ == "__main__":
         print("ffmpeg -framerate 15 -f image2 -i timelapse/t%d.png -c:v libvpx-vp9 -pix_fmt yuva420p output.webm")
         print("example with scaling *3 and audio track:")
         print("ffmpeg -i ./audio.mp3 -framerate 8 -f image2 -i timelapse/t%d.png -map 0:a -map 1:v -vf scale=iw*3:-1 -shortest -c:v libvpx-vp9 -c:a libvorbis -pix_fmt yuva420p output.webm")
+        print("lossless example:")
+        print("ffmpeg -framerate 15 -f image2 -i timelapse/t%d.png -c:v libvpx-vp9 -pix_fmt yuv444p -qmin 0 -qmax 0 -lossless 1 -an output.webm")
