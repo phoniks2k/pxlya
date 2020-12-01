@@ -31,6 +31,7 @@ const styles = [{
 const title = 'PixelPlanet.fun 3DGlobe';
 const description = '3D globe of our canvas';
 const scripts = [
+  ASSET_SERVER + assets.three.js,
   ASSET_SERVER + assets.globe.js,
 ];
 const body = <Globe />;
