@@ -80,23 +80,6 @@ const config = {
         ],
       },
       {
-        test: /\.scss/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              // CSS Loader https://github.com/webpack/css-loader
-              importLoaders: 1,
-              sourceMap: isDebug,
-              // CSS Modules https://github.com/css-modules/css-modules
-              modules: false,
-            },
-          },
-          'sass-loader',
-        ],
-      },
-      {
         test: /\.md$/,
         loader: path.resolve(__dirname, './lib/markdown-loader.js'),
       },
@@ -189,7 +172,7 @@ const clientConfig = {
               },
               debug: false,
             }],
-            "@babel/typescript",
+            '@babel/typescript',
             // JSX, Flow
             // https://github.com/babel/babel/tree/master/packages/babel-preset-react
             '@babel/react',
@@ -332,7 +315,7 @@ const webConfig = {
               useBuiltIns: false,
               debug: false,
             }],
-            "@babel/typescript",
+            '@babel/typescript',
             // JSX, Flow
             // https://github.com/babel/babel/tree/master/packages/babel-preset-react
             '@babel/react',
