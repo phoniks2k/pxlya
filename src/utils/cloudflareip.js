@@ -5,15 +5,24 @@
 
 import { Address4, Address6 } from 'ip-address';
 
-// returns undefined | Address4 | Address6
+import logger from '../core/logger';
+
+// returns null | Address4 | Address6
 function intoAddress(str) {
   if (typeof str === 'string') str = str.trim();
-  let ip = new Address6(str);
-  if (ip.v4 && !ip.valid) {
-    ip = new Address4(str);
+  try {
+    const isV6 = (str.indexOf(':') !== -1);
+    let ip = null;
+    if (isV6) {
+      ip = new Address6(str);
+    } else {
+      ip = new Address4(str);
+    }
+    return ip;
+  } catch {
+    logger.error(`CF-check: Got invalid ip ${str}`);
+    return null;
   }
-  if (!ip.valid) return null;
-  return ip;
 }
 
 const cloudflareIps = [
