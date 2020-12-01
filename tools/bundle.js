@@ -9,7 +9,20 @@
 
 import fs from 'fs';
 import webpack from 'webpack';
-import webpackConfig from './webpack.config';
+import webpackConfigWeb from './webpack.config.web';
+import webpackConfigClient from './webpack.config.client';
+
+const wpStats = {
+    colors: true,
+    reasons: false,
+    hash: false,
+    version: false,
+    timings: true,
+    chunks: true,
+    chunkModules: false,
+    cached: false,
+    cachedAssets: false,
+}
 
 /**
  * Creates application bundles from the source files.
@@ -20,7 +33,7 @@ function bundle() {
      * Pretty dirty, but we did write an issue and they might
      * update one day
      */
-    console.log('Pathing image-q set-immediate import');
+    console.log('Patching image-q set-immediate import');
     const regex = /core-js\/fn\/set-immediate/g;
     const files = [
       './node_modules/image-q/dist/esm/basicAPI.js',
@@ -31,17 +44,18 @@ function bundle() {
       fileContent = fileContent.replace(regex, 'core-js/features/set-immediate');
       fs.writeFileSync(file, fileContent);
     });
-    console.log('Pathing image-q done');
+    console.log('Patching image-q done');
   } catch {
     console.log('Error while patching image-q');
   }
+  console.log('Bundle with webpack....');
+
   return new Promise((resolve, reject) => {
-    webpack(webpackConfig).run((err, stats) => {
+    webpack([webpackConfigWeb, webpackConfigClient]).run((err, stats) => {
       if (err) {
         return reject(err);
       }
-
-      console.log(stats.toString(webpackConfig[0].stats));
+      console.log(stats.toString(wpStats));
       return resolve();
     });
   });

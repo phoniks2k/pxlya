@@ -2,7 +2,6 @@
 
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
 import { persistStore } from 'redux-persist';
 
 import audio from './audio';
@@ -17,14 +16,6 @@ import title from './title';
 import extensions from './extensions';
 import reducers from '../reducers';
 
-
-const isDebuggingInChrome = __DEV__ && !!window.navigator.userAgent;
-
-const logger = createLogger({
-  predicate: () => isDebuggingInChrome,
-  collapsed: true,
-  duration: true,
-});
 
 const store = createStore(
   reducers,
@@ -41,7 +32,6 @@ const store = createStore(
       protocolClientHook,
       rendererHook,
       extensions,
-      logger,
     ),
   ),
 );
