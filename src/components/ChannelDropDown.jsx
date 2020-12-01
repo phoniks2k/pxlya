@@ -25,6 +25,7 @@ const ChannelDropDown = ({
   setChannel,
 }) => {
   const [show, setShow] = useState(false);
+  const [sortChans, setSortChans] = useState([]);
   // 0: global and faction  channels
   // 1: DMs
   const [type, setType] = useState(0);
@@ -70,23 +71,41 @@ const ChannelDropDown = ({
 
   useEffect(() => {
     const cids = Object.keys(channels);
+    const sortChansNew = [];
     let i = 0;
     while (i < cids.length) {
       const cid = cids[i];
+      const unreadCh = unread[cid] && !mute.includes(cid);
+      // [cid, unread, name, type, lastTs, dmuid]
+      sortChansNew.push([cid, unreadCh, ...channels[cid]]);
       if (
-        channels[cid][1] !== 0
-        && unread[cid]
-        && !mute.includes(cid)
+        !unreadAny
+        && channels[cid][1] !== 0
+        && unreadCh
       ) {
         setUnreadAny(true);
-        break;
       }
       i += 1;
     }
+    // latest lastTs first
+    sortChansNew.sort((c1, c2) => {
+      if (c1[3] === 0) return 0;
+      if (c1[4] > c2[4]) return -1;
+      if (c2[4] > c1[4]) return 1;
+      return 0;
+    });
+    // unread first
+    sortChansNew.sort((c1, c2) => {
+      if (c1[3] === 0) return 0;
+      if (c1[1] && !c2[1]) return -1;
+      if (c2[1] && !c1[1]) return 1;
+      return 0;
+    });
+    setSortChans(sortChansNew);
     if (i === cids.length) {
       setUnreadAny(false);
     }
-  }, [unread]);
+  }, [channels, unread]);
 
   useEffect(() => {
     const cids = Object.keys(channels);
@@ -167,8 +186,8 @@ const ChannelDropDown = ({
             className="channeldds"
           >
             {
-              Object.keys(channels).filter((cid) => {
-                const chType = channels[cid][1];
+              sortChans.filter((ch) => {
+                const chType = ch[3];
                 if (type === 1 && chType === 1) {
                   return true;
                 }
@@ -176,8 +195,8 @@ const ChannelDropDown = ({
                   return true;
                 }
                 return false;
-              }).map((cid) => {
-                const [name] = channels[cid];
+              }).map((ch) => {
+                const [cid, unreadCh, name] = ch;
                 return (
                   <div
                     onClick={() => setChannel(cid)}
@@ -190,7 +209,7 @@ const ChannelDropDown = ({
                     tabIndex={-1}
                   >
                     {
-                      (unread[cid] && chatNotify && !mute.includes(cid)) ? (
+                      (unreadCh && chatNotify) ? (
                         <div className="chnunread">⦿</div>
                       ) : null
                     }

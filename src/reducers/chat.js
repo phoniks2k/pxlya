@@ -22,7 +22,7 @@ export type ChatState = {
    *   ...
    * }
    */
-  channels: Array,
+  channels: Object,
   // [[uId, userName], [userId2, userName2],...]
   blocked: Array,
   // { cid: [message1,message2,message3,...]}
