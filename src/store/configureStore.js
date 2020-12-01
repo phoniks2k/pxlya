@@ -41,8 +41,5 @@ export default function configureStore(onComplete: ?() => void) {
   persistStore(store, null, () => {
     onComplete(store);
   });
-  if (isDebuggingInChrome) {
-    window.store = store;
-  }
   return store;
 }
