@@ -83,7 +83,12 @@ class User {
           /* in DMs:
            * the name is the name of the other user
            * id also gets grabbed
+           *
+           * TODO clean DMs of deleted users
            */
+          if (!dmu1 || !dmu2) {
+            continue;
+          }
           const name = (dmu1.id === this.id) ? dmu2.name : dmu1.name;
           const dmu = (dmu1.id === this.id) ? dmu2.id : dmu1.id;
           this.addChannel(id, [
