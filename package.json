@@ -11,6 +11,7 @@
   "scripts": {
     "build": "babel-node tools/run build",
     "clean": "babel-node tools/run clean",
+    "webpack": "webpack --config webpack.config.web.babel.js && webpack --config webpack.config.client.babel.js",
     "babel-node": "cd $INIT_CWD && babel-node",
     "lint": "cd $INIT_CWD && eslint --ext .jsx --ext .js",
     "lint:src": "eslint --ext .jsx --ext .js src",
@@ -134,6 +135,7 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.9.0",
     "webpack-bundle-analyzer": "^4.2.0",
+    "webpack-cli": "^4.2.0",
     "webpack-dev-middleware": "^4.0.2",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-node-externals": "^2.5.2",

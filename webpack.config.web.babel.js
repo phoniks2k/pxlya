@@ -6,7 +6,7 @@ import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
 
-import pkg from '../package.json';
+import pkg from './package.json';
 
 const isDebug = process.argv.includes('--debug');
 const isVerbose = process.argv.includes('--verbose');
@@ -20,16 +20,9 @@ const basePackageValues = {
     start: 'node --nouse-idle-notification --expose-gc web.js',
   },
   dependencies: {
-    mysql2: '^2.1.0',
+    mysql2: '',
   },
 };
-
-/*
- * GeneratePackageJsonPlugin is not working
- * anymore for some unknown reason.
- * Adding all dependencies instead :(
- */
-basePackageValues.dependencies = pkg.dependencies;
 
 const babelPlugins = [
   '@babel/transform-flow-strip-types',
@@ -52,7 +45,7 @@ export default {
   name: 'web',
   target: 'node',
 
-  context: path.resolve(__dirname, '..'),
+  context: __dirname,
   mode: (isDebug) ? 'development' : 'production',
 
   entry: {
@@ -62,7 +55,7 @@ export default {
 
   output: {
     pathinfo: isVerbose,
-    path: path.resolve(__dirname, '../build'),
+    path: path.resolve(__dirname, './build'),
     libraryTarget: 'commonjs2',
   },
 
@@ -76,7 +69,7 @@ export default {
         test: /\.(js|jsx|ts|tsx)$/,
         loader: 'babel-loader',
         include: [
-          path.resolve(__dirname, '../src'),
+          path.resolve(__dirname, './src'),
         ],
         options: {
           cacheDirectory: isDebug,
@@ -113,7 +106,6 @@ export default {
     ],
   },
 
-  // needed because webpack tries to pack socket.io
   externals: [
     /\/proxies\.json$/,
     /\/canvases\.json$/,
@@ -129,10 +121,9 @@ export default {
     }),
     // create package.json for deployment
     new GeneratePackageJsonPlugin(basePackageValues, {
-      debug: isVerbose,
-      useInstalledVersions: false,
+      debug: true,
       sourcePackageFilenames: [
-        path.resolve(__dirname, '../package.json'),
+        path.resolve(__dirname, './package.json'),
       ],
     }),
   ],

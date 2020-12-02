@@ -6,7 +6,7 @@ import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-import pkg from '../package.json';
+import pkg from './package.json';
 
 const isDebug = process.argv.includes('--debug');
 const isVerbose = process.argv.includes('--verbose');
@@ -35,7 +35,7 @@ export default {
   name: 'client',
   target: 'web',
 
-  context: path.resolve(__dirname, '..'),
+  context: __dirname,
   mode: (isDebug) ? 'development' : 'production',
   devtool: 'source-map',
 
@@ -45,7 +45,7 @@ export default {
   },
 
   output: {
-    path: path.resolve(__dirname, '../build/public/assets'),
+    path: path.resolve(__dirname, './build/public/assets'),
     publicPath: '/assets/',
     pathinfo: isVerbose,
     filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
@@ -86,7 +86,7 @@ export default {
         test: /\.(js|jsx|ts|tsx)$/,
         loader: 'babel-loader',
         include: [
-          path.resolve(__dirname, '../src'),
+          path.resolve(__dirname, './src'),
         ],
         options: {
           cacheDirectory: isDebug,
@@ -135,7 +135,7 @@ export default {
     // Emit a file with assets paths
     // https://github.com/sporto/assets-webpack-plugin#options
     new AssetsPlugin({
-      path: path.resolve(__dirname, '../build'),
+      path: path.resolve(__dirname, './build'),
       filename: 'assets.json',
       prettyPrint: true,
     }),

@@ -9,8 +9,8 @@
 
 import fs from 'fs';
 import webpack from 'webpack';
-import webpackConfigWeb from './webpack.config.web';
-import webpackConfigClient from './webpack.config.client';
+import webpackConfigWeb from '../webpack.config.web.babel';
+import webpackConfigClient from '../webpack.config.client.babel';
 
 const wpStats = {
     colors: true,
