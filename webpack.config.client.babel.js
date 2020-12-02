@@ -9,7 +9,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import pkg from './package.json';
 
 const isDebug = process.argv.includes('--debug');
-const isVerbose = process.argv.includes('--verbose');
+const VERBOSE = false;
 const isAnalyze = process.argv.includes('--analyze')
   || process.argv.includes('--analyse');
 
@@ -47,7 +47,7 @@ export default {
   output: {
     path: path.resolve(__dirname, './build/public/assets'),
     publicPath: '/assets/',
-    pathinfo: isVerbose,
+    pathinfo: VERBOSE,
     filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
     chunkFilename: isDebug ? '[name].chunk.js' : '[name].[chunkhash:8].js',
   },
@@ -162,7 +162,7 @@ export default {
           test: /[\\/]node_modules[\\/]three[\\/]/,
           name: 'three',
           chunks: 'all',
-        }
+        },
       },
     },
   },

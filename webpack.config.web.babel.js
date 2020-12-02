@@ -9,7 +9,7 @@ import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
 import pkg from './package.json';
 
 const isDebug = process.argv.includes('--debug');
-const isVerbose = process.argv.includes('--verbose');
+const VERBOSE = false;
 
 const basePackageValues = {
   name: pkg.name,
@@ -54,7 +54,7 @@ export default {
   },
 
   output: {
-    pathinfo: isVerbose,
+    pathinfo: VERBOSE,
     path: path.resolve(__dirname, './build'),
     libraryTarget: 'commonjs2',
   },
@@ -97,7 +97,7 @@ export default {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              sourceMap: isDebug,
+              sourceMap: false,
               modules: false,
             },
           },
@@ -121,7 +121,7 @@ export default {
     }),
     // create package.json for deployment
     new GeneratePackageJsonPlugin(basePackageValues, {
-      debug: true,
+      debug: VERBOSE,
       sourcePackageFilenames: [
         path.resolve(__dirname, './package.json'),
       ],

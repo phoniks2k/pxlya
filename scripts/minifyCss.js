@@ -4,10 +4,15 @@
  */
 
 import fs from 'fs';
+import path from 'path';
 import CleanCSS from 'clean-css';
 import crypto from 'crypto';
 
-const FOLDER = './src/styles';
+const rootdir = path.resolve(__dirname, '..');
+const assetdir = path.resolve(__dirname, '../build/public/assets');
+const builddir = path.resolve(__dirname, '../build');
+
+const FOLDER = path.resolve(__dirname, '../src/styles');
 const FILES = [
   'default.css',
   'dark.css',
@@ -39,11 +44,11 @@ async function minifyCss() {
     const hash = crypto.createHash('md5').update(output.styles).digest('hex');
     const key = file.substr(0, file.indexOf('.'));
     const filename = `${key}.${hash.substr(0, 8)}.css`;
-    fs.writeFileSync(`./build/public/assets/${filename}`, output.styles, 'utf8');
+    fs.writeFileSync(`${assetdir}/${filename}`, output.styles, 'utf8');
     assets[key] = `/assets/${filename}`;
   });
   const json = JSON.stringify(assets);
-  fs.writeFileSync('./build/styleassets.json', json);
+  fs.writeFileSync(`${builddir}/styleassets.json`, json);
 }
 
 export default minifyCss;
