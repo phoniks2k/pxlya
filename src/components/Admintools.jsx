@@ -189,7 +189,7 @@ function Admintools({
   }
 
   useEffect(() => {
-    if (userlvl) {
+    if (userlvl === 1) {
       getModList((mods) => setModList(mods));
     }
   }, []);
