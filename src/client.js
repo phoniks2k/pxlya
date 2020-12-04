@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // on captcha received
-// TODO: this really isn't beautiful
 window.onCaptcha = async function onCaptcha(token: string) {
   const body = JSON.stringify({
     token,

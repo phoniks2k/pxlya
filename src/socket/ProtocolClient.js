@@ -1,5 +1,3 @@
-/**
- *
  * @flow
  */
 
@@ -125,11 +123,16 @@ class ProtocolClient extends EventEmitter {
     if (~pos) chunks.splice(pos, 1);
   }
 
+  /*
+   * Send pixel request
+   * @param i, j chunk coordinates
+   * @param pixel Array of [[offset, color],...]  pixels within chunk
+   */
   requestPlacePixel(
-    i, j, offset,
-    color,
+    i: number, j: number,
+    pixels: Array,
   ) {
-    const buffer = PixelUpdate.dehydrate(i, j, offset, color);
+    const buffer = PixelUpdate.dehydrate(i, j, pixels);
     this.sendWhenReady(buffer);
   }
 

@@ -28,15 +28,18 @@ import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
  * @param canvasId
  * @param i Chunk coordinates
  * @param j
- * @param offset Offset of pixel withing chunk
+ * @param pixels Array of indiviual pixels within the chunk, with:
+ *           [[offset, color], [offset2, color2],...]
+ *           Offset is the offset of the pixel within the chunk
+ * @return Promise<Object>
  */
-export async function drawByOffset(
+export async function drawByOffsets(
   user: User,
   canvasId: number,
   color: ColorIndex,
   i: number,
   j: number,
-  offset: number,
+  pixels: Array,
 ): Promise<Object> {
   let wait = 0;
   let coolDown = 0;
@@ -51,10 +54,13 @@ export async function drawByOffset(
       retCode: 1,
     };
   }
-  const { size: canvasSize, v: is3d } = canvas;
+    const { size: canvasSize, v: is3d } = canvas;
 
   try {
     const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
+    /*
+     * canvas/chunk validation
+     */
     if (i >= canvasSize / tileSize) {
       // x out of bounds
       throw new Error(2);
@@ -63,19 +69,6 @@ export async function drawByOffset(
       // y out of bounds
       throw new Error(3);
     }
-    const maxSize = (is3d) ? tileSize * tileSize * THREE_CANVAS_HEIGHT
-      : tileSize * tileSize;
-    if (offset >= maxSize) {
-      // z out of bounds or weird stuff
-      throw new Error(4);
-    }
-    if (color >= canvas.colors.length
-      || (color < canvas.cli && !(canvas.v && color === 0))
-    ) {
-      // color out of bounds
-      throw new Error(5);
-    }
-
     if (canvas.req !== -1) {
       if (user.id === null) {
         // not logged in
@@ -89,7 +82,28 @@ export async function drawByOffset(
     }
 
     const isAdmin = (user.userlvl === 1);
+    /*
+     * TODO benchmark if requesting by pixel or chunk
+     * is better
+     */
+    const chunk = await RedisCanvas.getChunk(canvasId, i, j);
     const setColor = await RedisCanvas.getPixelByOffset(canvasId, i, j, offset);
+
+    /*
+     * pixel validation
+     */
+    const maxSize = (is3d) ? tileSize * tileSize * THREE_CANVAS_HEIGHT
+      : tileSize * tileSize;
+    if (offset >= maxSize) {
+      // z out of bounds or weird stuff
+      throw new Error(4);
+    }
+    if (color >= canvas.colors.length
+      || (color < canvas.cli && !(canvas.v && color === 0))
+    ) {
+      // color out of bounds
+      throw new Error(5);
+    }
 
     if (setColor & 0x80
       /* 3D Canvas Minecraft Avatars */
@@ -331,7 +345,6 @@ export async function drawByCoords(
  * @param x
  * @param y
  * @param z (optional for 3d canvas)
- * @returns {Promise.<boolean>}
  */
 export function drawSafeByCoords(
   user: User,
@@ -340,7 +353,7 @@ export function drawSafeByCoords(
   x: number,
   y: number,
   z: number = null,
-): Promise<Cell> {
+): Promise<Object> {
   // can just check for one unique occurence,
   // we use ip, because id for logged out users is
   // always null
@@ -364,20 +377,19 @@ export function drawSafeByCoords(
  *
  * @param user
  * @param canvasId
- * @param color
  * @param i Chunk coordinates
  * @param j
- * @param offset Offset of pixel withing chunk
- * @returns {Promise.<boolean>}
+ * @param pixels Array of indiviual pixels within the chunk, with:
+ *           [[offset, color], [offset2, color2],...]
+ *           Offset is the offset of the pixel within the chunk
+ * @return Promise<Object>
  */
-export function drawSafeByOffset(
+export function drawSafeByOffsets(
   user: User,
   canvasId: number,
   color: ColorIndex,
-  i: number,
-  j: number,
-  offset: number,
-): Promise<Cell> {
+  pixels: Array,
+): Promise<Object> {
   // can just check for one unique occurence,
   // we use ip, because id for logged out users is
   // always null
@@ -387,7 +399,7 @@ export function drawSafeByOffset(
     using(
       redlock.disposer(`locks:${userId}`, 5000, logger.error),
       async () => {
-        const ret = await drawByOffset(user, canvasId, color, i, j, offset);
+        const ret = await drawByOffsets(user, canvasId, i, j, pixels);
         resolve(ret);
       },
     ); // <-- unlock is automatically handled by bluebird
