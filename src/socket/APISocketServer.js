@@ -220,7 +220,7 @@ class APISocketServer extends WebSocketEvents {
         // get userinfo
         user.ip = ip;
         const wait = await user.getWait(0);
-        const waitSeconds = (wait) ? (wait - Date.now()) / 1000 : null;
+        const waitSeconds = (wait) ? wait / 1000 : null;
         const name = (user.id == null) ? null : user.regUser.name;
         ws.send(JSON.stringify([
           'mcme',

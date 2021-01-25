@@ -12,7 +12,6 @@ import redis from '../redis';
 import logger from '../../core/logger';
 
 import Model from '../sequelize';
-import RegUser from './RegUser';
 import { getIPv6Subnet } from '../../utils/ip';
 import { ADMIN_IDS } from '../../core/config';
 
@@ -39,7 +38,6 @@ class User {
     this.blocked = [];
     this.userlvl = 0;
     this.ipSub = getIPv6Subnet(ip);
-    this.wait = null;
     // following gets populated by passport
     this.regUser = null;
   }
@@ -130,13 +128,12 @@ class User {
     return (this.regUser) ? this.regUser.name : null;
   }
 
-  async setWait(coolDown: number, canvasId: number): Promise<boolean> {
-    if (!coolDown) return false;
-    this.wait = Date.now() + coolDown;
+  async setWait(wait: number, canvasId: number): Promise<boolean> {
+    if (!wait) return false;
     // PX is milliseconds expire
-    await redis.setAsync(`cd:${canvasId}:ip:${this.ipSub}`, '', 'PX', coolDown);
+    await redis.setAsync(`cd:${canvasId}:ip:${this.ipSub}`, '', 'PX', wait);
     if (this.id != null) {
-      await redis.setAsync(`cd:${canvasId}:id:${this.id}`, '', 'PX', coolDown);
+      await redis.setAsync(`cd:${canvasId}:id:${this.id}`, '', 'PX', wait);
     }
     return true;
   }
@@ -151,23 +148,19 @@ class User {
     }
     logger.debug('ererer', ttl, typeof ttl);
 
-
-    const wait = ttl < 0 ? null : Date.now() + ttl;
-    this.wait = wait;
+    const wait = ttl < 0 ? 0 : ttl;
     return wait;
   }
 
-  async incrementPixelcount(): Promise<boolean> {
+  async incrementPixelcount(amount: number = 1): Promise<boolean> {
     const { id } = this;
     if (!id) return false;
     if (this.userlvl === 1) return false;
     try {
-      await RegUser.update({
-        totalPixels: Sequelize.literal('totalPixels + 1'),
-        dailyTotalPixels: Sequelize.literal('dailyTotalPixels + 1'),
-      }, {
-        where: { id },
-      });
+      await this.regUser.increment(
+        ['totalPixels', 'dailyTotalPixels'],
+        { by: amount },
+      );
     } catch (err) {
       return false;
     }

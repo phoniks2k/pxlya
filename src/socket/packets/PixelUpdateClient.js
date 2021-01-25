@@ -2,11 +2,9 @@
  * Packet for sending and receiving pixels per chunk
  * Multiple pixels can be sent at once
  *
- * @flow 
+ * @flow
  */
 
-
-import type { ColorIndex } from '../../core/Palette';
 
 type PixelUpdatePacket = {
   x: number,
@@ -35,7 +33,7 @@ export default {
       const color = data.getUint8(off -= 1);
       const offsetL = data.getUint16(off -= 2);
       const offsetH = data.getUint8(off -= 1) << 16;
-      const pixels.push([offsetH | offsetL, color]);
+      pixels.push([offsetH | offsetL, color]);
     }
     return {
       i, j, pixels,
@@ -57,8 +55,8 @@ export default {
      * 1 byte color
      */
     let cnt = 2;
-    for (let i = 0; i < pixels.length; i += 1) {
-      const [offset, color] = pixels[i];
+    for (let p = 0; p < pixels.length; p += 1) {
+      const [offset, color] = pixels[p];
       view.setUint8(cnt += 1, offset >>> 16);
       view.setUint16(cnt += 1, offset & 0x00FFFF);
       view.setUint8(cnt += 2, color);

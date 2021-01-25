@@ -48,7 +48,6 @@ setInterval(forceGC, 15 * 60 * SECOND);
 // create http server
 const server = http.createServer(app);
 
-
 //
 // websockets
 // -----------------------------------------------------------------------------

@@ -41,23 +41,18 @@ class WebSockets {
 
   /*
    * broadcast pixel message via websocket
-   * @param canvasIdent ident of canvas
-   * @param i x coordinates of chunk
-   * @param j y coordinates of chunk
-   * @param offset offset of pixel within this chunk
-   * @param color colorindex
+   * @param canvasId ident of canvas
+   * @param chunkid id consisting of i,j chunk coordinates
+   * @param pxls buffer with offset and color of one or more pixels
    */
-  broadcastPixel(
+  broadcastPixels(
     canvasId: number,
-    i: number,
-    j: number,
-    offset: number,
-    color: number,
+    chunkId: number,
+    pixels: Buffer,
   ) {
-    const chunkid = (i << 8) | j;
-    const buffer = PixelUpdate.dehydrate(i, j, offset, color);
+    const buffer = PixelUpdate.dehydrate(chunkId, pixels);
     this.listeners.forEach(
-      (listener) => listener.broadcastPixelBuffer(canvasId, chunkid, buffer),
+      (listener) => listener.broadcastPixelBuffer(canvasId, chunkId, buffer),
     );
   }
 

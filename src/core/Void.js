@@ -178,23 +178,25 @@ class Void extends WebSocketEvents {
     const {
       i: pi,
       j: pj,
-      offset: off,
-      color,
+      pixels,
     } = PixelUpdate.hydrate(buffer);
-    if (color <= 2 || color === 25) {
-      const { i, j } = this;
-      // 3x3 chunk area (this is hardcoded on multiple places)
-      if (pi >= i - 1 && pi <= i + 1 && pj >= j - 1 && pj <= j + 1) {
-        const uOff = (pi - i + 1) * TILE_SIZE;
-        const vOff = (pj - j + 1) * TILE_SIZE;
-        const x = uOff + off % TILE_SIZE;
-        const y = vOff + Math.floor(off / TILE_SIZE);
-        if (this.isSet(x, y, true)) {
-          this.pixelStack.push([x, y]);
-        } else {
-          this.userArea[x + y * TILE_SIZE * 3] = color;
+    const { i, j } = this;
+    // 3x3 chunk area (this is hardcoded on multiple places)
+    if (pi >= i - 1 && pi <= i + 1 && pj >= j - 1 && pj <= j + 1) {
+      pixels.forEach((pxl) => {
+        const [off, color] = pxl;
+        if (color <= 2 || color === 25) {
+          const uOff = (pi - i + 1) * TILE_SIZE;
+          const vOff = (pj - j + 1) * TILE_SIZE;
+          const x = uOff + off % TILE_SIZE;
+          const y = vOff + Math.floor(off / TILE_SIZE);
+          if (this.isSet(x, y, true)) {
+            this.pixelStack.push([x, y]);
+          } else {
+            this.userArea[x + y * TILE_SIZE * 3] = color;
+          }
         }
-      }
+      });
     }
   }
 }

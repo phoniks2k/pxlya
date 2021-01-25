@@ -22,7 +22,7 @@ import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './verifyClient';
 import WebSocketEvents from './WebSocketEvents';
 import webSockets from './websockets';
-import { drawSafeByOffset } from '../core/draw';
+import { drawSafeByOffsets } from '../core/draw';
 import { needCaptcha } from '../utils/captcha';
 import { cheapDetector } from '../core/isProxy';
 
@@ -385,18 +385,17 @@ class SocketServer extends WebSocketEvents {
           }
           // receive pixels here
           const {
-            i, j, offset,
-            color,
+            i, j, pixels,
           } = PixelUpdate.hydrate(buffer);
           const {
             wait,
             coolDown,
             retCode,
-          } = await drawSafeByOffset(
+          } = await drawSafeByOffsets(
             ws.user,
             ws.canvasId,
-            color,
-            i, j, offset,
+            i, j,
+            pixels,
           );
           ws.send(PixelReturn.dehydrate(retCode, wait, coolDown));
           break;
@@ -408,8 +407,7 @@ class SocketServer extends WebSocketEvents {
           }
           ws.canvasId = canvasId;
           const wait = await ws.user.getWait(canvasId);
-          const waitMs = (wait) ? wait - Date.now() : 0;
-          ws.send(CoolDownPacket.dehydrate(waitMs));
+          ws.send(CoolDownPacket.dehydrate(wait));
           break;
         }
         case RegisterChunk.OP_CODE: {

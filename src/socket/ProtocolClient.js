@@ -1,4 +1,4 @@
- * @flow
+/* @flow
  */
 
 // allow the websocket to be noisy on the console

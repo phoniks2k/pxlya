@@ -20,7 +20,6 @@ import Menu from './Menu';
 import UI from './UI';
 import ExpandMenuButton from './ExpandMenuButton';
 import ModalRoot from './ModalRoot';
-import ChristmasButton from './ChristmasButton';
 
 const App = () => (
   <div>
@@ -36,7 +35,6 @@ const App = () => (
       <ExpandMenuButton />
       <UI />
       <ModalRoot />
-      <ChristmasButton />
     </IconContext.Provider>
   </div>
 );

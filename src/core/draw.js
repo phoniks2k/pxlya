@@ -36,7 +36,6 @@ import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
 export async function drawByOffsets(
   user: User,
   canvasId: number,
-  color: ColorIndex,
   i: number,
   j: number,
   pixels: Array,
@@ -44,6 +43,7 @@ export async function drawByOffsets(
   let wait = 0;
   let coolDown = 0;
   let retCode = 0;
+  let pxlCnt = 0;
 
   const canvas = canvases[canvasId];
   if (!canvas) {
@@ -54,9 +54,11 @@ export async function drawByOffsets(
       retCode: 1,
     };
   }
-    const { size: canvasSize, v: is3d } = canvas;
+  const { size: canvasSize, v: is3d } = canvas;
 
   try {
+    wait = await user.getWait(canvasId);
+
     const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
     /*
      * canvas/chunk validation
@@ -82,72 +84,82 @@ export async function drawByOffsets(
     }
 
     const isAdmin = (user.userlvl === 1);
-    /*
-     * TODO benchmark if requesting by pixel or chunk
-     * is better
-     */
-    const chunk = await RedisCanvas.getChunk(canvasId, i, j);
-    const setColor = await RedisCanvas.getPixelByOffset(canvasId, i, j, offset);
-
-    /*
-     * pixel validation
-     */
-    const maxSize = (is3d) ? tileSize * tileSize * THREE_CANVAS_HEIGHT
-      : tileSize * tileSize;
-    if (offset >= maxSize) {
-      // z out of bounds or weird stuff
-      throw new Error(4);
-    }
-    if (color >= canvas.colors.length
-      || (color < canvas.cli && !(canvas.v && color === 0))
-    ) {
-      // color out of bounds
-      throw new Error(5);
-    }
-
-    if (setColor & 0x80
-      /* 3D Canvas Minecraft Avatars */
-      // && x >= 96 && x <= 128 && z >= 35 && z <= 100
-      // 96 - 128 on x
-      // 32 - 128 on z
-      || (canvas.v && i === 19 && j >= 17 && j < 20 && !isAdmin)
-    ) {
-      // protected pixel
-      throw new Error(8);
-    }
-
-    coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
-    if (isAdmin) {
-      coolDown = 0.0;
-    } else if (rpgEvent.success) {
+    let coolDownFactor = 1;
+    if (rpgEvent.success) {
       if (rpgEvent.success === 1) {
-        // if HOURLY_EVENT got won
-        coolDown /= 2;
+        // if hourly event got won
+        coolDownFactor = 0.5;
       } else {
-        // if HOURLY_EVENT got lost
-        coolDown *= 2;
+        // if hourly event got lost
+        coolDownFactor = 2;
       }
     }
 
-    const now = Date.now();
-    wait = await user.getWait(canvasId);
-    if (!wait) wait = now;
-    wait += coolDown;
-    const waitLeft = wait - now;
-    if (waitLeft > canvas.cds) {
-      // cooldown stack used
-      wait = waitLeft - coolDown;
-      coolDown = canvas.cds - waitLeft;
-      throw new Error(9);
-    }
+    /*
+     * TODO benchmark if requesting by pixel or chunk is better
+     */
 
-    setPixelByOffset(canvasId, color, i, j, offset);
+    while (pixels.length) {
+      const [offset, color] = pixels.pop();
 
-    user.setWait(waitLeft, canvasId);
-    if (canvas.ranked) {
-      user.incrementPixelcount();
+
+      const [x, y, z] = getPixelFromChunkOffset(i, j, offset, canvasSize, is3d);
+      pixelLogger.info(
+        `${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${retCode}`,
+      );
+
+      // eslint-disable-next-line no-await-in-loop
+      const setColor = await RedisCanvas.getPixelByOffset(
+        canvasId,
+        i, j,
+        offset,
+      );
+
+      /*
+       * pixel validation
+       */
+      const maxSize = (is3d) ? tileSize * tileSize * THREE_CANVAS_HEIGHT
+        : tileSize * tileSize;
+      if (offset >= maxSize) {
+        // z out of bounds or weird stuff
+        throw new Error(4);
+      }
+      if (color >= canvas.colors.length
+        || (color < canvas.cli && !(canvas.v && color === 0))
+      ) {
+        // color out of bounds
+        throw new Error(5);
+      }
+
+      if (setColor & 0x80
+        /* 3D Canvas Minecraft Avatars */
+        // && x >= 96 && x <= 128 && z >= 35 && z <= 100
+        // 96 - 128 on x
+        // 32 - 128 on z
+        || (canvas.v && i === 19 && j >= 17 && j < 20 && !isAdmin)
+      ) {
+        // protected pixel
+        throw new Error(8);
+      }
+
+      coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
+      if (isAdmin) {
+        coolDown = 0.0;
+      } else {
+        coolDown *= coolDownFactor;
+      }
+
+      wait += coolDown;
+      if (wait > canvas.cds) {
+        // cooldown stack used
+        coolDown = canvas.cds - wait;
+        wait -= coolDown;
+        throw new Error(9);
+      }
+
+      setPixelByOffset(canvasId, color, i, j, offset);
+      pxlCnt += 1;
     }
-    wait = waitLeft;
   } catch (e) {
     retCode = parseInt(e.message, 10);
     if (Number.isNaN(retCode)) {
@@ -155,9 +167,12 @@ export async function drawByOffsets(
     }
   }
 
-  const [x, y, z] = getPixelFromChunkOffset(i, j, offset, canvasSize, is3d);
-  // eslint-disable-next-line max-len
-  pixelLogger.info(`${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${retCode}`);
+  if (pxlCnt) {
+    user.setWait(wait, canvasId);
+    if (canvas.ranked) {
+      user.incrementPixelcount(pxlCnt);
+    }
+  }
 
   return {
     wait,
@@ -387,7 +402,8 @@ export function drawSafeByCoords(
 export function drawSafeByOffsets(
   user: User,
   canvasId: number,
-  color: ColorIndex,
+  i: number,
+  j: number,
   pixels: Array,
 ): Promise<Object> {
   // can just check for one unique occurence,

@@ -1,8 +1,6 @@
 /* @flow */
 
 
-import type { ColorIndex } from '../../core/Palette';
-
 type PixelUpdatePacket = {
   x: number,
   y: number,
@@ -26,38 +24,29 @@ export default {
      */
     const pixels = [];
     let off = data.length;
-    while (off >= 3) {
+    /*
+     * limit the max amount of pixels that can be
+     * receive to 500
+     */
+    let pxlcnt = 0;
+    while (off >= 3 && pxlcnt < 500) {
       const color = data.readUInt8(off -= 1);
       const offsetL = data.readUInt16BE(off -= 2);
       const offsetH = data.readUInt8(off -= 1) << 16;
-      const pixels.push([offsetH | offsetL, color]);
+      pixels.push([offsetH | offsetL, color]);
+      pxlcnt += 1;
     }
     return {
       i, j, pixels,
     };
   },
 
-  dehydrate(i, j, pixels): Buffer {
-    const buffer = Buffer.allocUnsafe(1 + 1 + 1 + pixels.length * 4);
-    buffer.writeUInt8(OP_CODE, 0);
-    /*
-     * chunk coordinates
-     */
-    buffer.writeUInt8(i, 1);
-    buffer.writeUInt8(j, 2);
-    /*
-     * offset and color of every pixel
-     * 3 bytes offset
-     * 1 byte color
-     */
-    let cnt = 2;
-    for (let i = 0; i < pixels.length; i += 1) {
-      const [offset, color] = pixels[i];
-      buffer.writeUInt8(offset >>> 16, cnt += 1);
-      buffer.writeUInt16BE(offset & 0x00FFFF, cnt += 1);
-      buffer.writeUInt8(color, cnt += 2);
-    }
-
-    return buffer;
+  /*
+   * @param chunkId id consisting of chunk coordinates
+   * @param pixels Buffer with offset and color of one or more pixels
+   */
+  dehydrate(chunkId, pixels): Buffer {
+    const index = new Uint8Array([OP_CODE, chunkId >> 8, chunkId && 0xFF]);
+    return Buffer.concat([index, pixels]);
   },
 };
