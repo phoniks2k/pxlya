@@ -93,7 +93,7 @@
     "ranked" : true,
     "req": 20000,
     "sd": "2020-01-08",
-    "desc": "Moon canvas with a pastel tone palette and black background"
+    "desc": "Moon canvas. Safe space for art. No flags or large text (unless part of art)"
   },
   "2": {
     "ident":"v",
@@ -281,16 +281,18 @@
     "title": "1bit",
     "colors": [
       [ 0, 0, 0 ],
+      [ 255, 255, 255 ],
+      [ 0, 0, 0 ],
       [ 255, 255, 255 ]
         ],
-    "size": 4096,
+    "size": 65536,
     "hid": false,
-    "cli": 0,
-    "bcd": 2000,
-    "pcd": 2000,
-    "cds": 80000,
-    "ranked": false,
-    "req": 10000,
+    "cli": 2,
+    "bcd": 7000,
+    "pcd": 15000,
+    "cds": 1000000,
+    "ranked": true,
+    "req": 5000,
     "sd": "2020-11-09",
     "desc": "Black and White canvas"
   }
