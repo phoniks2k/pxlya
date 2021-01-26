@@ -19,9 +19,9 @@ import {
 } from '../core/constants';
 import {
   setHover,
-  tryPlacePixel,
   selectColor,
 } from '../actions';
+import { tryPlacePixel } from './placePixel';
 
 
 const renderDistance = 150;
@@ -448,6 +448,8 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
+      // TODO make rollOverMesh in a different color while placeAllowed false
+      // instead of hiding it.... we can now queue Voxels
       if (!placeAllowed
         || target.clone().sub(camera.position).length() > 50) {
         rollOverMesh.position.y = -10;
@@ -470,9 +472,16 @@ class Renderer {
       selectedColor,
     } = state.canvas;
     const chClr = (color === null) ? selectedColor : color;
+    const curColor = (chClr === 0) ? this.chunkLoader.getVoxel(x, y, z) : 0;
     const [i, j] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
-    store.dispatch(tryPlacePixel(i, j, offset, chClr));
+    tryPlacePixel(
+      store,
+      i, j,
+      offset,
+      chClr,
+      curColor,
+    );
   }
 
   multiTapEnd() {
@@ -483,12 +492,6 @@ class Renderer {
     } = this;
     this.multitap = 0;
     const state = store.getState();
-    const {
-      placeAllowed,
-    } = state.user;
-    if (!placeAllowed) {
-      return;
-    }
 
     const [px, py, pz] = mouseMoveStart;
     const [qx, qy, qz] = state.gui.hover;

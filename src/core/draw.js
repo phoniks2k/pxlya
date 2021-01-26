@@ -51,6 +51,7 @@ export async function drawByOffsets(
     return {
       wait,
       coolDown,
+      pxlCnt,
       retCode: 1,
     };
   }
@@ -177,6 +178,7 @@ export async function drawByOffsets(
   return {
     wait,
     coolDown,
+    pxlCnt,
     retCode,
   };
 }

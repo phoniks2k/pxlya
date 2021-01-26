@@ -128,7 +128,7 @@ class ProtocolClient extends EventEmitter {
    * @param i, j chunk coordinates
    * @param pixel Array of [[offset, color],...]  pixels within chunk
    */
-  requestPlacePixel(
+  requestPlacePixels(
     i: number, j: number,
     pixels: Array,
   ) {

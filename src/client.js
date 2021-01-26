@@ -7,7 +7,6 @@ import './styles/font.css';
 
 import onKeyPress from './controls/keypress';
 import {
-  receivePixelUpdate,
   fetchMe,
   fetchStats,
   initTimer,
@@ -15,12 +14,14 @@ import {
   receiveOnline,
   receiveCoolDown,
   receiveChatMessage,
-  receivePixelReturn,
   addChatChannel,
   removeChatChannel,
   setMobile,
-  tryPlacePixel,
 } from './actions';
+import {
+  receivePixelUpdate,
+  receivePixelReturn,
+} from './ui/placePixel';
 import store from './ui/store';
 
 
@@ -33,15 +34,18 @@ function init() {
   initRenderer(store, false);
 
   ProtocolClient.on('pixelUpdate', ({
-    i, j, offset, color,
+    i, j, pixels,
   }) => {
-    // remove protection
-    store.dispatch(receivePixelUpdate(i, j, offset, color & 0x7F));
+    pixels.forEach((pxl) => {
+      const [offset, color] = pxl;
+      // remove protection
+      receivePixelUpdate(store, i, j, offset, color & 0x7F);
+    });
   });
   ProtocolClient.on('pixelReturn', ({
-    retCode, wait, coolDownSeconds,
+    retCode, wait, coolDownSeconds, pxlCnt,
   }) => {
-    store.dispatch(receivePixelReturn(retCode, wait, coolDownSeconds));
+    receivePixelReturn(store, retCode, wait, coolDownSeconds, pxlCnt);
   });
   ProtocolClient.on('cooldownPacket', (coolDown) => {
     store.dispatch(receiveCoolDown(coolDown));
@@ -145,16 +149,13 @@ window.onCaptcha = async function onCaptcha(token: string) {
       'Content-Type': 'application/json',
     },
     body,
-    // https://github.com/github/fetch/issues/349
     credentials: 'include',
   });
 
-  if (window.pixel) {
-    const {
-      i, j, offset, color,
-    } = window.pixel;
-    store.dispatch(tryPlacePixel(i, j, offset, color));
-  }
+  const {
+    i, j, pixels,
+  } = window.pixel;
+  ProtocolClient.requestPlacePixels(i, j, pixels);
 
   if (typeof window.hcaptcha !== 'undefined') {
     window.hcaptcha.reset();

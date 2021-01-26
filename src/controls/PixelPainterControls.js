@@ -7,7 +7,6 @@
 import keycode from 'keycode';
 
 import {
-  tryPlacePixel,
   setHover,
   unsetHover,
   setViewCoordinates,
@@ -21,6 +20,9 @@ import {
   moveEast,
   onViewFinishChange,
 } from '../actions';
+import {
+  tryPlacePixel,
+} from '../ui/placePixel';
 import {
   screenToWorld,
   getChunkOfPixel,
@@ -162,7 +164,6 @@ class PixelPlainterControls {
   static placePixel(store, renderer, cell) {
     const state = store.getState();
     const { autoZoomIn } = state.gui;
-    const { placeAllowed } = state.user;
     const {
       scale,
       isHistoricalView,
@@ -180,16 +181,17 @@ class PixelPlainterControls {
     // allow placing of pixel just on low zoomlevels
     if (scale < 3) return;
 
-    if (!placeAllowed) return;
-
-    if (selectedColor !== renderer.getColorIndexOfPixel(...cell)) {
+    const curColor = renderer.getColorIndexOfPixel(...cell);
+    if (selectedColor !== curColor) {
       const { canvasSize } = state.canvas;
       const [i, j] = getChunkOfPixel(canvasSize, ...cell);
       const offset = getOffsetOfPixel(canvasSize, ...cell);
-      store.dispatch(tryPlacePixel(
+      tryPlacePixel(
+        store,
         i, j, offset,
         selectedColor,
-      ));
+        curColor,
+      );
     }
   }
 

@@ -390,6 +390,7 @@ class SocketServer extends WebSocketEvents {
           const {
             wait,
             coolDown,
+            pxlCnt,
             retCode,
           } = await drawSafeByOffsets(
             ws.user,
@@ -397,7 +398,7 @@ class SocketServer extends WebSocketEvents {
             i, j,
             pixels,
           );
-          ws.send(PixelReturn.dehydrate(retCode, wait, coolDown));
+          ws.send(PixelReturn.dehydrate(retCode, wait, coolDown, pxlCnt));
           break;
         }
         case RegisterCanvas.OP_CODE: {

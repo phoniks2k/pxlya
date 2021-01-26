@@ -233,139 +233,6 @@ export function notify(notification: string) {
   };
 }
 
-function gotCoolDownDelta(delta: number) {
-  return {
-    type: 'COOLDOWN_DELTA',
-    delta,
-  };
-}
-
-let pixelTimeout = null;
-export function tryPlacePixel(
-  i: number,
-  j: number,
-  offset: number,
-  color: ColorIndex,
-): ThunkAction {
-  return async (dispatch) => {
-    pixelTimeout = Date.now() + 5000;
-    await dispatch(setPlaceAllowed(false));
-
-    // TODO:
-    // this is for resending after captcha returned
-    // window is ugly, put it into redux or something
-    window.pixel = {
-      i,
-      j,
-      offset,
-      color,
-    };
-
-    dispatch({
-      type: 'REQUEST_PLACE_PIXEL',
-      i,
-      j,
-      offset,
-      color,
-    });
-  };
-}
-
-export function receivePixelReturn(
-  retCode: number,
-  wait: number,
-  coolDownSeconds: number,
-): ThunkAction {
-  return (dispatch) => {
-    try {
-      /*
-       * the terms coolDown is used in a different meaning here
-       * coolDown is the delta seconds  of the placed pixel
-       */
-      if (wait) {
-        dispatch(setWait(wait));
-      }
-      if (coolDownSeconds) {
-        dispatch(notify(coolDownSeconds));
-        if (coolDownSeconds < 0) {
-          dispatch(gotCoolDownDelta(coolDownSeconds));
-        }
-      }
-
-      let errorTitle = null;
-      let msg = null;
-      switch (retCode) {
-        case 0:
-          dispatch(placedPixel());
-          break;
-        case 1:
-          errorTitle = 'Invalid Canvas';
-          msg = 'This canvas doesn\'t exist';
-          break;
-        case 2:
-          errorTitle = 'Invalid Coordinates';
-          msg = 'x out of bounds';
-          break;
-        case 3:
-          errorTitle = 'Invalid Coordinates';
-          msg = 'y out of bounds';
-          break;
-        case 4:
-          errorTitle = 'Invalid Coordinates';
-          msg = 'z out of bounds';
-          break;
-        case 5:
-          errorTitle = 'Wrong Color';
-          msg = 'Invalid color selected';
-          break;
-        case 6:
-          errorTitle = 'Just for registered Users';
-          msg = 'You have to be logged in to place on this canvas';
-          break;
-        case 7:
-          errorTitle = 'Place more :)';
-          // eslint-disable-next-line max-len
-          msg = 'You can not access this canvas yet. You need to place more pixels';
-          break;
-        case 8:
-          dispatch(notify('Pixel protected!'));
-          break;
-        case 9:
-          // pixestack used up
-          dispatch(pixelWait());
-          break;
-        case 10:
-          // captcha, reCaptcha or hCaptcha
-          if (typeof window.hcaptcha !== 'undefined') {
-            window.hcaptcha.execute();
-          } else {
-            window.grecaptcha.execute();
-          }
-          break;
-        case 11:
-          errorTitle = 'No Proxies Allowed :(';
-          msg = 'You are using a Proxy.';
-          break;
-        default:
-          errorTitle = 'Weird';
-          msg = 'Couldn\'t set Pixel';
-      }
-      if (msg) {
-        dispatch(pixelFailure());
-        dispatch(sweetAlert(
-          (errorTitle || `Error ${retCode}`),
-          msg,
-          'error',
-          'OK',
-        ));
-      }
-    } finally {
-      pixelTimeout = null;
-      dispatch(setPlaceAllowed(true));
-    }
-  };
-}
-
 export function setViewCoordinates(view: Cell): Action {
   return {
     type: 'SET_VIEW_COORDINATES',
@@ -414,7 +281,6 @@ export function moveEast(): ThunkAction {
     dispatch(moveDirection([1, 0]));
   };
 }
-
 
 export function setScale(scale: number, zoompoint: Cell): Action {
   return {
@@ -484,7 +350,7 @@ export function receiveCoolDown(
   };
 }
 
-export function receivePixelUpdate(
+export function updatePixel(
   i: number,
   j: number,
   offset: number,
@@ -668,18 +534,6 @@ function getPendingActions(state): Array<Action> {
     else actions.push(endCoolDown());
   }
 
-  if (pixelTimeout && now > pixelTimeout) {
-    actions.push(pixelFailure());
-    pixelTimeout = null;
-    actions.push(setPlaceAllowed(true));
-    actions.push(sweetAlert(
-      'Error :(',
-      'Didn\'t get an answer from pixelplanet. Maybe try to refresh?',
-      'error',
-      'OK',
-    ));
-  }
-
   return actions;
 }
 
@@ -846,6 +700,13 @@ export function startDm(query): PromiseAction {
       dispatch(setChatChannel(cid));
     }
     dispatch(setApiFetching(false));
+  };
+}
+
+export function gotCoolDownDelta(delta: number) {
+  return {
+    type: 'COOLDOWN_DELTA',
+    delta,
   };
 }
 

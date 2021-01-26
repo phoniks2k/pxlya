@@ -29,7 +29,7 @@ export default {
      * receive to 500
      */
     let pxlcnt = 0;
-    while (off >= 3 && pxlcnt < 500) {
+    while (off > 3 && pxlcnt < 500) {
       const color = data.readUInt8(off -= 1);
       const offsetL = data.readUInt16BE(off -= 2);
       const offsetH = data.readUInt8(off -= 1) << 16;
@@ -46,7 +46,7 @@ export default {
    * @param pixels Buffer with offset and color of one or more pixels
    */
   dehydrate(chunkId, pixels): Buffer {
-    const index = new Uint8Array([OP_CODE, chunkId >> 8, chunkId && 0xFF]);
+    const index = new Uint8Array([OP_CODE, chunkId >> 8, chunkId & 0xFF]);
     return Buffer.concat([index, pixels]);
   },
 };

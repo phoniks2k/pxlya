@@ -54,7 +54,7 @@ class PixelCache {
     this.PXL_CACHE = new Map();
 
     cache.forEach((pxls, chunkCanvasId) => {
-      const canvasId = chunkCanvasId & 0xFF0000 >> 16;
+      const canvasId = (chunkCanvasId & 0xFF0000) >> 16;
       const chunkId = chunkCanvasId & 0x00FFFF;
       webSockets.broadcastPixels(canvasId, chunkId, pxls);
     });

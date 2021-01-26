@@ -29,7 +29,7 @@ export default {
      */
     const pixels = [];
     let off = data.byteLength;
-    while (off >= 3) {
+    while (off > 3) {
       const color = data.getUint8(off -= 1);
       const offsetL = data.getUint16(off -= 2);
       const offsetH = data.getUint8(off -= 1) << 16;
