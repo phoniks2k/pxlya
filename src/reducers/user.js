@@ -120,10 +120,11 @@ export default function user(
       };
     }
 
-    case 'PLACE_PIXEL': {
+    case 'PLACED_PIXELS': {
       let { totalPixels, dailyTotalPixels } = state;
-      totalPixels += 1;
-      dailyTotalPixels += 1;
+      const { amount } = action;
+      totalPixels += amount;
+      dailyTotalPixels += amount;
       return {
         ...state,
         totalPixels,

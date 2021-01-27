@@ -8,7 +8,6 @@ export type GUIState = {
   showGrid: boolean,
   showPixelNotify: boolean,
   hover: ?Cell,
-  pixelsPlaced: number,
   autoZoomIn: boolean,
   isPotato: boolean,
   isLightGrid: boolean,
@@ -22,7 +21,6 @@ const initialState: GUIState = {
   showGrid: false,
   showPixelNotify: false,
   hover: null,
-  pixelsPlaced: 0,
   autoZoomIn: false,
   isPotato: false,
   isLightGrid: false,
@@ -123,15 +121,6 @@ export default function gui(
       return {
         ...state,
         hover,
-      };
-    }
-
-    case 'PLACE_PIXEL': {
-      let { pixelsPlaced } = state;
-      pixelsPlaced += 1;
-      return {
-        ...state,
-        pixelsPlaced,
       };
     }
 

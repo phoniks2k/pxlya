@@ -175,9 +175,10 @@ export function selectCanvas(canvasId: number): Action {
   };
 }
 
-export function placedPixel(): Action {
+export function placedPixels(amount: number): Action {
   return {
-    type: 'PLACE_PIXEL',
+    type: 'PLACED_PIXELS',
+    amount,
   };
 }
 

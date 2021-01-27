@@ -10,7 +10,7 @@ export default (store) => (next) => (action) => {
     if (!document.hasFocus()) {
       switch (action.type) {
         case 'RECEIVE_ME':
-        case 'PLACE_PIXEL': {
+        case 'PLACED_PIXELS': {
           if (window.Notification
             && Notification.permission !== 'granted'
             && Notification.permission !== 'denied'

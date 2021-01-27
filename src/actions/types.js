@@ -39,7 +39,7 @@ export type Action =
   | { type: 'COOLDOWN_DELTA', delta: number }
   | { type: 'SELECT_COLOR', color: ColorIndex }
   | { type: 'SELECT_CANVAS', canvasId: number }
-  | { type: 'PLACE_PIXEL' }
+  | { type: 'PLACED_PIXELS', amount: number }
   | { type: 'PIXEL_WAIT' }
   | { type: 'PIXEL_FAILURE' }
   | { type: 'SET_VIEW_COORDINATES', view: Cell }

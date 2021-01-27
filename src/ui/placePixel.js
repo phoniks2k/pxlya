@@ -12,7 +12,7 @@ import {
   gotCoolDownDelta,
   pixelFailure,
   setWait,
-  placedPixel,
+  placedPixels,
   pixelWait,
   updatePixel,
 } from '../actions';
@@ -200,7 +200,7 @@ export function receivePixelReturn(
     let msg = null;
     switch (retCode) {
       case 0:
-        store.dispatch(placedPixel());
+        store.dispatch(placedPixels(pxlCnt));
         break;
       case 1:
         errorTitle = 'Invalid Canvas';

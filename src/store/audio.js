@@ -132,7 +132,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'PLACE_PIXEL': {
+    case 'PLACED_PIXELS': {
       if (mute) break;
       const { palette, selectedColor: color } = state.canvas;
       const colorsAmount = palette.colors.length;
