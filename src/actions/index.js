@@ -114,10 +114,10 @@ export function toggleOpenMenu(): Action {
   };
 }
 
-export function setPlaceAllowed(placeAllowed: boolean): Action {
+export function setPlaceAllowed(requestingPixel: boolean): Action {
   return {
     type: 'SET_PLACE_ALLOWED',
-    placeAllowed,
+    requestingPixel,
   };
 }
 
@@ -357,7 +357,7 @@ export function updatePixel(
   color: ColorIndex,
 ): Action {
   return {
-    type: 'RECEIVE_PIXEL_UPDATE',
+    type: 'UPDATE_PIXEL',
     i,
     j,
     offset,

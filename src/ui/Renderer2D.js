@@ -384,7 +384,7 @@ class Renderer {
       isLightGrid,
     } = state.gui;
     const {
-      placeAllowed,
+      requestingPixel,
     } = state.user;
     const {
       view,
@@ -404,13 +404,13 @@ class Renderer {
     // if we have to render placeholder
     const doRenderPlaceholder = (
       viewscale >= 3
-      && placeAllowed
+      && requestingPixel
       && (hover || this.hover)
       && !isPotato
     );
     const doRenderPotatoPlaceholder = (
       viewscale >= 3
-      && placeAllowed
+      && requestingPixel
       && (hover !== this.hover
         || this.forceNextRender
         || this.forceNextSubrender

@@ -66,7 +66,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'RECEIVE_PIXEL_UPDATE': {
+    case 'UPDATE_PIXEL': {
       const {
         i,
         j,

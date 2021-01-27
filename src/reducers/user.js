@@ -12,7 +12,7 @@ export type UserState = {
   wait: ?Date,
   coolDown: ?number, // ms
   lastCoolDownEnd: ?Date,
-  placeAllowed: boolean,
+  requestingPixel: boolean,
   online: ?number,
   // messages are sent by api/me, like not_verified status
   messages: Array,
@@ -45,7 +45,7 @@ const initialState: UserState = {
   wait: null,
   coolDown: null,
   lastCoolDownEnd: null,
-  placeAllowed: true,
+  requestingPixel: true,
   online: null,
   messages: [],
   mailreg: false,
@@ -82,10 +82,10 @@ export default function user(
     }
 
     case 'SET_PLACE_ALLOWED': {
-      const { placeAllowed } = action;
+      const { requestingPixel } = action;
       return {
         ...state,
-        placeAllowed,
+        requestingPixel,
       };
     }
 

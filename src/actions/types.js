@@ -28,7 +28,7 @@ export type Action =
   | { type: 'SELECT_STYLE', style: string }
   | { type: 'SET_NOTIFICATION', notification: string }
   | { type: 'UNSET_NOTIFICATION' }
-  | { type: 'SET_PLACE_ALLOWED', placeAllowed: boolean }
+  | { type: 'SET_PLACE_ALLOWED', requestingPixel: boolean }
   | { type: 'SET_HOVER', hover: Cell }
   | { type: 'UNSET_HOVER' }
   | { type: 'SET_WAIT', wait: ?number }
@@ -48,7 +48,7 @@ export type Action =
   | { type: 'PRE_LOADED_BIG_CHUNK', center: Cell }
   | { type: 'RECEIVE_BIG_CHUNK', center: Cell, chunk: Uint8Array }
   | { type: 'RECEIVE_BIG_CHUNK_FAILURE', center: Cell, error: Error }
-  | { type: 'RECEIVE_PIXEL_UPDATE',
+  | { type: 'UPDATE_PIXEL',
     i: number,
     j: number,
     offset: number,

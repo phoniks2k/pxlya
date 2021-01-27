@@ -392,7 +392,7 @@ class Renderer {
       store,
     } = this;
     const {
-      placeAllowed,
+      requestingPixel,
     } = store.getState().user;
 
     mouse.set(
@@ -408,7 +408,7 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
-      if (!placeAllowed
+      if (!requestingPixel
         || target.clone().sub(camera.position).length() > 120) {
         rollOverMesh.position.y = -10;
       } else {
@@ -436,7 +436,7 @@ class Renderer {
       store,
     } = this;
     const {
-      placeAllowed,
+      requestingPixel,
     } = store.getState().user;
 
     mouse.set(0, 0);
@@ -448,9 +448,9 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
-      // TODO make rollOverMesh in a different color while placeAllowed false
+      // TODO make rollOverMesh in a different color while requestingPixel false
       // instead of hiding it.... we can now queue Voxels
-      if (!placeAllowed
+      if (!requestingPixel
         || target.clone().sub(camera.position).length() > 50) {
         rollOverMesh.position.y = -10;
       } else {
@@ -572,10 +572,10 @@ class Renderer {
 
     const state = this.store.getState();
     const {
-      placeAllowed,
+      requestingPixel,
       isOnMobile,
     } = state.user;
-    if (!placeAllowed || isOnMobile) {
+    if (!requestingPixel || isOnMobile) {
       return;
     }
 

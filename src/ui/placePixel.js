@@ -117,10 +117,6 @@ function revertPredictionsAt(
     clientPredictions = [];
     return;
   }
-  
-  console.log(
-    `Reverting ${clientPredictions.length - p} client predictions`,
-  );
 
   while (p < clientPredictions.length) {
     const [i, j, offset, color] = clientPredictions[p];
