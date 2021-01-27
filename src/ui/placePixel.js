@@ -27,7 +27,7 @@ let pixelQueue = [];
 /*
  * requests that got predicted on client and yet have to be
  * received from the server
- * [[i, j, offset, color], ...]
+ * [[i, j, offset, colorold, colornew], ...]
  */
 let clientPredictions = [];
 /*
@@ -84,7 +84,9 @@ export function receivePixelUpdate(
       && predPxl[1] === j
       && predPxl[2] === offset
     ) {
-      clientPredictions.splice(i, 1);
+      if (predPxl[4] === color) {
+        clientPredictions.splice(i, 1);
+      }
       return;
     }
   }
@@ -136,7 +138,7 @@ export function tryPlacePixel(
   curColor: ColorIndex,
 ) {
   store.dispatch(updatePixel(i, j, offset, color));
-  clientPredictions.push([i, j, offset, curColor]);
+  clientPredictions.push([i, j, offset, curColor, color]);
 
   if (pixelQueue.length) {
     const lastReq = pixelQueue[pixelQueue.length - 1];
