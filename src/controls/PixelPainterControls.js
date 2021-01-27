@@ -1,10 +1,11 @@
 /*
- * Creates Viewport for 2D Canvas
+ * Controls for 2D canvases
+ *
+ * keycodes:
+ * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
  *
  * @flow
  */
-
-import keycode from 'keycode';
 
 import {
   setHover,
@@ -444,9 +445,9 @@ class PixelPlainterControls {
   }
 
   onKeyUp(event: KeyboardEvent) {
-    switch (keycode(event)) {
-      case 'shift':
-      case 'caps lock':
+    switch (event.key) {
+      case 'Shift':
+      case 'CapsLock':
         this.holdPainting = false;
         break;
       default:
@@ -461,22 +462,21 @@ class PixelPlainterControls {
       return;
     }
     const { store } = this;
-    const key = keycode(event);
 
-    switch (key) {
-      case 'up':
+    switch (event.key) {
+      case 'ArrowUp':
       case 'w':
         store.dispatch(moveNorth());
         break;
-      case 'left':
+      case 'ArrowLeft':
       case 'a':
         store.dispatch(moveWest());
         break;
-      case 'down':
+      case 'ArrowDown':
       case 's':
         store.dispatch(moveSouth());
         break;
-      case 'right':
+      case 'ArrowRight':
       case 'd':
         store.dispatch(moveEast());
         break;
@@ -488,19 +488,27 @@ class PixelPlainterControls {
       case 'q':
         store.dispatch(zoomOut());
         break;
-      case 'ctrl':
-      case 'shift': {
+      case 'Control':
+      case 'Shift': {
         const state = store.getState();
         const { hover } = state.gui;
         if (hover) {
-          if (key === 'ctrl') {
+          if (event.key === 'Control') {
+            // ctrl
             const clrIndex = this.renderer.getColorIndexOfPixel(...hover);
             if (clrIndex !== null) {
               store.dispatch(selectColor(clrIndex));
             }
-          } else {
+            return;
+          }
+          if (event.location === KeyboardEvent.DOM_KEY_LOCATION_LEFT) {
+            // left shift
             this.holdPainting = true;
             PixelPlainterControls.placePixel(store, this.renderer, hover);
+            return;
+          }
+          if (event.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT) {
+            // right shift
           }
         }
         break;

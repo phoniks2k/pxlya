@@ -45,7 +45,6 @@
     "ip-address": "^7.1.0",
     "isomorphic-fetch": "^3.0.0",
     "js-file-download": "^0.4.12",
-    "keycode": "^2.1.9",
     "localforage": "^1.9.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.1",

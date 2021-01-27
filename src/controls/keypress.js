@@ -2,8 +2,6 @@
  * keypress actions
  * @flow
  */
-import keycode from 'keycode';
-
 import store from '../ui/store';
 import copy from '../utils/clipboard';
 import {
@@ -24,7 +22,7 @@ function onKeyPress(event: KeyboardEvent) {
     return;
   }
 
-  switch (keycode(event)) {
+  switch (event.key) {
     case 'g':
       store.dispatch(toggleGrid());
       break;
