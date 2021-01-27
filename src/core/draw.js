@@ -153,8 +153,8 @@ export async function drawByOffsets(
       wait += coolDown;
       if (wait > canvas.cds) {
         // cooldown stack used
-        coolDown = canvas.cds - wait;
         wait -= coolDown;
+        coolDown = canvas.cds - wait - coolDown;
         throw new Error(9);
       }
 
