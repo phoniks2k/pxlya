@@ -66,10 +66,12 @@ export async function drawByOffsets(
      */
     if (i >= canvasSize / tileSize) {
       // x out of bounds
+      // (we don't have to check for <0 becaue it is received as uint)
       throw new Error(2);
     }
     if (j >= canvasSize / tileSize) {
       // y out of bounds
+      // (we don't have to check for <0 becaue it is received as uint)
       throw new Error(3);
     }
     if (canvas.req !== -1) {

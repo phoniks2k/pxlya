@@ -182,17 +182,23 @@ class PixelPlainterControls {
     if (scale < 3) return;
 
     const curColor = renderer.getColorIndexOfPixel(...cell);
-    if (selectedColor !== curColor) {
-      const { canvasSize } = state.canvas;
-      const [i, j] = getChunkOfPixel(canvasSize, ...cell);
-      const offset = getOffsetOfPixel(canvasSize, ...cell);
-      tryPlacePixel(
-        store,
-        i, j, offset,
-        selectedColor,
-        curColor,
-      );
+    if (selectedColor === curColor) {
+      return;
     }
+    const { canvasSize } = state.canvas;
+    const [x, y] = cell;
+    const maxCoords = canvasSize / 2;
+    if (x < -maxCoords || x >= maxCoords || y < -maxCoords || y >= maxCoords) {
+      return;
+    }
+    const [i, j] = getChunkOfPixel(canvasSize, x, y);
+    const offset = getOffsetOfPixel(canvasSize, x, y);
+    tryPlacePixel(
+      store,
+      i, j, offset,
+      selectedColor,
+      curColor,
+    );
   }
 
   static getMultiTouchDistance(event: TouchEvent) {
@@ -377,7 +383,21 @@ class PixelPlainterControls {
         this.viewport,
         [clientX, clientY],
       );
-      if (!hover || hover[0] !== screenCoor[0] || hover[1] !== screenCoor[1]) {
+      const [x, y] = screenCoor;
+
+      /* out of bounds check */
+      const { canvasSize } = state.canvas;
+      const maxCoords = canvasSize / 2;
+      if (x < -maxCoords || x >= maxCoords
+        || y < -maxCoords || y >= maxCoords
+      ) {
+        if (hover) {
+          store.dispatch(unsetHover(screenCoor));
+        }
+        return;
+      }
+
+      if (!hover || hover[0] !== x || hover[1] !== y) {
         store.dispatch(setHover(screenCoor));
       }
       if (this.holdPainting && !this.coolDownDelta) {
