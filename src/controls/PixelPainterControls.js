@@ -61,8 +61,13 @@ class PixelPlainterControls {
     this.isMultiTab = false;
     // on touch: timeout to detect long-press
     this.tapTimeout = null;
-    // if we are shift-hold-painting
-    this.holdPainting = false;
+    /*
+     * if we are shift-hold-painting
+     * 0: no
+     * 1: left shift
+     * 2: right shift
+     */
+    this.holdPainting = 0;
     // if we are waiting before placeing pixel via holdPainting again
     this.coolDownDelta = false;
 
@@ -162,14 +167,20 @@ class PixelPlainterControls {
     return null;
   }
 
-  static placePixel(store, renderer, cell) {
+  /*
+   * place pixel
+   * either with given colorIndex or with selected color if none is given
+   */
+  static placePixel(store, renderer, cell, colorIndex = null) {
     const state = store.getState();
     const { autoZoomIn } = state.gui;
     const {
       scale,
       isHistoricalView,
-      selectedColor,
     } = state.canvas;
+    const selectedColor = (colorIndex === null)
+      ? state.canvas.selectedColor
+      : colorIndex;
 
     if (isHistoricalView) return;
 
@@ -393,16 +404,42 @@ class PixelPlainterControls {
         || y < -maxCoords || y >= maxCoords
       ) {
         if (hover) {
-          store.dispatch(unsetHover(screenCoor));
+          store.dispatch(unsetHover());
         }
         return;
       }
 
       if (!hover || hover[0] !== x || hover[1] !== y) {
         store.dispatch(setHover(screenCoor));
-      }
-      if (this.holdPainting && !this.coolDownDelta) {
-        PixelPlainterControls.placePixel(store, this.renderer, screenCoor);
+        /* shift placing */
+        if (!this.coolDownDelta) {
+          switch (this.holdPainting) {
+            case 1: {
+              /* left shift: from selected color */
+              PixelPlainterControls.placePixel(
+                store,
+                this.renderer,
+                screenCoor,
+              );
+              break;
+            }
+            case 2: {
+              /* right shift: from historical view */
+              const colorIndex = this.renderer
+                .getColorIndexOfPixel(x, y, true);
+              if (colorIndex !== null) {
+                PixelPlainterControls.placePixel(
+                  store,
+                  this.renderer,
+                  screenCoor,
+                  colorIndex,
+                );
+              }
+              break;
+            }
+            default:
+          }
+        }
       }
     }
   }
@@ -412,7 +449,7 @@ class PixelPlainterControls {
     viewport.style.cursor = 'auto';
     store.dispatch(unsetHover());
     store.dispatch(onViewFinishChange());
-    this.holdPainting = false;
+    this.holdPainting = 0;
     this.clearTabTimeout();
   }
 
@@ -448,7 +485,7 @@ class PixelPlainterControls {
     switch (event.key) {
       case 'Shift':
       case 'CapsLock':
-        this.holdPainting = false;
+        this.holdPainting = 0;
         break;
       default:
     }
@@ -496,19 +533,28 @@ class PixelPlainterControls {
           if (event.key === 'Control') {
             // ctrl
             const clrIndex = this.renderer.getColorIndexOfPixel(...hover);
-            if (clrIndex !== null) {
-              store.dispatch(selectColor(clrIndex));
-            }
+            store.dispatch(selectColor(clrIndex));
             return;
           }
           if (event.location === KeyboardEvent.DOM_KEY_LOCATION_LEFT) {
             // left shift
-            this.holdPainting = true;
+            this.holdPainting = 1;
             PixelPlainterControls.placePixel(store, this.renderer, hover);
             return;
           }
           if (event.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT) {
             // right shift
+            this.holdPainting = 2;
+            const colorIndex = this.renderer
+              .getColorIndexOfPixel(...hover, true);
+            if (colorIndex !== null) {
+              PixelPlainterControls.placePixel(
+                store,
+                this.renderer,
+                hover,
+                colorIndex,
+              );
+            }
           }
         }
         break;

@@ -78,6 +78,46 @@ class ChunkLoader {
   }
 
   /*
+   * Get color of pixel in current historical view
+   * @param x, y world coordiantes of pixel
+   * @return ColorIndex or null if chunks not loaded or historical view not set
+   */
+  getHistoricalIndexOfPixel(
+    x: number,
+    y: number,
+  ) {
+    const state: State = this.store.getState();
+    const { canvasSize, historicalDate, historicalTime } = state.canvas;
+    if (!historicalDate) {
+      return null;
+    }
+    const [cx, cy] = getChunkOfPixel(canvasSize, x, y);
+    const px = getCellInsideChunk(canvasSize, [x, y]);
+    const curTime = Date.now();
+
+    if (!historicalTime || historicalTime !== '0000') {
+      // eslint-disable-next-line max-len
+      const incrementialChunkKey = `${historicalDate}${historicalTime}:${cx}:${cy}`;
+      const incrementialChunk = this.chunks.get(incrementialChunkKey);
+      if (incrementialChunk) {
+        const incrementialColor = incrementialChunk.getColorIndex(px);
+        incrementialChunk.timestamp = curTime;
+        if (incrementialColor !== null) {
+          return incrementialColor;
+        }
+      }
+    }
+
+    const chunkKey = `${historicalDate}:${cx}:${cy}`;
+    const chunk = this.chunks.get(chunkKey);
+    if (!chunk) {
+      return null;
+    }
+    chunk.timestamp = curTime;
+    return chunk.getColorIndex(px);
+  }
+
+  /*
    * preLoad chunks by generating them out of
    * available lower zoomlevel chunks
    */

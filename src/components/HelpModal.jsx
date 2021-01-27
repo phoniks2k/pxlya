@@ -37,7 +37,8 @@ const HelpModal = () => (
     <p className="modaltext">Drag mouse to move</p>
     <p className="modaltext">Scroll mouse wheel to zoom</p>
     <p className="modaltext">Click middle mouse button to current hovering color</p>
-    <p className="modaltext">Hold shift for placing while moving mouse</p>
+    <p className="modaltext">Hold left shift for placing while moving mouse</p>
+    <p className="modaltext">Hold right shift for placing while moving mouse according to historical view</p>
     <p className="modaltext">Pinch to zoom (on touch devices)</p>
     <p className="modaltext">Pan to move (on touch devices)</p>
     <p className="modaltext">Click or tap to place a pixel</p>

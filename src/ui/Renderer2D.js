@@ -146,8 +146,10 @@ class Renderer {
     }
   }
 
-  getColorIndexOfPixel(cx, cy) {
-    return this.chunkLoader.getColorIndexOfPixel(cx, cy);
+  getColorIndexOfPixel(cx, cy, historical: boolean = false) {
+    return (historical)
+      ? this.chunkLoader.getHistoricalIndexOfPixel(cx, cy)
+      : this.chunkLoader.getColorIndexOfPixel(cx, cy);
   }
 
   updateScale(
