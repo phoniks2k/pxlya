@@ -174,7 +174,7 @@ class Void extends WebSocketEvents {
     return Math.floor(this.curRadius * 100 / TARGET_RADIUS);
   }
 
-  broadcastPixelBuffer(canvasId, chunkid, buffer) {
+  broadcastPixelBuffer(canvasId, chunkId, buffer) {
     const {
       i: pi,
       j: pj,

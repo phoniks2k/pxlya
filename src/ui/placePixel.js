@@ -78,7 +78,7 @@ export function receivePixelUpdate(
   offset: number,
   color: ColorIndex,
 ) {
-  for (let p = 0; p < clientPredictions; p += 1) {
+  for (let p = 0; p < clientPredictions.length; p += 1) {
     const predPxl = clientPredictions[p];
     if (predPxl[0] === i
       && predPxl[1] === j
