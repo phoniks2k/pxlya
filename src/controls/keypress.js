@@ -13,6 +13,7 @@ import {
   notify,
 } from '../actions';
 
+const usedKeys = ['g', 'h', 'x', 'm', 'r', 'p'];
 
 function onKeyPress(event: KeyboardEvent) {
   // ignore key presses if modal is open or chat is used
@@ -22,31 +23,39 @@ function onKeyPress(event: KeyboardEvent) {
     return;
   }
 
-  switch (event.key) {
+  /*
+   * if char of key isn't used by a keybind,
+   * we check if the key location is where a
+   * key that is used would be on QWERTY
+   */
+  const key = (usedKeys.includes(event.key))
+    ? event.key
+    : event.code.substr(-1).toLowerCase();
+
+  switch (key) {
     case 'g':
       store.dispatch(toggleGrid());
-      break;
+      return;
     case 'h':
       store.dispatch(toggleHistoricalView());
-      break;
+      return;
     case 'x':
       store.dispatch(togglePixelNotify());
-      break;
+      return;
     case 'm':
       store.dispatch(toggleMute());
-      break;
+      return;
     case 'r': {
       const state = store.getState();
       const { hover } = state.gui;
       const text = hover.join('_');
       copy(text);
       store.dispatch(notify('Copied!'));
-      break;
+      return;
     }
-    case 'p': {
+    case 'p':
       store.dispatch(toggleHiddenCanvases());
       break;
-    }
     default:
   }
 }

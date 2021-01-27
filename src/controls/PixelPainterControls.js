@@ -500,29 +500,43 @@ class PixelPlainterControls {
     }
     const { store } = this;
 
-    switch (event.key) {
+    /*
+     * key location
+     */
+    switch (event.code) {
       case 'ArrowUp':
-      case 'w':
+      case 'KeyW':
         store.dispatch(moveNorth());
-        break;
+        return;
       case 'ArrowLeft':
-      case 'a':
+      case 'KeyA':
         store.dispatch(moveWest());
-        break;
+        return;
       case 'ArrowDown':
-      case 's':
+      case 'KeyS':
         store.dispatch(moveSouth());
-        break;
+        return;
       case 'ArrowRight':
-      case 'd':
+      case 'KeyD':
         store.dispatch(moveEast());
-        break;
+        return;
+      case 'KeyE':
+        store.dispatch(zoomIn());
+        return;
+      case 'KeyQ':
+        store.dispatch(zoomOut());
+        return;
+      default:
+    }
+
+    /*
+     * key char
+     */
+    switch (event.key) {
       case '+':
-      case 'e':
         store.dispatch(zoomIn());
         break;
       case '-':
-      case 'q':
         store.dispatch(zoomOut());
         break;
       case 'Control':
