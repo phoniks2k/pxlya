@@ -20,4 +20,26 @@ export function ccToCoords(cc: string) {
   return (coords) || [0, 0];
 }
 
+/*
+ * gets prefered language out of localisation string
+ * @param location string (like from accept-language header)
+ * @return language code
+ */
+export function languageFromLocalisation(localisation) {
+  let lang = localisation;
+  let i = lang.indexOf('-');
+  if (i !== -1) {
+    lang = lang.slice(0, i);
+  }
+  i = lang.indexOf(',');
+  if (i !== -1) {
+    lang = lang.slice(0, i);
+  }
+  i = lang.indexOf(';');
+  if (i !== -1) {
+    lang = lang.slice(0, i);
+  }
+  return lang;
+}
+
 export default ccToCoords;

@@ -38,9 +38,10 @@ const css = [
  * including setting global variables for countryCoords
  * and assetserver
  * @param countryCoords Cell with coordinates of client country
+ * @param lang language code
  * @return html of mainpage
  */
-function generateMainPage(countryCoords: Cell): string {
+function generateMainPage(countryCoords: Cell, lang: string): string {
   const [x, y] = countryCoords;
   // eslint-disable-next-line
   const html = ReactDOM.renderToStaticMarkup(

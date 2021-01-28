@@ -32,7 +32,7 @@ import generateMainPage from './components/Main';
 import { SECOND, MONTH } from './core/constants';
 import { PORT, DISCORD_INVITE, GUILDED_INVITE } from './core/config';
 
-import { ccToCoords } from './utils/location';
+import { ccToCoords, languageFromLocalisation } from './utils/location';
 import { startAllCanvasLoops } from './core/tileserver';
 
 startAllCanvasLoops();
@@ -183,9 +183,12 @@ app.get('/', async (req, res) => {
 
   // get start coordinates based on cloudflare header country
   const country = req.headers['cf-ipcountry'];
+  let language = req.headers['accept-language'];
+
+  const lang = (language) ? languageFromLocalisation(language) : 'en';
   const countryCoords = (country) ? ccToCoords(country) : [0, 0];
 
-  res.status(200).send(generateMainPage(countryCoords));
+  res.status(200).send(generateMainPage(countryCoords, lang));
 });
 
 
