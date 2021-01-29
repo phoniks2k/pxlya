@@ -1,4 +1,10 @@
 /**
+ * This is an old webpack config that uses ttag-webpack-plugin
+ * Sadly this plugin has issues with webpack 5, so we can't use it.
+ * But we keep this config around, so that we can adjust in the case it
+ * might become stable.
+ *
+ * https://github.com/ttag-org/ttag-webpack-plugin/issues
  */
 
 import fs from 'fs';

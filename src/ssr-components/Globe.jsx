@@ -7,6 +7,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 
+import { getTTag } from '../core/ttag';
+
 import Html from './Html';
 /* this will be set by webpack */
 // eslint-disable-next-line import/no-unresolved
@@ -15,14 +17,6 @@ import { ASSET_SERVER } from '../core/config';
 
 import globeCss from '../styles/globe.css';
 
-const Globe = () => (
-  <div>
-    <div id="webgl" />
-    <div id="coorbox">(0, 0)</div>
-    <div id="info">Double click on globe to go back.</div>
-    <div id="loading">Loading...</div>
-  </div>
-);
 const styles = [{
   id: 'globe',
   cssText: globeCss,
@@ -33,7 +27,6 @@ const description = 'pixelplanet globe';
 const defaultScripts = assets.globe.js.map(
   (s) => ASSET_SERVER + s,
 );
-const body = <Globe />;
 
 /*
  * generates string with html of globe page
@@ -45,12 +38,22 @@ function generateGlobePage(lang: string): string {
     ? assets[`globe-${lang}`].js.map((s) => ASSET_SERVER + s)
     : defaultScripts;
 
+  const { t } = getTTag(lang);
+  const Globe = () => (
+    <div>
+      <div id="webgl" />
+      <div id="coorbox">(0, 0)</div>
+      <div id="info">{t`Double click on globe to go back.`}</div>
+      <div id="loading">{t`Loading...`}</div>
+    </div>
+  );
+
   const html = ReactDOM.renderToStaticMarkup(
     <Html
       title={title}
       description={description}
       scripts={scripts}
-      body={body}
+      body={<Globe />}
       styles={styles}
     />,
   );

@@ -2,13 +2,27 @@
  */
 
 import path from 'path';
+import fs from 'fs';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
 
+import patch from './scripts/patch';
 import pkg from './package.json';
 
 const isDebug = process.argv.includes('--debug');
+
+/*
+ * check which ssr translations are available
+ * Maybe we will use thi later to auto-populat src/core/ttag.js
+ *
+const langDir = path.resolve(__dirname, 'i18n');
+const langs = fs.readdirSync(langDir)
+  .filter((e) => (e.endsWith('.po') && e.startsWith('ssr')));
+fs.writeFileSync(path.resolve(langDir, 'ssr-list.json'), JSON.stringify(langs));
+*/
+
+patch();
 
 const basePackageValues = {
   name: pkg.name,
@@ -37,6 +51,12 @@ const babelPlugins = [
   '@babel/transform-react-inline-elements',
   'transform-react-remove-prop-types',
   'transform-react-pure-class-to-function',
+  ['ttag', {
+    extract: {
+      output: path.resolve(__dirname, 'i18n', 'template-ssr.pot'),
+    },
+    discover: ['t', 'jt', 'gettext'],
+  }],
 ];
 
 
@@ -101,6 +121,10 @@ export default {
           },
         ],
       },
+      {
+        test: [/\.po$/],
+        loader: 'ttag-po-loader',
+      },
     ],
   },
 
@@ -124,6 +148,15 @@ export default {
       ],
     }),
   ],
+
+  stats: {
+    colors: true,
+    reasons: false,
+    hash: false,
+    version: false,
+    timings: true,
+    chunkModules: false,
+  },
 
   node: {
     global: false,

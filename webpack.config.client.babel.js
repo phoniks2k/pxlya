@@ -2,6 +2,7 @@
  */
 
 import path from 'path';
+import fs from 'fs';
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -18,8 +19,12 @@ const assetPlugin = new AssetsPlugin({
   prettyPrint: true,
 });
 
+
 export function buildWebpackClientConfig(development, analyze, locale) {
   const ttag = {
+    extract: {
+      output: path.resolve(__dirname, 'i18n', 'template.pot'),
+    },
     resolve: {
       translations: (locale !== 'default')
         ? path.resolve(__dirname, 'i18n', `${locale}.po`)
@@ -180,13 +185,41 @@ export function buildWebpackClientConfig(development, analyze, locale) {
       },
     },
 
+    stats: {
+      colors: true,
+      reasons: false,
+      hash: false,
+      version: false,
+      timings: true,
+      chunkModules: false,
+    },
+
     cache: true,
   };
 }
 
-export default buildWebpackClientConfig(
+/*
+ * return array of webpack configuartions for all languages
+ */
+function buildWebpackClientConfigAllLangs(development, analyze) {
+  let webpackConfigClient = [
+    buildWebpackClientConfig(development, analyze, 'default'),
+  ];
+  /*
+   * get available translations
+   */
+  const langDir = path.resolve(__dirname, 'i18n');
+  const langs = fs.readdirSync(langDir)
+    .filter((e) => (e.endsWith('.po') && !e.startsWith('ssr')))
+    .map((l) => l.slice(0, -3));
+  webpackConfigClient = webpackConfigClient.concat(
+    langs.map((l) => buildWebpackClientConfig(development, analyze, l)),
+  );
+
+  return webpackConfigClient;
+}
+
+export default buildWebpackClientConfigAllLangs(
   process.argv.includes('--debug'),
   process.argv.includes('--analyse') || process.argv.includes('--analyze'),
-  'default',
 );
-

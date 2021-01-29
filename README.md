@@ -150,7 +150,7 @@ The default configuration values can be seen in `src/core/config.js` and for the
 
 #### Styles
 
-To add more css styles, create a new css file in `src/styles` based on `src/styles/default.css` and add it to the FILES array in `tools/minifyCss.js`
+To add more css styles, create a new css file in `src/styles` based on `src/styles/default.css` with a filename beginning with "theme-" and rebuild`
 
 ### Running
 

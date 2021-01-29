@@ -1,25 +1,26 @@
 /*
+ * Minify CSS
+ * currently just css files for themes are loades seperately,
+ * so files beginning with "theme-" in the src/styles folder will
+ * be read and automatically added.
  *
  * @flow
  */
+
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-console */
 
 import fs from 'fs';
 import path from 'path';
 import CleanCSS from 'clean-css';
 import crypto from 'crypto';
 
-const rootdir = path.resolve(__dirname, '..');
 const assetdir = path.resolve(__dirname, '..', 'build', 'public', 'assets');
 const builddir = path.resolve(__dirname, '..', 'build');
 
 const FOLDER = path.resolve(__dirname, '..', 'src', 'styles');
-const FILES = [
-  'default.css',
-  'dark.css',
-  'light-round.css',
-  'dark-round.css',
-  'arkeros.css',
-];
+const FILES = fs.readdirSync(FOLDER).filter((e) => e.startsWith('theme-'));
+FILES.push('default.css');
 
 async function minifyCss() {
   console.log('Minifying css');
@@ -37,18 +38,21 @@ async function minifyCss() {
       for (let i = 0; i < output.errors.length; i += 1) {
         console.log('\x1b[31m%s\x1b[0m', output.errors[i]);
       }
-      throw new Error("Minify CSS Error Occured");
+      throw new Error('Minify CSS Error Occured');
     }
     // eslint-disable-next-line max-len
     console.log('\x1b[33m%s\x1b[0m', `Minified ${file} by ${Math.round(output.stats.efficiency * 100)}%`);
     const hash = crypto.createHash('md5').update(output.styles).digest('hex');
-    const key = file.substr(0, file.indexOf('.'));
+    let key = file.substr(0, file.indexOf('.'));
+    if (key.startsWith('theme-')) {
+      key = key.substr(6);
+    }
     const filename = `${key}.${hash.substr(0, 8)}.css`;
-    fs.writeFileSync(path.resolve(assetdir,filename), output.styles, 'utf8');
+    fs.writeFileSync(path.resolve(assetdir, filename), output.styles, 'utf8');
     assets[key] = `/assets/${filename}`;
   });
   const json = JSON.stringify(assets);
-  fs.writeFileSync(path.resolve(builddir, styleassets.json), json);
+  fs.writeFileSync(path.resolve(builddir, 'styleassets.json'), json);
 }
 
 export default minifyCss;

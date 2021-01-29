@@ -28,9 +28,14 @@ function onKeyPress(event: KeyboardEvent) {
    * we check if the key location is where a
    * key that is used would be on QWERTY
    */
-  const key = (usedKeys.includes(event.key))
-    ? event.key
-    : event.code.substr(-1).toLowerCase();
+  let { key } = event;
+  if (!usedKeys.includes(key)) {
+    key = event.code;
+    if (!key.startsWith('Key')) {
+      return;
+    }
+    key = key.substr(-1).toLowerCase();
+  }
 
   switch (key) {
     case 'g':

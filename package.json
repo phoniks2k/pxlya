@@ -9,7 +9,7 @@
   "description": "Unlimited planet canvas for placing pixels",
   "main": "server.js",
   "scripts": {
-    "build": "babel-node scripts/run build",
+    "build": "babel-node scripts/run prebuild && npm run webpack",
     "clean": "babel-node scripts/run clean",
     "webpack": "webpack --config webpack.config.web.babel.js && webpack --config webpack.config.client.babel.js",
     "babel-node": "cd $INIT_CWD && babel-node",
@@ -78,6 +78,7 @@
     "three": "^0.123.0",
     "three-trackballcontrols": "^0.9.0",
     "ttag": "^1.7.24",
+    "ttag-po-loader": "0.0.2",
     "url-search-params-polyfill": "^8.1.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0",
