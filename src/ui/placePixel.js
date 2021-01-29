@@ -170,104 +170,103 @@ export function receivePixelReturn(
 ) {
   clearTimeout(pixelTimeout);
 
-  try {
-    /*
-     * the terms coolDown is used in a different meaning here
-     * coolDown is the delta seconds  of the placed pixel
-     */
-    if (wait) {
-      store.dispatch(setWait(wait));
-    }
-    if (coolDownSeconds) {
-      store.dispatch(notify(coolDownSeconds));
-      if (coolDownSeconds < 0) {
-        store.dispatch(gotCoolDownDelta(coolDownSeconds));
-      }
-    }
-
-    if (retCode) {
-      /*
-       * one or more pixels didn't get set,
-       * revert predictions and clean queue
-       */
-      const { i, j, pixels } = lastRequestValues;
-      const [offset] = pixels[pxlCnt];
-      revertPredictionsAt(store, i, j, offset);
-      pixelQueue = [];
-    }
-
-    let errorTitle = null;
-    let msg = null;
-    switch (retCode) {
-      case 0:
-        store.dispatch(placedPixels(pxlCnt));
-        break;
-      case 1:
-        errorTitle = 'Invalid Canvas';
-        msg = 'This canvas doesn\'t exist';
-        break;
-      case 2:
-        errorTitle = 'Invalid Coordinates';
-        msg = 'x out of bounds';
-        break;
-      case 3:
-        errorTitle = 'Invalid Coordinates';
-        msg = 'y out of bounds';
-        break;
-      case 4:
-        errorTitle = 'Invalid Coordinates';
-        msg = 'z out of bounds';
-        break;
-      case 5:
-        errorTitle = 'Wrong Color';
-        msg = 'Invalid color selected';
-        break;
-      case 6:
-        errorTitle = 'Just for registered Users';
-        msg = 'You have to be logged in to place on this canvas';
-        break;
-      case 7:
-        errorTitle = 'Place more :)';
-        // eslint-disable-next-line max-len
-        msg = 'You can not access this canvas yet. You need to place more pixels';
-        break;
-      case 8:
-        store.dispatch(notify('Pixel protected!'));
-        break;
-      case 9:
-        // pixestack used up
-        store.dispatch(pixelWait());
-        break;
-      case 10:
-        // captcha, reCaptcha or hCaptcha
-        if (typeof window.hcaptcha !== 'undefined') {
-          window.hcaptcha.execute();
-        } else {
-          window.grecaptcha.execute();
-        }
-        return;
-      case 11:
-
-        errorTitle = 'No Proxies Allowed :(';
-        msg = 'You are using a Proxy.';
-        break;
-      default:
-        errorTitle = 'Weird';
-        msg = 'Couldn\'t set Pixel';
-    }
-    if (msg) {
-      store.dispatch(pixelFailure());
-      store.dispatch(sweetAlert(
-        (errorTitle || `Error ${retCode}`),
-        msg,
-        'error',
-        'OK',
-      ));
-    }
-  } finally {
-    store.dispatch(setPlaceAllowed(true));
-    /* start next request if queue isn't empty */
-    requestFromQueue(store);
+  /*
+   * the terms coolDown is used in a different meaning here
+   * coolDown is the delta seconds  of the placed pixel
+   */
+  if (wait) {
+    store.dispatch(setWait(wait));
   }
+  if (coolDownSeconds) {
+    store.dispatch(notify(coolDownSeconds));
+    if (coolDownSeconds < 0) {
+      store.dispatch(gotCoolDownDelta(coolDownSeconds));
+    }
+  }
+
+  if (retCode) {
+    /*
+     * one or more pixels didn't get set,
+     * revert predictions and clean queue
+     */
+    const { i, j, pixels } = lastRequestValues;
+    const [offset] = pixels[pxlCnt];
+    revertPredictionsAt(store, i, j, offset);
+    pixelQueue = [];
+  }
+
+  let errorTitle = null;
+  let msg = null;
+  switch (retCode) {
+    case 0:
+      store.dispatch(placedPixels(pxlCnt));
+      break;
+    case 1:
+      errorTitle = 'Invalid Canvas';
+      msg = 'This canvas doesn\'t exist';
+      break;
+    case 2:
+      errorTitle = 'Invalid Coordinates';
+      msg = 'x out of bounds';
+      break;
+    case 3:
+      errorTitle = 'Invalid Coordinates';
+      msg = 'y out of bounds';
+      break;
+    case 4:
+      errorTitle = 'Invalid Coordinates';
+      msg = 'z out of bounds';
+      break;
+    case 5:
+      errorTitle = 'Wrong Color';
+      msg = 'Invalid color selected';
+      break;
+    case 6:
+      errorTitle = 'Just for registered Users';
+      msg = 'You have to be logged in to place on this canvas';
+      break;
+    case 7:
+      errorTitle = 'Place more :)';
+      // eslint-disable-next-line max-len
+      msg = 'You can not access this canvas yet. You need to place more pixels';
+      break;
+    case 8:
+      store.dispatch(notify('Pixel protected!'));
+      break;
+    case 9:
+      // pixestack used up
+      store.dispatch(pixelWait());
+      break;
+    case 10:
+      // captcha, reCaptcha or hCaptcha
+      if (typeof window.hcaptcha !== 'undefined') {
+        window.hcaptcha.execute();
+      } else {
+        window.grecaptcha.execute();
+      }
+      return;
+    case 11:
+
+      errorTitle = 'No Proxies Allowed :(';
+      msg = 'You are using a Proxy.';
+      break;
+    default:
+      errorTitle = 'Weird';
+      msg = 'Couldn\'t set Pixel';
+  }
+
+  if (msg) {
+    store.dispatch(pixelFailure());
+    store.dispatch(sweetAlert(
+      (errorTitle || `Error ${retCode}`),
+      msg,
+      'error',
+      'OK',
+    ));
+  }
+
+  store.dispatch(setPlaceAllowed(true));
+  /* start next request if queue isn't empty */
+  requestFromQueue(store);
 }
 
