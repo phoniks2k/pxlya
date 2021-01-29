@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FaUser, FaPaintBrush } from 'react-icons/fa';
 import { numberToString } from '../core/utils';
+import { t } from 'ttag';
 
 
 import type { State } from '../reducers';
@@ -17,9 +18,9 @@ const OnlineBox = ({ online, totalPixels, name }) => (
     {(online || name)
       ? (
         <div className="onlinebox">
-          {(online) && <span>{online} <FaUser />&nbsp;</span>}
+          {(online) && <span title={t`User online`}>{online} <FaUser />&nbsp;</span>}
           {(name != null)
-              && <span>{numberToString(totalPixels)} <FaPaintBrush /></span>}
+              && <span title={t`Pixel gesetzt`}>{numberToString(totalPixels)} <FaPaintBrush /></span>}
         </div>
       ) : null}
   </div>

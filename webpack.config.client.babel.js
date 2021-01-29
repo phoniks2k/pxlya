@@ -11,7 +11,7 @@ import pkg from './package.json';
 /*
  * Emit a file with assets paths
  */
-const assetPlugin =  new AssetsPlugin({
+const assetPlugin = new AssetsPlugin({
   path: path.resolve(__dirname, 'build'),
   filename: 'assets.json',
   entrypoints: true,
@@ -54,9 +54,9 @@ export function buildWebpackClientConfig(development, analyze, locale) {
 
     entry: {
       [(locale !== 'default') ? `client-${locale}` : 'client']:
-        ['./src/client.js'],
+        [path.resolve(__dirname, 'src', 'client.js')],
       [(locale !== 'default') ? `globe-${locale}` : 'globe']:
-        ['./src/globe.js'],
+        [path.resolve(__dirname, 'src', 'globe.js')],
     },
 
     output: {

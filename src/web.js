@@ -26,8 +26,8 @@ import {
   admintools,
   resetPassword,
 } from './routes';
-import generateGlobePage from './components/Globe';
-import generateMainPage from './components/Main';
+import generateGlobePage from './ssr-components/Globe';
+import generateMainPage from './ssr-components/Main';
 
 import { SECOND, MONTH } from './core/constants';
 import { PORT, DISCORD_INVITE, GUILDED_INVITE } from './core/config';

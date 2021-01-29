@@ -7,6 +7,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { MdPalette } from 'react-icons/md';
+import { t } from 'ttag';
 
 import { toggleOpenPalette } from '../actions';
 
@@ -21,6 +22,7 @@ const PalselButton = ({
       backgroundColor: palette.colors[selectedColor],
     }}
     role="button"
+    title={(paletteOpen) ? t`Close Palette` : t`Open Palette`}
     tabIndex={0}
     onClick={onToggle}
   >

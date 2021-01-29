@@ -6,6 +6,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FaQuestion } from 'react-icons/fa';
+import { t } from 'ttag';
 
 import { showHelpModal } from '../actions';
 
@@ -16,6 +17,7 @@ const HelpButton = ({ open }) => (
     className="actionbuttons"
     onClick={open}
     role="button"
+    title={t`Help`}
     tabIndex={-1}
   >
     <FaQuestion />

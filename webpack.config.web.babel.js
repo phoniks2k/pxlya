@@ -48,8 +48,8 @@ export default {
   mode: (isDebug) ? 'development' : 'production',
 
   entry: {
-    web: ['./src/web.js'],
-    backup: ['./src/backup.js'],
+    web: [path.resolve(__dirname, 'src', 'web.js')],
+    backup: [path.resolve(__dirname, 'src', 'web.js')],
   },
 
   output: {

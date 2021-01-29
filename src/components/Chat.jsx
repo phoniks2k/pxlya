@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import useStayScrolled from 'react-stay-scrolled';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import type { State } from '../reducers';
 import ChatMessage from './ChatMessage';
@@ -139,6 +140,7 @@ const Chat = ({
             );
           }}
           role="button"
+          title={t`Channel settings`}
           tabIndex={-1}
         >⚙</span>
         &nbsp;
@@ -147,6 +149,7 @@ const Chat = ({
           <span
             onClick={triggerModal}
             role="button"
+            title={t`maximize`}
             tabIndex={-1}
           >↷</span>
           )}
@@ -162,7 +165,7 @@ const Chat = ({
           && (
           <ChatMessage
             name="info"
-            msgArray={splitChatMessage('Start chatting here', nameRegExp)}
+            msgArray={splitChatMessage(t`Start chatting here`, nameRegExp)}
             country="xx"
             uid={0}
           />
@@ -194,7 +197,7 @@ const Chat = ({
               id="chatmsginput"
               maxLength="200"
               type="text"
-              placeholder="Chat here"
+              placeholder={t`Chat here`}
             />
             <button
               style={{ flexGrow: 0 }}
@@ -213,7 +216,7 @@ const Chat = ({
           role="button"
           tabIndex={0}
         >
-          You must be logged in to chat
+          {t`You must be logged in to chat`}
         </div>
       )}
     </div>

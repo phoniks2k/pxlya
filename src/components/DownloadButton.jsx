@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { MdFileDownload } from 'react-icons/md';
 import fileDownload from 'js-file-download';
+import { t } from 'ttag';
 
 import { getRenderer } from '../ui/renderer';
 
@@ -33,6 +34,7 @@ const DownloadButton = ({ view }) => (
     id="downloadbutton"
     className="actionbuttons"
     role="button"
+    title={t`Make Screenshot`}
     tabIndex={0}
     onClick={() => download(view)}
   >

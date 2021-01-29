@@ -6,6 +6,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Md3DRotation } from 'react-icons/md';
+import { t } from 'ttag';
 
 import type { State } from '../reducers';
 
@@ -27,6 +28,7 @@ const GlobeButton = ({
     role="button"
     tabIndex={-1}
     id="globebutton"
+    title={t`Globe View`}
     className="actionbuttons"
     onClick={() => globe(canvasId, canvasIdent, canvasSize, view)}
   >

@@ -25,7 +25,7 @@ async function minifyCss() {
   console.log('Minifying css');
   const assets = {};
   FILES.forEach((file) => {
-    const input = fs.readFileSync(`${FOLDER}/${file}`, 'utf8');
+    const input = fs.readFileSync(path.resolve(FOLDER, file), 'utf8');
     const options = {};
     const output = new CleanCSS(options).minify(input);
     if (output.warnings && output.warnings.length > 0) {
@@ -44,11 +44,11 @@ async function minifyCss() {
     const hash = crypto.createHash('md5').update(output.styles).digest('hex');
     const key = file.substr(0, file.indexOf('.'));
     const filename = `${key}.${hash.substr(0, 8)}.css`;
-    fs.writeFileSync(`${assetdir}/${filename}`, output.styles, 'utf8');
+    fs.writeFileSync(path.resolve(assetdir,filename), output.styles, 'utf8');
     assets[key] = `/assets/${filename}`;
   });
   const json = JSON.stringify(assets);
-  fs.writeFileSync(`${builddir}/styleassets.json`, json);
+  fs.writeFileSync(path.resolve(builddir, styleassets.json), json);
 }
 
 export default minifyCss;

@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import { connect } from 'react-redux';
 import { MdForum } from 'react-icons/md';
+import { t } from 'ttag';
 
 import { showChatModal } from '../actions';
 
@@ -57,6 +58,7 @@ const ChatButton = ({
       className="actionbuttons"
       onClick={open}
       role="button"
+      title={(chatOpen) ? t`Close Chat` : t`Open Chat`}
       tabIndex={0}
     >
       {(unreadAny) && (

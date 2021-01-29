@@ -41,11 +41,11 @@ async function bundle() {
     const regex = /core-js\/fn\/set-immediate/g;
     const files = [
       path.resolve(
-        '..', 'node_modules',
+        __dirname, '..', 'node_modules',
         'image-q', 'dist', 'esm', 'basicAPI.js',
       ),
       path.resolve(
-        '..', 'node_modules',
+        __dirname, '..', 'node_modules',
         'image-q', 'dist', 'esm', 'helper.js',
       ),
     ];

@@ -25,7 +25,7 @@ import change_mail from './change_mail';
 import restore_password from './restore_password';
 import mclink from './mclink';
 
-import getHtml from '../../../components/RedirectionPage';
+import getHtml from '../../../ssr-components/RedirectionPage';
 
 import getMe from '../../../core/me';
 

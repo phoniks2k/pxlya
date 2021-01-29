@@ -5,6 +5,8 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
+
 import copy from '../utils/clipboard';
 import { notify } from '../actions';
 
@@ -21,7 +23,7 @@ const CoordinatesBox = ({ view, hover, notifyCopy }) => (
     className="coorbox"
     onClick={() => { copy(window.location.hash); notifyCopy(); }}
     role="button"
-    title="Copy to Clipboard"
+    title={t`Copy to Clipboard`}
     tabIndex="0"
   >{
     renderCoordinates(hover

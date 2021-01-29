@@ -1,6 +1,5 @@
 /*
- * Html for adminpage
- *
+ * Admintools
  * @flow
  */
 
