@@ -29,20 +29,33 @@ const styles = [{
 }];
 
 const title = 'PixelPlanet.fun 3DGlobe';
-const description = '3D globe of our canvas';
-const scripts = [
-  ASSET_SERVER + assets.three.js,
-  ASSET_SERVER + assets.globe.js,
-];
+const description = 'pixelplanet globe';
+const defaultScripts = assets.globe.js.map(
+  (s) => ASSET_SERVER + s,
+);
 const body = <Globe />;
-const globeHtml = `<!doctype html>${ReactDOM.renderToStaticMarkup(
-  <Html
-    title={title}
-    description={description}
-    scripts={scripts}
-    body={body}
-    styles={styles}
-  />,
-)}`;
 
-export default globeHtml;
+/*
+ * generates string with html of globe page
+ * @param lang language code
+ * @return html of mainpage
+ */
+function generateGlobePage(lang: string): string {
+  const scripts = (assets[`globe-${lang}`])
+    ? assets[`globe-${lang}`].js.map((s) => ASSET_SERVER + s)
+    : defaultScripts;
+
+  const html = ReactDOM.renderToStaticMarkup(
+    <Html
+      title={title}
+      description={description}
+      scripts={scripts}
+      body={body}
+      styles={styles}
+    />,
+  );
+
+  return `<!doctype html>${html}`;
+}
+
+export default generateGlobePage;

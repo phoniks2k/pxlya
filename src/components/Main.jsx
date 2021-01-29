@@ -22,10 +22,9 @@ let code = `window.assetserver="${ASSET_SERVER}";window.availableStyles=JSON.par
 if (BACKUP_URL) {
   code += `window.backupurl="${BACKUP_URL}";`;
 }
-const scripts = [
-  ASSET_SERVER + assets.vendor.js,
-  ASSET_SERVER + assets.client.js,
-];
+const defaultScripts = assets.client.js.map(
+  (s) => ASSET_SERVER + s,
+);
 const css = [
   {
     id: 'globcss',
@@ -43,6 +42,9 @@ const css = [
  */
 function generateMainPage(countryCoords: Cell, lang: string): string {
   const [x, y] = countryCoords;
+  const scripts = (assets[`client-${lang}`])
+    ? assets[`client-${lang}`].js.map((s) => ASSET_SERVER + s)
+    : defaultScripts;
   // eslint-disable-next-line
   const html = ReactDOM.renderToStaticMarkup(
     <Html

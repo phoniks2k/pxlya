@@ -5,7 +5,7 @@
 import rimraf from 'rimraf';
 import path from 'path';
 
-const builddir = path.resolve(__dirname, '../build');
+const builddir = path.resolve(__dirname, '..', 'build');
 
 
 function clean() {

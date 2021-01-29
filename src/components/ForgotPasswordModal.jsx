@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import { showUserAreaModal } from '../actions';
 import NewPasswordForm from './NewPasswordForm';
@@ -16,7 +17,7 @@ const ForgotPasswordModal = ({ login }) => (
     </p><br />
     <p style={{ textAlign: 'center' }}>
       <NewPasswordForm back={login} />
-      <p>Consider joining us on Guilded:&nbsp;
+      <p>{t`Consider joining us on Guilded:`}&nbsp;
         <a href="./guilded" target="_blank">pixelplanet.fun/guilded</a>
       </p>
     </p>

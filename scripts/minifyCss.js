@@ -9,10 +9,10 @@ import CleanCSS from 'clean-css';
 import crypto from 'crypto';
 
 const rootdir = path.resolve(__dirname, '..');
-const assetdir = path.resolve(__dirname, '../build/public/assets');
-const builddir = path.resolve(__dirname, '../build');
+const assetdir = path.resolve(__dirname, '..', 'build', 'public', 'assets');
+const builddir = path.resolve(__dirname, '..', 'build');
 
-const FOLDER = path.resolve(__dirname, '../src/styles');
+const FOLDER = path.resolve(__dirname, '..', 'src', 'styles');
 const FILES = [
   'default.css',
   'dark.css',

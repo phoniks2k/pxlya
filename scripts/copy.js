@@ -9,10 +9,10 @@ import path from 'path';
 import glob from 'glob';
 import mkdirp from 'mkdirp';
 
-const builddir = path.resolve(__dirname, '../build');
-const deploydir = path.resolve(__dirname, '../deployment');
-const publicdir = path.resolve(__dirname, '../public');
-const srcdir = path.resolve(__dirname, '../src');
+const builddir = path.resolve(__dirname, '..', 'build');
+const deploydir = path.resolve(__dirname, '..', 'deployment');
+const publicdir = path.resolve(__dirname, '..', 'public');
+const srcdir = path.resolve(__dirname, '..', 'src');
 
 /*
  * following functions are copied from

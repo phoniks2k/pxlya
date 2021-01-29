@@ -5,6 +5,7 @@
 
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import type { State } from '../reducers';
 
@@ -124,7 +125,7 @@ const UserAreaModal = ({
           )}
         </Tabs>
       )}
-    <p>Consider joining us on Guilded:&nbsp;
+    <p>{t`Consider joining us on Guilded:`}&nbsp;
       <a href="./guilded" target="_blank">pixelplanet.fun/guilded</a>
     </p>
   </p>

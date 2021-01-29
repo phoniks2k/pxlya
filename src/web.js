@@ -26,7 +26,7 @@ import {
   admintools,
   resetPassword,
 } from './routes';
-import globeHtml from './components/Globe';
+import generateGlobePage from './components/Globe';
 import generateMainPage from './components/Main';
 
 import { SECOND, MONTH } from './core/constants';
@@ -142,7 +142,7 @@ app.use('/reset_password', resetPassword);
 // 3D Globe (react generated)
 // -----------------------------------------------------------------------------
 const globeEtag = etag(
-  `${assets.globe.js}`,
+  assets.globe.js.join('_'),
   { weak: true },
 );
 app.get('/globe', async (req, res) => {
@@ -157,7 +157,10 @@ app.get('/globe', async (req, res) => {
     return;
   }
 
-  res.status(200).send(globeHtml);
+  const language = req.headers['accept-language'];
+  const lang = (language) ? languageFromLocalisation(language) : 'en';
+
+  res.status(200).send(generateGlobePage(lang));
 });
 
 
@@ -165,7 +168,7 @@ app.get('/globe', async (req, res) => {
 // Main Page (react generated)
 // -----------------------------------------------------------------------------
 const indexEtag = etag(
-  `${assets.vendor.js},${assets.client.js}`,
+  assets.client.js.join('_'),
   { weak: true },
 );
 
@@ -183,7 +186,7 @@ app.get('/', async (req, res) => {
 
   // get start coordinates based on cloudflare header country
   const country = req.headers['cf-ipcountry'];
-  let language = req.headers['accept-language'];
+  const language = req.headers['accept-language'];
 
   const lang = (language) ? languageFromLocalisation(language) : 'en';
   const countryCoords = (country) ? ccToCoords(country) : [0, 0];

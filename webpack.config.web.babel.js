@@ -9,7 +9,6 @@ import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
 import pkg from './package.json';
 
 const isDebug = process.argv.includes('--debug');
-const VERBOSE = false;
 
 const basePackageValues = {
   name: pkg.name,
@@ -54,8 +53,7 @@ export default {
   },
 
   output: {
-    pathinfo: VERBOSE,
-    path: path.resolve(__dirname, './build'),
+    path: path.resolve(__dirname, 'build'),
     libraryTarget: 'commonjs2',
   },
 
@@ -69,7 +67,7 @@ export default {
         test: /\.(js|jsx|ts|tsx)$/,
         loader: 'babel-loader',
         include: [
-          path.resolve(__dirname, './src'),
+          path.resolve(__dirname, 'src'),
         ],
         options: {
           cacheDirectory: isDebug,
@@ -121,9 +119,8 @@ export default {
     }),
     // create package.json for deployment
     new GeneratePackageJsonPlugin(basePackageValues, {
-      debug: VERBOSE,
       sourcePackageFilenames: [
-        path.resolve(__dirname, './package.json'),
+        path.resolve(__dirname, 'package.json'),
       ],
     }),
   ],
@@ -133,8 +130,4 @@ export default {
     __filename: false,
     __dirname: false,
   },
-
-  bail: !isDebug,
-
-  cache: isDebug,
 };
