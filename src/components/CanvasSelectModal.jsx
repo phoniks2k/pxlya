@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import CanvasItem from './CanvasItem';
 import { showArchiveModal } from '../actions';
@@ -25,24 +26,23 @@ const CanvasSelectModal = ({
   }}
   >
     <p className="modaltext">
-      Select the canvas you want to use.
-      Every canvas is unique and has different palettes,
-      cooldown and requirements. Archive of closed canvases can be
-      accessed&nbsp;
+      {t`Select the canvas you want to use. \
+Every canvas is unique and has different palettes, cooldown and requirements. \
+Archive of closed canvases can be accessed here:`}&nbsp;
       <span
         role="button"
         tabIndex={0}
         className="modallink"
         onClick={showArchive}
-      >here</span>.
+      >{t`Archive`}</span>)
     </p>
     {
-      Object.keys(canvases).map((canvasId) => (
-        (canvases[canvasId].hid && !showHiddenCanvases)
-          ? null
-          : <CanvasItem canvasId={canvasId} canvas={canvases[canvasId]} />
-      ))
-    }
+        Object.keys(canvases).map((canvasId) => (
+          (canvases[canvasId].hid && !showHiddenCanvases)
+            ? null
+            : <CanvasItem canvasId={canvasId} canvas={canvases[canvasId]} />
+        ))
+      }
   </p>
 );
 
@@ -64,7 +64,7 @@ function mapStateToProps(state: State) {
 
 const data = {
   content: connect(mapStateToProps, mapDispatchToProps)(CanvasSelectModal),
-  title: 'Canvas Selection',
+  title: t`Canvas Selection`,
 };
 
 export default data;

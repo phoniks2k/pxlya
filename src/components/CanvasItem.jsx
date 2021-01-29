@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import { THREE_CANVAS_HEIGHT } from '../core/constants';
 import { selectCanvas } from '../actions';
@@ -42,25 +43,25 @@ const CanvasItem = ({ canvasId, canvas, changeCanvas }) => (
     <p className="modalcvtext">
       <span className="modaltitle">{canvas.title}</span><br />
       <span className="modalinfo">{canvas.desc}</span><br />
-      Cooldown:
-      &nbsp;
+      {t`Cooldown`}:&nbsp;
       <span className="modalinfo">
         {(canvas.bcd !== canvas.pcd)
           ? <span> {canvas.bcd / 1000}s / {canvas.pcd / 1000}s</span>
           : <span> {canvas.bcd / 1000}s</span>}
       </span><br />
-      Stacking till
+      {t`Stacking till`}:&nbsp;
       <span className="modalinfo"> {canvas.cds / 1000}s</span><br />
-      Ranked:
-      &nbsp;
+      {t`Ranked`}:&nbsp;
       <span className="modalinfo">{(canvas.ranked) ? 'Yes' : 'No'}</span><br />
-      {(canvas.req !== -1) ? <span>Requirements:<br /></span> : null}
+      {(canvas.req !== -1) ? <span>{t`Requirements`}:<br /></span> : null}
       <span className="modalinfo">
-        {(canvas.req !== -1) ? <span>User Account </span> : null}
-        {(canvas.req > 0) ? <span> and {canvas.req} Pixels set</span> : null}
+        {(canvas.req !== -1) ? <span>{t`User Account`} </span> : null}
+        {(canvas.req > 0)
+          ? <span> {t`and ${canvas.req} Pixels set`}</span>
+          : null}
       </span>
       {(canvas.req !== -1) ? <br /> : null}
-      Dimensions:
+      {t`Dimensions`}:&nbsp;
       <span className="modalinfo"> {canvas.size} x {canvas.size}
         {(canvas.v)
           ? <span> x {THREE_CANVAS_HEIGHT} Voxels</span>

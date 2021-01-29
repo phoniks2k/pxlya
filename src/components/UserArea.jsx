@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import type { State } from '../reducers';
 
@@ -53,31 +54,31 @@ class UserArea extends React.Component {
       <p style={{ textAlign: 'center' }}>
         <UserMessages />
         <Stat
-          text="Todays Placed Pixels"
+          text={t`Todays Placed Pixels`}
           value={stats.dailyTotalPixels}
         />
         <Stat
-          text="Daily Rank"
+          text={t`Daily Rank`}
           value={stats.dailyRanking}
           rank
         />
         <Stat
-          text="Placed Pixels"
+          text={t`Placed Pixels`}
           value={stats.totalPixels}
         />
         <Stat
-          text="Total Rank"
+          text={t`Total Rank`}
           value={stats.ranking}
           rank
         />
         <p className="modaltext">
-          <p>Your name is: {name}</p>(
+          <p>{t`Your name is: ${name}`}</p>(
           <span
             role="button"
             tabIndex={-1}
             className="modallink"
             onClick={logout}
-          > Log out</span> |
+          > {t`Log out`}</span> |
           <span
             role="button"
             tabIndex={-1}
@@ -89,7 +90,7 @@ class UserArea extends React.Component {
               deleteAccountExtended: false,
               socialSettingsExtended: false,
             })}
-          > Change Username</span> |
+          > {t`Change Username`}</span> |
           {(mailreg)
             && (
             <span>
@@ -104,7 +105,7 @@ class UserArea extends React.Component {
                   deleteAccountExtended: false,
                   socialSettingsExtended: false,
                 })}
-              > Change Mail</span> |
+              > {t`Change Mail`}</span> |
             </span>
             )}
           <span
@@ -118,7 +119,7 @@ class UserArea extends React.Component {
               deleteAccountExtended: false,
               socialSettingsExtended: false,
             })}
-          > Change Password</span> |
+          > {t`Change Password`}</span> |
           <span
             role="button"
             tabIndex={-1}
@@ -130,7 +131,7 @@ class UserArea extends React.Component {
               deleteAccountExtended: true,
               socialSettingsExtended: false,
             })}
-          > Delete Account</span> )
+          > {t`Delete Account`}</span> )
           <br />(
           <span
             role="button"
@@ -143,7 +144,7 @@ class UserArea extends React.Component {
               deleteAccountExtended: false,
               socialSettingsExtended: true,
             })}
-          > Social Settings</span> )
+          > {t`Social Settings`}</span> )
         </p>
         <p className="modaltext" />
         {(changePasswdExtended)

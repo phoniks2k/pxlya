@@ -11,6 +11,7 @@ lol-cleaned.png
 clean.png
 utils/ocean-tiles/ocean
 utils/osm-tiles/osm
+i18n/*.mo
 
 # Created by https://www.gitignore.io/api/node,webstorm
 

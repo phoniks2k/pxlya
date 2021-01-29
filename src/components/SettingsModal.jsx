@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { c, t } from 'ttag';
 
 import MdToggleButtonHover from './MdToggleButtonHover';
 import {
@@ -119,73 +120,73 @@ function SettingsModal({
   return (
     <p style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: 30 }}>
       <SettingsItem
-        title="Show Grid"
-        description="Turn on grid to highlight pixel borders."
-        keyBind="G"
+        title={t`Show Grid`}
+        description={t`Turn on grid to highlight pixel borders.`}
+        keyBind={c('keybinds').t`G`}
         value={isGridShown}
         onToggle={onToggleGrid}
       />
       <SettingsItem
-        title="Show Pixel Activity"
-        description="Show circles where pixels are placed."
-        keyBind="X"
+        title={t`Show Pixel Activity`}
+        description={t`Show circles where pixels are placed.`}
+        keyBind={c('keybinds').t`X`}
         value={isPixelNotifyShown}
         onToggle={onTogglePixelNotify}
       />
       <SettingsItem
-        title="Disable Game Sounds"
+        title={t`Disable Game Sounds`}
         // eslint-disable-next-line max-len
-        description="All sound effects will be disabled."
-        keyBind="M"
+        description={t`All sound effects will be disabled.`}
+        keyBind={c('keybinds').t`M`}
         value={isMuted}
         onToggle={onMute}
       />
       <SettingsItem
-        title="Enable chat notifications"
-        description="Play a sound when new chat messages arrive"
+        title={t`Enable chat notifications`}
+        description={t`Play a sound when new chat messages arrive`}
         value={chatNotify}
         onToggle={onToggleChatNotify}
       />
       <SettingsItem
-        title="Auto Zoom In"
+        title={t`Auto Zoom In`}
         // eslint-disable-next-line max-len
-        description="Zoom in instead of placing a pixel when you tap the canvas and your zoom is small."
+        description={t`Zoom in instead of placing a pixel when you tap the canvas and your zoom is small.`}
         value={autoZoomIn}
         onToggle={onToggleAutoZoomIn}
       />
       <SettingsItem
-        title="Compact Palette"
+        title={t`Compact Palette`}
         // eslint-disable-next-line max-len
-        description="Display Palette in a compact form that takes less screen space."
+        description={t`Display Palette in a compact form that takes less screen space.`}
         value={compactPalette}
         onToggle={onToggleCompactPalette}
       />
       <SettingsItem
-        title="Potato Mode"
-        description="For when you are playing on a potato."
+        title={t`Potato Mode`}
+        description={t`For when you are playing on a potato.`}
         value={isPotato}
         onToggle={onTogglePotatoMode}
       />
       <SettingsItem
-        title="Light Grid"
-        description="Show Grid in white instead of black."
+        title={t`Light Grid`}
+        description={t`Show Grid in white instead of black.`}
         value={isLightGrid}
         onToggle={onToggleLightGrid}
       />
       { (window.backupurl)
         ? (
           <SettingsItem
-            title="Historical View"
-            description="Check out past versions of the canvas."
+            title={t`Historical View`}
+            description={t`Check out past versions of the canvas.`}
             value={isHistoricalView}
-            keyBind="H"
+            keyBind={c('keybinds').t`H`}
             onToggle={onToggleHistoricalView}
           />
         ) : null }
       {(typeof window.availableStyles !== 'undefined') && (
         <SettingsItemSelect
-          title="Themes"
-          description="How pixelplanet should look like."
+          title={t`Themes`}
+          description={t`How pixelplanet should look like.`}
           values={Object.keys(window.availableStyles)}
           selected={selectedStyle}
           onSelect={onSelectStyle}
@@ -263,7 +264,7 @@ function mapDispatchToProps(dispatch) {
 
 const data = {
   content: connect(mapStateToProps, mapDispatchToProps)(SettingsModal),
-  title: 'Settings',
+  title: t`Settings`,
 };
 
 export default data;

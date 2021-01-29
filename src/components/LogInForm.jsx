@@ -4,6 +4,8 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
+
 import {
   validateEMail, validateName, validatePassword, parseAPIresponse,
 } from '../utils/validation';
@@ -99,18 +101,18 @@ class LogInForm extends React.Component {
           style={inputStyles}
           onChange={(evt) => this.setState({ nameoremail: evt.target.value })}
           type="text"
-          placeholder="Name or Email"
+          placeholder={t`Name or Email`}
         /><br />
         <input
           value={password}
           style={inputStyles}
           onChange={(evt) => this.setState({ password: evt.target.value })}
           type="password"
-          placeholder="Password"
+          placeholder={t`Password`}
         />
         <p>
           <button type="submit">
-            {(submitting) ? '...' : 'LogIn'}
+            {(submitting) ? '...' : t`LogIn`}
           </button>
         </p>
       </form>

@@ -90,6 +90,12 @@ a:hover {
   padding: 0.5rem 0.75rem;
 }
 
+.tab-list-item:hover {
+  background-color: #6d6d6d;
+  border: solid #ccc;
+  border-width: 1px 1px 0 1px;
+}
+
 .tab-list-active {
   background-color: white;
   border: solid #ccc;
@@ -519,7 +525,7 @@ tr:nth-child(even) {
   height: 22px;
 }
 
-.chn.selected, .chn:hover, .channelbtn.selected, .channelbtn:hover {
+.chn.selected, .chn:hover, .channelbtn.selected, .channelbtn:hover, #sendbtn:hover {
   cursor: pointer;
   background-color: #c9c9c9;
 }

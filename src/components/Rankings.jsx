@@ -3,7 +3,10 @@
  * @flow
  */
 
+/* eslint-disable max-len */
+
 import React from 'react';
+import { t } from 'ttag';
 
 import TotalRankings from './TotalRankings';
 import DailyRankings from './DailyRankings';
@@ -31,7 +34,7 @@ class Rankings extends React.Component {
             onClick={() => {
               this.setState({ orderDaily: false });
             }}
-          >Total</span> |
+          >{t`Total`}</span> |
           <span
             role="button"
             tabIndex={-1}
@@ -39,11 +42,11 @@ class Rankings extends React.Component {
               (orderDaily) ? 'modallinkselected' : 'modallink'
             }
             onClick={() => { this.setState({ orderDaily: true }); }}
-          >Daily</span>
+          >{t`Daily`}</span>
         </p>
         {(orderDaily) ? <DailyRankings /> : <TotalRankings />}
         <p className="modaltext">
-          Ranking updates every 5 min. Daily rankings get reset at midnight UTC.
+          {t`Ranking updates every 5 min. Daily rankings get reset at midnight UTC.`}
         </p>
       </div>
     );

@@ -29,16 +29,18 @@ const logoStyle = {
 
 const LogInArea = ({ register, forgotPassword, me }) => (
   <p style={{ textAlign: 'center' }}>
-    <p className="modaltext">Login to access more features and stats.</p><br />
-    <h2>Login with Mail:</h2>
+    <p className="modaltext">
+      {t`Login to access more features and stats.`}
+    </p><br />
+    <h2>{t`Login with Mail:`}</h2>
     <LogInForm me={me} />
     <p
       className="modallink"
       onClick={forgotPassword}
       role="presentation"
     >
-      I forgot my Password.</p>
-    <h2>or login with:</h2>
+      {t`I forgot my Password.`}</p>
+    <h2>{t`or login with:`}</h2>
     <a href="./api/auth/discord">
       <img
         style={logoStyle}
@@ -79,8 +81,8 @@ const LogInArea = ({ register, forgotPassword, me }) => (
         alt="Reddit"
       />
     </a>
-    <h2>or register here:</h2>
-    <button type="button" onClick={register}>Register</button>
+    <h2>{t`or register here:`}</h2>
+    <button type="button" onClick={register}>{t`Register`}</button>
   </p>
 );
 
@@ -102,23 +104,23 @@ const UserAreaModal = ({
       )
       : (
         <Tabs>
-          <div label="Profile">
+          <div label={t`Profile`}>
             <UserArea
               setName={setUserName}
               setMailreg={setUserMailreg}
             />
           </div>
-          <div label="Ranking">
+          <div label={t`Ranking`}>
             <Rankings />
           </div>
-          <div label="Converter">
+          <div label={t`Converter`}>
             <Suspense fallback={<div>Loading...</div>}>
               <Converter />
             </Suspense>
           </div>
           {userlvl && (
-          <div label={(userlvl === 1) ? 'Admintools' : 'Modtools'}>
-            <Suspense fallback={<div>Loading...</div>}>
+          <div label={(userlvl === 1) ? t`Admintools` : t`Modtools`}>
+            <Suspense fallback={<div>{t`Loading...`}</div>}>
               <Admintools />
             </Suspense>
           </div>
@@ -155,7 +157,7 @@ function mapStateToProps(state: State) {
 
 const data = {
   content: connect(mapStateToProps, mapDispatchToProps)(UserAreaModal),
-  title: 'User Area',
+  title: t`User Area`,
 };
 
 export default data;

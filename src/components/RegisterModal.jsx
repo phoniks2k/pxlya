@@ -15,7 +15,7 @@ import SignUpForm from './SignUpForm';
 
 const RegisterModal = ({ login }) => (
   <p style={{ paddingLeft: '5%', paddingRight: '5%' }}>
-    <p className="modaltext">Register new account here</p><br />
+    <p className="modaltext">{t`Register new account here`}</p><br />
     <p style={{ textAlign: 'center' }}>
       <SignUpForm back={login} />
       <p>{t`Consider joining us on Guilded:`}&nbsp;
@@ -35,7 +35,7 @@ function mapDispatchToProps(dispatch) {
 
 const data = {
   content: connect(null, mapDispatchToProps)(RegisterModal),
-  title: 'Register New Account',
+  title: t`Register New Account`,
 };
 
 export default data;

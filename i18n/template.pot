@@ -11,20 +11,20 @@ msgstr ""
 msgid "Open Menu"
 msgstr ""
 
-#: src/components/OnlineBox.jsx:22
-msgid "User online"
-msgstr ""
-
-#: src/components/OnlineBox.jsx:25
-msgid "Pixel gesetzt"
-msgstr ""
-
 #: src/components/ChatButton.jsx:61
 msgid "Close Chat"
 msgstr ""
 
 #: src/components/ChatButton.jsx:61
 msgid "Open Chat"
+msgstr ""
+
+#: src/components/OnlineBox.jsx:22
+msgid "User online"
+msgstr ""
+
+#: src/components/OnlineBox.jsx:25
+msgid "Pixel gesetzt"
 msgstr ""
 
 #: src/components/CanvasSwitchButton.jsx:20
@@ -39,12 +39,14 @@ msgstr ""
 msgid "Make Screenshot"
 msgstr ""
 
-#: src/components/SettingsButton.jsx:20
-msgid "Settings"
+#: src/components/LogInButton.jsx:20
+#: src/components/UserAreaModal.jsx:160
+msgid "User Area"
 msgstr ""
 
-#: src/components/LogInButton.jsx:20
-msgid "User Area"
+#: src/components/SettingsButton.jsx:20
+#: src/components/SettingsModal.jsx:267
+msgid "Settings"
 msgstr ""
 
 #: src/components/HelpButton.jsx:20
@@ -73,6 +75,14 @@ msgstr ""
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
+msgstr ""
+
+#: src/components/PalselButton.jsx:25
+msgid "Close Palette"
+msgstr ""
+
+#: src/components/PalselButton.jsx:25
+msgid "Open Palette"
 msgstr ""
 
 #: src/components/HelpModal.jsx:34
@@ -268,31 +278,205 @@ msgstr ""
 msgid "Welcome to PixelPlanet.fun"
 msgstr ""
 
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
+#: src/components/UserAreaModal.jsx:33
+msgid "Login to access more features and stats."
 msgstr ""
 
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
+#: src/components/UserAreaModal.jsx:35
+msgid "Login with Mail:"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:42
+msgid "I forgot my Password."
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:84
+msgid "or register here:"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:85
+msgid "Register"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:123
+msgid "Loading..."
 msgstr ""
 
 #: src/components/ForgotPasswordModal.jsx:20
 #: src/components/RegisterModal.jsx:21
-#: src/components/UserAreaModal.jsx:128
+#: src/components/UserAreaModal.jsx:130
 msgid "Consider joining us on Guilded:"
 msgstr ""
 
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr ""
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:123
+msgid "Show Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:124
+msgid "Turn on grid to highlight pixel borders."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:130
+msgid "Show Pixel Activity"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:131
+msgid "Show circles where pixels are placed."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:137
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:139
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:145
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:146
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:151
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:153
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:158
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:160
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:165
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:166
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:171
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:172
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:179
+msgid "Historical View"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:180
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:188
+msgid "Themes"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:189
+msgid "How pixelplanet should look like."
+msgstr ""
+
+#: src/components/ArchiveModal.jsx:20
+msgid ""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren&apos;t worth being kept active, we decide to remove them."
+msgstr ""
+
+#: src/components/ArchiveModal.jsx:22
+msgid ""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+msgstr ""
+
+#: src/components/ArchiveModal.jsx:24
+msgid "Political Compass Canvas"
+msgstr ""
+
+#: src/components/ArchiveModal.jsx:31
+msgid ""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s coolodwn and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+msgstr ""
+
+#: src/components/ArchiveModal.jsx:32
+msgid ""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking "
+"a screenshot from the timelapse results in a perfect 1:1 representation of "
+"how the canvas was at that time."
+msgstr ""
+
+#: src/components/ArchiveModal.jsx:50
+msgid "Canvas Archive"
+msgstr ""
+
+#: src/components/ForgotPasswordModal.jsx:16
+msgid "Enter your mail adress and we will send you a new password:"
+msgstr ""
+
+#: src/components/ForgotPasswordModal.jsx:37
+msgid "Restore my Password"
+msgstr ""
+
+#: src/components/ChatModal.jsx:35
+msgid "Chat"
+msgstr ""
+
+#: src/components/LogInForm.jsx:104
+msgid "Name or Email"
+msgstr ""
+
+#: src/components/LogInForm.jsx:111
+msgid "Password"
+msgstr ""
+
+#: src/components/LogInForm.jsx:115
+msgid "LogIn"
+msgstr ""
+
+#: src/components/Rankings.jsx:49
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+
 #: src/components/HelpModal.jsx:15
+#: src/components/SettingsModal.jsx:125
 msgctxt "keybinds"
 msgid "G"
 msgstr ""
 
 #: src/components/HelpModal.jsx:16
+#: src/components/SettingsModal.jsx:132
 msgctxt "keybinds"
 msgid "X"
 msgstr ""
 
 #: src/components/HelpModal.jsx:17
+#: src/components/SettingsModal.jsx:182
 msgctxt "keybinds"
 msgid "H"
 msgstr ""
@@ -340,4 +524,9 @@ msgstr ""
 #: src/components/HelpModal.jsx:32
 msgctxt "keybinds"
 msgid "C"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:140
+msgctxt "keybinds"
+msgid "M"
 msgstr ""

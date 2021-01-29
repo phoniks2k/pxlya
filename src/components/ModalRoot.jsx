@@ -9,6 +9,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { MdClose } from 'react-icons/md';
+import { t } from 'ttag';
 
 import {
   hideModal,
@@ -56,6 +57,7 @@ const ModalRoot = ({ modalType, modalOpen, close }) => {
         className="ModalClose"
         role="button"
         label="close"
+        title={t`Close`}
         tabIndex={-1}
       ><MdClose /></div>
       <SpecificModal />

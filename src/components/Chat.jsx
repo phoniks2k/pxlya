@@ -200,6 +200,7 @@ const Chat = ({
               placeholder={t`Chat here`}
             />
             <button
+              id="sendbtn"
               style={{ flexGrow: 0 }}
               type="submit"
             >

@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { t } from 'ttag';
 
 import Chat from './Chat';
 
@@ -31,7 +32,7 @@ const ChatModal = () => (
 
 const data = {
   content: ChatModal,
-  title: 'Chat',
+  title: t`Chat`,
 };
 
 export default data;

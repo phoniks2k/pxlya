@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import fileDownload from 'js-file-download';
 import { utils, applyPalette } from 'image-q';
+import { jt, t } from 'ttag';
 
 import type { State } from '../reducers';
 import printGIMPPalette from '../core/exportGPL';
@@ -261,9 +262,16 @@ function Converter({
     aa: scalingAA,
   } = scaleData;
 
+  const gimpLink = <a href="https://www.gimp.org">GIMP</a>;
+  const starhouseLink = (
+    <a href="https://twitter.com/starhousedev">
+      starhouse
+    </a>
+  );
+
   return (
     <p style={{ textAlign: 'center' }}>
-      <p className="modalcotext">Choose Canvas:&nbsp;
+      <p className="modalcotext">{t`Choose Canvas`}:&nbsp;
         <select
           onChange={(e) => {
             const sel = e.target;
@@ -289,9 +297,9 @@ function Converter({
         }
         </select>
       </p>
-      <h3 className="modaltitle">Palette Download</h3>
+      <h3 className="modaltitle">{t`Palette Download`}</h3>
       <p className="modalcotext">
-        Palette for <a href="https://www.gimp.org">GIMP</a>:&nbsp;
+        {jt`Palette for ${gimpLink}`}:&nbsp;
         <button
           type="button"
           style={{ display: 'inline' }}
@@ -308,11 +316,12 @@ function Converter({
         >
           Download
         </button>
-        <p>Credit for the Palette of the Moon goes to&nbsp;
-          <a href="https://twitter.com/starhousedev">starhouse</a>.</p>
+        <p>
+          {jt`Credit for the Palette of the Moon goes to ${starhouseLink}.`}
+        </p>
       </p>
-      <h3 className="modaltitle">Image Converter</h3>
-      <p className="modalcotext">Convert an image to canvas colors</p>
+      <h3 className="modaltitle">{t`Image Converter`}</h3>
+      <p className="modalcotext">{t`Convert an image to canvas colors`}</p>
       <input
         type="file"
         id="imgfile"
@@ -323,7 +332,7 @@ function Converter({
           readFile(file, selectFile, setScaleData);
         }}
       />
-      <p className="modalcotext">Choose Strategy:&nbsp;
+      <p className="modalcotext">{t`Choose Strategy`}:&nbsp;
         <select
           onChange={(e) => {
             const sel = e.target;
@@ -350,7 +359,7 @@ function Converter({
           }
         </select>
       </p>
-      <p className="modalcotext">Choose Color Mode:&nbsp;
+      <p className="modalcotext">{t`Choose Color Mode`}:&nbsp;
         <select
           onChange={(e) => {
             const sel = e.target;
@@ -388,7 +397,7 @@ function Converter({
             });
           }}
         />
-        Add Grid (uncheck if you need a 1:1 template)
+        {t`Add Grid (uncheck if you need a 1:1 template)`}
       </p>
       {(gridEnabled)
         ? (
@@ -411,9 +420,9 @@ function Converter({
                   });
                 }}
               />
-              Light Grid
+              {t`Light Grid`}
             </p>
-            <span className="modalcotext">Offset X:&nbsp;
+            <span className="modalcotext">{t`Offset`} X:&nbsp;
               <input
                 type="number"
                 step="1"
@@ -429,7 +438,7 @@ function Converter({
                 }}
               />&nbsp;
             </span>
-            <span className="modalcotext">Offset Y:&nbsp;
+            <span className="modalcotext">{t`Offset`} Y:&nbsp;
               <input
                 type="number"
                 step="1"
@@ -459,7 +468,7 @@ function Converter({
             });
           }}
         />
-        Scale Image
+        {t`Scale Image`}
       </p>
       {(scalingEnabled)
         ? (
@@ -471,7 +480,7 @@ function Converter({
             display: 'inline-block',
           }}
           >
-            <span className="modalcotext">Width:&nbsp;
+            <span className="modalcotext">{t`Width`}:&nbsp;
               <input
                 type="number"
                 step="1"
@@ -501,7 +510,7 @@ function Converter({
                 }}
               />&nbsp;
             </span>
-            <span className="modalcotext">Height:&nbsp;
+            <span className="modalcotext">{t`Height`}:&nbsp;
               <input
                 type="number"
                 step="1"
@@ -539,7 +548,7 @@ function Converter({
                   selectScaleKeepRatio(e.target.checked);
                 }}
               />
-              Keep Ratio
+              {t`Keep Ratio`}
             </p>
             <p style={{ fontHeight: 16 }} className="modalcotext">
               <input
@@ -552,7 +561,7 @@ function Converter({
                   });
                 }}
               />
-              Anti Aliasing
+              {t`Anti Aliasing`}
             </p>
             <button
               type="button"
@@ -566,7 +575,7 @@ function Converter({
                 }
               }}
             >
-              Reset
+              {t`Reset`}
             </button>
           </div>
         )
@@ -585,7 +594,7 @@ function Converter({
               type="button"
               onClick={downloadOutput}
             >
-              Download Template
+              {t`Download Template`}
             </button>
             {(typeof ClipboardItem === 'undefined')
               ? null
@@ -597,7 +606,7 @@ function Converter({
                     copyCanvasToClipboard(output);
                   }}
                 >
-                  Copy to Clipboard
+                  {t`Copy to Clipboard`}
                 </button>
               )}
           </div>
