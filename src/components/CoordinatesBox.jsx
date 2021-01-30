@@ -34,7 +34,7 @@ const CoordinatesBox = ({ view, hover, notifyCopy }) => (
 function mapDispatchToProps(dispatch) {
   return {
     notifyCopy() {
-      dispatch(notify('Copied!'));
+      dispatch(notify(t`Copied!`));
     },
   };
 }

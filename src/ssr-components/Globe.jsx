@@ -22,8 +22,6 @@ const styles = [{
   cssText: globeCss,
 }];
 
-const title = 'PixelPlanet.fun 3DGlobe';
-const description = 'pixelplanet globe';
 const defaultScripts = assets.globe.js.map(
   (s) => ASSET_SERVER + s,
 );
@@ -50,8 +48,8 @@ function generateGlobePage(lang: string): string {
 
   const html = ReactDOM.renderToStaticMarkup(
     <Html
-      title={title}
-      description={description}
+      title={t`PixelPlanet.Fun 3DGlobe`}
+      description={t`A 3D globe of our whole map`}
       scripts={scripts}
       body={<Globe />}
       styles={styles}

@@ -2,6 +2,7 @@
  * keypress actions
  * @flow
  */
+import { t } from 'ttag';
 import store from '../ui/store';
 import copy from '../utils/clipboard';
 import {
@@ -55,7 +56,7 @@ function onKeyPress(event: KeyboardEvent) {
       const { hover } = state.gui;
       const text = hover.join('_');
       copy(text);
-      store.dispatch(notify('Copied!'));
+      store.dispatch(notify(t`Copied!`));
       return;
     }
     case 'p':

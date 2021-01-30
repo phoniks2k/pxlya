@@ -13,7 +13,7 @@ const ttags = {
   default: new TTag(),
 };
 
-function populateTTags() {
+(() => {
   const langs = Object.keys(LOCALES);
   langs.forEach((lang) => {
     const ttag = new TTag();
@@ -21,14 +21,10 @@ function populateTTags() {
     ttag.useLocale(lang);
     ttags[lang] = ttag;
   });
-}
-populateTTags();
+})();
 
 export function getTTag(lang) {
-  if (ttags[lang]) {
-    return ttags[lang];
-  }
-  return ttags.default;
+  return ttags[lang] || ttags.default;
 }
 
-export default ttags.default;
+export default ttags;

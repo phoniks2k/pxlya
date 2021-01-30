@@ -5,6 +5,7 @@
  *
  * @flow
  * */
+import { t } from 'ttag';
 import {
   notify,
   setPlaceAllowed,
@@ -49,10 +50,10 @@ function requestFromQueue(store) {
     pixelTimeout = null;
     store.dispatch(setPlaceAllowed(true));
     store.dispatch(sweetAlert(
-      'Error :(',
-      'Didn\'t get an answer from pixelplanet. Maybe try to refresh?',
+      t`Error :(`,
+      t`Didn't get an answer from pixelplanet. Maybe try to refresh?`,
       'error',
-      'OK',
+      t`OK`,
     ));
   }, 5000);
 
@@ -202,36 +203,36 @@ export function receivePixelReturn(
       store.dispatch(placedPixels(pxlCnt));
       break;
     case 1:
-      errorTitle = 'Invalid Canvas';
-      msg = 'This canvas doesn\'t exist';
+      errorTitle = t`Invalid Canvas`;
+      msg = t`This canvas doesn't exist`;
       break;
     case 2:
-      errorTitle = 'Invalid Coordinates';
-      msg = 'x out of bounds';
+      errorTitle = t`Invalid Coordinates`;
+      msg = t`x out of bounds`;
       break;
     case 3:
-      errorTitle = 'Invalid Coordinates';
-      msg = 'y out of bounds';
+      errorTitle = t`Invalid Coordinates`;
+      msg = t`y out of bounds`;
       break;
     case 4:
-      errorTitle = 'Invalid Coordinates';
-      msg = 'z out of bounds';
+      errorTitle = t`Invalid Coordinates`;
+      msg = t`z out of bounds`;
       break;
     case 5:
-      errorTitle = 'Wrong Color';
-      msg = 'Invalid color selected';
+      errorTitle = t`Wrong Color`;
+      msg = t`Invalid color selected`;
       break;
     case 6:
-      errorTitle = 'Just for registered Users';
-      msg = 'You have to be logged in to place on this canvas';
+      errorTitle = t`Just for registered Users`;
+      msg = t`You have to be logged in to place on this canvas`;
       break;
     case 7:
-      errorTitle = 'Place more :)';
+      errorTitle = t`Place more :)`;
       // eslint-disable-next-line max-len
-      msg = 'You can not access this canvas yet. You need to place more pixels';
+      msg = t`You can not access this canvas yet. You need to place more pixels`;
       break;
     case 8:
-      store.dispatch(notify('Pixel protected!'));
+      store.dispatch(notify(t`Pixel protected!`));
       break;
     case 9:
       // pixestack used up
@@ -247,21 +248,21 @@ export function receivePixelReturn(
       return;
     case 11:
 
-      errorTitle = 'No Proxies Allowed :(';
-      msg = 'You are using a Proxy.';
+      errorTitle = t`No Proxies Allowed :(`;
+      msg = t`You are using a Proxy.`;
       break;
     default:
-      errorTitle = 'Weird';
-      msg = 'Couldn\'t set Pixel';
+      errorTitle = t`Weird`;
+      msg = t`Couldn't set Pixel`;
   }
 
   if (msg) {
     store.dispatch(pixelFailure());
     store.dispatch(sweetAlert(
-      (errorTitle || `Error ${retCode}`),
+      (errorTitle || t`Error ${retCode}`),
       msg,
       'error',
-      'OK',
+      t`OK`,
     ));
   }
 

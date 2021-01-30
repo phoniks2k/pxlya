@@ -6,11 +6,11 @@
  * @flow
  */
 // eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import { getLocalicedCanvases } from '../canvasesDesc';
 import chatProvider from './ChatProvider';
 
 
-export default async function getMe(user) {
+export default async function getMe(user, lang = 'default') {
   const userdata = user.getUserData();
   // sanitize data
   const {
@@ -30,7 +30,7 @@ export default async function getMe(user) {
   delete userdata.mailVerified;
   delete userdata.mcVerified;
 
-  userdata.canvases = canvases;
+  userdata.canvases = getLocalicedCanvases(lang);
   userdata.channels = {
     ...chatProvider.defaultChannels,
     ...userdata.channels,
