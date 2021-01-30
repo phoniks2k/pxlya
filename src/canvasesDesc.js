@@ -35,6 +35,8 @@ function getCanvases(t) {
     const key = canvasKeys[i];
     localicedCanvases[key].desc = canvasDesc[key] || `Canvas ${key}`;
   }
+
+  return localicedCanvases;
 }
 
 

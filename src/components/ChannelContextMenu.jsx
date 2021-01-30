@@ -7,6 +7,7 @@ import React, {
   useRef, useEffect,
 } from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import {
   hideContextMenu,
@@ -69,7 +70,7 @@ const UserContextMenu = ({
         tabIndex={0}
         style={{ borderTop: 'none' }}
       >
-        {`${(isMuted) ? '✔' : '✘'} Mute`}
+        {`${(isMuted) ? '✔' : '✘'} ${t`Mute`}`}
       </div>
       {(channels[cid][1] !== 0)
         && (
@@ -81,7 +82,7 @@ const UserContextMenu = ({
           }}
           tabIndex={0}
         >
-          Close
+          {t`Close`}
         </div>
         )}
     </div>

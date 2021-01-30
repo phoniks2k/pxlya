@@ -156,7 +156,7 @@ export default (passport) => {
         }
 
         user.ip = req.user.ip;
-        const me = await getMe(user);
+        const me = await getMe(user, req.lang);
         res.json({
           success: true,
           me,

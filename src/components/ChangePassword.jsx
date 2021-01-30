@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { t } from 'ttag';
 import { validatePassword, parseAPIresponse } from '../utils/validation';
 
 function validate(mailreg, password, newPassword, confirmPassword) {
@@ -14,7 +15,7 @@ function validate(mailreg, password, newPassword, confirmPassword) {
     if (oldpasserror) errors.push(oldpasserror);
   }
   if (newPassword !== confirmPassword) {
-    errors.push('Passwords do not match.');
+    errors.push(t`Passwords do not match.`);
     return errors;
   }
   const passerror = validatePassword(newPassword);
@@ -99,7 +100,7 @@ class ChangePassword extends React.Component {
       const { done } = this.props;
       return (
         <div className="inarea">
-          <p className="modalmessage">Changed Password successfully.</p>
+          <p className="modalmessage">{t`Changed Password successfully.`}</p>
           <button type="button" onClick={done}>Close</button>
         </div>
       );
@@ -124,7 +125,7 @@ class ChangePassword extends React.Component {
             value={password}
             onChange={(evt) => this.setState({ password: evt.target.value })}
             type="password"
-            placeholder="Old Password"
+            placeholder={t`Old Password`}
           />
           )}
           <br />
@@ -132,7 +133,7 @@ class ChangePassword extends React.Component {
             value={newPassword}
             onChange={(evt) => this.setState({ newPassword: evt.target.value })}
             type="password"
-            placeholder="New Password"
+            placeholder={t`New Password`}
           />
           <br />
           <input
@@ -141,13 +142,13 @@ class ChangePassword extends React.Component {
               confirmPassword: evt.target.value,
             })}
             type="password"
-            placeholder="Confirm New Password"
+            placeholder={t`Confirm New Password`}
           />
           <br />
           <button type="submit">
-            {(submitting) ? '...' : 'Save'}
+            {(submitting) ? '...' : t`Save`}
           </button>
-          <button type="button" onClick={cancel}>Cancel</button>
+          <button type="button" onClick={cancel}>{t`Cancel`}</button>
         </form>
       </div>
     );

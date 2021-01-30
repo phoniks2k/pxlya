@@ -10,10 +10,10 @@ import { RegUser } from '../../../data/models';
 import { validatePassword } from '../../../utils/validation';
 import { compareToHash } from '../../../utils/hash';
 
-function validate(password) {
+function validate(password, gettext) {
   const errors = [];
 
-  const passworderror = validatePassword(password);
+  const passworderror = gettext(validatePassword(password));
   if (passworderror) errors.push(passworderror);
 
   return errors;
@@ -21,7 +21,8 @@ function validate(password) {
 
 export default async (req: Request, res: Response) => {
   const { password } = req.body;
-  const errors = await validate(password);
+  const { t, gettext } = req.ttag;
+  const errors = await validate(password, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({
@@ -34,7 +35,7 @@ export default async (req: Request, res: Response) => {
   if (!user) {
     res.status(401);
     res.json({
-      errors: ['You are not authenticated.'],
+      errors: [t`You are not authenticated.`],
     });
     return;
   }
@@ -44,7 +45,7 @@ export default async (req: Request, res: Response) => {
   if (!currentPassword || !compareToHash(password, currentPassword)) {
     res.status(400);
     res.json({
-      errors: ['Incorrect password!'],
+      errors: [t`Incorrect password!`],
     });
     return;
   }

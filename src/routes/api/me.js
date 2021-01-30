@@ -14,8 +14,8 @@ import { cheapDetector } from '../../core/isProxy';
 
 
 export default async (req: Request, res: Response) => {
-  const { user } = req;
-  const userdata = await getMe(user);
+  const { user, lang } = req;
+  const userdata = await getMe(user, lang);
   user.updateLogInTimestamp();
 
   const { trueIp: ip } = req;

@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 
 import session from '../../core/session';
 import passport from '../../core/passport';
+import { expressTTag } from '../../core/ttag';
 import logger from '../../core/logger';
 import User from '../../data/models/User';
 import { getIPFromRequest } from '../../utils/ip';
@@ -78,8 +79,6 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/me', me);
-
 router.post('/mctp', mctp);
 
 router.get('/chathistory', chatHistory);
@@ -91,6 +90,10 @@ router.post('/leavechan', leaveChan);
 router.post('/block', block);
 
 router.post('/blockdm', blockdm);
+
+router.use(expressTTag);
+
+router.get('/me', me);
 
 router.use('/auth', auth(passport));
 

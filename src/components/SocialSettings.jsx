@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import {
   setBlockingDm,
@@ -35,7 +36,7 @@ const SocialSettings = ({
         }}
         className="modaltitle"
       >
-        Block all Private Messages
+        {t`Block all Private Messages`}
       </span>
       <MdToggleButtonHover
         value={blockDm}
@@ -53,7 +54,7 @@ const SocialSettings = ({
         marginLeft: 10,
       }}
       className="modaltitle"
-    >Unblock Users</p>
+    >{t`Unblock Users`}</p>
     {
       (blocked.length) ? (
         <span
@@ -77,7 +78,7 @@ const SocialSettings = ({
         </span>
       )
         : (
-          <p className="modaltext">You have no users blocked</p>
+          <p className="modaltext">{t`You have no users blocked`}</p>
         )
     }
     <div className="modaldivider" />

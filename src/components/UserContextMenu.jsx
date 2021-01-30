@@ -7,6 +7,7 @@ import React, {
   useRef, useEffect,
 } from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import {
   hideContextMenu,
@@ -68,7 +69,7 @@ const UserContextMenu = ({
         }}
         style={{ borderTop: 'none' }}
       >
-        Ping
+        {t`Ping`}
       </div>
       <div
         role="button"
@@ -93,7 +94,7 @@ const UserContextMenu = ({
           close();
         }}
       >
-        DM
+        {t`DM`}
       </div>
       <div
         onClick={() => {
@@ -103,7 +104,7 @@ const UserContextMenu = ({
         role="button"
         tabIndex={-1}
       >
-        Block
+        {t`Block`}
       </div>
     </div>
   );

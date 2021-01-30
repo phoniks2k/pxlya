@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { t } from 'ttag';
 import {
   validateEMail, validatePassword, parseAPIresponse,
 } from '../utils/validation';
@@ -85,8 +86,8 @@ class ChangeMail extends React.Component {
           <p
             className="modalmessage"
           >
-            Changed Mail successfully.
-            We sent you a verification mail, please verify your new mail adress.
+            {t`Changed Mail successfully. We sent you a verification mail, \
+              please verify your new mail adress.`}
           </p>
           <button type="button" onClick={done}>Close</button>
         </div>
@@ -105,20 +106,20 @@ class ChangeMail extends React.Component {
             value={password}
             onChange={(evt) => this.setState({ password: evt.target.value })}
             type="password"
-            placeholder="Password"
+            placeholder={t`Password`}
           />
           <br />
           <input
             value={email}
             onChange={(evt) => this.setState({ email: evt.target.value })}
             type="text"
-            placeholder="New Mail"
+            placeholder={t`New Mail`}
           />
           <br />
           <button type="submit">
-            {(submitting) ? '...' : 'Save'}
+            {(submitting) ? '...' : t`Save`}
           </button>
-          <button type="button" onClick={done}>Cancel</button>
+          <button type="button" onClick={done}>{t`Cancel`}</button>
         </form>
       </div>
     );

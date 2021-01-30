@@ -18,8 +18,10 @@ function validate(nameoremail, password) {
     ? validateEMail(nameoremail)
     : validateName(nameoremail);
   if (mailerror) errors.push(mailerror);
+  /*
   const passworderror = validatePassword(password);
   if (passworderror) errors.push(passworderror);
+  */
 
   return errors;
 }

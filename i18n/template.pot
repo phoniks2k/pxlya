@@ -3,6 +3,105 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+#: src/components/CoordinatesBox.jsx:37
+#: src/controls/keypress.js:59
+msgid "Copied!"
+msgstr ""
+
+#: src/ui/placePixel.js:53
+msgid "Error :("
+msgstr ""
+
+#: src/ui/placePixel.js:54
+msgid "Didn't get an answer from pixelplanet. Maybe try to refresh?"
+msgstr ""
+
+#: src/ui/placePixel.js:56
+#: src/ui/placePixel.js:265
+msgid "OK"
+msgstr ""
+
+#: src/ui/placePixel.js:206
+msgid "Invalid Canvas"
+msgstr ""
+
+#: src/ui/placePixel.js:207
+msgid "This canvas doesn't exist"
+msgstr ""
+
+#: src/ui/placePixel.js:210
+#: src/ui/placePixel.js:214
+#: src/ui/placePixel.js:218
+msgid "Invalid Coordinates"
+msgstr ""
+
+#: src/ui/placePixel.js:211
+msgid "x out of bounds"
+msgstr ""
+
+#: src/ui/placePixel.js:215
+msgid "y out of bounds"
+msgstr ""
+
+#: src/ui/placePixel.js:219
+msgid "z out of bounds"
+msgstr ""
+
+#: src/ui/placePixel.js:222
+msgid "Wrong Color"
+msgstr ""
+
+#: src/ui/placePixel.js:223
+msgid "Invalid color selected"
+msgstr ""
+
+#: src/ui/placePixel.js:226
+msgid "Just for registered Users"
+msgstr ""
+
+#: src/ui/placePixel.js:227
+msgid "You have to be logged in to place on this canvas"
+msgstr ""
+
+#: src/ui/placePixel.js:230
+msgid "Place more :)"
+msgstr ""
+
+#: src/ui/placePixel.js:232
+msgid "You can not access this canvas yet. You need to place more pixels"
+msgstr ""
+
+#: src/ui/placePixel.js:235
+msgid "Pixel protected!"
+msgstr ""
+
+#: src/ui/placePixel.js:251
+msgid "No Proxies Allowed :("
+msgstr ""
+
+#: src/ui/placePixel.js:252
+msgid "You are using a Proxy."
+msgstr ""
+
+#: src/ui/placePixel.js:255
+msgid "Weird"
+msgstr ""
+
+#: src/ui/placePixel.js:256
+msgid "Couldn't set Pixel"
+msgstr ""
+
+#: src/ui/placePixel.js:262
+#, javascript-format
+msgid "Error ${ retCode }"
+msgstr ""
+
+#: src/components/Admintools.jsx:219
+#: src/components/ChannelContextMenu.jsx:85
+#: src/components/ModalRoot.jsx:60
+msgid "Close"
+msgstr ""
+
 #: src/components/ExpandMenuButton.jsx:19
 msgid "Close Menu"
 msgstr ""
@@ -19,6 +118,11 @@ msgstr ""
 msgid "Open Chat"
 msgstr ""
 
+#: src/components/CanvasSelectModal.jsx:67
+#: src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
+msgstr ""
+
 #: src/components/OnlineBox.jsx:22
 msgid "User online"
 msgstr ""
@@ -27,10 +131,7 @@ msgstr ""
 msgid "Pixel gesetzt"
 msgstr ""
 
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr ""
-
+#: src/components/Converter.jsx:609
 #: src/components/CoordinatesBox.jsx:26
 msgid "Copy to Clipboard"
 msgstr ""
@@ -69,7 +170,7 @@ msgstr ""
 msgid "Chat here"
 msgstr ""
 
-#: src/components/Chat.jsx:219
+#: src/components/Chat.jsx:220
 msgid "You must be logged in to chat"
 msgstr ""
 
@@ -77,12 +178,87 @@ msgstr ""
 msgid "Globe View"
 msgstr ""
 
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
+#: src/components/SettingsModal.jsx:123
+msgid "Show Grid"
 msgstr ""
 
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
+#: src/components/SettingsModal.jsx:124
+msgid "Turn on grid to highlight pixel borders."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:130
+msgid "Show Pixel Activity"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:131
+msgid "Show circles where pixels are placed."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:137
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:139
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:145
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:146
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:151
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:153
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:158
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:160
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:165
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:166
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/Converter.jsx:423
+#: src/components/SettingsModal.jsx:171
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:172
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:179
+msgid "Historical View"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:180
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:188
+msgid "Themes"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:189
+msgid "How pixelplanet should look like."
 msgstr ""
 
 #: src/components/HelpModal.jsx:34
@@ -278,6 +454,44 @@ msgstr ""
 msgid "Welcome to PixelPlanet.fun"
 msgstr ""
 
+#: src/components/ChannelContextMenu.jsx:73
+msgid "Mute"
+msgstr ""
+
+#: src/components/UserContextMenu.jsx:72
+msgid "Ping"
+msgstr ""
+
+#: src/components/UserContextMenu.jsx:97
+msgid "DM"
+msgstr ""
+
+#: src/components/UserContextMenu.jsx:107
+msgid "Block"
+msgstr ""
+
+#: src/components/PalselButton.jsx:25
+msgid "Close Palette"
+msgstr ""
+
+#: src/components/PalselButton.jsx:25
+msgid "Open Palette"
+msgstr ""
+
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr ""
+
+#: src/components/ForgotPasswordModal.jsx:20
+#: src/components/RegisterModal.jsx:21
+#: src/components/UserAreaModal.jsx:130
+msgid "Consider joining us on Guilded:"
+msgstr ""
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr ""
+
 #: src/components/UserAreaModal.jsx:33
 msgid "Login to access more features and stats."
 msgstr ""
@@ -290,6 +504,10 @@ msgstr ""
 msgid "I forgot my Password."
 msgstr ""
 
+#: src/components/UserAreaModal.jsx:43
+msgid "or login with:"
+msgstr ""
+
 #: src/components/UserAreaModal.jsx:84
 msgid "or register here:"
 msgstr ""
@@ -298,104 +516,40 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
+#: src/components/UserAreaModal.jsx:107
+msgid "Profile"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:113
+msgid "Ranking"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:116
+msgid "Converter"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:122
+msgid "Admintools"
+msgstr ""
+
+#: src/components/UserAreaModal.jsx:122
+msgid "Modtools"
+msgstr ""
+
 #: src/components/UserAreaModal.jsx:123
 msgid "Loading..."
 msgstr ""
 
-#: src/components/ForgotPasswordModal.jsx:20
-#: src/components/RegisterModal.jsx:21
-#: src/components/UserAreaModal.jsx:130
-msgid "Consider joining us on Guilded:"
+#: src/components/ForgotPasswordModal.jsx:16
+msgid "Enter your mail adress and we will send you a new password:"
 msgstr ""
 
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
+#: src/components/ForgotPasswordModal.jsx:37
+msgid "Restore my Password"
 msgstr ""
 
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:123
-msgid "Show Grid"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:124
-msgid "Turn on grid to highlight pixel borders."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:130
-msgid "Show Pixel Activity"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:131
-msgid "Show circles where pixels are placed."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:137
-msgid "Disable Game Sounds"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:139
-msgid "All sound effects will be disabled."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:145
-msgid "Enable chat notifications"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:146
-msgid "Play a sound when new chat messages arrive"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:151
-msgid "Auto Zoom In"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:153
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:158
-msgid "Compact Palette"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:160
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:165
-msgid "Potato Mode"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:166
-msgid "For when you are playing on a potato."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:171
-msgid "Light Grid"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:172
-msgid "Show Grid in white instead of black."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:179
-msgid "Historical View"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:180
-msgid "Check out past versions of the canvas."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:188
-msgid "Themes"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:189
-msgid "How pixelplanet should look like."
+#: src/components/ChatModal.jsx:35
+msgid "Chat"
 msgstr ""
 
 #: src/components/ArchiveModal.jsx:20
@@ -435,23 +589,25 @@ msgstr ""
 msgid "Canvas Archive"
 msgstr ""
 
-#: src/components/ForgotPasswordModal.jsx:16
-msgid "Enter your mail adress and we will send you a new password:"
+#: src/components/CanvasSelectModal.jsx:29
+msgid ""
+"Select the canvas you want to use. Every canvas is unique and has different "
+"palettes, cooldown and requirements. Archive of closed canvases can be "
+"accessed here:"
 msgstr ""
 
-#: src/components/ForgotPasswordModal.jsx:37
-msgid "Restore my Password"
-msgstr ""
-
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
+#: src/components/CanvasSelectModal.jsx:37
+msgid "Archive"
 msgstr ""
 
 #: src/components/LogInForm.jsx:104
 msgid "Name or Email"
 msgstr ""
 
+#: src/components/ChangeMail.jsx:109
+#: src/components/DeleteAccount.jsx:88
 #: src/components/LogInForm.jsx:111
+#: src/components/SignUpForm.jsx:139
 msgid "Password"
 msgstr ""
 
@@ -459,8 +615,366 @@ msgstr ""
 msgid "LogIn"
 msgstr ""
 
+#: src/components/UserArea.jsx:57
+msgid "Todays Placed Pixels"
+msgstr ""
+
+#: src/components/UserArea.jsx:61
+msgid "Daily Rank"
+msgstr ""
+
+#: src/components/UserArea.jsx:66
+msgid "Placed Pixels"
+msgstr ""
+
+#: src/components/UserArea.jsx:70
+msgid "Total Rank"
+msgstr ""
+
+#: src/components/UserArea.jsx:75
+#, javascript-format
+msgid "Your name is: ${ name }"
+msgstr ""
+
+#: src/components/UserArea.jsx:81
+msgid "Log out"
+msgstr ""
+
+#: src/components/UserArea.jsx:93
+msgid "Change Username"
+msgstr ""
+
+#: src/components/UserArea.jsx:108
+msgid "Change Mail"
+msgstr ""
+
+#: src/components/UserArea.jsx:122
+msgid "Change Password"
+msgstr ""
+
+#: src/components/UserArea.jsx:134
+msgid "Delete Account"
+msgstr ""
+
+#: src/components/UserArea.jsx:147
+msgid "Social Settings"
+msgstr ""
+
+#: src/components/Rankings.jsx:37
+msgid "Total"
+msgstr ""
+
+#: src/components/Rankings.jsx:45
+msgid "Daily"
+msgstr ""
+
 #: src/components/Rankings.jsx:49
 msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+
+#: src/components/CanvasItem.jsx:46
+msgid "Cooldown"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:52
+msgid "Stacking till"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:54
+msgid "Ranked"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:56
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:58
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:60
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr ""
+
+#: src/components/Admintools.jsx:179
+msgid "Build image on canvas."
+msgstr ""
+
+#: src/components/Admintools.jsx:182
+msgid "Build image and set it to protected."
+msgstr ""
+
+#: src/components/Admintools.jsx:185
+msgid "Build image, but reset cooldown to unset-pixel cd."
+msgstr ""
+
+#: src/components/Admintools.jsx:248
+msgid "Image Upload"
+msgstr ""
+
+#: src/components/Admintools.jsx:249
+msgid "Upload images to canvas"
+msgstr ""
+
+#: src/components/Admintools.jsx:251
+msgid "File"
+msgstr ""
+
+#: src/components/Admintools.jsx:271
+msgid "Coordinates in X_Y format:"
+msgstr ""
+
+#: src/components/Admintools.jsx:306
+#: src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461
+#: src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589
+#: src/components/SignUpForm.jsx:151
+msgid "Submit"
+msgstr ""
+
+#: src/components/Admintools.jsx:311
+msgid "Pixel Protection"
+msgstr ""
+
+#: src/components/Admintools.jsx:313
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+msgstr ""
+
+#: src/components/Admintools.jsx:392
+msgid "Rollback to Date"
+msgstr ""
+
+#: src/components/Admintools.jsx:394
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr ""
+
+#: src/components/Admintools.jsx:468
+msgid "IP Actions"
+msgstr ""
+
+#: src/components/Admintools.jsx:470
+msgid "Do stuff with IPs (one IP per line)"
+msgstr ""
+
+#: src/components/Admintools.jsx:510
+msgid "Manage Moderators"
+msgstr ""
+
+#: src/components/Admintools.jsx:512
+msgid "Remove Moderator"
+msgstr ""
+
+#: src/components/Admintools.jsx:544
+msgid "There are no mods"
+msgstr ""
+
+#: src/components/Admintools.jsx:549
+msgid "Assign new Mod"
+msgstr ""
+
+#: src/components/Admintools.jsx:552
+msgid "Enter UserName of new Mod"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:125
+msgid "Name"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:132
+msgid "Email"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:148
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:122
+#: src/components/ChangePassword.jsx:151
+#: src/components/DeleteAccount.jsx:94
+#: src/components/SignUpForm.jsx:157
+msgid "Cancel"
+msgstr ""
+
+#: src/components/Converter.jsx:274
+msgid "Choose Canvas"
+msgstr ""
+
+#: src/components/Converter.jsx:300
+msgid "Palette Download"
+msgstr ""
+
+#: src/components/Converter.jsx:302
+#, javascript-format
+msgid "Palette for ${ gimpLink }"
+msgstr ""
+
+#: src/components/Converter.jsx:320
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr ""
+
+#: src/components/Converter.jsx:323
+msgid "Image Converter"
+msgstr ""
+
+#: src/components/Converter.jsx:324
+msgid "Convert an image to canvas colors"
+msgstr ""
+
+#: src/components/Converter.jsx:335
+msgid "Choose Strategy"
+msgstr ""
+
+#: src/components/Converter.jsx:362
+msgid "Choose Color Mode"
+msgstr ""
+
+#: src/components/Converter.jsx:400
+msgid "Add Grid (uncheck if you need a 1:1 template)"
+msgstr ""
+
+#: src/components/Converter.jsx:425
+#: src/components/Converter.jsx:441
+msgid "Offset"
+msgstr ""
+
+#: src/components/Converter.jsx:471
+msgid "Scale Image"
+msgstr ""
+
+#: src/components/Converter.jsx:483
+msgid "Width"
+msgstr ""
+
+#: src/components/Converter.jsx:513
+msgid "Height"
+msgstr ""
+
+#: src/components/Converter.jsx:551
+msgid "Keep Ratio"
+msgstr ""
+
+#: src/components/Converter.jsx:564
+msgid "Anti Aliasing"
+msgstr ""
+
+#: src/components/Converter.jsx:578
+msgid "Reset"
+msgstr ""
+
+#: src/components/Converter.jsx:597
+msgid "Download Template"
+msgstr ""
+
+#: src/utils/validation.js:15
+msgid "Email can't be empty."
+msgstr ""
+
+#: src/utils/validation.js:16
+msgid "Email should be at least 5 characters long."
+msgstr ""
+
+#: src/utils/validation.js:17
+msgid "Email can't be longer than 40 characters."
+msgstr ""
+
+#: src/utils/validation.js:18
+msgid "Email should at least contain a dot"
+msgstr ""
+
+#: src/utils/validation.js:20
+msgid "Email should contain a @"
+msgstr ""
+
+#: src/utils/validation.js:27
+msgid "Name can't be empty."
+msgstr ""
+
+#: src/utils/validation.js:28
+msgid "Name must be at least 4 characters long"
+msgstr ""
+
+#: src/utils/validation.js:29
+msgid "Name must be shorter than 26 characters"
+msgstr ""
+
+#: src/utils/validation.js:36
+msgid "Name contains invalid character like @, /, \\ or #"
+msgstr ""
+
+#: src/utils/validation.js:51
+msgid "Password must be at least 6 characters long."
+msgstr ""
+
+#: src/utils/validation.js:54
+msgid "Password must be shorter than 60 characters."
+msgstr ""
+
+#: src/utils/validation.js:68
+msgid "Could not connect to server, please try again later :("
+msgstr ""
+
+#: src/utils/validation.js:74
+msgid "I think we experienced some error :("
+msgstr ""
+
+#: src/components/DeleteAccount.jsx:92
+msgid "Yes, Delete My Account!"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:89
+msgid ""
+"Changed Mail successfully. We sent you a verification mail,               "
+"please verify your new mail adress."
+msgstr ""
+
+#: src/components/ChangeMail.jsx:116
+msgid "New Mail"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:120
+#: src/components/ChangePassword.jsx:149
+msgid "Save"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:18
+msgid "Passwords do not match."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:103
+msgid "Changed Password successfully."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:128
+msgid "Old Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:136
+msgid "New Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:145
+msgid "Confirm New Password"
+msgstr ""
+
+#: src/components/SocialSettings.jsx:39
+msgid "Block all Private Messages"
+msgstr ""
+
+#: src/components/SocialSettings.jsx:57
+msgid "Unblock Users"
+msgstr ""
+
+#: src/components/SocialSettings.jsx:81
+msgid "You have no users blocked"
 msgstr ""
 
 #: src/components/HelpModal.jsx:15
@@ -473,6 +987,11 @@ msgstr ""
 #: src/components/SettingsModal.jsx:132
 msgctxt "keybinds"
 msgid "X"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:140
+msgctxt "keybinds"
+msgid "M"
 msgstr ""
 
 #: src/components/HelpModal.jsx:17
@@ -524,9 +1043,4 @@ msgstr ""
 #: src/components/HelpModal.jsx:32
 msgctxt "keybinds"
 msgid "C"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:140
-msgctxt "keybinds"
-msgid "M"
 msgstr ""

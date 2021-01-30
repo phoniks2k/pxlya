@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 import {
   validateEMail, validateName, validatePassword, parseAPIresponse,
 } from '../utils/validation';
@@ -121,21 +122,21 @@ class SignUpForm extends React.Component {
           value={name}
           onChange={(evt) => this.setState({ name: evt.target.value })}
           type="text"
-          placeholder="Name"
+          placeholder={t`Name`}
         /><br />
         <input
           style={inputStyles}
           value={email}
           onChange={(evt) => this.setState({ email: evt.target.value })}
           type="text"
-          placeholder="Email"
+          placeholder={t`Email`}
         /><br />
         <input
           style={inputStyles}
           value={password}
           onChange={(evt) => this.setState({ password: evt.target.value })}
           type="password"
-          placeholder="Password"
+          placeholder={t`Password`}
         /><br />
         <input
           style={inputStyles}
@@ -144,16 +145,16 @@ class SignUpForm extends React.Component {
             confirmPassword: evt.target.value,
           })}
           type="password"
-          placeholder="Confirm Password"
+          placeholder={t`Confirm Password`}
         /><br />
         <button type="submit">
-          {(submitting) ? '...' : 'Submit'}
+          {(submitting) ? '...' : t`Submit`}
         </button>
         <button
           type="button"
           onClick={back}
         >
-          Cancel
+          {t`Cancel`}
         </button>
       </form>
     );

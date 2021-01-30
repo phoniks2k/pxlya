@@ -11,10 +11,10 @@ import { validatePassword, validateEMail } from '../../../utils/validation';
 import { getHostFromRequest } from '../../../utils/ip';
 import { compareToHash } from '../../../utils/hash';
 
-function validate(email, password) {
+function validate(email, password, gettext) {
   const errors = [];
 
-  const passerror = validatePassword(password);
+  const passerror = gettext(validatePassword(password));
   if (passerror) errors.push(passerror);
   const mailerror = validateEMail(email);
   if (mailerror) errors.push(mailerror);
@@ -24,7 +24,8 @@ function validate(email, password) {
 
 export default async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const errors = validate(email, password);
+  const { t, gettext } = req.ttag;
+  const errors = validate(email, password, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({
@@ -33,11 +34,11 @@ export default async (req: Request, res: Response) => {
     return;
   }
 
-  const { user } = req;
+  const { user, lang } = req;
   if (!user) {
     res.status(401);
     res.json({
-      errors: ['You are not authenticated.'],
+      errors: [t`You are not authenticated.`],
     });
     return;
   }
@@ -46,7 +47,7 @@ export default async (req: Request, res: Response) => {
   if (!compareToHash(password, currentPassword)) {
     res.status(400);
     res.json({
-      errors: ['Incorrect password!'],
+      errors: [t`Incorrect password!`],
     });
     return;
   }
@@ -57,7 +58,7 @@ export default async (req: Request, res: Response) => {
   });
 
   const host = getHostFromRequest(req);
-  mailProvider.sendVerifyMail(email, user.regUser.name, host);
+  mailProvider.sendVerifyMail(email, user.regUser.name, host, lang);
 
   res.json({
     success: true,

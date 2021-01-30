@@ -5,8 +5,9 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { validatePassword, parseAPIresponse } from '../utils/validation';
+import { t } from 'ttag';
 
+import { validatePassword, parseAPIresponse } from '../utils/validation';
 import { logoutUser } from '../actions';
 
 function validate(password) {
@@ -84,13 +85,13 @@ class DeleteAccount extends React.Component {
             value={password}
             onChange={(evt) => this.setState({ password: evt.target.value })}
             type="password"
-            placeholder="Password"
+            placeholder={t`Password`}
           />
           <br />
           <button type="submit">
-            {(submitting) ? '...' : 'Yes, Delete My Account!'}
+            {(submitting) ? '...' : t`Yes, Delete My Account!`}
           </button>
-          <button type="button" onClick={done}>Cancel</button>
+          <button type="button" onClick={done}>{t`Cancel`}</button>
         </form>
       </div>
     );

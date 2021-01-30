@@ -18,13 +18,13 @@ import {
   validatePassword,
 } from '../../../utils/validation';
 
-async function validate(email, name, password) {
+async function validate(email, name, password, gettext) {
   const errors = [];
   const emailerror = validateEMail(email);
   if (emailerror) errors.push(emailerror);
   const nameerror = validateName(name);
   if (nameerror) errors.push(nameerror);
-  const passworderror = validatePassword(password);
+  const passworderror = gettext(validatePassword(password));
   if (passworderror) errors.push(passworderror);
 
   let reguser = await RegUser.findOne({ where: { email } });
@@ -37,7 +37,8 @@ async function validate(email, name, password) {
 
 export default async (req: Request, res: Response) => {
   const { email, name, password } = req.body;
-  const errors = await validate(email, name, password);
+  const { t, gettext } = req.ttag;
+  const errors = await validate(email, name, password, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({
@@ -57,7 +58,7 @@ export default async (req: Request, res: Response) => {
   if (!newuser) {
     res.status(500);
     res.json({
-      errors: ['Failed to create new user :('],
+      errors: [t`Failed to create new user :(`],
     });
     return;
   }
@@ -65,20 +66,20 @@ export default async (req: Request, res: Response) => {
   const ip = getIPFromRequest(req);
   logger.info(`Created new user ${name} ${email} ${ip}`);
 
-  const { user } = req;
+  const { user, lang } = req;
   user.setRegUser(newuser);
-  const me = await getMe(user);
+  const me = await getMe(user, lang);
 
   await req.logIn(user, (err) => {
     if (err) {
       res.status(500);
       res.json({
-        errors: ['Failed to establish session after register :('],
+        errors: [t`Failed to establish session after register :(`],
       });
       return;
     }
     const host = getHostFromRequest(req);
-    mailProvider.sendVerifyMail(email, name, host);
+    mailProvider.sendVerifyMail(email, name, host, lang);
     res.status(200);
     res.json({
       success: true,

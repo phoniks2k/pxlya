@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import type { State } from '../reducers';
 
@@ -175,13 +176,13 @@ function Admintools({
   let descAction;
   switch (imageAction) {
     case 'build':
-      descAction = 'Build image on canvas.';
+      descAction = t`Build image on canvas.`;
       break;
     case 'protect':
-      descAction = 'Build image and set it to protected.';
+      descAction = t`Build image and set it to protected.`;
       break;
     case 'wipe':
-      descAction = 'Build image, but reset cooldown to unset-pixel cd.';
+      descAction = t`Build image, but reset cooldown to unset-pixel cd.`;
       break;
     default:
       // nothing
@@ -215,7 +216,7 @@ function Admintools({
             className="modallink"
             onClick={() => setResp(null)}
           >
-            Close
+            {t`Close`}
           </span>
         </div>
       )}
@@ -244,10 +245,10 @@ function Admintools({
       </p>
       <br />
       <div className="modaldivider" />
-      <h3 className="modaltitle">Image Upload</h3>
-      <p className="modalcotext">Upload images to canvas</p>
+      <h3 className="modaltitle">{t`Image Upload`}</h3>
+      <p className="modalcotext">{t`Upload images to canvas`}</p>
       <p className="modalcotext">
-        File:&nbsp;
+        {t`File`}:&nbsp;
         <input type="file" name="image" id="imgfile" />
       </p>
       <select
@@ -267,7 +268,7 @@ function Admintools({
       </select>
       <p className="modalcotext">{descAction}</p>
       <p className="modalcotext">
-        Coordinates in X_Y format:&nbsp;
+        {t`Coordinates in X_Y format:`}&nbsp;
         <input
           value={coords}
           style={{
@@ -302,16 +303,16 @@ function Admintools({
           );
         }}
       >
-        {(submitting) ? '...' : 'Submit'}
+        {(submitting) ? '...' : t`Submit`}
       </button>
 
       <br />
       <div className="modaldivider" />
-      <h3 className="modaltitle">Pixel Protection</h3>
+      <h3 className="modaltitle">{t`Pixel Protection`}</h3>
       <p className="modalcotext">
-        Set protection of areas&nbsp;
-        (if you need finer grained control,&nbsp;
-        use protect with image upload and alpha layers)
+        {t`Set protection of areas \
+        (if you need finer grained control, \
+        use protect with image upload and alpha layers)`}
       </p>
       <select
         onChange={(e) => {
@@ -383,14 +384,14 @@ function Admintools({
           );
         }}
       >
-        {(submitting) ? '...' : 'Submit'}
+        {(submitting) ? '...' : t`Submit`}
       </button>
 
       <br />
       <div className="modaldivider" />
-      <h3 className="modaltitle">Rollback to Date</h3>
+      <h3 className="modaltitle">{t`Rollback to Date`}</h3>
       <p className="modalcotext">
-        Rollback an area of the canvas to a set date (00:00 UTC)
+        {t`Rollback an area of the canvas to a set date (00:00 UTC)`}
       </p>
       <input
         type="date"
@@ -457,15 +458,17 @@ function Admintools({
           );
         }}
       >
-        {(submitting) ? '...' : 'Submit'}
+        {(submitting) ? '...' : t`Submit`}
       </button>
 
       {(userlvl === 1) && (
         <div>
           <br />
           <div className="modaldivider" />
-          <h3 className="modaltitle">IP Actions</h3>
-          <p className="modalcotext">Do stuff with IPs (one IP per line)</p>
+          <h3 className="modaltitle">{t`IP Actions`}</h3>
+          <p className="modalcotext">
+            {t`Do stuff with IPs (one IP per line)`}
+          </p>
           <select
             onChange={(e) => {
               const sel = e.target;
@@ -499,14 +502,14 @@ function Admintools({
               );
             }}
           >
-            {(submitting) ? '...' : 'Submit'}
+            {(submitting) ? '...' : t`Submit`}
           </button>
           <br />
 
           <div className="modaldivider" />
-          <h3 className="modaltitle">Manage Moderators</h3>
+          <h3 className="modaltitle">{t`Manage Moderators`}</h3>
           <p className="modalcotext">
-            Remove Moderator
+            {t`Remove Moderator`}
           </p>
           {(modlist.length) ? (
             <span
@@ -538,15 +541,15 @@ function Admintools({
             </span>
           )
             : (
-              <p className="modaltext">There are no mods</p>
+              <p className="modaltext">{t`There are no mods`}</p>
             )}
           <br />
 
           <p className="modalcotext">
-            Assign new Mod
+            {t`Assign new Mod`}
           </p>
           <p className="modalcotext">
-            Enter UserName of new Mod:&nbsp;
+            {t`Enter UserName of new Mod`}:&nbsp;
             <input
               value={modName}
               style={{
@@ -583,7 +586,7 @@ function Admintools({
               );
             }}
           >
-            {(submitting) ? '...' : 'Submit'}
+            {(submitting) ? '...' : t`Submit`}
           </button>
           <br />
           <div className="modaldivider" />

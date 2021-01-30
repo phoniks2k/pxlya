@@ -55,7 +55,7 @@ const babelPlugins = [
     extract: {
       output: path.resolve(__dirname, 'i18n', 'template-ssr.pot'),
     },
-    discover: ['t', 'jt', 'gettext'],
+    discover: ['t', 'jt'],
   }],
 ];
 

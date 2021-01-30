@@ -9,10 +9,10 @@ import type { Request, Response } from 'express';
 import { validatePassword } from '../../../utils/validation';
 import { compareToHash } from '../../../utils/hash';
 
-function validate(newPassword) {
+function validate(newPassword, gettext) {
   const errors = [];
 
-  const newpassworderror = validatePassword(newPassword);
+  const newpassworderror = gettext(validatePassword(newPassword));
   if (newpassworderror) errors.push(newpassworderror);
 
   return errors;
@@ -20,7 +20,8 @@ function validate(newPassword) {
 
 export default async (req: Request, res: Response) => {
   const { newPassword, password } = req.body;
-  const errors = validate(newPassword);
+  const { t, gettext } = req.ttag;
+  const errors = validate(newPassword, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({
@@ -33,7 +34,7 @@ export default async (req: Request, res: Response) => {
   if (!user) {
     res.status(401);
     res.json({
-      errors: ['You are not authenticated.'],
+      errors: [t`You are not authenticated.`],
     });
     return;
   }
@@ -42,7 +43,7 @@ export default async (req: Request, res: Response) => {
   if (currentPassword && !compareToHash(password, currentPassword)) {
     res.status(400);
     res.json({
-      errors: ['Incorrect password!'],
+      errors: [t`Incorrect password!`],
     });
     return;
   }

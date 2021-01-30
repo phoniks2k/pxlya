@@ -3,12 +3,14 @@
  * @flow
  */
 
-// import Sequelize from 'sequelize';
+/* eslint-disable max-len */
+
 import nodemailer from 'nodemailer';
 
 import logger from './logger';
 import { HOUR, MINUTE } from './constants';
 import { DailyCron, HourlyCron } from '../utils/cron';
+import { getTTag } from './ttag';
 import { GMAIL_USER, GMAIL_PW } from './config';
 
 import RegUser from '../data/models/RegUser';
@@ -48,7 +50,9 @@ class MailProvider {
     DailyCron.hook(MailProvider.cleanUsers);
   }
 
-  sendVerifyMail(to, name, host) {
+  sendVerifyMail(to, name, host, lang) {
+    const { t } = getTTag(lang);
+
     const pastMail = this.verifyCodes[to];
     if (pastMail) {
       const minLeft = Math.floor(
@@ -58,8 +62,7 @@ class MailProvider {
         logger.info(
           `Verify mail for ${to} - already sent, ${minLeft} minutes left`,
         );
-        // eslint-disable-next-line max-len
-        return `We already sent you a verification mail, you can request another one in ${minLeft} minutes.`;
+        return t`We already sent you a verification mail, you can request another one in ${minLeft} minutes.`;
       }
     }
     logger.info(`Sending verification mail to ${to} / ${name}`);
@@ -69,12 +72,13 @@ class MailProvider {
       from,
       to,
       replyTo: 'donotreply@pixelplanet.fun',
-      // eslint-disable-next-line max-len
-      subject: `Welcome ${name} to PixelPlanet, plese verify your mail`,
-      // eslint-disable-next-line max-len
+      subject: t`Welcome ${name} to PixelPlanet, plese verify your mail`,
       // text: `Hello,\nwelcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that here:\n ${verifyUrl} \nHave fun and don't hesitate to contact us if you encouter any problems :)\nThanks`,
-      // eslint-disable-next-line max-len
-      html: `<em>Hello ${name}</em>,<br />\nwelcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that <a href="${verifyUrl}">here</a>. Or by copying following url:<br />${verifyUrl}\n<br />\nHave fun and don&#39;t hesitate to contact us if you encouter any problems :)<br />\nThanks<br /><br />\n<img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`,
+      html: `<em>${t`Hello ${name}`}</em>,<br />
+      ${t`welcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that here: `} <a href="${verifyUrl}">${t`Click to Verify`}</a>. ${t`Or by copying following url:`}<br />${verifyUrl}\n<br />
+      ${t`Have fun and don't hesitate to contact us if you encouter any problems :)`}<br />
+      ${t`Thanks`}<br /><br />
+      <img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`,
     }, (err) => {
       if (err) {
         logger.error(err);
@@ -83,15 +87,15 @@ class MailProvider {
     return null;
   }
 
-  async sendPasswdResetMail(to, ip, host) {
+  async sendPasswdResetMail(to, ip, host, lang) {
+    const { t } = getTTag(lang);
     const pastMail = this.verifyCodes[to];
     if (pastMail) {
       if (Date.now() < pastMail.timestamp + 15 * MINUTE) {
         logger.info(
           `Password reset mail for ${to} requested by ${ip} - already sent`,
         );
-        // eslint-disable-next-line max-len
-        return 'We already sent you a mail with instructions. Please wait before requesting another mail.';
+        return t`We already sent you a mail with instructions. Please wait before requesting another mail.`;
       }
     }
     const reguser = await RegUser.findOne({ where: { email: to } });
@@ -99,7 +103,7 @@ class MailProvider {
       logger.info(
         `Password reset mail for ${to} requested by ${ip} - mail not found`,
       );
-      return "Couldn't find this mail in our database";
+      return t`Couldn't find this mail in our database`;
     }
     /*
      * not sure if this is needed yet
@@ -118,11 +122,12 @@ class MailProvider {
       from,
       to,
       replyTo: 'donotreply@pixelplanet.fun',
-      subject: 'You forgot your password for PixelPlanet? Get a new one here',
-      // eslint-disable-next-line max-len
+      subject: t`You forgot your password for PixelPlanet? Get a new one here`,
       // text: `Hello,\nYou requested to get a new password. You can change your password within the next 30min here:\n ${restoreUrl} \nHave fun and don't hesitate to contact us if you encouter any problems :)\nIf you did not request this mail, please just ignore it (the ip that requested this mail was ${ip}).\nThanks`,
-      // eslint-disable-next-line max-len
-      html: `<em>Hello</em>,<br />\nYou requested to get a new password. You can change your password within the next 30min <a href="${restoreUrl}">here</a>. Or by copying following url:<br />${restoreUrl}\n<br />\nIf you did not request this mail, please just ignore it (the ip that requested this mail was ${ip}).<br />\nThanks<br /><br />\n<img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`,
+      html: `<em>${t`Hello`}</em>,<br />
+      ${t`You requested to get a new password. You can change your password within the next 30min here: `} <a href="${restoreUrl}">${t`Reset Password`}</a>. ${t`Or by copying following url:`}<br />${restoreUrl}\n<br />
+      ${t`If you did not request this mail, please just ignore it (the ip that requested this mail was ${ip}).`}<br />
+      ${t`Thanks`}<br /><br />\n<img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`,
     }, (err) => {
       if (err) {
         logger.error(err & err.stack);

@@ -31,7 +31,8 @@ export default async (req: Request, res: Response) => {
     return;
   }
   const host = getHostFromRequest(req);
-  const error = await mailProvider.sendPasswdResetMail(email, ip, host);
+  const { lang } = req;
+  const error = await mailProvider.sendPasswdResetMail(email, ip, host, lang);
   if (error) {
     res.status(400);
     res.json({
