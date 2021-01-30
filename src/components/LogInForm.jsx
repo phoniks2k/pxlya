@@ -18,10 +18,8 @@ function validate(nameoremail, password) {
     ? validateEMail(nameoremail)
     : validateName(nameoremail);
   if (mailerror) errors.push(mailerror);
-  /*
   const passworderror = validatePassword(password);
   if (passworderror) errors.push(passworderror);
-  */
 
   return errors;
 }
@@ -96,7 +94,7 @@ class LogInForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {errors.map((error) => (
-          <p key={error}>Error: {error}</p>
+          <p key={error}><span>{t`Error`}</span>:&nbsp;{error}</p>
         ))}
         <input
           value={nameoremail}

@@ -134,32 +134,16 @@ msgid "User online"
 msgstr "Spieler anwesend"
 
 #: src/components/OnlineBox.jsx:25
-msgid "Pixel gesetzt"
-msgstr "Pixel plaziert"
+msgid "Pixels placed"
+msgstr "Pixels gesetzt"
 
 #: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
 msgid "Copy to Clipboard"
 msgstr "Kopiere in die Zwischenablage"
 
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr "Erstelle eine Bildschirmaufnahme"
-
-#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr "Spielerbereich"
-
-#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:267
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr "Hilfe"
-
 #: src/components/Chat.jsx:143
 msgid "Channel settings"
-msgstr "Channel Einstellungen"
+msgstr "Kanal Einstellungen"
 
 #: src/components/Chat.jsx:152
 msgid "maximize"
@@ -176,6 +160,22 @@ msgstr "Chatte hier"
 #: src/components/Chat.jsx:220
 msgid "You must be logged in to chat"
 msgstr "Melde dich an um dich zu unterhalten"
+
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr "Erstelle eine Bildschirmaufnahme"
+
+#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr "Spielerbereich"
+
+#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:267
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/components/HelpButton.jsx:20
+msgid "Help"
+msgstr "Hilfe"
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
@@ -203,7 +203,7 @@ msgstr "Deaktiviere Spiel Ton"
 
 #: src/components/SettingsModal.jsx:139
 msgid "All sound effects will be disabled."
-msgstr "alle Toneffekte werden ausgeschaltet"
+msgstr "Alle Toneffekte werden ausgeschaltet."
 
 #: src/components/SettingsModal.jsx:145
 msgid "Enable chat notifications"
@@ -232,7 +232,7 @@ msgstr "Kompakte Palette"
 #: src/components/SettingsModal.jsx:160
 msgid "Display Palette in a compact form that takes less screen space."
 msgstr ""
-"Zeige die Palette in einer kleineren Form an, welche weniger Platz benötigt"
+"Zeige die Palette in einer kleineren Form an, welche weniger Platz benötigt."
 
 #: src/components/SettingsModal.jsx:165
 msgid "Potato Mode"
@@ -248,7 +248,7 @@ msgstr "Helles Raster"
 
 #: src/components/SettingsModal.jsx:172
 msgid "Show Grid in white instead of black."
-msgstr "Zeige das Raster in weiß anstatt schwarz"
+msgstr "Zeige das Raster in weiß anstatt schwarz."
 
 #: src/components/SettingsModal.jsx:179
 msgid "Historical View"
@@ -256,7 +256,7 @@ msgstr "Historische Ansicht"
 
 #: src/components/SettingsModal.jsx:180
 msgid "Check out past versions of the canvas."
-msgstr "Siehe vergangene Versionen der Leinwand"
+msgstr "Siehe vergangene Versionen der Leinwand."
 
 #: src/components/SettingsModal.jsx:188
 msgid "Themes"
@@ -264,7 +264,7 @@ msgstr "Themen"
 
 #: src/components/SettingsModal.jsx:189
 msgid "How pixelplanet should look like."
-msgstr "Wähle aus wie pixelplanet aussehen soll"
+msgstr "Wähle aus wie pixelplanet aussehen soll."
 
 #: src/components/HelpModal.jsx:34 src/components/HelpModal.jsx:35
 msgid "Privacy Policy"
@@ -497,19 +497,19 @@ msgstr "Willkommen auf PixelPlanet.fun"
 
 #: src/components/ChannelContextMenu.jsx:73
 msgid "Mute"
-msgstr ""
+msgstr "Stummschalten"
 
 #: src/components/UserContextMenu.jsx:72
 msgid "Ping"
-msgstr ""
+msgstr "Erwähnen"
 
 #: src/components/UserContextMenu.jsx:97
 msgid "DM"
-msgstr ""
+msgstr "DM"
 
 #: src/components/UserContextMenu.jsx:107
 msgid "Block"
-msgstr ""
+msgstr "Blocke"
 
 #: src/components/PalselButton.jsx:25
 msgid "Close Palette"
@@ -537,12 +537,12 @@ msgid "Login to access more features and stats."
 msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
 
 #: src/components/UserAreaModal.jsx:35
-msgid "Login with Mail:"
-msgstr "Mit Mail anmelden:"
+msgid "Login with Name or Mail:"
+msgstr "Mit Name oder Mail anmelden:"
 
 #: src/components/UserAreaModal.jsx:42
 msgid "I forgot my Password."
-msgstr "Ich habe mein Passwort vergessen"
+msgstr "Ich habe mein Passwort vergessen."
 
 #: src/components/UserAreaModal.jsx:43
 msgid "or login with:"
@@ -582,7 +582,7 @@ msgstr "Lade..."
 
 #: src/components/ForgotPasswordModal.jsx:16
 msgid "Enter your mail adress and we will send you a new password:"
-msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort."
+msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
 
 #: src/components/ForgotPasswordModal.jsx:37
 msgid "Restore my Password"
@@ -599,6 +599,11 @@ msgid ""
 "boring after a while and after weeks of no major change and if they really "
 "aren&apos;t worth being kept active, we decide to remove them."
 msgstr ""
+"Wir versuchen so wenig wie möglich Leinwände zu entfernen. Manche werden "
+"allerding aus Spaß gestarted oder von Spielern angefragt oder sind nur "
+"Memes. Diese Leinwände können nach einiger Zeit langweilig werden und nach "
+"Wochen ohne erwähnenswerte Aktivität und falls sie es wirklich nicht wert "
+"sind, behalten zu werden, entscheiden wir uns side zu entfernen."
 
 #: src/components/ArchiveModal.jsx:22
 msgid ""
@@ -619,6 +624,10 @@ msgid ""
 "with a 5s coolodwn and 60s stacking. It got launched on May 11th and "
 "remained active for months till it got shut down on November 30th."
 msgstr ""
+"Diese Leinwand wurde zu Zeiten politscher Konlikte auf der Erd-Leinwand "
+"gestarted. Es war eine 1024x1024 Abbildung des politischen Kompass mit 5s "
+"Abklingzeit und 60s gesamter Wartezeit. Es wurde am 11. Mai 2020 gestartet "
+"und war für Monate aktiv bis es am 30. November geschlossen wurde."
 
 #: src/components/ArchiveModal.jsx:32
 msgid ""
@@ -640,23 +649,47 @@ msgid ""
 "palettes, cooldown and requirements. Archive of closed canvases can be "
 "accessed here:"
 msgstr ""
+"Wähle die Leinwand aus welche du benutzen willst. Jede Leinwand ist "
+"einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
+"Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
 
 #: src/components/CanvasSelectModal.jsx:37
 msgid "Archive"
 msgstr "Archiv"
 
+#: src/components/ChangeMail.jsx:104 src/components/ChangeName.jsx:82
+#: src/components/ChangePassword.jsx:120 src/components/DeleteAccount.jsx:82
+#: src/components/LogInForm.jsx:97 src/components/NewPasswordForm.jsx:93
+#: src/components/SignUpForm.jsx:118
+msgid "Error"
+msgstr "Fehler"
+
 #: src/components/LogInForm.jsx:104
 msgid "Name or Email"
 msgstr "Name oder Email"
 
-#: src/components/ChangeMail.jsx:109 src/components/DeleteAccount.jsx:88
-#: src/components/LogInForm.jsx:111 src/components/SignUpForm.jsx:139
+#: src/components/ChangeMail.jsx:112 src/components/DeleteAccount.jsx:89
+#: src/components/LogInForm.jsx:111 src/components/SignUpForm.jsx:140
 msgid "Password"
 msgstr "Passwort"
 
 #: src/components/LogInForm.jsx:115
 msgid "LogIn"
 msgstr "Einloggen"
+
+#: src/components/Rankings.jsx:37
+msgid "Total"
+msgstr "Gesamt"
+
+#: src/components/Rankings.jsx:45
+msgid "Daily"
+msgstr "Täglich"
+
+#: src/components/Rankings.jsx:49
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+"Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
+"Mitternacht UTC zurückgestellt."
 
 #: src/components/UserArea.jsx:57
 msgid "Todays Placed Pixels"
@@ -703,23 +736,38 @@ msgstr "Lösche Konto"
 msgid "Social Settings"
 msgstr "Soziale Einstellungen"
 
-#: src/components/Rankings.jsx:37
-msgid "Total"
-msgstr "Gesamt"
+#: src/components/SignUpForm.jsx:126
+msgid "Name"
+msgstr "Name"
 
-#: src/components/Rankings.jsx:45
-msgid "Daily"
-msgstr "Täglich"
+#: src/components/NewPasswordForm.jsx:100 src/components/SignUpForm.jsx:133
+msgid "Email"
+msgstr "Email"
 
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-"Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
-"Mitternacht UTC zurückgestellt."
+#: src/components/SignUpForm.jsx:149
+msgid "Confirm Password"
+msgstr "Passwort bestätigen"
+
+#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:104
+#: src/components/SignUpForm.jsx:152
+msgid "Submit"
+msgstr "Absenden"
+
+#: src/components/ChangeMail.jsx:125 src/components/ChangeName.jsx:94
+#: src/components/ChangePassword.jsx:152 src/components/DeleteAccount.jsx:95
+#: src/components/NewPasswordForm.jsx:106 src/components/SignUpForm.jsx:158
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/components/NewPasswordForm.jsx:83
+msgid "Sent you a mail with instructions to reset your password."
+msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
 
 #: src/components/CanvasItem.jsx:46
 msgid "Cooldown"
-msgstr "Wartezeit"
+msgstr "Abklingzeit"
 
 #: src/components/CanvasItem.jsx:52
 msgid "Stacking till"
@@ -745,103 +793,6 @@ msgstr "und ${ canvas.req } gesetzte Pixel"
 #: src/components/CanvasItem.jsx:64
 msgid "Dimensions"
 msgstr "Dimensionen"
-
-#: src/components/Admintools.jsx:179
-msgid "Build image on canvas."
-msgstr ""
-
-#: src/components/Admintools.jsx:182
-msgid "Build image and set it to protected."
-msgstr ""
-
-#: src/components/Admintools.jsx:185
-msgid "Build image, but reset cooldown to unset-pixel cd."
-msgstr ""
-
-#: src/components/Admintools.jsx:248
-msgid "Image Upload"
-msgstr ""
-
-#: src/components/Admintools.jsx:249
-msgid "Upload images to canvas"
-msgstr "Lade ein Bild zur Leinwand hoch"
-
-#: src/components/Admintools.jsx:251
-msgid "File"
-msgstr ""
-
-#: src/components/Admintools.jsx:271
-msgid "Coordinates in X_Y format:"
-msgstr ""
-
-#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589 src/components/SignUpForm.jsx:151
-msgid "Submit"
-msgstr ""
-
-#: src/components/Admintools.jsx:311
-msgid "Pixel Protection"
-msgstr "Pixel beschützen"
-
-#: src/components/Admintools.jsx:313
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-
-#: src/components/Admintools.jsx:392
-msgid "Rollback to Date"
-msgstr ""
-
-#: src/components/Admintools.jsx:394
-msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
-msgstr ""
-
-#: src/components/Admintools.jsx:468
-msgid "IP Actions"
-msgstr ""
-
-#: src/components/Admintools.jsx:470
-msgid "Do stuff with IPs (one IP per line)"
-msgstr ""
-
-#: src/components/Admintools.jsx:510
-msgid "Manage Moderators"
-msgstr ""
-
-#: src/components/Admintools.jsx:512
-msgid "Remove Moderator"
-msgstr ""
-
-#: src/components/Admintools.jsx:544
-msgid "There are no mods"
-msgstr ""
-
-#: src/components/Admintools.jsx:549
-msgid "Assign new Mod"
-msgstr ""
-
-#: src/components/Admintools.jsx:552
-msgid "Enter UserName of new Mod"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:125
-msgid "Name"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:132
-msgid "Email"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:148
-msgid "Confirm Password"
-msgstr "Passwort bestätigen"
-
-#: src/components/ChangeMail.jsx:122 src/components/ChangePassword.jsx:151
-#: src/components/DeleteAccount.jsx:94 src/components/SignUpForm.jsx:157
-msgid "Cancel"
-msgstr "Abbrechen"
 
 #: src/components/Converter.jsx:274
 msgid "Choose Canvas"
@@ -913,169 +864,305 @@ msgstr "Zurücksetzen"
 msgid "Download Template"
 msgstr "Bild herunterladen"
 
-#: src/utils/validation.js:15
-msgid "Email can't be empty."
-msgstr ""
+#: src/components/Admintools.jsx:179
+msgid "Build image on canvas."
+msgstr "Zeiche Bild auf Leinwand."
 
-#: src/utils/validation.js:16
-msgid "Email should be at least 5 characters long."
-msgstr ""
+#: src/components/Admintools.jsx:182
+msgid "Build image and set it to protected."
+msgstr "Lade Bild und schütze es."
 
-#: src/utils/validation.js:17
-msgid "Email can't be longer than 40 characters."
+#: src/components/Admintools.jsx:185
+msgid "Build image, but reset cooldown to unset-pixel cd."
+msgstr "Lade Bild und setze Abklingzeit wenn möglich zurück."
+
+#: src/components/Admintools.jsx:248
+msgid "Image Upload"
+msgstr "Bild Hochladen"
+
+#: src/components/Admintools.jsx:249
+msgid "Upload images to canvas"
+msgstr "Lade ein Bild zur Leinwand hoch"
+
+#: src/components/Admintools.jsx:251
+msgid "File"
+msgstr "Datei"
+
+#: src/components/Admintools.jsx:271
+msgid "Coordinates in X_Y format:"
+msgstr "Koordinaten in X_Y Format:"
+
+#: src/components/Admintools.jsx:311
+msgid "Pixel Protection"
+msgstr "Pixel beschützen"
+
+#: src/components/Admintools.jsx:313
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
 msgstr ""
+"Setze Gebiet auf geschützt (falls genauere Kontrolle erwünscht, lade Bild "
+"mit Transparenz mit \"protect\" hoch)"
+
+#: src/components/Admintools.jsx:392
+msgid "Rollback to Date"
+msgstr "Spule zum Datum zurück"
+
+#: src/components/Admintools.jsx:394
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr ""
+"Spule einen Beraich auf der Leinwand zum angegebenen Datum zurück (00:00 UTC)"
+
+#: src/components/Admintools.jsx:468
+msgid "IP Actions"
+msgstr "IP Aktionen"
+
+#: src/components/Admintools.jsx:470
+msgid "Do stuff with IPs (one IP per line)"
+msgstr "Mache etwas mit IPs (eine IP pro Zeile)"
+
+#: src/components/Admintools.jsx:510
+msgid "Manage Moderators"
+msgstr "Verwalte Moderatoren"
+
+#: src/components/Admintools.jsx:512
+msgid "Remove Moderator"
+msgstr "Entferne Moderator"
+
+#: src/components/Admintools.jsx:544
+msgid "There are no mods"
+msgstr "Es gibt keine Moderatoren"
+
+#: src/components/Admintools.jsx:549
+msgid "Assign new Mod"
+msgstr "Moderator zuweisen"
+
+#: src/components/Admintools.jsx:552
+msgid "Enter UserName of new Mod"
+msgstr "Gebe Name des neuen Moderators ein"
+
+#: src/components/Admintools.jsx:561
+msgid "User Name"
+msgstr "Spielerbereich"
 
 #: src/utils/validation.js:18
-msgid "Email should at least contain a dot"
-msgstr ""
+msgid "Email can't be empty."
+msgstr "Email Feld kann nicht leer sein."
+
+#: src/utils/validation.js:19
+msgid "Email should be at least 5 characters long."
+msgstr "Email sollte zumindest 5 Zeichen lang sein."
 
 #: src/utils/validation.js:20
+msgid "Email can't be longer than 40 characters."
+msgstr "Email kann nicht länger als 40 Zeichen sein."
+
+#: src/utils/validation.js:21
+msgid "Email should at least contain a dot"
+msgstr "Email sollte zumindest einen Punkt beinhalten"
+
+#: src/utils/validation.js:23
 msgid "Email should contain a @"
-msgstr ""
+msgstr "Email sollte ein @ beinhalten"
 
-#: src/utils/validation.js:27
+#: src/utils/validation.js:30
 msgid "Name can't be empty."
-msgstr ""
+msgstr "Email Feld kann nicht leer sein."
 
-#: src/utils/validation.js:28
+#: src/utils/validation.js:31
 msgid "Name must be at least 4 characters long"
-msgstr ""
+msgstr "Name muss mindestens 4 Zeichen lang sein"
 
-#: src/utils/validation.js:29
+#: src/utils/validation.js:32
 msgid "Name must be shorter than 26 characters"
-msgstr ""
+msgstr "Name muss kleiner als 26 Zeichen sein"
 
-#: src/utils/validation.js:36
+#: src/utils/validation.js:39
 msgid "Name contains invalid character like @, /, \\ or #"
-msgstr ""
-
-#: src/utils/validation.js:51
-msgid "Password must be at least 6 characters long."
-msgstr "Passwort muss mindestens 6 Zeichen lang sein"
+msgstr "Ungültige Zeichen im Namen wie @,/.\\ oder #"
 
 #: src/utils/validation.js:54
-msgid "Password must be shorter than 60 characters."
-msgstr ""
+msgid "No password given."
+msgstr "Kein Passwort eingegeben."
 
-#: src/utils/validation.js:68
-msgid "Could not connect to server, please try again later :("
-msgstr ""
+#: src/utils/validation.js:57
+msgid "Password must be at least 6 characters long."
+msgstr "Passwort muss mindestens 6 Zeichen lang sein."
+
+#: src/utils/validation.js:60
+msgid "Password must be shorter than 60 characters."
+msgstr "Passwort muss kleiner als 60 Zeichen sein."
 
 #: src/utils/validation.js:74
-msgid "I think we experienced some error :("
+msgid "Could not connect to server, please try again later :("
 msgstr ""
+"Kann nich zum Server verbinden, bitte versuche es später noch einmal :("
 
-#: src/components/DeleteAccount.jsx:92
+#: src/utils/validation.js:80
+msgid "I think we experienced some error :("
+msgstr "Ich glaube wir haben einen Fehler :("
+
+#: src/components/DeleteAccount.jsx:93
 msgid "Yes, Delete My Account!"
 msgstr "Ja, löche mein Konto!"
+
+#: src/components/SocialSettings.jsx:39
+msgid "Block all Private Messages"
+msgstr "Blockiere alle Privaten Nachrichten"
+
+#: src/components/SocialSettings.jsx:57
+msgid "Unblock Users"
+msgstr "Entblocke Spieler"
+
+#: src/components/SocialSettings.jsx:81
+msgid "You have no users blocked"
+msgstr "Du hast keinen Spieler geblockt"
 
 #: src/components/ChangeMail.jsx:89
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,               "
 "please verify your new mail adress."
 msgstr ""
+"Erfolgreich änderte Mail Adresse. Wir haben dir eine neue Bestätigungsmail "
+"gesendet."
 
-#: src/components/ChangeMail.jsx:116
+#: src/components/ChangeMail.jsx:119
 msgid "New Mail"
 msgstr "Neue Mail"
 
-#: src/components/ChangeMail.jsx:120 src/components/ChangePassword.jsx:149
+#: src/components/ChangeMail.jsx:123 src/components/ChangeName.jsx:92
+#: src/components/ChangePassword.jsx:150
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: src/components/ChangePassword.jsx:18
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Passwörter stimmen nicht überein."
 
 #: src/components/ChangePassword.jsx:103
 msgid "Changed Password successfully."
-msgstr "Passwort erfolgreich geändert"
+msgstr "Passwort erfolgreich geändert."
 
-#: src/components/ChangePassword.jsx:128
+#: src/components/ChangePassword.jsx:129
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: src/components/ChangePassword.jsx:136
+#: src/components/ChangePassword.jsx:137
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: src/components/ChangePassword.jsx:145
+#: src/components/ChangePassword.jsx:146
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
 
-#: src/components/SocialSettings.jsx:39
-msgid "Block all Private Messages"
-msgstr ""
+#: src/components/ChangeName.jsx:88
+msgid "New Username"
+msgstr "Neuer Name"
 
-#: src/components/SocialSettings.jsx:57
-msgid "Unblock Users"
-msgstr ""
+#: src/components/UserMessages.jsx:41
+msgid "A new verification mail is getting sent to you."
+msgstr "Eine neue Bestätigungsmail wurde gesendet."
 
-#: src/components/SocialSettings.jsx:81
-msgid "You have no users blocked"
+#: src/components/UserMessages.jsx:75
+msgid "You successfully linked your mc account."
+msgstr "Minecraft Konto wurde erfolgreich verknüpft."
+
+#: src/components/UserMessages.jsx:76
+msgid "You denied."
+msgstr "Abgelehnt."
+
+#: src/components/UserMessages.jsx:94
+msgid ""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
 msgstr ""
+"Bitte bestätige deine E-Mail Adresse oder dein Konto könnte nach einigen "
+"Tagen gelöscht werden."
+
+#: src/components/UserMessages.jsx:111
+msgid "Click here to request a new verification mail."
+msgstr "Klicke hier um eine neue Bestätigungsmail zu beantragen."
+
+#: src/components/UserMessages.jsx:120
+#, javascript-format
+msgid "You requested to link your mc account ${ minecraftname }."
+msgstr "Anfrage um das Minecraft Konto ${ minecraftname } zu verknüpfen."
+
+#: src/components/UserMessages.jsx:140
+msgid "Accept"
+msgstr "Annehmen"
+
+#: src/components/UserMessages.jsx:150
+msgid "Deny"
+msgstr "Ablehnen"
 
 #: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:125
 msgctxt "keybinds"
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:132
 msgctxt "keybinds"
 msgid "X"
-msgstr ""
+msgstr "X"
 
 #: src/components/SettingsModal.jsx:140
 msgctxt "keybinds"
 msgid "M"
-msgstr ""
+msgstr "M"
 
 #: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:182
 msgctxt "keybinds"
 msgid "H"
-msgstr ""
+msgstr "H"
 
 #: src/components/HelpModal.jsx:18
 msgctxt "keybinds"
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #: src/components/HelpModal.jsx:19
 msgctxt "keybinds"
 msgid "Q"
-msgstr ""
+msgstr "Q"
 
 #: src/components/HelpModal.jsx:20
 msgctxt "keybinds"
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #: src/components/HelpModal.jsx:21
 msgctxt "keybinds"
 msgid "W"
-msgstr ""
+msgstr "W"
 
 #: src/components/HelpModal.jsx:22
 msgctxt "keybinds"
 msgid "A"
-msgstr ""
+msgstr "A"
 
 #: src/components/HelpModal.jsx:23
 msgctxt "keybinds"
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: src/components/HelpModal.jsx:24
 msgctxt "keybinds"
 msgid "D"
-msgstr ""
+msgstr "D"
 
 #: src/components/HelpModal.jsx:31
 msgctxt "keybinds"
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #: src/components/HelpModal.jsx:32
 msgctxt "keybinds"
 msgid "C"
-msgstr ""
+msgstr "C"
+
+#~ msgid "Error: ${ error }"
+#~ msgstr "Fehler: ${ error }"
+
+#~ msgid "Pixel gesetzt"
+#~ msgstr "Pixel plaziert"

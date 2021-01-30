@@ -108,7 +108,10 @@ export default (passport) => {
     if (err) {
       const host = getHostFromRequest(req);
       logger.info(`Authentification error ${err}`);
-      const index = getHtml('OAuth Authentification', err.message, host);
+      const index = getHtml(
+        'OAuth Authentification',
+        err.message, host, req.lang,
+      );
       res.status(400).send(index);
     } else {
       next();

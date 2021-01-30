@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { t } from 'ttag';
 import { validateName, parseAPIresponse } from '../utils/validation';
 
 
@@ -77,19 +78,20 @@ class ChangeName extends React.Component {
       <div className="inarea">
         <form onSubmit={this.handleSubmit}>
           {errors.map((error) => (
-            <p key={error} className="errormessage">Error: {error}</p>
+            <p key={error} className="errormessage">
+              <span>{t`Error`}</span>:&nbsp;{error}</p>
           ))}
           <input
             value={name}
             onChange={(evt) => this.setState({ name: evt.target.value })}
             type="text"
-            placeholder="New Username"
+            placeholder={t`New Username`}
           />
           <br />
           <button type="submit">
-            {(submitting) ? '...' : 'Save'}
+            {(submitting) ? '...' : t`Save`}
           </button>
-          <button type="button" onClick={done}>Cancel</button>
+          <button type="button" onClick={done}>{t`Cancel`}</button>
         </form>
       </div>
     );

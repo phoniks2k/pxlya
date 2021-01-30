@@ -128,30 +128,12 @@ msgid "User online"
 msgstr ""
 
 #: src/components/OnlineBox.jsx:25
-msgid "Pixel gesetzt"
+msgid "Pixels placed"
 msgstr ""
 
 #: src/components/Converter.jsx:609
 #: src/components/CoordinatesBox.jsx:26
 msgid "Copy to Clipboard"
-msgstr ""
-
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr ""
-
-#: src/components/LogInButton.jsx:20
-#: src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr ""
-
-#: src/components/SettingsButton.jsx:20
-#: src/components/SettingsModal.jsx:267
-msgid "Settings"
-msgstr ""
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
 msgstr ""
 
 #: src/components/Chat.jsx:143
@@ -172,6 +154,24 @@ msgstr ""
 
 #: src/components/Chat.jsx:220
 msgid "You must be logged in to chat"
+msgstr ""
+
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr ""
+
+#: src/components/LogInButton.jsx:20
+#: src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr ""
+
+#: src/components/SettingsButton.jsx:20
+#: src/components/SettingsModal.jsx:267
+msgid "Settings"
+msgstr ""
+
+#: src/components/HelpButton.jsx:20
+msgid "Help"
 msgstr ""
 
 #: src/components/GlobeButton.jsx:31
@@ -497,7 +497,7 @@ msgid "Login to access more features and stats."
 msgstr ""
 
 #: src/components/UserAreaModal.jsx:35
-msgid "Login with Mail:"
+msgid "Login with Name or Mail:"
 msgstr ""
 
 #: src/components/UserAreaModal.jsx:42
@@ -600,19 +600,41 @@ msgstr ""
 msgid "Archive"
 msgstr ""
 
+#: src/components/ChangeMail.jsx:104
+#: src/components/ChangeName.jsx:82
+#: src/components/ChangePassword.jsx:120
+#: src/components/DeleteAccount.jsx:82
+#: src/components/LogInForm.jsx:97
+#: src/components/NewPasswordForm.jsx:93
+#: src/components/SignUpForm.jsx:118
+msgid "Error"
+msgstr ""
+
 #: src/components/LogInForm.jsx:104
 msgid "Name or Email"
 msgstr ""
 
-#: src/components/ChangeMail.jsx:109
-#: src/components/DeleteAccount.jsx:88
+#: src/components/ChangeMail.jsx:112
+#: src/components/DeleteAccount.jsx:89
 #: src/components/LogInForm.jsx:111
-#: src/components/SignUpForm.jsx:139
+#: src/components/SignUpForm.jsx:140
 msgid "Password"
 msgstr ""
 
 #: src/components/LogInForm.jsx:115
 msgid "LogIn"
+msgstr ""
+
+#: src/components/Rankings.jsx:37
+msgid "Total"
+msgstr ""
+
+#: src/components/Rankings.jsx:45
+msgid "Daily"
+msgstr ""
+
+#: src/components/Rankings.jsx:49
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
 #: src/components/UserArea.jsx:57
@@ -660,16 +682,40 @@ msgstr ""
 msgid "Social Settings"
 msgstr ""
 
-#: src/components/Rankings.jsx:37
-msgid "Total"
+#: src/components/SignUpForm.jsx:126
+msgid "Name"
 msgstr ""
 
-#: src/components/Rankings.jsx:45
-msgid "Daily"
+#: src/components/NewPasswordForm.jsx:100
+#: src/components/SignUpForm.jsx:133
+msgid "Email"
 msgstr ""
 
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+#: src/components/SignUpForm.jsx:149
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/Admintools.jsx:306
+#: src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461
+#: src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589
+#: src/components/NewPasswordForm.jsx:104
+#: src/components/SignUpForm.jsx:152
+msgid "Submit"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:125
+#: src/components/ChangeName.jsx:94
+#: src/components/ChangePassword.jsx:152
+#: src/components/DeleteAccount.jsx:95
+#: src/components/NewPasswordForm.jsx:106
+#: src/components/SignUpForm.jsx:158
+msgid "Cancel"
+msgstr ""
+
+#: src/components/NewPasswordForm.jsx:83
+msgid "Sent you a mail with instructions to reset your password."
 msgstr ""
 
 #: src/components/CanvasItem.jsx:46
@@ -699,108 +745,6 @@ msgstr ""
 
 #: src/components/CanvasItem.jsx:64
 msgid "Dimensions"
-msgstr ""
-
-#: src/components/Admintools.jsx:179
-msgid "Build image on canvas."
-msgstr ""
-
-#: src/components/Admintools.jsx:182
-msgid "Build image and set it to protected."
-msgstr ""
-
-#: src/components/Admintools.jsx:185
-msgid "Build image, but reset cooldown to unset-pixel cd."
-msgstr ""
-
-#: src/components/Admintools.jsx:248
-msgid "Image Upload"
-msgstr ""
-
-#: src/components/Admintools.jsx:249
-msgid "Upload images to canvas"
-msgstr ""
-
-#: src/components/Admintools.jsx:251
-msgid "File"
-msgstr ""
-
-#: src/components/Admintools.jsx:271
-msgid "Coordinates in X_Y format:"
-msgstr ""
-
-#: src/components/Admintools.jsx:306
-#: src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461
-#: src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589
-#: src/components/SignUpForm.jsx:151
-msgid "Submit"
-msgstr ""
-
-#: src/components/Admintools.jsx:311
-msgid "Pixel Protection"
-msgstr ""
-
-#: src/components/Admintools.jsx:313
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-
-#: src/components/Admintools.jsx:392
-msgid "Rollback to Date"
-msgstr ""
-
-#: src/components/Admintools.jsx:394
-msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
-msgstr ""
-
-#: src/components/Admintools.jsx:468
-msgid "IP Actions"
-msgstr ""
-
-#: src/components/Admintools.jsx:470
-msgid "Do stuff with IPs (one IP per line)"
-msgstr ""
-
-#: src/components/Admintools.jsx:510
-msgid "Manage Moderators"
-msgstr ""
-
-#: src/components/Admintools.jsx:512
-msgid "Remove Moderator"
-msgstr ""
-
-#: src/components/Admintools.jsx:544
-msgid "There are no mods"
-msgstr ""
-
-#: src/components/Admintools.jsx:549
-msgid "Assign new Mod"
-msgstr ""
-
-#: src/components/Admintools.jsx:552
-msgid "Enter UserName of new Mod"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:125
-msgid "Name"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:132
-msgid "Email"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:148
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:122
-#: src/components/ChangePassword.jsx:151
-#: src/components/DeleteAccount.jsx:94
-#: src/components/SignUpForm.jsx:157
-msgid "Cancel"
 msgstr ""
 
 #: src/components/Converter.jsx:274
@@ -874,95 +818,142 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
-#: src/utils/validation.js:15
-msgid "Email can't be empty."
+#: src/components/Admintools.jsx:179
+msgid "Build image on canvas."
 msgstr ""
 
-#: src/utils/validation.js:16
-msgid "Email should be at least 5 characters long."
+#: src/components/Admintools.jsx:182
+msgid "Build image and set it to protected."
 msgstr ""
 
-#: src/utils/validation.js:17
-msgid "Email can't be longer than 40 characters."
+#: src/components/Admintools.jsx:185
+msgid "Build image, but reset cooldown to unset-pixel cd."
+msgstr ""
+
+#: src/components/Admintools.jsx:248
+msgid "Image Upload"
+msgstr ""
+
+#: src/components/Admintools.jsx:249
+msgid "Upload images to canvas"
+msgstr ""
+
+#: src/components/Admintools.jsx:251
+msgid "File"
+msgstr ""
+
+#: src/components/Admintools.jsx:271
+msgid "Coordinates in X_Y format:"
+msgstr ""
+
+#: src/components/Admintools.jsx:311
+msgid "Pixel Protection"
+msgstr ""
+
+#: src/components/Admintools.jsx:313
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+msgstr ""
+
+#: src/components/Admintools.jsx:392
+msgid "Rollback to Date"
+msgstr ""
+
+#: src/components/Admintools.jsx:394
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr ""
+
+#: src/components/Admintools.jsx:468
+msgid "IP Actions"
+msgstr ""
+
+#: src/components/Admintools.jsx:470
+msgid "Do stuff with IPs (one IP per line)"
+msgstr ""
+
+#: src/components/Admintools.jsx:510
+msgid "Manage Moderators"
+msgstr ""
+
+#: src/components/Admintools.jsx:512
+msgid "Remove Moderator"
+msgstr ""
+
+#: src/components/Admintools.jsx:544
+msgid "There are no mods"
+msgstr ""
+
+#: src/components/Admintools.jsx:549
+msgid "Assign new Mod"
+msgstr ""
+
+#: src/components/Admintools.jsx:552
+msgid "Enter UserName of new Mod"
+msgstr ""
+
+#: src/components/Admintools.jsx:561
+msgid "User Name"
 msgstr ""
 
 #: src/utils/validation.js:18
-msgid "Email should at least contain a dot"
+msgid "Email can't be empty."
+msgstr ""
+
+#: src/utils/validation.js:19
+msgid "Email should be at least 5 characters long."
 msgstr ""
 
 #: src/utils/validation.js:20
+msgid "Email can't be longer than 40 characters."
+msgstr ""
+
+#: src/utils/validation.js:21
+msgid "Email should at least contain a dot"
+msgstr ""
+
+#: src/utils/validation.js:23
 msgid "Email should contain a @"
 msgstr ""
 
-#: src/utils/validation.js:27
+#: src/utils/validation.js:30
 msgid "Name can't be empty."
 msgstr ""
 
-#: src/utils/validation.js:28
+#: src/utils/validation.js:31
 msgid "Name must be at least 4 characters long"
 msgstr ""
 
-#: src/utils/validation.js:29
+#: src/utils/validation.js:32
 msgid "Name must be shorter than 26 characters"
 msgstr ""
 
-#: src/utils/validation.js:36
+#: src/utils/validation.js:39
 msgid "Name contains invalid character like @, /, \\ or #"
 msgstr ""
 
-#: src/utils/validation.js:51
+#: src/utils/validation.js:54
+msgid "No password given."
+msgstr ""
+
+#: src/utils/validation.js:57
 msgid "Password must be at least 6 characters long."
 msgstr ""
 
-#: src/utils/validation.js:54
+#: src/utils/validation.js:60
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/utils/validation.js:68
+#: src/utils/validation.js:74
 msgid "Could not connect to server, please try again later :("
 msgstr ""
 
-#: src/utils/validation.js:74
+#: src/utils/validation.js:80
 msgid "I think we experienced some error :("
 msgstr ""
 
-#: src/components/DeleteAccount.jsx:92
+#: src/components/DeleteAccount.jsx:93
 msgid "Yes, Delete My Account!"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:89
-msgid ""
-"Changed Mail successfully. We sent you a verification mail,               "
-"please verify your new mail adress."
-msgstr ""
-
-#: src/components/ChangeMail.jsx:116
-msgid "New Mail"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:120
-#: src/components/ChangePassword.jsx:149
-msgid "Save"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:18
-msgid "Passwords do not match."
-msgstr ""
-
-#: src/components/ChangePassword.jsx:103
-msgid "Changed Password successfully."
-msgstr ""
-
-#: src/components/ChangePassword.jsx:128
-msgid "Old Password"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:136
-msgid "New Password"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:145
-msgid "Confirm New Password"
 msgstr ""
 
 #: src/components/SocialSettings.jsx:39
@@ -975,6 +966,81 @@ msgstr ""
 
 #: src/components/SocialSettings.jsx:81
 msgid "You have no users blocked"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:89
+msgid ""
+"Changed Mail successfully. We sent you a verification mail,               "
+"please verify your new mail adress."
+msgstr ""
+
+#: src/components/ChangeMail.jsx:119
+msgid "New Mail"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:123
+#: src/components/ChangeName.jsx:92
+#: src/components/ChangePassword.jsx:150
+msgid "Save"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:18
+msgid "Passwords do not match."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:103
+msgid "Changed Password successfully."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:129
+msgid "Old Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:137
+msgid "New Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:146
+msgid "Confirm New Password"
+msgstr ""
+
+#: src/components/ChangeName.jsx:88
+msgid "New Username"
+msgstr ""
+
+#: src/components/UserMessages.jsx:41
+msgid "A new verification mail is getting sent to you."
+msgstr ""
+
+#: src/components/UserMessages.jsx:75
+msgid "You successfully linked your mc account."
+msgstr ""
+
+#: src/components/UserMessages.jsx:76
+msgid "You denied."
+msgstr ""
+
+#: src/components/UserMessages.jsx:94
+msgid ""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
+msgstr ""
+
+#: src/components/UserMessages.jsx:111
+msgid "Click here to request a new verification mail."
+msgstr ""
+
+#: src/components/UserMessages.jsx:120
+#, javascript-format
+msgid "You requested to link your mc account ${ minecraftname }."
+msgstr ""
+
+#: src/components/UserMessages.jsx:140
+msgid "Accept"
+msgstr ""
+
+#: src/components/UserMessages.jsx:150
+msgid "Deny"
 msgstr ""
 
 #: src/components/HelpModal.jsx:15

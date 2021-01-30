@@ -16,7 +16,7 @@ function validate(email, password, gettext) {
 
   const passerror = gettext(validatePassword(password));
   if (passerror) errors.push(passerror);
-  const mailerror = validateEMail(email);
+  const mailerror = gettext(validateEMail(email));
   if (mailerror) errors.push(mailerror);
 
   return errors;

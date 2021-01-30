@@ -12,6 +12,8 @@ import mailProvider from '../../../core/mail';
 
 export default async (req: Request, res: Response) => {
   const { token } = req.query;
+  const { lang } = req;
+  const { t } = req.ttag;
   const name = await mailProvider.verify(token);
   const host = getHostFromRequest(req);
   if (name) {
@@ -19,11 +21,15 @@ export default async (req: Request, res: Response) => {
     // thats a bit counter productive because it directly links to the websocket
     webSockets.notifyChangedMe(name);
     // ---
-    const index = getHtml('Mail verification', 'You are now verified :)', host);
+    const index = getHtml(
+      t`Mail verification`,
+      t`You are now verified :)`,
+      host, lang,
+    );
     res.status(200).send(index);
   } else {
     // eslint-disable-next-line max-len
-    const index = getHtml('Mail verification', 'Your mail verification code is invalid or already expired :(, please request a new one.', host);
+    const index = getHtml(t`Mail verification`, t`Your mail verification code is invalid or already expired :(, please request a new one.`, host, lang);
     res.status(400).send(index);
   }
 };

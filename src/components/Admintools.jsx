@@ -558,7 +558,7 @@ function Admintools({
                 maxWidth: '20em',
               }}
               type="text"
-              placeholder="User Name"
+              placeholder={t`User Name`}
               onChange={(evt) => {
                 const co = evt.target.value.trim();
                 selectModName(co);

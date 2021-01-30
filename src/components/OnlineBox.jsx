@@ -22,7 +22,7 @@ const OnlineBox = ({ online, totalPixels, name }) => (
             && <span title={t`User online`}>{online} <FaUser />&nbsp;</span>}
           {(name != null)
               && (
-              <span title={t`Pixel gesetzt`}>
+              <span title={t`Pixels placed`}>
                 {numberToString(totalPixels)} <FaPaintBrush />
               </span>
               )}

@@ -3,6 +3,7 @@
  * @flow
  */
 import React from 'react';
+import { t } from 'ttag';
 import { validateEMail, parseAPIresponse } from '../utils/validation';
 
 function validate(email) {
@@ -79,7 +80,7 @@ class NewPasswordForm extends React.Component {
       return (
         <div>
           <p className="modalmessage">
-            Sent you a mail with instructions to reset your password.
+            {t`Sent you a mail with instructions to reset your password.`}
           </p>
           <button type="button" onClick={back}>Back</button>
         </div>
@@ -89,20 +90,20 @@ class NewPasswordForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {errors.map((error) => (
-          <p key={error}>Error: {error}</p>
+          <p key={error}><span>{t`Error`}</span>:&nbsp;{error}</p>
         ))}
         <input
           style={inputStyles}
           value={email}
           onChange={(evt) => this.setState({ email: evt.target.value })}
           type="text"
-          placeholder="Email"
+          placeholder={t`Email`}
         />
         <br />
         <button type="submit">
-          {(submitting) ? '...' : 'Submit'}
+          {(submitting) ? '...' : t`Submit`}
         </button>
-        <button type="button" onClick={back}>Cancel</button>
+        <button type="button" onClick={back}>{t`Cancel`}</button>
       </form>
     );
   }

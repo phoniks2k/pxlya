@@ -18,9 +18,9 @@ import {
   validatePassword,
 } from '../../../utils/validation';
 
-async function validate(email, name, password, gettext) {
+async function validate(email, name, password, t, gettext) {
   const errors = [];
-  const emailerror = validateEMail(email);
+  const emailerror = gettext(validateEMail(email));
   if (emailerror) errors.push(emailerror);
   const nameerror = validateName(name);
   if (nameerror) errors.push(nameerror);
@@ -28,9 +28,9 @@ async function validate(email, name, password, gettext) {
   if (passworderror) errors.push(passworderror);
 
   let reguser = await RegUser.findOne({ where: { email } });
-  if (reguser) errors.push('E-Mail already in use.');
+  if (reguser) errors.push(t`E-Mail already in use.`);
   reguser = await RegUser.findOne({ where: { name } });
-  if (reguser) errors.push('Username already in use.');
+  if (reguser) errors.push(t`Username already in use.`);
 
   return errors;
 }
@@ -38,7 +38,7 @@ async function validate(email, name, password, gettext) {
 export default async (req: Request, res: Response) => {
   const { email, name, password } = req.body;
   const { t, gettext } = req.ttag;
-  const errors = await validate(email, name, password, gettext);
+  const errors = await validate(email, name, password, t, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({

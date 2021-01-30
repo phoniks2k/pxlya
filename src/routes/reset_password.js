@@ -54,12 +54,14 @@ router.use(expressTTag);
  */
 router.post('/', async (req: Request, res: Response) => {
   const { pass, passconf, code } = req.body;
+  const { lang } = req;
   const { t } = req.ttag;
 
   if (!pass || !passconf || !code) {
     const html = getPasswordResetHtml(
       null,
       null,
+      lang,
       t`You sent an empty password or invalid data :(`,
     );
     res.status(400).send(html);
@@ -71,6 +73,7 @@ router.post('/', async (req: Request, res: Response) => {
     const html = getPasswordResetHtml(
       null,
       null,
+      lang,
       t`This password-reset link isn't valid anymore :(`,
     );
     res.status(401).send(html);
@@ -81,6 +84,7 @@ router.post('/', async (req: Request, res: Response) => {
     const html = getPasswordResetHtml(
       null,
       null,
+      lang,
       t`Your passwords do not match :(`,
     );
     res.status(400).send(html);
@@ -95,6 +99,7 @@ router.post('/', async (req: Request, res: Response) => {
     const html = getPasswordResetHtml(
       null,
       null,
+      lang,
       t`User doesn't exist in our database :(`,
     );
     res.status(400).send(html);
@@ -106,6 +111,7 @@ router.post('/', async (req: Request, res: Response) => {
   const html = getPasswordResetHtml(
     null,
     null,
+    lang,
     t`Passowrd successfully changed.`,
   );
   res.status(200).send(html);
@@ -117,12 +123,14 @@ router.post('/', async (req: Request, res: Response) => {
  */
 router.get('/', async (req: Request, res: Response) => {
   const { token } = req.query;
+  const { lang } = req;
   const { t } = req.ttag;
 
   if (!token) {
     const html = getPasswordResetHtml(
       null,
       null,
+      lang,
       t`Invalid url :( Please check your mail again.`,
     );
     res.status(400).send(html);
@@ -134,6 +142,7 @@ router.get('/', async (req: Request, res: Response) => {
     const html = getPasswordResetHtml(
       null,
       null,
+      lang,
       // eslint-disable-next-line max-len
       t`This passwort reset link is wrong or already expired, please request a new one (Note: you can use those links just once)`,
     );

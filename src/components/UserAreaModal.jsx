@@ -32,7 +32,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
     <p className="modaltext">
       {t`Login to access more features and stats.`}
     </p><br />
-    <h2>{t`Login with Mail:`}</h2>
+    <h2>{t`Login with Name or Mail:`}</h2>
     <LogInForm me={me} />
     <p
       className="modallink"

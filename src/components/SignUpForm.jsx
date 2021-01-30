@@ -115,7 +115,8 @@ class SignUpForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {errors.map((error) => (
-          <p key={error} className="errormessage">Error: {error}</p>
+          <p key={error} className="errormessage"><span>{t`Error`}</span>
+            :&nbsp;{error}</p>
         ))}
         <input
           style={inputStyles}

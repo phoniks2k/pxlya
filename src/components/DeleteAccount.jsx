@@ -79,7 +79,8 @@ class DeleteAccount extends React.Component {
       <div className="inarea" style={{ backgroundColor: '#ff6666' }}>
         <form onSubmit={this.handleSubmit}>
           {errors.map((error) => (
-            <p key={error} className="errormessage">Error: {error}</p>
+            <p key={error} className="errormessage"><span>{t`Error`}</span>
+              :&nbsp;{error}</p>
           ))}
           <input
             value={password}

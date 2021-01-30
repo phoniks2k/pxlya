@@ -9,7 +9,7 @@
  * @flow
  */
 
-import { t } from 'ttag/dist/mock';
+import { t } from 'ttag';
 
 // eslint-disable-next-line no-useless-escape, max-len
 const mailTester = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;

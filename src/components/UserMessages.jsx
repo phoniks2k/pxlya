@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
+import { t } from 'ttag';
 
 import { parseAPIresponse } from '../utils/validation';
 import { setMinecraftName, remFromMessages } from '../actions';
@@ -37,7 +38,7 @@ class UserMessages extends React.Component {
     const { errors } = await parseAPIresponse(response);
     const verifyAnswer = (errors)
       ? errors[0]
-      : 'A new verification mail is getting sent to you.';
+      : t`A new verification mail is getting sent to you.`;
     this.setState({
       verifyAnswer,
     });
@@ -71,8 +72,8 @@ class UserMessages extends React.Component {
     remFromUserMessages('not_mc_verified');
     this.setState({
       linkAnswer: (accepted)
-        ? 'You successfully linked your mc account.'
-        : 'You denied.',
+        ? t`You successfully linked your mc account.`
+        : t`You denied.`,
     });
   }
 
@@ -90,8 +91,8 @@ class UserMessages extends React.Component {
           && messages.splice(messages.indexOf('not_verified'), 1))
           ? (
             <p className="usermessages">
-              Please verify your mail address&nbsp;
-              or your account could get deleted after a few days.&nbsp;
+              {t`Please verify your mail address&nbsp;
+              or your account could get deleted after a few days.`}&nbsp;
               {(verifyAnswer)
                 ? (
                   <span
@@ -107,7 +108,7 @@ class UserMessages extends React.Component {
                     className="modallink"
                     onClick={this.submitResendVerify}
                   >
-                    Click here to request a new verification mail.
+                    {t`Click here to request a new verification mail.`}
                   </span>
                 )}
             </p>
@@ -116,7 +117,7 @@ class UserMessages extends React.Component {
           && messages.splice(messages.indexOf('not_mc_verified'), 1))
           ? (
             <p className="usermessages">
-              You requested to link your mc account {minecraftname}.
+              {t`You requested to link your mc account ${minecraftname}.`}
               &nbsp;
               {(linkAnswer)
                 ? (
@@ -136,7 +137,7 @@ class UserMessages extends React.Component {
                         this.submitMcLink(true);
                       }}
                     >
-                      Accept
+                      {t`Accept`}
                     </span>&nbsp;or&nbsp;
                     <span
                       role="button"
@@ -146,7 +147,7 @@ class UserMessages extends React.Component {
                         this.submitMcLink(false);
                       }}
                     >
-                      Deny
+                      {t`Deny`}
                     </span>.
                   </span>
                 )}

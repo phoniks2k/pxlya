@@ -3,22 +3,21 @@
  * @flow
  */
 import { TTag } from 'ttag';
-import deLocale from '../../i18n/ssr-de.po';
 import { languageFromLocalisation } from '../utils/location';
 
-const LOCALES = {
-  de: deLocale,
-};
+// eslint-disable-next-line max-len
+const localeImports = require.context('../../i18n', false, /^\.[/\\]ssr-.+\.po$/);
 
 const ttags = {
   default: new TTag(),
 };
 
 (() => {
-  const langs = Object.keys(LOCALES);
-  langs.forEach((lang) => {
+  localeImports.keys().forEach((file) => {
     const ttag = new TTag();
-    ttag.addLocale(lang, LOCALES[lang]);
+    // ./ssr-de.po
+    const lang = file.replace('./ssr-', '').replace('.po', '');
+    ttag.addLocale(lang, localeImports(file).default);
     ttag.useLocale(lang);
     ttags[lang] = ttag;
   });

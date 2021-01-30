@@ -8,6 +8,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 
+import { getTTag } from '../core/ttag';
 import Html from './Html';
 /* this one is set by webpack */
 // eslint-disable-next-line import/no-unresolved
@@ -45,12 +46,13 @@ function generateMainPage(countryCoords: Cell, lang: string): string {
   const scripts = (assets[`client-${lang}`])
     ? assets[`client-${lang}`].js.map((s) => ASSET_SERVER + s)
     : defaultScripts;
+  const { t } = getTTag(lang);
   // eslint-disable-next-line
   const html = ReactDOM.renderToStaticMarkup(
     <Html
-      title="PixelPlanet.fun"
+      title={t`PixelPlanet.fun`}
       // eslint-disable-next-line max-len
-      description="Place color pixels on an map styled canvas with other players online"
+      description={t`Place color pixels on an map styled canvas with other players online`}
       scripts={scripts}
       css={css}
       code={`${code}window.coordx=${x};window.coordy=${y};`}

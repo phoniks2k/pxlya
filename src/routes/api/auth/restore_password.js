@@ -10,9 +10,9 @@ import mailProvider from '../../../core/mail';
 import { validateEMail } from '../../../utils/validation';
 import { getHostFromRequest } from '../../../utils/ip';
 
-async function validate(email) {
+async function validate(email, gettext) {
   const errors = [];
-  const emailerror = validateEMail(email);
+  const emailerror = gettext(validateEMail(email));
   if (emailerror) errors.push(emailerror);
 
   return errors;
@@ -21,8 +21,9 @@ async function validate(email) {
 export default async (req: Request, res: Response) => {
   const ip = req.trueIp;
   const { email } = req.body;
+  const { gettext } = req.ttag;
 
-  const errors = await validate(email);
+  const errors = validate(email, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({

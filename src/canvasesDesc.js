@@ -12,9 +12,18 @@ import ttag from './core/ttag';
 
 function getCanvases(t) {
   /*
-   * add descriptions of canvases here
+   * add descriptions and titles of canvases here
    * Use the t tab and right `backquotes`
    */
+  const canvasTitles = {
+    0: t`Earth`,
+    1: t`Moon`,
+    2: t`3D Canvas`,
+    3: t`Coronavirus`,
+    5: t`PixelZone`,
+    6: t`PixelCanvas`,
+    7: t`1bit`,
+  };
   const canvasDesc = {
     0: t`Our main canvas, a huge map of the world. Place everywhere you like`,
     1: t`Moon canvas. Safe space for art. No flags or large text (unless part of art)`,
@@ -34,6 +43,7 @@ function getCanvases(t) {
   for (let i = 0; i < canvasKeys.length; i += 1) {
     const key = canvasKeys[i];
     localicedCanvases[key].desc = canvasDesc[key] || `Canvas ${key}`;
+    localicedCanvases[key].title = canvasTitles[key] || `Canvas ${key}`;
   }
 
   return localicedCanvases;

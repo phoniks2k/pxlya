@@ -44,7 +44,8 @@
     "cds": 60000,
     "ranked" : true,
     "req": -1,
-    "sd": "2020-01-07"
+    "sd": "2020-01-07",
+    "desc": "Our main canvas, a huge map of the world. Place everywhere you like"
   },
   "1": {
     "ident": "m",
@@ -91,7 +92,8 @@
     "cds": 900000,
     "ranked" : true,
     "req": 20000,
-    "sd": "2020-01-08"
+    "sd": "2020-01-08",
+    "desc": "Moon canvas. Safe space for art. No flags or large text (unless part of art)"
   },
   "2": {
     "ident":"v",
@@ -169,7 +171,8 @@
     "cds": 60000,
     "ranked" : false,
     "req": 0,
-    "sd": "2020-01-08"
+    "sd": "2020-01-08",
+    "desc": "Place Voxels on a 3D canvas with others"
   },
   "3": {
     "ident": "c",
@@ -206,7 +209,8 @@
     "cds": 60000,
     "ranked" : false,
     "req": 0,
-    "sd": "2020-03-15"
+    "sd": "2020-03-15",
+    "desc": "Special canvas to spread awareness of SARS-CoV2"
   },
   "5": {
     "ident": "y",
@@ -237,7 +241,8 @@
     "cds": 4000,
     "ranked": false,
     "req": -1,
-    "sd": "2020-07-05"
+    "sd": "2020-07-05",
+    "desc": "Mirror of PixelZone"
   },
   "6": {
     "ident": "z",
@@ -268,7 +273,8 @@
     "cds": 10000,
     "ranked": false,
     "req": -1,
-    "sd": "2020-07-05"
+    "sd": "2020-07-05",
+    "desc": "Mirror of PixelCanvas"
   },
   "7": {
     "ident": "w",
@@ -287,6 +293,7 @@
     "cds": 1000000,
     "ranked": true,
     "req": 5000,
-    "sd": "2020-11-09"
+    "sd": "2020-11-09",
+    "desc": "Black and White canvas"
   }
 }
