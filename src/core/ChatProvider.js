@@ -15,9 +15,8 @@ export class ChatProvider {
   constructor() {
     this.defaultChannels = {};
     this.langChannels = {};
-    this.langChannelIds = [];
     this.enChannelId = 0;
-    this.intChannelId = 0;
+    this.intChannel = {};
     this.infoUserId = 1;
     this.eventUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
@@ -62,17 +61,20 @@ export class ChatProvider {
         },
       });
       const { id, type, lastTs } = channel[0];
-      if (name === 'int') {
-        this.intChannelId = id;
-      }
       if (name === 'en') {
         this.enChannelId = id;
       }
-      this.defaultChannels[id] = [
-        name,
-        type,
-        lastTs,
-      ];
+      if (name === 'int') {
+        this.intChannel = {
+          [id]: [name, type, lastTs],
+        };
+      } else {
+        this.defaultChannels[id] = [
+          name,
+          type,
+          lastTs,
+        ];
+      }
     }
     // find or create non-english lang channels
     const langs = Object.keys(ttags);
@@ -94,7 +96,6 @@ export class ChatProvider {
         type,
         lastTs,
       };
-      this.langChannelIds[id] = name;
     }
     // find or create default users
     let name = INFO_USER_NAME;
@@ -128,17 +129,21 @@ export class ChatProvider {
   }
 
   getDefaultChannels(lang) {
-    const { defaultChannels, langChannels } = this;
-    const langChannel = {};
-    if (lang && lang !== 'default' && langChannels[lang]) {
-      const {
-        id, type, lastTs,
-      } = langChannels[lang];
-      langChannel[id] = [lang, type, lastTs];
+    let langChannel = {};
+    if (lang && lang !== 'default') {
+      const { langChannels } = this;
+      if (langChannels[lang]) {
+        const {
+          id, type, lastTs,
+        } = langChannels[lang];
+        langChannel[id] = [lang, type, lastTs];
+      } else {
+        langChannel = this.intChannel;
+      }
     }
     return {
       ...langChannel,
-      ...defaultChannels,
+      ...this.defaultChannels,
     };
   }
 
@@ -172,8 +177,14 @@ export class ChatProvider {
     if (this.defaultChannels[cid]) {
       return true;
     }
-    if (this.langChannelIds[cid]
-      && this.langChannelIds[cid] === user.lang) {
+    const { lang } = user;
+    if (this.langChannels[lang]
+      && this.langChannels[lang].id === cid) {
+      return true;
+    }
+    if (this.intChannel[cid]
+      && user.lang !== 'default'
+      && !this.langChannels[user.lang]) {
       return true;
     }
     if (user.channels[cid]) {

@@ -39,6 +39,9 @@ export function languageFromLocalisation(localisation) {
   if (i !== -1) {
     lang = lang.slice(0, i);
   }
+  if (lang === 'en') {
+    lang = 'default';
+  }
   return lang;
 }
 
