@@ -32,7 +32,7 @@ export default async function getMe(user, lang = 'default') {
 
   userdata.canvases = getLocalicedCanvases(lang);
   userdata.channels = {
-    ...chatProvider.defaultChannels,
+    ...chatProvider.getDefaultChannels(lang),
     ...userdata.channels,
   };
 

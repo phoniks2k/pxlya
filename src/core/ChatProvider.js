@@ -7,12 +7,14 @@ import RateLimiter from '../utils/RateLimiter';
 import { Channel, RegUser, UserChannel } from '../data/models';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import { cheapDetector } from './isProxy';
+import ttags from './ttag';
 
 import { CHAT_CHANNELS, EVENT_USER_NAME, INFO_USER_NAME } from './constants';
 
 export class ChatProvider {
   constructor() {
     this.defaultChannels = {};
+    this.langChannels = {};
     this.enChannelId = 0;
     this.intChannelId = 0;
     this.infoUserId = 1;
@@ -71,6 +73,28 @@ export class ChatProvider {
         lastTs,
       ];
     }
+    // find or create non-english lang channels
+    const langs = Object.key(ttags);
+    for (let i = 0; i < langs; i += 1) {
+      const name = langs[i];
+      if (name === 'default') {
+        continue;
+      }
+      // eslint-disable-next-line no-await-in-loop
+      const channel = await Channel.findOrCreate({
+        where: { name },
+        defaults: {
+          name,
+        },
+      });
+      const { id, type, lastTs } = channel[0];
+      this.langChannels[name] = {
+        id,
+        name,
+        type,
+        lastTs,
+      };
+    }
     // find or create default users
     let name = INFO_USER_NAME;
     const infoUser = await RegUser.findOrCreate({
@@ -100,6 +124,18 @@ export class ChatProvider {
       raw: true,
     });
     this.eventUserId = eventUser[0].id;
+  }
+
+  getDefaultChannels(lang) {
+    const { defaultChannels, langChannels } = this;
+    const channels = { ...defaultChannels };
+    if (lang && lang !== 'default' && langChannels[lang]) {
+      const {
+        id, name, type, lastTs,
+      } = langChannels[lang];
+      channels[id] = [name, type, lastTs];
+    }
+    return channels;
   }
 
   static async addUserToChannel(
