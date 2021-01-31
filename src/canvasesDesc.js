@@ -54,8 +54,10 @@ const lCanvases = {};
 (() => {
   const langs = Object.keys(ttag);
   langs.forEach((lang) => {
+    console.log(`CANVAS LANGUAGE ${lang}`)
     lCanvases[lang] = getCanvases(ttag[lang].t);
   });
+  console.log(lCanvases)
 })();
 
 export function getLocalicedCanvases(lang) {
