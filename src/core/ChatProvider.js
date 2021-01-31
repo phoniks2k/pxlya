@@ -16,7 +16,6 @@ export class ChatProvider {
     this.defaultChannels = {};
     this.langChannels = {};
     this.enChannelId = 0;
-    this.intChannel = {};
     this.infoUserId = 1;
     this.eventUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
@@ -64,17 +63,11 @@ export class ChatProvider {
       if (name === 'en') {
         this.enChannelId = id;
       }
-      if (name === 'int') {
-        this.intChannel = {
-          [id]: [name, type, lastTs],
-        };
-      } else {
-        this.defaultChannels[id] = [
-          name,
-          type,
-          lastTs,
-        ];
-      }
+      this.defaultChannels[id] = [
+        name,
+        type,
+        lastTs,
+      ];
     }
     // find or create non-english lang channels
     const langs = Object.keys(ttags);
@@ -129,7 +122,7 @@ export class ChatProvider {
   }
 
   getDefaultChannels(lang) {
-    let langChannel = {};
+    const langChannel = {};
     if (lang && lang !== 'default') {
       const { langChannels } = this;
       if (langChannels[lang]) {
@@ -137,8 +130,6 @@ export class ChatProvider {
           id, type, lastTs,
         } = langChannels[lang];
         langChannel[id] = [lang, type, lastTs];
-      } else {
-        langChannel = this.intChannel;
       }
     }
     return {
@@ -177,17 +168,12 @@ export class ChatProvider {
     if (this.defaultChannels[cid]) {
       return true;
     }
+    if (user.channels[cid]) {
+      return true;
+    }
     const { lang } = user;
     if (this.langChannels[lang]
       && this.langChannels[lang].id === cid) {
-      return true;
-    }
-    if (this.intChannel[cid]
-      && user.lang !== 'default'
-      && !this.langChannels[user.lang]) {
-      return true;
-    }
-    if (user.channels[cid]) {
       return true;
     }
     return false;

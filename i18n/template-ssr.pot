@@ -3,57 +3,57 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/core/ChatProvider.js:243
+#: src/core/ChatProvider.js:301
 msgid "You can not send chat messages with proxy"
 msgstr ""
 
-#: src/core/ChatProvider.js:248
+#: src/core/ChatProvider.js:306
 msgid "Couldn't send your message, pls log out and back in again."
 msgstr ""
 
-#: src/core/ChatProvider.js:262
+#: src/core/ChatProvider.js:320
 #, javascript-format
 msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
 msgstr ""
 
-#: src/core/ChatProvider.js:266
+#: src/core/ChatProvider.js:324
 msgid "You don't have access to this channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:282
+#: src/core/ChatProvider.js:340
 msgid "Your mail has to be verified in order to chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:287
+#: src/core/ChatProvider.js:345
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr ""
 
-#: src/core/ChatProvider.js:292
+#: src/core/ChatProvider.js:350
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr ""
 
-#: src/core/ChatProvider.js:294
+#: src/core/ChatProvider.js:352
 msgid "You are muted for another ${ muted } seconds"
 msgstr ""
 
-#: src/core/ChatProvider.js:302
+#: src/core/ChatProvider.js:360
 msgid "Ow no! Spam protection decided to mute you"
 msgstr ""
 
-#: src/core/ChatProvider.js:313
+#: src/core/ChatProvider.js:371
 msgid "You can't send a message this long :("
 msgstr ""
 
-#: src/core/ChatProvider.js:317
+#: src/core/ChatProvider.js:375
 msgid "Please use int channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:321
+#: src/core/ChatProvider.js:379
 msgid "Your country is temporary muted from chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:329
+#: src/core/ChatProvider.js:387
 msgid "Stop flooding."
 msgstr ""
 
@@ -294,6 +294,21 @@ msgstr ""
 msgid "You are not even logged in."
 msgstr ""
 
+#: src/routes/api/auth/verify.js:25
+#: src/routes/api/auth/verify.js:32
+msgid "Mail verification"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:26
+msgid "You are now verified :)"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:32
+msgid ""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
+msgstr ""
+
 #: src/routes/api/auth/register.js:31
 msgid "E-Mail already in use."
 msgstr ""
@@ -308,21 +323,6 @@ msgstr ""
 
 #: src/routes/api/auth/register.js:77
 msgid "Failed to establish session after register :("
-msgstr ""
-
-#: src/routes/api/auth/verify.js:25
-#: src/routes/api/auth/verify.js:32
-msgid "Mail verification"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:26
-msgid "You are now verified :)"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:32
-msgid ""
-"Your mail verification code is invalid or already expired :(, please "
-"request a new one."
 msgstr ""
 
 #: src/ssr-components/RedirectionPage.jsx:20
