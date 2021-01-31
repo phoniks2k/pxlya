@@ -118,9 +118,9 @@ msgstr ""
 msgid "Open Chat"
 msgstr ""
 
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
+#: src/components/Converter.jsx:609
+#: src/components/CoordinatesBox.jsx:26
+msgid "Copy to Clipboard"
 msgstr ""
 
 #: src/components/OnlineBox.jsx:22
@@ -131,9 +131,27 @@ msgstr ""
 msgid "Pixels placed"
 msgstr ""
 
-#: src/components/Converter.jsx:609
-#: src/components/CoordinatesBox.jsx:26
-msgid "Copy to Clipboard"
+#: src/components/CanvasSelectModal.jsx:67
+#: src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
+msgstr ""
+
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr ""
+
+#: src/components/LogInButton.jsx:20
+#: src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr ""
+
+#: src/components/SettingsButton.jsx:20
+#: src/components/SettingsModal.jsx:267
+msgid "Settings"
+msgstr ""
+
+#: src/components/HelpButton.jsx:20
+msgid "Help"
 msgstr ""
 
 #: src/components/Chat.jsx:143
@@ -156,109 +174,28 @@ msgstr ""
 msgid "You must be logged in to chat"
 msgstr ""
 
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
+#: src/components/PalselButton.jsx:25
+msgid "Close Palette"
 msgstr ""
 
-#: src/components/LogInButton.jsx:20
-#: src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr ""
-
-#: src/components/SettingsButton.jsx:20
-#: src/components/SettingsModal.jsx:267
-msgid "Settings"
-msgstr ""
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
+#: src/components/PalselButton.jsx:25
+msgid "Open Palette"
 msgstr ""
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:123
-msgid "Show Grid"
+#: src/components/UserContextMenu.jsx:72
+msgid "Ping"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:124
-msgid "Turn on grid to highlight pixel borders."
+#: src/components/UserContextMenu.jsx:97
+msgid "DM"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:130
-msgid "Show Pixel Activity"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:131
-msgid "Show circles where pixels are placed."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:137
-msgid "Disable Game Sounds"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:139
-msgid "All sound effects will be disabled."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:145
-msgid "Enable chat notifications"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:146
-msgid "Play a sound when new chat messages arrive"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:151
-msgid "Auto Zoom In"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:153
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:158
-msgid "Compact Palette"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:160
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:165
-msgid "Potato Mode"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:166
-msgid "For when you are playing on a potato."
-msgstr ""
-
-#: src/components/Converter.jsx:423
-#: src/components/SettingsModal.jsx:171
-msgid "Light Grid"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:172
-msgid "Show Grid in white instead of black."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:179
-msgid "Historical View"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:180
-msgid "Check out past versions of the canvas."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:188
-msgid "Themes"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:189
-msgid "How pixelplanet should look like."
+#: src/components/UserContextMenu.jsx:107
+msgid "Block"
 msgstr ""
 
 #: src/components/HelpModal.jsx:34
@@ -458,24 +395,87 @@ msgstr ""
 msgid "Mute"
 msgstr ""
 
-#: src/components/UserContextMenu.jsx:72
-msgid "Ping"
+#: src/components/SettingsModal.jsx:123
+msgid "Show Grid"
 msgstr ""
 
-#: src/components/UserContextMenu.jsx:97
-msgid "DM"
+#: src/components/SettingsModal.jsx:124
+msgid "Turn on grid to highlight pixel borders."
 msgstr ""
 
-#: src/components/UserContextMenu.jsx:107
-msgid "Block"
+#: src/components/SettingsModal.jsx:130
+msgid "Show Pixel Activity"
 msgstr ""
 
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
+#: src/components/SettingsModal.jsx:131
+msgid "Show circles where pixels are placed."
 msgstr ""
 
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
+#: src/components/SettingsModal.jsx:137
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:139
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:145
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:146
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:151
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:153
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:158
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:160
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:165
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:166
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/Converter.jsx:423
+#: src/components/SettingsModal.jsx:171
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:172
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:179
+msgid "Historical View"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:180
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:188
+msgid "Themes"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:189
+msgid "How pixelplanet should look like."
 msgstr ""
 
 #: src/components/RegisterModal.jsx:18
@@ -540,18 +540,6 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/components/ForgotPasswordModal.jsx:16
-msgid "Enter your mail adress and we will send you a new password:"
-msgstr ""
-
-#: src/components/ForgotPasswordModal.jsx:37
-msgid "Restore my Password"
-msgstr ""
-
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
-msgstr ""
-
 #: src/components/ArchiveModal.jsx:20
 msgid ""
 "While we tend to not delete canvases, some canvases are started for fun or "
@@ -600,6 +588,18 @@ msgstr ""
 msgid "Archive"
 msgstr ""
 
+#: src/components/ForgotPasswordModal.jsx:16
+msgid "Enter your mail adress and we will send you a new password:"
+msgstr ""
+
+#: src/components/ForgotPasswordModal.jsx:37
+msgid "Restore my Password"
+msgstr ""
+
+#: src/components/ChatModal.jsx:35
+msgid "Chat"
+msgstr ""
+
 #: src/components/ChangeMail.jsx:104
 #: src/components/ChangeName.jsx:82
 #: src/components/ChangePassword.jsx:120
@@ -623,18 +623,6 @@ msgstr ""
 
 #: src/components/LogInForm.jsx:115
 msgid "LogIn"
-msgstr ""
-
-#: src/components/Rankings.jsx:37
-msgid "Total"
-msgstr ""
-
-#: src/components/Rankings.jsx:45
-msgid "Daily"
-msgstr ""
-
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
 #: src/components/UserArea.jsx:57
@@ -682,40 +670,16 @@ msgstr ""
 msgid "Social Settings"
 msgstr ""
 
-#: src/components/SignUpForm.jsx:126
-msgid "Name"
+#: src/components/Rankings.jsx:37
+msgid "Total"
 msgstr ""
 
-#: src/components/NewPasswordForm.jsx:100
-#: src/components/SignUpForm.jsx:133
-msgid "Email"
+#: src/components/Rankings.jsx:45
+msgid "Daily"
 msgstr ""
 
-#: src/components/SignUpForm.jsx:149
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/Admintools.jsx:306
-#: src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461
-#: src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589
-#: src/components/NewPasswordForm.jsx:104
-#: src/components/SignUpForm.jsx:152
-msgid "Submit"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:125
-#: src/components/ChangeName.jsx:94
-#: src/components/ChangePassword.jsx:152
-#: src/components/DeleteAccount.jsx:95
-#: src/components/NewPasswordForm.jsx:106
-#: src/components/SignUpForm.jsx:158
-msgid "Cancel"
-msgstr ""
-
-#: src/components/NewPasswordForm.jsx:83
-msgid "Sent you a mail with instructions to reset your password."
+#: src/components/Rankings.jsx:49
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
 #: src/components/CanvasItem.jsx:46
@@ -747,75 +711,40 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: src/components/Converter.jsx:274
-msgid "Choose Canvas"
+#: src/components/NewPasswordForm.jsx:83
+msgid "Sent you a mail with instructions to reset your password."
 msgstr ""
 
-#: src/components/Converter.jsx:300
-msgid "Palette Download"
+#: src/components/NewPasswordForm.jsx:100
+#: src/components/SignUpForm.jsx:133
+msgid "Email"
 msgstr ""
 
-#: src/components/Converter.jsx:302
-#, javascript-format
-msgid "Palette for ${ gimpLink }"
+#: src/components/Admintools.jsx:306
+#: src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461
+#: src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589
+#: src/components/NewPasswordForm.jsx:104
+#: src/components/SignUpForm.jsx:152
+msgid "Submit"
 msgstr ""
 
-#: src/components/Converter.jsx:320
-#, javascript-format
-msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+#: src/components/ChangeMail.jsx:125
+#: src/components/ChangeName.jsx:94
+#: src/components/ChangePassword.jsx:152
+#: src/components/DeleteAccount.jsx:95
+#: src/components/NewPasswordForm.jsx:106
+#: src/components/SignUpForm.jsx:158
+msgid "Cancel"
 msgstr ""
 
-#: src/components/Converter.jsx:323
-msgid "Image Converter"
+#: src/components/SignUpForm.jsx:126
+msgid "Name"
 msgstr ""
 
-#: src/components/Converter.jsx:324
-msgid "Convert an image to canvas colors"
-msgstr ""
-
-#: src/components/Converter.jsx:335
-msgid "Choose Strategy"
-msgstr ""
-
-#: src/components/Converter.jsx:362
-msgid "Choose Color Mode"
-msgstr ""
-
-#: src/components/Converter.jsx:400
-msgid "Add Grid (uncheck if you need a 1:1 template)"
-msgstr ""
-
-#: src/components/Converter.jsx:425
-#: src/components/Converter.jsx:441
-msgid "Offset"
-msgstr ""
-
-#: src/components/Converter.jsx:471
-msgid "Scale Image"
-msgstr ""
-
-#: src/components/Converter.jsx:483
-msgid "Width"
-msgstr ""
-
-#: src/components/Converter.jsx:513
-msgid "Height"
-msgstr ""
-
-#: src/components/Converter.jsx:551
-msgid "Keep Ratio"
-msgstr ""
-
-#: src/components/Converter.jsx:564
-msgid "Anti Aliasing"
-msgstr ""
-
-#: src/components/Converter.jsx:578
-msgid "Reset"
-msgstr ""
-
-#: src/components/Converter.jsx:597
-msgid "Download Template"
+#: src/components/SignUpForm.jsx:149
+msgid "Confirm Password"
 msgstr ""
 
 #: src/components/Admintools.jsx:179
@@ -896,6 +825,77 @@ msgstr ""
 msgid "User Name"
 msgstr ""
 
+#: src/components/Converter.jsx:274
+msgid "Choose Canvas"
+msgstr ""
+
+#: src/components/Converter.jsx:300
+msgid "Palette Download"
+msgstr ""
+
+#: src/components/Converter.jsx:302
+#, javascript-format
+msgid "Palette for ${ gimpLink }"
+msgstr ""
+
+#: src/components/Converter.jsx:320
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr ""
+
+#: src/components/Converter.jsx:323
+msgid "Image Converter"
+msgstr ""
+
+#: src/components/Converter.jsx:324
+msgid "Convert an image to canvas colors"
+msgstr ""
+
+#: src/components/Converter.jsx:335
+msgid "Choose Strategy"
+msgstr ""
+
+#: src/components/Converter.jsx:362
+msgid "Choose Color Mode"
+msgstr ""
+
+#: src/components/Converter.jsx:400
+msgid "Add Grid (uncheck if you need a 1:1 template)"
+msgstr ""
+
+#: src/components/Converter.jsx:425
+#: src/components/Converter.jsx:441
+msgid "Offset"
+msgstr ""
+
+#: src/components/Converter.jsx:471
+msgid "Scale Image"
+msgstr ""
+
+#: src/components/Converter.jsx:483
+msgid "Width"
+msgstr ""
+
+#: src/components/Converter.jsx:513
+msgid "Height"
+msgstr ""
+
+#: src/components/Converter.jsx:551
+msgid "Keep Ratio"
+msgstr ""
+
+#: src/components/Converter.jsx:564
+msgid "Anti Aliasing"
+msgstr ""
+
+#: src/components/Converter.jsx:578
+msgid "Reset"
+msgstr ""
+
+#: src/components/Converter.jsx:597
+msgid "Download Template"
+msgstr ""
+
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
 msgstr ""
@@ -952,10 +952,6 @@ msgstr ""
 msgid "I think we experienced some error :("
 msgstr ""
 
-#: src/components/DeleteAccount.jsx:93
-msgid "Yes, Delete My Account!"
-msgstr ""
-
 #: src/components/SocialSettings.jsx:39
 msgid "Block all Private Messages"
 msgstr ""
@@ -1004,8 +1000,8 @@ msgstr ""
 msgid "Confirm New Password"
 msgstr ""
 
-#: src/components/ChangeName.jsx:88
-msgid "New Username"
+#: src/components/DeleteAccount.jsx:93
+msgid "Yes, Delete My Account!"
 msgstr ""
 
 #: src/components/UserMessages.jsx:41
@@ -1043,6 +1039,10 @@ msgstr ""
 msgid "Deny"
 msgstr ""
 
+#: src/components/ChangeName.jsx:88
+msgid "New Username"
+msgstr ""
+
 #: src/components/HelpModal.jsx:15
 #: src/components/SettingsModal.jsx:125
 msgctxt "keybinds"
@@ -1053,11 +1053,6 @@ msgstr ""
 #: src/components/SettingsModal.jsx:132
 msgctxt "keybinds"
 msgid "X"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:140
-msgctxt "keybinds"
-msgid "M"
 msgstr ""
 
 #: src/components/HelpModal.jsx:17
@@ -1109,4 +1104,9 @@ msgstr ""
 #: src/components/HelpModal.jsx:32
 msgctxt "keybinds"
 msgid "C"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:140
+msgctxt "keybinds"
+msgid "M"
 msgstr ""

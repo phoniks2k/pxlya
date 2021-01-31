@@ -7,6 +7,8 @@ Official  repository of [pixelplanet.fun](http://www.pixelplanet.fun).
 
 ![videothumb](promotion/videothumb.gif)
 
+> **TRANSLATORS NEEDED** If you want to help us translate pixelplanet.fun, look into [i18n](./i18n)
+
 Just to the 2nd anniversary of r/space, pixelplanet takes pixelgames to a new level. Place pixels, create pixelart and fight faction wars on pixelplanet.fun.
 Pixelplanet is a 65k x 65k large canvas that is a map of the world and can also be seen as 3d globe, you can place pixels where ever you want, build an island, take over another country with a flag or just create pixelart.
 30 well chosen colors (decided by polls within the community) are available and you can place a pixel every 3s on an empty space, and 5s on an already set pixel. But pixels can be stacked up to a minute, so you don't have to wait every time.
@@ -23,6 +25,7 @@ Click or tab: Place Pixel
 ## Build
 ### Requirements
 - [nodejs environment](https://nodejs.org/en/)
+- Linux or WSL if you want to be safe (we do not build on Windows and therefor can't guarantee that it will work there)
 
 ### Building
 Checkout repository
@@ -122,7 +125,7 @@ Notes:
 - The HTML for SocialMedia logins is in src/componets/UserAreaModal.js , delete stuff from there if you don't need it
 - The HTML for the Help Screen is in src/components/HelpModal.js
 
-Canvas specific configuartion like colors and cooldown is in `canvases.json` for all canvases.
+Canvas specific configuartion like colors and cooldown is in `canvases.json` for all canvases. The titles and descriptions of the canvases are also in `src/canvasesDesc.js` for translation reasons. Changing them requires a rebuild.
 Meaning of some values:
 
 | Key    | Description                                       |
@@ -206,15 +209,6 @@ Wants=network-online.target
 After=network.target mysql.service redis.service
 ```
 
-### Development
-
-Run `npm run lint:src` to check for code errors and warnings or `npm run lint -- ./your/file.js` to check a single file.
-Please do not produce too many additional warnings.
-
-You can use `npm run babel-node ./your/script.js` to execute a script with local babel.
-
-`npm run upgrade` can be use for interactively upgrading npm packages.
-
 ## Backups and Historical View
 
 PixelPlanet includes a backup script that creates full canvas backups daily in the form of PNG tile files and incremential backups all 15min (or whatever you define) that saves PNG tiles with just the differences since the last full daily backup.
@@ -254,3 +248,16 @@ If v is set and true for a canvas in the canvas.json, it will be a 3D voxel canv
 3D Canvases can not be seen in Historical View.
 
 ![threecanvas](promotion/threecanvas.png)
+
+## Development
+
+Run `npm run lint:src` to check for code errors and warnings or `npm run lint -- ./your/file.js` to check a single file.
+Please do not produce too many additional warnings.
+
+[ttag](https://github.com/ttag-org/ttag/) is used for handling translations. For server-side rendering the `Accept-Language` header gets checked and the first locale used and on-the-fly translated (`src/core/ttag.js` provides the functions for it). On the client-side a seperate bundle for every language gets provided.
+
+You can use `npm run babel-node ./your/script.js` to execute a script with local babel.
+
+`npm run upgrade` can be use for interactively upgrading npm packages.
+
+
