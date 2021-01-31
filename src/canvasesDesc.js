@@ -13,7 +13,7 @@ import ttag from './core/ttag';
 function getCanvases(t) {
   /*
    * add descriptions and titles of canvases here
-   * Use the t tab and right `backquotes`
+   * Use the t tag and right `backquotes`
    */
   const canvasTitles = {
     0: t`Earth`,
@@ -37,11 +37,12 @@ function getCanvases(t) {
    * no edit below here needed when adding/removing canvas
    */
 
-  const localicedCanvases = { ...canvases };
-  const canvasKeys = Object.keys(localicedCanvases);
+  const localicedCanvases = {};
+  const canvasKeys = Object.keys(canvases);
 
   for (let i = 0; i < canvasKeys.length; i += 1) {
     const key = canvasKeys[i];
+    localicedCanvases[key] = { ...canvases[key] };
     localicedCanvases[key].desc = canvasDesc[key] || `Canvas ${key}`;
     localicedCanvases[key].title = canvasTitles[key] || `Canvas ${key}`;
   }
@@ -54,10 +55,8 @@ const lCanvases = {};
 (() => {
   const langs = Object.keys(ttag);
   langs.forEach((lang) => {
-    console.log(`CANVAS LANGUAGE ${lang}`)
     lCanvases[lang] = getCanvases(ttag[lang].t);
   });
-  console.log(lCanvases)
 })();
 
 export function getLocalicedCanvases(lang) {
