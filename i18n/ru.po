@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.4.2\n"
 "Last-Translator: \n"
-"Language: ru_RU\n"
+"Language: ru\n"
 
 #: src/components/CoordinatesBox.jsx:37 src/controls/keypress.js:59
 msgid "Copied!"
@@ -679,7 +679,7 @@ msgstr "Войти в аккаунт"
 
 #: src/components/UserArea.jsx:57
 msgid "Todays Placed Pixels"
-msgstr "Размешённые сегодня пиксели"
+msgstr "Поставленные сегодня пиксели"
 
 #: src/components/UserArea.jsx:61
 msgid "Daily Rank"

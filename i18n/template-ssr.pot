@@ -294,21 +294,6 @@ msgstr ""
 msgid "You are not even logged in."
 msgstr ""
 
-#: src/routes/api/auth/verify.js:25
-#: src/routes/api/auth/verify.js:32
-msgid "Mail verification"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:26
-msgid "You are now verified :)"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:32
-msgid ""
-"Your mail verification code is invalid or already expired :(, please "
-"request a new one."
-msgstr ""
-
 #: src/routes/api/auth/register.js:31
 msgid "E-Mail already in use."
 msgstr ""
@@ -323,6 +308,21 @@ msgstr ""
 
 #: src/routes/api/auth/register.js:77
 msgid "Failed to establish session after register :("
+msgstr ""
+
+#: src/routes/api/auth/verify.js:25
+#: src/routes/api/auth/verify.js:32
+msgid "Mail verification"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:26
+msgid "You are now verified :)"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:32
+msgid ""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
 msgstr ""
 
 #: src/ssr-components/RedirectionPage.jsx:20
