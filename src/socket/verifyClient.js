@@ -30,6 +30,7 @@ function authenticateClient(req) {
           : new User(null, getIPFromRequest(req));
         user.setCountry(countryCode);
         user.ttag = req.ttag;
+        user.lang = req.lang;
         resolve(user);
       });
     }),

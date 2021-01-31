@@ -36,8 +36,9 @@ async function chatHistory(req: Request, res: Response) {
   }
 
   const { user } = req;
+  user.lang = req.lang;
 
-  if (!chatProvider.userHasChannelAccess(user, cid, false)) {
+  if (!chatProvider.userHasChannelAccess(user, cid)) {
     res.status(401);
     res.json({
       errors: ['You don\'t have access to this channel'],

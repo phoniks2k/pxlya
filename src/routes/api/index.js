@@ -81,8 +81,6 @@ router.use((req, res, next) => {
 
 router.post('/mctp', mctp);
 
-router.get('/chathistory', chatHistory);
-
 router.post('/startdm', startDm);
 
 router.post('/leavechan', leaveChan);
@@ -91,7 +89,12 @@ router.post('/block', block);
 
 router.post('/blockdm', blockdm);
 
+/*
+ * make localisations available
+ */
 router.use(expressTTag);
+
+router.get('/chathistory', chatHistory);
 
 router.get('/me', me);
 

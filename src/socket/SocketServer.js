@@ -340,7 +340,6 @@ class SocketServer extends WebSocketEvents {
           user,
           message,
           channelId,
-          user.ttag,
         );
         if (errorMsg) {
           ws.send(JSON.stringify([

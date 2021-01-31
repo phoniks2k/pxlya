@@ -15,6 +15,7 @@ export class ChatProvider {
   constructor() {
     this.defaultChannels = {};
     this.langChannels = {};
+    this.langChannelIds = [];
     this.enChannelId = 0;
     this.intChannelId = 0;
     this.infoUserId = 1;
@@ -74,8 +75,8 @@ export class ChatProvider {
       ];
     }
     // find or create non-english lang channels
-    const langs = Object.key(ttags);
-    for (let i = 0; i < langs; i += 1) {
+    const langs = Object.keys(ttags);
+    for (let i = 0; i < langs.length; i += 1) {
       const name = langs[i];
       if (name === 'default') {
         continue;
@@ -90,10 +91,10 @@ export class ChatProvider {
       const { id, type, lastTs } = channel[0];
       this.langChannels[name] = {
         id,
-        name,
         type,
         lastTs,
       };
+      this.langChannelIds[id] = name;
     }
     // find or create default users
     let name = INFO_USER_NAME;
@@ -128,14 +129,17 @@ export class ChatProvider {
 
   getDefaultChannels(lang) {
     const { defaultChannels, langChannels } = this;
-    const channels = { ...defaultChannels };
+    const langChannel = {};
     if (lang && lang !== 'default' && langChannels[lang]) {
       const {
-        id, name, type, lastTs,
+        id, type, lastTs,
       } = langChannels[lang];
-      channels[id] = [name, type, lastTs];
+      langChannel[id] = [lang, type, lastTs];
     }
-    return channels;
+    return {
+      ...langChannel,
+      ...defaultChannels,
+    };
   }
 
   static async addUserToChannel(
@@ -160,12 +164,19 @@ export class ChatProvider {
     }
   }
 
-  userHasChannelAccess(user, cid, write = false) {
+  /*
+   * user.lang has to be set
+   * this is just the case in chathistory.js and SocketServer
+   */
+  userHasChannelAccess(user, cid) {
     if (this.defaultChannels[cid]) {
-      if (!write || user.regUser) {
-        return true;
-      }
-    } else if (user.regUser && user.channels[cid]) {
+      return true;
+    }
+    if (this.langChannelIds[cid]
+      && this.langChannelIds[cid] === user.lang) {
+      return true;
+    }
+    if (user.channels[cid]) {
       return true;
     }
     return false;
@@ -256,20 +267,20 @@ export class ChatProvider {
   }
 
   /*
+   * User.ttag for translation has to be set, this is just the case
+   * in SocketServer for websocket connections
    * @param user User object
    * @param message string of message
    * @param channelId integer of channel
-   * @param ttag for translating return string
    * @return error message if unsuccessful, otherwise null
    */
   async sendMessage(
     user,
     message,
     channelId,
-    ttag,
   ) {
     const { id } = user;
-    const { t } = ttag;
+    const { t } = user.ttag;
     const name = user.getName();
 
     if (!user.userlvl && await cheapDetector(user.ip)) {
