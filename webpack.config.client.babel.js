@@ -15,6 +15,7 @@ import pkg from './package.json';
 const assetPlugin = new AssetsPlugin({
   path: path.resolve(__dirname, 'build'),
   filename: 'assets.json',
+  update: true,
   entrypoints: true,
   prettyPrint: true,
 });
