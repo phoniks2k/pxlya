@@ -3,6 +3,60 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+#: src/core/ChatProvider.js:243
+msgid "You can not send chat messages with proxy"
+msgstr ""
+
+#: src/core/ChatProvider.js:248
+msgid "Couldn't send your message, pls log out and back in again."
+msgstr ""
+
+#: src/core/ChatProvider.js:262
+#, javascript-format
+msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
+msgstr ""
+
+#: src/core/ChatProvider.js:266
+msgid "You don't have access to this channel"
+msgstr ""
+
+#: src/core/ChatProvider.js:282
+msgid "Your mail has to be verified in order to chat"
+msgstr ""
+
+#: src/core/ChatProvider.js:287
+msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgstr ""
+
+#: src/core/ChatProvider.js:292
+#, javascript-format
+msgid "You are muted for another ${ timeMin } minutes"
+msgstr ""
+
+#: src/core/ChatProvider.js:294
+msgid "You are muted for another ${ muted } seconds"
+msgstr ""
+
+#: src/core/ChatProvider.js:302
+msgid "Ow no! Spam protection decided to mute you"
+msgstr ""
+
+#: src/core/ChatProvider.js:313
+msgid "You can't send a message this long :("
+msgstr ""
+
+#: src/core/ChatProvider.js:317
+msgid "Please use int channel"
+msgstr ""
+
+#: src/core/ChatProvider.js:321
+msgid "Your country is temporary muted from chat"
+msgstr ""
+
+#: src/core/ChatProvider.js:329
+msgid "Stop flooding."
+msgstr ""
+
 #: src/ssr-components/Main.jsx:53
 msgid "PixelPlanet.fun"
 msgstr ""

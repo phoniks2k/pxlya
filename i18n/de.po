@@ -775,7 +775,7 @@ msgstr "Gesamtzeit"
 
 #: src/components/CanvasItem.jsx:54
 msgid "Ranked"
-msgstr ""
+msgstr "Gewertet"
 
 #: src/components/CanvasItem.jsx:56
 msgid "Requirements"

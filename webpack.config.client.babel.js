@@ -113,7 +113,7 @@ export function buildWebpackClientConfig(development, analyze, locale) {
             path.resolve(__dirname, 'src'),
           ],
           options: {
-            cacheDirectory: development,
+            cacheDirectory: true,
             babelrc: false,
             presets: [
               ['@babel/preset-env', {
@@ -194,7 +194,18 @@ export function buildWebpackClientConfig(development, analyze, locale) {
       chunkModules: false,
     },
 
-    cache: true,
+    /*
+     * this does not much tbqh
+    cache: {
+      type: 'filesystem',
+      cacheDirectory: path.resolve(
+        __dirname,
+        'node_modules',
+        '.cache',
+        'webpack',
+      ),
+    },
+     */
   };
 }
 

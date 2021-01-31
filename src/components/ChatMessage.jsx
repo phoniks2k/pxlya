@@ -82,6 +82,14 @@ function ChatMessage({
             return (<span className={className}>{txt}</span>);
           } if (type === 'c') {
             return (<a href={`./${txt}`}>{txt}</a>);
+          } if (type === 'l') {
+            return (
+              <a
+                href={txt}
+                target="_blank"
+                rel="noopener noreferrer"
+              >{txt}</a>
+            );
           } if (type === 'p') {
             return (
               <span

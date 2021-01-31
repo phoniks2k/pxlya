@@ -219,20 +219,33 @@ export class ChatProvider {
     }
   }
 
-  async sendMessage(user, message, channelId: number = 0) {
+  /*
+   * @param user User object
+   * @param message string of message
+   * @param channelId integer of channel
+   * @param ttag for translating return string
+   * @return error message if unsuccessful, otherwise null
+   */
+  async sendMessage(
+    user,
+    message,
+    channelId,
+    ttag,
+  ) {
     const { id } = user;
+    const { t } = ttag;
     const name = user.getName();
 
     if (!user.userlvl && await cheapDetector(user.ip)) {
       logger.info(
         `${name} / ${user.ip} tried to send chat message with proxy`,
       );
-      return 'You can not send chat messages with proxy';
+      return t`You can not send chat messages with proxy`;
     }
 
     if (!name || !id) {
       // eslint-disable-next-line max-len
-      return 'Couldn\'t send your message, pls log out and back in again.';
+      return t`Couldn\'t send your message, pls log out and back in again.`;
     }
 
     if (message.charAt(0) === '/' && user.userlvl) {
@@ -244,40 +257,41 @@ export class ChatProvider {
     }
     const waitLeft = user.rateLimiter.tick();
     if (waitLeft) {
+      const waitTime = Math.floor(waitLeft / 1000);
       // eslint-disable-next-line max-len
-      return `You are sending messages too fast, you have to wait ${Math.floor(waitLeft / 1000)}s :(`;
+      return t`You are sending messages too fast, you have to wait ${waitTime}s :(`;
     }
 
     if (!this.userHasChannelAccess(user, channelId)) {
-      return 'You don\'t have access to this channel';
+      return t`You don\'t have access to this channel`;
     }
 
     const country = user.regUser.flag || 'xx';
-    const displayCountry = (name.endsWith('berg') || name.endsWith('stein'))
+    let displayCountry = (name.endsWith('berg') || name.endsWith('stein'))
       ? 'il'
       : country;
-
-    if (!user.regUser.verified) {
-      return 'Your mail has to be verified in order to chat';
+    /*
+     * hard coded flag for Manchukuo_1940
+     * TODO make it possible to modify user flags
+     */
+    if (user.id === 2927) {
+      displayCountry = 'bt';
     }
 
-    if (message.length > 4
-      && message === message.toUpperCase()
-      && message !== message.toLowerCase()
-    ) {
-      return 'Stop shouting';
+    if (!user.regUser.verified) {
+      return t`Your mail has to be verified in order to chat`;
     }
 
     const muted = await ChatProvider.checkIfMuted(user);
     if (muted === -1) {
-      return 'You are permanently muted, join our guilded to apppeal the mute';
+      return t`You are permanently muted, join our guilded to apppeal the mute`;
     }
     if (muted > 0) {
       if (muted > 120) {
         const timeMin = Math.round(muted / 60);
-        return `You are muted for another ${timeMin} minutes`;
+        return t`You are muted for another ${timeMin} minutes`;
       }
-      return `You are muted for another ${muted} seconds`;
+      return t`You are muted for another ${muted} seconds`;
     }
 
     for (let i = 0; i < this.filters.length; i += 1) {
@@ -285,7 +299,7 @@ export class ChatProvider {
       const count = (message.match(filter.regexp) || []).length;
       if (count >= filter.matches) {
         this.mute(name, channelId, 30);
-        return 'Ow no! Spam protection decided to mute you';
+        return t`Ow no! Spam protection decided to mute you`;
       }
     }
 
@@ -294,21 +308,17 @@ export class ChatProvider {
       message = message.replace(subsitute.regexp, subsitute.replace);
     }
 
-    if (message.includes('http')) {
-      return 'no shitty links pls';
-    }
-
     if (message.length > 200) {
       // eslint-disable-next-line max-len
-      return 'You can\'t send a message this long :(';
+      return t`You can\'t send a message this long :(`;
     }
 
     if (message.match(this.cyrillic) && channelId === this.enChannelId) {
-      return 'Please use int channel';
+      return t`Please use int channel`;
     }
 
     if (this.mutedCountries.includes(country)) {
-      return 'Your country is temporary muted from chat';
+      return t`Your country is temporary muted from chat`;
     }
 
     if (user.last_message && user.last_message === message) {
@@ -316,7 +326,7 @@ export class ChatProvider {
       if (user.message_repeat >= 4) {
         this.mute(name, channelId, 60);
         user.message_repeat = 0;
-        return 'Stop flooding.';
+        return t`Stop flooding.`;
       }
     } else {
       user.message_repeat = 0;

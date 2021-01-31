@@ -8,14 +8,17 @@
  * splits chat message into array of what it represents
  * [[type, text],[type, text], ...]
  * type:
+ *   'l': external link
  *   't': text
  *   'p': ping
- *   'c': coordinates
+ *   'c': coordinates or ppfun link
  *   'm': mention of somebody else
  *  nameRegExp has to be in the form of:
       new RegExp(`(^|\\s+)(@${ownName})(\\s+|$)`, 'g');
  */
-const linkRegExp = /(#[a-z]*,-?[0-9]*,-?[0-9]*(,-?[0-9]+)?)/gi;
+// eslint-disable-next-line
+const linkRegExp = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+const ppLinkRegExp = /(#[a-z]*,-?[0-9]*,-?[0-9]*(,-?[0-9]+)?)/gi;
 const linkRegExpFilter = (val, ind) => ((ind % 3) !== 2);
 const mentionRegExp = /(^|\s)(@\S+)/g;
 const spaceFilter = (val, ind) => (val !== ' ' && (ind !== 0 | val !== ''));
@@ -49,10 +52,11 @@ function splitChatMessage(message, nameRegExp = null) {
     return null;
   }
   let arr = [['t', message.trim()]];
-  arr = splitChatMessageRegexp(arr, linkRegExp, 'c', linkRegExpFilter);
+  arr = splitChatMessageRegexp(arr, ppLinkRegExp, 'c', linkRegExpFilter);
   if (nameRegExp) {
     arr = splitChatMessageRegexp(arr, nameRegExp, 'p', spaceFilter);
   }
+  arr = splitChatMessageRegexp(arr, linkRegExp, 'l', linkRegExpFilter);
   arr = splitChatMessageRegexp(arr, mentionRegExp, 'm', spaceFilter);
   return arr;
 }

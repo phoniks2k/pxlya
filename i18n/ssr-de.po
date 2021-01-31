@@ -12,6 +12,62 @@ msgstr ""
 "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
 "X-Generator: Poedit 2.3\n"
 
+#: src/core/ChatProvider.js:243
+msgid "You can not send chat messages with proxy"
+msgstr "Du kannst keine Nachrichten senden wenn du ein Proxy benutzt"
+
+#: src/core/ChatProvider.js:248
+msgid "Couldn't send your message, pls log out and back in again."
+msgstr "Konnte die Nachricht nicht senden, bitte logge duch aus und wieder an."
+
+#: src/core/ChatProvider.js:262
+#, javascript-format
+msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
+msgstr "Du sendest zu viele Nachrichten, du musst ${ waitTime }s warten :("
+
+#: src/core/ChatProvider.js:266
+msgid "You don't have access to this channel"
+msgstr "Du hast keinen Zugriff zu diesen Kanal"
+
+#: src/core/ChatProvider.js:282
+msgid "Your mail has to be verified in order to chat"
+msgstr "E-Mail muss verifiziert sein um Nachrichten zu senden"
+
+#: src/core/ChatProvider.js:287
+msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgstr ""
+"Du bsit permanent stummgeschaltet, gehe zu unser guilded um dagegen "
+"einzusprechen"
+
+#: src/core/ChatProvider.js:292
+#, javascript-format
+msgid "You are muted for another ${ timeMin } minutes"
+msgstr "Du bist für ${ timeMin } Minuten stummgeschaltet"
+
+#: src/core/ChatProvider.js:294
+msgid "You are muted for another ${ muted } seconds"
+msgstr "Du bist for ${ muted } Sekunden stummgeschaltet"
+
+#: src/core/ChatProvider.js:302
+msgid "Ow no! Spam protection decided to mute you"
+msgstr "Oh nein! Spam-Schutz hat dich stummgeschaltet"
+
+#: src/core/ChatProvider.js:313
+msgid "You can't send a message this long :("
+msgstr "Do kannst keine so langen Nachrichten senden"
+
+#: src/core/ChatProvider.js:317
+msgid "Please use int channel"
+msgstr "Bitte benutze int Kanal"
+
+#: src/core/ChatProvider.js:321
+msgid "Your country is temporary muted from chat"
+msgstr "Dein Land ist temporär stummgeschaltet"
+
+#: src/core/ChatProvider.js:329
+msgid "Stop flooding."
+msgstr "Stoppe zu spamen."
+
 #: src/ssr-components/Main.jsx:53
 msgid "PixelPlanet.fun"
 msgstr "PixelPlanet.Fun"
@@ -141,7 +197,7 @@ msgid ""
 "next 30min here: "
 msgstr ""
 "Du hast ein neues Passwort beantragt. Du kannst es nun während der nächsten "
-"30min hier ändern:"
+"30min hier ändern"
 
 #: src/core/mail.js:128 src/ssr-components/PasswordReset.jsx:19
 #: src/ssr-components/PasswordReset.jsx:28
@@ -237,7 +293,7 @@ msgstr "Passwort muss mindestens 6 Zeichen lang sein."
 
 #: src/utils/validation.js:60
 msgid "Password must be shorter than 60 characters."
-msgstr "Passwort muss kürzer als 60 Zeichen sein"
+msgstr "Passwort muss kürzer als 60 Zeichen sein."
 
 #: src/utils/validation.js:74
 msgid "Could not connect to server, please try again later :("
@@ -302,7 +358,7 @@ msgstr "Du wirst automatisch weitergeleitet nach 15s"
 #: src/ssr-components/RedirectionPage.jsx:21
 #, javascript-format
 msgid "Or ${ clickHere } to go back to pixelplanet"
-msgstr "oder ${ clickHere } um zu pixelplanet zurückzukehren"
+msgstr "Oder ${ clickHere } um zu pixelplanet zurückzukehren"
 
 #: src/ssr-components/RedirectionPage.jsx:25
 msgid "PixelPlanet.fun Accounts"

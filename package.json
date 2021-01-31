@@ -11,7 +11,7 @@
   "scripts": {
     "build": "babel-node scripts/run prebuild && npm run webpack",
     "clean": "babel-node scripts/run clean",
-    "webpack": "webpack --config webpack.config.web.babel.js && webpack --config webpack.config.client.babel.js",
+    "webpack": "webpack --config ./webpack.config.web.babel.js && parallel-webpack --config ./webpack.config.client.babel.js",
     "babel-node": "cd $INIT_CWD && babel-node",
     "lint": "cd $INIT_CWD && eslint --ext .jsx --ext .js",
     "lint:src": "eslint --ext .jsx --ext .js src",
@@ -133,6 +133,7 @@
     "json-loader": "^0.5.4",
     "mkdirp": "^1.0.4",
     "npm-check": "^5.9.2",
+    "parallel-webpack": "^2.6.0",
     "react-hot-loader": "^4.13.0",
     "react-svg-loader": "^3.0.3",
     "rimraf": "^3.0.2",

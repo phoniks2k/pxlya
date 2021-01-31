@@ -1,0 +1,677 @@
+"Copied!"
+
+"Error :("
+
+"Didn't get an answer from pixelplanet. Maybe try to refresh?"
+
+"OK"
+
+"Invalid Canvas"
+
+"This canvas doesn't exist"
+
+"Invalid Coordinates"
+
+"x out of bounds"
+
+"y out of bounds"
+
+"z out of bounds"
+
+"Wrong Color"
+
+"Invalid color selected"
+
+"Just for registered Users"
+
+"You have to be logged in to place on this canvas"
+
+"Place more :)"
+
+"You can not access this canvas yet. You need to place more pixels"
+
+"Pixel protected!"
+
+"No Proxies Allowed :("
+
+"You are using a Proxy."
+
+"Weird"
+
+"Couldn't set Pixel"
+
+"Error ${ retCode }"
+
+"Close"
+
+"Close Menu"
+
+"Open Menu"
+
+"Close Chat"
+
+"Open Chat"
+
+"Copy to Clipboard"
+
+"User online"
+
+"Pixels placed"
+
+"Canvas Selection"
+
+"Make Screenshot"
+
+"User Area"
+
+"Settings"
+
+"Help"
+
+"Channel settings"
+
+"maximize"
+
+"Start chatting here"
+
+"Chat here"
+
+"You must be logged in to chat"
+
+"Close Palette"
+
+"Open Palette"
+
+"Globe View"
+
+"Ping"
+
+"DM"
+
+"Block"
+
+"Privacy Policy"
+
+"Terms of Service"
+
+"your IP"
+
+"Place color pixels on a large canvas with other players online!"
+
+""
+"Our main canvas is a huge worldmap, you can place wherever you like, but "
+"you will have to wait a specific Cooldown between pixels. You can check out "
+"the cooldown and requiremnts on the Canvas Selection menu (globe button on "
+"top). Some canvases have a different cooldown for replacing a user-set "
+"pixels than placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels "
+"and 7s on already set pixels."
+
+""
+"Higher zoomlevels take some time to update, the 3D globe gets updated at "
+"least once per day."
+
+"Have fun!"
+
+"recommended"
+
+"Source on "
+
+"Map Data"
+
+""
+"The bare map data that we use, together with converted OpenStreetMap tiles "
+"for orientation, can be downloaded from mega.nz here: "
+
+"Detected as Proxy?"
+
+""
+"If you got detected as proxy, but you are none, please go to our ${ "
+"guildedLink } or send us an e-mail with ${ getIPLink } to ${ mailLink }. Do "
+"not post your IP anywhere else. We are sorry for the inconvenience."
+
+"Controls"
+
+"Click a color in palette to select it"
+
+"Press ${ bindG } to toggle grid"
+
+"Press ${ bindX } to toggle showing of pixel activity"
+
+"Press ${ bindH } to toggle historical view"
+
+"Press ${ bindR } to copy coordinates"
+
+"Press ${ bindQ } or ${ bindE } to zoom"
+
+"Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
+
+"Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
+
+"Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
+
+"Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
+
+"Hold left ${ bindShift } for placing while moving mouse"
+
+""
+"Hold right ${ bindShift } for placing while moving mouse according to "
+"historical view"
+
+"${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
+
+""
+"Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
+"select current hovering color"
+
+"Press ${ bindE } and ${ bindC } to fly up and down"
+
+"${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
+
+""
+"${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
+"button and drag to zoom"
+
+"${ mouseSymbol } Right click and drag mouse to pan"
+
+""
+"${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a "
+"pixel"
+
+"Partners:"
+
+""
+"This site is protected by reCAPTCHA and the Google ${ reCaptchaPP } and ${ "
+"reCaptchaTOS } apply."
+
+""
+"This site is protected by hCAPTCHA and its ${ hCaptchaPP } and ${ "
+"hCaptchaTOS } apply."
+
+"Welcome to PixelPlanet.fun"
+
+"Mute"
+
+"Show Grid"
+
+"Turn on grid to highlight pixel borders."
+
+"Show Pixel Activity"
+
+"Show circles where pixels are placed."
+
+"Disable Game Sounds"
+
+"All sound effects will be disabled."
+
+"Enable chat notifications"
+
+"Play a sound when new chat messages arrive"
+
+"Auto Zoom In"
+
+""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+
+"Compact Palette"
+
+"Display Palette in a compact form that takes less screen space."
+
+"Potato Mode"
+
+"For when you are playing on a potato."
+
+"Light Grid"
+
+"Show Grid in white instead of black."
+
+"Historical View"
+
+"Check out past versions of the canvas."
+
+"Themes"
+
+"How pixelplanet should look like."
+
+"Register new account here"
+
+"Consider joining us on Guilded:"
+
+"Register New Account"
+
+"Login to access more features and stats."
+
+"Login with Name or Mail:"
+
+"I forgot my Password."
+
+"or login with:"
+
+"or register here:"
+
+"Register"
+
+"Profile"
+
+"Ranking"
+
+"Converter"
+
+"Admintools"
+
+"Modtools"
+
+"Loading..."
+
+""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren&apos;t worth being kept active, we decide to remove them."
+
+""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+
+"Political Compass Canvas"
+
+""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s coolodwn and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+
+""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking "
+"a screenshot from the timelapse results in a perfect 1:1 representation of "
+"how the canvas was at that time."
+
+"Canvas Archive"
+
+""
+"Select the canvas you want to use. Every canvas is unique and has different "
+"palettes, cooldown and requirements. Archive of closed canvases can be "
+"accessed here:"
+
+"Archive"
+
+"Enter your mail adress and we will send you a new password:"
+
+"Restore my Password"
+
+"Chat"
+
+"Error"
+
+"Name or Email"
+
+"Password"
+
+"LogIn"
+
+"Todays Placed Pixels"
+
+"Daily Rank"
+
+"Placed Pixels"
+
+"Total Rank"
+
+"Your name is: ${ name }"
+
+"Log out"
+
+"Change Username"
+
+"Change Mail"
+
+"Change Password"
+
+"Delete Account"
+
+"Social Settings"
+
+"Total"
+
+"Daily"
+
+"Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+
+"Cooldown"
+
+"Stacking till"
+
+"Ranked"
+
+"Requirements"
+
+"User Account"
+
+"and ${ canvas.req } Pixels set"
+
+"Dimensions"
+
+"Sent you a mail with instructions to reset your password."
+
+"Email"
+
+"Submit"
+
+"Cancel"
+
+"Name"
+
+"Confirm Password"
+
+"Build image on canvas."
+
+"Build image and set it to protected."
+
+"Build image, but reset cooldown to unset-pixel cd."
+
+"Image Upload"
+
+"Upload images to canvas"
+
+"File"
+
+"Coordinates in X_Y format:"
+
+"Pixel Protection"
+
+""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+
+"Rollback to Date"
+
+"Rollback an area of the canvas to a set date (00:00 UTC)"
+
+"IP Actions"
+
+"Do stuff with IPs (one IP per line)"
+
+"Manage Moderators"
+
+"Remove Moderator"
+
+"There are no mods"
+
+"Assign new Mod"
+
+"Enter UserName of new Mod"
+
+"User Name"
+
+"Choose Canvas"
+
+"Palette Download"
+
+"Palette for ${ gimpLink }"
+
+"Credit for the Palette of the Moon goes to ${ starhouseLink }."
+
+"Image Converter"
+
+"Convert an image to canvas colors"
+
+"Choose Strategy"
+
+"Choose Color Mode"
+
+"Add Grid (uncheck if you need a 1:1 template)"
+
+"Offset"
+
+"Scale Image"
+
+"Width"
+
+"Height"
+
+"Keep Ratio"
+
+"Anti Aliasing"
+
+"Reset"
+
+"Download Template"
+
+"Email can't be empty."
+
+"Email should be at least 5 characters long."
+
+"Email can't be longer than 40 characters."
+
+"Email should at least contain a dot"
+
+"Email should contain a @"
+
+"Name can't be empty."
+
+"Name must be at least 4 characters long"
+
+"Name must be shorter than 26 characters"
+
+"Name contains invalid character like @, /, \\ or #"
+
+"No password given."
+
+"Password must be at least 6 characters long."
+
+"Password must be shorter than 60 characters."
+
+"Could not connect to server, please try again later :("
+
+"I think we experienced some error :("
+
+"Block all Private Messages"
+
+"Unblock Users"
+
+"You have no users blocked"
+
+""
+"Changed Mail successfully. We sent you a verification mail,               "
+"please verify your new mail adress."
+
+"New Mail"
+
+"Save"
+
+"Passwords do not match."
+
+"Changed Password successfully."
+
+"Old Password"
+
+"New Password"
+
+"Confirm New Password"
+
+"Yes, Delete My Account!"
+
+"A new verification mail is getting sent to you."
+
+"You successfully linked your mc account."
+
+"You denied."
+
+""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
+
+"Click here to request a new verification mail."
+
+"You requested to link your mc account ${ minecraftname }."
+
+"Accept"
+
+"Deny"
+
+"New Username"
+
+"Place color pixels on an map styled canvas with other players online"
+
+"Double click on globe to go back."
+
+"Loading..."
+
+"PixelPlanet.Fun 3DGlobe"
+
+"A 3D globe of our whole map"
+
+"You sent an empty password or invalid data :("
+
+"This password-reset link isn't valid anymore :("
+
+"Your passwords do not match :("
+
+"User doesn't exist in our database :("
+
+"Passowrd successfully changed."
+
+"Invalid url :( Please check your mail again."
+
+"This passwort reset link is wrong or already expired, please request a new "
+"one (Note: you can use those links just once)"
+
+""
+"We already sent you a verification mail, you can request another one in ${ "
+"minLeft } minutes."
+
+"Welcome ${ name } to PixelPlanet, plese verify your mail"
+
+"Hello ${ name }"
+
+""
+"welcome to our little community of pixelplacers, to use your account, you "
+"have to verify your mail. You can do that here: "
+
+"Click to Verify"
+
+"Or by copying following url:"
+
+"Have fun and don't hesitate to contact us if you encouter any problems :)"
+
+"Thanks"
+
+""
+"We already sent you a mail with instructions. Please wait before requesting "
+"another mail."
+
+"Couldn't find this mail in our database"
+
+"You forgot your password for PixelPlanet? Get a new one here"
+
+"Hello"
+
+""
+"You requested to get a new password. You can change your password within "
+"the next 30min here: "
+
+"Reset Password"
+
+""
+"If you did not request this mail, please just ignore it (the ip that "
+"requested this mail was ${ ip })."
+
+"Click here"
+
+"to go back to pixelplanet"
+
+"Hello ${ name }, you can set your new password here:"
+
+"New Password"
+
+"Confirm New Password"
+
+"Submit"
+
+"PixelPlanet.fun Password Reset"
+
+"Reset your password here"
+
+"Email can't be empty."
+
+"Email should be at least 5 characters long."
+
+"Email can't be longer than 40 characters."
+
+"Email should at least contain a dot"
+
+"Email should contain a @"
+
+"Name can't be empty."
+
+"Name must be at least 4 characters long"
+
+"Name must be shorter than 26 characters"
+
+"Name contains invalid character like @, /, \\ or #"
+
+"No password given."
+
+"Password must be at least 6 characters long."
+
+"Password must be shorter than 60 characters."
+
+"Could not connect to server, please try again later :("
+
+"I think we experienced some error :("
+
+"You are not authenticated."
+
+"Incorrect password!"
+
+"You are not even logged in."
+
+"Mail verification"
+
+"You are now verified :)"
+
+""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
+
+"E-Mail already in use."
+
+"Username already in use."
+
+"Failed to create new user :("
+
+"Failed to establish session after register :("
+
+"You will be automatically redirected after 15s"
+
+"Or ${ clickHere } to go back to pixelplanet"
+
+"PixelPlanet.fun Accounts"
+
+"Earth"
+
+"Moon"
+
+"3D Canvas"
+
+"Coronavirus"
+
+"PixelZone"
+
+"PixelCanvas"
+
+"1bit"
+
+"Our main canvas, a huge map of the world. Place everywhere you like"
+
+"Moon canvas. Safe space for art. No flags or large text (unless part of art)"
+
+"Place Voxels on a 3D canvas with others"
+
+"Special canvas to spread awareness of SARS-CoV2"
+
+"Mirror of PixelZone"
+
+"Mirror of PixelCanvas"
+
+"Black and White canvas"
