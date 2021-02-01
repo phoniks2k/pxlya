@@ -118,17 +118,17 @@ msgstr ""
 msgid "Open Chat"
 msgstr ""
 
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr ""
-
 #: src/components/OnlineBox.jsx:22
 msgid "User online"
 msgstr ""
 
 #: src/components/OnlineBox.jsx:25
 msgid "Pixels placed"
+msgstr ""
+
+#: src/components/CanvasSelectModal.jsx:67
+#: src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/Converter.jsx:609
@@ -600,6 +600,100 @@ msgstr ""
 msgid "You must be logged in to chat"
 msgstr ""
 
+#: src/components/NewPasswordForm.jsx:83
+msgid "Sent you a mail with instructions to reset your password."
+msgstr ""
+
+#: src/components/ChangeMail.jsx:104
+#: src/components/ChangeName.jsx:82
+#: src/components/ChangePassword.jsx:120
+#: src/components/DeleteAccount.jsx:82
+#: src/components/LogInForm.jsx:97
+#: src/components/NewPasswordForm.jsx:93
+#: src/components/SignUpForm.jsx:118
+msgid "Error"
+msgstr ""
+
+#: src/components/NewPasswordForm.jsx:100
+#: src/components/SignUpForm.jsx:133
+msgid "Email"
+msgstr ""
+
+#: src/components/Admintools.jsx:306
+#: src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461
+#: src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589
+#: src/components/NewPasswordForm.jsx:104
+#: src/components/SignUpForm.jsx:152
+msgid "Submit"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:125
+#: src/components/ChangeName.jsx:94
+#: src/components/ChangePassword.jsx:152
+#: src/components/DeleteAccount.jsx:95
+#: src/components/NewPasswordForm.jsx:106
+#: src/components/SignUpForm.jsx:158
+msgid "Cancel"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:46
+msgid "Cooldown"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:52
+msgid "Stacking till"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:54
+msgid "Ranked"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:56
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:58
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:60
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:126
+msgid "Name"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:112
+#: src/components/DeleteAccount.jsx:89
+#: src/components/LogInForm.jsx:111
+#: src/components/SignUpForm.jsx:140
+msgid "Password"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:149
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/Rankings.jsx:37
+msgid "Total"
+msgstr ""
+
+#: src/components/Rankings.jsx:45
+msgid "Daily"
+msgstr ""
+
+#: src/components/Rankings.jsx:49
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+
 #: src/components/UserArea.jsx:57
 msgid "Todays Placed Pixels"
 msgstr ""
@@ -645,37 +739,8 @@ msgstr ""
 msgid "Social Settings"
 msgstr ""
 
-#: src/components/Rankings.jsx:37
-msgid "Total"
-msgstr ""
-
-#: src/components/Rankings.jsx:45
-msgid "Daily"
-msgstr ""
-
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-
-#: src/components/ChangeMail.jsx:104
-#: src/components/ChangeName.jsx:82
-#: src/components/ChangePassword.jsx:120
-#: src/components/DeleteAccount.jsx:82
-#: src/components/LogInForm.jsx:97
-#: src/components/NewPasswordForm.jsx:93
-#: src/components/SignUpForm.jsx:118
-msgid "Error"
-msgstr ""
-
 #: src/components/LogInForm.jsx:104
 msgid "Name or Email"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:112
-#: src/components/DeleteAccount.jsx:89
-#: src/components/LogInForm.jsx:111
-#: src/components/SignUpForm.jsx:140
-msgid "Password"
 msgstr ""
 
 #: src/components/LogInForm.jsx:115
@@ -708,16 +773,6 @@ msgstr ""
 
 #: src/components/Admintools.jsx:271
 msgid "Coordinates in X_Y format:"
-msgstr ""
-
-#: src/components/Admintools.jsx:306
-#: src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461
-#: src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589
-#: src/components/NewPasswordForm.jsx:104
-#: src/components/SignUpForm.jsx:152
-msgid "Submit"
 msgstr ""
 
 #: src/components/Admintools.jsx:311
@@ -768,57 +823,6 @@ msgstr ""
 
 #: src/components/Admintools.jsx:561
 msgid "User Name"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:126
-msgid "Name"
-msgstr ""
-
-#: src/components/NewPasswordForm.jsx:100
-#: src/components/SignUpForm.jsx:133
-msgid "Email"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:149
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:125
-#: src/components/ChangeName.jsx:94
-#: src/components/ChangePassword.jsx:152
-#: src/components/DeleteAccount.jsx:95
-#: src/components/NewPasswordForm.jsx:106
-#: src/components/SignUpForm.jsx:158
-msgid "Cancel"
 msgstr ""
 
 #: src/components/Converter.jsx:274
@@ -892,10 +896,6 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
-#: src/components/NewPasswordForm.jsx:83
-msgid "Sent you a mail with instructions to reset your password."
-msgstr ""
-
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
 msgstr ""
@@ -952,10 +952,6 @@ msgstr ""
 msgid "I think we experienced some error :("
 msgstr ""
 
-#: src/components/DeleteAccount.jsx:93
-msgid "Yes, Delete My Account!"
-msgstr ""
-
 #: src/components/SocialSettings.jsx:39
 msgid "Block all Private Messages"
 msgstr ""
@@ -966,6 +962,10 @@ msgstr ""
 
 #: src/components/SocialSettings.jsx:81
 msgid "You have no users blocked"
+msgstr ""
+
+#: src/components/DeleteAccount.jsx:93
+msgid "Yes, Delete My Account!"
 msgstr ""
 
 #: src/components/ChangeMail.jsx:89

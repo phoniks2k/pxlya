@@ -23,15 +23,18 @@ const assetPlugin = new AssetsPlugin({
 
 export function buildWebpackClientConfig(development, analyze, locale) {
   const ttag = {
-    extract: {
-      output: path.resolve(__dirname, 'i18n', 'template.pot'),
-    },
     resolve: {
       translations: (locale !== 'default')
         ? path.resolve(__dirname, 'i18n', `${locale}.po`)
         : locale,
     },
   };
+
+  if (locale === 'default') {
+    ttag.extract = {
+      output: path.resolve(__dirname, 'i18n', 'template.pot'),
+    }
+  }
 
   const babelPlugins = [
     '@babel/transform-flow-strip-types',
