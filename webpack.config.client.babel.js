@@ -122,7 +122,9 @@ export function buildWebpackClientConfig(
             path.resolve(__dirname, 'src'),
           ],
           options: {
-            cacheDirectory: !extract,
+            // should be !extract and adhere to .po timestamps
+            // in cacheIdentifier
+            cacheDirectory: false,
             babelrc: false,
             presets: [
               ['@babel/preset-env', {
