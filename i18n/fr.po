@@ -422,7 +422,7 @@ msgid ""
 "This site is protected by hCAPTCHA and its ${ hCaptchaPP } and "
 "${ hCaptchaTOS } apply."
 msgstr ""
-"Ce site est protégé par hCAPTCHA et son ${ hCaptchaPP } et ${ hCaptcha TOS } "
+"Ce site est protégé par hCAPTCHA et son ${ hCaptchaPP } et ${ hCaptchaTOS } "
 "s'appliquent."
 
 #: src/components/HelpModal.jsx:113

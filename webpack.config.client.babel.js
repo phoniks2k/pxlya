@@ -21,7 +21,12 @@ const assetPlugin = new AssetsPlugin({
 });
 
 
-export function buildWebpackClientConfig(development, analyze, locale) {
+export function buildWebpackClientConfig(
+  development,
+  analyze,
+  locale,
+  extract,
+) {
   const ttag = {
     resolve: {
       translations: (locale !== 'default')
@@ -30,10 +35,10 @@ export function buildWebpackClientConfig(development, analyze, locale) {
     },
   };
 
-  if (locale === 'default') {
+  if (extract) {
     ttag.extract = {
       output: path.resolve(__dirname, 'i18n', 'template.pot'),
-    }
+    };
   }
 
   const babelPlugins = [
@@ -117,7 +122,7 @@ export function buildWebpackClientConfig(development, analyze, locale) {
             path.resolve(__dirname, 'src'),
           ],
           options: {
-            cacheDirectory: true,
+            cacheDirectory: !extract,
             babelrc: false,
             presets: [
               ['@babel/preset-env', {
@@ -199,7 +204,10 @@ export function buildWebpackClientConfig(development, analyze, locale) {
     },
 
     /*
-     * this does not much tbqh
+     * maybe some day in the future it might be
+     * better than babel-loader cacheDirectory,
+     * but right now it isn't
+     *
     cache: {
       type: 'filesystem',
       cacheDirectory: path.resolve(
@@ -218,7 +226,7 @@ export function buildWebpackClientConfig(development, analyze, locale) {
  */
 function buildWebpackClientConfigAllLangs(development, analyze) {
   let webpackConfigClient = [
-    buildWebpackClientConfig(development, analyze, 'default'),
+    buildWebpackClientConfig(development, analyze, 'default', false),
   ];
   /*
    * get available translations
@@ -234,7 +242,13 @@ function buildWebpackClientConfigAllLangs(development, analyze) {
   return webpackConfigClient;
 }
 
-export default buildWebpackClientConfigAllLangs(
-  process.argv.includes('--debug'),
-  process.argv.includes('--analyse') || process.argv.includes('--analyze'),
-);
+export default ({
+  debug, analyze, extract, locale,
+}) => {
+  if (extract || locale) {
+    return buildWebpackClientConfig(
+      debug, analyze, locale || 'default', extract,
+    );
+  }
+  return buildWebpackClientConfigAllLangs(debug, analyze);
+};

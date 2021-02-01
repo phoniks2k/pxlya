@@ -2,25 +2,12 @@
  */
 
 import path from 'path';
-import fs from 'fs';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
 
 import patch from './scripts/patch';
 import pkg from './package.json';
-
-const isDebug = process.argv.includes('--debug');
-
-/*
- * check which ssr translations are available
- * Maybe we will use thi later to auto-populat src/core/ttag.js
- *
-const langDir = path.resolve(__dirname, 'i18n');
-const langs = fs.readdirSync(langDir)
-  .filter((e) => (e.endsWith('.po') && e.startsWith('ssr')));
-fs.writeFileSync(path.resolve(langDir, 'ssr-list.json'), JSON.stringify(langs));
-*/
 
 patch();
 
@@ -37,6 +24,8 @@ const basePackageValues = {
   },
 };
 
+const ttag = {};
+
 const babelPlugins = [
   '@babel/transform-flow-strip-types',
   ['@babel/plugin-proposal-decorators', { legacy: true }],
@@ -51,116 +40,122 @@ const babelPlugins = [
   '@babel/transform-react-inline-elements',
   'transform-react-remove-prop-types',
   'transform-react-pure-class-to-function',
-  ['ttag', {
-    extract: {
-      output: path.resolve(__dirname, 'i18n', 'template-ssr.pot'),
-    },
-    discover: ['t', 'jt'],
-  }],
+  ['ttag', ttag],
 ];
 
 
-export default {
-  name: 'web',
-  target: 'node',
+export default ({
+  debug, extract,
+}) => {
+  if (extract) {
+    ttag.extract = {
+      output: path.resolve(__dirname, 'i18n', 'template-ssr.pot'),
+    };
+    ttag.discover = ['t', 'jt'];
+  }
 
-  context: __dirname,
-  mode: (isDebug) ? 'development' : 'production',
+  return {
+    name: 'web',
+    target: 'node',
 
-  entry: {
-    web: [path.resolve(__dirname, 'src', 'web.js')],
-    backup: [path.resolve(__dirname, 'src', 'backup.js')],
-  },
+    context: __dirname,
+    mode: (debug) ? 'development' : 'production',
 
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    libraryTarget: 'commonjs2',
-  },
+    entry: {
+      web: [path.resolve(__dirname, 'src', 'web.js')],
+      backup: [path.resolve(__dirname, 'src', 'backup.js')],
+    },
 
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-  },
+    output: {
+      path: path.resolve(__dirname, 'build'),
+      libraryTarget: 'commonjs2',
+    },
 
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx|ts|tsx)$/,
-        loader: 'babel-loader',
-        include: [
-          path.resolve(__dirname, 'src'),
-        ],
-        options: {
-          cacheDirectory: isDebug,
+    resolve: {
+      extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    },
 
-          babelrc: false,
-          presets: [
-            ['@babel/preset-env', {
-              targets: {
-                node: pkg.engines.node.replace(/^\D+/g, ''),
-              },
-              modules: false,
-              useBuiltIns: false,
-              debug: false,
-            }],
-            '@babel/typescript',
-            '@babel/react',
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx|ts|tsx)$/,
+          loader: 'babel-loader',
+          include: [
+            path.resolve(__dirname, 'src'),
           ],
-          plugins: babelPlugins,
-        },
-      },
-      {
-        test: /\.css/,
-        use: [
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              sourceMap: false,
-              modules: false,
-            },
+          options: {
+            cacheDirectory: false,
+
+            babelrc: false,
+            presets: [
+              ['@babel/preset-env', {
+                targets: {
+                  node: pkg.engines.node.replace(/^\D+/g, ''),
+                },
+                modules: false,
+                useBuiltIns: false,
+                debug: false,
+              }],
+              '@babel/typescript',
+              '@babel/react',
+            ],
+            plugins: babelPlugins,
           },
-        ],
-      },
-      {
-        test: [/\.po$/],
-        loader: 'ttag-po-loader',
-      },
-    ],
-  },
-
-  externals: [
-    /\/proxies\.json$/,
-    /\/canvases\.json$/,
-    /^\.\/styleassets\.json$/,
-    /^\.\/assets\.json$/,
-    nodeExternals(),
-  ],
-
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
-      'process.env.BROWSER': false,
-    }),
-    // create package.json for deployment
-    new GeneratePackageJsonPlugin(basePackageValues, {
-      sourcePackageFilenames: [
-        path.resolve(__dirname, 'package.json'),
+        },
+        {
+          test: /\.css/,
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                sourceMap: false,
+                modules: false,
+              },
+            },
+          ],
+        },
+        {
+          test: [/\.po$/],
+          loader: 'ttag-po-loader',
+        },
       ],
-    }),
-  ],
+    },
 
-  stats: {
-    colors: true,
-    reasons: false,
-    hash: false,
-    version: false,
-    timings: true,
-    chunkModules: false,
-  },
+    externals: [
+      /\/proxies\.json$/,
+      /\/canvases\.json$/,
+      /^\.\/styleassets\.json$/,
+      /^\.\/assets\.json$/,
+      nodeExternals(),
+    ],
 
-  node: {
-    global: false,
-    __filename: false,
-    __dirname: false,
-  },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': debug ? '"development"' : '"production"',
+        'process.env.BROWSER': false,
+      }),
+      // create package.json for deployment
+      new GeneratePackageJsonPlugin(basePackageValues, {
+        sourcePackageFilenames: [
+          path.resolve(__dirname, 'package.json'),
+        ],
+      }),
+    ],
+
+    stats: {
+      colors: true,
+      reasons: false,
+      hash: false,
+      version: false,
+      timings: true,
+      chunkModules: false,
+    },
+
+    node: {
+      global: false,
+      __filename: false,
+      __dirname: false,
+    },
+  };
 };

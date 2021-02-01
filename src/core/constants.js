@@ -88,8 +88,6 @@ export const CHAT_CHANNELS = [
   }, {
     name: 'int',
   }, {
-    name: 'pol',
-  }, {
     name: 'art',
   },
 ];

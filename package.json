@@ -12,6 +12,7 @@
     "build": "babel-node scripts/run prebuild && npm run webpack",
     "clean": "babel-node scripts/run clean",
     "webpack": "webpack --config ./webpack.config.web.babel.js && parallel-webpack --config ./webpack.config.client.babel.js",
+    "extract": "webpack --env extract --config ./webpack.config.web.babel.js && webpack --env extract --config ./webpack.config.client.babel.js",
     "babel-node": "cd $INIT_CWD && babel-node",
     "lint": "cd $INIT_CWD && eslint --ext .jsx --ext .js",
     "lint:src": "eslint --ext .jsx --ext .js src",
