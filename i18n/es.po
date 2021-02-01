@@ -245,7 +245,7 @@ msgstr "Olvidé mi Contraseña."
 
 #: src/components/UserAreaModal.jsx:43
 msgid "or login with:"
-msgstr "o iniciar sesión con:"
+msgstr "o inicia sesión con:"
 
 #: src/components/UserAreaModal.jsx:84
 msgid "or register here:"
@@ -293,7 +293,7 @@ msgstr "Enciende la cuadrícula para mostrar los bordes de los píxeles."
 
 #: src/components/SettingsModal.jsx:130
 msgid "Show Pixel Activity"
-msgstr "Mostrar la Actividad de Píxeles"
+msgstr "Mostrar Actividad de Píxeles"
 
 #: src/components/SettingsModal.jsx:131
 msgid "Show circles where pixels are placed."
@@ -313,7 +313,7 @@ msgstr "Activar las notificaciones del chat"
 
 #: src/components/SettingsModal.jsx:146
 msgid "Play a sound when new chat messages arrive"
-msgstr "Reproducir un sonido al llegar mensajes nuevos"
+msgstr "Reproducir un sonido al llegar mensajes nuevos."
 
 #: src/components/SettingsModal.jsx:151
 msgid "Auto Zoom In"
@@ -343,7 +343,7 @@ msgstr "Modo Patata"
 
 #: src/components/SettingsModal.jsx:166
 msgid "For when you are playing on a potato."
-msgstr "Para cuando juega en una patata."
+msgstr "Para cuando juegas en una patata."
 
 #: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:171
 msgid "Light Grid"
@@ -351,7 +351,7 @@ msgstr "Cuadrícula Clara"
 
 #: src/components/SettingsModal.jsx:172
 msgid "Show Grid in white instead of black."
-msgstr "Muestra la Cuadricula en blanco en vez de negro."
+msgstr "Muestra la Cuadrícula en blanco en vez de negro."
 
 #: src/components/SettingsModal.jsx:179
 msgid "Historical View"
@@ -367,7 +367,7 @@ msgstr "Temas"
 
 #: src/components/SettingsModal.jsx:189
 msgid "How pixelplanet should look like."
-msgstr "Como pixelplanet debería verse."
+msgstr "Cambiar el aspecto de pixelplanet."
 
 #: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:267
 msgid "Settings"
@@ -426,7 +426,7 @@ msgstr "recomendado"
 
 #: src/components/HelpModal.jsx:55
 msgid "Source on "
-msgstr "Fuente de datos encendida "
+msgstr "Código fuente en "
 
 #: src/components/HelpModal.jsx:56
 msgid "Map Data"
@@ -457,7 +457,7 @@ msgstr ""
 
 #: src/components/HelpModal.jsx:63 src/components/HelpModal.jsx:80
 msgid "Controls"
-msgstr "Controles"
+msgstr ": controles"
 
 #: src/components/HelpModal.jsx:65
 msgid "Click a color in palette to select it"
@@ -505,14 +505,14 @@ msgstr ""
 #: src/components/HelpModal.jsx:73
 msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
 msgstr ""
-"Utiliza ${ mouseSymbol } el ratón o ${ touchSymbol } (pan) para desplazar"
+"Utiliza ${ mouseSymbol } el ratón o ${ touchSymbol } arrastrar para desplazar"
 
 #: src/components/HelpModal.jsx:74
 #, javascript-format
 msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
 msgstr ""
-"Desplaza ${ mouseSymbol } la rueda del ratón o ${ touchSymbol } el panel "
-"táctil para hacer zoom"
+"Gira ${ mouseSymbol } la rueda del ratón o ${ touchSymbol } el panel táctil "
+"para hacer zoom"
 
 #: src/components/HelpModal.jsx:75
 msgid "Hold left ${ bindShift } for placing while moving mouse"
@@ -552,7 +552,7 @@ msgstr "Presiona ${ bindE } y ${ bindC } para volar hacia arriba y hacia abajo"
 #, javascript-format
 msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
 msgstr ""
-"${ mouseSymbol } Mantén presionado el botón izquierdo del ratón arrástralo "
+"${ mouseSymbol } Mantén presionado el botón izquierdo del ratón y arrástralo "
 "para rotar"
 
 #: src/components/HelpModal.jsx:86
@@ -562,19 +562,18 @@ msgid ""
 "button and drag to zoom"
 msgstr ""
 "${ mouseSymbol } Gira la rueda del ratón o mantén presionado el "
-"${ mouseSymbol } botón medio del ratón arrástralo para hacer zoom"
+"${ mouseSymbol } botón medio del ratón y arrástralo para hacer zoom"
 
 #: src/components/HelpModal.jsx:87
 msgid "${ mouseSymbol } Right click and drag mouse to pan"
-msgstr ""
-"${ mouseSymbol } Haz clic derecho y arrastras el ratón para desplazarte"
+msgstr "Haz ${ mouseSymbol } clic derecho y arrastra el ratón para desplazarte"
 
 #: src/components/HelpModal.jsx:89
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
 msgstr ""
-"${ mouseSymbol } Haz clic derecho o ${ touchSymbol } doble toque para "
+"Haz ${ mouseSymbol } clic derecho o ${ touchSymbol } doble toque para "
 "remover un píxel"
 
 #: src/components/HelpModal.jsx:92
@@ -612,7 +611,7 @@ msgstr "Hacer Ping"
 
 #: src/components/UserContextMenu.jsx:97
 msgid "DM"
-msgstr "Mensaje Directo)"
+msgstr "Mensaje Directo"
 
 #: src/components/UserContextMenu.jsx:107
 msgid "Block"
@@ -628,7 +627,7 @@ msgstr "Abrir Paleta"
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
-msgstr "Vista del Globo"
+msgstr "Vista de Globo"
 
 #: src/components/DownloadButton.jsx:37
 msgid "Make Screenshot"
@@ -672,7 +671,7 @@ msgstr "Píxeles Colocados"
 
 #: src/components/UserArea.jsx:70
 msgid "Total Rank"
-msgstr "Ránking Total"
+msgstr "Ranking Total"
 
 #: src/components/UserArea.jsx:75
 #, javascript-format
@@ -874,7 +873,7 @@ msgstr "Cancelar"
 
 #: src/components/Converter.jsx:274
 msgid "Choose Canvas"
-msgstr "Elegir Lieno"
+msgstr "Elegir Lienzo"
 
 #: src/components/Converter.jsx:300
 msgid "Palette Download"

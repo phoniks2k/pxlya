@@ -193,7 +193,7 @@ msgid ""
 "You requested to get a new password. You can change your password within the "
 "next 30min here: "
 msgstr ""
-"Haz solicitado una nueva contraseña. Puedes cambiar tu contraseña dentro de "
+"Has solicitado una nueva contraseña. Puedes cambiar tu contraseña dentro de "
 "los próximos 30 minutos aquí: "
 
 #: src/core/mail.js:128 src/ssr-components/PasswordReset.jsx:19
@@ -207,8 +207,8 @@ msgid ""
 "If you did not request this mail, please just ignore it (the ip that "
 "requested this mail was ${ ip })."
 msgstr ""
-"Si no solicitó este correo, por favor ignórelo (la ip que solicitó este "
-"correo fue ${ ip })."
+"Si usted no solicitó este correo, por favor ignórelo (la ip que solicitó "
+"este correo fue ${ ip })."
 
 #: src/ssr-components/PasswordReset.jsx:21
 #: src/ssr-components/RedirectionPage.jsx:15
