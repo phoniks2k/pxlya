@@ -69,7 +69,7 @@ export default {
 
   entry: {
     web: [path.resolve(__dirname, 'src', 'web.js')],
-    backup: [path.resolve(__dirname, 'src', 'web.js')],
+    backup: [path.resolve(__dirname, 'src', 'backup.js')],
   },
 
   output: {
