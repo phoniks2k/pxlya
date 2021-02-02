@@ -33,7 +33,7 @@
     "bufferutil": "^4.0.3",
     "compression": "^1.7.3",
     "connect-redis": "^5.0.0",
-    "cookie-parser": "^1.4.5",
+    "cookie": "^0.4.1",
     "core-js": "^3.8.3",
     "cors": "^2.8.4",
     "etag": "^1.8.1",

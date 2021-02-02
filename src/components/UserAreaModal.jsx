@@ -45,7 +45,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
       <img
         style={logoStyle}
         width={32}
-        src={`${window.assetserver}/discordlogo.svg`}
+        src={`${window.ssv.assetserver}/discordlogo.svg`}
         alt="Discord"
       />
     </a>
@@ -53,7 +53,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
       <img
         style={logoStyle}
         width={32}
-        src={`${window.assetserver}/googlelogo.svg`}
+        src={`${window.ssv.assetserver}/googlelogo.svg`}
         alt="Google"
       />
     </a>
@@ -61,7 +61,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
       <img
         style={logoStyle}
         width={32}
-        src={`${window.assetserver}/facebooklogo.svg`}
+        src={`${window.ssv.assetserver}/facebooklogo.svg`}
         alt="Facebook"
       />
     </a>
@@ -69,7 +69,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
       <img
         style={logoStyle}
         width={32}
-        src={`${window.assetserver}/vklogo.svg`}
+        src={`${window.ssv.assetserver}/vklogo.svg`}
         alt="VK"
       />
     </a>
@@ -77,7 +77,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
       <img
         style={logoStyle}
         width={32}
-        src={`${window.assetserver}/redditlogo.svg`}
+        src={`${window.ssv.assetserver}/redditlogo.svg`}
         alt="Reddit"
       />
     </a>

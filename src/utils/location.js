@@ -26,6 +26,9 @@ export function ccToCoords(cc: string) {
  * @return language code
  */
 export function languageFromLocalisation(localisation) {
+  if (!localisation) {
+    return 'default';
+  }
   let lang = localisation;
   let i = lang.indexOf('-');
   if (i !== -1) {
@@ -42,7 +45,27 @@ export function languageFromLocalisation(localisation) {
   if (lang === 'en') {
     lang = 'default';
   }
-  return lang;
+  return lang.toLowerCase();
+}
+
+/*
+ * get country code to language code for displaying flags
+ * to languages
+ * @param lang 2-char lang code
+ * @return 2-char country code
+ */
+const lang2CC = {
+  en: 'gb',
+  de: 'de',
+  dz: 'bt',
+  hy: 'am',
+  uk: 'ua',
+  ru: 'ru',
+  fr: 'fr',
+  es: 'es',
+};
+export function langCodeToCC(lang: string) {
+  return lang2CC[lang] || lang;
 }
 
 export default ccToCoords;

@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { c, t } from 'ttag';
 
+import LanguageSelect from './LanguageSelect';
 import MdToggleButtonHover from './MdToggleButtonHover';
 import {
   toggleGrid,
@@ -49,11 +50,12 @@ const rowStyles = {
 };
 
 const SettingsItemSelect = ({
-  title, description, values, selected, onSelect,
+  title, description, values, selected, onSelect, icon,
 }) => (
   <div style={itemStyles}>
     <div style={rowStyles}>
       <h3 style={titleStyles} className="modaltitle">{title}</h3>
+      {(icon) && <img alt="" src={icon} />}
       <select
         onChange={(e) => {
           const sel = e.target;
@@ -173,24 +175,33 @@ function SettingsModal({
         value={isLightGrid}
         onToggle={onToggleLightGrid}
       />
-      { (window.backupurl)
-        ? (
-          <SettingsItem
-            title={t`Historical View`}
-            description={t`Check out past versions of the canvas.`}
-            value={isHistoricalView}
-            keyBind={c('keybinds').t`H`}
-            onToggle={onToggleHistoricalView}
-          />
-        ) : null }
-      {(typeof window.availableStyles !== 'undefined') && (
+      {(window.ssv && window.ssv.backupurl) && (
+      <SettingsItem
+        title={t`Historical View`}
+        description={t`Check out past versions of the canvas.`}
+        value={isHistoricalView}
+        keyBind={c('keybinds').t`H`}
+        onToggle={onToggleHistoricalView}
+      />
+      )}
+      {(window.ssv && window.ssv.availableStyles) && (
         <SettingsItemSelect
           title={t`Themes`}
           description={t`How pixelplanet should look like.`}
-          values={Object.keys(window.availableStyles)}
+          values={Object.keys(window.ssv.availableStyles)}
           selected={selectedStyle}
           onSelect={onSelectStyle}
         />
+      )}
+      {(window.ssv && navigator.cookieEnabled && window.ssv.langs) && (
+        <div style={itemStyles}>
+          <div style={rowStyles}>
+            <h3 style={titleStyles} className="modaltitle">
+              {t`Select Language`}
+            </h3>
+            <LanguageSelect />
+          </div>
+        </div>
       )}
     </p>
   );

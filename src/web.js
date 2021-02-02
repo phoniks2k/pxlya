@@ -15,6 +15,7 @@ import logger from './core/logger';
 import rankings from './core/ranking';
 import models from './data/models';
 import chatProvider from './core/ChatProvider';
+import { expressTTag } from './core/ttag';
 
 import SocketServer from './socket/SocketServer';
 import APISocketServer from './socket/APISocketServer';
@@ -32,7 +33,7 @@ import generateMainPage from './ssr-components/Main';
 import { SECOND, MONTH } from './core/constants';
 import { PORT, DISCORD_INVITE, GUILDED_INVITE } from './core/config';
 
-import { ccToCoords, languageFromLocalisation } from './utils/location';
+import { ccToCoords } from './utils/location';
 import { startAllCanvasLoops } from './core/tileserver';
 
 startAllCanvasLoops();
@@ -125,11 +126,15 @@ app.use('/guilded', (req, res) => {
 // -----------------------------------------------------------------------------
 app.get('/chunks/:c([0-9]+)/:x([0-9]+)/:y([0-9]+)(/)?:z([0-9]+)?.bmp', chunks);
 
-
 //
 // Admintools
 // -----------------------------------------------------------------------------
 app.use('/admintools', admintools);
+
+/*
+ * decide which language to use
+ */
+app.use(expressTTag);
 
 
 //
@@ -157,10 +162,7 @@ app.get('/globe', async (req, res) => {
     return;
   }
 
-  const language = req.headers['accept-language'];
-  const lang = (language) ? languageFromLocalisation(language) : 'en';
-
-  res.status(200).send(generateGlobePage(lang));
+  res.status(200).send(generateGlobePage(req.lang));
 });
 
 
@@ -186,12 +188,10 @@ app.get('/', async (req, res) => {
 
   // get start coordinates based on cloudflare header country
   const country = req.headers['cf-ipcountry'];
-  const language = req.headers['accept-language'];
 
-  const lang = (language) ? languageFromLocalisation(language) : 'en';
   const countryCoords = (country) ? ccToCoords(country) : [0, 0];
 
-  res.status(200).send(generateMainPage(countryCoords, lang));
+  res.status(200).send(generateMainPage(countryCoords, req.lang));
 });
 
 

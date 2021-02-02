@@ -8,7 +8,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/server';
 
-import { getTTag } from '../core/ttag';
+import { langCodeToCC } from '../utils/location';
+import ttags, { getTTag } from '../core/ttag';
 import Html from './Html';
 /* this one is set by webpack */
 // eslint-disable-next-line import/no-unresolved
@@ -18,11 +19,25 @@ import styleassets from './styleassets.json';
 
 import { ASSET_SERVER, BACKUP_URL } from '../core/config';
 
-// eslint-disable-next-line max-len
-let code = `window.assetserver="${ASSET_SERVER}";window.availableStyles=JSON.parse('${JSON.stringify(styleassets)}');`;
+/*
+ * generate language list
+ */
+const langs = Object.keys(ttags)
+  .map((l) => (l === 'default' ? 'en' : l))
+  .map((l) => [l, langCodeToCC(l)]);
+
+/*
+ * values that we pass to client scripts
+ */
+const ssv = {
+  assetserver: ASSET_SERVER,
+  availableStyles: styleassets,
+  langs,
+};
 if (BACKUP_URL) {
-  code += `window.backupurl="${BACKUP_URL}";`;
+  ssv.backupurl = BACKUP_URL;
 }
+
 const defaultScripts = assets.client.js.map(
   (s) => ASSET_SERVER + s,
 );
@@ -34,15 +49,19 @@ const css = [
 ];
 
 /*
- * generates string with html of main page
- * including setting global variables for countryCoords
- * and assetserver
+ * Generates string with html of main page
  * @param countryCoords Cell with coordinates of client country
  * @param lang language code
  * @return html of mainpage
  */
 function generateMainPage(countryCoords: Cell, lang: string): string {
   const [x, y] = countryCoords;
+  const ssvR = {
+    ...ssv,
+    coordx: x,
+    coordy: y,
+    lang: lang === 'default' ? 'en' : lang,
+  };
   const scripts = (assets[`client-${lang}`])
     ? assets[`client-${lang}`].js.map((s) => ASSET_SERVER + s)
     : defaultScripts;
@@ -55,7 +74,8 @@ function generateMainPage(countryCoords: Cell, lang: string): string {
       description={t`Place color pixels on an map styled canvas with other players online`}
       scripts={scripts}
       css={css}
-      code={`${code}window.coordx=${x};window.coordy=${y};`}
+      // eslint-disable-next-line max-len
+      code={`window.ssv=JSON.parse('${JSON.stringify(ssvR)}');`}
       useCaptcha
     />,
   );

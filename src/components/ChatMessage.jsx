@@ -41,7 +41,7 @@ function ChatMessage({
           <img
             alt=""
             title={country}
-            src={`${window.assetserver}/cf/${country}.gif`}
+            src={`${window.ssv.assetserver}/cf/${country}.gif`}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = './cf/xx.gif';

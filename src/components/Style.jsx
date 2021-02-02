@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import type { State } from '../reducers';
 
 function Style({ style }) {
-  const cssUri = window.availableStyles[style];
+  const cssUri = window.ssv.availableStyles[style];
   return (style === 'default') ? null
     : (<link rel="stylesheet" type="text/css" href={cssUri} />);
 }

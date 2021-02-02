@@ -3,6 +3,8 @@
  * @flow
  */
 import { TTag } from 'ttag';
+import cookie from 'cookie';
+
 import { languageFromLocalisation } from '../utils/location';
 
 // eslint-disable-next-line max-len
@@ -29,9 +31,15 @@ export function getTTag(lang) {
   return ttags[lang] || ttags.default;
 }
 
+/*
+ * express middleware for getting language
+ * It checks the lang cookie, and if not present,
+ * the Accept-Lanuage header
+ */
 export function expressTTag(req, res, next) {
-  const language = req.headers['accept-language'];
-  req.lang = (language) ? languageFromLocalisation(language) : 'default';
+  const cookies = cookie.parse(req.headers.cookie || '');
+  const language = cookies.lang || req.headers['accept-language'];
+  req.lang = languageFromLocalisation(language);
   req.ttag = getTTag(req.lang);
   next();
 }

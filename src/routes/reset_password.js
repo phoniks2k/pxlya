@@ -13,7 +13,6 @@ import type { Request, Response } from 'express';
 import redis from '../data/redis';
 import logger from '../core/logger';
 import getPasswordResetHtml from '../ssr-components/PasswordReset';
-import { expressTTag } from '../core/ttag';
 import { MINUTE } from '../core/constants';
 
 import mailProvider from '../core/mail';
@@ -40,12 +39,6 @@ router.use('/',
  * decode form data to req.body
  */
 router.use(bodyParser.urlencoded({ extended: true }));
-
-
-/*
- * use translation
- */
-router.use(expressTTag);
 
 
 /*

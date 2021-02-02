@@ -236,7 +236,7 @@ class ChunkLoader {
   ) {
     const { canvasId, canvasMaxTiledZoom } = this;
     const center = [canvasMaxTiledZoom, cx, cy];
-    let url = `${window.backupurl}/${historicalDate}/`;
+    let url = `${window.ssv.backupurl}/${historicalDate}/`;
     if (historicalTime) {
       // incremential tiles
       url += `${canvasId}/${historicalTime}/${cx}/${cy}.png`;
