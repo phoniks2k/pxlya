@@ -12,10 +12,6 @@ msgstr ""
 "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
 "X-Generator: Poedit 2.3\n"
 
-#: src/components/CoordinatesBox.jsx:37 src/controls/keypress.js:59
-msgid "Copied!"
-msgstr "Kopiert!"
-
 #: src/ui/placePixel.js:53
 msgid "Error :("
 msgstr "Fehler :("
@@ -103,18 +99,14 @@ msgstr "Konnte ein Pixel setzen"
 msgid "Error ${ retCode }"
 msgstr "Fehler ${ retCode }"
 
+#: src/components/CoordinatesBox.jsx:37 src/controls/keypress.js:59
+msgid "Copied!"
+msgstr "Kopiert!"
+
 #: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:85
 #: src/components/ModalRoot.jsx:60
 msgid "Close"
 msgstr "Schließen"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Close Menu"
-msgstr "Schließe Menü"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Open Menu"
-msgstr "Öffne Menü"
 
 #: src/components/ChatButton.jsx:61
 msgid "Close Chat"
@@ -124,10 +116,22 @@ msgstr "Schließe Chat"
 msgid "Open Chat"
 msgstr "Öffne Chat"
 
+#: src/components/ExpandMenuButton.jsx:19
+msgid "Close Menu"
+msgstr "Schließe Menü"
+
+#: src/components/ExpandMenuButton.jsx:19
+msgid "Open Menu"
+msgstr "Öffne Menü"
+
 #: src/components/CanvasSelectModal.jsx:67
 #: src/components/CanvasSwitchButton.jsx:20
 msgid "Canvas Selection"
 msgstr "Leinwand auswahl"
+
+#: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
+msgid "Copy to Clipboard"
+msgstr "Kopiere in die Zwischenablage"
 
 #: src/components/OnlineBox.jsx:22
 msgid "User online"
@@ -137,87 +141,213 @@ msgstr "Spieler anwesend"
 msgid "Pixels placed"
 msgstr "Pixels gesetzt"
 
-#: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
-msgid "Copy to Clipboard"
-msgstr "Kopiere in die Zwischenablage"
+#: src/components/ChannelContextMenu.jsx:73
+msgid "Mute"
+msgstr "Stummschalten"
 
-#: src/components/Chat.jsx:143
-msgid "Channel settings"
-msgstr "Kanal Einstellungen"
+#: src/components/UserContextMenu.jsx:72
+msgid "Ping"
+msgstr "Erwähnen"
 
-#: src/components/Chat.jsx:152
-msgid "maximize"
-msgstr "maximieren"
+#: src/components/UserContextMenu.jsx:97
+msgid "DM"
+msgstr "DM"
 
-#: src/components/Chat.jsx:168
-msgid "Start chatting here"
-msgstr "Beginne hier zu unterhalten"
+#: src/components/UserContextMenu.jsx:107
+msgid "Block"
+msgstr "Blocke"
 
-#: src/components/Chat.jsx:200
-msgid "Chat here"
-msgstr "Chatte hier"
+#: src/components/PalselButton.jsx:25
+msgid "Close Palette"
+msgstr "Schließe Palette"
 
-#: src/components/Chat.jsx:220
-msgid "You must be logged in to chat"
-msgstr "Melde dich an um dich zu unterhalten"
-
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr "Erstelle eine Bildschirmaufnahme"
-
-#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr "Spielerbereich"
-
-#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:267
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr "Hilfe"
+#: src/components/PalselButton.jsx:25
+msgid "Open Palette"
+msgstr "Öffne Palette"
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
 msgstr "Globus Ansicht"
 
-#: src/components/SettingsModal.jsx:123
+#: src/components/ForgotPasswordModal.jsx:16
+msgid "Enter your mail adress and we will send you a new password:"
+msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
+
+#: src/components/ForgotPasswordModal.jsx:20
+#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
+msgid "Consider joining us on Guilded:"
+msgstr "Triff uns und andere Spieler auf guilded:"
+
+#: src/components/ForgotPasswordModal.jsx:37
+msgid "Restore my Password"
+msgstr "Passwort wiederherstellen"
+
+#: src/components/ChatModal.jsx:35
+msgid "Chat"
+msgstr "Unterhaltung"
+
+#: src/components/ArchiveModal.jsx:20
+msgid ""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren&apos;t worth being kept active, we decide to remove them."
+msgstr ""
+"Wir versuchen so wenig wie möglich Leinwände zu entfernen. Manche werden "
+"allerding aus Spaß gestarted oder von Spielern angefragt oder sind nur "
+"Memes. Diese Leinwände können nach einiger Zeit langweilig werden und nach "
+"Wochen ohne erwähnenswerte Aktivität und falls sie es wirklich nicht wert "
+"sind, behalten zu werden, entscheiden wir uns side zu entfernen."
+
+#: src/components/ArchiveModal.jsx:22
+msgid ""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+msgstr ""
+"Hier sammeln wir vergangene Leinwände um sie ordentlich zu archivieren (zur "
+"Zeit nur eine)."
+
+#: src/components/ArchiveModal.jsx:24
+msgid "Political Compass Canvas"
+msgstr "Politischer Kompass Leinwand"
+
+#: src/components/ArchiveModal.jsx:31
+msgid ""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s coolodwn and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+msgstr ""
+"Diese Leinwand wurde zu Zeiten politscher Konlikte auf der Erd-Leinwand "
+"gestarted. Es war eine 1024x1024 Abbildung des politischen Kompass mit 5s "
+"Abklingzeit und 60s gesamter Wartezeit. Es wurde am 11. Mai 2020 gestartet "
+"und war für Monate aktiv bis es am 30. November geschlossen wurde."
+
+#: src/components/ArchiveModal.jsx:32
+msgid ""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
+"screenshot from the timelapse results in a perfect 1:1 representation of how "
+"the canvas was at that time."
+msgstr ""
+"Wir haben uns entschieden sie in der Form eines Zeitraffers in verlustfrei "
+"kodiertes webm zu archivieren. Eine Bildschirmaufnahme aus dem Video ergibt "
+"eine perfekte 1:1 Abbildung der Leinwand zu dieser Zeit."
+
+#: src/components/ArchiveModal.jsx:50
+msgid "Canvas Archive"
+msgstr "Leinwand Archiv"
+
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr "Registriere ein neues Konto hier"
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr "Registriere neues Konto"
+
+#: src/components/CanvasSelectModal.jsx:29
+msgid ""
+"Select the canvas you want to use. Every canvas is unique and has different "
+"palettes, cooldown and requirements. Archive of closed canvases can be "
+"accessed here:"
+msgstr ""
+"Wähle die Leinwand aus welche du benutzen willst. Jede Leinwand ist "
+"einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
+"Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
+
+#: src/components/CanvasSelectModal.jsx:37
+msgid "Archive"
+msgstr "Archiv"
+
+#: src/components/UserAreaModal.jsx:33
+msgid "Login to access more features and stats."
+msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
+
+#: src/components/UserAreaModal.jsx:35
+msgid "Login with Name or Mail:"
+msgstr "Mit Name oder Mail anmelden:"
+
+#: src/components/UserAreaModal.jsx:42
+msgid "I forgot my Password."
+msgstr "Ich habe mein Passwort vergessen."
+
+#: src/components/UserAreaModal.jsx:43
+msgid "or login with:"
+msgstr "oder melde dich an mit:"
+
+#: src/components/UserAreaModal.jsx:84
+msgid "or register here:"
+msgstr "oder registriere dich hier:"
+
+#: src/components/UserAreaModal.jsx:85
+msgid "Register"
+msgstr "Registrieren"
+
+#: src/components/UserAreaModal.jsx:107
+msgid "Profile"
+msgstr "Profil"
+
+#: src/components/UserAreaModal.jsx:113
+msgid "Ranking"
+msgstr "Rangliste"
+
+#: src/components/UserAreaModal.jsx:116
+msgid "Converter"
+msgstr "Konverter"
+
+#: src/components/UserAreaModal.jsx:122
+msgid "Admintools"
+msgstr "Admin Werkzeuge"
+
+#: src/components/UserAreaModal.jsx:122
+msgid "Modtools"
+msgstr "Mod Werkzeuge"
+
+#: src/components/UserAreaModal.jsx:123
+msgid "Loading..."
+msgstr "Lade..."
+
+#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr "Spielerbereich"
+
+#: src/components/SettingsModal.jsx:125
 msgid "Show Grid"
 msgstr "Zeige Raster"
 
-#: src/components/SettingsModal.jsx:124
+#: src/components/SettingsModal.jsx:126
 msgid "Turn on grid to highlight pixel borders."
 msgstr "Aktiviere das Raster um  Pixelgrenzen zu sehen."
 
-#: src/components/SettingsModal.jsx:130
+#: src/components/SettingsModal.jsx:132
 msgid "Show Pixel Activity"
 msgstr "Zeige Pixelaktivität"
 
-#: src/components/SettingsModal.jsx:131
+#: src/components/SettingsModal.jsx:133
 msgid "Show circles where pixels are placed."
 msgstr "Zeige Kreise wo Pixel von Spielern gesetzt werden."
 
-#: src/components/SettingsModal.jsx:137
+#: src/components/SettingsModal.jsx:139
 msgid "Disable Game Sounds"
 msgstr "Deaktiviere Spiel Ton"
 
-#: src/components/SettingsModal.jsx:139
+#: src/components/SettingsModal.jsx:141
 msgid "All sound effects will be disabled."
 msgstr "Alle Toneffekte werden ausgeschaltet."
 
-#: src/components/SettingsModal.jsx:145
+#: src/components/SettingsModal.jsx:147
 msgid "Enable chat notifications"
 msgstr "Aktiviere Chat Benachrichtigungen"
 
-#: src/components/SettingsModal.jsx:146
+#: src/components/SettingsModal.jsx:148
 msgid "Play a sound when new chat messages arrive"
 msgstr "Spiele ein Geräusch wenn eine neue Chat Nachricht eintrifft"
 
-#: src/components/SettingsModal.jsx:151
+#: src/components/SettingsModal.jsx:153
 msgid "Auto Zoom In"
 msgstr "Automaticher Zoom"
 
-#: src/components/SettingsModal.jsx:153
+#: src/components/SettingsModal.jsx:155
 msgid ""
 "Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
 "small."
@@ -225,46 +355,54 @@ msgstr ""
 "Zoome rein anstatt ein Pixel zu setzen wenn auf kleineren Zoomlevel geklickt "
 "wird."
 
-#: src/components/SettingsModal.jsx:158
+#: src/components/SettingsModal.jsx:160
 msgid "Compact Palette"
 msgstr "Kompakte Palette"
 
-#: src/components/SettingsModal.jsx:160
+#: src/components/SettingsModal.jsx:162
 msgid "Display Palette in a compact form that takes less screen space."
 msgstr ""
 "Zeige die Palette in einer kleineren Form an, welche weniger Platz benötigt."
 
-#: src/components/SettingsModal.jsx:165
+#: src/components/SettingsModal.jsx:167
 msgid "Potato Mode"
 msgstr "Erdapfel Modus"
 
-#: src/components/SettingsModal.jsx:166
+#: src/components/SettingsModal.jsx:168
 msgid "For when you are playing on a potato."
 msgstr "Wenn du auf einer Kartoffel spielst."
 
-#: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:171
+#: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:173
 msgid "Light Grid"
 msgstr "Helles Raster"
 
-#: src/components/SettingsModal.jsx:172
+#: src/components/SettingsModal.jsx:174
 msgid "Show Grid in white instead of black."
 msgstr "Zeige das Raster in weiß anstatt schwarz."
 
-#: src/components/SettingsModal.jsx:179
+#: src/components/SettingsModal.jsx:180
 msgid "Historical View"
 msgstr "Historische Ansicht"
 
-#: src/components/SettingsModal.jsx:180
+#: src/components/SettingsModal.jsx:181
 msgid "Check out past versions of the canvas."
 msgstr "Siehe vergangene Versionen der Leinwand."
 
-#: src/components/SettingsModal.jsx:188
+#: src/components/SettingsModal.jsx:189
 msgid "Themes"
 msgstr "Themen"
 
-#: src/components/SettingsModal.jsx:189
+#: src/components/SettingsModal.jsx:190
 msgid "How pixelplanet should look like."
 msgstr "Wähle aus wie pixelplanet aussehen soll."
+
+#: src/components/SettingsModal.jsx:200
+msgid "Select Language"
+msgstr "Sprache Auswählen"
+
+#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:278
+msgid "Settings"
+msgstr "Einstellungen"
 
 #: src/components/HelpModal.jsx:34 src/components/HelpModal.jsx:35
 msgid "Privacy Policy"
@@ -495,167 +633,33 @@ msgstr ""
 msgid "Welcome to PixelPlanet.fun"
 msgstr "Willkommen auf PixelPlanet.fun"
 
-#: src/components/ChannelContextMenu.jsx:73
-msgid "Mute"
-msgstr "Stummschalten"
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr "Erstelle eine Bildschirmaufnahme"
 
-#: src/components/UserContextMenu.jsx:72
-msgid "Ping"
-msgstr "Erwähnen"
+#: src/components/HelpButton.jsx:20
+msgid "Help"
+msgstr "Hilfe"
 
-#: src/components/UserContextMenu.jsx:97
-msgid "DM"
-msgstr "DM"
+#: src/components/Chat.jsx:143
+msgid "Channel settings"
+msgstr "Kanal Einstellungen"
 
-#: src/components/UserContextMenu.jsx:107
-msgid "Block"
-msgstr "Blocke"
+#: src/components/Chat.jsx:152
+msgid "maximize"
+msgstr "maximieren"
 
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
-msgstr "Schließe Palette"
+#: src/components/Chat.jsx:168
+msgid "Start chatting here"
+msgstr "Beginne hier zu unterhalten"
 
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
-msgstr "Öffne Palette"
+#: src/components/Chat.jsx:200
+msgid "Chat here"
+msgstr "Chatte hier"
 
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr "Registriere ein neues Konto hier"
-
-#: src/components/ForgotPasswordModal.jsx:20
-#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
-msgid "Consider joining us on Guilded:"
-msgstr "Triff uns und andere Spieler auf guilded:"
-
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
-msgstr "Registriere neues Konto"
-
-#: src/components/UserAreaModal.jsx:33
-msgid "Login to access more features and stats."
-msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
-
-#: src/components/UserAreaModal.jsx:35
-msgid "Login with Name or Mail:"
-msgstr "Mit Name oder Mail anmelden:"
-
-#: src/components/UserAreaModal.jsx:42
-msgid "I forgot my Password."
-msgstr "Ich habe mein Passwort vergessen."
-
-#: src/components/UserAreaModal.jsx:43
-msgid "or login with:"
-msgstr "oder melde dich an mit:"
-
-#: src/components/UserAreaModal.jsx:84
-msgid "or register here:"
-msgstr "oder registriere dich hier:"
-
-#: src/components/UserAreaModal.jsx:85
-msgid "Register"
-msgstr "Registrieren"
-
-#: src/components/UserAreaModal.jsx:107
-msgid "Profile"
-msgstr "Profil"
-
-#: src/components/UserAreaModal.jsx:113
-msgid "Ranking"
-msgstr "Rangliste"
-
-#: src/components/UserAreaModal.jsx:116
-msgid "Converter"
-msgstr "Konverter"
-
-#: src/components/UserAreaModal.jsx:122
-msgid "Admintools"
-msgstr "Admin Werkzeuge"
-
-#: src/components/UserAreaModal.jsx:122
-msgid "Modtools"
-msgstr "Mod Werkzeuge"
-
-#: src/components/UserAreaModal.jsx:123
-msgid "Loading..."
-msgstr "Lade..."
-
-#: src/components/ForgotPasswordModal.jsx:16
-msgid "Enter your mail adress and we will send you a new password:"
-msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
-
-#: src/components/ForgotPasswordModal.jsx:37
-msgid "Restore my Password"
-msgstr "Passwort wiederherstellen"
-
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
-msgstr "Unterhaltung"
-
-#: src/components/ArchiveModal.jsx:20
-msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or "
-"as a request by users who currently like a meme. Those canvases can get "
-"boring after a while and after weeks of no major change and if they really "
-"aren&apos;t worth being kept active, we decide to remove them."
-msgstr ""
-"Wir versuchen so wenig wie möglich Leinwände zu entfernen. Manche werden "
-"allerding aus Spaß gestarted oder von Spielern angefragt oder sind nur "
-"Memes. Diese Leinwände können nach einiger Zeit langweilig werden und nach "
-"Wochen ohne erwähnenswerte Aktivität und falls sie es wirklich nicht wert "
-"sind, behalten zu werden, entscheiden wir uns side zu entfernen."
-
-#: src/components/ArchiveModal.jsx:22
-msgid ""
-"Here we collect those canvases to archive them in a proper way (which is "
-"currently just one)."
-msgstr ""
-"Hier sammeln wir vergangene Leinwände um sie ordentlich zu archivieren (zur "
-"Zeit nur eine)."
-
-#: src/components/ArchiveModal.jsx:24
-msgid "Political Compass Canvas"
-msgstr "Politischer Kompass Leinwand"
-
-#: src/components/ArchiveModal.jsx:31
-msgid ""
-"This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s coolodwn and 60s stacking. It got launched on May 11th and "
-"remained active for months till it got shut down on November 30th."
-msgstr ""
-"Diese Leinwand wurde zu Zeiten politscher Konlikte auf der Erd-Leinwand "
-"gestarted. Es war eine 1024x1024 Abbildung des politischen Kompass mit 5s "
-"Abklingzeit und 60s gesamter Wartezeit. Es wurde am 11. Mai 2020 gestartet "
-"und war für Monate aktiv bis es am 30. November geschlossen wurde."
-
-#: src/components/ArchiveModal.jsx:32
-msgid ""
-"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
-"screenshot from the timelapse results in a perfect 1:1 representation of how "
-"the canvas was at that time."
-msgstr ""
-"Wir haben uns entschieden sie in der Form eines Zeitraffers in verlustfrei "
-"kodiertes webm zu archivieren. Eine Bildschirmaufnahme aus dem Video ergibt "
-"eine perfekte 1:1 Abbildung der Leinwand zu dieser Zeit."
-
-#: src/components/ArchiveModal.jsx:50
-msgid "Canvas Archive"
-msgstr "Leinwand Archiv"
-
-#: src/components/CanvasSelectModal.jsx:29
-msgid ""
-"Select the canvas you want to use. Every canvas is unique and has different "
-"palettes, cooldown and requirements. Archive of closed canvases can be "
-"accessed here:"
-msgstr ""
-"Wähle die Leinwand aus welche du benutzen willst. Jede Leinwand ist "
-"einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
-"Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
-
-#: src/components/CanvasSelectModal.jsx:37
-msgid "Archive"
-msgstr "Archiv"
+#: src/components/Chat.jsx:220
+msgid "You must be logged in to chat"
+msgstr "Melde dich an um dich zu unterhalten"
 
 #: src/components/ChangeMail.jsx:104 src/components/ChangeName.jsx:82
 #: src/components/ChangePassword.jsx:120 src/components/DeleteAccount.jsx:82
@@ -664,18 +668,64 @@ msgstr "Archiv"
 msgid "Error"
 msgstr "Fehler"
 
-#: src/components/LogInForm.jsx:104
-msgid "Name or Email"
-msgstr "Name oder Email"
+#: src/components/SignUpForm.jsx:126
+msgid "Name"
+msgstr "Name"
+
+#: src/components/NewPasswordForm.jsx:100 src/components/SignUpForm.jsx:133
+msgid "Email"
+msgstr "Email"
 
 #: src/components/ChangeMail.jsx:112 src/components/DeleteAccount.jsx:89
 #: src/components/LogInForm.jsx:111 src/components/SignUpForm.jsx:140
 msgid "Password"
 msgstr "Passwort"
 
-#: src/components/LogInForm.jsx:115
-msgid "LogIn"
-msgstr "Einloggen"
+#: src/components/SignUpForm.jsx:149
+msgid "Confirm Password"
+msgstr "Passwort bestätigen"
+
+#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:104
+#: src/components/SignUpForm.jsx:152
+msgid "Submit"
+msgstr "Absenden"
+
+#: src/components/ChangeMail.jsx:125 src/components/ChangeName.jsx:94
+#: src/components/ChangePassword.jsx:152 src/components/DeleteAccount.jsx:95
+#: src/components/NewPasswordForm.jsx:106 src/components/SignUpForm.jsx:158
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: src/components/CanvasItem.jsx:46
+msgid "Cooldown"
+msgstr "Abklingzeit"
+
+#: src/components/CanvasItem.jsx:52
+msgid "Stacking till"
+msgstr "Gesamtzeit"
+
+#: src/components/CanvasItem.jsx:54
+msgid "Ranked"
+msgstr "Gewertet"
+
+#: src/components/CanvasItem.jsx:56
+msgid "Requirements"
+msgstr "Vorraussetzungen"
+
+#: src/components/CanvasItem.jsx:58
+msgid "User Account"
+msgstr "Konto"
+
+#: src/components/CanvasItem.jsx:60
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr "und ${ canvas.req } gesetzte Pixel"
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr "Dimensionen"
 
 #: src/components/Rankings.jsx:37
 msgid "Total"
@@ -736,133 +786,18 @@ msgstr "Lösche Konto"
 msgid "Social Settings"
 msgstr "Soziale Einstellungen"
 
-#: src/components/SignUpForm.jsx:126
-msgid "Name"
-msgstr "Name"
+#: src/components/LogInForm.jsx:104
+msgid "Name or Email"
+msgstr "Name oder Email"
 
-#: src/components/NewPasswordForm.jsx:100 src/components/SignUpForm.jsx:133
-msgid "Email"
-msgstr "Email"
+#: src/components/LogInForm.jsx:115
+msgid "LogIn"
+msgstr "Einloggen"
 
-#: src/components/SignUpForm.jsx:149
-msgid "Confirm Password"
-msgstr "Passwort bestätigen"
-
-#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:104
-#: src/components/SignUpForm.jsx:152
-msgid "Submit"
-msgstr "Absenden"
-
-#: src/components/ChangeMail.jsx:125 src/components/ChangeName.jsx:94
-#: src/components/ChangePassword.jsx:152 src/components/DeleteAccount.jsx:95
-#: src/components/NewPasswordForm.jsx:106 src/components/SignUpForm.jsx:158
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: src/components/NewPasswordForm.jsx:83
-msgid "Sent you a mail with instructions to reset your password."
-msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
-
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
-msgstr "Abklingzeit"
-
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
-msgstr "Gesamtzeit"
-
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
-msgstr "Gewertet"
-
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr "Vorraussetzungen"
-
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr "Konto"
-
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr "und ${ canvas.req } gesetzte Pixel"
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
-msgstr "Dimensionen"
-
-#: src/components/Converter.jsx:274
-msgid "Choose Canvas"
-msgstr "Wähle Leinwand"
-
-#: src/components/Converter.jsx:300
-msgid "Palette Download"
-msgstr "Palette herunterladen"
-
-#: src/components/Converter.jsx:302
-#, javascript-format
-msgid "Palette for ${ gimpLink }"
-msgstr "Palette für ${ gimpLink }"
-
-#: src/components/Converter.jsx:320
-#, javascript-format
-msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
-msgstr "Vielen Dank an ${ starhouseLink } für die Palette der Mond Leinwand."
-
-#: src/components/Converter.jsx:323
-msgid "Image Converter"
-msgstr "Bild Konverter"
-
-#: src/components/Converter.jsx:324
-msgid "Convert an image to canvas colors"
-msgstr "Konvertiere ein Bild zu Leinwand Farben"
-
-#: src/components/Converter.jsx:335
-msgid "Choose Strategy"
-msgstr "Wähle Strategie"
-
-#: src/components/Converter.jsx:362
-msgid "Choose Color Mode"
-msgstr "Wähle Farb Modus"
-
-#: src/components/Converter.jsx:400
-msgid "Add Grid (uncheck if you need a 1:1 template)"
-msgstr "Zeichne Raster (deaktiviere falls du eine 1:1 Vorlage benötigst)"
-
-#: src/components/Converter.jsx:425 src/components/Converter.jsx:441
-msgid "Offset"
-msgstr "Abweichung"
-
-#: src/components/Converter.jsx:471
-msgid "Scale Image"
-msgstr "Skaliere Bild"
-
-#: src/components/Converter.jsx:483
-msgid "Width"
-msgstr "Breite"
-
-#: src/components/Converter.jsx:513
-msgid "Height"
-msgstr "Höhe"
-
-#: src/components/Converter.jsx:551
-msgid "Keep Ratio"
-msgstr "Seitenverhältniss beibehalten"
-
-#: src/components/Converter.jsx:564
-msgid "Anti Aliasing"
-msgstr "Kantenglättung"
-
-#: src/components/Converter.jsx:578
-msgid "Reset"
-msgstr "Zurücksetzen"
-
-#: src/components/Converter.jsx:597
-msgid "Download Template"
-msgstr "Bild herunterladen"
+#: src/components/ChangeMail.jsx:123 src/components/ChangeName.jsx:92
+#: src/components/ChangePassword.jsx:150 src/components/LanguageSelect.jsx:73
+msgid "Save"
+msgstr "Speichern"
 
 #: src/components/Admintools.jsx:179
 msgid "Build image on canvas."
@@ -945,6 +880,80 @@ msgstr "Gebe Name des neuen Moderators ein"
 msgid "User Name"
 msgstr "Spielerbereich"
 
+#: src/components/NewPasswordForm.jsx:83
+msgid "Sent you a mail with instructions to reset your password."
+msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
+
+#: src/components/Converter.jsx:274
+msgid "Choose Canvas"
+msgstr "Wähle Leinwand"
+
+#: src/components/Converter.jsx:300
+msgid "Palette Download"
+msgstr "Palette herunterladen"
+
+#: src/components/Converter.jsx:302
+#, javascript-format
+msgid "Palette for ${ gimpLink }"
+msgstr "Palette für ${ gimpLink }"
+
+#: src/components/Converter.jsx:320
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr "Vielen Dank an ${ starhouseLink } für die Palette der Mond Leinwand."
+
+#: src/components/Converter.jsx:323
+msgid "Image Converter"
+msgstr "Bild Konverter"
+
+#: src/components/Converter.jsx:324
+msgid "Convert an image to canvas colors"
+msgstr "Konvertiere ein Bild zu Leinwand Farben"
+
+#: src/components/Converter.jsx:335
+msgid "Choose Strategy"
+msgstr "Wähle Strategie"
+
+#: src/components/Converter.jsx:362
+msgid "Choose Color Mode"
+msgstr "Wähle Farb Modus"
+
+#: src/components/Converter.jsx:400
+msgid "Add Grid (uncheck if you need a 1:1 template)"
+msgstr "Zeichne Raster (deaktiviere falls du eine 1:1 Vorlage benötigst)"
+
+#: src/components/Converter.jsx:425 src/components/Converter.jsx:441
+msgid "Offset"
+msgstr "Abweichung"
+
+#: src/components/Converter.jsx:471
+msgid "Scale Image"
+msgstr "Skaliere Bild"
+
+#: src/components/Converter.jsx:483
+msgid "Width"
+msgstr "Breite"
+
+#: src/components/Converter.jsx:513
+msgid "Height"
+msgstr "Höhe"
+
+#: src/components/Converter.jsx:551
+msgid "Keep Ratio"
+msgstr "Seitenverhältniss beibehalten"
+
+#: src/components/Converter.jsx:564
+msgid "Anti Aliasing"
+msgstr "Kantenglättung"
+
+#: src/components/Converter.jsx:578
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: src/components/Converter.jsx:597
+msgid "Download Template"
+msgstr "Bild herunterladen"
+
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
 msgstr "Email Feld kann nicht leer sein."
@@ -1002,10 +1011,6 @@ msgstr ""
 msgid "I think we experienced some error :("
 msgstr "Ich glaube wir haben einen Fehler :("
 
-#: src/components/DeleteAccount.jsx:93
-msgid "Yes, Delete My Account!"
-msgstr "Ja, löche mein Konto!"
-
 #: src/components/SocialSettings.jsx:39
 msgid "Block all Private Messages"
 msgstr "Blockiere alle Privaten Nachrichten"
@@ -1017,6 +1022,10 @@ msgstr "Entblocke Spieler"
 #: src/components/SocialSettings.jsx:81
 msgid "You have no users blocked"
 msgstr "Du hast keinen Spieler geblockt"
+
+#: src/components/DeleteAccount.jsx:93
+msgid "Yes, Delete My Account!"
+msgstr "Ja, löche mein Konto!"
 
 #: src/components/ChangeMail.jsx:89
 msgid ""
@@ -1030,10 +1039,9 @@ msgstr ""
 msgid "New Mail"
 msgstr "Neue Mail"
 
-#: src/components/ChangeMail.jsx:123 src/components/ChangeName.jsx:92
-#: src/components/ChangePassword.jsx:150
-msgid "Save"
-msgstr "Speichern"
+#: src/components/ChangeName.jsx:88
+msgid "New Username"
+msgstr "Neuer Name"
 
 #: src/components/ChangePassword.jsx:18
 msgid "Passwords do not match."
@@ -1054,10 +1062,6 @@ msgstr "Neues Passwort"
 #: src/components/ChangePassword.jsx:146
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
-
-#: src/components/ChangeName.jsx:88
-msgid "New Username"
-msgstr "Neuer Name"
 
 #: src/components/UserMessages.jsx:41
 msgid "A new verification mail is getting sent to you."
@@ -1096,22 +1100,22 @@ msgstr "Annehmen"
 msgid "Deny"
 msgstr "Ablehnen"
 
-#: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:125
+#: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:127
 msgctxt "keybinds"
 msgid "G"
 msgstr "G"
 
-#: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:132
+#: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:134
 msgctxt "keybinds"
 msgid "X"
 msgstr "X"
 
-#: src/components/SettingsModal.jsx:140
+#: src/components/SettingsModal.jsx:142
 msgctxt "keybinds"
 msgid "M"
 msgstr "M"
 
-#: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:182
+#: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:183
 msgctxt "keybinds"
 msgid "H"
 msgstr "H"
