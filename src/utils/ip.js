@@ -3,19 +3,10 @@
  * @flow
  */
 
-import isCloudflareIp from './cloudflareip';
-
 import logger from '../core/logger';
 
 import { USE_XREALIP } from '../core/config';
 
-
-function isTrustedProxy(ip: string): boolean {
-  if (ip === '::ffff:127.0.0.1' || ip === '127.0.0.1' || isCloudflareIp(ip)) {
-    return true;
-  }
-  return false;
-}
 
 export function getHostFromRequest(req): ?string {
   const { headers } = req;
@@ -26,30 +17,25 @@ export function getHostFromRequest(req): ?string {
 }
 
 export function getIPFromRequest(req): ?string {
-  const { socket, connection, headers } = req;
+
+  if (USE_XREALIP) {
+    const ip = req.headers['x-real-ip'];
+    if (ip) {
+      return ip;
+    }
+  }
+
+  const { socket, connection } = req;
 
   let conip = (connection ? connection.remoteAddress : socket.remoteAddress);
   conip = conip || '0.0.0.1';
 
-  if (USE_XREALIP) {
-    const ip = headers['x-real-ip'];
-    return ip || conip;
-  }
+  // eslint-disable-next-line max-len
+  logger.warn(
+    `Connection not going through nginx and cloudflare! IP: ${conip}`, headers
+  );
 
-  if (!headers['x-forwarded-for'] || !isTrustedProxy(conip)) {
-    // eslint-disable-next-line max-len
-    logger.warn(`Connection not going through nginx and cloudflare! IP: ${conip}`, headers);
-    return conip;
-  }
-
-  const forwardedFor = headers['x-forwarded-for'];
-  const ipList = forwardedFor.split(',').map((str) => str.trim());
-
-  let ip = ipList.pop();
-  while (isTrustedProxy(ip) && ipList.length) {
-    ip = ipList.pop();
-  }
-  return ip || conip;
+  return conip;
 }
 
 export function getIPv6Subnet(ip: string): string {

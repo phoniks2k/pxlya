@@ -31,7 +31,7 @@ import generateGlobePage from './ssr-components/Globe';
 import generateMainPage from './ssr-components/Main';
 
 import { SECOND, MONTH } from './core/constants';
-import { PORT, DISCORD_INVITE, GUILDED_INVITE } from './core/config';
+import { PORT, HOST, GUILDED_INVITE } from './core/config';
 
 import { ccToCoords } from './utils/location';
 import { startAllCanvasLoops } from './core/tileserver';
@@ -111,11 +111,8 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 
 //
-// Redirecct to discord and guilded
+// Redirecct to guilded
 // -----------------------------------------------------------------------------
-app.use('/discord', (req, res) => {
-  res.redirect(DISCORD_INVITE);
-});
 app.use('/guilded', (req, res) => {
   res.redirect(GUILDED_INVITE);
 });
@@ -203,10 +200,13 @@ const promise = models.sync({ alter: { drop: false } })
 // const promise = models.sync()
   .catch((err) => logger.error(err.stack));
 promise.then(() => {
-  server.listen(PORT, () => {
+  server.listen(PORT, HOST, () => {
     rankings.updateRanking();
     chatProvider.initialize();
     const address = server.address();
-    logger.log('info', `web is running at http://localhost:${address.port}/`);
+    logger.log(
+      'info', 
+      `web is running at http://${address.host}:${address.port}/`,
+    );
   });
 });

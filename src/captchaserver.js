@@ -16,7 +16,8 @@ const PORT = 7000;
 
 const server = http.createServer((req, res) => {
   const captcha = ppfunCaptcha.create();
-  console.log(`Serving ${captcha.text} to ${req.headers['x-real-ip']}`);
+  const ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
+  console.log(`Serving ${captcha.text} to ${ip}`);
   res.writeHead(200, {
     'Content-Type': 'text/html',
     'Cache-Control': 'no-cache',
@@ -25,6 +26,6 @@ const server = http.createServer((req, res) => {
   res.end();
 });
 
-server.listen(port, () => {
-  console.log(`Captcha Server listening on port ${port}`);
+server.listen(PORT, () => {
+  console.log(`Captcha Server listening on port ${PORT}`);
 });

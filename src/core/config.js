@@ -35,8 +35,6 @@ export const MYSQL_USER = process.env.MYSQL_USER || 'pixelplanet';
 export const MYSQL_PW = process.env.MYSQL_PW || 'password';
 
 // Social
-export const DISCORD_INVITE = process.env.DISCORD_INVITE
-  || 'https://discordapp.com/';
 export const GUILDED_INVITE = process.env.GUILDED_INVITE
   || 'https://www.guilded.gg/';
 

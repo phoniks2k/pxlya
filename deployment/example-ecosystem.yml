@@ -3,9 +3,9 @@ apps:
     name     : 'web'
     node_args: --nouse-idle-notification --expose-gc
     env:
-      HOSTURL: "http://localhost"
-      ASSET_SERVER: "http://localhost"
       PORT: 80
+      HOST: "localhost"
+      ASSET_SERVER: "http://localhost"
       REDIS_URL: 'redis://localhost:6379'
       MYSQL_HOST: "localhost"
       MYSQL_USER: "pixelplanet"

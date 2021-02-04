@@ -69,8 +69,9 @@ Configuration takes place in the environment variables that are defined in ecosy
 
 | Variable       | Description              |  Example                |
 |----------------|:-------------------------|------------------------:|
-| PORT           | Port                     |  80                     |
-| REDIS_URL      | URL:PORT of redis server | "redis://localhost:6379" |
+| PORT           | Own Port                 | 80                      |
+| HOST           | Own Host                 | "localhost"             |
+| REDIS_URL      | URL:PORT of redis server | "redis://localhost:6379"|
 | MYSQL_HOST     | MySql Host               | "localhost"             |
 | MYSQL_USER     | MySql User               | "user"                  |
 | MYSQL_PW       | MySql Password           | "password"              |
@@ -90,7 +91,7 @@ Configuration takes place in the environment variables that are defined in ecosy
 | CAPTCHA_TIME      | time in minutes between captchas      | 30                 |
 | SESSION_SECRET    | random sting for express sessions     | "ayylmao"          |
 | LOG_MYSQL         | if sql queries should get logged      | 0                  |
-| USE_XREALIP       | see cloudflare section                | 1                  |
+| USE_XREALIP       | see ngins / CDN  section              | 1                  |
 | BACKUP_URL        | url of backup server (see Backup)     | "http://localhost" |
 | BACKUP_DIR        | mounted directory of backup server    | "/mnt/backup/"     |
 | GMAIL_USER        | gmail username if used for mails      | "ppfun@gmail.com"  |
@@ -108,7 +109,7 @@ Notes:
 
 | Variable              | Description              |
 |-----------------------|:-------------------------|
-| DISCORD_INVITE        | Invite to discord server |
+| GUILDED_INVITE        | Invite to guilded server |
 | DISCORD_CLIENT_ID     | All                      |
 | DISCORD_CLIENT_SECRET | those                    |
 | GOOGLE_CLIENT_ID      | values                   |
