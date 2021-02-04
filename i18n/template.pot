@@ -126,80 +126,14 @@ msgstr ""
 msgid "Pixels placed"
 msgstr ""
 
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr ""
-
 #: src/components/Converter.jsx:609
 #: src/components/CoordinatesBox.jsx:26
 msgid "Copy to Clipboard"
 msgstr ""
 
-#: src/components/ChannelContextMenu.jsx:73
-msgid "Mute"
-msgstr ""
-
-#: src/components/UserContextMenu.jsx:72
-msgid "Ping"
-msgstr ""
-
-#: src/components/UserContextMenu.jsx:97
-msgid "DM"
-msgstr ""
-
-#: src/components/UserContextMenu.jsx:107
-msgid "Block"
-msgstr ""
-
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
-msgstr ""
-
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
-msgstr ""
-
-#: src/components/GlobeButton.jsx:31
-msgid "Globe View"
-msgstr ""
-
-#: src/components/SettingsButton.jsx:20
-#: src/components/SettingsModal.jsx:267
-msgid "Settings"
-msgstr ""
-
-#: src/components/LogInButton.jsx:20
-#: src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr ""
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr ""
-
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr ""
-
-#: src/components/Chat.jsx:143
-msgid "Channel settings"
-msgstr ""
-
-#: src/components/Chat.jsx:152
-msgid "maximize"
-msgstr ""
-
-#: src/components/Chat.jsx:168
-msgid "Start chatting here"
-msgstr ""
-
-#: src/components/Chat.jsx:200
-msgid "Chat here"
-msgstr ""
-
-#: src/components/Chat.jsx:220
-msgid "You must be logged in to chat"
+#: src/components/CanvasSelectModal.jsx:67
+#: src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/ForgotPasswordModal.jsx:16
@@ -214,6 +148,10 @@ msgstr ""
 
 #: src/components/ForgotPasswordModal.jsx:37
 msgid "Restore my Password"
+msgstr ""
+
+#: src/components/ChatModal.jsx:35
+msgid "Chat"
 msgstr ""
 
 #: src/components/ArchiveModal.jsx:20
@@ -251,18 +189,6 @@ msgstr ""
 
 #: src/components/ArchiveModal.jsx:50
 msgid "Canvas Archive"
-msgstr ""
-
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
-msgstr ""
-
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr ""
-
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
 msgstr ""
 
 #: src/components/CanvasSelectModal.jsx:29
@@ -322,6 +248,111 @@ msgstr ""
 
 #: src/components/UserAreaModal.jsx:123
 msgid "Loading..."
+msgstr ""
+
+#: src/components/LogInButton.jsx:20
+#: src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr ""
+
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr ""
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:125
+msgid "Show Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:126
+msgid "Turn on grid to highlight pixel borders."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:132
+msgid "Show Pixel Activity"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:133
+msgid "Show circles where pixels are placed."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:139
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:141
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:147
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:148
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:153
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:155
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:160
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:162
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:167
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:168
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/Converter.jsx:423
+#: src/components/SettingsModal.jsx:173
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:174
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:180
+msgid "Historical View"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:181
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:189
+msgid "Themes"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:190
+msgid "How pixelplanet should look like."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:200
+msgid "Select Language"
+msgstr ""
+
+#: src/components/SettingsButton.jsx:20
+#: src/components/SettingsModal.jsx:278
+msgid "Settings"
 msgstr ""
 
 #: src/components/HelpModal.jsx:34
@@ -517,140 +548,60 @@ msgstr ""
 msgid "Welcome to PixelPlanet.fun"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:123
-msgid "Show Grid"
+#: src/components/UserContextMenu.jsx:72
+msgid "Ping"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:124
-msgid "Turn on grid to highlight pixel borders."
+#: src/components/UserContextMenu.jsx:97
+msgid "DM"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:130
-msgid "Show Pixel Activity"
+#: src/components/UserContextMenu.jsx:107
+msgid "Block"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:131
-msgid "Show circles where pixels are placed."
+#: src/components/ChannelContextMenu.jsx:73
+msgid "Mute"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:137
-msgid "Disable Game Sounds"
+#: src/components/PalselButton.jsx:25
+msgid "Close Palette"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:139
-msgid "All sound effects will be disabled."
+#: src/components/PalselButton.jsx:25
+msgid "Open Palette"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:145
-msgid "Enable chat notifications"
+#: src/components/GlobeButton.jsx:31
+msgid "Globe View"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:146
-msgid "Play a sound when new chat messages arrive"
+#: src/components/Chat.jsx:143
+msgid "Channel settings"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:151
-msgid "Auto Zoom In"
+#: src/components/Chat.jsx:152
+msgid "maximize"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:153
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
+#: src/components/Chat.jsx:168
+msgid "Start chatting here"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:158
-msgid "Compact Palette"
+#: src/components/Chat.jsx:200
+msgid "Chat here"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:160
-msgid "Display Palette in a compact form that takes less screen space."
+#: src/components/Chat.jsx:220
+msgid "You must be logged in to chat"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:165
-msgid "Potato Mode"
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:166
-msgid "For when you are playing on a potato."
-msgstr ""
-
-#: src/components/Converter.jsx:423
-#: src/components/SettingsModal.jsx:171
-msgid "Light Grid"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:172
-msgid "Show Grid in white instead of black."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:179
-msgid "Historical View"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:180
-msgid "Check out past versions of the canvas."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:188
-msgid "Themes"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:189
-msgid "How pixelplanet should look like."
-msgstr ""
-
-#: src/components/ChangeMail.jsx:104
-#: src/components/ChangeName.jsx:82
-#: src/components/ChangePassword.jsx:120
-#: src/components/DeleteAccount.jsx:82
-#: src/components/LogInForm.jsx:97
-#: src/components/NewPasswordForm.jsx:93
-#: src/components/SignUpForm.jsx:118
-msgid "Error"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:126
-msgid "Name"
-msgstr ""
-
-#: src/components/NewPasswordForm.jsx:100
-#: src/components/SignUpForm.jsx:133
-msgid "Email"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:112
-#: src/components/DeleteAccount.jsx:89
-#: src/components/LogInForm.jsx:111
-#: src/components/SignUpForm.jsx:140
-msgid "Password"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:149
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/Admintools.jsx:306
-#: src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461
-#: src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589
-#: src/components/NewPasswordForm.jsx:104
-#: src/components/SignUpForm.jsx:152
-msgid "Submit"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:125
-#: src/components/ChangeName.jsx:94
-#: src/components/ChangePassword.jsx:152
-#: src/components/DeleteAccount.jsx:95
-#: src/components/NewPasswordForm.jsx:106
-#: src/components/SignUpForm.jsx:158
-msgid "Cancel"
-msgstr ""
-
-#: src/components/NewPasswordForm.jsx:83
-msgid "Sent you a mail with instructions to reset your password."
+#: src/components/HelpButton.jsx:20
+msgid "Help"
 msgstr ""
 
 #: src/components/CanvasItem.jsx:46
@@ -692,14 +643,6 @@ msgstr ""
 
 #: src/components/Rankings.jsx:49
 msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-
-#: src/components/LogInForm.jsx:104
-msgid "Name or Email"
-msgstr ""
-
-#: src/components/LogInForm.jsx:115
-msgid "LogIn"
 msgstr ""
 
 #: src/components/UserArea.jsx:57
@@ -745,6 +688,70 @@ msgstr ""
 
 #: src/components/UserArea.jsx:147
 msgid "Social Settings"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:104
+#: src/components/ChangeName.jsx:82
+#: src/components/ChangePassword.jsx:120
+#: src/components/DeleteAccount.jsx:82
+#: src/components/LogInForm.jsx:97
+#: src/components/NewPasswordForm.jsx:93
+#: src/components/SignUpForm.jsx:118
+msgid "Error"
+msgstr ""
+
+#: src/components/LogInForm.jsx:104
+msgid "Name or Email"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:112
+#: src/components/DeleteAccount.jsx:89
+#: src/components/LogInForm.jsx:111
+#: src/components/SignUpForm.jsx:140
+msgid "Password"
+msgstr ""
+
+#: src/components/LogInForm.jsx:115
+msgid "LogIn"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:126
+msgid "Name"
+msgstr ""
+
+#: src/components/NewPasswordForm.jsx:100
+#: src/components/SignUpForm.jsx:133
+msgid "Email"
+msgstr ""
+
+#: src/components/SignUpForm.jsx:149
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/Admintools.jsx:306
+#: src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461
+#: src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589
+#: src/components/NewPasswordForm.jsx:104
+#: src/components/SignUpForm.jsx:152
+msgid "Submit"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:125
+#: src/components/ChangeName.jsx:94
+#: src/components/ChangePassword.jsx:152
+#: src/components/DeleteAccount.jsx:95
+#: src/components/NewPasswordForm.jsx:106
+#: src/components/SignUpForm.jsx:158
+msgid "Cancel"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:123
+#: src/components/ChangeName.jsx:92
+#: src/components/ChangePassword.jsx:150
+#: src/components/LanguageSelect.jsx:73
+msgid "Save"
 msgstr ""
 
 #: src/components/Admintools.jsx:179
@@ -823,6 +830,10 @@ msgstr ""
 
 #: src/components/Admintools.jsx:561
 msgid "User Name"
+msgstr ""
+
+#: src/components/NewPasswordForm.jsx:83
+msgid "Sent you a mail with instructions to reset your password."
 msgstr ""
 
 #: src/components/Converter.jsx:274
@@ -964,10 +975,6 @@ msgstr ""
 msgid "You have no users blocked"
 msgstr ""
 
-#: src/components/DeleteAccount.jsx:93
-msgid "Yes, Delete My Account!"
-msgstr ""
-
 #: src/components/ChangeMail.jsx:89
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,               "
@@ -978,34 +985,12 @@ msgstr ""
 msgid "New Mail"
 msgstr ""
 
-#: src/components/ChangeMail.jsx:123
-#: src/components/ChangeName.jsx:92
-#: src/components/ChangePassword.jsx:150
-msgid "Save"
+#: src/components/DeleteAccount.jsx:93
+msgid "Yes, Delete My Account!"
 msgstr ""
 
 #: src/components/ChangeName.jsx:88
 msgid "New Username"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:18
-msgid "Passwords do not match."
-msgstr ""
-
-#: src/components/ChangePassword.jsx:103
-msgid "Changed Password successfully."
-msgstr ""
-
-#: src/components/ChangePassword.jsx:129
-msgid "Old Password"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:137
-msgid "New Password"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:146
-msgid "Confirm New Password"
 msgstr ""
 
 #: src/components/UserMessages.jsx:41
@@ -1043,20 +1028,45 @@ msgstr ""
 msgid "Deny"
 msgstr ""
 
+#: src/components/ChangePassword.jsx:18
+msgid "Passwords do not match."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:103
+msgid "Changed Password successfully."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:129
+msgid "Old Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:137
+msgid "New Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:146
+msgid "Confirm New Password"
+msgstr ""
+
 #: src/components/HelpModal.jsx:15
-#: src/components/SettingsModal.jsx:125
+#: src/components/SettingsModal.jsx:127
 msgctxt "keybinds"
 msgid "G"
 msgstr ""
 
 #: src/components/HelpModal.jsx:16
-#: src/components/SettingsModal.jsx:132
+#: src/components/SettingsModal.jsx:134
 msgctxt "keybinds"
 msgid "X"
 msgstr ""
 
+#: src/components/SettingsModal.jsx:142
+msgctxt "keybinds"
+msgid "M"
+msgstr ""
+
 #: src/components/HelpModal.jsx:17
-#: src/components/SettingsModal.jsx:182
+#: src/components/SettingsModal.jsx:183
 msgctxt "keybinds"
 msgid "H"
 msgstr ""
@@ -1104,9 +1114,4 @@ msgstr ""
 #: src/components/HelpModal.jsx:32
 msgctxt "keybinds"
 msgid "C"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:140
-msgctxt "keybinds"
-msgid "M"
 msgstr ""

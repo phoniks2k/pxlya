@@ -17,7 +17,6 @@ export function getHostFromRequest(req): ?string {
 }
 
 export function getIPFromRequest(req): ?string {
-
   if (USE_XREALIP) {
     const ip = req.headers['x-real-ip'];
     if (ip) {
@@ -30,10 +29,11 @@ export function getIPFromRequest(req): ?string {
   let conip = (connection ? connection.remoteAddress : socket.remoteAddress);
   conip = conip || '0.0.0.1';
 
-  // eslint-disable-next-line max-len
-  logger.warn(
-    `Connection not going through nginx and cloudflare! IP: ${conip}`, headers
-  );
+  if (!USE_XREALIP) {
+    logger.warn(
+      `Connection not going through reverse proxy! IP: ${conip}`, reqheaders,
+    );
+  }
 
   return conip;
 }

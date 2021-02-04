@@ -64,6 +64,7 @@ export default ({
     entry: {
       web: [path.resolve(__dirname, 'src', 'web.js')],
       backup: [path.resolve(__dirname, 'src', 'backup.js')],
+      captchaserver: [path.resolve(__dirname, 'src', 'captchaserver.js')],
     },
 
     output: {

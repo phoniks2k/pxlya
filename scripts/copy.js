@@ -92,6 +92,10 @@ async function copy() {
       `${deploydir}/example-ecosystem-backup.yml`,
       `${builddir}/ecosystem-backup.example.yml`,
     ),
+    copyFile(
+      `${deploydir}/example-ecosystem-captchas.yml`,
+      `${builddir}/ecosystem-captchas.example.yml`,
+    ),
   ]);
 }
 

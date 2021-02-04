@@ -1,0 +1,8 @@
+apps:
+  - script   : ./captchaserver.js
+    name     : 'captchas'
+    node_args: --nouse-idle-notification --expose-gc
+    env:
+      PORT: 80
+      HOST: "localhost"
+      REDIS_URL: 'redis://localhost:6379'

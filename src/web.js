@@ -205,7 +205,7 @@ promise.then(() => {
     chatProvider.initialize();
     const address = server.address();
     logger.log(
-      'info', 
+      'info',
       `web is running at http://${address.host}:${address.port}/`,
     );
   });

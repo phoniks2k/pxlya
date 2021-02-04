@@ -10,6 +10,7 @@ if (process.env.BROWSER) {
 }
 
 export const PORT = process.env.PORT || 80;
+export const HOST = process.env.HOST || 'localhost';
 
 export const GMAIL_USER = process.env.GMAIL_USER || null;
 export const GMAIL_PW = process.env.GMAIL_PW || null;
