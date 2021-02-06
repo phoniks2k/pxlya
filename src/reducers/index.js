@@ -7,6 +7,7 @@ import canvas from './canvas';
 import gui from './gui';
 import modal from './modal';
 import user from './user';
+import ranks from './ranks';
 import chat from './chat';
 import contextMenu from './contextMenu';
 import chatRead from './chatRead';
@@ -38,6 +39,7 @@ const config = {
   storage: localForage,
   blacklist: [
     'user',
+    'ranks',
     'canvas',
     'modal',
     'chat',
@@ -52,6 +54,7 @@ export default persistCombineReducers(config, {
   gui,
   modal,
   user,
+  ranks,
   chat,
   contextMenu,
   chatRead,

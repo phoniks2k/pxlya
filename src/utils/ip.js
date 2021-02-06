@@ -31,7 +31,7 @@ export function getIPFromRequest(req): ?string {
 
   if (!USE_XREALIP) {
     logger.warn(
-      `Connection not going through reverse proxy! IP: ${conip}`, reqheaders,
+      `Connection not going through reverse proxy! IP: ${conip}`, req.headers,
     );
   }
 

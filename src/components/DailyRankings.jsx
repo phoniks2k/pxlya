@@ -34,7 +34,7 @@ const DailyRankings = ({ totalDailyRanking }) => (
 );
 
 function mapStateToProps(state: State) {
-  const { totalDailyRanking } = state.user;
+  const { totalDailyRanking } = state.ranks;
   return { totalDailyRanking };
 }
 

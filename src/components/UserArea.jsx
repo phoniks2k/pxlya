@@ -212,11 +212,13 @@ function mapStateToProps(state: State) {
   const {
     name,
     mailreg,
+  } = state.user;
+  const {
     totalPixels,
     dailyTotalPixels,
     ranking,
     dailyRanking,
-  } = state.user;
+  } = state.ranks;
   const stats = {
     totalPixels,
     dailyTotalPixels,

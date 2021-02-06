@@ -34,7 +34,7 @@ const TotalRankings = ({ totalRanking }) => (
 );
 
 function mapStateToProps(state: State) {
-  const { totalRanking } = state.user;
+  const { totalRanking } = state.ranks;
   return { totalRanking };
 }
 
