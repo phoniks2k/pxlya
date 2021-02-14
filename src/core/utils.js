@@ -195,7 +195,7 @@ export function numberToString(num: number): string {
   while (postfixNum < postfix.length) {
     if (num < 10000) {
       // eslint-disable-next-line max-len
-      return `${Math.floor(num / 1000)}.${Math.floor((num % 1000) / 10)}${postfix[postfixNum]}`;
+      return `${Math.floor(num / 1000)}.${(`0${Math.floor((num % 1000) / 10)}`).slice(-2)}${postfix[postfixNum]}`;
     } if (num < 100000) {
       // eslint-disable-next-line max-len
       return `${Math.floor(num / 1000)}.${Math.floor((num % 1000) / 100)}${postfix[postfixNum]}`;
@@ -208,9 +208,6 @@ export function numberToString(num: number): string {
   return '';
 }
 
-/*
- * generates a color based on a given string
- */
 export function numberToStringFull(num: number): string {
   if (num < 0) {
     return `${num} :-(`;
@@ -224,6 +221,9 @@ export function numberToStringFull(num: number): string {
   return `${Math.floor(num / 1000000)}.${(`00${String(Math.floor(num / 1000))}`).slice(-3)}.${(`00${String(num % 1000)}`).slice(-3)}`;
 }
 
+/*
+ * generates a color based on a given string
+ */
 export function colorFromText(str: string) {
   if (!str) return '#000000';
 
