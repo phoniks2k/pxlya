@@ -45,7 +45,7 @@ const HelpModal = () => {
       <p className="modaltext">
         {t`Place color pixels on a large canvas with other players online!`}<br />
         {t`Our main canvas is a huge worldmap, you can place wherever you like, but you will have to wait a specific \
-Cooldown between pixels. You can check out the cooldown and requiremnts on the Canvas Selection menu (globe button on top). \
+Cooldown between pixels. You can check out the cooldown and requirements on the Canvas Selection menu (globe button on top). \
 Some canvases have a different cooldown for replacing a user-set pixels than placing on a unset pixel. i.e. 4s/7s means 4s on fresh \
 pixels and 7s on already set pixels.`}<br />
         {t`Higher zoomlevels take some time to update, the 3D globe gets updated at least once per day.`}<br />

@@ -87,7 +87,7 @@ class ChangeMail extends React.Component {
             className="modalmessage"
           >
             {t`Changed Mail successfully. We sent you a verification mail, \
-              please verify your new mail adress.`}
+              please verify your new mail address.`}
           </p>
           <button type="button" onClick={done}>Close</button>
         </div>

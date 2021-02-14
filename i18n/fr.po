@@ -212,7 +212,7 @@ msgstr "Conditions d'utilisation"
 
 #: src/components/HelpModal.jsx:40
 msgid "your IP"
-msgstr "Votre adresse IP"
+msgstr "Votre addresse IP"
 
 #: src/components/HelpModal.jsx:46
 msgid "Place color pixels on a large canvas with other players online!"
@@ -223,7 +223,7 @@ msgstr ""
 msgid ""
 "Our main canvas is a huge worldmap, you can place wherever you like, but you "
 "will have to wait a specific Cooldown between pixels. You can check out the "
-"cooldown and requiremnts on the Canvas Selection menu (globe button on top). "
+"cooldown and requirements on the Canvas Selection menu (globe button on top). "
 "Some canvases have a different cooldown for replacing a user-set pixels than "
 "placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels and 7s on "
 "already set pixels."
@@ -282,7 +282,7 @@ msgid ""
 msgstr ""
 "Si vous avez été détécté comme proxy mais vous n'en utilisez pas, allez à "
 "notre ${ guildedLink } ou envoyez-nous un courriel avec ${ getIPLink } à "
-"${ mailLink } s'il vous plait. Ne postez pas votre adresse IP ailleurs. Nous "
+"${ mailLink } s'il vous plait. Ne postez pas votre addresse IP ailleurs. Nous "
 "sommes désolés du dérangement."
 
 #: src/components/HelpModal.jsx:63 src/components/HelpModal.jsx:80
@@ -585,7 +585,7 @@ msgid ""
 "While we tend to not delete canvases, some canvases are started for fun or "
 "as a request by users who currently like a meme. Those canvases can get "
 "boring after a while and after weeks of no major change and if they really "
-"aren&apos;t worth being kept active, we decide to remove them."
+"aren't worth being kept active, we decide to remove them."
 msgstr ""
 "Bien que nous avons tendance à ne pas supprimer les toiles, certaines toiles "
 "sont faites pour le plaisir ou par une requête des utilisateurs qui "
@@ -607,7 +607,7 @@ msgstr "Toile de la boussole politique"
 msgid ""
 "This canvas got requested during a time of political conflicts on the main "
 "Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s coolodwn and 60s stacking. It got launched on May 11th and "
+"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
 "remained active for months till it got shut down on November 30th."
 msgstr ""
 "Cette toile a été demandé pendant une période de conflits politiques sur la "
@@ -645,9 +645,9 @@ msgid "Archive"
 msgstr "Archive"
 
 #: src/components/ForgotPasswordModal.jsx:16
-msgid "Enter your mail adress and we will send you a new password:"
+msgid "Enter your mail address and we will send you a new password:"
 msgstr ""
-"Entrez votre adresse de courriel et nous vous enverrons un nouveau mot de "
+"Entrez votre addresse de courriel et nous vous enverrons un nouveau mot de "
 "passe:"
 
 #: src/components/ForgotPasswordModal.jsx:37
@@ -853,7 +853,7 @@ msgstr "Actions d'IP"
 
 #: src/components/Admintools.jsx:470
 msgid "Do stuff with IPs (one IP per line)"
-msgstr "Fait des choses avec les IPs (un adresse par ligne)"
+msgstr "Fait des choses avec les IPs (un addresse par ligne)"
 
 #: src/components/Admintools.jsx:510
 msgid "Manage Moderators"
@@ -1020,10 +1020,10 @@ msgstr "Vous n'avez pas bloqué personne"
 #: src/components/ChangeMail.jsx:89
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,               "
-"please verify your new mail adress."
+"please verify your new mail address."
 msgstr ""
 "Le courriel a été modifié avec succès. Nous vous avons envoyé un courriel de "
-"verification,               veuillez verifier votre nouvelle adresse de "
+"verification,               veuillez verifier votre nouvelle addresse de "
 "courriel."
 
 #: src/components/ChangeMail.jsx:119
