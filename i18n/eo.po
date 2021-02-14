@@ -499,21 +499,21 @@ msgstr "Premu"
 #: src/components/HelpModal.jsx:68
 #, javascript-format
 msgid "Press ${ bindH } to toggle historical view"
-msgstr "Premu ${ bindH }"
+msgstr "Premu ${ bindH } por arkiva vizaĵ'"
 
 #: src/components/HelpModal.jsx:69
 msgid "Press ${ bindR } to copy coordinates"
-msgstr "Premu ${ bindR }"
+msgstr "Premu ${ bindR } por kopii koordinatoj"
 
 #: src/components/HelpModal.jsx:70
 #, javascript-format
 msgid "Press ${ bindQ } or ${ bindE } to zoom"
-msgstr "Premu ${ bindQ }"
+msgstr "Premu ${ bindQ } aŭ ${ bindE } por zomi"
 
 #: src/components/HelpModal.jsx:71 src/components/HelpModal.jsx:82
 #, javascript-format
 msgid "Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
-msgstr "Premu ${ bindW }"
+msgstr "Premu ${ bindW }, ${  bindA }, ${ bindD } por movi"
 
 #: src/components/HelpModal.jsx:72 src/components/HelpModal.jsx:83
 #, javascript-format

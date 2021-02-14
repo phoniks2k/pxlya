@@ -88,8 +88,7 @@ msgstr "PixelPlanet.fun"
 
 #: src/ssr-components/Main.jsx:74
 msgid "Place color pixels on an map styled canvas with other players online"
-msgstr ""
-"Metu kolorajn pikselojn en grandan kanvason kun alian ludantojn enrete!"
+msgstr "Metu kolorajn pikselojn en grandan kanvason kun alian ludantojn enrete"
 
 #: src/routes/reset_password.js:58
 msgid "You sent an empty password or invalid data :("
