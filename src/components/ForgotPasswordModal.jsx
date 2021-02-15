@@ -13,7 +13,7 @@ import NewPasswordForm from './NewPasswordForm';
 const ForgotPasswordModal = ({ login }) => (
   <p style={{ paddingLeft: '5%', paddingRight: '5%' }}>
     <p className="modaltext">
-      {t`Enter your mail adress and we will send you a new password:`}
+      {t`Enter your mail address and we will send you a new password:`}
     </p><br />
     <p style={{ textAlign: 'center' }}>
       <NewPasswordForm back={login} />

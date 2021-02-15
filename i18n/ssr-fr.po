@@ -103,7 +103,7 @@ msgstr "Cliquez pour vérifier"
 
 #: src/core/mail.js:78 src/core/mail.js:128
 msgid "Or by copying following url:"
-msgstr "Ou copiez l'adresse URL suivente:"
+msgstr "Ou copiez l'addresse URL suivente:"
 
 #: src/core/mail.js:79
 msgid ""
@@ -156,7 +156,7 @@ msgid ""
 "If you did not request this mail, please just ignore it (the ip that "
 "requested this mail was ${ ip })."
 msgstr ""
-"Si vous n'avez pas demandé ce courriel, merci de l'ignorer (l'adresse IP qui "
+"Si vous n'avez pas demandé ce courriel, merci de l'ignorer (l'addresse IP qui "
 "a demandé ce courriel était ${ ip })."
 
 #: src/ssr-components/PasswordReset.jsx:21

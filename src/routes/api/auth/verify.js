@@ -1,5 +1,5 @@
 /*
- * verify mail adress
+ * verify mail address
  * @flow
  */
 
