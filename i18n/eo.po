@@ -494,7 +494,7 @@ msgstr "Premu ${ bindG } baskuli kranon"
 
 #: src/components/HelpModal.jsx:67
 msgid "Press ${ bindX } to toggle showing of pixel activity"
-msgstr "Premu ${ bindX }"
+msgstr "Premu ${ bindX } por vidi piksel' aktivec'."
 
 #: src/components/HelpModal.jsx:68
 #, javascript-format
