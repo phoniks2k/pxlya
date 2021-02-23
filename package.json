@@ -10,6 +10,7 @@
   "main": "server.js",
   "scripts": {
     "build": "babel-node scripts/run prebuild && npm run webpack",
+    "build-en": "babel-node scripts/run prebuild && npm run extract",
     "clean": "babel-node scripts/run clean",
     "webpack": "webpack --config ./webpack.config.web.babel.js && parallel-webpack --config ./webpack.config.client.babel.js",
     "extract": "webpack --env extract --config ./webpack.config.web.babel.js && webpack --env extract --config ./webpack.config.client.babel.js",
@@ -76,7 +77,6 @@
     "sequelize": "^6.5.0",
     "sharp": "^0.27.1",
     "startaudiocontext": "^1.2.1",
-    "sweetalert2": "^10.14.0",
     "three": "^0.125.2",
     "three-trackballcontrols": "^0.9.0",
     "ttag": "^1.7.24",

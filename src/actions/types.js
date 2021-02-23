@@ -14,6 +14,7 @@ export type Action =
     icon: string,
     confirmButtonText: string,
   }
+  | { type: 'CLOSE_ALERT' }
   | { type: 'TOGGLE_GRID' }
   | { type: 'TOGGLE_PIXEL_NOTIFY' }
   | { type: 'TOGGLE_AUTO_ZOOM_IN' }

@@ -7,6 +7,5 @@ import { t } from 'ttag';
 
 const Captcha = ({
 }) => (
-  <div>
-  <div />
+  div />
 );

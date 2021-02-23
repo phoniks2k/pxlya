@@ -4,20 +4,20 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import type { State } from '../reducers';
 import useWindowSize from '../utils/reactHookResize';
 import { showChatModal } from '../actions';
 
 import Chat from './Chat';
 
 
-function ChatBox({
-  chatOpen,
-  triggerModal,
-}) {
+const ChatBox = () => {
   const [render, setRender] = useState(false);
+
+  const chatOpen = useSelector((state) => state.modal.chatOpen);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.setTimeout(() => {
@@ -25,13 +25,13 @@ function ChatBox({
     }, 10);
   }, [chatOpen]);
 
-  const onTransitionEnd = () => {
+  const onTransitionEnd =() => {
     if (!chatOpen) setRender(false);
   };
 
   const { width } = useWindowSize();
   if (width < 604 && chatOpen) {
-    triggerModal();
+    dispatch(showChatModal(true));
   }
 
   return (
@@ -46,17 +46,4 @@ function ChatBox({
   );
 }
 
-function mapStateToProps(state: State) {
-  const { chatOpen } = state.modal;
-  return { chatOpen };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    triggerModal() {
-      dispatch(showChatModal(true));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatBox);
+export default React.memo(ChatBox);

@@ -2,7 +2,7 @@
 
 import type { Action } from '../actions/types';
 
-export type UserState = {
+export type RanksState = {
   totalPixels: number,
   dailyTotalPixels: number,
   ranking: number,
@@ -13,7 +13,7 @@ export type UserState = {
   totalDailyRanking: Object,
 };
 
-const initialState: UserState = {
+const initialState: RanksState = {
   totalPixels: 0,
   dailyTotalPixels: 0,
   ranking: 1488,
@@ -24,9 +24,9 @@ const initialState: UserState = {
 };
 
 export default function ranks(
-  state: UserState = initialState,
+  state: RanksState = initialState,
   action: Action,
-): UserState {
+): RanksState {
   switch (action.type) {
     case 'PLACED_PIXELS': {
       let { totalPixels, dailyTotalPixels } = state;

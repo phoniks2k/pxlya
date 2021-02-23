@@ -29,6 +29,12 @@ export function sweetAlert(
   };
 }
 
+export function closeAlert(): Action {
+  return {
+    type: 'CLOSE_ALERT',
+  };
+}
+
 export function toggleChatBox(): Action {
   return {
     type: 'TOGGLE_CHAT_BOX',
