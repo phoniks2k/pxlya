@@ -8,7 +8,7 @@ import process from 'process';
 import http from 'http';
 import ppfunCaptcha from 'ppfun-captcha';
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || 'localhost';
 
 const server = http.createServer((req, res) => {
@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
   const ip = req.headers['x-real-ip'] || req.connection.remoteAddress;
   console.log(`Serving ${captcha.text} to ${ip}`);
   res.writeHead(200, {
-    'Content-Type': 'text/html',
+    'Content-Type': 'image/svg+xml',
     'Cache-Control': 'no-cache',
   });
   res.write(captcha.data);

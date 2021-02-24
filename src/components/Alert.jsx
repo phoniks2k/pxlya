@@ -3,9 +3,10 @@
  * @flow
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import Captcha from './Captcha';
 import { closeAlert } from '../actions';
 
 const Alert = () => {
@@ -20,9 +21,9 @@ const Alert = () => {
   } = useSelector((state) => state.alert);
 
   const dispatch = useDispatch();
-  const close = () => {
+  const close = useCallback(() => {
     dispatch(closeAlert());
-  };
+  }, [dispatch]);
 
   const onTransitionEnd = () => {
     if (!alertOpen) setRender(false);
@@ -54,12 +55,16 @@ const Alert = () => {
             {alertMessage}
           </p>
           <p>
-          <button
-            type="button"
-            onClick={close}
-          >
-            {alertBtn}
-          </button>
+            {(alertType === 'captcha')
+              ? <Captcha cancel={close} />
+              : (
+                <button
+                  type="button"
+                  onClick={close}
+                >
+                  {alertBtn}
+                </button>
+              )}
           </p>
         </div>
       </div>

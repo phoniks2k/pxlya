@@ -25,7 +25,7 @@ const ChatBox = () => {
     }, 10);
   }, [chatOpen]);
 
-  const onTransitionEnd =() => {
+  const onTransitionEnd = () => {
     if (!chatOpen) setRender(false);
   };
 
@@ -44,6 +44,6 @@ const ChatBox = () => {
       </div>
     )
   );
-}
+};
 
 export default React.memo(ChatBox);

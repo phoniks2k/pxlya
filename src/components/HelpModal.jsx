@@ -90,20 +90,6 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
       <p>{t`Partners:`} <a href="https://www.crazygames.com/c/io" target="_blank" rel="noopener noreferrer">crazygames.com</a></p>
-      { (typeof window.hcaptcha === 'undefined')
-        ? (
-          <p className="modaltext">
-            <small>
-              {jt`This site is protected by reCAPTCHA and the Google ${reCaptchaPP} and ${reCaptchaTOS} apply.`}
-            </small>
-          </p>
-        ) : (
-          <p className="modaltext">
-            <small>
-              {jt`This site is protected by hCAPTCHA and its ${hCaptchaPP} and ${hCaptchaTOS} apply.`}
-            </small>
-          </p>
-        )}
     </p>
   );
 };

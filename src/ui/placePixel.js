@@ -239,15 +239,14 @@ export function receivePixelReturn(
       store.dispatch(pixelWait());
       break;
     case 10:
-      // captcha, reCaptcha or hCaptcha
-      if (typeof window.hcaptcha !== 'undefined') {
-        window.hcaptcha.execute();
-      } else {
-        window.grecaptcha.execute();
-      }
+      store.dispatch(sweetAlert(
+        'Captcha',
+        `Please prove that you are human..`,
+        'captcha',
+        t`OK`,
+      ));
       return;
     case 11:
-
       errorTitle = t`No Proxies Allowed :(`;
       msg = t`You are using a Proxy.`;
       break;

@@ -11,7 +11,6 @@
 /* eslint-disable max-len */
 
 import React from 'react';
-import { CAPTCHA_METHOD, CAPTCHA_SITEKEY } from '../core/config';
 
 const Html = ({
   title,
@@ -48,10 +47,6 @@ const Html = ({
           dangerouslySetInnerHTML={{ __html: style.cssText }}
         />
       ))}
-      {(CAPTCHA_METHOD === 1) && CAPTCHA_SITEKEY && useCaptcha
-          && <script src="https://www.google.com/recaptcha/api.js" async defer />}
-      {(CAPTCHA_METHOD === 2) && CAPTCHA_SITEKEY && useCaptcha
-          && <script src="https://hcaptcha.com/1/api.js" async defer />}
       {code && (
       <script
         // eslint-disable-next-line react/no-danger
@@ -67,24 +62,6 @@ const Html = ({
         {body}
       </div>
       {scripts && scripts.map((script) => <script key={script} src={script} />)}
-      {(CAPTCHA_METHOD === 2) && CAPTCHA_SITEKEY && useCaptcha
-          && (
-          <div
-            className="h-captcha"
-            data-sitekey={CAPTCHA_SITEKEY}
-            data-callback="onCaptcha"
-            data-size="invisible"
-          />
-          )}
-      {(CAPTCHA_METHOD === 1) && CAPTCHA_SITEKEY && useCaptcha
-          && (
-          <div
-            className="g-recaptcha"
-            data-sitekey={CAPTCHA_SITEKEY}
-            data-callback="onCaptcha"
-            data-size="invisible"
-          />
-          )}
     </body>
   </html>
 );

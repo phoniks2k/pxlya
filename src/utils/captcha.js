@@ -3,46 +3,15 @@
  * @flow
  */
 
-import fetch from 'isomorphic-fetch';
 import logger from '../core/logger';
 import redis from '../data/redis';
 
 import {
-  CAPTCHA_METHOD,
-  CAPTCHA_SECRET,
+  CAPTCHA_URL,
   CAPTCHA_TIME,
 } from '../core/config';
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
-// eslint-disable-next-line max-len
-const RECAPTCHA_ENDPOINT = `https://www.google.com/recaptcha/api/siteverify?secret=${CAPTCHA_SECRET}`;
-const HCAPTCHA_ENDPOINT = 'https://hcaptcha.com/siteverify';
-
-/**
- * https://stackoverflow.com/questions/27297067/google-recaptcha-how-to-get-user-response-and-validate-in-the-server-side
- *
- * @param token
- * @param ip
- * @returns {Promise.<boolean>}
- */
-async function verifyReCaptcha(
-  token: string,
-  ip: string,
-): Promise<boolean> {
-  const url = `${RECAPTCHA_ENDPOINT}&response=${token}&remoteip=${ip}`;
-  const response = await fetch(url);
-  if (response.ok) {
-    const { success } = await response.json();
-    if (success) {
-      logger.info(`CAPTCHA ${ip} successfully solved captcha`);
-      return true;
-    }
-    logger.info(`CAPTCHA Token for ${ip} not ok`);
-  } else {
-    logger.warn(`CAPTCHA Recapcha answer for ${ip} not ok`);
-  }
-  return false;
-}
 
 /*
  * https://docs.hcaptcha.com/
@@ -55,24 +24,12 @@ async function verifyHCaptcha(
   token: string,
   ip: string,
 ): Promise<boolean> {
-  const response = await fetch(HCAPTCHA_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `response=${token}&secret=${CAPTCHA_SECRET}&remoteip=${ip}`,
-  });
-  if (response.ok) {
-    const { success } = await response.json();
-    if (success) {
-      logger.info(`CAPTCHA ${ip} successfully solved captcha`);
-      return true;
-    }
-    logger.info(`CAPTCHA Token for ${ip} not ok`);
-  } else {
-    // eslint-disable-next-line max-len
-    logger.warn(`CAPTCHA hCapcha answer for ${ip} not ok ${await response.text()}`);
+  const success = true;
+  if (success) {
+    logger.info(`CAPTCHA ${ip} successfully solved captcha`);
+    return true;
   }
+  logger.info(`CAPTCHA Token for ${ip} not ok`);
   return false;
 }
 
@@ -88,24 +45,10 @@ export async function verifyCaptcha(
   ip: string,
 ): Promise<boolean> {
   try {
-    if (!CAPTCHA_METHOD) {
-      return true;
-    }
     const key = `human:${ip}`;
 
-    switch (CAPTCHA_METHOD) {
-      case 1:
-        if (!await verifyReCaptcha(token, ip)) {
-          return false;
-        }
-        break;
-      case 2:
-        if (!await verifyHCaptcha(token, ip)) {
-          return false;
-        }
-        break;
-      default:
-        // nothing
+    if (!await verifyHCaptcha(token, ip)) {
+      return false;
     }
 
     await redis.setAsync(key, '', 'EX', TTL_CACHE);
@@ -123,7 +66,7 @@ export async function verifyCaptcha(
  * @return boolean true if needed
  */
 export async function needCaptcha(ip: string) {
-  if (!CAPTCHA_METHOD) {
+  if (!CAPTCHA_URL) {
     return false;
   }
 

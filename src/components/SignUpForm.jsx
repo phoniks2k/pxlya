@@ -121,6 +121,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={name}
+          autoComplete="username"
           onChange={(evt) => this.setState({ name: evt.target.value })}
           type="text"
           placeholder={t`Name`}
@@ -128,6 +129,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={email}
+          autoComplete="email"
           onChange={(evt) => this.setState({ email: evt.target.value })}
           type="text"
           placeholder={t`Email`}
@@ -135,6 +137,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={password}
+          autoComplete="new-password"
           onChange={(evt) => this.setState({ password: evt.target.value })}
           type="password"
           placeholder={t`Password`}
@@ -142,6 +145,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={confirmPassword}
+          autoComplete="new-password"
           onChange={(evt) => this.setState({
             confirmPassword: evt.target.value,
           })}

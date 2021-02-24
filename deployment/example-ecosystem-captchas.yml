@@ -3,6 +3,6 @@ apps:
     name     : 'captchas'
     node_args: --nouse-idle-notification --expose-gc
     env:
-      PORT: 80
+      PORT: 8080
       HOST: "localhost"
       REDIS_URL: 'redis://localhost:6379'

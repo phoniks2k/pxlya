@@ -20,6 +20,8 @@ export const TILE_FOLDER = path.join(__dirname, `./${TILE_FOLDER_REL}`);
 
 export const ASSET_SERVER = process.env.ASSET_SERVER || '.';
 
+export const CAPTCHA_URL = process.env.CAPTCHA_URL || 'http://localhost:8080';
+
 export const USE_XREALIP = process.env.USE_XREALIP || false;
 
 export const BACKUP_URL = process.env.BACKUP_URL || null;
@@ -86,12 +88,6 @@ export const auth = {
   },
 };
 
-// o: none
-// 1: reCaptcha
-// 2: hCaptcha
-export const CAPTCHA_METHOD = Number(process.env.CAPTCHA_METHOD || 0);
-export const CAPTCHA_SECRET = process.env.CAPTCHA_SECRET || false;
-export const CAPTCHA_SITEKEY = process.env.CAPTCHA_SITEKEY || false;
 // time on which to display captcha in minutes
 export const CAPTCHA_TIME = parseInt(process.env.CAPTCHA_TIME, 10) || 30;
 
