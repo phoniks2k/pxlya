@@ -90,5 +90,7 @@ export const auth = {
 
 // time on which to display captcha in minutes
 export const CAPTCHA_TIME = parseInt(process.env.CAPTCHA_TIME, 10) || 30;
+// time during which the user can solve a captcha in seconds
+export const CAPTCHA_TIMEOUT = parseInt(process.env.CAPTCHA_TIMEOUT, 10) || 120;
 
 export const SESSION_SECRET = process.env.SESSION_SECRET || 'dummy';

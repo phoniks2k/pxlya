@@ -241,7 +241,7 @@ export function receivePixelReturn(
     case 10:
       store.dispatch(sweetAlert(
         'Captcha',
-        `Please prove that you are human..`,
+        t`Please prove that you are human`,
         'captcha',
         t`OK`,
       ));

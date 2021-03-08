@@ -1,4 +1,8 @@
 /*
+ * Form to ask for captcha.
+ * If callback is provided, it sets the captcha text to it.
+ * If callback is not provided, it provides a button to send the
+ * captcha itself
  * @flow
  */
 
@@ -6,6 +10,7 @@ import React, { useState } from 'react';
 import { t } from 'ttag';
 
 import { IoReloadCircleSharp } from 'react-icons/io5';
+import { requestSolveCaptcha } from '../actions/fetch';
 
 function getUrl() {
   return `${window.ssv.captchaurl}/captcha.svg?${new Date().getTime()}`;
@@ -25,7 +30,7 @@ const Captcha = ({ callback, cancel }) => {
         </span>
       </p>
       <img
-        style={{width: '75%'}}
+        style={{ width: '75%' }}
         src={captchaUrl}
         onError={() => setError(true)}
       />

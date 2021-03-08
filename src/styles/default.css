@@ -112,6 +112,8 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  max-width: 18em;
+  overflow-x: hidden;
 }
 
 tr:nth-child(even) {

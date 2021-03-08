@@ -8,42 +8,51 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
-import { verifyCaptcha } from '../../utils/captcha';
+import { checkCaptchaSolution } from '../../utils/captcha';
 import { getIPFromRequest } from '../../utils/ip';
 
 export default async (req: Request, res: Response) => {
   const ip = getIPFromRequest(req);
+  const { t } = req.ttag;
 
   try {
-    const { token } = req.body;
-    if (!token) {
+    const { text } = req.body;
+    if (!text) {
       res.status(400)
-        .json({ errors: [{ msg: 'No token given' }] });
+        .json({ errors: [t`No captcha text given`] });
       return;
     }
 
-    if (!await verifyCaptcha(token, ip)) {
-      logger.info(`CAPTCHA ${ip} failed his captcha`);
-      res.status(422)
-        .json({
-          errors: [{
-            msg:
-          'You failed your captcha',
-          }],
-        });
-      return;
-    }
+    const ret = await checkCaptchaSolution(text, ip);
 
-    res.status(200)
-      .json({ success: true });
+    switch (ret) {
+      case 0:
+        res.status(200)
+          .json({ success: true });
+        break;
+      case 1:
+        res.status(422)
+          .json({
+            errors: [t`You took too long, try again.`],
+          });
+        break;
+      case 2:
+        res.status(422)
+          .json({
+            errors: [t`You failed your captcha`],
+          });
+        break;
+      default:
+        res.status(422)
+          .json({
+            errors: [t`Unknown Captcha Error`],
+          });
+    }
   } catch (error) {
-    logger.error('checkHuman', error);
+    logger.error('CAPTCHA', error);
     res.status(500)
       .json({
-        errors: [{
-          msg:
-        'Server error occured',
-        }],
+        errors: [t`Server error occured`],
       });
   }
 };

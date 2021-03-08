@@ -5,58 +5,60 @@
 
 import logger from '../core/logger';
 import redis from '../data/redis';
-
+import { getIPv6Subnet } from './ip';
 import {
   CAPTCHA_URL,
   CAPTCHA_TIME,
+  CAPTCHA_TIMEOUT,
 } from '../core/config';
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
 
 /*
- * https://docs.hcaptcha.com/
+ * set captcha solution
  *
- * @param token
+ * @param text Solution of captcha
  * @param ip
- * @return boolean, true if successful, false on error or fail
+ * @param ttl time to be valid in seconds
  */
-async function verifyHCaptcha(
-  token: string,
+export function setCaptchaSolution(
+  text: string,
   ip: string,
-): Promise<boolean> {
-  const success = true;
-  if (success) {
-    logger.info(`CAPTCHA ${ip} successfully solved captcha`);
-    return true;
-  }
-  logger.info(`CAPTCHA Token for ${ip} not ok`);
-  return false;
+) {
+  const key = `capt:${getIPv6Subnet(ip)}`;
+  return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
 }
 
 /*
- * verify captcha token from client
+ * check captcha solution
  *
- * @param token token of solved captcha from client
+ * @param text Solution of captcha
  * @param ip
- * @returns Boolean if successful
+ * @return 0 if solution right
+ *         1 if timed out
+ *         2 if wrong
  */
-export async function verifyCaptcha(
-  token: string,
+export async function checkCaptchaSolution(
+  text: string,
   ip: string,
-): Promise<boolean> {
-  try {
-    const key = `human:${ip}`;
-
-    if (!await verifyHCaptcha(token, ip)) {
-      return false;
+) {
+  const ipn = getIPv6Subnet(ip);
+  const key = `capt:${ipn}`;
+  const solution = await redis.getAsync(key);
+  if (solution) {
+    if (solution.toString('utf8') === text) {
+      const solvkey = `human:${ipn}`;
+      await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
+      logger.info(`CAPTCHA ${ip} successfully solved captcha`);
+      return 0;
     }
-
-    await redis.setAsync(key, '', 'EX', TTL_CACHE);
-    return true;
-  } catch (error) {
-    logger.error(error);
+    logger.info(
+      `CAPTCHA ${ip} got captcha wrong (${text} instead of ${solution})`,
+    );
+    return 2;
   }
-  return false;
+  logger.info(`CAPTCHA ${ip} timed out`);
+  return 1;
 }
 
 /*
@@ -70,7 +72,7 @@ export async function needCaptcha(ip: string) {
     return false;
   }
 
-  const key = `human:${ip}`;
+  const key = `human:${getIPv6Subnet(ip)}`;
   const ttl: number = await redis.ttlAsync(key);
   if (ttl > 0) {
     return false;
@@ -78,6 +80,3 @@ export async function needCaptcha(ip: string) {
   logger.info(`CAPTCHA ${ip} got captcha`);
   return true;
 }
-
-
-export default verifyCaptcha;

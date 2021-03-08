@@ -6,3 +6,4 @@ apps:
       PORT: 8080
       HOST: "localhost"
       REDIS_URL: 'redis://localhost:6379'
+      CAPTCHA_TIMEOUT: 120

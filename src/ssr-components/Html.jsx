@@ -24,8 +24,6 @@ const Html = ({
   styles,
   // code as string
   code,
-  // if recaptcha should get loaded
-  useCaptcha,
 }) => (
   <html className="no-js" lang="en">
     <head>
