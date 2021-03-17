@@ -721,6 +721,6 @@ tr:nth-child(even) {
   visibility: hidden;
 }
 
-.Modal.show, .Alert.show, .Overlay.show {
+.Modal.show, .Alert.show, .OverlayAlert.show, .OverlayModal.show {
     opacity: 1;
 }
