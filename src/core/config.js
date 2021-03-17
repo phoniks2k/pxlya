@@ -20,7 +20,7 @@ export const TILE_FOLDER = path.join(__dirname, `./${TILE_FOLDER_REL}`);
 
 export const ASSET_SERVER = process.env.ASSET_SERVER || '.';
 
-export const CAPTCHA_URL = process.env.CAPTCHA_URL || 'http://localhost:8080';
+export const CAPTCHA_URL = process.env.CAPTCHA_URL || '';
 
 export const USE_XREALIP = process.env.USE_XREALIP || false;
 
