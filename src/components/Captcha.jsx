@@ -65,6 +65,8 @@ const Captcha = ({ callback, close }) => {
           role="button"
           tabIndex={-1}
           title={t`Reload`}
+          className="modallink"
+          style={{fontSize: 28}}
           onClick={() => {
             setImgLoaded(false);
             setCaptchaUrl(getUrl());
@@ -74,11 +76,15 @@ const Captcha = ({ callback, close }) => {
         </span>
       </p>
       <input
-        placeholder={t`I am human`}
+        placeholder={t`Enter Characters`}
         type="text"
         value={text}
         autoComplete="off"
-        style={{ width: '5em' }}
+        style={{
+          width: '6em',
+          fontSize: 21,
+          margin: 5,
+        }}
         onChange={(evt) => {
           const txt = evt.target.value;
           setText(txt);
@@ -90,9 +96,11 @@ const Captcha = ({ callback, close }) => {
           <button
             type="button"
             onClick={close}
+            style={{fontSize: 16}}
           >
             {t`Cancel`}
           </button>
+         &nbsp;
           <button
             type="button"
             onClick={async () => {
@@ -105,6 +113,7 @@ const Captcha = ({ callback, close }) => {
                 close();
               }
             }}
+            style={{fontSize: 16}}
           >
             {t`Send`}
           </button>
