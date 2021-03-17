@@ -49,6 +49,7 @@ const Alert = () => {
       >
         <div
           className="Alert"
+          onClick={(evt) => evt.stopPropagation()}
         >
           <h2>{alertTitle}</h2>
           <p className="modaltext">
