@@ -69,7 +69,9 @@ const ModalRoot = () => {
     (render || modalOpen) && (
       <div>
         <div
-          className={(modalOpen && render) ? 'Overlay show' : 'Overlay'}
+          className={(modalOpen && render)
+            ? 'OverlayModal show'
+            : 'OverlayModal'}
           onTransitionEnd={onTransitionEnd}
           tabIndex={-1}
           onClick={close}

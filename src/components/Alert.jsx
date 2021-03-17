@@ -39,7 +39,9 @@ const Alert = () => {
     (render || alertOpen) && (
       <div>
         <div
-          className={(alertOpen && render) ? 'Overlay show' : 'Overlay'}
+          className={(alertOpen && render)
+            ? 'OverlayAlert show'
+            : 'OverlayAlert'}
           onTransitionEnd={onTransitionEnd}
           tabIndex={-1}
           onClick={close}

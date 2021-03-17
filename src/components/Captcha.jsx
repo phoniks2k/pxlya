@@ -54,7 +54,7 @@ const Captcha = ({ callback, close }) => {
           }}
           src={captchaUrl}
           alt="CAPTCHA"
-          onLoad={() => {setImgLoaded(true)}}
+          onLoad={() => { setImgLoaded(true); }}
           onError={() => setErrors([t`Could not load captcha`])}
         />
       </div>
