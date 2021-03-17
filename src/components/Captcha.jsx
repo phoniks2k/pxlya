@@ -55,7 +55,6 @@ const Captcha = ({ callback, close }) => {
         placeholder={t`I am human`}
         type="text"
         value={text}
-        autoFocus
         autoComplete="off"
         style={{ width: '5em' }}
         onChange={(evt) => {

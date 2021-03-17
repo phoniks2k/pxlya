@@ -37,19 +37,18 @@ const Alert = () => {
 
   return (
     (render || alertOpen) && (
-      <div
-        className={(alertOpen && render) ? 'Overlay show' : 'Overlay'}
-        onTransitionEnd={onTransitionEnd}
-        role="button"
-        tabIndex={-1}
-        onClick={close}
-        style={{
-          zIndex: 5,
-        }}
-      >
+      <div>
+        <div
+          className={(alertOpen && render) ? 'Overlay show' : 'Overlay'}
+          onTransitionEnd={onTransitionEnd}
+          tabIndex={-1}
+          onClick={close}
+        />
         <div
           className="Alert"
-          onClick={(evt) => evt.stopPropagation()}
+          style={{
+            zIndex: 5,
+          }}
         >
           <h2>{alertTitle}</h2>
           <p className="modaltext">
