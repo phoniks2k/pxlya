@@ -38,7 +38,7 @@ let clientPredictions = [];
 let lastRequestValues = {};
 
 
-function requestFromQueue(store) {
+export function requestFromQueue(store) {
   if (!pixelQueue.length) {
     pixelTimeout = null;
     return;

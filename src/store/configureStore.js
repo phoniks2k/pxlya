@@ -12,6 +12,7 @@ import array from './array';
 import promise from './promise';
 import notifications from './notifications';
 import title from './title';
+import placePixelControl from './placePixelControl';
 import extensions from './extensions';
 import reducers from '../reducers';
 
@@ -29,6 +30,7 @@ const store = createStore(
       title,
       protocolClientHook,
       rendererHook,
+      placePixelControl,
       extensions,
     ),
   ),

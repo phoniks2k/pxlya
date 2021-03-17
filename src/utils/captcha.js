@@ -25,7 +25,7 @@ export function setCaptchaSolution(
   text: string,
   ip: string,
 ) {
-  const key = `capt:${getIPv6Subnet(ip)}`;
+  const key = `capt:${ip}`;
   return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
 }
 
@@ -43,7 +43,7 @@ export async function checkCaptchaSolution(
   ip: string,
 ) {
   const ipn = getIPv6Subnet(ip);
-  const key = `capt:${ipn}`;
+  const key = `capt:${ip}`;
   const solution = await redis.getAsync(key);
   if (solution) {
     if (solution.toString('utf8') === text) {

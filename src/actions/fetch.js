@@ -32,21 +32,17 @@ async function fetchWithTimeout(resource, options) {
  * @return Object of response
  */
 async function parseAPIresponse(response) {
-  if (!response.ok) {
-    const code = response.status;
-    if (code === 429) {
-      let error = t`You made too many requests`;
-      const retryAfter = response.headers.get('Retry-After');
-      if (!Number.isNaN(Number(retryAfter))) {
-        const ti = Math.floor(retryAfter / 60);
-        error += `, ${t`try again after ${ti}min`}`;
-      }
-      return {
-        errors: [error],
-      };
+  const { status: code } = response;
+
+  if (code === 429) {
+    let error = t`You made too many requests`;
+    const retryAfter = response.headers.get('Retry-After');
+    if (!Number.isNaN(Number(retryAfter))) {
+      const ti = Math.floor(retryAfter / 60);
+      error += `, ${t`try again after ${ti}min`}`;
     }
     return {
-      errors: [t`Connection error ${code} :(`],
+      errors: [error],
     };
   }
 
@@ -54,7 +50,7 @@ async function parseAPIresponse(response) {
     return await response.json();
   } catch (e) {
     return {
-      errors: [t`Server answered with gibberish :(`],
+      errors: [t`Connection error ${code} :(`],
     };
   }
 }
