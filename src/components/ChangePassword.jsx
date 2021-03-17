@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { t } from 'ttag';
-import { validatePassword, parseAPIresponse } from '../utils/validation';
+import { validatePassword } from '../utils/validation';
+import { requestPasswordChange } from '../actions/fetch';
 
 function validate(mailreg, password, newPassword, confirmPassword) {
   const errors = [];
@@ -23,24 +24,6 @@ function validate(mailreg, password, newPassword, confirmPassword) {
 
   return errors;
 }
-
-async function submitPasswordChange(newPassword, password) {
-  const body = JSON.stringify({
-    password,
-    newPassword,
-  });
-  const response = await fetch('./api/auth/change_passwd', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
-
-  return parseAPIresponse(response);
-}
-
 
 class ChangePassword extends React.Component {
   constructor() {
@@ -78,7 +61,7 @@ class ChangePassword extends React.Component {
     if (errors.length > 0) return;
     this.setState({ submitting: true });
 
-    const { errors: resperrors } = await submitPasswordChange(
+    const { errors: resperrors } = await requestPasswordChange(
       newPassword,
       password,
     );

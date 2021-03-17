@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import { t } from 'ttag';
 
 import {
-  validateEMail, validateName, validatePassword, parseAPIresponse,
+  validateEMail, validateName, validatePassword,
 } from '../utils/validation';
+import { requestLogin } from '../actions/fetch';
 import { loginUser } from '../actions';
 
 
@@ -22,22 +23,6 @@ function validate(nameoremail, password) {
   if (passworderror) errors.push(passworderror);
 
   return errors;
-}
-
-async function submitLogin(nameoremail, password) {
-  const body = JSON.stringify({
-    nameoremail,
-    password,
-  });
-  const response = await fetch('./api/auth/local', {
-    method: 'POST',
-    body,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  return parseAPIresponse(response);
 }
 
 const inputStyles = {
@@ -73,7 +58,7 @@ class LogInForm extends React.Component {
     if (errors.length > 0) return;
 
     this.setState({ submitting: true });
-    const { errors: resperrors, me } = await submitLogin(
+    const { errors: resperrors, me } = await requestLogin(
       nameoremail,
       password,
     );

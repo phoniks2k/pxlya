@@ -6,8 +6,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { t } from 'ttag';
 
-import { parseAPIresponse } from '../utils/validation';
 import { setMinecraftName, remFromMessages } from '../actions';
+import { requestResendVerify, requestMcLink } from '../actions/fetch';
 
 
 class UserMessages extends React.Component {
@@ -31,11 +31,8 @@ class UserMessages extends React.Component {
       resentVerify: true,
     });
 
-    const response = await fetch('./api/auth/resend_verify', {
-      credentials: 'include',
-    });
+    const { errors } = await requestResendVerify();
 
-    const { errors } = await parseAPIresponse(response);
     const verifyAnswer = (errors)
       ? errors[0]
       : t`A new verification mail is getting sent to you.`;
@@ -50,15 +47,9 @@ class UserMessages extends React.Component {
     this.setState({
       sentLink: true,
     });
-    const body = JSON.stringify({ accepted });
-    const rep = await fetch('./api/auth/mclink', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body,
-      credentials: 'include',
-    });
 
-    const { errors } = parseAPIresponse(rep);
+    const { errors } = await requestMcLink(accepted);
+
     if (errors) {
       this.setState({
         linkAnswer: errors[0],

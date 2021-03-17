@@ -1,11 +1,11 @@
 /*
  * Collect api fetch commands for actions here
  * (chunk and tiles requests in ui/ChunkLoader*.js)
- * (user settings requests in their components)
  *
  * @flow
  */
 
+import { t } from 'ttag';
 
 /*
  * Adds customizeable timeout to fetch
@@ -27,123 +27,213 @@ async function fetchWithTimeout(resource, options) {
 }
 
 /*
- * block / unblock user
- * userId id of user to block
- * block true if block, false if unblock
- * return error string or null if successful
+ * Parse response from API
+ * @param response
+ * @return Object of response
  */
-export async function requestBlock(userId: number, block: boolean) {
-  const response = await fetchWithTimeout('api/block', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userId,
-      block,
-    }),
-  });
+async function parseAPIresponse(response) {
+  if (!response.ok) {
+    const code = response.status;
+    return {
+      errors: [t`Connection error ${code} :(`],
+    };
+  }
 
   try {
-    const res = await response.json();
-    if (res.errors) {
-      return res.errors[0];
-    }
-    if (response.ok && res.status === 'ok') {
-      return null;
-    }
-    return 'Unknown Error';
-  } catch {
-    return 'Connection Error';
+    return await response.json();
+  } catch (e) {
+    return {
+      errors: [t`Server answered with gibberish :(`],
+    };
   }
+}
+
+/*
+ * Make API POST Request
+ * @param url URL of post api endpoint
+ * @param body Body of request
+ * @return Object with response or error Array
+ */
+async function makeAPIPOSTRequest(url, body) {
+  try {
+    const response = await fetchWithTimeout(url, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    return parseAPIresponse(response);
+  } catch (e) {
+    return {
+      errors: [t`Could not connect to server, please try again later :(`],
+    };
+  }
+}
+
+/*
+ * Make API GET Request
+ * @param url URL of get api endpoint
+ * @return Object with response or error Array
+ */
+async function makeAPIGETRequest(url) {
+  try {
+    const response = await fetchWithTimeout(url, {
+      credentials: 'include',
+    });
+
+    return parseAPIresponse(response);
+  } catch (e) {
+    return {
+      errors: [t`Could not connect to server, please try again later :(`],
+    };
+  }
+}
+
+/*
+ * block / unblock user
+ * @param userId id of user to block
+ * @param block true if block, false if unblock
+ * @return error string or null if successful
+ */
+export async function requestBlock(userId: number, block: boolean) {
+  const res = await makeAPIPOSTRequest(
+    'api/block',
+    { userId, block },
+  );
+  if (res.errors) {
+    return res.errors[0];
+  }
+  if (res.status === 'ok') {
+    return null;
+  }
+  return t`Unknown Error`;
 }
 
 /*
  * start new DM channel with user
- * query Object with either userId: number or userName: string
- * return channel Array on success, error string if not
+ * @param query Object with either userId: number or userName: string
+ * @return channel Array on success, error string if not
  */
 export async function requestStartDm(query) {
-  const response = await fetchWithTimeout('api/startdm', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(query),
-  });
-
-  try {
-    const res = await response.json();
-    if (res.errors) {
-      return res.errors[0];
-    }
-    if (response.ok && res.channel) {
-      const { channel } = res;
-      return channel;
-    }
-
-    return 'Unknown Error';
-  } catch {
-    return 'Connection Error';
+  const res = await makeAPIPOSTRequest(
+    'api/startdm',
+    query,
+  );
+  if (res.errors) {
+    return res.errors[0];
   }
+  if (res.channel) {
+    return res.channel;
+  }
+  return t`Unknown Error`;
 }
 
 /*
  * set receiving of all DMs on/off
- * block true if blocking all dms, false if unblocking
- * return error string or null if successful
+ * @param block true if blocking all dms, false if unblocking
+ * @return error string or null if successful
  */
 export async function requestBlockDm(block: boolean) {
-  const response = await fetchWithTimeout('api/blockdm', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ block }),
-  });
-
-  try {
-    const res = await response.json();
-    if (res.errors) {
-      return res.errors[0];
-    }
-    if (response.ok && res.status === 'ok') {
-      return null;
-    }
-    return 'Unknown Error';
-  } catch {
-    return 'Connection Error';
+  const res = await makeAPIPOSTRequest(
+    'api/blockdm',
+    { block },
+  );
+  if (res.errors) {
+    return res.errors[0];
   }
+  if (res.status === 'ok') {
+    return null;
+  }
+  return t`Unknown Error`;
 }
 
 /*
  * leaving Chat Channel (i.e. DM channel)
- * channelId 8nteger id of channel
- * return error string or null if successful
+ * @param channelId 8nteger id of channel
+ * @return error string or null if successful
  */
 export async function requestLeaveChan(channelId: boolean) {
-  const response = await fetchWithTimeout('api/leavechan', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ channelId }),
-  });
-
-  try {
-    const res = await response.json();
-    if (res.errors) {
-      return res.errors[0];
-    }
-    if (response.ok && res.status === 'ok') {
-      return null;
-    }
-    return 'Unknown Error';
-  } catch {
-    return 'Connection Error';
+  const res = await makeAPIPOSTRequest(
+    'api/leavechan',
+    { channelId },
+  );
+  if (res.errors) {
+    return res.errors[0];
   }
+  if (res.status === 'ok') {
+    return null;
+  }
+  return t`Unknown Error`;
+}
+
+export function requestSolveCaptcha(text) {
+  return makeAPIPOSTRequest(
+    'api/captcha',
+    { text },
+  );
+}
+
+export function requestPasswordChange(newPassword, password) {
+  return makeAPIPOSTRequest(
+    'api/auth/change_passwd',
+    { password, newPassword },
+  );
+}
+
+export async function requestResendVerify() {
+  return makeAPIGETRequest(
+    './api/auth/resend_verify',
+  );
+}
+
+export function requestMcLink(accepted) {
+  return makeAPIPOSTRequest(
+    'api/auth/mclink',
+    { accepted },
+  );
+}
+
+export function requestNameChange(name) {
+  return makeAPIPOSTRequest(
+    'api/auth/change_name',
+    { name },
+  );
+}
+
+export function requestMailChange(email, password) {
+  return makeAPIPOSTRequest(
+    'api/auth/change_mail',
+    { email, password },
+  );
+}
+
+export function requestLogin(nameoremail, password) {
+  return makeAPIPOSTRequest(
+    'api/auth/local',
+    { nameoremail, password },
+  );
+}
+
+export function requestRegistration(name, email, password) {
+  return makeAPIPOSTRequest(
+    'api/auth/register',
+    { name, email, password },
+  );
+}
+
+export function requestNewPassword(email) {
+  return makeAPIPOSTRequest(
+    'api/auth/restore_password',
+    { email },
+  );
+}
+
+export function requestDeleteAccount(password) {
+  return makeAPIPOSTRequest(
+    'api/auth/delete_account',
+    { password },
+  );
 }

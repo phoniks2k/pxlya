@@ -31,11 +31,6 @@ const HelpModal = () => {
   const bindShift = <kbd>⇧ {c('keybinds').t`Shift`}</kbd>;
   const bindC = <kbd>{c('keybinds').t`C`}</kbd>;
 
-  const hCaptchaPP = <a href="https://hcaptcha.com/privacy">{t`Privacy Policy`}</a>;
-  const reCaptchaPP = <a href="https://policies.google.com/privacy">{t`Privacy Policy`}</a>;
-  const hCaptchaTOS = <a href="https://hcaptcha.com/terms">{t`Terms of Service`}</a>;
-  const reCaptchaTOS = <a href="https://policies.google.com/terms">{t`Terms of Service`}</a>;
-
   const guildedLink = <a href="https://pixelplanet.fun/guilded">guilded</a>;
   const getIPLink = <a href="https://www.whatismyip.com/">{t`your IP`}</a>;
   const mailLink = <a href="mailto:pixelplanetdev@gmail.com">pixelplanetdev@gmail.com</a>;

@@ -61,23 +61,3 @@ export function validatePassword(password) {
   }
   return false;
 }
-
-/*
- * makes sure that responses from the api
- * includes errors when failure occures
- */
-export async function parseAPIresponse(response) {
-  try {
-    const resp = await response.json();
-    if (!response.ok && !resp.errors) {
-      return {
-        errors: [t`Could not connect to server, please try again later :(`],
-      };
-    }
-    return resp;
-  } catch (e) {
-    return {
-      errors: [t`I think we experienced some error :(`],
-    };
-  }
-}
