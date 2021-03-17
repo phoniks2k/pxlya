@@ -55,7 +55,7 @@ const ChangePassword = ({ mailreg, done, cancel }) => {
             confirmPassword,
           );
           setErrors(valerrors);
-          if (errors.length) return;
+          if (valerrors.length) return;
           setSubmitting(true);
           const { errors: resperrors } = await requestPasswordChange(
             newPassword,
@@ -64,6 +64,7 @@ const ChangePassword = ({ mailreg, done, cancel }) => {
           if (resperrors) {
             setErrors(resperrors);
             setSubmitting(false);
+            return;
           }
           setSuccess(true);
         }}
