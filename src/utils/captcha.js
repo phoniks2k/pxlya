@@ -14,6 +14,14 @@ import {
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
 
+function captchaTextFilter(text: string) {
+  let ret = text.toString('utf8');
+  ret = ret.split('l').join('i');
+  ret = ret.split('0').join('O');
+  ret = ret.toLowerCase();
+  return ret;
+}
+
 /*
  * set captcha solution
  *
@@ -26,7 +34,7 @@ export function setCaptchaSolution(
   ip: string,
 ) {
   const key = `capt:${ip}`;
-  return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
+  return redis.setAsync(key, captchaTextFilter(text), 'EX', CAPTCHA_TIMEOUT);
 }
 
 /*
@@ -44,9 +52,9 @@ export async function checkCaptchaSolution(
 ) {
   const ipn = getIPv6Subnet(ip);
   const key = `capt:${ip}`;
-  const solution = await redis.getAsync(key);
+  let solution = await redis.getAsync(key);
   if (solution) {
-    if (solution.toString('utf8') === text) {
+    if (solution.toString('utf8') === captchaTextFilter(text)) {
       const solvkey = `human:${ipn}`;
       await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
       logger.info(`CAPTCHA ${ip} successfully solved captcha`);
