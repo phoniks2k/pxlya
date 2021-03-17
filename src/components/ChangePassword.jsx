@@ -3,7 +3,7 @@
  * @flow
  */
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { t } from 'ttag';
 import { validatePassword } from '../utils/validation';
 import { requestPasswordChange } from '../actions/fetch';
@@ -48,13 +48,13 @@ const ChangePassword = ({ mailreg, done, cancel }) => {
         onSubmit={async (e) => {
           e.preventDefault();
           if (submitting) return;
-          const errors = validate(
+          const valerrors = validate(
             mailreg,
             password,
             newPassword,
             confirmPassword,
           );
-          setErrors(errors);
+          setErrors(valerrors);
           if (errors.length) return;
           setSubmitting(true);
           const { errors: resperrors } = await requestPasswordChange(
@@ -110,6 +110,6 @@ const ChangePassword = ({ mailreg, done, cancel }) => {
       </form>
     </div>
   );
-}
+};
 
 export default React.memo(ChangePassword);
