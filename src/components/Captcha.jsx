@@ -16,13 +16,18 @@ function getUrl() {
   return `${window.ssv.captchaurl}/captcha.svg?${new Date().getTime()}`;
 }
 
-const Captcha = ({ callback, cancel }) => {
+const Captcha = ({ callback, close }) => {
   const [captchaUrl, setCaptchaUrl] = useState(getUrl());
   const [text, setText] = useState('');
-  const [error, setError] = useState(false);
+  const [errors, setErrors] = useState([]);
 
   return (
     <div>
+      {errors.map((error) => (
+        <p key={error} className="errormessage">
+          <span>{t`Error`}</span>:&nbsp;{error}
+        </p>
+      ))}
       <p className="modaltext">
         {t`Type the characters from the following image:`}
         <span style={{ fontSize: 11 }}>
@@ -32,7 +37,8 @@ const Captcha = ({ callback, cancel }) => {
       <img
         style={{ width: '75%' }}
         src={captchaUrl}
-        onError={() => setError(true)}
+        alt="CAPTCHA"
+        onError={() => setErrors([t`Could not load captcha`])}
       />
       <p className="modaltext">
         {t`Can't read? Reload:`}&nbsp;
@@ -62,12 +68,21 @@ const Captcha = ({ callback, cancel }) => {
         <div>
           <button
             type="button"
-            onClick={cancel}
+            onClick={close}
           >
             {t`Cancel`}
           </button>
           <button
             type="button"
+            onClick={async () => {
+              const { errors: resErrors } = await requestSolveCaptcha(text);
+              if (resErrors) {
+                setCaptchaUrl(getUrl());
+                setErrors(resErrors);
+              } else {
+                close();
+              }
+            }}
           >
             {t`Send`}
           </button>

@@ -56,7 +56,7 @@ const Alert = () => {
           </p>
           <p>
             {(alertType === 'captcha')
-              ? <Captcha cancel={close} />
+              ? <Captcha close={close} />
               : (
                 <button
                   type="button"

@@ -47,7 +47,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'SET_PLACE_ALLOWED': {
+    case 'SET_REQUESTING_PIXEL': {
       const renderer = getRenderer();
       renderer.forceNextSubRender = true;
       break;

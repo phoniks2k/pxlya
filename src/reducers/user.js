@@ -68,7 +68,7 @@ export default function user(
       };
     }
 
-    case 'SET_PLACE_ALLOWED': {
+    case 'SET_REQUESTING_PIXEL': {
       const { requestingPixel } = action;
       return {
         ...state,

@@ -34,6 +34,17 @@ async function fetchWithTimeout(resource, options) {
 async function parseAPIresponse(response) {
   if (!response.ok) {
     const code = response.status;
+    if (code === 429) {
+      let error = t`You made too many requests`;
+      const retryAfter = response.headers.get('Retry-After');
+      if (!Number.isNaN(Number(retryAfter))) {
+        const ti = Math.floor(retryAfter / 60);
+        error += `, ${t`try again after ${ti}min`}`;
+      }
+      return {
+        errors: [error],
+      };
+    }
     return {
       errors: [t`Connection error ${code} :(`],
     };
@@ -169,11 +180,17 @@ export async function requestLeaveChan(channelId: boolean) {
   return t`Unknown Error`;
 }
 
-export function requestSolveCaptcha(text) {
-  return makeAPIPOSTRequest(
+export async function requestSolveCaptcha(text) {
+  const res = await makeAPIPOSTRequest(
     'api/captcha',
     { text },
   );
+  if (!res.errors && !res.success) {
+    return {
+      errors: [t`Server answered with gibberish :(`],
+    };
+  }
+  return res;
 }
 
 export function requestPasswordChange(newPassword, password) {

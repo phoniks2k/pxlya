@@ -120,9 +120,9 @@ export function toggleOpenMenu(): Action {
   };
 }
 
-export function setPlaceAllowed(requestingPixel: boolean): Action {
+export function setRequestingPixel(requestingPixel: boolean): Action {
   return {
-    type: 'SET_PLACE_ALLOWED',
+    type: 'SET_REQUESTING_PIXEL',
     requestingPixel,
   };
 }

@@ -8,7 +8,7 @@
 import { t } from 'ttag';
 import {
   notify,
-  setPlaceAllowed,
+  setRequestingPixel,
   sweetAlert,
   gotCoolDownDelta,
   pixelFailure,
@@ -48,7 +48,7 @@ function requestFromQueue(store) {
   pixelTimeout = setTimeout(() => {
     pixelQueue = [];
     pixelTimeout = null;
-    store.dispatch(setPlaceAllowed(true));
+    store.dispatch(setRequestingPixel(true));
     store.dispatch(sweetAlert(
       t`Error :(`,
       t`Didn't get an answer from pixelplanet. Maybe try to refresh?`,
@@ -60,16 +60,7 @@ function requestFromQueue(store) {
   lastRequestValues = pixelQueue.shift();
   const { i, j, pixels } = lastRequestValues;
   ProtocolClient.requestPlacePixels(i, j, pixels);
-  store.dispatch(setPlaceAllowed(false));
-
-  // TODO:
-  // this is for resending after captcha returned
-  // window is ugly, put it into redux or something
-  window.pixel = {
-    i,
-    j,
-    pixels,
-  };
+  store.dispatch(setRequestingPixel(false));
 }
 
 export function receivePixelUpdate(
@@ -245,6 +236,7 @@ export function receivePixelReturn(
         'captcha',
         t`OK`,
       ));
+      store.dispatch(setRequestingPixel(true));
       return;
     case 11:
       errorTitle = t`No Proxies Allowed :(`;
@@ -265,7 +257,7 @@ export function receivePixelReturn(
     ));
   }
 
-  store.dispatch(setPlaceAllowed(true));
+  store.dispatch(setRequestingPixel(true));
   /* start next request if queue isn't empty */
   requestFromQueue(store);
 }
