@@ -99,6 +99,7 @@ const Captcha = ({ callback, close }) => {
               const { errors: resErrors } = await requestSolveCaptcha(text);
               if (resErrors) {
                 setCaptchaUrl(getUrl());
+                setText('');
                 setErrors(resErrors);
               } else {
                 close();
