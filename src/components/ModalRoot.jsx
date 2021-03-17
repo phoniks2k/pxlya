@@ -5,9 +5,8 @@
  * @flow
  */
 
-import React from 'react';
-import Modal from 'react-modal';
-import { connect } from 'react-redux';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { MdClose } from 'react-icons/md';
 import { t } from 'ttag';
 
@@ -38,44 +37,60 @@ const MODAL_COMPONENTS = {
   /* other modals */
 };
 
-const ModalRoot = ({ modalType, modalOpen, close }) => {
-  const choice = MODAL_COMPONENTS[modalType || 'NONE'];
-  const { content: SpecificModal, title } = choice;
+const ModalRoot = () => {
+  const [render, setRender] = useState(false);
+
+  const {
+    modalType,
+    modalOpen,
+  } = useSelector((state) => state.modal);
+
+  const {
+    title,
+    content: SpecificModal,
+  } = MODAL_COMPONENTS[modalType || 'NONE'];
+
+  const dispatch = useDispatch();
+  const close = useCallback(() => {
+    dispatch(hideModal());
+  }, [dispatch]);
+
+  const onTransitionEnd = () => {
+    if (!modalOpen) setRender(false);
+  };
+
+  useEffect(() => {
+    window.setTimeout(() => {
+      if (modalOpen) setRender(true);
+    }, 10);
+  }, [modalOpen]);
+
   return (
-    <Modal
-      isOpen={modalOpen}
-      onClose={close}
-      className="Modal"
-      overlayClassName="Overlay"
-      contentLabel={`${title} Modal`}
-      closeTimeoutMS={200}
-      onRequestClose={close}
-    >
-      <h2 style={{ paddingLeft: '5%' }}>{title}</h2>
-      <div
-        onClick={close}
-        className="ModalClose"
-        role="button"
-        label="close"
-        title={t`Close`}
-        tabIndex={-1}
-      ><MdClose /></div>
-      <SpecificModal />
-    </Modal>
+    (render || modalOpen) && (
+      <div>
+        <div
+          className={(modalOpen && render) ? 'Overlay show' : 'Overlay'}
+          onTransitionEnd={onTransitionEnd}
+          tabIndex={-1}
+          onClick={close}
+        />
+        <div
+          className={(modalOpen && render) ? 'Modal show' : 'Modal'}
+        >
+          <h2 style={{ paddingLeft: '5%' }}>{title}</h2>
+          <div
+            onClick={close}
+            className="ModalClose"
+            role="button"
+            label="close"
+            title={t`Close`}
+            tabIndex={-1}
+          ><MdClose /></div>
+          <SpecificModal />
+        </div>
+      </div>
+    )
   );
 };
 
-function mapStateToProps(state: State) {
-  const { modalType, modalOpen } = state.modal;
-  return { modalType, modalOpen };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    close() {
-      dispatch(hideModal());
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ModalRoot);
+export default React.memo(ModalRoot);

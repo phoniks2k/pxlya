@@ -45,10 +45,7 @@ const Alert = () => {
           onClick={close}
         />
         <div
-          className="Alert"
-          style={{
-            zIndex: 5,
-          }}
+          className={(alertOpen && render) ? 'Alert show' : 'Alert'}
         >
           <h2>{alertTitle}</h2>
           <p className="modaltext">

@@ -336,17 +336,22 @@ tr:nth-child(even) {
   border-radius: 4px;
   outline: currentcolor none medium;
   transform: translate(-50%, -50%);
+  transition: opacity 200ms ease-in-out;
+  opacity: 0;
 }
 
 .Modal {
   height: 80%;
   width: 70%;
   max-height: 900px;
+  z-index: 5;
 }
 
 .Alert {
+  max-height: 100%;
   padding: 15px;
   text-align: center;
+  z-index: 6;
 }
 
 .modaltext, .modalcotext {
@@ -441,7 +446,7 @@ tr:nth-child(even) {
 }
 
 @media (max-width: 604px) {
-  .Modal {
+  .Modal, .Alert {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -709,10 +714,6 @@ tr:nth-child(even) {
   visibility: hidden;
 }
 
-.ReactModal__Overlay--after-open, .Overlay.show {
+.Modal.show, .Alert.show, .Overlay.show {
     opacity: 1;
-}
-
-.ReactModal__Overlay--before-close{
-    opacity: 0;
 }

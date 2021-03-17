@@ -20,6 +20,7 @@ const Captcha = ({ callback, close }) => {
   const [captchaUrl, setCaptchaUrl] = useState(getUrl());
   const [text, setText] = useState('');
   const [errors, setErrors] = useState([]);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
     <div>
@@ -34,19 +35,39 @@ const Captcha = ({ callback, close }) => {
           ({t`Tip: Not case-sensitive; I and l are the same`})
         </span>
       </p>
-      <img
-        style={{ width: '75%' }}
-        src={captchaUrl}
-        alt="CAPTCHA"
-        onError={() => setErrors([t`Could not load captcha`])}
-      />
+      <br />
+      <div
+        style={{
+          width: '100%',
+          paddingTop: '60%',
+          position: 'relative',
+        }}
+      >
+        <img
+          style={{
+            width: '100%',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: `scale(${(imgLoaded) ? '1' : '0'}) translate(-50%,-50%)`,
+            transition: '100ms',
+          }}
+          src={captchaUrl}
+          alt="CAPTCHA"
+          onLoad={() => {setImgLoaded(true)}}
+          onError={() => setErrors([t`Could not load captcha`])}
+        />
+      </div>
       <p className="modaltext">
         {t`Can't read? Reload:`}&nbsp;
         <span
           role="button"
           tabIndex={-1}
           title={t`Reload`}
-          onClick={() => setCaptchaUrl(getUrl())}
+          onClick={() => {
+            setImgLoaded(false);
+            setCaptchaUrl(getUrl());
+          }}
         >
           <IoReloadCircleSharp />
         </span>
