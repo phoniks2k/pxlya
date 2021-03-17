@@ -49,7 +49,8 @@ const Captcha = ({ callback, close }) => {
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: `scale(${(imgLoaded) ? '1' : '0'}) translate(-50%,-50%)`,
+            opacity: (imgLoaded) ? 1 : 0,
+            transform: 'translate(-50%,-50%)',
             transition: '100ms',
           }}
           src={captchaUrl}

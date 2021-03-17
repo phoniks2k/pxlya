@@ -16,14 +16,15 @@ const HOST = process.env.HOST || 'localhost';
 
 const server = http.createServer((req, res) => {
   const captcha = ppfunCaptcha.create({
-    width: 700,
-    height: 500,
-    fontSize: 600,
+    width: 500,
+    height: 300,
+    fontSize: 220,
     stroke: 'black',
     fill: 'none',
-    background: 'white',
-    nodeDeviation: 0.5,
-    connectionPathDeviation: 0.3,
+    nodeDeviation: 3.0,
+    connectionPathDeviation: 3.0,
+    style: 'stroke-width: 4;',
+    background: '#EFEFEF',
   });
 
   const ip = getIPFromRequest(req);
