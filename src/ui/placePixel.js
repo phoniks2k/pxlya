@@ -8,7 +8,7 @@
 import { t } from 'ttag';
 import {
   notify,
-  setPlaceAllowed,
+  setRequestingPixel,
   sweetAlert,
   gotCoolDownDelta,
   pixelFailure,
@@ -38,7 +38,7 @@ let clientPredictions = [];
 let lastRequestValues = {};
 
 
-function requestFromQueue(store) {
+export function requestFromQueue(store) {
   if (!pixelQueue.length) {
     pixelTimeout = null;
     return;
@@ -48,7 +48,7 @@ function requestFromQueue(store) {
   pixelTimeout = setTimeout(() => {
     pixelQueue = [];
     pixelTimeout = null;
-    store.dispatch(setPlaceAllowed(true));
+    store.dispatch(setRequestingPixel(true));
     store.dispatch(sweetAlert(
       t`Error :(`,
       t`Didn't get an answer from pixelplanet. Maybe try to refresh?`,
@@ -60,16 +60,7 @@ function requestFromQueue(store) {
   lastRequestValues = pixelQueue.shift();
   const { i, j, pixels } = lastRequestValues;
   ProtocolClient.requestPlacePixels(i, j, pixels);
-  store.dispatch(setPlaceAllowed(false));
-
-  // TODO:
-  // this is for resending after captcha returned
-  // window is ugly, put it into redux or something
-  window.pixel = {
-    i,
-    j,
-    pixels,
-  };
+  store.dispatch(setRequestingPixel(false));
 }
 
 export function receivePixelUpdate(
@@ -239,15 +230,15 @@ export function receivePixelReturn(
       store.dispatch(pixelWait());
       break;
     case 10:
-      // captcha, reCaptcha or hCaptcha
-      if (typeof window.hcaptcha !== 'undefined') {
-        window.hcaptcha.execute();
-      } else {
-        window.grecaptcha.execute();
-      }
+      store.dispatch(sweetAlert(
+        'Captcha',
+        t`Please prove that you are human`,
+        'captcha',
+        t`OK`,
+      ));
+      store.dispatch(setRequestingPixel(true));
       return;
     case 11:
-
       errorTitle = t`No Proxies Allowed :(`;
       msg = t`You are using a Proxy.`;
       break;
@@ -266,7 +257,7 @@ export function receivePixelReturn(
     ));
   }
 
-  store.dispatch(setPlaceAllowed(true));
+  store.dispatch(setRequestingPixel(true));
   /* start next request if queue isn't empty */
   requestFromQueue(store);
 }

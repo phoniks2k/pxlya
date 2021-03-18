@@ -5,7 +5,6 @@ import type { Action } from '../actions/types';
 import { createNameRegExp } from '../core/utils';
 
 
-
 export type UserState = {
   name: string,
   center: Cell,
@@ -13,18 +12,9 @@ export type UserState = {
   coolDown: ?number, // ms
   lastCoolDownEnd: ?Date,
   requestingPixel: boolean,
-  online: ?number,
   // messages are sent by api/me, like not_verified status
   messages: Array,
   mailreg: boolean,
-  // stats
-  totalPixels: number,
-  dailyTotalPixels: number,
-  ranking: number,
-  dailyRanking: number,
-  // global stats
-  totalRanking: Object,
-  totalDailyRanking: Object,
   // minecraft
   minecraftname: string,
   // blocking all Dms
@@ -46,11 +36,8 @@ const initialState: UserState = {
   coolDown: null,
   lastCoolDownEnd: null,
   requestingPixel: true,
-  online: null,
   messages: [],
   mailreg: false,
-  totalRanking: {},
-  totalDailyRanking: {},
   minecraftname: null,
   blockDm: false,
   isOnMobile: false,
@@ -81,7 +68,7 @@ export default function user(
       };
     }
 
-    case 'SET_PLACE_ALLOWED': {
+    case 'SET_REQUESTING_PIXEL': {
       const { requestingPixel } = action;
       return {
         ...state,
@@ -120,35 +107,11 @@ export default function user(
       };
     }
 
-    case 'PLACED_PIXELS': {
-      let { totalPixels, dailyTotalPixels } = state;
-      const { amount } = action;
-      totalPixels += amount;
-      dailyTotalPixels += amount;
-      return {
-        ...state,
-        totalPixels,
-        dailyTotalPixels,
-      };
-    }
-
-    case 'RECEIVE_ONLINE': {
-      const { online } = action;
-      return {
-        ...state,
-        online,
-      };
-    }
-
     case 'RECEIVE_ME':
     case 'LOGIN': {
       const {
         name,
         mailreg,
-        totalPixels,
-        dailyTotalPixels,
-        ranking,
-        dailyRanking,
         minecraftname,
         blockDm,
         userlvl,
@@ -160,10 +123,6 @@ export default function user(
         name,
         messages,
         mailreg,
-        totalPixels,
-        dailyTotalPixels,
-        ranking,
-        dailyRanking,
         minecraftname,
         blockDm,
         userlvl,
@@ -181,15 +140,6 @@ export default function user(
         blockDm: false,
         userlvl: 0,
         nameRegExp: null,
-      };
-    }
-
-    case 'RECEIVE_STATS': {
-      const { totalRanking, totalDailyRanking } = action;
-      return {
-        ...state,
-        totalRanking,
-        totalDailyRanking,
       };
     }
 

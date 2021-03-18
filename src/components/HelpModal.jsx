@@ -31,11 +31,6 @@ const HelpModal = () => {
   const bindShift = <kbd>⇧ {c('keybinds').t`Shift`}</kbd>;
   const bindC = <kbd>{c('keybinds').t`C`}</kbd>;
 
-  const hCaptchaPP = <a href="https://hcaptcha.com/privacy">{t`Privacy Policy`}</a>;
-  const reCaptchaPP = <a href="https://policies.google.com/privacy">{t`Privacy Policy`}</a>;
-  const hCaptchaTOS = <a href="https://hcaptcha.com/terms">{t`Terms of Service`}</a>;
-  const reCaptchaTOS = <a href="https://policies.google.com/terms">{t`Terms of Service`}</a>;
-
   const guildedLink = <a href="https://pixelplanet.fun/guilded">guilded</a>;
   const getIPLink = <a href="https://www.whatismyip.com/">{t`your IP`}</a>;
   const mailLink = <a href="mailto:pixelplanetdev@gmail.com">pixelplanetdev@gmail.com</a>;
@@ -90,20 +85,6 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
       <p>{t`Partners:`} <a href="https://www.crazygames.com/c/io" target="_blank" rel="noopener noreferrer">crazygames.com</a></p>
-      { (typeof window.hcaptcha === 'undefined')
-        ? (
-          <p className="modaltext">
-            <small>
-              {jt`This site is protected by reCAPTCHA and the Google ${reCaptchaPP} and ${reCaptchaTOS} apply.`}
-            </small>
-          </p>
-        ) : (
-          <p className="modaltext">
-            <small>
-              {jt`This site is protected by hCAPTCHA and its ${hCaptchaPP} and ${hCaptchaTOS} apply.`}
-            </small>
-          </p>
-        )}
     </p>
   );
 };

@@ -14,6 +14,7 @@ export type Action =
     icon: string,
     confirmButtonText: string,
   }
+  | { type: 'CLOSE_ALERT' }
   | { type: 'TOGGLE_GRID' }
   | { type: 'TOGGLE_PIXEL_NOTIFY' }
   | { type: 'TOGGLE_AUTO_ZOOM_IN' }
@@ -28,7 +29,7 @@ export type Action =
   | { type: 'SELECT_STYLE', style: string }
   | { type: 'SET_NOTIFICATION', notification: string }
   | { type: 'UNSET_NOTIFICATION' }
-  | { type: 'SET_PLACE_ALLOWED', requestingPixel: boolean }
+  | { type: 'SET_REQUESTING_PIXEL', requestingPixel: boolean }
   | { type: 'SET_HOVER', hover: Cell }
   | { type: 'UNSET_HOVER' }
   | { type: 'SET_WAIT', wait: ?number }

@@ -3,9 +3,10 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { t } from 'ttag';
-import { validatePassword, parseAPIresponse } from '../utils/validation';
+import { validatePassword } from '../utils/validation';
+import { requestPasswordChange } from '../actions/fetch';
 
 function validate(mailreg, password, newPassword, confirmPassword) {
   const errors = [];
@@ -24,136 +25,92 @@ function validate(mailreg, password, newPassword, confirmPassword) {
   return errors;
 }
 
-async function submitPasswordChange(newPassword, password) {
-  const body = JSON.stringify({
-    password,
-    newPassword,
-  });
-  const response = await fetch('./api/auth/change_passwd', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
+const ChangePassword = ({ mailreg, done, cancel }) => {
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState([]);
 
-  return parseAPIresponse(response);
-}
-
-
-class ChangePassword extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      password: '',
-      newPassword: '',
-      confirmPassword: '',
-      success: false,
-      submitting: false,
-
-      errors: [],
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  async handleSubmit(e) {
-    e.preventDefault();
-
-    const {
-      password, newPassword, confirmPassword, submitting,
-    } = this.state;
-    if (submitting) return;
-
-    const { mailreg } = this.props;
-    const errors = validate(
-      mailreg,
-      password,
-      newPassword,
-      confirmPassword,
-    );
-
-    this.setState({ errors });
-    if (errors.length > 0) return;
-    this.setState({ submitting: true });
-
-    const { errors: resperrors } = await submitPasswordChange(
-      newPassword,
-      password,
-    );
-    if (resperrors) {
-      this.setState({
-        errors: resperrors,
-        submitting: false,
-      });
-      return;
-    }
-    this.setState({
-      success: true,
-    });
-  }
-
-  render() {
-    const { success } = this.state;
-    if (success) {
-      const { done } = this.props;
-      return (
-        <div className="inarea">
-          <p className="modalmessage">{t`Changed Password successfully.`}</p>
-          <button type="button" onClick={done}>Close</button>
-        </div>
-      );
-    }
-    const {
-      errors,
-      password,
-      newPassword,
-      confirmPassword,
-      submitting,
-    } = this.state;
-    const { cancel, mailreg } = this.props;
+  if (success) {
     return (
       <div className="inarea">
-        <form onSubmit={this.handleSubmit}>
-          {errors.map((error) => (
-            <p key={error} className="errormessage"><span>{t`Error`}</span>
-              :&nbsp;{error}</p>
-          ))}
-          {(mailreg)
-          && (
-          <input
-            value={password}
-            onChange={(evt) => this.setState({ password: evt.target.value })}
-            type="password"
-            placeholder={t`Old Password`}
-          />
-          )}
-          <br />
-          <input
-            value={newPassword}
-            onChange={(evt) => this.setState({ newPassword: evt.target.value })}
-            type="password"
-            placeholder={t`New Password`}
-          />
-          <br />
-          <input
-            value={confirmPassword}
-            onChange={(evt) => this.setState({
-              confirmPassword: evt.target.value,
-            })}
-            type="password"
-            placeholder={t`Confirm New Password`}
-          />
-          <br />
-          <button type="submit">
-            {(submitting) ? '...' : t`Save`}
-          </button>
-          <button type="button" onClick={cancel}>{t`Cancel`}</button>
-        </form>
+        <p className="modalmessage">{t`Changed Password successfully.`}</p>
+        <button type="button" onClick={done}>Close</button>
       </div>
     );
   }
-}
 
-export default ChangePassword;
+  return (
+    <div className="inarea">
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (submitting) return;
+          const valerrors = validate(
+            mailreg,
+            password,
+            newPassword,
+            confirmPassword,
+          );
+          setErrors(valerrors);
+          if (valerrors.length) return;
+          setSubmitting(true);
+          const { errors: resperrors } = await requestPasswordChange(
+            newPassword,
+            password,
+          );
+          if (resperrors) {
+            setErrors(resperrors);
+            setSubmitting(false);
+            return;
+          }
+          setSuccess(true);
+        }}
+      >
+        {errors.map((error) => (
+          <p key={error} className="errormessage"><span>{t`Error`}</span>
+            :&nbsp;{error}</p>
+        ))}
+        {(mailreg)
+        && (
+        <input
+          value={password}
+          onChange={(evt) => setPassword(evt.target.value)}
+          type="password"
+          placeholder={t`Old Password`}
+        />
+        )}
+        <br />
+        <input
+          value={newPassword}
+          onChange={(evt) => setNewPassword(evt.target.value)}
+          type="password"
+          placeholder={t`New Password`}
+        />
+        <br />
+        <input
+          value={confirmPassword}
+          onChange={(evt) => setConfirmPassword(evt.target.value)}
+          type="password"
+          placeholder={t`Confirm New Password`}
+        />
+        <br />
+        <button
+          type="submit"
+        >
+          {(submitting) ? '...' : t`Save`}
+        </button>
+        <button
+          type="button"
+          onClick={cancel}
+        >
+          {t`Cancel`}
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default React.memo(ChangePassword);

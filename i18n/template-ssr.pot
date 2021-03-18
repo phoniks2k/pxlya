@@ -73,11 +73,11 @@ msgstr ""
 msgid "A 3D globe of our whole map"
 msgstr ""
 
-#: src/ssr-components/Main.jsx:72
+#: src/ssr-components/Main.jsx:73
 msgid "PixelPlanet.fun"
 msgstr ""
 
-#: src/ssr-components/Main.jsx:74
+#: src/ssr-components/Main.jsx:75
 msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
@@ -270,39 +270,28 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/utils/validation.js:74
-msgid "Could not connect to server, please try again later :("
+#: src/routes/api/captcha.js:22
+msgid "No captcha text given"
 msgstr ""
 
-#: src/utils/validation.js:80
-msgid "I think we experienced some error :("
+#: src/routes/api/captcha.js:36
+msgid "You took too long, try again."
 msgstr ""
 
-#: src/routes/api/auth/change_mail.js:41
-#: src/routes/api/auth/change_passwd.js:37
-#: src/routes/api/auth/delete_account.js:38
-msgid "You are not authenticated."
+#: src/routes/api/captcha.js:42
+msgid "You failed your captcha"
 msgstr ""
 
-#: src/routes/api/auth/change_mail.js:50
-#: src/routes/api/auth/change_passwd.js:46
-#: src/routes/api/auth/delete_account.js:48
-msgid "Incorrect password!"
+#: src/routes/api/captcha.js:48
+msgid "Unknown Captcha Error"
 msgstr ""
 
-#: src/routes/api/auth/verify.js:25
-#: src/routes/api/auth/verify.js:32
-msgid "Mail verification"
+#: src/routes/api/captcha.js:55
+msgid "Server error occured"
 msgstr ""
 
-#: src/routes/api/auth/verify.js:26
-msgid "You are now verified :)"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:32
-msgid ""
-"Your mail verification code is invalid or already expired :(, please "
-"request a new one."
+#: src/routes/api/auth/logout.js:13
+msgid "You are not even logged in."
 msgstr ""
 
 #: src/routes/api/auth/register.js:31
@@ -321,8 +310,31 @@ msgstr ""
 msgid "Failed to establish session after register :("
 msgstr ""
 
-#: src/routes/api/auth/logout.js:13
-msgid "You are not even logged in."
+#: src/routes/api/auth/verify.js:25
+#: src/routes/api/auth/verify.js:32
+msgid "Mail verification"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:26
+msgid "You are now verified :)"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:32
+msgid ""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:41
+#: src/routes/api/auth/change_passwd.js:37
+#: src/routes/api/auth/delete_account.js:38
+msgid "You are not authenticated."
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:50
+#: src/routes/api/auth/change_passwd.js:46
+#: src/routes/api/auth/delete_account.js:48
+msgid "Incorrect password!"
 msgstr ""
 
 #: src/ssr-components/RedirectionPage.jsx:20

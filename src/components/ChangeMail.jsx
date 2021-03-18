@@ -6,8 +6,9 @@
 import React from 'react';
 import { t } from 'ttag';
 import {
-  validateEMail, validatePassword, parseAPIresponse,
+  validateEMail, validatePassword,
 } from '../utils/validation';
+import { requestMailChange } from '../actions/fetch';
 
 function validate(email, password) {
   const errors = [];
@@ -18,23 +19,6 @@ function validate(email, password) {
   if (mailerror) errors.push(mailerror);
 
   return errors;
-}
-
-async function submitMailchange(email, password) {
-  const body = JSON.stringify({
-    email,
-    password,
-  });
-  const response = await fetch('./api/auth/change_mail', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
-
-  return parseAPIresponse(response);
 }
 
 class ChangeMail extends React.Component {
@@ -64,7 +48,7 @@ class ChangeMail extends React.Component {
     if (errors.length > 0) return;
     this.setState({ submitting: true });
 
-    const { errors: resperrors } = await submitMailchange(email, password);
+    const { errors: resperrors } = await requestMailChange(email, password);
     if (resperrors) {
       this.setState({
         errors: resperrors,

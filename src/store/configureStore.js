@@ -5,7 +5,6 @@ import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
 
 import audio from './audio';
-import swal from './sweetAlert';
 import protocolClientHook from './protocolClientHook';
 import rendererHook from './rendererHook';
 // import ads from './ads';
@@ -13,6 +12,7 @@ import array from './array';
 import promise from './promise';
 import notifications from './notifications';
 import title from './title';
+import placePixelControl from './placePixelControl';
 import extensions from './extensions';
 import reducers from '../reducers';
 
@@ -25,12 +25,12 @@ const store = createStore(
       thunk,
       promise,
       array,
-      swal,
       audio,
       notifications,
       title,
       protocolClientHook,
       rendererHook,
+      placePixelControl,
       extensions,
     ),
   ),

@@ -228,8 +228,8 @@ msgid ""
 "already set pixels."
 msgstr ""
 "Nosso canvas principal é um mapa mundi enorme, que você pode colocar píxeis "
-"onde quiser, mas você tera que esperar um tempo entre píxeis. Você pode ver "
-"o tempo de espera entre píxeis e outros requerimentos no menu de Seleção de "
+"onde quiser, mas você tera que esperar um tempo entre píxeis. Você pode ver o "
+"tempo de espera entre píxeis e outros requerimentos no menu de Seleção de "
 "Canvas (o botão com o formato de globo no topo). Alguns canvas tem um tempo "
 "de espera diferente para trocar píxeis que foram colocados por outro usuário "
 "do que um píxeis que ainda não foram pintado. Por exemplo: 4s/7s significa 4 "
@@ -265,8 +265,8 @@ msgid ""
 "The bare map data that we use, together with converted OpenStreetMap tiles "
 "for orientation, can be downloaded from mega.nz here: "
 msgstr ""
-"O mapa original que usamos, junto com os pedaços convertidos do "
-"OpenStreetMap para orientação, podem ser baixados do mega.nz aqui: "
+"O mapa original que usamos, junto com os pedaços convertidos do OpenStreetMap "
+"para orientação, podem ser baixados do mega.nz aqui: "
 
 #: src/components/HelpModal.jsx:59
 msgid "Detected as Proxy?"
@@ -365,8 +365,8 @@ msgid ""
 "Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
 "select current hovering color"
 msgstr ""
-"Clique ${ mouseSymbol } com botão do meio do mouse ou ${ touchSymbol } "
-"toque e segure para selecionar a cor que o mouse/seu dedo está em cima"
+"Clique ${ mouseSymbol } com botão do meio do mouse ou ${ touchSymbol } toque "
+"e segure para selecionar a cor que o mouse/seu dedo está em cima"
 
 #: src/components/HelpModal.jsx:84
 msgid "Press ${ bindE } and ${ bindC } to fly up and down"
@@ -469,8 +469,8 @@ msgid ""
 "Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
 "small."
 msgstr ""
-"Dar zoom ao invés de colocar um pixel quando você aperta no canvas e seu "
-"zoom é baixo."
+"Dar zoom ao invés de colocar um pixel quando você aperta no canvas e seu zoom "
+"é baixo."
 
 #: src/components/SettingsModal.jsx:158
 msgid "Compact Palette"
@@ -478,8 +478,7 @@ msgstr "Paleta Compacta"
 
 #: src/components/SettingsModal.jsx:160
 msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-"Mostrar a paleta em um formato compacto que ocupa menos espaço da tela."
+msgstr "Mostrar a paleta em um formato compacto que ocupa menos espaço da tela."
 
 #: src/components/SettingsModal.jsx:165
 msgid "Potato Mode"
@@ -517,8 +516,8 @@ msgstr "Como pixelplanet deve parecer."
 msgid "Register new account here"
 msgstr "Registre uma conta nova aqui"
 
-#: src/components/ForgotPasswordModal.jsx:20
-#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
+#: src/components/ForgotPasswordModal.jsx:20 src/components/RegisterModal.jsx:21
+#: src/components/UserAreaModal.jsx:130
 msgid "Consider joining us on Guilded:"
 msgstr "Considere entrar no nosso Guilded:"
 
@@ -576,16 +575,16 @@ msgstr "Carregando..."
 
 #: src/components/ArchiveModal.jsx:20
 msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or "
-"as a request by users who currently like a meme. Those canvases can get "
-"boring after a while and after weeks of no major change and if they really "
-"aren't worth being kept active, we decide to remove them."
+"While we tend to not delete canvases, some canvases are started for fun or as "
+"a request by users who currently like a meme. Those canvases can get boring "
+"after a while and after weeks of no major change and if they really aren't "
+"worth being kept active, we decide to remove them."
 msgstr ""
 "Enquanto a gente não costuma deletar os canvas, alguns canvas são feitos "
 "apenas como piada ou alguns usuários pedem porque gostam de um meme. Esses "
 "canvas depois de um tempo podem ficar chatos e entediantes e se não forem "
-"bastante modificados depois de semanas e não valerem a pena se manter "
-"ativos, nós decidimos removê-los."
+"bastante modificados depois de semanas e não valerem a pena se manter ativos, "
+"nós decidimos removê-los."
 
 #: src/components/ArchiveModal.jsx:22
 msgid ""
@@ -602,9 +601,9 @@ msgstr "Canvas do Compasso Político"
 #: src/components/ArchiveModal.jsx:31
 msgid ""
 "This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
-"remained active for months till it got shut down on November 30th."
+"Earth canvas. It was a 1024x1024 representation of the political compass with "
+"a 5s cooldown and 60s stacking. It got launched on May 11th and remained "
+"active for months till it got shut down on November 30th."
 msgstr ""
 "Este canvas foi pedido durante um tempo de muitos conflitos políticos no "
 "canvas principal, a Terra. Era uma representação com 1024x1024 píxeis do "
@@ -618,8 +617,8 @@ msgid ""
 "screenshot from the timelapse results in a perfect 1:1 representation of how "
 "the canvas was at that time."
 msgstr ""
-"Nos decidimos arquivá-lo como uma timelapse em um webm codificado sem "
-"perdas. Tirando uma captura de tela da timelapse resulta em uma perfeita "
+"Nos decidimos arquivá-lo como uma timelapse em um webm codificado sem perdas. "
+"Tirando uma captura de tela da timelapse resulta em uma perfeita "
 "representação 1:1 de como o canvas era naquele tempo."
 
 #: src/components/ArchiveModal.jsx:50
@@ -666,7 +665,7 @@ msgstr "Nome ou Email"
 #: src/components/ChangeMail.jsx:112 src/components/DeleteAccount.jsx:89
 #: src/components/LogInForm.jsx:111 src/components/SignUpForm.jsx:140
 msgid "Password"
-msgstr "SeNHA"
+msgstr "Senha"
 
 #: src/components/LogInForm.jsx:115
 msgid "LogIn"

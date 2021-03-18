@@ -32,13 +32,13 @@ tr:nth-child(even) {
 
 .chatbox {
   background-color: rgba(59, 59, 59, 0.8);
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .channeldd, .contextmenu {
-  background-color: #535356;
+  background-color: #353535;
   color: #efefef;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .chntop {
@@ -46,7 +46,7 @@ tr:nth-child(even) {
 }
 
 .chn, .chntype, .contextmenu > div {
-  background-color: #5f5f5f;
+  background-color: #353535;
 }
 
 .chn.selected, .chn:hover, .chntype.selected, .chntype:hover,
@@ -55,39 +55,43 @@ tr:nth-child(even) {
 }
 
 .actionbuttons, .coorbox, .onlinebox, .cooldownbox, #historyselect {
-  background-color: rgba(59, 59, 59, 0.8);
-  color: #f4f4f4;
-  border-radius: 21px;
+  background-color: rgba(27, 27, 27, 0.8);
+  color: #ffd4ae;
+  border-radius: 15px;
 }
 
 .menu > div {
   z-index: 1;
-  background-color: #15374fd1;
+  background-color: #000000d1;
+}
+
+.contextmenu > div {
+  border-top: thin solid #ffa14c;
 }
 
 .Modal, .Alert {
-  background: #444242 none repeat scroll 0 0;;
-  color: #f4f4f4;
+  background: #262626 none repeat scroll 0 0;;
+  color: #ff8c22;
 }
 
 .Modal {
-  border-radius: 21px;
+  border-radius: 15px;
 }
 
 .Alert {
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .modaltext, .modalcotext {
-  color: #f4f4f4;
+  color: #f8f8f8;
 }
 
 .modaltitle {
-  color: #d7e5fb;
+  color: #f38826;
 }
 
 .modaldesc {
-  color: hsla(220, 100%, 95.3%, 0.6);
+  color: hsl(0, 0%, 88%);
 }
 
 .modaldivider {
@@ -116,7 +120,7 @@ tr:nth-child(even) {
 }
 
 .chatmsg {
-  color: white;
+  color: #fffcf7;
 }
 .msg.info{
   color: #ff91a6;
@@ -137,7 +141,7 @@ tr:nth-child(even) {
 }
 
 .actionbuttons:hover, .coorbox:hover, .menu > div:hover {
-  background-color: #363637;
+  background-color: rgba(71, 71, 71, 0.8);
 }
 
 #outstreamContainer {

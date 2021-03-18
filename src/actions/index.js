@@ -29,6 +29,12 @@ export function sweetAlert(
   };
 }
 
+export function closeAlert(): Action {
+  return {
+    type: 'CLOSE_ALERT',
+  };
+}
+
 export function toggleChatBox(): Action {
   return {
     type: 'TOGGLE_CHAT_BOX',
@@ -114,9 +120,9 @@ export function toggleOpenMenu(): Action {
   };
 }
 
-export function setPlaceAllowed(requestingPixel: boolean): Action {
+export function setRequestingPixel(requestingPixel: boolean): Action {
   return {
-    type: 'SET_PLACE_ALLOWED',
+    type: 'SET_REQUESTING_PIXEL',
     requestingPixel,
   };
 }

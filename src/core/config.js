@@ -10,6 +10,7 @@ if (process.env.BROWSER) {
 }
 
 export const PORT = process.env.PORT || 80;
+export const HOST = process.env.HOST || 'localhost';
 
 export const GMAIL_USER = process.env.GMAIL_USER || null;
 export const GMAIL_PW = process.env.GMAIL_PW || null;
@@ -18,6 +19,8 @@ const TILE_FOLDER_REL = process.env.TILE_FOLDER || 'tiles';
 export const TILE_FOLDER = path.join(__dirname, `./${TILE_FOLDER_REL}`);
 
 export const ASSET_SERVER = process.env.ASSET_SERVER || '.';
+
+export const CAPTCHA_URL = process.env.CAPTCHA_URL || '';
 
 export const USE_XREALIP = process.env.USE_XREALIP || false;
 
@@ -35,8 +38,6 @@ export const MYSQL_USER = process.env.MYSQL_USER || 'pixelplanet';
 export const MYSQL_PW = process.env.MYSQL_PW || 'password';
 
 // Social
-export const DISCORD_INVITE = process.env.DISCORD_INVITE
-  || 'https://discordapp.com/';
 export const GUILDED_INVITE = process.env.GUILDED_INVITE
   || 'https://www.guilded.gg/';
 
@@ -87,13 +88,9 @@ export const auth = {
   },
 };
 
-// o: none
-// 1: reCaptcha
-// 2: hCaptcha
-export const CAPTCHA_METHOD = Number(process.env.CAPTCHA_METHOD || 0);
-export const CAPTCHA_SECRET = process.env.CAPTCHA_SECRET || false;
-export const CAPTCHA_SITEKEY = process.env.CAPTCHA_SITEKEY || false;
 // time on which to display captcha in minutes
 export const CAPTCHA_TIME = parseInt(process.env.CAPTCHA_TIME, 10) || 30;
+// time during which the user can solve a captcha in seconds
+export const CAPTCHA_TIMEOUT = parseInt(process.env.CAPTCHA_TIMEOUT, 10) || 120;
 
 export const SESSION_SECRET = process.env.SESSION_SECRET || 'dummy';

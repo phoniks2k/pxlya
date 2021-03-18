@@ -44,6 +44,11 @@ router.use((err, req, res, next) => {
   }
 });
 
+/*
+ * make localisations available
+ */
+router.use(expressTTag);
+
 // captcah doesn't need a user
 router.post('/captcha', captcha);
 
@@ -88,11 +93,6 @@ router.post('/leavechan', leaveChan);
 router.post('/block', block);
 
 router.post('/blockdm', blockdm);
-
-/*
- * make localisations available
- */
-router.use(expressTTag);
 
 router.get('/chathistory', chatHistory);
 

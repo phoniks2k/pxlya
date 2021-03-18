@@ -7,8 +7,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { t } from 'ttag';
 import {
-  validateEMail, validateName, validatePassword, parseAPIresponse,
+  validateEMail, validateName, validatePassword,
 } from '../utils/validation';
+import { requestRegistration } from '../actions/fetch';
 
 import { showUserAreaModal, loginUser } from '../actions';
 
@@ -26,25 +27,6 @@ function validate(name, email, password, confirmPassword) {
     errors.push('Passwords do not match');
   }
   return errors;
-}
-
-
-async function submitRegistration(name, email, password) {
-  const body = JSON.stringify({
-    name,
-    email,
-    password,
-  });
-  const response = await fetch('./api/auth/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
-
-  return parseAPIresponse(response);
 }
 
 const inputStyles = {
@@ -83,7 +65,7 @@ class SignUpForm extends React.Component {
     if (errors.length > 0) return;
 
     this.setState({ submitting: true });
-    const { errors: resperrors, me } = await submitRegistration(
+    const { errors: resperrors, me } = await requestRegistration(
       name,
       email,
       password,
@@ -121,6 +103,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={name}
+          autoComplete="username"
           onChange={(evt) => this.setState({ name: evt.target.value })}
           type="text"
           placeholder={t`Name`}
@@ -128,6 +111,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={email}
+          autoComplete="email"
           onChange={(evt) => this.setState({ email: evt.target.value })}
           type="text"
           placeholder={t`Email`}
@@ -135,6 +119,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={password}
+          autoComplete="new-password"
           onChange={(evt) => this.setState({ password: evt.target.value })}
           type="password"
           placeholder={t`Password`}
@@ -142,6 +127,7 @@ class SignUpForm extends React.Component {
         <input
           style={inputStyles}
           value={confirmPassword}
+          autoComplete="new-password"
           onChange={(evt) => this.setState({
             confirmPassword: evt.target.value,
           })}

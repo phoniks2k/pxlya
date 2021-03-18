@@ -183,25 +183,6 @@ class UserArea extends React.Component {
             done={() => { this.setState({ socialSettingsExtended: false }); }}
           />
           )}
-        {(typeof window.hcaptcha !== 'undefined')
-          && (
-            <img
-              role="presentation"
-              src="hcaptcha.svg"
-              alt="hCaptcha"
-              title="test hCaptcha"
-              onClick={() => {
-                window.pixel = null;
-                window.hcaptcha.execute();
-              }}
-              style={{
-                width: '5%',
-                height: '5%',
-                paddingTop: 20,
-                cursor: 'pointer',
-              }}
-            />
-          )}
       </p>
     );
   }
@@ -212,11 +193,13 @@ function mapStateToProps(state: State) {
   const {
     name,
     mailreg,
+  } = state.user;
+  const {
     totalPixels,
     dailyTotalPixels,
     ranking,
     dailyRanking,
-  } = state.user;
+  } = state.ranks;
   const stats = {
     totalPixels,
     dailyTotalPixels,

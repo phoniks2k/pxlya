@@ -4,28 +4,14 @@
  */
 import React from 'react';
 import { t } from 'ttag';
-import { validateEMail, parseAPIresponse } from '../utils/validation';
+import { validateEMail } from '../utils/validation';
+import { requestNewPassword } from '../actions/fetch';
 
 function validate(email) {
   const errors = [];
   const mailerror = validateEMail(email);
   if (mailerror) errors.push(mailerror);
   return errors;
-}
-
-async function submitNewpass(email) {
-  const body = JSON.stringify({
-    email,
-  });
-  const response = await fetch('./api/auth/restore_password', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body,
-  });
-
-  return parseAPIresponse(response);
 }
 
 const inputStyles = {
@@ -60,7 +46,7 @@ class NewPasswordForm extends React.Component {
     if (errors.length > 0) return;
 
     this.setState({ submitting: true });
-    const { errors: resperrors } = await submitNewpass(email);
+    const { errors: resperrors } = await requestNewPassword(email);
     if (resperrors) {
       this.setState({
         errors: resperrors,

@@ -12,6 +12,7 @@ import NotifyBox from './NotifyBox';
 import GlobeButton from './GlobeButton';
 import PalselButton from './PalselButton';
 import Palette from './Palette';
+import Alert from './Alert';
 import HistorySelect from './HistorySelect';
 import Mobile3DControls from './Mobile3DControls';
 import UserContextMenu from './UserContextMenu';
@@ -41,13 +42,14 @@ const UI = ({
   }
   return (
     <div>
+      <Alert />
       <PalselButton />
       <Palette />
-      {(is3D) ? null : <GlobeButton />}
-      {(is3D && isOnMobile) ? <Mobile3DControls /> : null}
+      {(!is3D) && <GlobeButton />}
+      {(is3D && isOnMobile) && <Mobile3DControls />}
       <CoolDownBox />
       <NotifyBox />
-      {(menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null}
+      {(menuOpen && menuType) && CONTEXT_MENUS[menuType]}
     </div>
   );
 };

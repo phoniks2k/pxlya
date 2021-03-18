@@ -11,7 +11,7 @@ tr:nth-child(odd) {
   border-radius: 10px;
 }
 
-.Overlay {
+.OverlayModal, .OverlayAlert {
   background: linear-gradient(175deg, #61dceaab , #ffb1e1, #ecffec, #ffb1e1, #61dceaab);
 }
 
@@ -53,4 +53,9 @@ tr:nth-child(odd) {
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10px;
+}
+
+.Alert {
+  background: #f4edf0 none repeat scroll 0 0;
+  border-radius: 7px;
 }

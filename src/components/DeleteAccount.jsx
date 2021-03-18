@@ -7,7 +7,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { t } from 'ttag';
 
-import { validatePassword, parseAPIresponse } from '../utils/validation';
+import { validatePassword } from '../utils/validation';
+import { requestDeleteAccount } from '../actions/fetch';
 import { logoutUser } from '../actions';
 
 function validate(password) {
@@ -17,22 +18,6 @@ function validate(password) {
   if (passworderror) errors.push(passworderror);
 
   return errors;
-}
-
-async function submitDeleteAccount(password) {
-  const body = JSON.stringify({
-    password,
-  });
-  const response = await fetch('./api/auth/delete_account', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
-
-  return parseAPIresponse(response);
 }
 
 class DeleteAccount extends React.Component {
@@ -60,7 +45,7 @@ class DeleteAccount extends React.Component {
     if (errors.length > 0) return;
     this.setState({ submitting: true });
 
-    const { errors: resperrors } = await submitDeleteAccount(password);
+    const { errors: resperrors } = await requestDeleteAccount(password);
     if (resperrors) {
       this.setState({
         errors: resperrors,

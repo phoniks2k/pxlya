@@ -17,7 +17,7 @@ import assets from './assets.json';
 // eslint-disable-next-line import/no-unresolved
 import styleassets from './styleassets.json';
 
-import { ASSET_SERVER, BACKUP_URL } from '../core/config';
+import { CAPTCHA_URL, ASSET_SERVER, BACKUP_URL } from '../core/config';
 
 /*
  * generate language list
@@ -31,6 +31,7 @@ const langs = Object.keys(ttags)
  */
 const ssv = {
   assetserver: ASSET_SERVER,
+  captchaurl: CAPTCHA_URL,
   availableStyles: styleassets,
   langs,
 };

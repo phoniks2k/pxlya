@@ -3,117 +3,70 @@
  * @flow
  */
 
-import fetch from 'isomorphic-fetch';
 import logger from '../core/logger';
 import redis from '../data/redis';
-
+import { getIPv6Subnet } from './ip';
 import {
-  CAPTCHA_METHOD,
-  CAPTCHA_SECRET,
+  CAPTCHA_URL,
   CAPTCHA_TIME,
+  CAPTCHA_TIMEOUT,
 } from '../core/config';
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
-// eslint-disable-next-line max-len
-const RECAPTCHA_ENDPOINT = `https://www.google.com/recaptcha/api/siteverify?secret=${CAPTCHA_SECRET}`;
-const HCAPTCHA_ENDPOINT = 'https://hcaptcha.com/siteverify';
 
-/**
- * https://stackoverflow.com/questions/27297067/google-recaptcha-how-to-get-user-response-and-validate-in-the-server-side
- *
- * @param token
- * @param ip
- * @returns {Promise.<boolean>}
- */
-async function verifyReCaptcha(
-  token: string,
-  ip: string,
-): Promise<boolean> {
-  const url = `${RECAPTCHA_ENDPOINT}&response=${token}&remoteip=${ip}`;
-  const response = await fetch(url);
-  if (response.ok) {
-    const { success } = await response.json();
-    if (success) {
-      logger.info(`CAPTCHA ${ip} successfully solved captcha`);
-      return true;
-    }
-    logger.info(`CAPTCHA Token for ${ip} not ok`);
-  } else {
-    logger.warn(`CAPTCHA Recapcha answer for ${ip} not ok`);
-  }
-  return false;
+function captchaTextFilter(text: string) {
+  let ret = text.toString('utf8');
+  ret = ret.split('l').join('i');
+  ret = ret.split('0').join('O');
+  ret = ret.toLowerCase();
+  return ret;
 }
 
 /*
- * https://docs.hcaptcha.com/
+ * set captcha solution
  *
- * @param token
+ * @param text Solution of captcha
  * @param ip
- * @return boolean, true if successful, false on error or fail
+ * @param ttl time to be valid in seconds
  */
-async function verifyHCaptcha(
-  token: string,
+export function setCaptchaSolution(
+  text: string,
   ip: string,
-): Promise<boolean> {
-  const response = await fetch(HCAPTCHA_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `response=${token}&secret=${CAPTCHA_SECRET}&remoteip=${ip}`,
-  });
-  if (response.ok) {
-    const { success } = await response.json();
-    if (success) {
-      logger.info(`CAPTCHA ${ip} successfully solved captcha`);
-      return true;
-    }
-    logger.info(`CAPTCHA Token for ${ip} not ok`);
-  } else {
-    // eslint-disable-next-line max-len
-    logger.warn(`CAPTCHA hCapcha answer for ${ip} not ok ${await response.text()}`);
-  }
-  return false;
+) {
+  const key = `capt:${ip}`;
+  return redis.setAsync(key, captchaTextFilter(text), 'EX', CAPTCHA_TIMEOUT);
 }
 
 /*
- * verify captcha token from client
+ * check captcha solution
  *
- * @param token token of solved captcha from client
+ * @param text Solution of captcha
  * @param ip
- * @returns Boolean if successful
+ * @return 0 if solution right
+ *         1 if timed out
+ *         2 if wrong
  */
-export async function verifyCaptcha(
-  token: string,
+export async function checkCaptchaSolution(
+  text: string,
   ip: string,
-): Promise<boolean> {
-  try {
-    if (!CAPTCHA_METHOD) {
-      return true;
+) {
+  const ipn = getIPv6Subnet(ip);
+  const key = `capt:${ip}`;
+  let solution = await redis.getAsync(key);
+  if (solution) {
+    if (solution.toString('utf8') === captchaTextFilter(text)) {
+      const solvkey = `human:${ipn}`;
+      await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
+      logger.info(`CAPTCHA ${ip} successfully solved captcha`);
+      return 0;
     }
-    const key = `human:${ip}`;
-
-    switch (CAPTCHA_METHOD) {
-      case 1:
-        if (!await verifyReCaptcha(token, ip)) {
-          return false;
-        }
-        break;
-      case 2:
-        if (!await verifyHCaptcha(token, ip)) {
-          return false;
-        }
-        break;
-      default:
-        // nothing
-    }
-
-    await redis.setAsync(key, '', 'EX', TTL_CACHE);
-    return true;
-  } catch (error) {
-    logger.error(error);
+    logger.info(
+      `CAPTCHA ${ip} got captcha wrong (${text} instead of ${solution})`,
+    );
+    return 2;
   }
-  return false;
+  logger.info(`CAPTCHA ${ip} timed out`);
+  return 1;
 }
 
 /*
@@ -123,11 +76,11 @@ export async function verifyCaptcha(
  * @return boolean true if needed
  */
 export async function needCaptcha(ip: string) {
-  if (!CAPTCHA_METHOD) {
+  if (!CAPTCHA_URL) {
     return false;
   }
 
-  const key = `human:${ip}`;
+  const key = `human:${getIPv6Subnet(ip)}`;
   const ttl: number = await redis.ttlAsync(key);
   if (ttl > 0) {
     return false;
@@ -135,6 +88,3 @@ export async function needCaptcha(ip: string) {
   logger.info(`CAPTCHA ${ip} got captcha`);
   return true;
 }
-
-
-export default verifyCaptcha;

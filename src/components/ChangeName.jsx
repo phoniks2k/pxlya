@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { t } from 'ttag';
-import { validateName, parseAPIresponse } from '../utils/validation';
+import { validateName } from '../utils/validation';
+import { requestNameChange } from '../actions/fetch';
 
 
 function validate(name) {
@@ -15,22 +16,6 @@ function validate(name) {
   if (nameerror) errors.push(nameerror);
 
   return errors;
-}
-
-async function submitNamechange(name) {
-  const body = JSON.stringify({
-    name,
-  });
-  const response = await fetch('./api/auth/change_name', {
-    method: 'POST',
-    headers: {
-      'Content-type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
-
-  return parseAPIresponse(response);
 }
 
 class ChangeName extends React.Component {
@@ -58,7 +43,7 @@ class ChangeName extends React.Component {
     if (errors.length > 0) return;
     this.setState({ submitting: true });
 
-    const { errors: resperrors } = await submitNamechange(name);
+    const { errors: resperrors } = await requestNameChange(name);
     if (resperrors) {
       this.setState({
         errors: resperrors,
