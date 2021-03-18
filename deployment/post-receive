@@ -42,8 +42,10 @@ do
         cd "$PFOLDER"
         pm2 stop web
         pm2 stop backup
+        pm2 stop captchas
         pm2 start ecosystem.yml
         pm2 start ecosystem-backup.yml
+        pm2 start ecosystem-captchas.yml
         curl -H "Content-Type: application/json" --data-binary '{ "username": "PixelPlanet Server", "avatar_url": "https://pixelplanet.fun/favicon.ico", "content": "...Done", "embeds": [{"title": "New Commits", "url": "https://pixelplanet.fun", "description": "'"$COMMITS"'", "color": 15258703}] }' "$PWEBHOOK"
     else
         echo "---UPDATING REPO ON DEV SERVER---"
