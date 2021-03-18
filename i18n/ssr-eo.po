@@ -133,7 +133,7 @@ msgstr ""
 
 #: src/core/mail.js:75
 msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
-msgstr "Bonvenon ${ name } to PixelPlanet, bonvolu verigi vian retpostadreson."
+msgstr "Bonvenon ${ name } to PixelPlanet, bonvolu verigi vian retpostadreson"
 
 #: src/core/mail.js:77
 #, javascript-format
@@ -145,7 +145,7 @@ msgid ""
 "welcome to our little community of pixelplacers, to use your account, you "
 "have to verify your mail. You can do that here: "
 msgstr ""
-"Bonvenon al nia comunumeta de pixelmetistoj; por uzi vian konton, vi devus "
+"bonvenon al nia comunumeta de pixelmetistoj; por uzi vian konton, vi devus "
 "verigi vian retpostadreson. Povus fari ĝin ĉi tie: "
 
 #: src/core/mail.js:78
@@ -175,7 +175,7 @@ msgstr ""
 
 #: src/core/mail.js:106
 msgid "Couldn't find this mail in our database"
-msgstr "Ne trovis tion retpostmensaĝon en la datumbazon."
+msgstr "Ne trovis tion retpostmensaĝon en la datumbazon"
 
 #: src/core/mail.js:125
 msgid "You forgot your password for PixelPlanet? Get a new one here"
@@ -301,7 +301,7 @@ msgstr "Ni eraron spertis ŭwŭ"
 #: src/routes/api/auth/change_passwd.js:37
 #: src/routes/api/auth/delete_account.js:38
 msgid "You are not authenticated."
-msgstr "Vi ne estas aŭtentigita"
+msgstr "Vi ne estas aŭtentigita."
 
 #: src/routes/api/auth/change_mail.js:50
 #: src/routes/api/auth/change_passwd.js:46
@@ -339,7 +339,7 @@ msgstr "Malsukcesis krei novan uzanton ŭwŭ"
 
 #: src/routes/api/auth/register.js:77
 msgid "Failed to establish session after register :("
-msgstr "Malsukcesis krei novan ligon post reĝistro."
+msgstr "Malsukcesis krei novan ligon post reĝistro"
 
 #: src/routes/api/auth/logout.js:13
 msgid "You are not even logged in."
@@ -388,7 +388,7 @@ msgstr "1bit'"
 
 #: src/canvasesDesc.js:28
 msgid "Our main canvas, a huge map of the world. Place everywhere you like"
-msgstr "Nia "
+msgstr "Nia ĉefa kanvaso, granda mapo de l' mond'. Metus en ajn lokon"
 
 #: src/canvasesDesc.js:29
 msgid ""
