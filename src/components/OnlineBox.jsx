@@ -32,7 +32,8 @@ const OnlineBox = ({ online, totalPixels, name }) => (
 );
 
 function mapStateToProps(state: State) {
-  const { online, totalPixels, name } = state.user;
+  const { online, totalPixels } = state.ranks;
+  const { name } = state.user;
   return { online, totalPixels, name };
 }
 
