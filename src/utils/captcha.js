@@ -17,6 +17,7 @@ const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
 function captchaTextFilter(text: string) {
   let ret = text.toString('utf8');
   ret = ret.split('l').join('i');
+  ret = ret.split('j').join('i');
   ret = ret.split('0').join('O');
   ret = ret.toLowerCase();
   return ret;
