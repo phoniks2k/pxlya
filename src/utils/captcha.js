@@ -52,7 +52,7 @@ export async function checkCaptchaSolution(
 ) {
   const ipn = getIPv6Subnet(ip);
   const key = `capt:${ip}`;
-  let solution = await redis.getAsync(key);
+  const solution = await redis.getAsync(key);
   if (solution) {
     if (solution.toString('utf8') === captchaTextFilter(text)) {
       const solvkey = `human:${ipn}`;

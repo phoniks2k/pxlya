@@ -23,7 +23,19 @@ const Captcha = ({ callback, close }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
 
   return (
-    <div>
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const { errors: resErrors } = await requestSolveCaptcha(text);
+        if (resErrors) {
+          setCaptchaUrl(getUrl());
+          setText('');
+          setErrors(resErrors);
+        } else {
+          close();
+        }
+      }}
+    >
       {errors.map((error) => (
         <p key={error} className="errormessage">
           <span>{t`Error`}</span>:&nbsp;{error}
@@ -67,7 +79,7 @@ const Captcha = ({ callback, close }) => {
           tabIndex={-1}
           title={t`Reload`}
           className="modallink"
-          style={{fontSize: 28}}
+          style={{ fontSize: 28 }}
           onClick={() => {
             setImgLoaded(false);
             setCaptchaUrl(getUrl());
@@ -81,6 +93,9 @@ const Captcha = ({ callback, close }) => {
         type="text"
         value={text}
         autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
         style={{
           width: '6em',
           fontSize: 21,
@@ -97,30 +112,20 @@ const Captcha = ({ callback, close }) => {
           <button
             type="button"
             onClick={close}
-            style={{fontSize: 16}}
+            style={{ fontSize: 16 }}
           >
             {t`Cancel`}
           </button>
          &nbsp;
           <button
-            type="button"
-            onClick={async () => {
-              const { errors: resErrors } = await requestSolveCaptcha(text);
-              if (resErrors) {
-                setCaptchaUrl(getUrl());
-                setText('');
-                setErrors(resErrors);
-              } else {
-                close();
-              }
-            }}
-            style={{fontSize: 16}}
+            type="submit"
+            style={{ fontSize: 16 }}
           >
             {t`Send`}
           </button>
         </div>
       )}
-    </div>
+    </form>
   );
 };
 
