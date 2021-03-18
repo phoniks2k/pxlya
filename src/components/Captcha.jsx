@@ -31,6 +31,7 @@ const Captcha = ({ callback, close }) => {
       ))}
       <p className="modaltext">
         {t`Type the characters from the following image:`}
+        &nbsp;
         <span style={{ fontSize: 11 }}>
           ({t`Tip: Not case-sensitive; I and l are the same`})
         </span>
