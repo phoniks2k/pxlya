@@ -87,7 +87,7 @@ class SocketServer extends WebSocketEvents {
       cheapDetector(user.ip);
 
       ws.send(OnlineCounter.dehydrate({
-        online: this.wss.clients.size || 0,
+        online: ipCounter.amount() || 0,
       }));
 
       const ip = getIPFromRequest(req);
@@ -282,7 +282,7 @@ class SocketServer extends WebSocketEvents {
   }
 
   onlineCounterBroadcast() {
-    const online = this.wss.clients.size || 0;
+    const online = ipCounter.amount() || 0;
     webSockets.broadcastOnlineCounter(online);
   }
 

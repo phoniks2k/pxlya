@@ -11,6 +11,10 @@ export default class Counter<T> {
     this.map = new Map();
   }
 
+  amount(): number {
+    return this.map.size;
+  }
+
   get(item: T): number {
     const count = this.map.get(item) || 0;
     return count;
