@@ -5,6 +5,7 @@ import path from 'path';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 import patch from './scripts/patch';
 import pkg from './package.json';
@@ -70,6 +71,7 @@ export default ({
     output: {
       path: path.resolve(__dirname, 'build'),
       libraryTarget: 'commonjs2',
+      clean: true,
     },
 
     resolve: {
@@ -140,6 +142,40 @@ export default ({
       new GeneratePackageJsonPlugin(basePackageValues, {
         sourcePackageFilenames: [
           path.resolve(__dirname, 'package.json'),
+        ],
+      }),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, 'public'),
+            to: path.resolve(__dirname, 'build', 'public'),
+          },
+          path.resolve(__dirname, 'src', 'canvases.json'),
+          path.resolve(__dirname, 'src', 'proxies.json'),
+          {
+            from: path.resolve(
+              __dirname, 'deployment', 'example-ecosystem.yml'
+            ),
+            to: path.resolve(
+              __dirname, 'build', 'ecosystem.yml'
+            ),
+          },
+          {
+            from: path.resolve(
+              __dirname, 'deployment', 'example-ecosystem-backup.yml'
+            ),
+            to: path.resolve(
+              __dirname, 'build', 'ecosystem-backup.yml'
+            ),
+          },
+          {
+            from: path.resolve(
+              __dirname, 'deployment', 'example-ecosystem-captchas.yml'
+            ),
+            to: path.resolve(
+              __dirname, 'build', 'ecosystem-captchas.yml'
+            ),
+          },
         ],
       }),
     ],

@@ -14,6 +14,7 @@ import fs from 'fs';
 import path from 'path';
 import CleanCSS from 'clean-css';
 import crypto from 'crypto';
+import mkdirp from 'mkdirp';
 
 const assetdir = path.resolve(__dirname, '..', 'build', 'public', 'assets');
 const builddir = path.resolve(__dirname, '..', 'build');
@@ -53,6 +54,21 @@ async function minifyCss() {
   });
   const json = JSON.stringify(assets);
   fs.writeFileSync(path.resolve(builddir, 'styleassets.json'), json);
+}
+
+async function doMinifyCss() {
+  try {
+    mkdirp.sync(path.resolve(__dirname, '..', 'build', 'public', 'assets'));
+    await minifyCss();
+  } catch (e) {
+    console.log('ERROR while minifying css', e);
+    process.exit(1);
+  }
+  process.exit(0); 
+}
+
+if (require.main === module) {
+  doMinifyCss();
 }
 
 export default minifyCss;

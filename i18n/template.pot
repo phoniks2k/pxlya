@@ -106,17 +106,17 @@ msgstr ""
 msgid "Copy to Clipboard"
 msgstr ""
 
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr ""
-
 #: src/components/OnlineBox.jsx:22
 msgid "User online"
 msgstr ""
 
 #: src/components/OnlineBox.jsx:25
 msgid "Pixels placed"
+msgstr ""
+
+#: src/components/CanvasSelectModal.jsx:67
+#: src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/ChatButton.jsx:61
@@ -170,6 +170,10 @@ msgstr ""
 msgid "Server answered with gibberish :("
 msgstr ""
 
+#: src/components/HelpButton.jsx:20
+msgid "Help"
+msgstr ""
+
 #: src/components/Chat.jsx:143
 msgid "Channel settings"
 msgstr ""
@@ -190,12 +194,9 @@ msgstr ""
 msgid "You must be logged in to chat"
 msgstr ""
 
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr ""
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
+#: src/components/SettingsButton.jsx:20
+#: src/components/SettingsModal.jsx:278
+msgid "Settings"
 msgstr ""
 
 #: src/components/LogInButton.jsx:20
@@ -203,9 +204,8 @@ msgstr ""
 msgid "User Area"
 msgstr ""
 
-#: src/components/SettingsButton.jsx:20
-#: src/components/SettingsModal.jsx:278
-msgid "Settings"
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
 msgstr ""
 
 #: src/components/GlobeButton.jsx:31
@@ -234,93 +234,6 @@ msgstr ""
 
 #: src/components/ChannelContextMenu.jsx:73
 msgid "Mute"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:125
-msgid "Show Grid"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:126
-msgid "Turn on grid to highlight pixel borders."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:132
-msgid "Show Pixel Activity"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:133
-msgid "Show circles where pixels are placed."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:139
-msgid "Disable Game Sounds"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:141
-msgid "All sound effects will be disabled."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:147
-msgid "Enable chat notifications"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:148
-msgid "Play a sound when new chat messages arrive"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:153
-msgid "Auto Zoom In"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:155
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:160
-msgid "Compact Palette"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:162
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:167
-msgid "Potato Mode"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:168
-msgid "For when you are playing on a potato."
-msgstr ""
-
-#: src/components/Converter.jsx:423
-#: src/components/SettingsModal.jsx:173
-msgid "Light Grid"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:174
-msgid "Show Grid in white instead of black."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:180
-msgid "Historical View"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:181
-msgid "Check out past versions of the canvas."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:189
-msgid "Themes"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:190
-msgid "How pixelplanet should look like."
-msgstr ""
-
-#: src/components/SettingsModal.jsx:200
-msgid "Select Language"
 msgstr ""
 
 #: src/components/HelpModal.jsx:35
@@ -493,6 +406,93 @@ msgstr ""
 msgid "Welcome to PixelPlanet.fun"
 msgstr ""
 
+#: src/components/SettingsModal.jsx:125
+msgid "Show Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:126
+msgid "Turn on grid to highlight pixel borders."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:132
+msgid "Show Pixel Activity"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:133
+msgid "Show circles where pixels are placed."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:139
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:141
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:147
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:148
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:153
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:155
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:160
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:162
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:167
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:168
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/Converter.jsx:423
+#: src/components/SettingsModal.jsx:173
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:174
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:180
+msgid "Historical View"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:181
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:189
+msgid "Themes"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:190
+msgid "How pixelplanet should look like."
+msgstr ""
+
+#: src/components/SettingsModal.jsx:200
+msgid "Select Language"
+msgstr ""
+
 #: src/components/UserAreaModal.jsx:33
 msgid "Login to access more features and stats."
 msgstr ""
@@ -547,6 +547,14 @@ msgstr ""
 msgid "Consider joining us on Guilded:"
 msgstr ""
 
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr ""
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr ""
+
 #: src/components/CanvasSelectModal.jsx:29
 msgid ""
 "Select the canvas you want to use. Every canvas is unique and has different "
@@ -556,14 +564,6 @@ msgstr ""
 
 #: src/components/CanvasSelectModal.jsx:37
 msgid "Archive"
-msgstr ""
-
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr ""
-
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
 msgstr ""
 
 #: src/components/ArchiveModal.jsx:20
@@ -615,7 +615,7 @@ msgstr ""
 msgid "Restore my Password"
 msgstr ""
 
-#: src/components/Captcha.jsx:29
+#: src/components/Captcha.jsx:41
 #: src/components/ChangeMail.jsx:88
 #: src/components/ChangeName.jsx:67
 #: src/components/ChangePassword.jsx:73
@@ -626,31 +626,31 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: src/components/Captcha.jsx:33
+#: src/components/Captcha.jsx:45
 msgid "Type the characters from the following image:"
 msgstr ""
 
-#: src/components/Captcha.jsx:36
+#: src/components/Captcha.jsx:48
 msgid "Tip: Not case-sensitive; I and l are the same"
 msgstr ""
 
-#: src/components/Captcha.jsx:60
+#: src/components/Captcha.jsx:72
 msgid "Could not load captcha"
 msgstr ""
 
-#: src/components/Captcha.jsx:64
+#: src/components/Captcha.jsx:76
 msgid "Can't read? Reload:"
 msgstr ""
 
-#: src/components/Captcha.jsx:68
+#: src/components/Captcha.jsx:80
 msgid "Reload"
 msgstr ""
 
-#: src/components/Captcha.jsx:80
+#: src/components/Captcha.jsx:92
 msgid "Enter Characters"
 msgstr ""
 
-#: src/components/Captcha.jsx:102
+#: src/components/Captcha.jsx:117
 #: src/components/ChangeMail.jsx:109
 #: src/components/ChangeName.jsx:79
 #: src/components/ChangePassword.jsx:109
@@ -660,7 +660,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/components/Captcha.jsx:119
+#: src/components/Captcha.jsx:124
 msgid "Send"
 msgstr ""
 
@@ -743,33 +743,27 @@ msgstr ""
 msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
+#: src/components/SignUpForm.jsx:109
+msgid "Name"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
+#: src/components/NewPasswordForm.jsx:86
+#: src/components/SignUpForm.jsx:117
+msgid "Email"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
+#: src/components/SignUpForm.jsx:135
+msgid "Confirm Password"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
+#: src/components/Admintools.jsx:306
+#: src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461
+#: src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589
+#: src/components/NewPasswordForm.jsx:90
+#: src/components/SignUpForm.jsx:138
+msgid "Submit"
 msgstr ""
 
 #: src/components/Admintools.jsx:179
@@ -798,16 +792,6 @@ msgstr ""
 
 #: src/components/Admintools.jsx:271
 msgid "Coordinates in X_Y format:"
-msgstr ""
-
-#: src/components/Admintools.jsx:306
-#: src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461
-#: src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589
-#: src/components/NewPasswordForm.jsx:90
-#: src/components/SignUpForm.jsx:138
-msgid "Submit"
 msgstr ""
 
 #: src/components/Admintools.jsx:311
@@ -860,21 +844,37 @@ msgstr ""
 msgid "User Name"
 msgstr ""
 
+#: src/components/CanvasItem.jsx:46
+msgid "Cooldown"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:52
+msgid "Stacking till"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:54
+msgid "Ranked"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:56
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:58
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:60
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr ""
+
 #: src/components/NewPasswordForm.jsx:69
 msgid "Sent you a mail with instructions to reset your password."
-msgstr ""
-
-#: src/components/NewPasswordForm.jsx:86
-#: src/components/SignUpForm.jsx:117
-msgid "Email"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:109
-msgid "Name"
-msgstr ""
-
-#: src/components/SignUpForm.jsx:135
-msgid "Confirm Password"
 msgstr ""
 
 #: src/components/Converter.jsx:274
@@ -996,26 +996,6 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/components/ChangePassword.jsx:19
-msgid "Passwords do not match."
-msgstr ""
-
-#: src/components/ChangePassword.jsx:39
-msgid "Changed Password successfully."
-msgstr ""
-
-#: src/components/ChangePassword.jsx:82
-msgid "Old Password"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:90
-msgid "New Password"
-msgstr ""
-
-#: src/components/ChangePassword.jsx:97
-msgid "Confirm New Password"
-msgstr ""
-
 #: src/components/UserMessages.jsx:38
 msgid "A new verification mail is getting sent to you."
 msgstr ""
@@ -1055,8 +1035,24 @@ msgstr ""
 msgid "New Username"
 msgstr ""
 
-#: src/components/DeleteAccount.jsx:78
-msgid "Yes, Delete My Account!"
+#: src/components/ChangePassword.jsx:19
+msgid "Passwords do not match."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:39
+msgid "Changed Password successfully."
+msgstr ""
+
+#: src/components/ChangePassword.jsx:82
+msgid "Old Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:90
+msgid "New Password"
+msgstr ""
+
+#: src/components/ChangePassword.jsx:97
+msgid "Confirm New Password"
 msgstr ""
 
 #: src/components/ChangeMail.jsx:73
@@ -1067,6 +1063,10 @@ msgstr ""
 
 #: src/components/ChangeMail.jsx:103
 msgid "New Mail"
+msgstr ""
+
+#: src/components/DeleteAccount.jsx:78
+msgid "Yes, Delete My Account!"
 msgstr ""
 
 #: src/components/SocialSettings.jsx:39
@@ -1091,11 +1091,6 @@ msgstr ""
 #: src/components/SettingsModal.jsx:134
 msgctxt "keybinds"
 msgid "X"
-msgstr ""
-
-#: src/components/SettingsModal.jsx:142
-msgctxt "keybinds"
-msgid "M"
 msgstr ""
 
 #: src/components/HelpModal.jsx:17
@@ -1147,4 +1142,9 @@ msgstr ""
 #: src/components/HelpModal.jsx:32
 msgctxt "keybinds"
 msgid "C"
+msgstr ""
+
+#: src/components/SettingsModal.jsx:142
+msgctxt "keybinds"
+msgid "M"
 msgstr ""
