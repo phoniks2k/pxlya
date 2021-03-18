@@ -26,7 +26,11 @@ export default class Counter<T> {
   }
 
   delete(item: T): void {
-    const count = this.get(item);
-    this.map.set(item, count - 1);
+    const count = this.get(item) - 1;
+    if (count === 0) {
+      this.map.delete(item);
+    } else {
+      this.map.set(item, count);
+    }
   }
 }
