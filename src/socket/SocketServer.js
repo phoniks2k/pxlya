@@ -109,7 +109,6 @@ class SocketServer extends WebSocketEvents {
       });
     });
 
-    this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
     this.ping = this.ping.bind(this);
 
     /*
@@ -120,7 +119,7 @@ class SocketServer extends WebSocketEvents {
     // this.killOld = this.killOld.bind(this);
     // setInterval(this.killOld, 10 * 60 * 1000);
 
-    setInterval(this.onlineCounterBroadcast, 10 * 1000);
+    setInterval(SocketServer.onlineCounterBroadcast, 10 * 1000);
     // https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
     setInterval(this.ping, 45 * 1000);
   }
@@ -281,7 +280,7 @@ class SocketServer extends WebSocketEvents {
     });
   }
 
-  onlineCounterBroadcast() {
+  static onlineCounterBroadcast() {
     const online = ipCounter.amount() || 0;
     webSockets.broadcastOnlineCounter(online);
   }

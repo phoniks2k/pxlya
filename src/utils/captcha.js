@@ -14,13 +14,56 @@ import {
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
 
-function captchaTextFilter(text: string) {
-  let ret = text.toString('utf8');
-  ret = ret.split('l').join('i');
-  ret = ret.split('j').join('i');
-  ret = ret.split('0').join('O');
-  ret = ret.toLowerCase();
-  return ret;
+/*
+ * chars that are so similar that we allow them to get mixed up
+ * left: captcha text
+ * right: user input
+ */
+const graceChars = [
+  ['I', 'l'],
+  ['l', 'I'],
+  ['l', 'i'],
+  ['i', 'j'],
+  ['j', 'i'],
+  ['0', 'O'],
+  ['0', 'o'],
+  ['O', '0'],
+];
+
+/*
+ * Compare chars of captcha to result
+ * @return true if chars are the same
+ */
+function evaluateChar(charC, charU) {
+  if (charC.toLowerCase() === charU.toLowerCase()) {
+    return true;
+  }
+  for (let i = 0; i < graceChars.length; i += 1) {
+    const [cc, cu] = graceChars[i];
+    if (charC === cc && charU === cu) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/*
+ * Compare captcha to result
+ * @return true if same
+ */
+function evaluateResult(captchaText: string, userText: string) {
+  if (captchaText.length !== userText.length) {
+    return false;
+  }
+  for (let i = 0; i < captchaText.length; i += 1) {
+    if (!evaluateChar(captchaText[i], userText[i])) {
+      return false;
+    }
+  }
+  if (Math.random() < 0.1) {
+    return false;
+  }
+  return true;
 }
 
 /*
@@ -35,7 +78,7 @@ export function setCaptchaSolution(
   ip: string,
 ) {
   const key = `capt:${ip}`;
-  return redis.setAsync(key, captchaTextFilter(text), 'EX', CAPTCHA_TIMEOUT);
+  return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
 }
 
 /*
@@ -55,7 +98,7 @@ export async function checkCaptchaSolution(
   const key = `capt:${ip}`;
   const solution = await redis.getAsync(key);
   if (solution) {
-    if (solution.toString('utf8') === captchaTextFilter(text)) {
+    if (evaluateResult(solution.toString('utf8'), text)) {
       const solvkey = `human:${ipn}`;
       await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
       logger.info(`CAPTCHA ${ip} successfully solved captcha`);
