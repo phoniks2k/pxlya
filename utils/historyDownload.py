@@ -41,6 +41,16 @@ canvases = [
             "canvas_id": 4,
             "bkg": (196, 196, 196),
         },
+        {
+        },
+        {
+        },
+        {
+            "canvas_name": "1bit",
+            "canvas_size": 256*256,
+            "canvas_id": 7,
+            "bkg": (0, 0, 0),
+        },
     ]
 
 async def fetch(session, url, offx, offy, image, bkg, needed = False):
