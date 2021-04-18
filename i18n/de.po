@@ -172,6 +172,22 @@ msgstr "Unbekannter Fehler"
 msgid "Server answered with gibberish :("
 msgstr "Server antwortete mit wirrwarr :("
 
+#: src/components/HelpButton.jsx:20
+msgid "Help"
+msgstr "Hilfe"
+
+#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr "Spielerbereich"
+
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr "Erstelle eine Bildschirmaufnahme"
+
+#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:278
+msgid "Settings"
+msgstr "Einstellungen"
+
 #: src/components/Chat.jsx:143
 msgid "Channel settings"
 msgstr "Kanal Einstellungen"
@@ -191,22 +207,6 @@ msgstr "Chatte hier"
 #: src/components/Chat.jsx:220
 msgid "You must be logged in to chat"
 msgstr "Melde dich an um dich zu unterhalten"
-
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr "Erstelle eine Bildschirmaufnahme"
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr "Hilfe"
-
-#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr "Spielerbereich"
-
-#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:278
-msgid "Settings"
-msgstr "Einstellungen"
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
@@ -582,6 +582,14 @@ msgstr "Lade..."
 msgid "Consider joining us on Guilded:"
 msgstr "Triff uns und andere Spieler auf guilded:"
 
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr "Registriere ein neues Konto hier"
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr "Registriere neues Konto"
+
 #: src/components/CanvasSelectModal.jsx:29
 msgid ""
 "Select the canvas you want to use. Every canvas is unique and has different "
@@ -595,14 +603,6 @@ msgstr ""
 #: src/components/CanvasSelectModal.jsx:37
 msgid "Archive"
 msgstr "Archiv"
-
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr "Registriere ein neues Konto hier"
-
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
-msgstr "Registriere neues Konto"
 
 #: src/components/ArchiveModal.jsx:20
 msgid ""
@@ -655,10 +655,6 @@ msgstr ""
 msgid "Canvas Archive"
 msgstr "Leinwand Archiv"
 
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
-msgstr "Unterhaltung"
-
 #: src/components/ForgotPasswordModal.jsx:16
 msgid "Enter your mail address and we will send you a new password:"
 msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
@@ -667,47 +663,51 @@ msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
 msgid "Restore my Password"
 msgstr "Passwort wiederherstellen"
 
-#: src/components/Captcha.jsx:29 src/components/ChangeMail.jsx:88
+#: src/components/ChatModal.jsx:35
+msgid "Chat"
+msgstr "Unterhaltung"
+
+#: src/components/Captcha.jsx:41 src/components/ChangeMail.jsx:88
 #: src/components/ChangeName.jsx:67 src/components/ChangePassword.jsx:73
 #: src/components/DeleteAccount.jsx:67 src/components/LogInForm.jsx:82
 #: src/components/NewPasswordForm.jsx:79 src/components/SignUpForm.jsx:100
 msgid "Error"
 msgstr "Fehler"
 
-#: src/components/Captcha.jsx:33
+#: src/components/Captcha.jsx:45
 msgid "Type the characters from the following image:"
 msgstr "Gebe die Zeichen aus dem folgenden Bild ein:"
 
-#: src/components/Captcha.jsx:36
+#: src/components/Captcha.jsx:48
 msgid "Tip: Not case-sensitive; I and l are the same"
 msgstr ""
 "Tipp: Groß- und Kleinschreibung wird nicht berücksichtigt; l und I sind "
 "dasselbe"
 
-#: src/components/Captcha.jsx:60
+#: src/components/Captcha.jsx:72
 msgid "Could not load captcha"
-msgstr "Konnte Captcha nicht laden."
+msgstr "Konnte Captcha nicht laden"
 
-#: src/components/Captcha.jsx:64
+#: src/components/Captcha.jsx:76
 msgid "Can't read? Reload:"
 msgstr "Unlesbar? Hier neu laden:"
 
-#: src/components/Captcha.jsx:68
+#: src/components/Captcha.jsx:80
 msgid "Reload"
 msgstr "Neu laden"
 
-#: src/components/Captcha.jsx:80
+#: src/components/Captcha.jsx:92
 msgid "Enter Characters"
 msgstr "Zeichen eingeben"
 
-#: src/components/Captcha.jsx:102 src/components/ChangeMail.jsx:109
+#: src/components/Captcha.jsx:117 src/components/ChangeMail.jsx:109
 #: src/components/ChangeName.jsx:79 src/components/ChangePassword.jsx:109
 #: src/components/DeleteAccount.jsx:80 src/components/NewPasswordForm.jsx:92
 #: src/components/SignUpForm.jsx:144
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/components/Captcha.jsx:119
+#: src/components/Captcha.jsx:124
 msgid "Send"
 msgstr "Senden"
 
@@ -788,34 +788,24 @@ msgstr ""
 "Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
 "Mitternacht UTC zurückgestellt."
 
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
-msgstr "Abklingzeit"
+#: src/components/SignUpForm.jsx:109
+msgid "Name"
+msgstr "Name"
 
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
-msgstr "Gesamtzeit"
+#: src/components/NewPasswordForm.jsx:86 src/components/SignUpForm.jsx:117
+msgid "Email"
+msgstr "Email"
 
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
-msgstr "Gewertet"
+#: src/components/SignUpForm.jsx:135
+msgid "Confirm Password"
+msgstr "Passwort bestätigen"
 
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr "Vorraussetzungen"
-
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr "Konto"
-
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr "und ${ canvas.req } gesetzte Pixel"
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
-msgstr "Dimensionen"
+#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:90
+#: src/components/SignUpForm.jsx:138
+msgid "Submit"
+msgstr "Absenden"
 
 #: src/components/Admintools.jsx:179
 msgid "Build image on canvas."
@@ -844,13 +834,6 @@ msgstr "Datei"
 #: src/components/Admintools.jsx:271
 msgid "Coordinates in X_Y format:"
 msgstr "Koordinaten in X_Y Format:"
-
-#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:90
-#: src/components/SignUpForm.jsx:138
-msgid "Submit"
-msgstr "Absenden"
 
 #: src/components/Admintools.jsx:311
 msgid "Pixel Protection"
@@ -905,21 +888,38 @@ msgstr "Gebe Name des neuen Moderators ein"
 msgid "User Name"
 msgstr "Spielerbereich"
 
+#: src/components/CanvasItem.jsx:46
+msgid "Cooldown"
+msgstr "Abklingzeit"
+
+#: src/components/CanvasItem.jsx:52
+msgid "Stacking till"
+msgstr "Gesamtzeit"
+
+#: src/components/CanvasItem.jsx:54
+msgid "Ranked"
+msgstr "Gewertet"
+
+#: src/components/CanvasItem.jsx:56
+msgid "Requirements"
+msgstr "Vorraussetzungen"
+
+#: src/components/CanvasItem.jsx:58
+msgid "User Account"
+msgstr "Konto"
+
+#: src/components/CanvasItem.jsx:60
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr "und ${ canvas.req } gesetzte Pixel"
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr "Dimensionen"
+
 #: src/components/NewPasswordForm.jsx:69
 msgid "Sent you a mail with instructions to reset your password."
 msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
-
-#: src/components/NewPasswordForm.jsx:86 src/components/SignUpForm.jsx:117
-msgid "Email"
-msgstr "Email"
-
-#: src/components/SignUpForm.jsx:109
-msgid "Name"
-msgstr "Name"
-
-#: src/components/SignUpForm.jsx:135
-msgid "Confirm Password"
-msgstr "Passwort bestätigen"
 
 #: src/components/Converter.jsx:274
 msgid "Choose Canvas"
@@ -1039,26 +1039,6 @@ msgstr "Passwort muss mindestens 6 Zeichen lang sein."
 msgid "Password must be shorter than 60 characters."
 msgstr "Passwort muss kleiner als 60 Zeichen sein."
 
-#: src/components/ChangePassword.jsx:19
-msgid "Passwords do not match."
-msgstr "Passwörter stimmen nicht überein."
-
-#: src/components/ChangePassword.jsx:39
-msgid "Changed Password successfully."
-msgstr "Passwort erfolgreich geändert."
-
-#: src/components/ChangePassword.jsx:82
-msgid "Old Password"
-msgstr "Altes Passwort"
-
-#: src/components/ChangePassword.jsx:90
-msgid "New Password"
-msgstr "Neues Passwort"
-
-#: src/components/ChangePassword.jsx:97
-msgid "Confirm New Password"
-msgstr "Neues Passwort bestätigen"
-
 #: src/components/UserMessages.jsx:38
 msgid "A new verification mail is getting sent to you."
 msgstr "Eine neue Bestätigungsmail wurde gesendet."
@@ -1095,6 +1075,26 @@ msgstr "Annehmen"
 #: src/components/UserMessages.jsx:141
 msgid "Deny"
 msgstr "Ablehnen"
+
+#: src/components/ChangePassword.jsx:19
+msgid "Passwords do not match."
+msgstr "Passwörter stimmen nicht überein."
+
+#: src/components/ChangePassword.jsx:39
+msgid "Changed Password successfully."
+msgstr "Passwort erfolgreich geändert."
+
+#: src/components/ChangePassword.jsx:82
+msgid "Old Password"
+msgstr "Altes Passwort"
+
+#: src/components/ChangePassword.jsx:90
+msgid "New Password"
+msgstr "Neues Passwort"
+
+#: src/components/ChangePassword.jsx:97
+msgid "Confirm New Password"
+msgstr "Neues Passwort bestätigen"
 
 #: src/components/ChangeName.jsx:73
 msgid "New Username"
