@@ -26,7 +26,7 @@ function getCanvases(t) {
   };
   const canvasDesc = {
     0: t`Our main canvas, a huge map of the world. Place everywhere you like`,
-    1: t`Moon canvas. Safe space for art. No flags or large text (unless part of art) or art larger than 900x900 pixels.`,
+    1: t`Moon canvas. Safe space for art. No flags or large text (unless part of art) or art larger than 1.5k x 1.5k pixels.`,
     2: t`Place Voxels on a 3D canvas with others`,
     3: t`Special canvas to spread awareness of SARS-CoV2`,
     5: t`Mirror of PixelZone`,
