@@ -96,13 +96,13 @@ class ChunkLoader {
     y: number,
     historicalDate: string,
     historicalTime: string,
+    historicalCanvasSize: number,
   ) {
-    const { canvasSize } = this;
     if (!historicalDate) {
       return null;
     }
-    const [cx, cy] = getChunkOfPixel(canvasSize, x, y);
-    const px = getCellInsideChunk(canvasSize, [x, y]);
+    const [cx, cy] = getChunkOfPixel(historicalCanvasSize, x, y);
+    const px = getCellInsideChunk(historicalCanvasSize, [x, y]);
     const curTime = Date.now();
 
     if (!historicalTime || historicalTime !== '0000') {

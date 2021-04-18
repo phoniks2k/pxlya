@@ -164,9 +164,10 @@ class Renderer {
       const {
         historicalDate,
         historicalTime,
+        historicalCanvasSize,
       } = state.canvas;
       return this.chunkLoader.getHistoricalIndexOfPixel(cx, cy,
-        historicalDate, historicalTime);
+        historicalDate, historicalTime, historicalCanvasSize);
     }
     return this.chunkLoader.getColorIndexOfPixel(cx, cy);
   }
@@ -176,7 +177,6 @@ class Renderer {
   ) {
     const {
       viewscale,
-      view,
       isHistoricalView,
     } = state.canvas;
     pixelNotify.updateScale(viewscale);
@@ -184,9 +184,6 @@ class Renderer {
       ? 0
       : Math.round(Math.log2(viewscale) / 2);
     tiledScale = 4 ** tiledScale;
-    const canvasSize = (isHistoricalView)
-      ? state.canvas.historicalCanvasSize
-      : state.canvas.canvasSize;
     const canvasMaxTiledZoom = (isHistoricalView)
       ? this.historicalCanvasMaxTiledZoom
       : this.canvasMaxTiledZoom;
