@@ -15,7 +15,14 @@ export default (store) => (next) => (action) => {
   if (type === 'SET_HISTORICAL_TIME') {
     const state = store.getState();
     const renderer = getRenderer();
-    renderer.updateOldHistoricalTime(state.canvas.historicalTime);
+    const {
+      historicalDate: oldDate,
+      historicalTime: oldTime,
+    } = state.canvas;
+    renderer.updateOldHistoricalTime(
+      oldDate,
+      oldTime,
+    );
   }
 
   // executed after reducers
@@ -37,7 +44,22 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'SET_HISTORICAL_TIME':
+    case 'SET_HISTORICAL_TIME': {
+      const {
+        historicalDate,
+        historicalTime,
+        historicalCanvasSize,
+      } = state.canvas;
+      const renderer = getRenderer();
+      renderer.updateHistoricalTime(
+        historicalDate,
+        historicalTime,
+        historicalCanvasSize,
+      );
+      renderer.forceNextRender = true;
+      break;
+    }
+
     case 'REQUEST_BIG_CHUNK':
     case 'PRE_LOADED_BIG_CHUNK':
     case 'RECEIVE_BIG_CHUNK':
@@ -55,14 +77,8 @@ export default (store) => (next) => (action) => {
 
     case 'TOGGLE_HISTORICAL_VIEW':
     case 'SET_SCALE': {
-      const {
-        viewscale,
-        canvasMaxTiledZoom,
-        view,
-        canvasSize,
-      } = state.canvas;
       const renderer = getRenderer();
-      renderer.updateScale(viewscale, canvasMaxTiledZoom, view, canvasSize);
+      renderer.updateScale(state);
       break;
     }
 
@@ -79,9 +95,8 @@ export default (store) => (next) => (action) => {
     }
 
     case 'SET_VIEW_COORDINATES': {
-      const { view, canvasSize } = state.canvas;
       const renderer = getRenderer();
-      renderer.updateView(view, canvasSize);
+      renderer.updateView(state);
       break;
     }
 

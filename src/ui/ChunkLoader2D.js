@@ -17,28 +17,37 @@ import {
   // preLoadedBigChunk,
 } from '../actions';
 import {
+  getMaxTiledZoom,
   getCellInsideChunk,
   getChunkOfPixel,
+  getHistoricalCanvasSize,
 } from '../core/utils';
 
 class ChunkLoader {
   store = null;
   canvasId: number;
   canvasMaxTiledZoom: number;
+  historicalMaxTiledZooms: Array;
   palette;
+  canvasSize: number;
   chunks: Map<string, ChunkRGB>;
 
-  constructor(store) {
+  constructor(store, canvasId, palette, canvasSize, historicalSizes) {
     this.store = store;
-    const state = store.getState();
-    const {
-      canvasId,
-      canvasMaxTiledZoom,
-      palette,
-    } = state.canvas;
     this.canvasId = canvasId;
-    this.canvasMaxTiledZoom = canvasMaxTiledZoom;
     this.palette = palette;
+    this.canvasSize = canvasSize;
+    this.canvasMaxTiledZoom = getMaxTiledZoom(canvasSize);
+
+    if (historicalSizes) {
+      this.historicalMaxTiledZooms = historicalSizes.map((ts) => {
+        const [date, size] = ts;
+        return [date, getMaxTiledZoom(size)];
+      });
+    } else {
+      this.historicalMaxTiledZooms = [];
+    }
+
     this.chunks = new Map();
   }
 
@@ -64,8 +73,7 @@ class ChunkLoader {
     x: number,
     y: number,
   ) {
-    const state: State = this.store.getState();
-    const { canvasSize } = state.canvas;
+    const { canvasSize } = this;
     const [cx, cy] = getChunkOfPixel(canvasSize, x, y);
     const key = `${this.canvasMaxTiledZoom}:${cx}:${cy}`;
     const chunk = this.chunks.get(key);
@@ -79,15 +87,17 @@ class ChunkLoader {
 
   /*
    * Get color of pixel in current historical view
+   * (has to account for canvs size changes in the past
    * @param x, y world coordiantes of pixel
    * @return ColorIndex or null if chunks not loaded or historical view not set
    */
   getHistoricalIndexOfPixel(
     x: number,
     y: number,
+    historicalDate: string,
+    historicalTime: string,
   ) {
-    const state: State = this.store.getState();
-    const { canvasSize, historicalDate, historicalTime } = state.canvas;
+    const { canvasSize } = this;
     if (!historicalDate) {
       return null;
     }
@@ -208,10 +218,15 @@ class ChunkLoader {
       }
       return (historicalTime) ? null : loadingTiles.getTile(canvasId);
     } if (fetch) {
+      const historicalCanvasMaxTiledZoom = getHistoricalCanvasSize(
+        historicalDate,
+        this.canvasMaxTiledZoom,
+        this.historicalMaxTiledZooms,
+      );
       // fetch tile
       const chunkRGB = new ChunkRGB(
         this.palette,
-        this.canvasMaxTiledZoom,
+        historicalCanvasMaxTiledZoom,
         cx,
         cy,
       );
@@ -221,6 +236,7 @@ class ChunkLoader {
         cy,
         historicalDate,
         historicalTime,
+        historicalCanvasMaxTiledZoom,
         chunkRGB,
       );
     }
@@ -232,10 +248,12 @@ class ChunkLoader {
     cy: number,
     historicalDate: string,
     historicalTime: string,
+    historicalCanvasMaxTiledZoom,
     chunkRGB,
   ) {
-    const { canvasId, canvasMaxTiledZoom } = this;
-    const center = [canvasMaxTiledZoom, cx, cy];
+    const { canvasId } = this;
+
+    const center = [historicalCanvasMaxTiledZoom, cx, cy];
     let url = `${window.ssv.backupurl}/${historicalDate}/`;
     if (historicalTime) {
       // incremential tiles

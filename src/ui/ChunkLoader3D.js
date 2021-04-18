@@ -23,15 +23,11 @@ class ChunkLoader {
   palette;
   chunks: Map<string, Chunk>;
 
-  constructor(store) {
+  constructor(store, canvasId, palette, canvasSize) {
     this.store = store;
-    const state = store.getState();
-    const {
-      canvasId,
-      palette,
-    } = state.canvas;
     this.canvasId = canvasId;
     this.palette = palette;
+    this.canvasSize = canvasSize;
     this.chunks = new Map();
   }
 
@@ -43,10 +39,7 @@ class ChunkLoader {
   }
 
   getVoxel(x: number, y: number, z: number) {
-    const state = this.store.getState();
-    const {
-      canvasSize,
-    } = state.canvas;
+    const { canvasSize } = this;
     const [xc, zc] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
     const key = `${xc}:${zc}`;

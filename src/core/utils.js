@@ -69,6 +69,24 @@ export function getMaxTiledZoom(canvasSize: number): number {
   return Math.log2(canvasSize / TILE_SIZE) / TILE_ZOOM_LEVEL * 2;
 }
 
+export function getHistoricalCanvasSize(
+  historicalDate: string,
+  canvasSize: number,
+  historicalSizes: Array,
+) {
+  if (historicalDate && historicalSizes) {
+    let i = historicalSizes.length;
+    while (i > 0) {
+      i -= 1;
+      const [date, size] = historicalSizes[i];
+      if (historicalDate <= date) {
+        return size;
+      }
+    }
+  }
+  return canvasSize;
+}
+
 export function getCanvasBoundaries(canvasSize: number): number {
   const canvasMinXY = -canvasSize / 2;
   const canvasMaxXY = canvasSize / 2 - 1;

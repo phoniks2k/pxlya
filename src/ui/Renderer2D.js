@@ -11,6 +11,7 @@ import { TILE_SIZE } from '../core/constants';
 import {
   getTileOfPixel,
   getPixelFromChunkOffset,
+  getMaxTiledZoom,
 } from '../core/utils';
 
 import {
@@ -58,6 +59,8 @@ class Renderer {
     this.centerChunk = [null, null];
     this.tiledScale = 0;
     this.tiledZoom = 4;
+    this.canvasMaxTiledZoom = 0;
+    this.historicalCanvasMaxTiledZoom = 0;
     this.hover = false;
     //--
     this.forceNextRender = true;
@@ -110,70 +113,100 @@ class Renderer {
   setStore(store) {
     this.store = store;
     const state = store.getState();
-    const {
-      canvasMaxTiledZoom,
-      viewscale,
-      view,
-      canvasSize,
-    } = state.canvas;
     this.updateCanvasData(state);
-    this.updateScale(viewscale, canvasMaxTiledZoom, view, canvasSize);
+    this.updateScale(state);
     this.controls = new PixelPainterControls(this, this.viewport, store);
   }
 
   updateCanvasData(state: State) {
     const {
-      canvasMaxTiledZoom,
-      viewscale,
-      view,
-      canvasSize,
       canvasId,
     } = state.canvas;
     if (canvasId !== this.canvasId) {
       this.canvasId = canvasId;
       if (canvasId !== null) {
-        this.chunkLoader = new ChunkLoader(this.store);
+        const {
+          palette,
+          canvasSize,
+          canvases,
+        } = state.canvas;
+        this.canvasMaxTiledZoom = getMaxTiledZoom(canvasSize);
+        this.chunkLoader = new ChunkLoader(
+          this.store,
+          canvasId,
+          palette,
+          canvasSize,
+          canvases[canvasId].historicalSizes,
+        );
       }
     }
-    this.updateScale(viewscale, canvasMaxTiledZoom, view, canvasSize);
+    this.updateScale(state);
   }
 
-  updateOldHistoricalTime(historicalTime: string) {
-    if (historicalTime === '0000') {
+  updateOldHistoricalTime(oldDate, oldTime) {
+    if (oldTime === '0000') {
       this.oldHistoricalTime = null;
     } else {
-      this.oldHistoricalTime = historicalTime;
+      this.oldHistoricalTime = oldTime;
     }
+  }
+
+  updateHistoricalTime(historicalDate, historicalTime, historicalCanvasSize) {
+    this.historicalCanvasMaxTiledZoom = getMaxTiledZoom(
+      historicalCanvasSize,
+    );
   }
 
   getColorIndexOfPixel(cx, cy, historical: boolean = false) {
-    return (historical)
-      ? this.chunkLoader.getHistoricalIndexOfPixel(cx, cy)
-      : this.chunkLoader.getColorIndexOfPixel(cx, cy);
+    if (historical) {
+      const state = this.store.getState();
+      const {
+        historicalDate,
+        historicalTime,
+      } = state.canvas;
+      return this.chunkLoader.getHistoricalIndexOfPixel(cx, cy,
+        historicalDate, historicalTime);
+    }
+    return this.chunkLoader.getColorIndexOfPixel(cx, cy);
   }
 
   updateScale(
-    viewscale: number,
-    canvasMaxTiledZoom: number,
-    view,
-    canvasSize,
+    state,
   ) {
+    const {
+      viewscale,
+      view,
+      isHistoricalView,
+    } = state.canvas;
     pixelNotify.updateScale(viewscale);
     let tiledScale = (viewscale > 0.5)
       ? 0
       : Math.round(Math.log2(viewscale) / 2);
     tiledScale = 4 ** tiledScale;
+    const canvasSize = (isHistoricalView)
+      ? state.canvas.historicalCanvasSize
+      : state.canvas.canvasSize;
+    const canvasMaxTiledZoom = (isHistoricalView)
+      ? this.historicalCanvasMaxTiledZoom
+      : this.canvasMaxTiledZoom;
     const tiledZoom = canvasMaxTiledZoom + Math.log2(tiledScale) / 2;
     const relScale = viewscale / tiledScale;
 
     this.tiledScale = tiledScale;
     this.tiledZoom = tiledZoom;
     this.relScale = relScale;
-    this.updateView(view, canvasSize);
+    this.updateView(state);
     this.forceNextRender = true;
   }
 
-  updateView(view, canvasSize) {
+  updateView(state) {
+    const {
+      view,
+    } = state.canvas;
+    const canvasSize = (state.canvas.isHistoricalView)
+      ? state.canvas.historicalCanvasSize
+      : state.canvas.canvasSize;
+
     const [x, y] = view;
     let [cx, cy] = this.centerChunk;
     const [curcx, curcy] = getTileOfPixel(
@@ -506,9 +539,9 @@ class Renderer {
     } = this;
     const {
       viewscale,
-      canvasSize,
       historicalDate,
       historicalTime,
+      historicalCanvasSize,
     } = state.canvas;
 
 
@@ -575,7 +608,7 @@ class Renderer {
         const x = xOffset + dx * TILE_SIZE;
         const y = yOffset + dy * TILE_SIZE;
 
-        const chunkMaxXY = canvasSize / TILE_SIZE;
+        const chunkMaxXY = historicalCanvasSize / TILE_SIZE;
         if (cx < 0 || cx >= chunkMaxXY || cy < 0 || cy >= chunkMaxXY) {
           // if out of bounds
           context.fillRect(x, y, TILE_SIZE, TILE_SIZE);
@@ -638,7 +671,7 @@ class Renderer {
     const {
       view,
       viewscale,
-      canvasSize,
+      historicalCanvasSize,
     } = state.canvas;
 
     const [x, y] = view;
@@ -663,7 +696,7 @@ class Renderer {
     viewportCtx.imageSmoothingEnabled = false;
     // If scale is so large that neighbouring chunks wouldn't fit in offscreen
     // canvas, do scale = 1 in renderChunks and scale in render()
-    const canvasCenter = canvasSize / 2;
+    const canvasCenter = historicalCanvasSize / 2;
     if (viewscale > SCALE_THREASHOLD) {
       viewportCtx.save();
       viewportCtx.scale(viewscale, viewscale);

@@ -249,7 +249,16 @@ class Renderer {
           }
         }
         this.loadedChunks = new Map();
-        this.chunkLoader = new ChunkLoader(this.store);
+        const {
+          palette,
+          canvasSize,
+        } = state.canvas;
+        this.chunkLoader = new ChunkLoader(
+          this.store,
+          canvasId,
+          palette,
+          canvasSize,
+        );
       }
     }
     this.controls.setView(view);
