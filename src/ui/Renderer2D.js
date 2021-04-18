@@ -131,6 +131,7 @@ class Renderer {
           canvases,
         } = state.canvas;
         this.canvasMaxTiledZoom = getMaxTiledZoom(canvasSize);
+        this.historicalCanvasMaxTiledZoom = this.canvasMaxTiledZoom;
         this.chunkLoader = new ChunkLoader(
           this.store,
           canvasId,
@@ -156,6 +157,7 @@ class Renderer {
       historicalCanvasSize,
     );
     this.forceNextRender = true;
+    this.updateScale(this.store.getState());
   }
 
   getColorIndexOfPixel(cx, cy, historical: boolean = false) {
