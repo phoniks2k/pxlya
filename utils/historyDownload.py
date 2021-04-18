@@ -23,9 +23,12 @@ canvases = [
         },
         {
             "canvas_name": "moon",
-            "canvas_size": 4096,
+            "canvas_size": 16384,
             "canvas_id": 1,
             "bkg": (49, 46, 47),
+            "historical_sizes" : [
+                    ["20210417", 4096],
+                ]
         },
         {
         },
@@ -85,12 +88,6 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
     canvas_size = canvas_data["canvas_size"]
     bkg = canvas_data["bkg"]
 
-    offset = int(-canvas_size / 2)
-    xc = (x - offset) // 256
-    wc = (x + w - offset) // 256
-    yc = (y - offset) // 256
-    hc = (y + h - offset) // 256
-    print("Load from %s / %s to %s / %s" % (xc, yc, wc + 1, hc + 1))
     delta = datetime.timedelta(days=1)
     end_date = end_date.strftime("%Y%m%d")
     iter_date = None
@@ -102,6 +99,22 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
         print('------------------------------------------------')
         print('Getting frames for date %s' % (iter_date))
         start_date = start_date + delta
+
+        fetch_canvas_size = canvas_size
+        if 'historical_sizes' in canvas_data:
+            for ts in canvas_data['historical_sizes']:
+                date = ts[0]
+                size = ts[1]
+                if iter_date <= date:
+                    fetch_canvas_size = size
+
+        offset = int(-fetch_canvas_size / 2)
+        xc = (x - offset) // 256
+        wc = (x + w - offset) // 256
+        yc = (y - offset) // 256
+        hc = (y + h - offset) // 256
+        print("Load from %s / %s to %s / %s" % (xc, yc, wc + 1, hc + 1))
+
         tasks = []
         async with aiohttp.ClientSession() as session:
             image = PIL.Image.new('RGBA', (w, h))
