@@ -155,6 +155,7 @@ class Renderer {
     this.historicalCanvasMaxTiledZoom = getMaxTiledZoom(
       historicalCanvasSize,
     );
+    this.forceNextRender = true;
   }
 
   getColorIndexOfPixel(cx, cy, historical: boolean = false) {

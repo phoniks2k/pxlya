@@ -56,7 +56,6 @@ export default (store) => (next) => (action) => {
         historicalTime,
         historicalCanvasSize,
       );
-      renderer.forceNextRender = true;
       break;
     }
 

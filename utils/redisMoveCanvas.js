@@ -10,7 +10,7 @@ bluebird.promisifyAll(redis.Multi.prototype);
 
 //ATTENTION Make suer to set the rdis URLs right!!!
 const url = "redis://localhost:6379";
-const redis = redis.createClient(url, { return_buffers: true });
+const redisc = redis.createClient(url, { return_buffers: true });
 
 const CANVAS_SIZE = 4096;
 const TILE_SIZE = 256;
@@ -22,12 +22,12 @@ async function move() {
   for (let x = CHUNKS_XY - 1; x >= 0; x--) {
     for (let y = CHUNKS_XY - 1; y >= 0; y--) {
       const key = `ch:1:${x}:${y}`;
-      const chunk = await redis.getAsync(key);
+      const chunk = await redisc.getAsync(key);
       if (chunk) {
         const buffer = new Uint8Array(chunk);
         const newKey = `ch:1:${x + offset}:${y + offset}`
-        await redis.setAsync(newKey, Buffer.from(buffer.buffer));
-        await redis.delAsync(key);
+        await redisc.setAsync(newKey, Buffer.from(buffer.buffer));
+        await redisc.delAsync(key);
         console.log('Moved Chunk ', key, ' to ', newKey);
       }
     }
