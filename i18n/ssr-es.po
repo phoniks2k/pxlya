@@ -1,81 +1,73 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
 "Last-Translator: \n"
+"Language-Team: \n"
 "Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.2\n"
 
-#: src/core/ChatProvider.js:243
+#: src/core/ChatProvider.js:287
 msgid "You can not send chat messages with proxy"
 msgstr "No se pueden enviar mensajes de chat con proxy"
 
-#: src/core/ChatProvider.js:248
+#: src/core/ChatProvider.js:292
 msgid "Couldn't send your message, pls log out and back in again."
 msgstr ""
 "No se pudo enviar tu mensaje, por favor cierra y vuelve a iniciar la sesión."
 
-#: src/core/ChatProvider.js:262
+#: src/core/ChatProvider.js:306
 #, javascript-format
 msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
 msgstr ""
 "Estás enviando mensajes demasiado rápido, tienes que esperar ${ waitTime }s :"
 "("
 
-#: src/core/ChatProvider.js:266
+#: src/core/ChatProvider.js:310
 msgid "You don't have access to this channel"
 msgstr "No tienes acceso a este canal"
 
-#: src/core/ChatProvider.js:282
+#: src/core/ChatProvider.js:326
 msgid "Your mail has to be verified in order to chat"
 msgstr "Tu correo tiene que ser verificado para poder chatear"
 
-#: src/core/ChatProvider.js:287
+#: src/core/ChatProvider.js:331
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr "Estás silenciado permanentemente, únete a nuestro guilded para apelar"
 
-#: src/core/ChatProvider.js:292
+#: src/core/ChatProvider.js:336
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr "Estás silenciado por ${ timeMin } minutos más"
 
-#: src/core/ChatProvider.js:294
+#: src/core/ChatProvider.js:338
 msgid "You are muted for another ${ muted } seconds"
 msgstr "Estás silenciado por ${ muted } segundos más"
 
-#: src/core/ChatProvider.js:302
+#: src/core/ChatProvider.js:346
 msgid "Ow no! Spam protection decided to mute you"
 msgstr "¡Oh no! La protección antispam ha decidido silenciarte"
 
-#: src/core/ChatProvider.js:313
+#: src/core/ChatProvider.js:357
 msgid "You can't send a message this long :("
 msgstr "No se puede enviar un mensaje así de largo :("
 
-#: src/core/ChatProvider.js:317
+#: src/core/ChatProvider.js:361
 msgid "Please use int channel"
 msgstr "Por favor usa el chat 'int'"
 
-#: src/core/ChatProvider.js:321
+#: src/core/ChatProvider.js:365
 msgid "Your country is temporary muted from chat"
 msgstr "Tu país está temporalmente silenciado en el chat"
 
-#: src/core/ChatProvider.js:329
+#: src/core/ChatProvider.js:373
 msgid "Stop flooding."
 msgstr "Deja de hacer spam."
-
-#: src/ssr-components/Main.jsx:53
-msgid "PixelPlanet.fun"
-msgstr "PixelPlanet.fun"
-
-#: src/ssr-components/Main.jsx:55
-msgid "Place color pixels on an map styled canvas with other players online"
-msgstr "Coloca píxeles de colores en un lienzo con otros jugadores en línea"
 
 #: src/ssr-components/Globe.jsx:44
 msgid "Double click on globe to go back."
@@ -93,31 +85,39 @@ msgstr "Globo 3D de PixelPlanet.Fun"
 msgid "A 3D globe of our whole map"
 msgstr "Un globo 3D para nuestro mapa completo"
 
-#: src/routes/reset_password.js:65
+#: src/ssr-components/Main.jsx:73
+msgid "PixelPlanet.fun"
+msgstr "PixelPlanet.fun"
+
+#: src/ssr-components/Main.jsx:75
+msgid "Place color pixels on an map styled canvas with other players online"
+msgstr "Coloca píxeles de colores en un lienzo con otros jugadores en línea"
+
+#: src/routes/reset_password.js:58
 msgid "You sent an empty password or invalid data :("
 msgstr "Enviaste una contraseña vacía o datos inválidos :("
 
-#: src/routes/reset_password.js:77
+#: src/routes/reset_password.js:70
 msgid "This password-reset link isn't valid anymore :("
 msgstr "Este enlace de reinicio de contraseña ya no es válido :("
 
-#: src/routes/reset_password.js:88
+#: src/routes/reset_password.js:81
 msgid "Your passwords do not match :("
 msgstr "Tus contraseñas no coinciden :("
 
-#: src/routes/reset_password.js:103
+#: src/routes/reset_password.js:96
 msgid "User doesn't exist in our database :("
 msgstr "El usuario no existe en la base de datos :("
 
-#: src/routes/reset_password.js:115
+#: src/routes/reset_password.js:108
 msgid "Passowrd successfully changed."
 msgstr "Contraseña cambiada exitosamente."
 
-#: src/routes/reset_password.js:134
+#: src/routes/reset_password.js:127
 msgid "Invalid url :( Please check your mail again."
 msgstr "Url inválida :( Por favor revisa tu correo nuevamente."
 
-#: src/routes/reset_password.js:147
+#: src/routes/reset_password.js:140
 msgid ""
 "This passwort reset link is wrong or already expired, please request a new "
 "one (Note: you can use those links just once)"
@@ -292,30 +292,25 @@ msgstr "La contraseña debe tener al menos 6 caracteres de largo."
 msgid "Password must be shorter than 60 characters."
 msgstr "La contraseña debe tener menos de 60 caracteres."
 
-#: src/utils/validation.js:74
-msgid "Could not connect to server, please try again later :("
+#: src/routes/api/captcha.js:22
+msgid "No captcha text given"
+msgstr "No se envió ningún texto para el captcha"
+
+#: src/routes/api/captcha.js:36
+msgid "You took too long, try again."
+msgstr "Te tardaste demasiado, inténtalo de nuevo."
+
+#: src/routes/api/captcha.js:42
+msgid "You failed your captcha"
 msgstr ""
-"No se pudo conectar al servidor, por favor inténtalo de nuevo más tarde :("
 
-#: src/utils/validation.js:80
-msgid "I think we experienced some error :("
-msgstr "Parece que experimentamos un error :("
+#: src/routes/api/captcha.js:48
+msgid "Unknown Captcha Error"
+msgstr "Error de Captcha Desconocido"
 
-#: src/routes/api/auth/change_mail.js:41
-#: src/routes/api/auth/change_passwd.js:37
-#: src/routes/api/auth/delete_account.js:38
-msgid "You are not authenticated."
-msgstr "No estás autenticado."
-
-#: src/routes/api/auth/change_mail.js:50
-#: src/routes/api/auth/change_passwd.js:46
-#: src/routes/api/auth/delete_account.js:48
-msgid "Incorrect password!"
-msgstr "¡Contraseña incorrecta!"
-
-#: src/routes/api/auth/logout.js:13
-msgid "You are not even logged in."
-msgstr "Ni siquiera has iniciado sesión."
+#: src/routes/api/captcha.js:55
+msgid "Server error occured"
+msgstr "Ocurrió un error al guardar"
 
 #: src/routes/api/auth/register.js:31
 msgid "E-Mail already in use."
@@ -348,6 +343,22 @@ msgid ""
 msgstr ""
 "Tu código de verificación de correo es inválido o ya expiró :(, por favor "
 "solicita uno nuevo."
+
+#: src/routes/api/auth/logout.js:13
+msgid "You are not even logged in."
+msgstr "Ni siquiera has iniciado sesión."
+
+#: src/routes/api/auth/change_mail.js:41
+#: src/routes/api/auth/change_passwd.js:37
+#: src/routes/api/auth/delete_account.js:38
+msgid "You are not authenticated."
+msgstr "No estás autenticado."
+
+#: src/routes/api/auth/change_mail.js:50
+#: src/routes/api/auth/change_passwd.js:46
+#: src/routes/api/auth/delete_account.js:48
+msgid "Incorrect password!"
+msgstr "¡Contraseña incorrecta!"
 
 #: src/ssr-components/RedirectionPage.jsx:20
 msgid "You will be automatically redirected after 15s"
@@ -397,10 +408,12 @@ msgstr ""
 
 #: src/canvasesDesc.js:29
 msgid ""
-"Moon canvas. Safe space for art. No flags or large text (unless part of art)"
+"Moon canvas. Safe space for art. No flags or large text (unless part of art) "
+"or art larger than 1.5k x 1.5k pixels."
 msgstr ""
 "Lienzo Lunar. Un espacio seguro para el arte. No se permiten banderas "
-"gigantes (a menos que sean parte de un dibujo)"
+"gigantes (a menos que sean parte de un dibujo) o dibujos mayores a 1.5k x "
+"1.5k píxeles."
 
 #: src/canvasesDesc.js:30
 msgid "Place Voxels on a 3D canvas with others"
@@ -421,3 +434,10 @@ msgstr "Espejo de PixelCanvas"
 #: src/canvasesDesc.js:34
 msgid "Black and White canvas"
 msgstr "Lienzo en Blanco y Negro"
+
+#~ msgid "Could not connect to server, please try again later :("
+#~ msgstr ""
+#~ "No se pudo conectar al servidor, por favor inténtalo de nuevo más tarde :("
+
+#~ msgid "I think we experienced some error :("
+#~ msgstr "Parece que experimentamos un error :("

@@ -1,18 +1,17 @@
-# PPF, 2021.
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2021-01-31 19:06+0200\n"
-"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 20.12.1\n"
-"Last-Translator: PPF\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: src/components/CoordinatesBox.jsx:37 src/controls/keypress.js:59
 msgid "Copied!"
@@ -24,107 +23,94 @@ msgstr "Ошибка :("
 
 #: src/ui/placePixel.js:54
 msgid "Didn't get an answer from pixelplanet. Maybe try to refresh?"
-msgstr ""
-"Нету ответа от пиксельпланеты. Может попробуете перезагрузить страницу?"
+msgstr "Нет ответа от pixelplanet. Попробуйте перезагрузить страницу?"
 
-#: src/ui/placePixel.js:56 src/ui/placePixel.js:265
+#: src/ui/placePixel.js:56 src/ui/placePixel.js:237 src/ui/placePixel.js:256
 msgid "OK"
 msgstr "ОК"
 
-#: src/ui/placePixel.js:206
+#: src/ui/placePixel.js:197
 msgid "Invalid Canvas"
 msgstr "Неверное полотно"
 
-#: src/ui/placePixel.js:207
+#: src/ui/placePixel.js:198
 msgid "This canvas doesn't exist"
 msgstr "Этого полотна не существует"
 
-#: src/ui/placePixel.js:210 src/ui/placePixel.js:214 src/ui/placePixel.js:218
+#: src/ui/placePixel.js:201 src/ui/placePixel.js:205 src/ui/placePixel.js:209
 msgid "Invalid Coordinates"
 msgstr "Неверные координаты"
 
-#: src/ui/placePixel.js:211
+#: src/ui/placePixel.js:202
 msgid "x out of bounds"
 msgstr "х вне границы"
 
-#: src/ui/placePixel.js:215
+#: src/ui/placePixel.js:206
 msgid "y out of bounds"
 msgstr "у вне границы"
 
-#: src/ui/placePixel.js:219
+#: src/ui/placePixel.js:210
 msgid "z out of bounds"
 msgstr "z вне границы"
 
-#: src/ui/placePixel.js:222
+#: src/ui/placePixel.js:213
 msgid "Wrong Color"
 msgstr "Неверный цвет"
 
-#: src/ui/placePixel.js:223
+#: src/ui/placePixel.js:214
 msgid "Invalid color selected"
 msgstr "Выбран неверный цвет"
 
-#: src/ui/placePixel.js:226
+#: src/ui/placePixel.js:217
 msgid "Just for registered Users"
 msgstr "Только для зарегистрированных пользователей"
 
-#: src/ui/placePixel.js:227
+#: src/ui/placePixel.js:218
 msgid "You have to be logged in to place on this canvas"
 msgstr "Вы должны войти в аккаунт чтобы ставить на этом полотне"
 
-#: src/ui/placePixel.js:230
+#: src/ui/placePixel.js:221
 msgid "Place more :)"
 msgstr "Ставьте больше :)"
 
-#: src/ui/placePixel.js:232
+#: src/ui/placePixel.js:223
 msgid "You can not access this canvas yet. You need to place more pixels"
 msgstr ""
 "Вы еще не можете открыть это полотно. Вам нужно поставить больше пикселей"
 
-#: src/ui/placePixel.js:235
+#: src/ui/placePixel.js:226
 msgid "Pixel protected!"
 msgstr "Пиксель защищён!"
 
-#: src/ui/placePixel.js:251
+#: src/ui/placePixel.js:235
+msgid "Please prove that you are human"
+msgstr "Докажите пожалуйста, что вы человек"
+
+#: src/ui/placePixel.js:242
 msgid "No Proxies Allowed :("
 msgstr "Прокси не разрешены :("
 
-#: src/ui/placePixel.js:252
+#: src/ui/placePixel.js:243
 msgid "You are using a Proxy."
 msgstr "Вы используете прокси."
 
-#: src/ui/placePixel.js:255
+#: src/ui/placePixel.js:246
 msgid "Weird"
 msgstr "Странно"
 
-#: src/ui/placePixel.js:256
+#: src/ui/placePixel.js:247
 msgid "Couldn't set Pixel"
-msgstr "Не поставить пиксель"
+msgstr "Невозможно поставить пиксель"
 
-#: src/ui/placePixel.js:262
+#: src/ui/placePixel.js:253
 #, javascript-format
 msgid "Error ${ retCode }"
 msgstr "Ошибка ${ retCode }"
 
-#: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:85
-#: src/components/ModalRoot.jsx:60
-msgid "Close"
-msgstr "Закрыть"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Close Menu"
-msgstr "Закрыть меню"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Open Menu"
-msgstr "Открыть меню"
-
-#: src/components/ChatButton.jsx:61
-msgid "Close Chat"
-msgstr "Закрыть чат"
-
-#: src/components/ChatButton.jsx:61
-msgid "Open Chat"
-msgstr "Открыть чат"
+#: src/components/CanvasSelectModal.jsx:67
+#: src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
+msgstr "Выбор полотна"
 
 #: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
 msgid "Copy to Clipboard"
@@ -138,26 +124,52 @@ msgstr "Пользователей в сети"
 msgid "Pixels placed"
 msgstr "Пикселей поставлено"
 
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr "Выбор полотна"
+#: src/components/ChatButton.jsx:61
+msgid "Close Chat"
+msgstr "Закрыть чат"
 
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr "Сделать снимок экрана"
+#: src/components/ChatButton.jsx:61
+msgid "Open Chat"
+msgstr "Открыть чат"
 
-#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr "Зона пользователя"
+#: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:85
+#: src/components/ModalRoot.jsx:88
+msgid "Close"
+msgstr "Закрыть"
 
-#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:267
-msgid "Settings"
-msgstr "Настройки"
+#: src/components/ExpandMenuButton.jsx:19
+msgid "Close Menu"
+msgstr "Закрыть меню"
 
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr "Помощь"
+#: src/components/ExpandMenuButton.jsx:19
+msgid "Open Menu"
+msgstr "Открыть меню"
+
+#: src/actions/fetch.js:38
+msgid "You made too many requests"
+msgstr "Вы сделали слишком много запросов"
+
+#: src/actions/fetch.js:42
+#, javascript-format
+msgid "try again after ${ ti }min"
+msgstr "попробуйте снова через ${ ti }мин"
+
+#: src/actions/fetch.js:53
+msgid "Connection error ${ code } :("
+msgstr "Ошибка соеденения ${ code } :("
+
+#: src/actions/fetch.js:78 src/actions/fetch.js:97
+msgid "Could not connect to server, please try again later :("
+msgstr "Не получается присоедениться к серверу, пожалуйста попробуйте позже :("
+
+#: src/actions/fetch.js:119 src/actions/fetch.js:138 src/actions/fetch.js:157
+#: src/actions/fetch.js:176
+msgid "Unknown Error"
+msgstr "Неизвестная ошибка"
+
+#: src/actions/fetch.js:186
+msgid "Server answered with gibberish :("
+msgstr "Сервер отвечает с полной белибердой :("
 
 #: src/components/Chat.jsx:143
 msgid "Channel settings"
@@ -173,11 +185,31 @@ msgstr "Начинайте писать здесь"
 
 #: src/components/Chat.jsx:200
 msgid "Chat here"
-msgstr "Чат здесь"
+msgstr "Пишите здесь"
 
 #: src/components/Chat.jsx:220
 msgid "You must be logged in to chat"
 msgstr "Вы должны войти в аккаунт чтобы общаться"
+
+#: src/components/HelpButton.jsx:20
+msgid "Help"
+msgstr "Помощь"
+
+#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:278
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
+msgid "User Area"
+msgstr "Зона Пользователя"
+
+#: src/components/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr "Сделать снимок экрана"
+
+#: src/components/GlobeButton.jsx:31
+msgid "Globe View"
+msgstr "Просмотр глобуса"
 
 #: src/components/PalselButton.jsx:25
 msgid "Close Palette"
@@ -187,9 +219,9 @@ msgstr "Закрыть палитру"
 msgid "Open Palette"
 msgstr "Открыть палитру"
 
-#: src/components/GlobeButton.jsx:31
-msgid "Globe View"
-msgstr "Просмотр глобуса"
+#: src/components/ChannelContextMenu.jsx:73
+msgid "Mute"
+msgstr "Заглушить"
 
 #: src/components/UserContextMenu.jsx:72
 msgid "Ping"
@@ -203,64 +235,55 @@ msgstr "ЛС"
 msgid "Block"
 msgstr "Заблокировать"
 
-#: src/components/HelpModal.jsx:34 src/components/HelpModal.jsx:35
-msgid "Privacy Policy"
-msgstr "Политика конфиденциальности"
-
-#: src/components/HelpModal.jsx:36 src/components/HelpModal.jsx:37
-msgid "Terms of Service"
-msgstr "Условия использования"
-
-#: src/components/HelpModal.jsx:40
+#: src/components/HelpModal.jsx:35
 msgid "your IP"
 msgstr "ваш IP"
 
-#: src/components/HelpModal.jsx:46
+#: src/components/HelpModal.jsx:41
 msgid "Place color pixels on a large canvas with other players online!"
-msgstr ""
-"Ставьте цветные пиксели на огромном полотне с другими игроками по сети!"
+msgstr "Ставьте цветные пиксели на огромном полотне с другими людьми по сети!"
 
-#: src/components/HelpModal.jsx:47
+#: src/components/HelpModal.jsx:42
 msgid ""
 "Our main canvas is a huge worldmap, you can place wherever you like, but you "
 "will have to wait a specific Cooldown between pixels. You can check out the "
-"cooldown and requirements on the Canvas Selection menu (globe button on top). "
-"Some canvases have a different cooldown for replacing a user-set pixels than "
-"placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels and 7s on "
-"already set pixels."
+"cooldown and requirements on the Canvas Selection menu (globe button on "
+"top). Some canvases have a different cooldown for replacing a user-set "
+"pixels than placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels "
+"and 7s on already set pixels."
 msgstr ""
 "Наше главное полотно - огромная карта мира, вы можете ставить где хотите, но "
 "вам нужно ждать особую Перезарядку между поставленными пикселями. Вы можете "
-"проверить перезарядку и требования в Меню выбора полотен(кнопка с глобусом "
-"наверху). Некоторые полотна имеют разную перезарядку для замены пикселей уже "
-"поставленных пользователями и для нетронутых пикселей.т.е. 4с/7с значит что "
-"4с для нетронутых пикселей и 7с для уже поставленных ранее."
+"проверить перезарядку и требования в Меню Выбора Полотен(кнопка с глобусом "
+"наверху). Некоторые полотна имеют разную перезарядку для замены уже "
+"поставленных пользователями пикселей и для нетронутых пикселей. т.е. 4с/7с "
+"значит что 4с для нетронутых пикселей и 7с для уже поставленных ранее."
 
-#: src/components/HelpModal.jsx:51
+#: src/components/HelpModal.jsx:46
 msgid ""
 "Higher zoomlevels take some time to update, the 3D globe gets updated at "
 "least once per day."
 msgstr ""
 "Более высокие уровни увелечения занимают какое-то время для обновления, 3D "
-"глобус обновляется хотя-бы один раз в день."
+"глобус обновляется как минимум один раз в день."
 
-#: src/components/HelpModal.jsx:52
+#: src/components/HelpModal.jsx:47
 msgid "Have fun!"
 msgstr "Развлекайтесь!"
 
-#: src/components/HelpModal.jsx:54
+#: src/components/HelpModal.jsx:49
 msgid "recommended"
 msgstr "рекомендованно"
 
-#: src/components/HelpModal.jsx:55
+#: src/components/HelpModal.jsx:50
 msgid "Source on "
 msgstr "Источник на "
 
-#: src/components/HelpModal.jsx:56
+#: src/components/HelpModal.jsx:51
 msgid "Map Data"
 msgstr "Данные о Карте"
 
-#: src/components/HelpModal.jsx:57
+#: src/components/HelpModal.jsx:52
 msgid ""
 "The bare map data that we use, together with converted OpenStreetMap tiles "
 "for orientation, can be downloaded from mega.nz here: "
@@ -268,11 +291,11 @@ msgstr ""
 "Чистые данные которые мы используем, вместе с преобразованными фрагментами "
 "OpenStreetMap для ориентации, их можно скачать с сайта mega.nz здесь: "
 
-#: src/components/HelpModal.jsx:59
+#: src/components/HelpModal.jsx:54
 msgid "Detected as Proxy?"
-msgstr "Вас распознали как Прокси?"
+msgstr "Вы были обнаружены как использующий прокси?"
 
-#: src/components/HelpModal.jsx:61
+#: src/components/HelpModal.jsx:56
 #, javascript-format
 msgid ""
 "If you got detected as proxy, but you are none, please go to our "
@@ -280,48 +303,50 @@ msgid ""
 "Do not post your IP anywhere else. We are sorry for the inconvenience."
 msgstr ""
 "Если вы были обнаружены как использующий прокси, но вы этого не делали, "
-"пожалуйста перейдите в наш ${ guildedLink } или пошлите нам э-письмо ч "
+"пожалуйста перейдите в наш ${ guildedLink } или пошлите нам э-письмо с "
 "${ getIPLink } на ${ mailLink }. Не пишите ваш IP где-либо еще. Приносим "
 "свои извинения за неудобства."
 
-#: src/components/HelpModal.jsx:63 src/components/HelpModal.jsx:80
+#: src/components/HelpModal.jsx:58 src/components/HelpModal.jsx:75
 msgid "Controls"
 msgstr "Управление"
 
-#: src/components/HelpModal.jsx:65
+#: src/components/HelpModal.jsx:60
 msgid "Click a color in palette to select it"
 msgstr "Нажмите на цвет в палитре чтобы выбрать его"
 
-#: src/components/HelpModal.jsx:66
+#: src/components/HelpModal.jsx:61
 #, javascript-format
 msgid "Press ${ bindG } to toggle grid"
-msgstr "Нажмите ${ bindG } чтобы переключить использование решетки"
+msgstr "Нажмите ${ bindG } чтобы переключить использование сетки"
 
-#: src/components/HelpModal.jsx:67
+#: src/components/HelpModal.jsx:62
 msgid "Press ${ bindX } to toggle showing of pixel activity"
-msgstr "Нажмите ${ bindX }, чтобы переключить отображение активности пикселей."
+msgstr ""
+"Нажмите ${ bindX } чтобы переключить отображение активности постановки "
+"пикселей"
 
-#: src/components/HelpModal.jsx:68
+#: src/components/HelpModal.jsx:63
 #, javascript-format
 msgid "Press ${ bindH } to toggle historical view"
 msgstr "Нажмите ${ bindH } чтобы переключить исторический вид"
 
-#: src/components/HelpModal.jsx:69
+#: src/components/HelpModal.jsx:64
 msgid "Press ${ bindR } to copy coordinates"
 msgstr "Нажмите ${ bindR }  чтобы скопировать координаты"
 
-#: src/components/HelpModal.jsx:70
+#: src/components/HelpModal.jsx:65
 #, javascript-format
 msgid "Press ${ bindQ } or ${ bindE } to zoom"
-msgstr "Нажмите ${ bindQ } или ${ bindE } чтобы изменять приближение"
+msgstr "Нажмите ${ bindQ } или ${ bindE } чтобы изменять масштаб"
 
-#: src/components/HelpModal.jsx:71 src/components/HelpModal.jsx:82
+#: src/components/HelpModal.jsx:66 src/components/HelpModal.jsx:77
 #, javascript-format
 msgid "Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
 msgstr ""
 "Нажмите ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } чтобы перемещаться"
 
-#: src/components/HelpModal.jsx:72 src/components/HelpModal.jsx:83
+#: src/components/HelpModal.jsx:67 src/components/HelpModal.jsx:78
 #, javascript-format
 msgid ""
 "Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
@@ -329,60 +354,60 @@ msgstr ""
 "Нажмите ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } чтобы "
 "перемещаться"
 
-#: src/components/HelpModal.jsx:73
+#: src/components/HelpModal.jsx:68
 msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
 msgstr ""
 "Двигайте мышью с зажатой левой кнопкой ${ mouseSymbol } или ${ touchSymbol } "
 "смахивайте чтобы передвигаться"
 
-#: src/components/HelpModal.jsx:74
+#: src/components/HelpModal.jsx:69
 #, javascript-format
 msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
 msgstr ""
 "Вращайте ${ mouseSymbol } колёсиком мыши или ${ touchSymbol } ущипните чтобы "
 "изменять приближение"
 
-#: src/components/HelpModal.jsx:75
+#: src/components/HelpModal.jsx:70
 msgid "Hold left ${ bindShift } for placing while moving mouse"
 msgstr ""
 "Зажмите левый ${ bindShift } для того чтобы ставить пиксели пока вы двигаете "
 "мышью"
 
-#: src/components/HelpModal.jsx:76
+#: src/components/HelpModal.jsx:71
 #, javascript-format
 msgid ""
 "Hold right ${ bindShift } for placing while moving mouse according to "
 "historical view"
 msgstr ""
 "Зажмите правый ${ bindShift } для того чтобы ставить пиксели пока вы "
-"двигаете мышью следуя историческому виду"
+"двигаете мышью в соответствии с историческим видом"
 
-#: src/components/HelpModal.jsx:77 src/components/HelpModal.jsx:88
+#: src/components/HelpModal.jsx:72 src/components/HelpModal.jsx:83
 #, javascript-format
 msgid "${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
 msgstr ""
 "${ mouseSymbol } Кликните левой кнопкой мыши или ${ touchSymbol } нажмите "
 "чтобы поставить пиксель"
 
-#: src/components/HelpModal.jsx:78 src/components/HelpModal.jsx:90
+#: src/components/HelpModal.jsx:73 src/components/HelpModal.jsx:85
 msgid ""
 "Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
 "select current hovering color"
 msgstr ""
 "Кликните ${ mouseSymbol } средней кнопкой мыши или ${ touchSymbol } Зажмите "
-"чтобы выбрать выбрать цвет на который вы навели"
+"чтобы выбрать цвет на который вы навели"
 
-#: src/components/HelpModal.jsx:84
+#: src/components/HelpModal.jsx:79
 msgid "Press ${ bindE } and ${ bindC } to fly up and down"
 msgstr "Нажмите ${ bindE } и ${ bindC } чтобы летать вверх и вниз"
 
-#: src/components/HelpModal.jsx:85
+#: src/components/HelpModal.jsx:80
 #, javascript-format
 msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
 msgstr ""
 "${ mouseSymbol } Зажмите левую кнопку мыши и вращайте мышью чтобы вращаться"
 
-#: src/components/HelpModal.jsx:86
+#: src/components/HelpModal.jsx:81
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
@@ -391,12 +416,12 @@ msgstr ""
 "${ mouseSymbol } Крутите колесиком мыши или зажмите ${ mouseSymbol } среднюю "
 "кнопку мыши и водите чтобы изменять приближение"
 
-#: src/components/HelpModal.jsx:87
+#: src/components/HelpModal.jsx:82
 msgid "${ mouseSymbol } Right click and drag mouse to pan"
 msgstr ""
 "${ mouseSymbol } Зажмите и двигайте правой кнопкой мыши чтобы перемещаться"
 
-#: src/components/HelpModal.jsx:89
+#: src/components/HelpModal.jsx:84
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
@@ -404,72 +429,51 @@ msgstr ""
 "${ mouseSymbol } Клик правой кнопкой мыши или ${ touchSymbol } двойное "
 "нажатие чтобы удалить пиксель"
 
-#: src/components/HelpModal.jsx:92
+#: src/components/HelpModal.jsx:87
 msgid "Partners:"
 msgstr "Партнёры:"
 
-#: src/components/HelpModal.jsx:97
-#, javascript-format
-msgid ""
-"This site is protected by reCAPTCHA and the Google ${ reCaptchaPP } and "
-"${ reCaptchaTOS } apply."
-msgstr ""
-"Этот сайт защищён reCAPTCHA и применяются eё Google ${ reCaptchaPP } и "
-"${ reCaptchaTOS } ."
-
-#: src/components/HelpModal.jsx:103
-msgid ""
-"This site is protected by hCAPTCHA and its ${ hCaptchaPP } and "
-"${ hCaptchaTOS } apply."
-msgstr ""
-"Этот сайт защищён hCAPTCHA и используется её ${ hCaptchaPP } и "
-"${ hCaptchaTOS } ."
-
-#: src/components/HelpModal.jsx:113
+#: src/components/HelpModal.jsx:94
 msgid "Welcome to PixelPlanet.fun"
 msgstr "Добро пожаловать на PixelPlanet.fun"
 
-#: src/components/ChannelContextMenu.jsx:73
-msgid "Mute"
-msgstr "Заглушить"
-
-#: src/components/SettingsModal.jsx:123
+#: src/components/SettingsModal.jsx:125
 msgid "Show Grid"
-msgstr "Показать решётку"
+msgstr "Показать сетку"
 
-#: src/components/SettingsModal.jsx:124
+#: src/components/SettingsModal.jsx:126
 msgid "Turn on grid to highlight pixel borders."
-msgstr "Включите решётку чтобы подсветить границы пикселей."
+msgstr "Включите сетку чтобы подсветить границы пикселей."
 
-#: src/components/SettingsModal.jsx:130
+#: src/components/SettingsModal.jsx:132
 msgid "Show Pixel Activity"
-msgstr "Показать активность пикселей"
+msgstr "Показать активность постановки пикселей"
 
-#: src/components/SettingsModal.jsx:131
+#: src/components/SettingsModal.jsx:133
 msgid "Show circles where pixels are placed."
-msgstr "Показывает круги на месте где был поставлены пиксели."
+msgstr "Показывает круги на месте где были поставлены пиксели."
 
-#: src/components/SettingsModal.jsx:137
+#: src/components/SettingsModal.jsx:139
 msgid "Disable Game Sounds"
 msgstr "Выключить звуки в игре"
 
-#: src/components/SettingsModal.jsx:139
+#: src/components/SettingsModal.jsx:141
 msgid "All sound effects will be disabled."
 msgstr "Все звуковые эффекты будут отключены."
 
-#: src/components/SettingsModal.jsx:145
+#: src/components/SettingsModal.jsx:147
 msgid "Enable chat notifications"
-msgstr "Включить уведомления чата"
+msgstr "Включить уведомления в чате"
 
-#: src/components/SettingsModal.jsx:146
+#: src/components/SettingsModal.jsx:148
 msgid "Play a sound when new chat messages arrive"
 msgstr "Произвести звук когда в чате появляется новое сообщение"
 
-#: src/components/SettingsModal.jsx:151
-msgid "Auto Zoom In"
-msgstr "Автоматическое  приближение"
-
 #: src/components/SettingsModal.jsx:153
+msgid "Auto Zoom In"
+msgstr "Автоматическое увеличение приближения"
+
+#: src/components/SettingsModal.jsx:155
 msgid ""
 "Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
 "small."
@@ -477,64 +481,55 @@ msgstr ""
 "Увеличивает приближение вместо постановки пикселя, когда вы нажимаете на "
 "полотно и ваше приближение маленькое."
 
-#: src/components/SettingsModal.jsx:158
+#: src/components/SettingsModal.jsx:160
 msgid "Compact Palette"
 msgstr "Компактная Палитра"
 
-#: src/components/SettingsModal.jsx:160
+#: src/components/SettingsModal.jsx:162
 msgid "Display Palette in a compact form that takes less screen space."
 msgstr ""
-"Отобразить Палитру в компактной форме чтобы занимать меньше места на экране."
+"Отображает Палитру в компактной форме чтобы занимать меньше места на экране."
 
-#: src/components/SettingsModal.jsx:165
+#: src/components/SettingsModal.jsx:167
 msgid "Potato Mode"
 msgstr "Режим Калькулятора"
 
-#: src/components/SettingsModal.jsx:166
+#: src/components/SettingsModal.jsx:168
 msgid "For when you are playing on a potato."
 msgstr "Для тех случаев когда вы играете на калькуляторе."
 
-#: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:171
+#: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:173
 msgid "Light Grid"
-msgstr "Светлая Решётка"
+msgstr "Светлая Сетка"
 
-#: src/components/SettingsModal.jsx:172
+#: src/components/SettingsModal.jsx:174
 msgid "Show Grid in white instead of black."
 msgstr "Показывать решётку в белом цвете вместо чёрного."
 
-#: src/components/SettingsModal.jsx:179
+#: src/components/SettingsModal.jsx:180
 msgid "Historical View"
 msgstr "Исторический Вид"
 
-#: src/components/SettingsModal.jsx:180
+#: src/components/SettingsModal.jsx:181
 msgid "Check out past versions of the canvas."
 msgstr "Посмотреть вид полотна в прошлом."
 
-#: src/components/SettingsModal.jsx:188
+#: src/components/SettingsModal.jsx:189
 msgid "Themes"
 msgstr "Темы"
 
-#: src/components/SettingsModal.jsx:189
+#: src/components/SettingsModal.jsx:190
 msgid "How pixelplanet should look like."
 msgstr "Как pixelplanet должен выглядеть."
 
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr "Зарегистрируйте новый аккаунт здесь"
-
-#: src/components/ForgotPasswordModal.jsx:20
-#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
-msgid "Consider joining us on Guilded:"
-msgstr "Подумайте о присоеденение к нам в Guilded:"
-
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
-msgstr "Зарегистрировать Новый Аккаунт"
+#: src/components/SettingsModal.jsx:200
+msgid "Select Language"
+msgstr "Выбрать язык"
 
 #: src/components/UserAreaModal.jsx:33
 msgid "Login to access more features and stats."
 msgstr ""
-"Войти в аккаунт чтобы получить доступ к большему количеству особенностей и "
+"Войдите в аккаунт чтобы получить доступ к большему количеству функций и "
 "статистике."
 
 #: src/components/UserAreaModal.jsx:35
@@ -571,7 +566,7 @@ msgstr "Пикселизатор"
 
 #: src/components/UserAreaModal.jsx:122
 msgid "Admintools"
-msgstr "Инструменты админа"
+msgstr "Инструменты администратора"
 
 #: src/components/UserAreaModal.jsx:122
 msgid "Modtools"
@@ -580,6 +575,33 @@ msgstr "Инструменты модератора"
 #: src/components/UserAreaModal.jsx:123
 msgid "Loading..."
 msgstr "Загрузка..."
+
+#: src/components/ForgotPasswordModal.jsx:20
+#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
+msgid "Consider joining us on Guilded:"
+msgstr "Подумайте о присоединение к нам в Guilded:"
+
+#: src/components/RegisterModal.jsx:18
+msgid "Register new account here"
+msgstr "Зарегистрируйте новый аккаунт здесь"
+
+#: src/components/RegisterModal.jsx:38
+msgid "Register New Account"
+msgstr "Зарегистрировать Новый Аккаунт"
+
+#: src/components/CanvasSelectModal.jsx:29
+msgid ""
+"Select the canvas you want to use. Every canvas is unique and has different "
+"palettes, cooldown and requirements. Archive of closed canvases can be "
+"accessed here:"
+msgstr ""
+"Выберите полотно которое вы хотите использовать. Каждое полотно имеет "
+"уникальные и разные палитры, перезарядки и требования. Доступ к архиву "
+"закрытых полотен может быть получен здесь:"
+
+#: src/components/CanvasSelectModal.jsx:37
+msgid "Archive"
+msgstr "Архив"
 
 #: src/components/ArchiveModal.jsx:20
 msgid ""
@@ -632,20 +654,6 @@ msgstr ""
 msgid "Canvas Archive"
 msgstr "Архив Полотен"
 
-#: src/components/CanvasSelectModal.jsx:29
-msgid ""
-"Select the canvas you want to use. Every canvas is unique and has different "
-"palettes, cooldown and requirements. Archive of closed canvases can be "
-"accessed here:"
-msgstr ""
-"Выберите полотно которое вы хотите использовать. Каждое полотно уникальное и"
-" имеет  разные палитры, перезарядки и требования. Доступ к архиву "
-"закрытых полотен может быть получен здесь:"
-
-#: src/components/CanvasSelectModal.jsx:37
-msgid "Archive"
-msgstr "Архив"
-
 #: src/components/ForgotPasswordModal.jsx:16
 msgid "Enter your mail address and we will send you a new password:"
 msgstr "Напишите адрес вашей почты и мы вышлем вам новый пароль:"
@@ -658,33 +666,87 @@ msgstr "Восстановить мой Пароль"
 msgid "Chat"
 msgstr "Чат"
 
-#: src/components/ChangeMail.jsx:104 src/components/ChangeName.jsx:82
-#: src/components/ChangePassword.jsx:120 src/components/DeleteAccount.jsx:82
-#: src/components/LogInForm.jsx:97 src/components/NewPasswordForm.jsx:93
-#: src/components/SignUpForm.jsx:118
+#: src/components/Captcha.jsx:41 src/components/ChangeMail.jsx:88
+#: src/components/ChangeName.jsx:67 src/components/ChangePassword.jsx:73
+#: src/components/DeleteAccount.jsx:67 src/components/LogInForm.jsx:82
+#: src/components/NewPasswordForm.jsx:79 src/components/SignUpForm.jsx:100
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/components/LogInForm.jsx:104
+#: src/components/Captcha.jsx:45
+msgid "Type the characters from the following image:"
+msgstr "Напишите символы со следующей картинки:"
+
+#: src/components/Captcha.jsx:48
+msgid "Tip: Not case-sensitive; I and l are the same"
+msgstr "Примечание: I/l являются одинаковыми; регистр символов неважен"
+
+#: src/components/Captcha.jsx:72
+msgid "Could not load captcha"
+msgstr "Невозможно загрузить каптчу"
+
+#: src/components/Captcha.jsx:76
+msgid "Can't read? Reload:"
+msgstr "Не можете прочитать? Перезагрузите:"
+
+#: src/components/Captcha.jsx:80
+msgid "Reload"
+msgstr "Перезагрузить"
+
+#: src/components/Captcha.jsx:92
+msgid "Enter Characters"
+msgstr "Введите Символы"
+
+#: src/components/Captcha.jsx:117 src/components/ChangeMail.jsx:109
+#: src/components/ChangeName.jsx:79 src/components/ChangePassword.jsx:109
+#: src/components/DeleteAccount.jsx:80 src/components/NewPasswordForm.jsx:92
+#: src/components/SignUpForm.jsx:144
+msgid "Cancel"
+msgstr "Отменить"
+
+#: src/components/Captcha.jsx:124
+msgid "Send"
+msgstr "Отправить"
+
+#: src/components/ChangeMail.jsx:107 src/components/ChangeName.jsx:77
+#: src/components/ChangePassword.jsx:103 src/components/LanguageSelect.jsx:73
+msgid "Save"
+msgstr "Сохранить"
+
+#: src/components/LogInForm.jsx:89
 msgid "Name or Email"
 msgstr "Имя или Почта"
 
-#: src/components/ChangeMail.jsx:112 src/components/DeleteAccount.jsx:89
-#: src/components/LogInForm.jsx:111 src/components/SignUpForm.jsx:140
+#: src/components/ChangeMail.jsx:96 src/components/DeleteAccount.jsx:74
+#: src/components/LogInForm.jsx:96 src/components/SignUpForm.jsx:125
 msgid "Password"
 msgstr "Пароль"
 
-#: src/components/LogInForm.jsx:115
+#: src/components/LogInForm.jsx:100
 msgid "LogIn"
 msgstr "Войти в аккаунт"
 
+#: src/components/Rankings.jsx:37
+msgid "Total"
+msgstr "Всего"
+
+#: src/components/Rankings.jsx:45
+msgid "Daily"
+msgstr "За День"
+
+#: src/components/Rankings.jsx:49
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+"Рейтинг обновляется каждые 5 минут. Ежедневный рейтинг сбрасывается в "
+"полночь по UTC."
+
 #: src/components/UserArea.jsx:57
 msgid "Todays Placed Pixels"
-msgstr "Поставленные сегодня пиксели"
+msgstr "Размешённые сегодня пиксели"
 
 #: src/components/UserArea.jsx:61
 msgid "Daily Rank"
-msgstr "Дневной Рейтинг"
+msgstr "Ежедневный Рейтинг"
 
 #: src/components/UserArea.jsx:66
 msgid "Placed Pixels"
@@ -692,7 +754,7 @@ msgstr "Поставленных Пикселей"
 
 #: src/components/UserArea.jsx:70
 msgid "Total Rank"
-msgstr "Общий рейтинг"
+msgstr "Суммарный Рейтинг"
 
 #: src/components/UserArea.jsx:75
 #, javascript-format
@@ -723,20 +785,6 @@ msgstr "Удалить Аккаунт"
 msgid "Social Settings"
 msgstr "Социальные Настройки"
 
-#: src/components/Rankings.jsx:37
-msgid "Total"
-msgstr "Суммарно"
-
-#: src/components/Rankings.jsx:45
-msgid "Daily"
-msgstr "За День"
-
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-"Рейтинг обновляеться каждые 5 минут. Дневной рейтинг сбрасывается в полночь "
-"по UTC."
-
 #: src/components/CanvasItem.jsx:46
 msgid "Cooldown"
 msgstr "Перезарядка"
@@ -766,34 +814,28 @@ msgstr "и ${ canvas.req } поставленных пикселей"
 msgid "Dimensions"
 msgstr "Размеры"
 
-#: src/components/NewPasswordForm.jsx:83
-msgid "Sent you a mail with instructions to reset your password."
-msgstr "Послали вам письмо с инструкциями для сброса вашего пароля."
-
-#: src/components/NewPasswordForm.jsx:100 src/components/SignUpForm.jsx:133
-msgid "Email"
-msgstr "Почта"
-
-#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:104
-#: src/components/SignUpForm.jsx:152
-msgid "Submit"
-msgstr "Подать"
-
-#: src/components/ChangeMail.jsx:125 src/components/ChangeName.jsx:94
-#: src/components/ChangePassword.jsx:152 src/components/DeleteAccount.jsx:95
-#: src/components/NewPasswordForm.jsx:106 src/components/SignUpForm.jsx:158
-msgid "Cancel"
-msgstr "Отменить"
-
-#: src/components/SignUpForm.jsx:126
+#: src/components/SignUpForm.jsx:109
 msgid "Name"
 msgstr "Имя Пользователя"
 
-#: src/components/SignUpForm.jsx:149
+#: src/components/NewPasswordForm.jsx:86 src/components/SignUpForm.jsx:117
+msgid "Email"
+msgstr "Почта"
+
+#: src/components/SignUpForm.jsx:135
 msgid "Confirm Password"
 msgstr "Подтвердите пароль"
+
+#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
+#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
+#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:90
+#: src/components/SignUpForm.jsx:138
+msgid "Submit"
+msgstr "Подтвердить"
+
+#: src/components/NewPasswordForm.jsx:69
+msgid "Sent you a mail with instructions to reset your password."
+msgstr "Вам отправлено письмо с инструкциями для сброса вашего пароля."
 
 #: src/components/Admintools.jsx:179
 msgid "Build image on canvas."
@@ -834,7 +876,7 @@ msgid ""
 "Set protection of areas         (if you need finer grained control,         "
 "use protect with image upload and alpha layers)"
 msgstr ""
-"Поставить защиту на площадь         (если вам нужен более мелкий "
+"Поставить защиту на площадь         (если вам нужен более точный "
 "контроль,         используйте защиту вместе с загрузкой изображения и альфа "
 "слоями)"
 
@@ -852,7 +894,7 @@ msgstr "Действия с IP"
 
 #: src/components/Admintools.jsx:470
 msgid "Do stuff with IPs (one IP per line)"
-msgstr "Сделать что-то с IP (один IP за линию)"
+msgstr "Сделать что-то с IP (одно IP за линию)"
 
 #: src/components/Admintools.jsx:510
 msgid "Manage Moderators"
@@ -910,7 +952,7 @@ msgstr "Выбрать Стратегию"
 
 #: src/components/Converter.jsx:362
 msgid "Choose Color Mode"
-msgstr "Выбрать Режим Цветов"
+msgstr "Выбрать Цветовой Режим "
 
 #: src/components/Converter.jsx:400
 msgid "Add Grid (uncheck if you need a 1:1 template)"
@@ -938,7 +980,7 @@ msgstr "Сохранить Соотношение"
 
 #: src/components/Converter.jsx:564
 msgid "Anti Aliasing"
-msgstr "Анти Сглаживание"
+msgstr "Сглаживание"
 
 #: src/components/Converter.jsx:578
 msgid "Reset"
@@ -996,13 +1038,78 @@ msgstr "Пароль должен быть минимум 6 символов д�
 msgid "Password must be shorter than 60 characters."
 msgstr "Пароль должен быть короче 60 символов."
 
-#: src/utils/validation.js:74
-msgid "Could not connect to server, please try again later :("
-msgstr "Не получается присоедениться к серверу, пожалуйста попробуйте позже :("
+#: src/components/UserMessages.jsx:38
+msgid "A new verification mail is getting sent to you."
+msgstr "Новое письмо с подтверждением было отправлено вам."
 
-#: src/utils/validation.js:80
-msgid "I think we experienced some error :("
-msgstr "Я думаю у нас вышла ошибка :("
+#: src/components/UserMessages.jsx:66
+msgid "You successfully linked your mc account."
+msgstr "Вы успешно связали ваш mc аккаунт."
+
+#: src/components/UserMessages.jsx:67
+msgid "You denied."
+msgstr "Вам отказано."
+
+#: src/components/UserMessages.jsx:85
+msgid ""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
+msgstr ""
+"Пожалуйста подтвердите ваш адрес почты&nbsp;\n"
+"или ваш аккаунт может быть удалён через несколько дней."
+
+#: src/components/UserMessages.jsx:102
+msgid "Click here to request a new verification mail."
+msgstr "Кликнете здесть чтобы запросить новое письмо с верификаций."
+
+#: src/components/UserMessages.jsx:111
+#, javascript-format
+msgid "You requested to link your mc account ${ minecraftname }."
+msgstr "Вы запросили привязать ваш mc аккаунт ${ minecraftname }."
+
+#: src/components/UserMessages.jsx:131
+msgid "Accept"
+msgstr "Принять"
+
+#: src/components/UserMessages.jsx:141
+msgid "Deny"
+msgstr "Отклонить"
+
+#: src/components/ChangePassword.jsx:19
+msgid "Passwords do not match."
+msgstr "Пароли не соовпадают."
+
+#: src/components/ChangePassword.jsx:39
+msgid "Changed Password successfully."
+msgstr "Пароль успешно изменён."
+
+#: src/components/ChangePassword.jsx:82
+msgid "Old Password"
+msgstr "Старый Пароль"
+
+#: src/components/ChangePassword.jsx:90
+msgid "New Password"
+msgstr "Новый Пароль"
+
+#: src/components/ChangePassword.jsx:97
+msgid "Confirm New Password"
+msgstr "Подтвердить Новый Пароль"
+
+#: src/components/ChangeMail.jsx:73
+msgid ""
+"Changed Mail successfully. We sent you a verification mail,               "
+"please verify your new mail address."
+msgstr ""
+"Почта успешно изменена. Мы послали вам письмо с "
+"подтверждением,               пожалуйста подтвердите ваш новый адрес почты."
+
+#: src/components/ChangeMail.jsx:103
+msgid "New Mail"
+msgstr "Новая Почта"
+
+#: src/components/ChangeName.jsx:73
+msgid "New Username"
+msgstr "Новое Имя Пользователя"
 
 #: src/components/SocialSettings.jsx:39
 msgid "Block all Private Messages"
@@ -1016,99 +1123,21 @@ msgstr "Разблокировать Пользователей"
 msgid "You have no users blocked"
 msgstr "У вас нету заблокированных пользователей"
 
-#: src/components/ChangeMail.jsx:89
-msgid ""
-"Changed Mail successfully. We sent you a verification mail,               "
-"please verify your new mail address."
-msgstr ""
-"Почта успешно изменена. Мы послали вам письмо с "
-"подтверждением,               пожалуйста подтвердите ваш новый адрес почты."
-
-#: src/components/ChangeMail.jsx:119
-msgid "New Mail"
-msgstr "Новая Почта"
-
-#: src/components/ChangeMail.jsx:123 src/components/ChangeName.jsx:92
-#: src/components/ChangePassword.jsx:150
-msgid "Save"
-msgstr "Сохранить"
-
-#: src/components/ChangePassword.jsx:18
-msgid "Passwords do not match."
-msgstr "Пароли не соовпадают."
-
-#: src/components/ChangePassword.jsx:103
-msgid "Changed Password successfully."
-msgstr "Пароль успешно изменён."
-
-#: src/components/ChangePassword.jsx:129
-msgid "Old Password"
-msgstr "Старый Пароль"
-
-#: src/components/ChangePassword.jsx:137
-msgid "New Password"
-msgstr "Новый Пароль"
-
-#: src/components/ChangePassword.jsx:146
-msgid "Confirm New Password"
-msgstr "Подтвердить Новый Пароль"
-
-#: src/components/DeleteAccount.jsx:93
+#: src/components/DeleteAccount.jsx:78
 msgid "Yes, Delete My Account!"
 msgstr "Да, Удалить Мой Аккаунт!"
 
-#: src/components/UserMessages.jsx:41
-msgid "A new verification mail is getting sent to you."
-msgstr "Новой письмо с подтверждением было послано вым."
-
-#: src/components/UserMessages.jsx:75
-msgid "You successfully linked your mc account."
-msgstr "Вы успешно связали ваш mc аккаунт."
-
-#: src/components/UserMessages.jsx:76
-msgid "You denied."
-msgstr "Вам отказано."
-
-#: src/components/UserMessages.jsx:94
-msgid ""
-"Please verify your mail address&nbsp;\n"
-"or your account could get deleted after a few days."
-msgstr ""
-"Пожалуйста подтвердите ваш адрес почты&nbsp;\n"
-"или ваш аккаунт может быть удалён через несколько дней."
-
-#: src/components/UserMessages.jsx:111
-msgid "Click here to request a new verification mail."
-msgstr "Кликнете здесть чтобы запросить новое письмо с верификаций."
-
-#: src/components/UserMessages.jsx:120
-#, javascript-format
-msgid "You requested to link your mc account ${ minecraftname }."
-msgstr "Вы запросили привязать ваш mc аккаунт ${ minecraftname }."
-
-#: src/components/UserMessages.jsx:140
-msgid "Accept"
-msgstr "Принять"
-
-#: src/components/UserMessages.jsx:150
-msgid "Deny"
-msgstr "Отклонить"
-
-#: src/components/ChangeName.jsx:88
-msgid "New Username"
-msgstr "Новое Имя Пользователя"
-
-#: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:125
+#: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:127
 msgctxt "keybinds"
 msgid "G"
 msgstr "G"
 
-#: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:132
+#: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:134
 msgctxt "keybinds"
 msgid "X"
 msgstr "X"
 
-#: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:182
+#: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:183
 msgctxt "keybinds"
 msgid "H"
 msgstr "H"
@@ -1158,7 +1187,31 @@ msgctxt "keybinds"
 msgid "C"
 msgstr "C"
 
-#: src/components/SettingsModal.jsx:140
+#: src/components/SettingsModal.jsx:142
 msgctxt "keybinds"
 msgid "M"
 msgstr "M"
+
+#~ msgid "Privacy Policy"
+#~ msgstr "Политика конфиденциальности"
+
+#~ msgid "Terms of Service"
+#~ msgstr "Условия использования"
+
+#, javascript-format
+#~ msgid ""
+#~ "This site is protected by reCAPTCHA and the Google ${ reCaptchaPP } and "
+#~ "${ reCaptchaTOS } apply."
+#~ msgstr ""
+#~ "Этот сайт защищён reCAPTCHA и применяются eё Google ${ reCaptchaPP } и "
+#~ "${ reCaptchaTOS } ."
+
+#~ msgid ""
+#~ "This site is protected by hCAPTCHA and its ${ hCaptchaPP } and "
+#~ "${ hCaptchaTOS } apply."
+#~ msgstr ""
+#~ "Этот сайт защищён hCAPTCHA и используется её ${ hCaptchaPP } и "
+#~ "${ hCaptchaTOS } ."
+
+#~ msgid "I think we experienced some error :("
+#~ msgstr "Я думаю у нас вышла ошибка :("
