@@ -136,7 +136,6 @@ tr:nth-child(even) {
 
 .contextmenu {
   position: absolute;
-  width: 90px;
   font-size: 12px;
   z-index: 10;
   background-color: rgba(226, 226, 226);
