@@ -4,10 +4,10 @@
  */
 
 import React, {
-  useRef, useLayoutEffect, useState, useEffect,
+  useRef, useLayoutEffect, useState, useEffect, useCallback,
 } from 'react';
 import useStayScrolled from 'react-stay-scrolled';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import type { State } from '../reducers';
@@ -18,8 +18,8 @@ import {
   showUserAreaModal,
   showChatModal,
   setChatChannel,
-  fetchChatMessages,
   setChatInputMessage,
+  fetchChatMessages,
   showContextMenu,
 } from '../actions';
 import ProtocolClient from '../socket/ProtocolClient';
@@ -30,26 +30,28 @@ function escapeRegExp(string) {
 }
 
 const Chat = ({
+  windowId,
   showExpand,
-  channels,
-  messages,
-  chatChannel,
-  ownName,
-  open,
-  inputMessage,
-  setInputMessage,
-  setChannel,
-  fetchMessages,
-  fetching,
-  blocked,
-  triggerModal,
-  openChannelContextMenu,
 }) => {
   const listRef = useRef();
   const targetRef = useRef();
+
   const [nameRegExp, setNameRegExp] = useState(null);
   const [blockedIds, setBlockedIds] = useState([]);
   const [btnSize, setBtnSize] = useState(20);
+
+  const dispatch = useDispatch();
+
+  const setChannel = useCallback((cid) => dispatch(
+    setChatChannel(windowId, cid),
+  ), [dispatch]);
+
+  const ownName = useSelector((state) => state.user.name);
+  const isDarkMode = useSelector((state) => state.gui.style.indexOf('dark') !== -1);
+  const fetching = useSelector((state) => state.fetching.fetchingChat);
+  const { channels, messages, blocked } = useSelector((state) => state.chat);
+
+  const { chatChannel, inputMessage } = useSelector((state) => state.windows.args[windowId]);
 
   const { stayScrolled } = useStayScrolled(listRef, {
     initialScroll: Infinity,
@@ -58,7 +60,7 @@ const Chat = ({
 
   const channelMessages = messages[chatChannel] || [];
   if (channels[chatChannel] && !messages[chatChannel] && !fetching) {
-    fetchMessages(chatChannel);
+    dispatch(fetchChatMessages(chatChannel));
   }
 
   useLayoutEffect(() => {
@@ -94,6 +96,7 @@ const Chat = ({
     // send message via websocket
     ProtocolClient.sendChatMessage(msg, chatChannel);
     setInputMessage('');
+    dispatch(setChatInputMessage(windowId, ''));
   }
 
   /*
@@ -102,13 +105,13 @@ const Chat = ({
    * set channel to first available one
    */
   useEffect(() => {
-    if (!channels[chatChannel]) {
+    if (!chatChannel || !channels[chatChannel]) {
       const cids = Object.keys(channels);
       if (cids.length) {
         setChannel(cids[0]);
       }
     }
-  }, [chatChannel, channels]);
+  }, [channels]);
 
   return (
     <div
@@ -133,11 +136,12 @@ const Chat = ({
               clientX,
               clientY,
             } = event;
-            openChannelContextMenu(
+            dispatch(showContextMenu(
+              'CHANNEL',
               clientX,
               clientY,
-              chatChannel,
-            );
+              { cid: chatChannel },
+            ));
           }}
           role="button"
           title={t`Channel settings`}
@@ -147,7 +151,7 @@ const Chat = ({
         {(showExpand)
           && (
           <span
-            onClick={triggerModal}
+            onClick={() => dispatch(showChatModal())}
             role="button"
             title={t`maximize`}
             tabIndex={-1}
@@ -168,6 +172,8 @@ const Chat = ({
             msgArray={splitChatMessage(t`Start chatting here`, nameRegExp)}
             country="xx"
             uid={0}
+            dark={isDarkMode}
+            windowId={windowId}
           />
           )
           }
@@ -179,6 +185,8 @@ const Chat = ({
                 msgArray={splitChatMessage(message[1], nameRegExp)}
                 country={message[2]}
                 uid={message[3]}
+                dark={isDarkMode}
+                windowId={windowId}
               />
             )))
         }
@@ -192,9 +200,10 @@ const Chat = ({
             <input
               style={{ flexGrow: 1, minWidth: 40 }}
               value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
+              onChange={(e) => dispatch(
+                setChatInputMessage(windowId, e.target.value),
+              )}
               autoComplete="off"
-              id="chatmsginput"
               maxLength="200"
               type="text"
               placeholder={t`Chat here`}
@@ -206,13 +215,16 @@ const Chat = ({
             >
               ‣
             </button>
-            <ChannelDropDown />
+            <ChannelDropDown
+              setChatChannel={setChannel}
+              chatChannel={chatChannel}
+            />
           </form>
         </div>
       ) : (
         <div
           className="modallink"
-          onClick={open}
+          onClick={() => dispatch(showUserAreaModal())}
           style={{ textAlign: 'center', fontSize: 13 }}
           role="button"
           tabIndex={0}
@@ -224,52 +236,4 @@ const Chat = ({
   );
 };
 
-function mapStateToProps(state: State) {
-  const { name } = state.user;
-  const { chatChannel } = state.chatRead;
-  const {
-    channels,
-    messages,
-    inputMessage,
-    blocked,
-  } = state.chat;
-  const {
-    fetchingChat: fetching,
-  } = state.fetching;
-  return {
-    channels,
-    messages,
-    fetching,
-    blocked,
-    inputMessage,
-    chatChannel,
-    ownName: name,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    open() {
-      dispatch(showUserAreaModal());
-    },
-    triggerModal() {
-      dispatch(showChatModal(true));
-    },
-    setChannel(channelId) {
-      dispatch(setChatChannel(channelId));
-    },
-    fetchMessages(channelId) {
-      dispatch(fetchChatMessages(channelId));
-    },
-    setInputMessage(message) {
-      dispatch(setChatInputMessage(message));
-    },
-    openChannelContextMenu(xPos, yPos, cid) {
-      dispatch(showContextMenu('CHANNEL', xPos, yPos, {
-        cid,
-      }));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default Chat;

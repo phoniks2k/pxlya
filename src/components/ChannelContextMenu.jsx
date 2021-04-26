@@ -17,7 +17,7 @@ import {
 } from '../actions';
 import type { State } from '../reducers';
 
-const UserContextMenu = ({
+const ChannelContextMenu = ({
   xPos,
   yPos,
   cid,
@@ -128,4 +128,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContextMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(ChannelContextMenu);

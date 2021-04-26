@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { MdForum } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { showChatModal } from '../actions';
+import { showChatModal, openChatWindow } from '../actions';
 
 
 const ChatButton = ({
@@ -80,7 +80,8 @@ const ChatButton = ({
 function mapDispatchToProps(dispatch) {
   return {
     open() {
-      dispatch(showChatModal(false));
+      // dispatch(showChatModal(false));
+      dispatch(openChatWindow());
     },
   };
 }

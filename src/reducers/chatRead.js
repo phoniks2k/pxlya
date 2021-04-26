@@ -18,15 +18,17 @@ export type ChatReadState = {
   // booleans if channel is unread
   // {cid: unread, ...}
   unread: Object,
-  // selected chat channel
-  chatChannel: number,
+  // currently open chat channels can contain duplications
+  // just used to keep track of what channels we are seeing in
+  // windows to decide if readTS gets changed,
+  chatChannels: Array,
 };
 
 const initialState: ChatReadState = {
   mute: [],
   readTs: {},
   unread: {},
-  chatChannel: 1,
+  chatChannels: [],
 };
 
 
@@ -57,11 +59,14 @@ export default function chatRead(
       };
     }
 
-    case 'SET_CHAT_CHANNEL': {
+    case 'OPEN_CHAT_CHANNEL': {
       const { cid } = action;
       return {
         ...state,
-        chatChannel: cid,
+        chatChannels: [
+          ...state.chatChannels,
+          cid,
+        ],
         readTs: {
           ...state.readTs,
           [cid]: Date.now() + TIME_DIFF_THREASHOLD,
@@ -70,6 +75,19 @@ export default function chatRead(
           ...state.unread,
           [cid]: false,
         },
+      };
+    }
+
+    case 'CLOSE_CHAT_CHANNEL': {
+      const { cid } = action;
+      const chatChannels = [...state.chatChannels];
+      const pos = chatChannels.indexOf(cid);
+      if (pos !== -1) {
+        chatChannels.splice(pos, 1);
+      }
+      return {
+        ...state,
+        chatChannels,
       };
     }
 
@@ -106,16 +124,14 @@ export default function chatRead(
 
     case 'RECEIVE_CHAT_MESSAGE': {
       const { channel: cid } = action;
-      const { chatChannel } = state;
-      // eslint-disable-next-line eqeqeq
-      const readTs = (chatChannel == cid)
+      const { chatChannels } = state;
+      const readTs = chatChannels.includes(cid)
         ? {
           ...state.readTs,
           // 15s treshold for desync
           [cid]: Date.now() + TIME_DIFF_THREASHOLD,
         } : state.readTs;
-      // eslint-disable-next-line eqeqeq
-      const unread = (chatChannel != cid)
+      const unread = chatChannels.includes(cid)
         ? {
           ...state.unread,
           [cid]: true,

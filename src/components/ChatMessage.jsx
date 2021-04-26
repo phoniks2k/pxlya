@@ -3,7 +3,7 @@
  * @flow
  */
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { showContextMenu } from '../actions';
 import { colorFromText, setBrightness } from '../core/utils';
@@ -13,13 +13,15 @@ function ChatMessage({
   name,
   uid,
   country,
+  dark,
+  windowId,
   msgArray,
-  openUserContextMenu,
-  darkMode,
 }) {
   if (!name || !msgArray) {
     return null;
   }
+
+  const dispatch = useDispatch();
 
   const isInfo = (name === 'info');
   const isEvent = (name === 'event');
@@ -51,7 +53,7 @@ function ChatMessage({
           <span
             className="chatname"
             style={{
-              color: setBrightness(colorFromText(name), darkMode),
+              color: setBrightness(colorFromText(name), dark),
               cursor: 'pointer',
             }}
             role="button"
@@ -61,12 +63,11 @@ function ChatMessage({
                 clientX,
                 clientY,
               } = event;
-              openUserContextMenu(
-                clientX,
-                clientY,
+              dispatch(showContextMenu('USER', clientX, clientY, {
+                windowId,
                 uid,
                 name,
-              );
+              }));
             }}
           >
             {name}
@@ -95,7 +96,7 @@ function ChatMessage({
               <span
                 className="ping"
                 style={{
-                  color: setBrightness(colorFromText(txt.substr(1)), darkMode),
+                  color: setBrightness(colorFromText(txt.substr(1)), dark),
                 }}
               >{txt}</span>
             );
@@ -104,7 +105,7 @@ function ChatMessage({
               <span
                 className="mention"
                 style={{
-                  color: setBrightness(colorFromText(txt.substr(1)), darkMode),
+                  color: setBrightness(colorFromText(txt.substr(1)), dark),
                 }}
               >{txt}</span>
             );
@@ -116,21 +117,4 @@ function ChatMessage({
   );
 }
 
-function mapStateToProps(state: State) {
-  const { style } = state.gui;
-  const darkMode = style.indexOf('dark') !== -1;
-  return { darkMode };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    openUserContextMenu(xPos, yPos, uid, name) {
-      dispatch(showContextMenu('USER', xPos, yPos, {
-        uid,
-        name,
-      }));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatMessage);
+export default React.memo(ChatMessage);

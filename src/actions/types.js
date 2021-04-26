@@ -65,14 +65,17 @@ export type Action =
     isPing: boolean,
   }
   | { type: 'RECEIVE_CHAT_HISTORY', cid: number, history: Array }
-  | { type: 'SET_CHAT_CHANNEL', cid: number }
+  | { type: 'OPEN_CHAT_CHANNEL', cid: number }
+  | { type: 'CLOSE_CHAT_CHANNEL', cid: number }
   | { type: 'ADD_CHAT_CHANNEL', channel: Object }
   | { type: 'REMOVE_CHAT_CHANNEL', cid: number }
   | { type: 'MUTE_CHAT_CHANNEL', cid: number }
   | { type: 'UNMUTE_CHAT_CHANNEL', cid: number }
+  | { type: 'SET_CHAT_CHANNEL', windowId: number, cid: number }
+  | { type: 'SET_CHAT_INPUT_MSG', windowId: number, msg: string }
+  | { type: 'ADD_CHAT_INPUT_MSG', windowId: number, msg: string }
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
-  | { type: 'SET_CHAT_INPUT_MSG', message: string }
-  | { type: 'ADD_CHAT_INPUT_MSG', message: string }
+  | { type: 'MOVE_WINDOW', windowId: number, xDiff: number, yDiff: number }
   | { type: 'BLOCK_USER', userId: number, userName: string }
   | { type: 'UNBLOCK_USER', userId: number, userName: string }
   | { type: 'SET_BLOCKING_DM', blockDm: boolean }

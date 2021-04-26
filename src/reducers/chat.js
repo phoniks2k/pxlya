@@ -5,7 +5,6 @@ import { MAX_CHAT_MESSAGES } from '../core/constants';
 import type { Action } from '../actions/types';
 
 export type ChatState = {
-  inputMessage: string,
   /*
    * {
    *   cid: [
@@ -30,7 +29,6 @@ export type ChatState = {
 }
 
 const initialState: ChatState = {
-  inputMessage: '',
   channels: {},
   blocked: [],
   messages: {},
@@ -63,7 +61,6 @@ export default function chat(
       }
       return {
         ...state,
-        inputMessage: '',
         channels,
         blocked: [],
         messages,
@@ -135,30 +132,6 @@ export default function chat(
         ...state,
         channels,
         messages,
-      };
-    }
-
-    case 'SET_CHAT_INPUT_MSG': {
-      const { message } = action;
-      return {
-        ...state,
-        inputMessage: message,
-      };
-    }
-
-    case 'ADD_CHAT_INPUT_MSG': {
-      const { message } = action;
-      let { inputMessage } = state;
-      const lastChar = inputMessage.substr(-1);
-      const pad = (lastChar && lastChar !== ' ');
-      if (pad) {
-        inputMessage += ' ';
-      }
-      inputMessage += message;
-
-      return {
-        ...state,
-        inputMessage,
       };
     }
 

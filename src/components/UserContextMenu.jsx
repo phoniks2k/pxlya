@@ -6,7 +6,7 @@
 import React, {
   useRef, useEffect,
 } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import {
@@ -16,23 +16,20 @@ import {
   setUserBlock,
   setChatChannel,
 } from '../actions';
-import type { State } from '../reducers';
 
 const UserContextMenu = ({
-  xPos,
-  yPos,
-  uid,
-  name,
-  addToInput,
-  dm,
-  block,
-  channels,
-  fetching,
   setChannel,
-  close,
 }) => {
   const wrapperRef = useRef(null);
 
+  const { xPos, yPos, args } = useSelector((state) => state.contextMenu);
+  const { windowId, name, uid } = args;
+
+  const channels = useSelector((state) => state.chat.channels);
+  const fetching = useSelector((state) => state.fetching.fetchingApi);
+
+  const dispatch = useDispatch();
+  const close = () => dispatch(hideContextMenu());
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -64,7 +61,7 @@ const UserContextMenu = ({
         role="button"
         tabIndex={0}
         onClick={() => {
-          addToInput(`@${name} `);
+          dispatch(addToChatInputMessage(windowId, `@${name} `));
           close();
         }}
         style={{ borderTop: 'none' }}
@@ -83,13 +80,13 @@ const UserContextMenu = ({
           for (let i = 0; i < cids.length; i += 1) {
             const cid = cids[i];
             if (channels[cid].length === 4 && channels[cid][3] === uid) {
-              setChannel(cid);
+              dispatch(setChatChannel(windowId, cid));
               close();
               return;
             }
           }
           if (!fetching) {
-            dm(uid);
+            dispatch(startDm(windowId, { userId: uid }));
           }
           close();
         }}
@@ -98,7 +95,7 @@ const UserContextMenu = ({
       </div>
       <div
         onClick={() => {
-          block(uid, name);
+          dispatch(setUserBlock(uid, name, true));
           close();
         }}
         role="button"
@@ -110,55 +107,4 @@ const UserContextMenu = ({
   );
 };
 
-function mapStateToProps(state: State) {
-  const {
-    xPos,
-    yPos,
-    args,
-  } = state.contextMenu;
-  const {
-    channels,
-  } = state.chat;
-  const {
-    name,
-    uid,
-  } = args;
-  const {
-    fetchingApi: fetching,
-  } = state.fetching;
-  return {
-    xPos,
-    yPos,
-    channels,
-    name,
-    uid,
-    fetching,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    addToInput(text) {
-      dispatch(addToChatInputMessage(text));
-      const input = document.getElementById('chatmsginput');
-      if (input) {
-        input.focus();
-        input.select();
-      }
-    },
-    dm(userId) {
-      dispatch(startDm({ userId }));
-    },
-    block(userId, userName) {
-      dispatch(setUserBlock(userId, userName, true));
-    },
-    close() {
-      dispatch(hideContextMenu());
-    },
-    setChannel(channelId) {
-      dispatch(setChatChannel(channelId));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserContextMenu);
+export default UserContextMenu;

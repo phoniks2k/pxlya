@@ -610,28 +610,21 @@ export function showContextMenu(
   };
 }
 
-export function setChatInputMessage(message: string): Action {
-  return {
-    type: 'SET_CHAT_INPUT_MSG',
-    message,
-  };
-}
-
-export function addToChatInputMessage(message: string): Action {
-  return {
-    type: 'ADD_CHAT_INPUT_MSG',
-    message,
-  };
-}
-
 export function showChatModal(forceModal: boolean = false): Action {
   if (window.innerWidth > 604 && !forceModal) { return toggleChatBox(); }
   return showModal('CHAT');
 }
 
-export function setChatChannel(cid: number): Action {
+export function openChatChannel(cid: number): Action {
   return {
-    type: 'SET_CHAT_CHANNEL',
+    type: 'OPEN_CHAT_CHANNEL',
+    cid,
+  };
+}
+
+export function closeChatChannel(cid: number): Action {
+  return {
+    type: 'CLOSE_CHAT_CHANNEL',
     cid,
   };
 }
@@ -687,10 +680,59 @@ export function unmuteChatChannel(cid: number): Action {
   };
 }
 
+export function setChatChannel(windowId: number, cid: number): Action {
+  return {
+    type: 'SET_CHAT_CHANNEL',
+    windowId,
+    cid,
+  };
+}
+
+export function setChatInputMessage(windowId: number, msg: string): Action {
+  return {
+    type: 'SET_CHAT_INPUT_MSG',
+    windowId,
+    msg,
+  };
+}
+
+export function addToChatInputMessage(windowId: number, msg: string): Action {
+  return {
+    type: 'ADD_CHAT_INPUT_MSG',
+    windowId,
+    msg,
+  };
+}
+
+export function moveWindow(windowId, xDiff, yDiff): Action {
+  return {
+    type: 'MOVE_WINDOW',
+    windowId,
+    xDiff,
+    yDiff,
+  };
+}
+
+export function openChatWindow(): Action {
+  return {
+    type: 'OPEN_WINDOW',
+    windowType: 'CHAT',
+    title: 'chat',
+    width: 700,
+    height: 300,
+    xPos: 100,
+    yPos: 100,
+    args: {
+      chatChannel: 1,
+      inputMessage: '',
+    },
+  };
+}
+
 /*
  * query: Object with either userId: number or userName: string
  */
-export function startDm(query): PromiseAction {
+export function startDm(windowId, query): PromiseAction {
   return async (dispatch) => {
     dispatch(setApiFetching(true));
     const res = await requestStartDm(query);
@@ -704,7 +746,7 @@ export function startDm(query): PromiseAction {
     } else {
       const cid = Object.keys(res)[0];
       dispatch(addChatChannel(res));
-      dispatch(setChatChannel(cid));
+      dispatch(setChatChannel(windowId, cid));
     }
     dispatch(setApiFetching(false));
   };

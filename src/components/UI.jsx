@@ -32,26 +32,24 @@ const UI = ({
   menuOpen,
   menuType,
 }) => {
+  const contextMenu = (menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null;
+
   if (isHistoricalView) {
-    return (
-      <div>
-        <HistorySelect />
-        {(menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null}
-      </div>
-    );
+    return [
+      <HistorySelect />,
+      contextMenu,
+    ];
   }
-  return (
-    <div>
-      <Alert />
-      <PalselButton />
-      <Palette />
-      {(!is3D) && <GlobeButton />}
-      {(is3D && isOnMobile) && <Mobile3DControls />}
-      <CoolDownBox />
-      <NotifyBox />
-      {(menuOpen && menuType) && CONTEXT_MENUS[menuType]}
-    </div>
-  );
+  return [
+    <Alert />,
+    <PalselButton />,
+    <Palette />,
+    (!is3D) && <GlobeButton />,
+    (is3D && isOnMobile) && <Mobile3DControls />,
+    <CoolDownBox />,
+    <NotifyBox />,
+    contextMenu,
+  ];
 };
 
 function mapStateToProps(state: State) {

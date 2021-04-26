@@ -134,6 +134,18 @@ tr:nth-child(even) {
   transition: 0.3s;
 }
 
+.window {
+  position: fixed;
+  background-color: rgba(226, 226, 226, 0.92);
+  border: solid black;
+  border-width: thin;
+  overflow: hidden;
+}
+
+.topbar {
+  cursor: move;
+}
+
 .contextmenu {
   position: absolute;
   font-size: 12px;

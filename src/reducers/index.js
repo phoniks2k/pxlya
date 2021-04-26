@@ -6,6 +6,7 @@ import audio from './audio';
 import canvas from './canvas';
 import gui from './gui';
 import modal from './modal';
+import windows from './windows';
 import user from './user';
 import ranks from './ranks';
 import alert from './alert';
@@ -59,6 +60,7 @@ export default persistCombineReducers(config, {
   canvas,
   gui,
   modal,
+  windows,
   user,
   ranks,
   alert,

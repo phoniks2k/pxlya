@@ -67,7 +67,7 @@ function init() {
       name,
       text,
       country,
-      channelId,
+      Number(channelId),
       userId,
       isPing,
     ));
@@ -90,9 +90,8 @@ function init() {
   //
   function checkMobile() {
     store.dispatch(setMobile(true));
-    document.removeEventListener('touchstart', checkMobile, false);
   }
-  document.addEventListener('touchstart', checkMobile, false);
+  document.addEventListener('touchstart', checkMobile, { once: true });
 
   store.dispatch(initTimer());
 

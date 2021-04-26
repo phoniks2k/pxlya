@@ -7,22 +7,15 @@
 import React, {
   useRef, useState, useEffect, useCallback, useLayoutEffect,
 } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { MdChat } from 'react-icons/md';
 import { FaUserFriends } from 'react-icons/fa';
 
 import type { State } from '../reducers';
-import {
-  setChatChannel,
-} from '../actions';
 
 const ChannelDropDown = ({
-  channels,
+  setChatChannel,
   chatChannel,
-  unread,
-  chatNotify,
-  mute,
-  setChannel,
 }) => {
   const [show, setShow] = useState(false);
   const [sortChans, setSortChans] = useState([]);
@@ -35,6 +28,12 @@ const ChannelDropDown = ({
   const [hasDm, setHasDm] = useState(false);
   const wrapperRef = useRef(null);
   const buttonRef = useRef(null);
+
+
+  const unread = useSelector((state) => state.chatRead.unread);
+  const mute = useSelector((state) => state.chatRead.mute);
+  const channels = useSelector((state) => state.chat.channels);
+  const chatNotify = useSelector((state) => state.audio.chatNotify);
 
   useEffect(() => {
     setOffset(buttonRef.current.clientHeight);
@@ -200,7 +199,7 @@ const ChannelDropDown = ({
                 const [cid, unreadCh, name] = ch;
                 return (
                   <div
-                    onClick={() => setChannel(cid)}
+                    onClick={() => setChatChannel(cid)}
                     className={
                       `chn${
                         (cid === chatChannel) ? ' selected' : ''
@@ -226,29 +225,4 @@ const ChannelDropDown = ({
   );
 };
 
-function mapStateToProps(state: State) {
-  const { channels } = state.chat;
-  const {
-    chatChannel,
-    unread,
-    mute,
-  } = state.chatRead;
-  const { chatNotify } = state.audio;
-  return {
-    channels,
-    chatChannel,
-    unread,
-    mute,
-    chatNotify,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setChannel(channelId) {
-      dispatch(setChatChannel(channelId));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelDropDown);
+export default React.memo(ChannelDropDown);
