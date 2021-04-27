@@ -10,9 +10,8 @@ import useStayScrolled from 'react-stay-scrolled';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import type { State } from '../reducers';
-import ChatMessage from './ChatMessage';
-import ChannelDropDown from './ChannelDropDown';
+import ChatMessage from '../ChatMessage';
+import ChannelDropDown from '../ChannelDropDown';
 
 import {
   showUserAreaModal,
@@ -21,9 +20,9 @@ import {
   setChatInputMessage,
   fetchChatMessages,
   showContextMenu,
-} from '../actions';
-import ProtocolClient from '../socket/ProtocolClient';
-import splitChatMessage from '../core/chatMessageFilter';
+} from '../../actions';
+import ProtocolClient from '../../socket/ProtocolClient';
+import splitChatMessage from '../../core/chatMessageFilter';
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -115,13 +114,7 @@ const Chat = ({
   return (
     <div
       ref={targetRef}
-      style={{
-        display: 'flex',
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-      }}
+      className="chat-container"
     >
       <div
         className="chatlink"

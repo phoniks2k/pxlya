@@ -7,8 +7,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { c, t } from 'ttag';
 
-import LanguageSelect from './LanguageSelect';
-import MdToggleButtonHover from './MdToggleButtonHover';
+import LanguageSelect from '../LanguageSelect';
+import MdToggleButtonHover from '../MdToggleButtonHover';
 import {
   toggleGrid,
   togglePixelNotify,
@@ -20,9 +20,9 @@ import {
   toggleLightGrid,
   toggleHistoricalView,
   selectStyle,
-} from '../actions';
+} from '../../actions';
 
-import type { State } from '../reducers';
+import type { State } from '../../reducers';
 
 
 const flexy = {
@@ -97,7 +97,7 @@ const SettingsItem = ({
   </div>
 );
 
-function SettingsModal({
+function Settings({
   isMuted,
   isGridShown,
   isPixelNotifyShown,
@@ -273,9 +273,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const data = {
-  content: connect(mapStateToProps, mapDispatchToProps)(SettingsModal),
-  title: t`Settings`,
-};
-
-export default data;
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

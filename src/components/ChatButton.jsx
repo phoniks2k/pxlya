@@ -14,7 +14,6 @@ import { showChatModal, openChatWindow } from '../actions';
 
 
 const ChatButton = ({
-  modalOpen,
   chatNotify,
   channels,
   unread,
@@ -24,6 +23,7 @@ const ChatButton = ({
   const [unreadAny, setUnreadAny] = useState(false);
   // TODO what do here?
   const chatOpen = false;
+  const modalOpen = false;
 
   /*
    * almost the same as in ChannelDropDown
@@ -89,9 +89,6 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   const {
-    modalOpen,
-  } = state.windows;
-  const {
     chatNotify,
   } = state.audio;
   const {
@@ -102,8 +99,6 @@ function mapStateToProps(state) {
     mute,
   } = state.chatRead;
   return {
-    modalOpen,
-    chatNotify,
     channels,
     unread,
     mute,

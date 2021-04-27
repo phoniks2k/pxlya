@@ -144,6 +144,7 @@ tr:nth-child(even) {
 
 .win-topbar {
   display: flex;
+  height: 16px;
 }
 
 .win-title {
@@ -155,6 +156,29 @@ tr:nth-child(even) {
   border: solid black;
   border-width: thin;
   background-color: blue;
+  cursor: pointer;
+}
+
+.win-resize {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+
+.chat-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100% - 4px);
+}
+
+.win-content {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 16px);
+  overflow-y: auto;
 }
 
 .contextmenu {
@@ -444,7 +468,7 @@ tr:nth-child(even) {
   width: 75%;
 }
 
-.ModalClose {
+.ModalClose, .ModalRestore {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -459,11 +483,18 @@ tr:nth-child(even) {
   background-color: #f6f6f7;
   border-color: #dcddde;
   top: 30px;
-  right: 40px;
   z-index: 5;
 }
 
-.ModalClose:hover {
+.ModalClose {
+  right: 40px;
+}
+
+.ModalRestore {
+  right: 90px;
+}
+
+.ModalClose:hover, .ModalRestore:hover {
   background-color: #e3e3e4;
 }
 

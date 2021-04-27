@@ -1,5 +1,7 @@
 /* @flow */
 
+import { t } from 'ttag';
+
 import type {
   Action,
   ThunkAction,
@@ -557,42 +559,62 @@ export function initTimer(): ThunkAction {
   };
 }
 
-export function showModal(modalType: string): Action {
-  return {
-    type: 'SHOW_MODAL',
+export function showModal(modalType: string, title: string): Action {
+  return openWindow(
     modalType,
-  };
+    title,
+    true,
+    false,
+    {},
+  );
 }
 
 export function showSettingsModal(): Action {
-  return showModal('SETTINGS');
+  return showModal(
+    'SETTINGS',
+    t`Settings`,
+  );
 }
 
 export function showUserAreaModal(): Action {
-  return showModal('USERAREA');
-}
-
-export function showMinecraftModal(): Action {
-  return showModal('MINECRAFT');
+  return showModal(
+    'USERAREA',
+    t`User Area`,
+  );
 }
 
 export function showRegisterModal(): Action {
-  return showModal('REGISTER');
+  return showModal(
+    'REGISTER',
+    t`Register New Account`,
+  );
 }
 
 export function showForgotPasswordModal(): Action {
-  return showModal('FORGOT_PASSWORD');
+  return showModal(
+    'FORGOT_PASSWORD',
+    t`Restore my Password`,
+  );
 }
 
 export function showHelpModal(): Action {
-  return showModal('HELP');
+  return showModal(
+    'HELP',
+    t`Welcome to PixelPlanet.fun`,
+  );
 }
 export function showArchiveModal(): Action {
-  return showModal('ARCHIVE');
+  return showModal(
+    'ARCHIVE',
+    t`Canvas Archive`,
+  );
 }
 
 export function showCanvasSelectionModal(): Action {
-  return showModal('CANVAS_SELECTION');
+  return showModal(
+    'CANVAS_SELECTION',
+    t`Canvas Selection`,
+  );
 }
 
 export function showContextMenu(
@@ -610,6 +632,7 @@ export function showContextMenu(
   };
 }
 
+// TODO CHAT MODAL
 export function showChatModal(forceModal: boolean = false): Action {
   if (window.innerWidth > 604 && !forceModal) { return toggleChatBox(); }
   return showModal('CHAT');
@@ -704,6 +727,53 @@ export function addToChatInputMessage(windowId: number, msg: string): Action {
   };
 }
 
+/*
+ * fullscreen means to open as modal
+ */
+export function openWindow(
+  windowType: string,
+  title: string,
+  fullscreen: boolean,
+  cloneable: boolean,
+  args: Object,
+): Action {
+  return {
+    type: 'OPEN_WINDOW',
+    windowType,
+    title,
+    fullscreen,
+    cloneable,
+    args,
+  };
+}
+
+export function closeWindow(windowId): Action {
+  return {
+    type: 'CLOSE_WINDOW',
+    windowId,
+  };
+}
+
+export function cloneWindow(windowId): Action {
+  return {
+    type: 'CLONE_WINDOW',
+    windowId,
+  };
+}
+
+export function maximizeWindow(windowId): Action {
+  return {
+    type: 'MAXIMIZE_WINDOW',
+    windowId,
+  };
+}
+
+export function restoreWindow(): Action {
+  return {
+    type: 'RESTORE_WINDOW',
+  };
+}
+
 export function moveWindow(windowId, xDiff, yDiff): Action {
   return {
     type: 'MOVE_WINDOW',
@@ -713,20 +783,18 @@ export function moveWindow(windowId, xDiff, yDiff): Action {
   };
 }
 
-export function openChatWindow(): Action {
+export function resizeWindow(windowId, xDiff, yDiff): Action {
   return {
-    type: 'OPEN_WINDOW',
-    windowType: 'CHAT',
-    title: 'chat',
-    width: 700,
-    height: 300,
-    xPos: 100,
-    yPos: 100,
-    args: {
-      chatChannel: 1,
-      inputMessage: '',
-    },
+    type: 'RESIZE_WINDOW',
+    windowId,
+    xDiff,
+    yDiff,
   };
+}
+
+export function openChatWindow(): Action {
+  return openWindow('CHAT', t`Chat`, false, true,
+    { chatChannel: 1, inputMessage: '' });
 }
 
 /*
@@ -820,12 +888,6 @@ export function setLeaveChannel(
       dispatch(removeChatChannel(cid));
     }
     dispatch(setApiFetching(false));
-  };
-}
-
-export function hideModal(): Action {
-  return {
-    type: 'HIDE_MODAL',
   };
 }
 

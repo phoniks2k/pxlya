@@ -11,7 +11,7 @@ import { MdTouchApp } from 'react-icons/md';
 /* eslint-disable max-len */
 
 
-const HelpModal = () => {
+const Help = () => {
   const bindG = <kbd>{c('keybinds').t`G`}</kbd>;
   const bindX = <kbd>{c('keybinds').t`X`}</kbd>;
   const bindH = <kbd>{c('keybinds').t`H`}</kbd>;
@@ -89,9 +89,4 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
   );
 };
 
-const data = {
-  content: HelpModal,
-  title: t`Welcome to PixelPlanet.fun`,
-};
-
-export default data;
+export default Help;

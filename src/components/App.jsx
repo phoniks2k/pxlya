@@ -19,7 +19,7 @@ import Menu from './Menu';
 import UI from './UI';
 import ExpandMenuButton from './ExpandMenuButton';
 import ModalRoot from './ModalRoot';
-import WindowsRoot from './WindowsRoot';
+import WindowManager from './WindowManager';
 
 const App = () => (
   <div>
@@ -34,7 +34,7 @@ const App = () => (
       <ExpandMenuButton />
       <UI />
       <ModalRoot />
-      <WindowsRoot />
+      <WindowManager />
     </IconContext.Provider>
   </div>
 );

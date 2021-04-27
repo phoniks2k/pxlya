@@ -7,13 +7,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { t } from 'ttag';
 
-import CanvasItem from './CanvasItem';
-import { showArchiveModal } from '../actions';
+import CanvasItem from '../CanvasItem';
+import { showArchiveModal } from '../../actions';
 
-import type { State } from '../reducers';
+import type { State } from '../../reducers';
 
 
-const CanvasSelectModal = ({
+const CanvasSelect = ({
   canvases,
   showHiddenCanvases,
   showArchive,
@@ -62,9 +62,4 @@ function mapStateToProps(state: State) {
   return { canvases, showHiddenCanvases };
 }
 
-const data = {
-  content: connect(mapStateToProps, mapDispatchToProps)(CanvasSelectModal),
-  title: t`Canvas Selection`,
-};
-
-export default data;
+export default connect(mapStateToProps, mapDispatchToProps)(CanvasSelect);

@@ -14,7 +14,7 @@ const imageStyle = {
   verticalAlign: 'middle',
 };
 
-const ArchiveModal = () => (
+const Archive = () => (
   <p style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
     <p className="modaltext">
       {t`While we tend to not delete canvases, some canvases are started for fun or as a request by users who currently like a meme. \
@@ -45,9 +45,4 @@ Those canvases can get boring after a while and after weeks of no major change a
   </p>
 );
 
-const data = {
-  content: ArchiveModal,
-  title: t`Canvas Archive`,
-};
-
-export default data;
+export default Archive;

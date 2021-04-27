@@ -75,7 +75,19 @@ export type Action =
   | { type: 'SET_CHAT_INPUT_MSG', windowId: number, msg: string }
   | { type: 'ADD_CHAT_INPUT_MSG', windowId: number, msg: string }
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
+  | { type: 'OPEN_WINDOW',
+    windowType: string,
+    title: string,
+    fullscreen: boolean,
+    cloneable: boolean,
+    args: Object,
+  }
+  | { type: 'CLOSE_WINDOW', windowId: number }
+  | { type: 'CLONE_WINDOW', windowId: number }
+  | { type: 'MAXIMIZE_WINDOW', windowId: number }
+  | { type: 'RESTORE_WINDOW' }
   | { type: 'MOVE_WINDOW', windowId: number, xDiff: number, yDiff: number }
+  | { type: 'RESIZE_WINDOW', windowId: number, xDiff: number, yDiff: number }
   | { type: 'BLOCK_USER', userId: number, userName: string }
   | { type: 'UNBLOCK_USER', userId: number, userName: string }
   | { type: 'SET_BLOCKING_DM', blockDm: boolean }
@@ -117,14 +129,12 @@ export type Action =
   | { type: 'SET_MINECRAFT_NAME', minecraftname: string }
   | { type: 'SET_MAILREG', mailreg: boolean }
   | { type: 'REM_FROM_MESSAGES', message: string }
-  | { type: 'SHOW_MODAL', modalType: string }
   | { type: 'SHOW_CONTEXT_MENU',
     menuType: string,
     xPos: number,
     yPos: number,
     args: Object,
   }
-  | { type: 'HIDE_MODAL' }
   | { type: 'HIDE_CONTEXT_MENU' }
   | { type: 'RELOAD_URL' }
   | { type: 'SET_HISTORICAL_TIME', date: string, time: string }

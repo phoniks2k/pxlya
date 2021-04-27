@@ -14,7 +14,7 @@ const WindowsRoot = () => {
   const windowIds = useSelector(selectWindowIds, shallowEqual);
 
   return windowIds.map((id) => (
-    <Window id={id} />
+    <Window key={id} id={id} />
   ));
 };
 

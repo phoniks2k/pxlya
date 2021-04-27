@@ -7,21 +7,21 @@ import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { t } from 'ttag';
 
-import type { State } from '../reducers';
+import type { State } from '../../reducers';
 
 
 import {
   showRegisterModal, showForgotPasswordModal, setName, setMailreg,
-} from '../actions';
-import LogInForm from './LogInForm';
-import Tabs from './Tabs';
-import UserArea from './UserArea';
-import Rankings from './Rankings';
+} from '../../actions';
+import LogInForm from '../LogInForm';
+import Tabs from '../Tabs';
+import UserAreaContent from '../UserArea';
+import Rankings from '../Rankings';
 
 // eslint-disable-next-line max-len
-const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ './Converter'));
+const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ '../Converter'));
 // eslint-disable-next-line max-len
-const Admintools = React.lazy(() => import(/* webpackChunkName: "admintools" */ './Admintools'));
+const Admintools = React.lazy(() => import(/* webpackChunkName: "admintools" */ '../Admintools'));
 
 const logoStyle = {
   marginRight: 5,
@@ -86,7 +86,7 @@ const LogInArea = ({ register, forgotPassword, me }) => (
   </p>
 );
 
-const UserAreaModal = ({
+const UserArea = ({
   name,
   register,
   forgotPassword,
@@ -105,7 +105,7 @@ const UserAreaModal = ({
       : (
         <Tabs>
           <div label={t`Profile`}>
-            <UserArea
+            <UserAreaContent
               setName={setUserName}
               setMailreg={setUserMailreg}
             />
@@ -155,9 +155,4 @@ function mapStateToProps(state: State) {
   return { name, userlvl };
 }
 
-const data = {
-  content: connect(mapStateToProps, mapDispatchToProps)(UserAreaModal),
-  title: t`User Area`,
-};
-
-export default data;
+export default connect(mapStateToProps, mapDispatchToProps)(UserArea);

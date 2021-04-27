@@ -6,17 +6,16 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Chat from './Chat';
 import {
   moveWindow,
+  resizeWindow,
+  closeWindow,
+  maximizeWindow,
+  cloneWindow,
 } from '../actions';
+import COMPONENTS from './windows';
 
 const selectWindowById = (state, windowId) => state.windows.windows.find((win) => win.windowId === windowId);
-
-const WINDOW_COMPONENTS = {
-  NONE: <div />,
-  CHAT: Chat,
-};
 
 const Window = ({ id }) => {
   const win = useSelector((state) => selectWindowById(state, id));
@@ -46,6 +45,33 @@ const Window = ({ id }) => {
     document.addEventListener('mouseleave', stopMove, { once: true });
   }, []);
 
+  const startResize = useCallback((event) => {
+    event.preventDefault();
+    let {
+      clientX: startX,
+      clientY: startY,
+    } = event;
+    const resize = (evt) => {
+      const {
+        clientX: curX,
+        clientY: curY,
+      } = evt;
+      dispatch(resizeWindow(id, curX - startX, curY - startY));
+      startX = curX;
+      startY = curY;
+    };
+    document.addEventListener('mousemove', resize);
+    const stopResize = () => {
+      document.removeEventListener('mousemove', resize);
+    };
+    document.addEventListener('mouseup', stopResize, { once: true });
+    document.addEventListener('mouseleave', stopResize, { once: true });
+  }, []);
+
+  if (!win) {
+    return null;
+  }
+
   const {
     width, height,
     xPos, yPos,
@@ -53,7 +79,7 @@ const Window = ({ id }) => {
     title,
   } = win;
 
-  const Content = WINDOW_COMPONENTS[windowType];
+  const Content = COMPONENTS[windowType];
 
   console.log(`render window ${id}`);
 
@@ -71,7 +97,8 @@ const Window = ({ id }) => {
         className="win-topbar"
       >
         <span
-          className="win-topbtnn"
+          className="win-topbtn"
+          onClick={() => dispatch(cloneWindow(id))}
         >
           +
         </span>
@@ -79,20 +106,30 @@ const Window = ({ id }) => {
           className="win-title"
           onMouseDown={startMove}
         >
-          Move Here
+          {title}
         </span>
         <span
-          className="win-topbtnn"
+          className="win-topbtn"
+          onClick={() => dispatch(maximizeWindow(id))}
         >
           ↑
         </span>
         <span
-          className="win-topbtnn"
+          className="win-topbtn"
+          onClick={() => dispatch(closeWindow(id))}
         >
           X
         </span>
       </div>
-      <Content windowId={id} />
+      <div className="win-content">
+        <Content windowId={id} />
+      </div>
+      <div
+        onMouseDown={startResize}
+        className="win-resize"
+      >
+        R
+      </div>
     </div>
   );
 };

@@ -5,88 +5,76 @@
  * @flow
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MdClose } from 'react-icons/md';
 import { t } from 'ttag';
 
 import {
-  hideModal,
+  closeWindow,
+  restoreWindow,
 } from '../actions';
-
-import HelpModal from './HelpModal';
-import SettingsModal from './SettingsModal';
-import UserAreaModal from './UserAreaModal';
-import RegisterModal from './RegisterModal';
-import CanvasSelectModal from './CanvasSelectModal';
-import ArchiveModal from './ArchiveModal';
-import ChatModal from './ChatModal';
-import ForgotPasswordModal from './ForgotPasswordModal';
-
-
-const MODAL_COMPONENTS = {
-  NONE: { content: <div />, title: '' },
-  HELP: HelpModal,
-  SETTINGS: SettingsModal,
-  USERAREA: UserAreaModal,
-  REGISTER: RegisterModal,
-  FORGOT_PASSWORD: ForgotPasswordModal,
-  CHAT: ChatModal,
-  CANVAS_SELECTION: CanvasSelectModal,
-  ARCHIVE: ArchiveModal,
-  /* other modals */
-};
+import COMPONENTS from './windows';
 
 const ModalRoot = () => {
   const [render, setRender] = useState(false);
 
-  const modalType = useSelector((state) => state.windows.modalType);
-  const modalOpen = useSelector((state) => state.windows.modalOpen);
-
-  const {
-    title,
-    content: SpecificModal,
-  } = MODAL_COMPONENTS[modalType || 'NONE'];
+  const { windowType, open, title } = useSelector(
+    (state) => state.windows.modal,
+  );
 
   const dispatch = useDispatch();
-  const close = useCallback(() => {
-    dispatch(hideModal());
-  }, [dispatch]);
 
   const onTransitionEnd = () => {
-    if (!modalOpen) setRender(false);
+    if (!open) setRender(false);
   };
 
   useEffect(() => {
     window.setTimeout(() => {
-      if (modalOpen) setRender(true);
+      if (open) setRender(true);
     }, 10);
-  }, [modalOpen]);
+  }, [open]);
+
+  if (!windowType) {
+    return null;
+  }
+
+  const Content = COMPONENTS[windowType || 'NONE'];
 
   return (
-    (render || modalOpen)
+    (render || open)
       && [
         <div
-          className={(modalOpen && render)
+          className={(open && render)
             ? 'OverlayModal show'
             : 'OverlayModal'}
           onTransitionEnd={onTransitionEnd}
           tabIndex={-1}
-          onClick={close}
+          onClick={() => dispatch(closeWindow(0))}
         />,
         <div
-          className={(modalOpen && render) ? 'Modal show' : 'Modal'}
+          className={(open && render) ? 'Modal show' : 'Modal'}
         >
           <h2 style={{ paddingLeft: '5%' }}>{title}</h2>
           <div
-            onClick={close}
+            onClick={() => dispatch(closeWindow(0))}
             className="ModalClose"
             role="button"
             label="close"
             title={t`Close`}
             tabIndex={-1}
           ><MdClose /></div>
-          <SpecificModal windowId={0} />
+          <div
+            onClick={() => dispatch(restoreWindow())}
+            className="ModalRestore"
+            role="button"
+            label="restore"
+            title={t`Restore`}
+            tabIndex={-1}
+          >♥</div>
+          <div className="win-content">
+            <Content windowId={0} />
+          </div>
         </div>,
       ]
   );
