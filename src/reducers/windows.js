@@ -7,6 +7,10 @@
 import type { Action } from '../actions/types';
 
 export type WindowsState = {
+  // modal is considerd as "fullscreen window"
+  // its windowId is considered 0 and args are under args[0]
+  modalOpen: boolean,
+  modalType: ?string,
   // [
   //   {
   //     windowId: number,
@@ -28,6 +32,8 @@ export type WindowsState = {
 }
 
 const initialState: WindowsState = {
+  modalOpen: false,
+  modalType: null,
   windows: [],
   args: {},
 };

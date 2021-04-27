@@ -95,7 +95,6 @@ const Chat = ({
     if (!msg) return;
     // send message via websocket
     ProtocolClient.sendChatMessage(msg, chatChannel);
-    setInputMessage('');
     dispatch(setChatInputMessage(windowId, ''));
   }
 

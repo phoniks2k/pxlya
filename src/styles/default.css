@@ -142,8 +142,19 @@ tr:nth-child(even) {
   overflow: hidden;
 }
 
-.topbar {
+.win-topbar {
+  display: flex;
+}
+
+.win-title {
   cursor: move;
+  flex-grow: 1;
+}
+
+.win-topbtn {
+  border: solid black;
+  border-width: thin;
+  background-color: blue;
 }
 
 .contextmenu {

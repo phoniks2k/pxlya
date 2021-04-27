@@ -25,7 +25,6 @@ const Window = ({ id }) => {
 
   const startMove = useCallback((event) => {
     event.preventDefault();
-    event.stopPropagation();
     let {
       clientX: startX,
       clientY: startY,
@@ -69,9 +68,30 @@ const Window = ({ id }) => {
       }}
     >
       <div
-        className="topbar"
-        onMouseDown={startMove}
-      >Move Here</div>
+        className="win-topbar"
+      >
+        <span
+          className="win-topbtnn"
+        >
+          +
+        </span>
+        <span
+          className="win-title"
+          onMouseDown={startMove}
+        >
+          Move Here
+        </span>
+        <span
+          className="win-topbtnn"
+        >
+          ↑
+        </span>
+        <span
+          className="win-topbtnn"
+        >
+          X
+        </span>
+      </div>
       <Content windowId={id} />
     </div>
   );

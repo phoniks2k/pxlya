@@ -40,10 +40,8 @@ const MODAL_COMPONENTS = {
 const ModalRoot = () => {
   const [render, setRender] = useState(false);
 
-  const {
-    modalType,
-    modalOpen,
-  } = useSelector((state) => state.modal);
+  const modalType = useSelector((state) => state.windows.modalType);
+  const modalOpen = useSelector((state) => state.windows.modalOpen);
 
   const {
     title,
@@ -66,8 +64,8 @@ const ModalRoot = () => {
   }, [modalOpen]);
 
   return (
-    (render || modalOpen) && (
-      <div>
+    (render || modalOpen)
+      && [
         <div
           className={(modalOpen && render)
             ? 'OverlayModal show'
@@ -75,7 +73,7 @@ const ModalRoot = () => {
           onTransitionEnd={onTransitionEnd}
           tabIndex={-1}
           onClick={close}
-        />
+        />,
         <div
           className={(modalOpen && render) ? 'Modal show' : 'Modal'}
         >
@@ -88,10 +86,9 @@ const ModalRoot = () => {
             title={t`Close`}
             tabIndex={-1}
           ><MdClose /></div>
-          <SpecificModal />
-        </div>
-      </div>
-    )
+          <SpecificModal windowId={0} />
+        </div>,
+      ]
   );
 };
 

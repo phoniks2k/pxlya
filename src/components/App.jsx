@@ -15,7 +15,6 @@ import CoordinatesBox from './CoordinatesBox';
 import CanvasSwitchButton from './CanvasSwitchButton';
 import OnlineBox from './OnlineBox';
 import ChatButton from './ChatButton';
-import ChatBox from './ChatBox';
 import Menu from './Menu';
 import UI from './UI';
 import ExpandMenuButton from './ExpandMenuButton';
@@ -30,7 +29,6 @@ const App = () => (
       <CanvasSwitchButton />
       <Menu />
       <ChatButton />
-      <ChatBox />
       <OnlineBox />
       <CoordinatesBox />
       <ExpandMenuButton />

@@ -5,7 +5,6 @@ import localForage from 'localforage';
 import audio from './audio';
 import canvas from './canvas';
 import gui from './gui';
-import modal from './modal';
 import windows from './windows';
 import user from './user';
 import ranks from './ranks';
@@ -18,7 +17,6 @@ import fetching from './fetching';
 import type { AudioState } from './audio';
 import type { CanvasState } from './canvas';
 import type { GUIState } from './gui';
-import type { ModalState } from './modal';
 import type { UserState } from './user';
 import type { RanksState } from './ranks';
 import type { AlertState } from './alert';
@@ -30,7 +28,6 @@ export type State = {
   audio: AudioState,
   canvas: CanvasState,
   gui: GUIState,
-  modal: ModalState,
   user: UserState,
   ranks: RanksState,
   alert: AlertState,
@@ -48,7 +45,6 @@ const config = {
     'ranks',
     'canvas',
     'alert',
-    'modal',
     'chat',
     'contextMenu',
     'fetching',
@@ -59,7 +55,6 @@ export default persistCombineReducers(config, {
   audio,
   canvas,
   gui,
-  modal,
   windows,
   user,
   ranks,
