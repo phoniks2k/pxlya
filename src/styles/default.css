@@ -140,6 +140,7 @@ tr:nth-child(even) {
   border: solid black;
   border-width: thin;
   overflow: hidden;
+  z-index: 3;
 }
 
 .win-topbar {

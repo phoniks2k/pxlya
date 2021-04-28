@@ -37,14 +37,11 @@ const UserContextMenu = ({
         close();
       }
     };
-    const handleWindowResize = () => close();
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('touchstart', handleClickOutside);
-    window.addEventListener('resize', handleWindowResize);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
-      window.removeEventListener('resize', handleWindowResize);
     };
   }, [wrapperRef]);
 

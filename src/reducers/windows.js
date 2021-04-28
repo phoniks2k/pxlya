@@ -6,6 +6,8 @@
 
 import type { Action } from '../actions/types';
 
+import { clamp } from '../core/utils';
+
 function generateWindowId(state) {
   let windowId = Math.floor(Math.random() * 99999) + 1;
   while (state.args[windowId]) {
@@ -254,12 +256,16 @@ export default function windows(
         xDiff,
         yDiff,
       } = action;
+      const {
+        innerWidth: width,
+        innerHeight: height,
+      } = window;
       const newWindows = state.windows.map((win) => {
         if (win.windowId !== windowId) return win;
         return {
           ...win,
-          xPos: win.xPos + xDiff,
-          yPos: win.yPos + yDiff,
+          xPos: clamp(win.xPos + xDiff, -win.width + 70, width - 30),
+          yPos: clamp(win.yPos + yDiff, 0, height - 30),
         };
       });
       return {
@@ -278,10 +284,43 @@ export default function windows(
         if (win.windowId !== windowId) return win;
         return {
           ...win,
-          width: win.width + xDiff,
-          height: win.height + yDiff,
+          width: Math.max(win.width + xDiff, 70, 70 - win.xPos),
+          height: Math.max(win.height + yDiff, 50),
         };
       });
+      return {
+        ...state,
+        windows: newWindows,
+      };
+    }
+
+    case 'WINDOW_RESIZE': {
+      const {
+        width,
+        height,
+      } = action;
+      const xMax = width - 30;
+      const yMax = height - 30;
+      let modified = false;
+
+      const newWindows = [];
+      for (let i = 0; i < state.windows.length; i += 1) {
+        const win = state.windows[i];
+        let { xPos, yPos } = win;
+        if (xPos > xMax || yPos > yMax) {
+          modified = true;
+          newWindows.push({
+            ...win,
+            xPos: Math.min(xMax, xPos),
+            yPos: Math.min(yMax, yPos),
+          });
+        } else {
+          newWindows.push(win);
+        }
+      }
+
+      if (!modified) return state;
+
       return {
         ...state,
         windows: newWindows,

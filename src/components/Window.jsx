@@ -42,7 +42,6 @@ const Window = ({ id }) => {
       document.removeEventListener('mousemove', move);
     };
     document.addEventListener('mouseup', stopMove, { once: true });
-    document.addEventListener('mouseleave', stopMove, { once: true });
   }, []);
 
   const startResize = useCallback((event) => {
@@ -65,7 +64,6 @@ const Window = ({ id }) => {
       document.removeEventListener('mousemove', resize);
     };
     document.addEventListener('mouseup', stopResize, { once: true });
-    document.addEventListener('mouseleave', stopResize, { once: true });
   }, []);
 
   if (!win) {

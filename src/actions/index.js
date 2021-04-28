@@ -169,6 +169,14 @@ export function setMobile(mobile: boolean): Action {
   };
 }
 
+export function windowResize(width: number, height: number): Action {
+  return {
+    type: 'WINDOW_RESIZE',
+    width,
+    height,
+  };
+}
+
 export function selectColor(color: ColorIndex): Action {
   return {
     type: 'SELECT_COLOR',

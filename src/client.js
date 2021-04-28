@@ -17,6 +17,7 @@ import {
   addChatChannel,
   removeChatChannel,
   setMobile,
+  windowResize,
 } from './actions';
 import {
   receivePixelUpdate,
@@ -92,6 +93,14 @@ function init() {
     store.dispatch(setMobile(true));
   }
   document.addEventListener('touchstart', checkMobile, { once: true });
+
+  // listen for resize
+  //
+  function onWindowResize() {
+    store.dispatch(windowResize(window.innerWidth, window.innerHeight));
+  }
+  window.addEventListener('resize', onWindowResize);
+  onWindowResize();
 
   store.dispatch(initTimer());
 

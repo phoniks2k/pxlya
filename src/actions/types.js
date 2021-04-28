@@ -35,6 +35,7 @@ export type Action =
   | { type: 'SET_WAIT', wait: ?number }
   | { type: 'RECEIVE_COOLDOWN', wait: number }
   | { type: 'SET_MOBILE', mobile: boolean }
+  | { type: 'WINDOW_RESIZE', width: number, height: number }
   | { type: 'COOLDOWN_END' }
   | { type: 'COOLDOWN_SET', coolDown: number }
   | { type: 'COOLDOWN_DELTA', delta: number }

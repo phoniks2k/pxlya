@@ -44,6 +44,7 @@ export default function contextMenu(
       };
     }
 
+    case 'WINDOW_RESIZE':
     case 'HIDE_CONTEXT_MENU': {
       return {
         ...state,
