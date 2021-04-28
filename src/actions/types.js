@@ -84,6 +84,7 @@ export type Action =
     args: Object,
   }
   | { type: 'CLOSE_WINDOW', windowId: number }
+  | { type: 'FOCUS_WINDOW', windowId: number }
   | { type: 'CLONE_WINDOW', windowId: number }
   | { type: 'MAXIMIZE_WINDOW', windowId: number }
   | { type: 'RESTORE_WINDOW' }

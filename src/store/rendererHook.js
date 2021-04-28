@@ -68,9 +68,10 @@ export default (store) => (next) => (action) => {
       break;
     }
 
+    case 'TOGGLE_GRID':
     case 'SET_REQUESTING_PIXEL': {
       const renderer = getRenderer();
-      renderer.forceNextSubRender = true;
+      renderer.forceNextSubrender = true;
       break;
     }
 

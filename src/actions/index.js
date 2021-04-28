@@ -762,6 +762,13 @@ export function closeWindow(windowId): Action {
   };
 }
 
+export function focusWindow(windowId): Action {
+  return {
+    type: 'FOCUS_WINDOW',
+    windowId,
+  };
+}
+
 export function cloneWindow(windowId): Action {
   return {
     type: 'CLONE_WINDOW',

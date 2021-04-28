@@ -12,6 +12,7 @@ import {
   closeWindow,
   maximizeWindow,
   cloneWindow,
+  focusWindow,
 } from '../actions';
 import COMPONENTS from './windows';
 
@@ -40,8 +41,11 @@ const Window = ({ id }) => {
     document.addEventListener('mousemove', move);
     const stopMove = () => {
       document.removeEventListener('mousemove', move);
+      document.removeEventListener('mouseup', stopMove);
+      document.removeEventListener('touchcancel', stopMove);
     };
-    document.addEventListener('mouseup', stopMove, { once: true });
+    document.addEventListener('mouseup', stopMove);
+    document.addEventListener('touchcancel', stopMove);
   }, []);
 
   const startResize = useCallback((event) => {
@@ -62,8 +66,11 @@ const Window = ({ id }) => {
     document.addEventListener('mousemove', resize);
     const stopResize = () => {
       document.removeEventListener('mousemove', resize);
+      document.removeEventListener('mouseup', stopResize);
+      document.removeEventListener('touchcancel', stopResize);
     };
-    document.addEventListener('mouseup', stopResize, { once: true });
+    document.addEventListener('mouseup', stopResize);
+    document.addEventListener('touchcancel', stopResize);
   }, []);
 
   if (!win) {
@@ -83,7 +90,8 @@ const Window = ({ id }) => {
 
   return (
     <div
-      className="window"
+      className={`window ${windowType}`}
+      onMouseDown={() => dispatch(focusWindow(id))}
       style={{
         left: xPos,
         top: yPos,
@@ -96,7 +104,7 @@ const Window = ({ id }) => {
       >
         <span
           className="win-topbtn"
-          onClick={() => dispatch(cloneWindow(id))}
+          onMouseDown={() => dispatch(cloneWindow(id))}
         >
           +
         </span>
@@ -108,13 +116,13 @@ const Window = ({ id }) => {
         </span>
         <span
           className="win-topbtn"
-          onClick={() => dispatch(maximizeWindow(id))}
+          onMouseDown={() => dispatch(maximizeWindow(id))}
         >
           ↑
         </span>
         <span
           className="win-topbtn"
-          onClick={() => dispatch(closeWindow(id))}
+          onMouseDown={() => dispatch(closeWindow(id))}
         >
           X
         </span>

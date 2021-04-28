@@ -8,6 +8,11 @@ import type { Action } from '../actions/types';
 
 import { clamp } from '../core/utils';
 
+const SCREEN_MARGIN_SE = 30;
+const SCREEN_MARGIN_W = 70;
+const MIN_WIDTH = 70;
+const MIN_HEIGHT = 50;
+
 function generateWindowId(state) {
   let windowId = Math.floor(Math.random() * 99999) + 1;
   while (state.args[windowId]) {
@@ -175,6 +180,10 @@ export default function windows(
       } = action;
       const win = state.windows.find((w) => w.windowId === windowId);
       const newWindowId = generateWindowId(state);
+      const {
+        innerWidth: width,
+        innerHeight: height,
+      } = window;
       return {
         ...state,
         windows: [
@@ -182,8 +191,8 @@ export default function windows(
           {
             ...win,
             windowId: newWindowId,
-            xPos: win.xPos + 15,
-            yPos: win.yPos + 15,
+            xPos: Math.min(win.xPos + 15, width - SCREEN_MARGIN_SE),
+            yPos: Math.min(win.yPos + 15, height - SCREEN_MARGIN_SE),
           },
         ],
         args: {
@@ -195,6 +204,27 @@ export default function windows(
       };
     }
 
+    case 'FOCUS_WINDOW': {
+      const {
+        windowId,
+      } = action;
+      const {
+        windows: oldWindows,
+      } = state;
+      if (!oldWindows
+        || oldWindows[oldWindows.length - 1].windowId === windowId) {
+        return state;
+      }
+      console.log(`focus window ${windowId}`);
+      const newWindows = oldWindows.filter((w) => w.windowId !== windowId);
+      const win = oldWindows.find((w) => w.windowId === windowId);
+      newWindows.push(win);
+      return {
+        ...state,
+        windows: newWindows,
+      };
+    }
+
     case 'MAXIMIZE_WINDOW': {
       const {
         windowId,
@@ -203,7 +233,8 @@ export default function windows(
         ...state.args,
         0: state.args[windowId],
       };
-      const { windowType, title } = state.windows.find((w) => w.windowId === windowId);
+      const { windowType, title } = state.windows
+        .find((w) => w.windowId === windowId);
       delete args[windowId];
       return {
         ...state,
@@ -264,8 +295,12 @@ export default function windows(
         if (win.windowId !== windowId) return win;
         return {
           ...win,
-          xPos: clamp(win.xPos + xDiff, -win.width + 70, width - 30),
-          yPos: clamp(win.yPos + yDiff, 0, height - 30),
+          xPos: clamp(
+            win.xPos + xDiff,
+            -win.width + SCREEN_MARGIN_W,
+            width - SCREEN_MARGIN_SE,
+          ),
+          yPos: clamp(win.yPos + yDiff, 0, height - SCREEN_MARGIN_SE),
         };
       });
       return {
@@ -284,8 +319,15 @@ export default function windows(
         if (win.windowId !== windowId) return win;
         return {
           ...win,
-          width: Math.max(win.width + xDiff, 70, 70 - win.xPos),
-          height: Math.max(win.height + yDiff, 50),
+          width: Math.max(
+            win.width + xDiff,
+            MIN_WIDTH,
+            SCREEN_MARGIN_W - win.xPos,
+          ),
+          height: Math.max(
+            win.height + yDiff,
+            MIN_HEIGHT,
+          ),
         };
       });
       return {
@@ -299,14 +341,14 @@ export default function windows(
         width,
         height,
       } = action;
-      const xMax = width - 30;
-      const yMax = height - 30;
+      const xMax = width - SCREEN_MARGIN_SE;
+      const yMax = height - SCREEN_MARGIN_SE;
       let modified = false;
 
       const newWindows = [];
       for (let i = 0; i < state.windows.length; i += 1) {
         const win = state.windows[i];
-        let { xPos, yPos } = win;
+        const { xPos, yPos } = win;
         if (xPos > xMax || yPos > yMax) {
           modified = true;
           newWindows.push({
