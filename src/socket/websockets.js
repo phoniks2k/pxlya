@@ -144,11 +144,19 @@ class WebSockets {
 
   /*
    * Notify user on websocket that he should rerequest api/message
-   * Currently just used for getting minecraft link message.
    */
   notifyChangedMe(name: string) {
     this.listeners.forEach(
       (listener) => listener.notifyChangedMe(name),
+    );
+  }
+
+  /*
+   * reload user on websocket to get changes
+   */
+  reloadUser(name: string) {
+    this.listeners.forEach(
+      (listener) => listener.reloadUser(name),
     );
   }
 

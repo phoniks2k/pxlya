@@ -55,7 +55,7 @@ const ModalRoot = () => {
         <div
           className={(open && render) ? 'Modal show' : 'Modal'}
         >
-          <h2 style={{ paddingLeft: '5%' }}>{title}</h2>
+          <h2>{title}</h2>
           <div
             onClick={() => dispatch(closeWindow(0))}
             className="ModalClose"
@@ -71,8 +71,8 @@ const ModalRoot = () => {
             label="restore"
             title={t`Restore`}
             tabIndex={-1}
-          >♥</div>
-          <div className="win-content">
+          >↓</div>
+          <div className="Modal-content">
             <Content windowId={0} />
           </div>
         </div>,

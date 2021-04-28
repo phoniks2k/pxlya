@@ -116,6 +116,13 @@ td, th {
   overflow-x: hidden;
 }
 
+h2 {
+  font-size: 22px;
+  padding-left: 5%;
+  margin-bottom: 10px;
+  margin-top: 12px;
+}
+
 tr:nth-child(even) {
   background-color: #dddddd;
 }
@@ -140,30 +147,44 @@ tr:nth-child(even) {
   border: solid black;
   border-width: thin;
   overflow: hidden;
+  padding: 3px;
   z-index: 3;
 }
 
 .win-topbar {
   display: flex;
-  height: 16px;
+  height: 24px;
+  vertical-align: middle;
 }
 
 .win-title {
   cursor: move;
   flex-grow: 1;
+  line-height: 19px;
+  margin: 2px;
+  padding-left: 10px;
+  font-size: 15px;
 }
 
 .win-topbtn {
   border: solid black;
   border-width: thin;
-  background-color: blue;
+  background-color: #f7f7f7;
   cursor: pointer;
+  margin: 2px;
+  text-align: center;
+  height: 17px;
+  width: 17px;
+  line-height: 17px;
+  font-size: 17px;
+  font-weight: bold;
 }
 
 .win-resize {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: -3px;
+  right: -3px;
+  font-size: 22px;
   cursor: se-resize;
 }
 
@@ -172,13 +193,13 @@ tr:nth-child(even) {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 4px);
+  height: calc(100% - 1px);
 }
 
 .win-content {
   position: relative;
-  width: 100%;
-  height: calc(100% - 16px);
+  width: calc(100% - 3px);
+  height: calc(100% - 28px);
   overflow-y: auto;
 }
 
@@ -379,7 +400,6 @@ tr:nth-child(even) {
   bottom: auto;
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255) none repeat scroll 0% 0%;
-  overflow-y: auto;
   border-radius: 4px;
   outline: currentcolor none medium;
   transform: translate(-50%, -50%);
@@ -394,7 +414,15 @@ tr:nth-child(even) {
   z-index: 5;
 }
 
+.Modal-content {
+  position: relative;
+  width: calc(100% - 3px);
+  height: calc(100% - 50px);
+  overflow-y: auto;
+}
+
 .Alert {
+  overflow-y: auto;
   max-height: 100%;
   padding: 15px;
   text-align: center;
@@ -474,25 +502,24 @@ tr:nth-child(even) {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 36px;
   border-width: 2px;
   border-style: solid;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 27px;
+  height: 27px;
   cursor: pointer;
   background-color: #f6f6f7;
   border-color: #dcddde;
-  top: 30px;
+  top: 11px;
   z-index: 5;
 }
 
 .ModalClose {
-  right: 40px;
+  right: 14px;
 }
 
 .ModalRestore {
-  right: 90px;
+  right: 52px;
 }
 
 .ModalClose:hover, .ModalRestore:hover {

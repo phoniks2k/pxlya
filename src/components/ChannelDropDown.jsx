@@ -11,8 +11,6 @@ import { useSelector } from 'react-redux';
 import { MdChat } from 'react-icons/md';
 import { FaUserFriends } from 'react-icons/fa';
 
-import type { State } from '../reducers';
-
 const ChannelDropDown = ({
   setChatChannel,
   chatChannel,

@@ -60,6 +60,8 @@ class User {
   setRegUser(reguser) {
     this.regUser = reguser;
     this.id = reguser.id;
+    this.channels = {};
+    this.blocked = [];
 
     if (this.regUser.isMod) {
       this.userlvl = 2;
@@ -114,6 +116,12 @@ class User {
         this.blocked.push([id, name]);
       }
     }
+  }
+
+  async reload() {
+    if (!this.regUser) return;
+    await this.regUser.reload();
+    this.setRegUser(this.regUser);
   }
 
   addChannel(cid, channelArray) {

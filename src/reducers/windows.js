@@ -211,14 +211,17 @@ export default function windows(
       const {
         windows: oldWindows,
       } = state;
-      if (!oldWindows
-        || oldWindows[oldWindows.length - 1].windowId === windowId) {
+      if (oldWindows.length === 0
+        || oldWindows[oldWindows.length - 1].windowId === windowId
+      ) {
         return state;
       }
       console.log(`focus window ${windowId}`);
       const newWindows = oldWindows.filter((w) => w.windowId !== windowId);
       const win = oldWindows.find((w) => w.windowId === windowId);
-      newWindows.push(win);
+      if (win) {
+        newWindows.push(win);
+      }
       return {
         ...state,
         windows: newWindows,

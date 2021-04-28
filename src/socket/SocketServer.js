@@ -261,6 +261,17 @@ class SocketServer extends WebSocketEvents {
     });
   }
 
+  reloadUser(name) {
+    this.wss.clients.forEach(async (ws) => {
+      if (ws.name === name) {
+        await ws.user.reload();
+        ws.name = ws.user.getName();
+        const buffer = ChangedMe.dehydrate();
+        ws.send(buffer);
+      }
+    });
+  }
+
   killOld() {
     const now = Date.now();
     this.wss.clients.forEach((ws) => {

@@ -6,6 +6,7 @@
 
 import type { Request, Response } from 'express';
 
+import webSockets from '../../../socket/websockets';
 import { RegUser } from '../../../data/models';
 import { validateName } from '../../../utils/validation';
 
@@ -33,7 +34,8 @@ export default async (req: Request, res: Response) => {
     return;
   }
 
-  const error = await validate(user.regUser.name, name);
+  const oldname = user.regUser.name;
+  const error = await validate(oldname, name);
   if (error) {
     res.status(400);
     res.json({
@@ -43,6 +45,8 @@ export default async (req: Request, res: Response) => {
   }
 
   await user.regUser.update({ name });
+
+  webSockets.reloadUser(oldname);
 
   res.json({
     success: true,

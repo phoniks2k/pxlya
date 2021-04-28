@@ -567,6 +567,26 @@ export function initTimer(): ThunkAction {
   };
 }
 
+/*
+ * fullscreen means to open as modal
+ */
+export function openWindow(
+  windowType: string,
+  title: string,
+  fullscreen: boolean,
+  cloneable: boolean,
+  args: Object,
+): Action {
+  return {
+    type: 'OPEN_WINDOW',
+    windowType,
+    title,
+    fullscreen,
+    cloneable,
+    args,
+  };
+}
+
 export function showModal(modalType: string, title: string): Action {
   return openWindow(
     modalType,
@@ -732,26 +752,6 @@ export function addToChatInputMessage(windowId: number, msg: string): Action {
     type: 'ADD_CHAT_INPUT_MSG',
     windowId,
     msg,
-  };
-}
-
-/*
- * fullscreen means to open as modal
- */
-export function openWindow(
-  windowType: string,
-  title: string,
-  fullscreen: boolean,
-  cloneable: boolean,
-  args: Object,
-): Action {
-  return {
-    type: 'OPEN_WINDOW',
-    windowType,
-    title,
-    fullscreen,
-    cloneable,
-    args,
   };
 }
 

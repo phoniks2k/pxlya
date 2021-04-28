@@ -17,9 +17,7 @@ import {
   setChatChannel,
 } from '../actions';
 
-const UserContextMenu = ({
-  setChannel,
-}) => {
+const UserContextMenu = () => {
   const wrapperRef = useRef(null);
 
   const { xPos, yPos, args } = useSelector((state) => state.contextMenu);

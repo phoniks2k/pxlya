@@ -40,6 +40,9 @@ class WebSocketEvents {
   notifyChangedMe(name: string) {
   }
 
+  reloadUser(name: string) {
+  }
+
   broadcastMinecraftTP(minecraftid: string, x: number, y: number) {
   }
 

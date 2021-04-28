@@ -68,10 +68,30 @@ const Window = ({ id }) => {
       document.removeEventListener('mousemove', resize);
       document.removeEventListener('mouseup', stopResize);
       document.removeEventListener('touchcancel', stopResize);
+      document.removeEventListener('touchend', stopResize);
     };
     document.addEventListener('mouseup', stopResize);
     document.addEventListener('touchcancel', stopResize);
+    document.addEventListener('touchend', stopResize);
   }, []);
+
+  const clone = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    dispatch(cloneWindow(id));
+  };
+
+  const maximize = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    dispatch(maximizeWindow(id));
+  };
+
+  const close = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    dispatch(closeWindow(id));
+  };
 
   if (!win) {
     return null;
@@ -101,40 +121,42 @@ const Window = ({ id }) => {
     >
       <div
         className="win-topbar"
+        onMouseDown={startMove}
+        onTouchStart={startMove}
       >
         <span
           className="win-topbtn"
-          onMouseDown={() => dispatch(cloneWindow(id))}
+          onMouseDown={clone}
         >
           +
         </span>
         <span
           className="win-title"
-          onMouseDown={startMove}
         >
           {title}
         </span>
         <span
           className="win-topbtn"
-          onMouseDown={() => dispatch(maximizeWindow(id))}
+          onMouseDown={maximize}
         >
           ↑
         </span>
         <span
           className="win-topbtn"
-          onMouseDown={() => dispatch(closeWindow(id))}
+          onMouseDown={close}
         >
           X
         </span>
       </div>
-      <div className="win-content">
-        <Content windowId={id} />
-      </div>
       <div
         onMouseDown={startResize}
+        onTouchStart={startResize}
         className="win-resize"
       >
-        R
+        ▨
+      </div>
+      <div className="win-content">
+        <Content windowId={id} />
       </div>
     </div>
   );
