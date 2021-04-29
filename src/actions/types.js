@@ -85,6 +85,9 @@ export type Action =
     args: Object,
   }
   | { type: 'CLOSE_WINDOW', windowId: number }
+  | { type: 'REMOVE_WINDOW', windowId: number }
+  | { type: 'HIDE_ALL_WINDOW_TYPE', windowType: string, hide: boolean }
+  | { type: 'CLOSE_ALL_WINDOW_TYPE', windowType: string}
   | { type: 'FOCUS_WINDOW', windowId: number }
   | { type: 'CLONE_WINDOW', windowId: number }
   | { type: 'MAXIMIZE_WINDOW', windowId: number }

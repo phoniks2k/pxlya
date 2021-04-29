@@ -12,6 +12,9 @@ const selectWindowIds = (state) => state.windows.windows.map((win) => win.window
 
 const WindowsRoot = () => {
   const windowIds = useSelector(selectWindowIds, shallowEqual);
+  const showWindows = useSelector((state) => state.windows.showWindows);
+
+  if (!showWindows) return null;
 
   return windowIds.map((id) => (
     <Window key={id} id={id} />

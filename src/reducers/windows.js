@@ -12,6 +12,9 @@ const SCREEN_MARGIN_S = 30;
 const SCREEN_MARGIN_EW = 70;
 const MIN_WIDTH = 70;
 const MIN_HEIGHT = 50;
+// if screen smaller than this, hide all windows and just
+// allow Modals
+const SCREEN_WIDTH_THRESHOLD = 604;
 
 function generateWindowId(state) {
   let windowId = Math.floor(Math.random() * 99999) + 1;
@@ -24,6 +27,7 @@ function generateWindowId(state) {
 export type WindowsState = {
   // modal is considerd as "fullscreen window"
   // its windowId is considered 0 and args are under args[0]
+  showWindows: boolean,
   modal: {
     windowType: ?string,
     title: ?string,
@@ -32,7 +36,8 @@ export type WindowsState = {
   // [
   //   {
   //     windowId: number,
-  //     windowOpen: boolean,
+  //     open: boolean,
+  //     hidden: boolean,
   //     windowType: string,
   //     title: string,
   //     width: number,
@@ -52,6 +57,7 @@ export type WindowsState = {
 }
 
 const initialState: WindowsState = {
+  showWindows: true,
   modal: {
     windowType: null,
     title: null,
@@ -70,10 +76,10 @@ export default function windows(
       const {
         windowType,
         title,
-        fullscreen,
         cloneable,
         args,
       } = action;
+      const fullscreen = !state.showWindows || action.fullscreen;
       if (fullscreen) {
         return {
           ...state,
@@ -98,7 +104,8 @@ export default function windows(
           {
             windowId,
             windowType,
-            windowOpen: true,
+            open: true,
+            hidden: false,
             title,
             width: 600,
             height: 300,
@@ -152,25 +159,69 @@ export default function windows(
           },
         };
       }
-      /*
-        const newWindows = state.windows.map((win) => {
-          if (win.windowId !== windowId) return win;
-          return {
-            ...win,
-            windowOpen: false,
-          }
-        });
+
+      const newWindows = state.windows.map((win) => {
+        if (win.windowId !== windowId) return win;
         return {
-          ...state,
-          windows: newWindows,
+          ...win,
+          open: false,
         };
-        */
-      const args = { ...state.args };
-      delete args[windowId];
+      });
       return {
         ...state,
-        windows: state.windows.filter((win) => win.windowId !== windowId),
-        args,
+        windows: newWindows,
+      };
+    }
+
+    case 'CLOSE_ALL_WINDOW_TYPE': {
+      const {
+        windowType,
+      } = action;
+      const newWindows = state.windows.map((win) => {
+        if (win.windowType !== windowType) return win;
+        return {
+          ...win,
+          open: false,
+        };
+      });
+      let { modal } = state;
+      if (modal.open && modal.windowType === windowType) {
+        modal = {
+          ...modal,
+          open: false,
+        };
+      }
+      return {
+        ...state,
+        modal,
+        windows: newWindows,
+      };
+    }
+
+    case 'HIDE_ALL_WINDOW_TYPE': {
+      const {
+        windowType,
+        hide,
+      } = action;
+      console.log(`hideAllWindowTypes`, windowType, hide);
+      const newWindows = state.windows.map((win) => {
+        if (win.windowType !== windowType) return win;
+        return {
+          ...win,
+          hidden: hide,
+        };
+      });
+      let { modal } = state;
+      if (hide && modal.open && modal.windowType === windowType) {
+        modal = {
+          ...modal,
+          open: false,
+        };
+      }
+      return {
+        ...state,
+        modal,
+        windows: newWindows,
       };
     }
 
@@ -266,7 +317,8 @@ export default function windows(
           {
             windowType,
             windowId,
-            windowOpen: true,
+            open: true,
+            hidden: false,
             title,
             width: 600,
             height: 300,
@@ -301,7 +353,7 @@ export default function windows(
           xPos: clamp(
             win.xPos + xDiff,
             -win.width + SCREEN_MARGIN_EW,
-            width - SCREEN_MARGIN_S,
+            width - SCREEN_MARGIN_EW,
           ),
           yPos: clamp(win.yPos + yDiff, 0, height - SCREEN_MARGIN_S),
         };
@@ -340,11 +392,20 @@ export default function windows(
       };
     }
 
+    case 'RECEIVE_ME':
     case 'WINDOW_RESIZE': {
       const {
         width,
         height,
       } = action;
+
+      if (width <= SCREEN_WIDTH_THRESHOLD) {
+        return {
+          ...state,
+          showWindows: false,
+        };
+      }
+
       const xMax = width - SCREEN_MARGIN_EW;
       const yMax = height - SCREEN_MARGIN_S;
       let modified = false;
@@ -373,16 +434,11 @@ export default function windows(
         }
       }
 
-      if (!modified) return state;
-
       return {
         ...state,
-        windows: newWindows,
+        showWindows: true,
+        windows: (modified) ? newWindows : state.windows,
       };
-    }
-
-    case 'CLOSE_ALL_WINDOWS': {
-      return initialState;
     }
 
     /*

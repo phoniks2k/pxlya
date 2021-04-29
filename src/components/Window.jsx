@@ -3,11 +3,14 @@
  * @flow
  */
 
-import React, { useCallback, useRef } from 'react';
+import React, {
+  useState, useCallback, useRef, useEffect,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
   moveWindow,
+  removeWindow,
   resizeWindow,
   closeWindow,
   maximizeWindow,
@@ -20,6 +23,8 @@ import COMPONENTS from './windows';
 const selectWindowById = (state, windowId) => state.windows.windows.find((win) => win.windowId === windowId);
 
 const Window = ({ id }) => {
+  const [render, setRender] = useState(false);
+
   const titleBarRef = useRef(null);
   const resizeRef = useRef(null);
 
@@ -28,6 +33,18 @@ const Window = ({ id }) => {
   const dispatch = useDispatch();
 
   const focus = useCallback(() => dispatch(focusWindow(id)), []);
+  const clone = (evt) => {
+    evt.stopPropagation();
+    dispatch(cloneWindow(id));
+  };
+  const maximize = (evt) => {
+    evt.stopPropagation();
+    dispatch(maximizeWindow(id));
+  };
+  const close = (evt) => {
+    evt.stopPropagation();
+    dispatch(closeWindow(id));
+  };
 
   useDrag(
     titleBarRef,
@@ -41,31 +58,25 @@ const Window = ({ id }) => {
     useCallback((xDiff, yDiff) => dispatch(resizeWindow(id, xDiff, yDiff)), []),
   );
 
-  const clone = (evt) => {
-    evt.stopPropagation();
-    dispatch(cloneWindow(id));
-  };
-
-  const maximize = (evt) => {
-    evt.stopPropagation();
-    dispatch(maximizeWindow(id));
-  };
-
-  const close = (evt) => {
-    evt.stopPropagation();
-    dispatch(closeWindow(id));
-  };
-
-  if (!win) {
-    return null;
-  }
-
   const {
     width, height,
     xPos, yPos,
     windowType,
     title,
+    open,
   } = win;
+
+  const onTransitionEnd = () => {
+    if (!open) {
+      dispatch(removeWindow(id));
+    }
+  };
+
+  useEffect(() => {
+    window.setTimeout(() => {
+      if (open) setRender(true);
+    }, 10);
+  }, [open]);
 
   const Content = COMPONENTS[windowType];
 
@@ -73,7 +84,8 @@ const Window = ({ id }) => {
 
   return (
     <div
-      className={`window ${windowType}`}
+      className={`window ${windowType}${(open && render) ? ' show' : ''}`}
+      onTransitionEnd={onTransitionEnd}
       onClick={focus}
       style={{
         left: xPos,

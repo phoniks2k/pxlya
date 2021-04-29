@@ -63,7 +63,14 @@ function init() {
   ) => {
     const state = store.getState();
     const { nameRegExp } = state.user;
-    const isRead = Object.values(state.windows.args).find(((args) => args.chatChannel === channelId));
+
+    // assume that if one chat window is not hidden, all are
+    let isRead = state.windows.showWindows
+      && state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === false)
+      && Object.values(state.windows.args).find((args) => args.chatChannel === channelId);
+    isRead = isRead || state.windows.modal.open
+      && state.windows.args[0].chatChannel === channelId;
+
     const isPing = (nameRegExp && text.match(nameRegExp));
     store.dispatch(receiveChatMessage(
       name,

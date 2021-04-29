@@ -127,20 +127,6 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-.chatbox {
-  position: fixed;
-  background-color: rgba(226, 226, 226, 0.92);
-  border: solid black;
-  border-width: thin;
-  width: 0px;
-  height: 36px;
-  bottom: 16px;
-  right: 98px;
-  visibility: hidden;
-  overflow: hidden;
-  transition: 0.3s;
-}
-
 .window {
   position: fixed;
   background-color: rgba(226, 226, 226, 0.92);
@@ -149,6 +135,8 @@ tr:nth-child(even) {
   overflow: hidden;
   padding: 3px;
   z-index: 3;
+  transition: opacity 200ms ease-in-out;
+  opacity: 0;
 }
 
 .win-topbar {
@@ -182,7 +170,7 @@ tr:nth-child(even) {
 
 .win-resize {
   position: absolute;
-  bottom: -3px;
+  bottom: -4px;
   right: -3px;
   font-size: 22px;
   cursor: se-resize;
@@ -225,14 +213,6 @@ tr:nth-child(even) {
 .contextmenu > div:hover {
   background-color: #c9c9c9;
   cursor: pointer;
-}
-
-.chatbox.show {
-  height: 200px;
-  width: 350px;
-  bottom: 16px;
-  right: 98px;
-  visibility: visible;
 }
 
 .channelbtn {
@@ -397,6 +377,7 @@ tr:nth-child(even) {
   top: 50%;
   left: 50%;
   right: auto;
+  padding: 0px 5px 5px 5px;
   bottom: auto;
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255) none repeat scroll 0% 0%;
@@ -802,6 +783,6 @@ tr:nth-child(even) {
   visibility: hidden;
 }
 
-.Modal.show, .Alert.show, .OverlayAlert.show, .OverlayModal.show {
+.Modal.show, .Alert.show, .OverlayAlert.show, .OverlayModal.show, .window.show {
     opacity: 1;
 }

@@ -13,6 +13,7 @@ import { t } from 'ttag';
 import {
   closeWindow,
   restoreWindow,
+  removeWindow,
 } from '../actions';
 import COMPONENTS from './windows';
 
@@ -22,11 +23,15 @@ const ModalRoot = () => {
   const { windowType, open, title } = useSelector(
     (state) => state.windows.modal,
   );
+  const showWindows = useSelector((state) => state.windows.showWindows);
 
   const dispatch = useDispatch();
 
   const onTransitionEnd = () => {
-    if (!open) setRender(false);
+    if (!open) {
+      setRender(false);
+      dispatch(removeWindow(0));
+    }
   };
 
   useEffect(() => {
@@ -64,6 +69,7 @@ const ModalRoot = () => {
             title={t`Close`}
             tabIndex={-1}
           ><MdClose /></div>
+          {(showWindows) && (
           <div
             onClick={() => dispatch(restoreWindow())}
             className="ModalRestore"
@@ -72,6 +78,7 @@ const ModalRoot = () => {
             title={t`Restore`}
             tabIndex={-1}
           >↓</div>
+          )}
           <div className="Modal-content">
             <Content windowId={0} />
           </div>

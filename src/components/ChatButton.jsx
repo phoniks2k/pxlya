@@ -6,31 +6,51 @@
 import React, {
   useState, useEffect,
 } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { MdForum } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { openChatWindow } from '../actions';
+import {
+  hideAllWindowTypes,
+  openChatWindow,
+} from '../actions';
 
+/*
+ * return [ showWindows, chatOpen, chatHiden ]
+ *   showWindows: if windows are enabled (false on small screens)
+ *   chatOpen: if any chat window or modal is open
+ *   chatHidden: if any chat windows are hidden
+ */
+const selectChatWindowStatus = (state) => [
+  state.windows.showWindows,
+  state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === false) || (
+    state.windows.modal.open
+      && state.windows.modal.windowType === 'CHAT'
+  ),
+  state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === true),
+];
 
-const ChatButton = ({
-  chatNotify,
-  channels,
-  unread,
-  mute,
-  open,
-}) => {
+const ChatButton = () => {
   const [unreadAny, setUnreadAny] = useState(false);
-  // TODO what do here?
-  const chatOpen = false;
-  const modalOpen = false;
+
+  const dispatch = useDispatch();
+
+  const [showWindows, chatOpen, chatHidden] = useSelector(
+    selectChatWindowStatus,
+    shallowEqual,
+  );
+
+  const chatNotify = useSelector((state) => state.audio.chatNotify);
+  const channels = useSelector((state) => state.chat.channels);
+  const [unread, mute] = useSelector((state) => [state.chatRead.unread, state.chatRead.mute],
+    shallowEqual);
 
   /*
    * almost the same as in ChannelDropDown
    * just cares about chatNotify too
    */
   useEffect(() => {
-    if (!chatNotify || modalOpen || chatOpen) {
+    if (!chatNotify || chatOpen) {
       setUnreadAny(false);
       return;
     }
@@ -57,7 +77,15 @@ const ChatButton = ({
     <div
       id="chatbutton"
       className="actionbuttons"
-      onClick={open}
+      onClick={() => {
+        if (chatOpen) {
+          dispatch(hideAllWindowTypes('CHAT', true));
+        } else if (chatHidden && showWindows) {
+          dispatch(hideAllWindowTypes('CHAT', false));
+        } else {
+          dispatch(openChatWindow());
+        }
+      }}
       role="button"
       title={(chatOpen) ? t`Close Chat` : t`Open Chat`}
       tabIndex={0}
@@ -78,31 +106,4 @@ const ChatButton = ({
   );
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    open() {
-      // dispatch(showChatModal(false));
-      dispatch(openChatWindow());
-    },
-  };
-}
-
-function mapStateToProps(state) {
-  const {
-    chatNotify,
-  } = state.audio;
-  const {
-    channels,
-  } = state.chat;
-  const {
-    unread,
-    mute,
-  } = state.chatRead;
-  return {
-    channels,
-    unread,
-    mute,
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatButton);
+export default React.memo(ChatButton);

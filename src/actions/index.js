@@ -752,6 +752,13 @@ export function closeWindow(windowId): Action {
   };
 }
 
+export function removeWindow(windowId): Action {
+  return {
+    type: 'REMOVE_WINDOW',
+    windowId,
+  };
+}
+
 export function focusWindow(windowId): Action {
   return {
     type: 'FOCUS_WINDOW',
@@ -794,6 +801,25 @@ export function resizeWindow(windowId, xDiff, yDiff): Action {
     windowId,
     xDiff,
     yDiff,
+  };
+}
+
+export function closeAllWindowTypes(windowType: string): Action {
+  return {
+    type: 'CLOSE_ALL_WINDOW_TYPE',
+    windowType,
+  };
+}
+
+export function hideAllWindowTypes(
+  windowType: string,
+  hide: boolean,
+): Action {
+  console.log(`hideAllWindowTypes`, hide);
+  return {
+    type: 'HIDE_ALL_WINDOW_TYPE',
+    windowType,
+    hide,
   };
 }
 
