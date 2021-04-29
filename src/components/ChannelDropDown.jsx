@@ -42,6 +42,7 @@ const ChannelDropDown = ({
       && !wrapperRef.current.contains(event.target)
       && !buttonRef.current.contains(event.target)
     ) {
+      event.stopPropagation();
       setShow(false);
     }
   }, []);
@@ -56,12 +57,14 @@ const ChannelDropDown = ({
         const chType = (channels[chatChannel][1] === 1) ? 1 : 0;
         setType(chType);
       }
-      document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
+      document.addEventListener('click', handleClickOutside, {
+        capture: true,
+      });
       window.addEventListener('resize', handleWindowResize);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside, {
+        capture: true,
+      });
       window.removeEventListener('resize', handleWindowResize);
     }
   }, [show]);

@@ -107,14 +107,49 @@ msgstr "Konnte ein Pixel setzen"
 msgid "Error ${ retCode }"
 msgstr "Fehler ${ retCode }"
 
+#: src/actions/index.js:599 src/components/SettingsButton.jsx:20
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/actions/index.js:606 src/components/LogInButton.jsx:20
+msgid "User Area"
+msgstr "Spielerbereich"
+
+#: src/actions/index.js:613
+msgid "Register New Account"
+msgstr "Registriere neues Konto"
+
+#: src/actions/index.js:620
+msgid "Restore my Password"
+msgstr "Passwort wiederherstellen"
+
+#: src/actions/index.js:627
+msgid "Welcome to PixelPlanet.fun"
+msgstr "Willkommen auf PixelPlanet.fun"
+
+#: src/actions/index.js:633
+msgid "Canvas Archive"
+msgstr "Leinwand Archiv"
+
+#: src/actions/index.js:640 src/components/CanvasSwitchButton.jsx:20
+msgid "Canvas Selection"
+msgstr "Leinwand auswahl"
+
+#: src/actions/index.js:827
+msgid "Chat"
+msgstr "Unterhaltung"
+
 #: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
 msgid "Copy to Clipboard"
 msgstr "Kopiere in die Zwischenablage"
 
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr "Leinwand auswahl"
+#: src/components/ChatButton.jsx:90
+msgid "Close Chat"
+msgstr "Schließe Chat"
+
+#: src/components/ChatButton.jsx:90
+msgid "Open Chat"
+msgstr "Öffne Chat"
 
 #: src/components/OnlineBox.jsx:22
 msgid "User online"
@@ -124,14 +159,6 @@ msgstr "Spieler anwesend"
 msgid "Pixels placed"
 msgstr "Pixels gesetzt"
 
-#: src/components/ChatButton.jsx:61
-msgid "Close Chat"
-msgstr "Schließe Chat"
-
-#: src/components/ChatButton.jsx:61
-msgid "Open Chat"
-msgstr "Öffne Chat"
-
 #: src/components/ExpandMenuButton.jsx:19
 msgid "Close Menu"
 msgstr "Schließe Menü"
@@ -140,10 +167,14 @@ msgstr "Schließe Menü"
 msgid "Open Menu"
 msgstr "Öffne Menü"
 
-#: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:85
-#: src/components/ModalRoot.jsx:88
+#: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:82
+#: src/components/ModalRoot.jsx:69 src/components/Window.jsx:126
 msgid "Close"
 msgstr "Schließen"
+
+#: src/components/ModalRoot.jsx:78
+msgid "Restore"
+msgstr "Wiederherstellen"
 
 #: src/actions/fetch.js:38
 msgid "You made too many requests"
@@ -176,37 +207,9 @@ msgstr "Server antwortete mit wirrwarr :("
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr "Spielerbereich"
-
 #: src/components/DownloadButton.jsx:37
 msgid "Make Screenshot"
 msgstr "Erstelle eine Bildschirmaufnahme"
-
-#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:278
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: src/components/Chat.jsx:143
-msgid "Channel settings"
-msgstr "Kanal Einstellungen"
-
-#: src/components/Chat.jsx:152
-msgid "maximize"
-msgstr "maximieren"
-
-#: src/components/Chat.jsx:168
-msgid "Start chatting here"
-msgstr "Beginne hier zu unterhalten"
-
-#: src/components/Chat.jsx:200
-msgid "Chat here"
-msgstr "Chatte hier"
-
-#: src/components/Chat.jsx:220
-msgid "You must be logged in to chat"
-msgstr "Melde dich an um dich zu unterhalten"
 
 #: src/components/GlobeButton.jsx:31
 msgid "Globe View"
@@ -220,452 +223,37 @@ msgstr "Schließe Palette"
 msgid "Open Palette"
 msgstr "Öffne Palette"
 
-#: src/components/UserContextMenu.jsx:72
+#: src/components/UserContextMenu.jsx:64
 msgid "Ping"
 msgstr "Erwähnen"
 
-#: src/components/UserContextMenu.jsx:97
+#: src/components/UserContextMenu.jsx:89
 msgid "DM"
 msgstr "DM"
 
-#: src/components/UserContextMenu.jsx:107
+#: src/components/UserContextMenu.jsx:99
 msgid "Block"
 msgstr "Blocke"
 
-#: src/components/ChannelContextMenu.jsx:73
+#: src/components/ChannelContextMenu.jsx:70
 msgid "Mute"
 msgstr "Stummschalten"
 
-#: src/components/SettingsModal.jsx:125
-msgid "Show Grid"
-msgstr "Zeige Raster"
-
-#: src/components/SettingsModal.jsx:126
-msgid "Turn on grid to highlight pixel borders."
-msgstr "Aktiviere das Raster um  Pixelgrenzen zu sehen."
-
-#: src/components/SettingsModal.jsx:132
-msgid "Show Pixel Activity"
-msgstr "Zeige Pixelaktivität"
-
-#: src/components/SettingsModal.jsx:133
-msgid "Show circles where pixels are placed."
-msgstr "Zeige Kreise wo Pixel von Spielern gesetzt werden."
-
-#: src/components/SettingsModal.jsx:139
-msgid "Disable Game Sounds"
-msgstr "Deaktiviere Spiel Ton"
-
-#: src/components/SettingsModal.jsx:141
-msgid "All sound effects will be disabled."
-msgstr "Alle Toneffekte werden ausgeschaltet."
-
-#: src/components/SettingsModal.jsx:147
-msgid "Enable chat notifications"
-msgstr "Aktiviere Chat Benachrichtigungen"
-
-#: src/components/SettingsModal.jsx:148
-msgid "Play a sound when new chat messages arrive"
-msgstr "Spiele ein Geräusch wenn eine neue Chat Nachricht eintrifft"
-
-#: src/components/SettingsModal.jsx:153
-msgid "Auto Zoom In"
-msgstr "Automaticher Zoom"
-
-#: src/components/SettingsModal.jsx:155
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-"Zoome rein anstatt ein Pixel zu setzen wenn auf kleineren Zoomlevel geklickt "
-"wird."
-
-#: src/components/SettingsModal.jsx:160
-msgid "Compact Palette"
-msgstr "Kompakte Palette"
-
-#: src/components/SettingsModal.jsx:162
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-"Zeige die Palette in einer kleineren Form an, welche weniger Platz benötigt."
-
-#: src/components/SettingsModal.jsx:167
-msgid "Potato Mode"
-msgstr "Erdapfel Modus"
-
-#: src/components/SettingsModal.jsx:168
-msgid "For when you are playing on a potato."
-msgstr "Wenn du auf einer Kartoffel spielst."
-
-#: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:173
-msgid "Light Grid"
-msgstr "Helles Raster"
-
-#: src/components/SettingsModal.jsx:174
-msgid "Show Grid in white instead of black."
-msgstr "Zeige das Raster in weiß anstatt schwarz."
-
-#: src/components/SettingsModal.jsx:180
-msgid "Historical View"
-msgstr "Historische Ansicht"
-
-#: src/components/SettingsModal.jsx:181
-msgid "Check out past versions of the canvas."
-msgstr "Siehe vergangene Versionen der Leinwand."
-
-#: src/components/SettingsModal.jsx:189
-msgid "Themes"
-msgstr "Themen"
-
-#: src/components/SettingsModal.jsx:190
-msgid "How pixelplanet should look like."
-msgstr "Wähle aus wie pixelplanet aussehen soll."
-
-#: src/components/SettingsModal.jsx:200
-msgid "Select Language"
-msgstr "Sprache Auswählen"
-
-#: src/components/HelpModal.jsx:35
-msgid "your IP"
-msgstr "deiner IP"
-
-#: src/components/HelpModal.jsx:41
-msgid "Place color pixels on a large canvas with other players online!"
-msgstr ""
-"Zeichne gemeinsam mit anderen Spielern auf einer großen Leinwand online!"
-
-#: src/components/HelpModal.jsx:42
-msgid ""
-"Our main canvas is a huge worldmap, you can place wherever you like, but you "
-"will have to wait a specific Cooldown between pixels. You can check out the "
-"cooldown and requirements on the Canvas Selection menu (globe button on "
-"top). Some canvases have a different cooldown for replacing a user-set "
-"pixels than placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels "
-"and 7s on already set pixels."
-msgstr ""
-"Unsere standard Leinwand ist eine große Weltkarte. Pixel können überall "
-"gesetzen werden, aber es kann nur eine begrenzte Anzahl and Pixels per Zeit "
-"platziert werden. Die Vorraussetzungen und die Wartezeit sind im Auswahlmenu "
-"zu sehen (Globus Taste am oberen Bildschirmrand). Manche Leinwände haben "
-"eine niedrigere Wartezeit für ungesetzte Pixel im Vergleich zu von anderen "
-"Spielern gesetzte Pixel. z.B. 4s/7s heißt dass man 4s für jedes neue Pixel "
-"warten muss, allerdings 7s wenn man über ein Pixel eines anderen Spielers "
-"setzt."
-
-#: src/components/HelpModal.jsx:46
-msgid ""
-"Higher zoomlevels take some time to update, the 3D globe gets updated at "
-"least once per day."
-msgstr ""
-"Die höheren Zoomlevel brauchen etwas Zeit um aktualisiert zu werden, der 3D "
-"Globus wird mindestens einmal pro tag neu geladen."
-
-#: src/components/HelpModal.jsx:47
-msgid "Have fun!"
-msgstr "Viel Spaß!"
-
-#: src/components/HelpModal.jsx:49
-msgid "recommended"
-msgstr "empfohlen"
-
-#: src/components/HelpModal.jsx:50
-msgid "Source on "
-msgstr "Quelltext auf "
-
-#: src/components/HelpModal.jsx:51
-msgid "Map Data"
-msgstr "Karten Dateien"
-
-#: src/components/HelpModal.jsx:52
-msgid ""
-"The bare map data that we use, together with converted OpenStreetMap tiles "
-"for orientation, can be downloaded from mega.nz here: "
-msgstr ""
-"Die Kartendaten welche wir benutzen, zusammen mit konvertierten "
-"OpenStreetMap  Kacheln zur orientierung können auf mega.nz heruntergeladen "
-"werden: "
-
-#: src/components/HelpModal.jsx:54
-msgid "Detected as Proxy?"
-msgstr "Als Proxy erkannt?"
-
-#: src/components/HelpModal.jsx:56
-#, javascript-format
-msgid ""
-"If you got detected as proxy, but you are none, please go to our "
-"${ guildedLink } or send us an e-mail with ${ getIPLink } to ${ mailLink }. "
-"Do not post your IP anywhere else. We are sorry for the inconvenience."
-msgstr ""
-"Solltest do als Proxy erkannt sein, aber du benutzt keines, bitte "
-"kontaktiere uns auf ${ guildedLink } oder sende uns eine Mail mit "
-"${ getIPLink } auf ${ mailLink }. Sende deine IP zu niemanden sonst. Wir "
-"entschuldigen uns für die Unannehmlichkeiten."
-
-#: src/components/HelpModal.jsx:58 src/components/HelpModal.jsx:75
-msgid "Controls"
-msgstr "Steuerung"
-
-#: src/components/HelpModal.jsx:60
-msgid "Click a color in palette to select it"
-msgstr "Klicke auf eine Farbe in der Palette um sie auszuwählen"
-
-#: src/components/HelpModal.jsx:61
-#, javascript-format
-msgid "Press ${ bindG } to toggle grid"
-msgstr "Drücke ${ bindG } um das Raster ein- und auszuschalten"
-
-#: src/components/HelpModal.jsx:62
-msgid "Press ${ bindX } to toggle showing of pixel activity"
-msgstr "Drücke ${ bindX } um Pixel Aktivität anzuzeigen"
-
-#: src/components/HelpModal.jsx:63
-#, javascript-format
-msgid "Press ${ bindH } to toggle historical view"
-msgstr "Drücke ${ bindH } um zur historischen Ansicht zu wechseln"
-
-#: src/components/HelpModal.jsx:64
-msgid "Press ${ bindR } to copy coordinates"
-msgstr "Drücke ${ bindR } um aktuelle Koordinaten zu kopieren"
-
-#: src/components/HelpModal.jsx:65
-#, javascript-format
-msgid "Press ${ bindQ } or ${ bindE } to zoom"
-msgstr "Drücke ${ bindQ } oder ${ bindE } um zu zoomen"
-
-#: src/components/HelpModal.jsx:66 src/components/HelpModal.jsx:77
-#, javascript-format
-msgid "Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
-msgstr "Drücke ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } zum navigieren"
-
-#: src/components/HelpModal.jsx:67 src/components/HelpModal.jsx:78
-#, javascript-format
-msgid ""
-"Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
-msgstr ""
-"Drücke ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } zum "
-"navigieren"
-
-#: src/components/HelpModal.jsx:68
-msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
-msgstr ""
-"Ziehe mit der ${ mouseSymbol } Maus oder ${ touchSymbol } wische zum "
-"navigieren"
-
-#: src/components/HelpModal.jsx:69
-#, javascript-format
-msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
-msgstr ""
-"Scrolle ${ mouseSymbol } mit them Mausrad oder ${ touchSymbol } benutze Zwei-"
-"Finger-Zoom um zu zoomen"
-
-#: src/components/HelpModal.jsx:70
-msgid "Hold left ${ bindShift } for placing while moving mouse"
-msgstr ""
-"Halte die linke ${ bindShift } Taste gedrückt um Pixel unter der Maus zu "
-"setzen"
-
-#: src/components/HelpModal.jsx:71
-#, javascript-format
-msgid ""
-"Hold right ${ bindShift } for placing while moving mouse according to "
-"historical view"
-msgstr ""
-"Halte die rechte ${ bindShift } Taste gedrückt um Pixel unter der Maus nach "
-"der aktuellen historischen Ansicht zu setzen"
-
-#: src/components/HelpModal.jsx:72 src/components/HelpModal.jsx:83
-#, javascript-format
-msgid "${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
-msgstr ""
-"${ mouseSymbol } Linksklick oder ${ touchSymbol } tippe um ein Pixel zu "
-"platzieren"
-
-#: src/components/HelpModal.jsx:73 src/components/HelpModal.jsx:85
-msgid ""
-"Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
-"select current hovering color"
-msgstr ""
-"Klicke ${ mouseSymbol } die mittlere Maustaste oder ${ touchSymbol } tippe "
-"lange um eine Farbe von der Leinwand auszuwählen"
-
-#: src/components/HelpModal.jsx:79
-msgid "Press ${ bindE } and ${ bindC } to fly up and down"
-msgstr "Drücke ${ bindE } oder ${ bindC } um hoch und runter zu fliegen"
-
-#: src/components/HelpModal.jsx:80
-#, javascript-format
-msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
-msgstr ""
-"${ mouseSymbol } Halte die linke Maustaste gedrückt und ziehe um zu rotieren"
-
-#: src/components/HelpModal.jsx:81
-#, javascript-format
-msgid ""
-"${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
-"button and drag to zoom"
-msgstr ""
-"${ mouseSymbol } Scrolle mit dem Mausrad oder halte ${ mouseSymbol } die "
-"mittlere Maustaste gedrückt und ziehe um zu zoomen"
-
-#: src/components/HelpModal.jsx:82
-msgid "${ mouseSymbol } Right click and drag mouse to pan"
-msgstr ""
-"${ mouseSymbol } Halte die rechte Maustaste gedrückt und ziehe um dich zu "
-"bewegen"
-
-#: src/components/HelpModal.jsx:84
-#, javascript-format
-msgid ""
-"${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
-msgstr ""
-"${ mouseSymbol } Rechtsklick oder ${ touchSymbol } tippe zweimal um ein "
-"Voxel zu entfernen"
-
-#: src/components/HelpModal.jsx:87
-msgid "Partners:"
-msgstr "Partner:"
-
-#: src/components/HelpModal.jsx:94
-msgid "Welcome to PixelPlanet.fun"
-msgstr "Willkommen auf PixelPlanet.fun"
-
-#: src/components/UserAreaModal.jsx:33
-msgid "Login to access more features and stats."
-msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
-
-#: src/components/UserAreaModal.jsx:35
-msgid "Login with Name or Mail:"
-msgstr "Mit Name oder Mail anmelden:"
-
-#: src/components/UserAreaModal.jsx:42
-msgid "I forgot my Password."
-msgstr "Ich habe mein Passwort vergessen."
-
-#: src/components/UserAreaModal.jsx:43
-msgid "or login with:"
-msgstr "oder melde dich an mit:"
-
-#: src/components/UserAreaModal.jsx:84
-msgid "or register here:"
-msgstr "oder registriere dich hier:"
-
-#: src/components/UserAreaModal.jsx:85
-msgid "Register"
-msgstr "Registrieren"
-
-#: src/components/UserAreaModal.jsx:107
-msgid "Profile"
-msgstr "Profil"
-
-#: src/components/UserAreaModal.jsx:113
-msgid "Ranking"
-msgstr "Rangliste"
-
-#: src/components/UserAreaModal.jsx:116
-msgid "Converter"
-msgstr "Konverter"
-
-#: src/components/UserAreaModal.jsx:122
-msgid "Admintools"
-msgstr "Admin Werkzeuge"
-
-#: src/components/UserAreaModal.jsx:122
-msgid "Modtools"
-msgstr "Mod Werkzeuge"
-
-#: src/components/UserAreaModal.jsx:123
-msgid "Loading..."
-msgstr "Lade..."
-
-#: src/components/ForgotPasswordModal.jsx:20
-#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
-msgid "Consider joining us on Guilded:"
-msgstr "Triff uns und andere Spieler auf guilded:"
-
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr "Registriere ein neues Konto hier"
-
-#: src/components/RegisterModal.jsx:38
-msgid "Register New Account"
-msgstr "Registriere neues Konto"
-
-#: src/components/CanvasSelectModal.jsx:29
-msgid ""
-"Select the canvas you want to use. Every canvas is unique and has different "
-"palettes, cooldown and requirements. Archive of closed canvases can be "
-"accessed here:"
-msgstr ""
-"Wähle die Leinwand aus welche du benutzen willst. Jede Leinwand ist "
-"einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
-"Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
-
-#: src/components/CanvasSelectModal.jsx:37
-msgid "Archive"
-msgstr "Archiv"
-
-#: src/components/ArchiveModal.jsx:20
-msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or "
-"as a request by users who currently like a meme. Those canvases can get "
-"boring after a while and after weeks of no major change and if they really "
-"aren't worth being kept active, we decide to remove them."
-msgstr ""
-"Wir versuchen so wenig wie möglich Leinwände zu entfernen. Manche werden "
-"allerding aus Spaß gestarted oder von Spielern angefragt oder sind nur "
-"Memes. Diese Leinwände können nach einiger Zeit langweilig werden und nach "
-"Wochen ohne erwähnenswerte Aktivität und falls sie es wirklich nicht wert "
-"sind, behalten zu werden, entscheiden wir uns side zu entfernen."
-
-#: src/components/ArchiveModal.jsx:22
-msgid ""
-"Here we collect those canvases to archive them in a proper way (which is "
-"currently just one)."
-msgstr ""
-"Hier sammeln wir vergangene Leinwände um sie ordentlich zu archivieren (zur "
-"Zeit nur eine)."
-
-#: src/components/ArchiveModal.jsx:24
-msgid "Political Compass Canvas"
-msgstr "Politischer Kompass Leinwand"
-
-#: src/components/ArchiveModal.jsx:31
-msgid ""
-"This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
-"remained active for months till it got shut down on November 30th."
-msgstr ""
-"Diese Leinwand wurde zu Zeiten politscher Konlikte auf der Erd-Leinwand "
-"gestarted. Es war eine 1024x1024 Abbildung des politischen Kompass mit 5s "
-"Abklingzeit und 60s gesamter Wartezeit. Es wurde am 11. Mai 2020 gestartet "
-"und war für Monate aktiv bis es am 30. November geschlossen wurde."
-
-#: src/components/ArchiveModal.jsx:32
-msgid ""
-"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
-"screenshot from the timelapse results in a perfect 1:1 representation of how "
-"the canvas was at that time."
-msgstr ""
-"Wir haben uns entschieden sie in der Form eines Zeitraffers in verlustfrei "
-"kodiertes webm zu archivieren. Eine Bildschirmaufnahme aus dem Video ergibt "
-"eine perfekte 1:1 Abbildung der Leinwand zu dieser Zeit."
-
-#: src/components/ArchiveModal.jsx:50
-msgid "Canvas Archive"
-msgstr "Leinwand Archiv"
-
-#: src/components/ForgotPasswordModal.jsx:16
-msgid "Enter your mail address and we will send you a new password:"
-msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
-
-#: src/components/ForgotPasswordModal.jsx:37
-msgid "Restore my Password"
-msgstr "Passwort wiederherstellen"
-
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
-msgstr "Unterhaltung"
+#: src/components/Window.jsx:105
+msgid "Clone"
+msgstr "Klonen"
+
+#: src/components/Window.jsx:112
+msgid "Move"
+msgstr "Verschieben"
+
+#: src/components/Window.jsx:119
+msgid "Maximize"
+msgstr "Maximieren"
+
+#: src/components/Window.jsx:133
+msgid "Resize"
+msgstr "Größe ändern"
 
 #: src/components/Captcha.jsx:41 src/components/ChangeMail.jsx:88
 #: src/components/ChangeName.jsx:67 src/components/ChangePassword.jsx:73
@@ -711,23 +299,433 @@ msgstr "Abbrechen"
 msgid "Send"
 msgstr "Senden"
 
-#: src/components/ChangeMail.jsx:107 src/components/ChangeName.jsx:77
-#: src/components/ChangePassword.jsx:103 src/components/LanguageSelect.jsx:73
-msgid "Save"
-msgstr "Speichern"
+#: src/components/windows/Help.jsx:35
+msgid "your IP"
+msgstr "deiner IP"
 
-#: src/components/LogInForm.jsx:89
-msgid "Name or Email"
-msgstr "Name oder Email"
+#: src/components/windows/Help.jsx:41
+msgid "Place color pixels on a large canvas with other players online!"
+msgstr ""
+"Zeichne gemeinsam mit anderen Spielern auf einer großen Leinwand online!"
 
-#: src/components/ChangeMail.jsx:96 src/components/DeleteAccount.jsx:74
-#: src/components/LogInForm.jsx:96 src/components/SignUpForm.jsx:125
-msgid "Password"
-msgstr "Passwort"
+#: src/components/windows/Help.jsx:42
+msgid ""
+"Our main canvas is a huge worldmap, you can place wherever you like, but you "
+"will have to wait a specific Cooldown between pixels. You can check out the "
+"cooldown and requirements on the Canvas Selection menu (globe button on "
+"top). Some canvases have a different cooldown for replacing a user-set "
+"pixels than placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels "
+"and 7s on already set pixels."
+msgstr ""
+"Unsere Standardleinwand ist eine große Weltkarte. Pixel können überall "
+"gesetzen werden, aber es kann nur eine begrenzte Anzahl and Pixels per Zeit "
+"platziert werden. Die Vorraussetzungen und die Wartezeit sind im Auswahlmenu "
+"zu sehen (Globus Taste am oberen Bildschirmrand). Manche Leinwände haben "
+"eine niedrigere Wartezeit für ungesetzte Pixel im Vergleich zu von anderen "
+"Spielern gesetzte Pixel. z.B. 4s/7s heißt dass man 4s für jedes neue Pixel "
+"warten muss, allerdings 7s wenn man über ein Pixel eines anderen Spielers "
+"setzt."
 
-#: src/components/LogInForm.jsx:100
-msgid "LogIn"
-msgstr "Einloggen"
+#: src/components/windows/Help.jsx:46
+msgid ""
+"Higher zoomlevels take some time to update, the 3D globe gets updated at "
+"least once per day."
+msgstr ""
+"Die höheren Zoomlevel brauchen etwas Zeit um aktualisiert zu werden, der 3D "
+"Globus wird mindestens einmal pro tag neu geladen."
+
+#: src/components/windows/Help.jsx:47
+msgid "Have fun!"
+msgstr "Viel Spaß!"
+
+#: src/components/windows/Help.jsx:49
+msgid "recommended"
+msgstr "empfohlen"
+
+#: src/components/windows/Help.jsx:50
+msgid "Source on "
+msgstr "Quelltext auf "
+
+#: src/components/windows/Help.jsx:51
+msgid "Map Data"
+msgstr "Karten Dateien"
+
+#: src/components/windows/Help.jsx:52
+msgid ""
+"The bare map data that we use, together with converted OpenStreetMap tiles "
+"for orientation, can be downloaded from mega.nz here: "
+msgstr ""
+"Die Kartendaten welche wir benutzen, zusammen mit konvertierten "
+"OpenStreetMap  Kacheln zur orientierung können auf mega.nz heruntergeladen "
+"werden: "
+
+#: src/components/windows/Help.jsx:54
+msgid "Detected as Proxy?"
+msgstr "Als Proxy erkannt?"
+
+#: src/components/windows/Help.jsx:56
+#, javascript-format
+msgid ""
+"If you got detected as proxy, but you are none, please go to our "
+"${ guildedLink } or send us an e-mail with ${ getIPLink } to ${ mailLink }. "
+"Do not post your IP anywhere else. We are sorry for the inconvenience."
+msgstr ""
+"Solltest do als Proxy erkannt sein, aber du benutzt keines, bitte "
+"kontaktiere uns auf ${ guildedLink } oder sende uns eine Mail mit "
+"${ getIPLink } auf ${ mailLink }. Sende deine IP zu niemanden sonst. Wir "
+"entschuldigen uns für die Unannehmlichkeiten."
+
+#: src/components/windows/Help.jsx:58 src/components/windows/Help.jsx:75
+msgid "Controls"
+msgstr "Steuerung"
+
+#: src/components/windows/Help.jsx:60
+msgid "Click a color in palette to select it"
+msgstr "Klicke auf eine Farbe in der Palette um sie auszuwählen"
+
+#: src/components/windows/Help.jsx:61
+#, javascript-format
+msgid "Press ${ bindG } to toggle grid"
+msgstr "Drücke ${ bindG } um das Raster ein- und auszuschalten"
+
+#: src/components/windows/Help.jsx:62
+msgid "Press ${ bindX } to toggle showing of pixel activity"
+msgstr "Drücke ${ bindX } um Pixel Aktivität anzuzeigen"
+
+#: src/components/windows/Help.jsx:63
+#, javascript-format
+msgid "Press ${ bindH } to toggle historical view"
+msgstr "Drücke ${ bindH } um zur historischen Ansicht zu wechseln"
+
+#: src/components/windows/Help.jsx:64
+msgid "Press ${ bindR } to copy coordinates"
+msgstr "Drücke ${ bindR } um aktuelle Koordinaten zu kopieren"
+
+#: src/components/windows/Help.jsx:65
+#, javascript-format
+msgid "Press ${ bindQ } or ${ bindE } to zoom"
+msgstr "Drücke ${ bindQ } oder ${ bindE } um zu zoomen"
+
+#: src/components/windows/Help.jsx:66 src/components/windows/Help.jsx:77
+#, javascript-format
+msgid "Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
+msgstr "Drücke ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } zum navigieren"
+
+#: src/components/windows/Help.jsx:67 src/components/windows/Help.jsx:78
+#, javascript-format
+msgid ""
+"Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
+msgstr ""
+"Drücke ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } zum "
+"navigieren"
+
+#: src/components/windows/Help.jsx:68
+msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
+msgstr ""
+"Ziehe mit der ${ mouseSymbol } Maus oder ${ touchSymbol } wische zum "
+"navigieren"
+
+#: src/components/windows/Help.jsx:69
+#, javascript-format
+msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
+msgstr ""
+"Scrolle ${ mouseSymbol } mit them Mausrad oder ${ touchSymbol } benutze Zwei-"
+"Finger-Zoom um zu zoomen"
+
+#: src/components/windows/Help.jsx:70
+msgid "Hold left ${ bindShift } for placing while moving mouse"
+msgstr ""
+"Halte die linke ${ bindShift } Taste gedrückt um Pixel unter der Maus zu "
+"setzen"
+
+#: src/components/windows/Help.jsx:71
+#, javascript-format
+msgid ""
+"Hold right ${ bindShift } for placing while moving mouse according to "
+"historical view"
+msgstr ""
+"Halte die rechte ${ bindShift } Taste gedrückt um Pixel unter der Maus nach "
+"der aktuellen historischen Ansicht zu setzen"
+
+#: src/components/windows/Help.jsx:72 src/components/windows/Help.jsx:83
+#, javascript-format
+msgid "${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
+msgstr ""
+"${ mouseSymbol } Linksklick oder ${ touchSymbol } tippe um ein Pixel zu "
+"platzieren"
+
+#: src/components/windows/Help.jsx:73 src/components/windows/Help.jsx:85
+msgid ""
+"Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
+"select current hovering color"
+msgstr ""
+"Klicke ${ mouseSymbol } die mittlere Maustaste oder ${ touchSymbol } tippe "
+"lange um eine Farbe von der Leinwand auszuwählen"
+
+#: src/components/windows/Help.jsx:79
+msgid "Press ${ bindE } and ${ bindC } to fly up and down"
+msgstr "Drücke ${ bindE } oder ${ bindC } um hoch und runter zu fliegen"
+
+#: src/components/windows/Help.jsx:80
+#, javascript-format
+msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
+msgstr ""
+"${ mouseSymbol } Halte die linke Maustaste gedrückt und ziehe um zu rotieren"
+
+#: src/components/windows/Help.jsx:81
+#, javascript-format
+msgid ""
+"${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
+"button and drag to zoom"
+msgstr ""
+"${ mouseSymbol } Scrolle mit dem Mausrad oder halte ${ mouseSymbol } die "
+"mittlere Maustaste gedrückt und ziehe um zu zoomen"
+
+#: src/components/windows/Help.jsx:82
+msgid "${ mouseSymbol } Right click and drag mouse to pan"
+msgstr ""
+"${ mouseSymbol } Halte die rechte Maustaste gedrückt und ziehe um dich zu "
+"bewegen"
+
+#: src/components/windows/Help.jsx:84
+#, javascript-format
+msgid ""
+"${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
+msgstr ""
+"${ mouseSymbol } Rechtsklick oder ${ touchSymbol } tippe zweimal um ein "
+"Voxel zu entfernen"
+
+#: src/components/windows/Help.jsx:87
+msgid "Partners:"
+msgstr "Partner:"
+
+#: src/components/windows/UserArea.jsx:33
+msgid "Login to access more features and stats."
+msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
+
+#: src/components/windows/UserArea.jsx:35
+msgid "Login with Name or Mail:"
+msgstr "Mit Name oder Mail anmelden:"
+
+#: src/components/windows/UserArea.jsx:42
+msgid "I forgot my Password."
+msgstr "Ich habe mein Passwort vergessen."
+
+#: src/components/windows/UserArea.jsx:43
+msgid "or login with:"
+msgstr "oder melde dich an mit:"
+
+#: src/components/windows/UserArea.jsx:84
+msgid "or register here:"
+msgstr "oder registriere dich hier:"
+
+#: src/components/windows/UserArea.jsx:85
+msgid "Register"
+msgstr "Registrieren"
+
+#: src/components/windows/UserArea.jsx:107
+msgid "Profile"
+msgstr "Profil"
+
+#: src/components/windows/UserArea.jsx:113
+msgid "Ranking"
+msgstr "Rangliste"
+
+#: src/components/windows/UserArea.jsx:116
+msgid "Converter"
+msgstr "Konverter"
+
+#: src/components/windows/UserArea.jsx:122
+msgid "Admintools"
+msgstr "Admin Werkzeuge"
+
+#: src/components/windows/UserArea.jsx:122
+msgid "Modtools"
+msgstr "Mod Werkzeuge"
+
+#: src/components/windows/UserArea.jsx:123
+msgid "Loading..."
+msgstr "Lade..."
+
+#: src/components/windows/ForgotPassword.jsx:20
+#: src/components/windows/Register.jsx:21
+#: src/components/windows/UserArea.jsx:130
+msgid "Consider joining us on Guilded:"
+msgstr "Triff uns und andere Spieler auf guilded:"
+
+#: src/components/windows/Settings.jsx:125
+msgid "Show Grid"
+msgstr "Zeige Raster"
+
+#: src/components/windows/Settings.jsx:126
+msgid "Turn on grid to highlight pixel borders."
+msgstr "Aktiviere das Raster um  Pixelgrenzen zu sehen."
+
+#: src/components/windows/Settings.jsx:132
+msgid "Show Pixel Activity"
+msgstr "Zeige Pixelaktivität"
+
+#: src/components/windows/Settings.jsx:133
+msgid "Show circles where pixels are placed."
+msgstr "Zeige Kreise wo Pixel von Spielern gesetzt werden."
+
+#: src/components/windows/Settings.jsx:139
+msgid "Disable Game Sounds"
+msgstr "Deaktiviere Spiel Ton"
+
+#: src/components/windows/Settings.jsx:141
+msgid "All sound effects will be disabled."
+msgstr "Alle Toneffekte werden ausgeschaltet."
+
+#: src/components/windows/Settings.jsx:147
+msgid "Enable chat notifications"
+msgstr "Aktiviere Chat Benachrichtigungen"
+
+#: src/components/windows/Settings.jsx:148
+msgid "Play a sound when new chat messages arrive"
+msgstr "Spiele ein Geräusch wenn eine neue Chat Nachricht eintrifft"
+
+#: src/components/windows/Settings.jsx:153
+msgid "Auto Zoom In"
+msgstr "Automaticher Zoom"
+
+#: src/components/windows/Settings.jsx:155
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+"Zoome rein anstatt ein Pixel zu setzen wenn auf kleineren Zoomlevel geklickt "
+"wird."
+
+#: src/components/windows/Settings.jsx:160
+msgid "Compact Palette"
+msgstr "Kompakte Palette"
+
+#: src/components/windows/Settings.jsx:162
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+"Zeige die Palette in einer kleineren Form an, welche weniger Platz benötigt."
+
+#: src/components/windows/Settings.jsx:167
+msgid "Potato Mode"
+msgstr "Erdapfel Modus"
+
+#: src/components/windows/Settings.jsx:168
+msgid "For when you are playing on a potato."
+msgstr "Wenn du auf einer Kartoffel spielst."
+
+#: src/components/Converter.jsx:423 src/components/windows/Settings.jsx:173
+msgid "Light Grid"
+msgstr "Helles Raster"
+
+#: src/components/windows/Settings.jsx:174
+msgid "Show Grid in white instead of black."
+msgstr "Zeige das Raster in weiß anstatt schwarz."
+
+#: src/components/windows/Settings.jsx:180
+msgid "Historical View"
+msgstr "Historische Ansicht"
+
+#: src/components/windows/Settings.jsx:181
+msgid "Check out past versions of the canvas."
+msgstr "Siehe vergangene Versionen der Leinwand."
+
+#: src/components/windows/Settings.jsx:189
+msgid "Themes"
+msgstr "Themen"
+
+#: src/components/windows/Settings.jsx:190
+msgid "How pixelplanet should look like."
+msgstr "Wähle aus wie pixelplanet aussehen soll."
+
+#: src/components/windows/Settings.jsx:200
+msgid "Select Language"
+msgstr "Sprache Auswählen"
+
+#: src/components/windows/Register.jsx:18
+msgid "Register new account here"
+msgstr "Registriere ein neues Konto hier"
+
+#: src/components/windows/CanvasSelect.jsx:29
+msgid ""
+"Select the canvas you want to use. Every canvas is unique and has different "
+"palettes, cooldown and requirements. Archive of closed canvases can be "
+"accessed here:"
+msgstr ""
+"Wähle die Leinwand aus welche du benutzen willst. Jede Leinwand ist "
+"einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
+"Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
+
+#: src/components/windows/CanvasSelect.jsx:37
+msgid "Archive"
+msgstr "Archiv"
+
+#: src/components/windows/Archive.jsx:20
+msgid ""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren't worth being kept active, we decide to remove them."
+msgstr ""
+"Wir versuchen so wenig wie möglich Leinwände zu entfernen. Manche werden "
+"allerding aus Spaß gestarted oder von Spielern angefragt oder sind nur "
+"Memes. Diese Leinwände können nach einiger Zeit langweilig werden und nach "
+"Wochen ohne erwähnenswerte Aktivität und falls sie es wirklich nicht wert "
+"sind, behalten zu werden, entscheiden wir uns side zu entfernen."
+
+#: src/components/windows/Archive.jsx:22
+msgid ""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+msgstr ""
+"Hier sammeln wir vergangene Leinwände um sie ordentlich zu archivieren (zur "
+"Zeit nur eine)."
+
+#: src/components/windows/Archive.jsx:24
+msgid "Political Compass Canvas"
+msgstr "Politischer Kompass Leinwand"
+
+#: src/components/windows/Archive.jsx:31
+msgid ""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+msgstr ""
+"Diese Leinwand wurde zu Zeiten politscher Konlikte auf der Erd-Leinwand "
+"gestarted. Es war eine 1024x1024 Abbildung des politischen Kompass mit 5s "
+"Abklingzeit und 60s gesamter Wartezeit. Es wurde am 11. Mai 2020 gestartet "
+"und war für Monate aktiv bis es am 30. November geschlossen wurde."
+
+#: src/components/windows/Archive.jsx:32
+msgid ""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
+"screenshot from the timelapse results in a perfect 1:1 representation of how "
+"the canvas was at that time."
+msgstr ""
+"Wir haben uns entschieden sie in der Form eines Zeitraffers in verlustfrei "
+"kodiertes webm zu archivieren. Eine Bildschirmaufnahme aus dem Video ergibt "
+"eine perfekte 1:1 Abbildung der Leinwand zu dieser Zeit."
+
+#: src/components/windows/Chat.jsx:137
+msgid "Channel settings"
+msgstr "Kanal Einstellungen"
+
+#: src/components/windows/Chat.jsx:152
+msgid "Start chatting here"
+msgstr "Beginne hier zu unterhalten"
+
+#: src/components/windows/Chat.jsx:189
+msgid "Chat here"
+msgstr "Chatte hier"
+
+#: src/components/windows/Chat.jsx:212
+msgid "You must be logged in to chat"
+msgstr "Melde dich an um dich zu unterhalten"
+
+#: src/components/windows/ForgotPassword.jsx:16
+msgid "Enter your mail address and we will send you a new password:"
+msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
 
 #: src/components/UserArea.jsx:57
 msgid "Todays Placed Pixels"
@@ -774,6 +772,19 @@ msgstr "Lösche Konto"
 msgid "Social Settings"
 msgstr "Soziale Einstellungen"
 
+#: src/components/LogInForm.jsx:89
+msgid "Name or Email"
+msgstr "Name oder Email"
+
+#: src/components/ChangeMail.jsx:96 src/components/DeleteAccount.jsx:74
+#: src/components/LogInForm.jsx:96 src/components/SignUpForm.jsx:125
+msgid "Password"
+msgstr "Passwort"
+
+#: src/components/LogInForm.jsx:100
+msgid "LogIn"
+msgstr "Einloggen"
+
 #: src/components/Rankings.jsx:37
 msgid "Total"
 msgstr "Gesamt"
@@ -787,6 +798,11 @@ msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 "Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
 "Mitternacht UTC zurückgestellt."
+
+#: src/components/ChangeMail.jsx:107 src/components/ChangeName.jsx:77
+#: src/components/ChangePassword.jsx:103 src/components/LanguageSelect.jsx:73
+msgid "Save"
+msgstr "Speichern"
 
 #: src/components/SignUpForm.jsx:109
 msgid "Name"
@@ -806,6 +822,39 @@ msgstr "Passwort bestätigen"
 #: src/components/SignUpForm.jsx:138
 msgid "Submit"
 msgstr "Absenden"
+
+#: src/components/CanvasItem.jsx:46
+msgid "Cooldown"
+msgstr "Abklingzeit"
+
+#: src/components/CanvasItem.jsx:52
+msgid "Stacking till"
+msgstr "Gesamtzeit"
+
+#: src/components/CanvasItem.jsx:54
+msgid "Ranked"
+msgstr "Gewertet"
+
+#: src/components/CanvasItem.jsx:56
+msgid "Requirements"
+msgstr "Vorraussetzungen"
+
+#: src/components/CanvasItem.jsx:58
+msgid "User Account"
+msgstr "Konto"
+
+#: src/components/CanvasItem.jsx:60
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr "und ${ canvas.req } gesetzte Pixel"
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr "Dimensionen"
+
+#: src/components/NewPasswordForm.jsx:69
+msgid "Sent you a mail with instructions to reset your password."
+msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
 
 #: src/components/Admintools.jsx:179
 msgid "Build image on canvas."
@@ -887,39 +936,6 @@ msgstr "Gebe Name des neuen Moderators ein"
 #: src/components/Admintools.jsx:561
 msgid "User Name"
 msgstr "Spielerbereich"
-
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
-msgstr "Abklingzeit"
-
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
-msgstr "Gesamtzeit"
-
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
-msgstr "Gewertet"
-
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr "Vorraussetzungen"
-
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr "Konto"
-
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr "und ${ canvas.req } gesetzte Pixel"
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
-msgstr "Dimensionen"
-
-#: src/components/NewPasswordForm.jsx:69
-msgid "Sent you a mail with instructions to reset your password."
-msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
 
 #: src/components/Converter.jsx:274
 msgid "Choose Canvas"
@@ -1096,14 +1112,6 @@ msgstr "Neues Passwort"
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
 
-#: src/components/ChangeName.jsx:73
-msgid "New Username"
-msgstr "Neuer Name"
-
-#: src/components/DeleteAccount.jsx:78
-msgid "Yes, Delete My Account!"
-msgstr "Ja, löche mein Konto!"
-
 #: src/components/ChangeMail.jsx:73
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,               "
@@ -1115,6 +1123,14 @@ msgstr ""
 #: src/components/ChangeMail.jsx:103
 msgid "New Mail"
 msgstr "Neue Mail"
+
+#: src/components/DeleteAccount.jsx:78
+msgid "Yes, Delete My Account!"
+msgstr "Ja, löche mein Konto!"
+
+#: src/components/ChangeName.jsx:73
+msgid "New Username"
+msgstr "Neuer Name"
 
 #: src/components/SocialSettings.jsx:39
 msgid "Block all Private Messages"
@@ -1128,70 +1144,70 @@ msgstr "Entblocke Spieler"
 msgid "You have no users blocked"
 msgstr "Du hast keinen Spieler geblockt"
 
-#: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:127
+#: src/components/windows/Help.jsx:15 src/components/windows/Settings.jsx:127
 msgctxt "keybinds"
 msgid "G"
 msgstr "G"
 
-#: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:134
+#: src/components/windows/Help.jsx:16 src/components/windows/Settings.jsx:134
 msgctxt "keybinds"
 msgid "X"
 msgstr "X"
 
-#: src/components/SettingsModal.jsx:142
-msgctxt "keybinds"
-msgid "M"
-msgstr "M"
-
-#: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:183
+#: src/components/windows/Help.jsx:17 src/components/windows/Settings.jsx:183
 msgctxt "keybinds"
 msgid "H"
 msgstr "H"
 
-#: src/components/HelpModal.jsx:18
+#: src/components/windows/Help.jsx:18
 msgctxt "keybinds"
 msgid "R"
 msgstr "R"
 
-#: src/components/HelpModal.jsx:19
+#: src/components/windows/Help.jsx:19
 msgctxt "keybinds"
 msgid "Q"
 msgstr "Q"
 
-#: src/components/HelpModal.jsx:20
+#: src/components/windows/Help.jsx:20
 msgctxt "keybinds"
 msgid "E"
 msgstr "E"
 
-#: src/components/HelpModal.jsx:21
+#: src/components/windows/Help.jsx:21
 msgctxt "keybinds"
 msgid "W"
 msgstr "W"
 
-#: src/components/HelpModal.jsx:22
+#: src/components/windows/Help.jsx:22
 msgctxt "keybinds"
 msgid "A"
 msgstr "A"
 
-#: src/components/HelpModal.jsx:23
+#: src/components/windows/Help.jsx:23
 msgctxt "keybinds"
 msgid "S"
 msgstr "S"
 
-#: src/components/HelpModal.jsx:24
+#: src/components/windows/Help.jsx:24
 msgctxt "keybinds"
 msgid "D"
 msgstr "D"
 
-#: src/components/HelpModal.jsx:31
+#: src/components/windows/Help.jsx:31
 msgctxt "keybinds"
 msgid "Shift"
 msgstr "Shift"
 
-#: src/components/HelpModal.jsx:32
+#: src/components/windows/Help.jsx:32
 msgctxt "keybinds"
 msgid "C"
 msgstr "C"
+
+#: src/components/windows/Settings.jsx:142
+msgctxt "keybinds"
+msgid "M"
+msgstr "M"
 
 #~ msgid "Privacy Policy"
 #~ msgstr "Datenschutzerklärung"

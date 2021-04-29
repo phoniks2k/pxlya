@@ -227,7 +227,6 @@ class PixelPlainterControls {
   onTouchStart(event: TouchEvent) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('PixelPlainterControls touch start');
     document.activeElement.blur();
 
     this.clickTapStartTime = Date.now();
@@ -258,7 +257,6 @@ class PixelPlainterControls {
   onTouchEnd(event: TouchEvent) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('PixelPlainterControls touch end');
 
     const { store } = this;
     if (event.touches.length === 0 && this.isClicking) {
@@ -295,7 +293,6 @@ class PixelPlainterControls {
   onTouchMove(event: TouchEvent) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('PixelPlainterControls touch move');
 
     const multiTouch = (event.touches.length > 1);
 

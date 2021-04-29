@@ -7,6 +7,7 @@ import React, {
   useState, useCallback, useRef, useEffect,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { t } from 'ttag';
 
 import {
   moveWindow,
@@ -20,6 +21,7 @@ import {
 import useDrag from './hooks/drag';
 import COMPONENTS from './windows';
 
+// eslint-disable-next-line max-len
 const selectWindowById = (state, windowId) => state.windows.windows.find((win) => win.windowId === windowId);
 
 const Window = ({ id }) => {
@@ -46,27 +48,33 @@ const Window = ({ id }) => {
     dispatch(closeWindow(id));
   };
 
-  useDrag(
-    titleBarRef,
-    focus,
-    useCallback((xDiff, yDiff) => dispatch(moveWindow(id, xDiff, yDiff)), []),
-  );
-
-  useDrag(
-    resizeRef,
-    focus,
-    useCallback((xDiff, yDiff) => dispatch(resizeWindow(id, xDiff, yDiff)), []),
-  );
-
   const {
     width, height,
     xPos, yPos,
     windowType,
     title,
     open,
+    hidden,
   } = win;
 
+  useDrag(
+    titleBarRef,
+    focus,
+    useCallback((xDiff, yDiff) => dispatch(moveWindow(id, xDiff, yDiff)),
+      [hidden]),
+  );
+
+  useDrag(
+    resizeRef,
+    focus,
+    useCallback((xDiff, yDiff) => dispatch(resizeWindow(id, xDiff, yDiff)),
+      [hidden]),
+  );
+
   const onTransitionEnd = () => {
+    if (hidden) {
+      setRender(false);
+    }
     if (!open) {
       dispatch(removeWindow(id));
     }
@@ -74,17 +82,21 @@ const Window = ({ id }) => {
 
   useEffect(() => {
     window.setTimeout(() => {
-      if (open) setRender(true);
+      if (open && !hidden) setRender(true);
     }, 10);
-  }, [open]);
+  }, [open, hidden]);
 
   const Content = COMPONENTS[windowType];
 
-  console.log(`render window ${id}`);
+  if (!render && hidden) {
+    return null;
+  }
 
   return (
     <div
-      className={`window ${windowType}${(open && render) ? ' show' : ''}`}
+      className={`window ${windowType}${
+        (open && !hidden && render) ? ' show' : ''
+      }`}
       onTransitionEnd={onTransitionEnd}
       onClick={focus}
       style={{
@@ -100,30 +112,35 @@ const Window = ({ id }) => {
         <span
           className="win-topbtn"
           onClick={clone}
+          title={t`Clone`}
         >
           +
         </span>
         <span
           className="win-title"
           ref={titleBarRef}
+          title={t`Move`}
         >
           {title}
         </span>
         <span
           className="win-topbtn"
           onClick={maximize}
+          title={t`Maximize`}
         >
           ↑
         </span>
         <span
-          className="win-topbtn"
+          className="win-topbtn close"
           onClick={close}
+          title={t`Close`}
         >
           X
         </span>
       </div>
       <div
         className="win-resize"
+        title={t`Resize`}
         ref={resizeRef}
       >
         ▨

@@ -23,11 +23,11 @@ import {
  */
 const selectChatWindowStatus = (state) => [
   state.windows.showWindows,
-  state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === false) || (
-    state.windows.modal.open
-      && state.windows.modal.windowType === 'CHAT'
-  ),
-  state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === true),
+  state.windows.windows.find((win) => win.windowType === 'CHAT'
+    && win.hidden === false)
+  || (state.windows.modal.open && state.windows.modal.windowType === 'CHAT'),
+  state.windows.windows.find((win) => win.windowType === 'CHAT'
+    && win.hidden === true),
 ];
 
 const ChatButton = () => {
@@ -42,8 +42,10 @@ const ChatButton = () => {
 
   const chatNotify = useSelector((state) => state.audio.chatNotify);
   const channels = useSelector((state) => state.chat.channels);
-  const [unread, mute] = useSelector((state) => [state.chatRead.unread, state.chatRead.mute],
-    shallowEqual);
+  const [unread, mute] = useSelector((state) => [
+    state.chatRead.unread,
+    state.chatRead.mute,
+  ], shallowEqual);
 
   /*
    * almost the same as in ChannelDropDown

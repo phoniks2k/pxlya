@@ -129,7 +129,7 @@ tr:nth-child(even) {
 
 .window {
   position: fixed;
-  background-color: rgba(226, 226, 226, 0.92);
+  background-color: rgba(252, 252, 252, 0.95);
   border: solid black;
   border-width: thin;
   overflow: hidden;
@@ -146,12 +146,20 @@ tr:nth-child(even) {
 }
 
 .win-title {
+  border: solid black;
+  border-width: thin;
+  background-color: #e8e8e8;
   cursor: move;
   flex-grow: 1;
-  line-height: 19px;
+  line-height: 17px;
+  height: 17px;
   margin: 2px;
   padding-left: 10px;
   font-size: 15px;
+}
+
+.win-title:hover {
+  background-color: #e4e4e4;
 }
 
 .win-topbtn {
@@ -166,6 +174,14 @@ tr:nth-child(even) {
   line-height: 17px;
   font-size: 17px;
   font-weight: bold;
+}
+
+.win-topbtn:hover {
+  background-color: #d7d7d7;
+}
+
+.win-topbtn.close:hover {
+  background-color: #f29696;
 }
 
 .win-resize {

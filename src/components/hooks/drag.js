@@ -16,7 +16,6 @@ function useDrag(elRef, startHandler, diffHandler) {
     event.preventDefault();
     event.stopPropagation();
     startHandler();
-    console.log('startDrag');
 
     let {
       clientX: startX,
@@ -29,7 +28,6 @@ function useDrag(elRef, startHandler, diffHandler) {
         clientX: curX,
         clientY: curY,
       } = evt.touches ? evt.touches[0] : evt;
-      console.log(`drag by ${curX - startX} - ${curY - startY}`);
       diffHandler(curX - startX, curY - startY);
       startX = curX;
       startY = curY;
@@ -39,7 +37,6 @@ function useDrag(elRef, startHandler, diffHandler) {
     const stopDrag = (evt) => {
       evt.preventDefault();
       evt.stopPropagation();
-      console.log('stopDrag');
       document.removeEventListener('mousemove', drag);
       document.removeEventListener('touchmove', drag);
       document.removeEventListener('mouseup', stopDrag);
@@ -53,12 +50,18 @@ function useDrag(elRef, startHandler, diffHandler) {
 
   useEffect(() => {
     if (elRef && elRef.current) {
-      elRef.current.addEventListener('mousedown', startDrag, { passive: false });
-      elRef.current.addEventListener('touchstart', startDrag, { passive: false });
+      elRef.current.addEventListener('mousedown', startDrag, {
+        passive: false,
+      });
+      elRef.current.addEventListener('touchstart', startDrag, {
+        passive: false,
+      });
     }
     return () => {
-      elRef.current.removeEventListener('mousedown', startDrag);
-      elRef.current.removeEventListener('touchstart', startDrag);
+      if (elRef && elRef.current) {
+        elRef.current.removeEventListener('mousedown', startDrag);
+        elRef.current.removeEventListener('touchstart', startDrag);
+      }
     };
   }, [elRef, diffHandler]);
 }

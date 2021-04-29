@@ -44,10 +44,11 @@ const Chat = ({
   ), [dispatch]);
 
   const ownName = useSelector((state) => state.user.name);
+  // eslint-disable-next-line max-len
   const isDarkMode = useSelector((state) => state.gui.style.indexOf('dark') !== -1);
   const fetching = useSelector((state) => state.fetching.fetchingChat);
   const { channels, messages, blocked } = useSelector((state) => state.chat);
-
+  // eslint-disable-next-line max-len
   const { chatChannel, inputMessage } = useSelector((state) => state.windows.args[windowId]);
 
   const { stayScrolled } = useStayScrolled(listRef, {

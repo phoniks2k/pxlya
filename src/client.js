@@ -66,7 +66,9 @@ function init() {
 
     // assume that if one chat window is not hidden, all are
     let isRead = state.windows.showWindows
+      // eslint-disable-next-line max-len
       && state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === false)
+      // eslint-disable-next-line max-len
       && Object.values(state.windows.args).find((args) => args.chatChannel === channelId);
     isRead = isRead || state.windows.modal.open
       && state.windows.args[0].chatChannel === channelId;

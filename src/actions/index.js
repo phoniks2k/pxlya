@@ -815,7 +815,6 @@ export function hideAllWindowTypes(
   windowType: string,
   hide: boolean,
 ): Action {
-  console.log(`hideAllWindowTypes`, hide);
   return {
     type: 'HIDE_ALL_WINDOW_TYPE',
     windowType,

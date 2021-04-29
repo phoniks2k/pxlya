@@ -8,6 +8,7 @@ import { useSelector, shallowEqual } from 'react-redux';
 
 import Window from './Window';
 
+// eslint-disable-next-line max-len
 const selectWindowIds = (state) => state.windows.windows.map((win) => win.windowId);
 
 const WindowsRoot = () => {

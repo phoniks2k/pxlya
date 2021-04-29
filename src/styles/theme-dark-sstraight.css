@@ -30,9 +30,26 @@ tr:nth-child(even) {
   background-color: #505050;
 }
 
-.chatbox {
-  background-color: rgba(59, 59, 59, 0.8);
+.window {
+  background-color: rgba(59, 59, 59, 0.98);
   border-radius: 4px;
+}
+
+.win-title {
+  background-color: #c1c1c1;
+  color: #8a5007;
+}
+
+.win-title:hover {
+  background-color: #dedede;
+}
+
+.win-topbtn {
+  background-color: #a6a4a4;
+}
+
+.win-topbtn:hover {
+  background-color: #8b8b8b;
 }
 
 .channeldd, .contextmenu {
@@ -106,12 +123,12 @@ tr:nth-child(even) {
   color: hsla(220, 100%, 95.3%, 0.6);
 }
 
-.ModalClose {
+.ModalClose, .ModalRestore {
   background-color: #55555d;
   border-color: #dcddde;
 }
 
-.ModalClose:hover {
+.ModalClose:hover, .ModalRestore:hover {
   background-color: #6f6f75;
 }
 

@@ -97,6 +97,12 @@ export default function windows(
         };
       }
       const windowId = generateWindowId(state);
+      const {
+        innerWidth: screenWidth,
+        innerHeight: screenHeight,
+      } = window;
+      const width = Math.min(550, Math.floor(screenWidth * 0.75));
+      const height = Math.min(300, Math.floor(screenHeight * 0.75));
       return {
         ...state,
         windows: [
@@ -107,10 +113,10 @@ export default function windows(
             open: true,
             hidden: false,
             title,
-            width: 600,
-            height: 300,
-            xPos: 200,
-            yPos: 200,
+            width,
+            height,
+            xPos: Math.floor((screenWidth - width) / 2),
+            yPos: Math.floor((screenHeight - height) / 2),
             cloneable,
           },
         ],
@@ -203,7 +209,6 @@ export default function windows(
         windowType,
         hide,
       } = action;
-      console.log(`hideAllWindowTypes`, windowType, hide);
       const newWindows = state.windows.map((win) => {
         if (win.windowType !== windowType) return win;
         return {
@@ -267,7 +272,6 @@ export default function windows(
       ) {
         return state;
       }
-      console.log(`focus window ${windowId}`);
       const newWindows = oldWindows.filter((w) => w.windowId !== windowId);
       const win = oldWindows.find((w) => w.windowId === windowId);
       if (win) {
@@ -306,6 +310,12 @@ export default function windows(
       const windowId = generateWindowId(state);
       const { windowType, title } = state.modal;
       const cloneable = true;
+      const {
+        innerWidth: screenWidth,
+        innerHeight: screenHeight,
+      } = window;
+      const width = Math.min(550, Math.floor(screenWidth * 0.75));
+      const height = Math.min(300, Math.floor(screenHeight * 0.75));
       return {
         ...state,
         modal: {
@@ -320,10 +330,10 @@ export default function windows(
             open: true,
             hidden: false,
             title,
-            width: 600,
-            height: 300,
-            xPos: 200,
-            yPos: 200,
+            width,
+            height,
+            xPos: Math.floor((screenWidth - width) / 2),
+            yPos: Math.floor((screenHeight - height) / 2),
             cloneable,
           },
         ],

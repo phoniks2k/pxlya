@@ -33,14 +33,17 @@ const ChannelContextMenu = ({
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        event.stopPropagation();
         close();
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('touchstart', handleClickOutside);
+    document.addEventListener('click', handleClickOutside, {
+      capture: true,
+    });
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
+      document.removeEventListener('click', handleClickOutside, {
+        capture: true,
+      });
     };
   }, [wrapperRef]);
 

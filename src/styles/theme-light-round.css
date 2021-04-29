@@ -1,5 +1,9 @@
-.chatbox, .channeldd, .contextmenu {
+.channeldd, .contextmenu {
   border-radius: 8px;
+}
+
+.window {
+  border-radius: 5px;
 }
 
 .chntop {
