@@ -3,7 +3,7 @@
  * @flow
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -19,39 +19,57 @@ import COMPONENTS from './windows';
 const selectWindowById = (state, windowId) => state.windows.windows.find((win) => win.windowId === windowId);
 
 const Window = ({ id }) => {
+  const titleBarRef = useRef(null);
+
   const win = useSelector((state) => selectWindowById(state, id));
 
   const dispatch = useDispatch();
 
   const startMove = useCallback((event) => {
-    event.preventDefault();
-    dispatch(focusWindow(id));
+    try {
+      event.stopPropagation();
+      dispatch(focusWindow(id));
+      console.log('startMove');
 
-    let {
-      clientX: startX,
-      clientY: startY,
-    } = event;
-    const move = (evt) => {
-      const {
-        clientX: curX,
-        clientY: curY,
-      } = evt;
-      dispatch(moveWindow(id, curX - startX, curY - startY));
-      startX = curX;
-      startY = curY;
-    };
-    document.addEventListener('mousemove', move);
-    const stopMove = () => {
-      document.removeEventListener('mousemove', move);
-      document.removeEventListener('mouseup', stopMove);
-      document.removeEventListener('touchcancel', stopMove);
-    };
-    document.addEventListener('mouseup', stopMove);
-    document.addEventListener('touchcancel', stopMove);
+      let {
+        clientX: startX,
+        clientY: startY,
+      } = event.touches ? event.touches[0] : evt;
+      const move = (evt) => {
+        evt.stopPropagation();
+        try {
+          const {
+            clientX: curX,
+            clientY: curY,
+          } = evt.touches ? evt.touches[0] : evt;
+          console.log(`move by ${curX-startX} - ${curY - startY}`);
+          dispatch(moveWindow(id, curX - startX, curY - startY));
+          startX = curX;
+          startY = curY;
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      document.addEventListener('mousemove', move);
+      document.addEventListener('touchmove', move);
+      const stopMove = (evt) => {
+        evt.stopPropagation();
+        console.log('stopMove');
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('touchmove', move);
+        document.removeEventListener('mouseup', stopMove);
+        document.removeEventListener('touchcancel', stopMove);
+        document.removeEventListener('touchend', stopMove);
+      };
+      document.addEventListener('mouseup', stopMove);
+      document.addEventListener('touchcancel', stopMove);
+      document.addEventListener('touchend', stopMove);
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
   const startResize = useCallback((event) => {
-    event.preventDefault();
     dispatch(focusWindow(id));
 
     let {
@@ -78,6 +96,19 @@ const Window = ({ id }) => {
     document.addEventListener('touchcancel', stopResize);
     document.addEventListener('touchend', stopResize);
   }, []);
+
+  useEffect(() => {
+    if (titleBarRef && titleBarRef.current) {
+      console.log('add listener')
+      console.log(titleBarRef.current);
+      titleBarRef.current.addEventListener('mousedown', startMove, {passive: false});
+      titleBarRef.current.addEventListener('touchstart', startMove, {passive: false});
+    }
+    return () => {
+      titleBarRef.current.removeEventListener('mousedown', startMove);
+      titleBarRef.current.removeEventListener('touchstart', startMove);
+    };
+  }, [titleBarRef, startMove]);
 
   const clone = (evt) => {
     evt.stopPropagation();
@@ -125,8 +156,7 @@ const Window = ({ id }) => {
     >
       <div
         className="win-topbar"
-        onMouseDown={startMove}
-        onTouchStart={startMove}
+        ref={titleBarRef}
       >
         <span
           className="win-topbtn"
@@ -156,6 +186,7 @@ const Window = ({ id }) => {
         onMouseDown={startResize}
         onTouchStart={startResize}
         className="win-resize"
+        touchAction="none"
       >
         ▨
       </div>
