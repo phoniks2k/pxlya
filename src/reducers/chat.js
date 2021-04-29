@@ -41,9 +41,17 @@ export default function chat(
   switch (action.type) {
     case 'RECEIVE_ME':
     case 'LOGIN': {
+      // making sure object keys are numbers
+      const channels = {};
+      const channelsJson = action.channels;
+      const cids = Object.keys(channelsJson);
+      for (let i = 0; i < cids.length; i += 1) {
+        const cid = cids[i];
+        channels[Number(cid)] = channelsJson[cid];
+      }
       return {
         ...state,
-        channels: action.channels,
+        channels,
         blocked: action.blocked,
       };
     }
@@ -106,7 +114,7 @@ export default function chat(
 
     case 'ADD_CHAT_CHANNEL': {
       const { channel } = action;
-      const [cid] = Object.keys(channel);
+      const cid = Number(Object.keys(channel)[0]);
       if (state.channels[cid]) {
         return state;
       }

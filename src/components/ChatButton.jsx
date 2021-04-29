@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { MdForum } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { showChatModal, openChatWindow } from '../actions';
+import { openChatWindow } from '../actions';
 
 
 const ChatButton = ({

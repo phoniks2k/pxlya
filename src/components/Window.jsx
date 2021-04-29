@@ -25,7 +25,7 @@ const Window = ({ id }) => {
 
   const startMove = useCallback((event) => {
     event.preventDefault();
-    dispatch(focusWindow());
+    dispatch(focusWindow(id));
 
     let {
       clientX: startX,
@@ -52,7 +52,7 @@ const Window = ({ id }) => {
 
   const startResize = useCallback((event) => {
     event.preventDefault();
-    dispatch(focusWindow());
+    dispatch(focusWindow(id));
 
     let {
       clientX: startX,

@@ -15,7 +15,6 @@ import ChannelDropDown from '../ChannelDropDown';
 
 import {
   showUserAreaModal,
-  showChatModal,
   setChatChannel,
   setChatInputMessage,
   fetchChatMessages,
@@ -30,7 +29,6 @@ function escapeRegExp(string) {
 
 const Chat = ({
   windowId,
-  showExpand,
 }) => {
   const listRef = useRef();
   const targetRef = useRef();
@@ -139,16 +137,6 @@ const Chat = ({
           title={t`Channel settings`}
           tabIndex={-1}
         >⚙</span>
-        &nbsp;
-        {(showExpand)
-          && (
-          <span
-            onClick={() => dispatch(showChatModal())}
-            role="button"
-            title={t`maximize`}
-            tabIndex={-1}
-          >↷</span>
-          )}
       </div>
       <ul
         className="chatarea"

@@ -193,7 +193,7 @@ tr:nth-child(even) {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 1px);
+  height: calc(100% - 2px);
 }
 
 .win-content {
@@ -611,7 +611,7 @@ tr:nth-child(even) {
 .chatlink {
   position: absolute;
   top: 5px;
-  right: 17px;
+  right: 20px;
   font-weight: bold;
   color: #4a4a49; 
   transition: font-size 0.2s;

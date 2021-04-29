@@ -32,6 +32,19 @@ export default function contextMenu(
       const {
         menuType, xPos, yPos, args,
       } = action;
+      // if the same context menu is already open, close it
+      if (state.menuOpen && state.menuType === menuType
+        && !(
+          Object.keys(state.args).length === Object.keys(args).length
+          && Object.keys(state.args).every(
+            (key) => state.args[key] === args[key],
+          )
+        )) {
+        return {
+          ...state,
+          menuOpen: false,
+        };
+      }
       return {
         ...state,
         menuType,

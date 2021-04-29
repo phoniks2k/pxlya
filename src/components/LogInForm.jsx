@@ -27,7 +27,7 @@ function validate(nameoremail, password) {
 
 const inputStyles = {
   display: 'inline-block',
-  width: '100%',
+  width: '75%',
   maxWidth: '35em',
 };
 

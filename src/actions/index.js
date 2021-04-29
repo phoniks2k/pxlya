@@ -37,12 +37,6 @@ export function closeAlert(): Action {
   };
 }
 
-export function toggleChatBox(): Action {
-  return {
-    type: 'TOGGLE_CHAT_BOX',
-  };
-}
-
 export function toggleHistoricalView(): Action {
   return {
     type: 'TOGGLE_HISTORICAL_VIEW',
@@ -662,12 +656,6 @@ export function showContextMenu(
   };
 }
 
-// TODO CHAT MODAL
-export function showChatModal(forceModal: boolean = false): Action {
-  if (window.innerWidth > 604 && !forceModal) { return toggleChatBox(); }
-  return showModal('CHAT');
-}
-
 export function openChatChannel(cid: number): Action {
   return {
     type: 'OPEN_CHAT_CHANNEL',
@@ -737,7 +725,7 @@ export function setChatChannel(windowId: number, cid: number): Action {
   return {
     type: 'SET_CHAT_CHANNEL',
     windowId,
-    cid,
+    cid: Number(cid),
   };
 }
 
