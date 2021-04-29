@@ -8,8 +8,8 @@ import type { Action } from '../actions/types';
 
 import { clamp } from '../core/utils';
 
-const SCREEN_MARGIN_SE = 30;
-const SCREEN_MARGIN_W = 70;
+const SCREEN_MARGIN_S = 30;
+const SCREEN_MARGIN_EW = 70;
 const MIN_WIDTH = 70;
 const MIN_HEIGHT = 50;
 
@@ -191,8 +191,8 @@ export default function windows(
           {
             ...win,
             windowId: newWindowId,
-            xPos: Math.min(win.xPos + 15, width - SCREEN_MARGIN_SE),
-            yPos: Math.min(win.yPos + 15, height - SCREEN_MARGIN_SE),
+            xPos: Math.min(win.xPos + 15, width - SCREEN_MARGIN_EW),
+            yPos: Math.min(win.yPos + 15, height - SCREEN_MARGIN_S),
           },
         ],
         args: {
@@ -300,10 +300,10 @@ export default function windows(
           ...win,
           xPos: clamp(
             win.xPos + xDiff,
-            -win.width + SCREEN_MARGIN_W,
-            width - SCREEN_MARGIN_SE,
+            -win.width + SCREEN_MARGIN_EW,
+            width - SCREEN_MARGIN_S,
           ),
-          yPos: clamp(win.yPos + yDiff, 0, height - SCREEN_MARGIN_SE),
+          yPos: clamp(win.yPos + yDiff, 0, height - SCREEN_MARGIN_S),
         };
       });
       return {
@@ -322,14 +322,15 @@ export default function windows(
         if (win.windowId !== windowId) return win;
         return {
           ...win,
-          width: Math.max(
+          width: clamp(
             win.width + xDiff,
-            MIN_WIDTH,
-            SCREEN_MARGIN_W - win.xPos,
+            Math.max(MIN_WIDTH, SCREEN_MARGIN_EW - win.xPos),
+            window.innerWidth,
           ),
-          height: Math.max(
+          height: clamp(
             win.height + yDiff,
             MIN_HEIGHT,
+            window.innerHeight,
           ),
         };
       });
@@ -344,20 +345,28 @@ export default function windows(
         width,
         height,
       } = action;
-      const xMax = width - SCREEN_MARGIN_SE;
-      const yMax = height - SCREEN_MARGIN_SE;
+      const xMax = width - SCREEN_MARGIN_EW;
+      const yMax = height - SCREEN_MARGIN_S;
       let modified = false;
 
       const newWindows = [];
       for (let i = 0; i < state.windows.length; i += 1) {
         const win = state.windows[i];
-        const { xPos, yPos } = win;
-        if (xPos > xMax || yPos > yMax) {
+        const {
+          xPos,
+          yPos,
+          width: winWidth,
+          height: winHeight,
+        } = win;
+        if (xPos > xMax || yPos > yMax
+          || width > winWidth || height > winHeight) {
           modified = true;
           newWindows.push({
             ...win,
             xPos: Math.min(xMax, xPos),
             yPos: Math.min(yMax, yPos),
+            width: Math.min(winWidth, width - SCREEN_MARGIN_S),
+            height: Math.min(winHeight, height - SCREEN_MARGIN_S),
           });
         } else {
           newWindows.push(win);

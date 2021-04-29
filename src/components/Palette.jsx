@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import { selectColor } from '../actions';
 import type { State } from '../reducers';
-import useWindowSize from '../utils/reactHookResize';
+import useWindowSize from './hooks/resize';
 
 
 /*
