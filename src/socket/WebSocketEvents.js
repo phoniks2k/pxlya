@@ -37,9 +37,6 @@ class WebSocketEvents {
   ) {
   }
 
-  notifyChangedMe(name: string) {
-  }
-
   reloadUser(name: string) {
   }
 

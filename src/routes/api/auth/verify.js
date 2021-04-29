@@ -19,7 +19,7 @@ export default async (req: Request, res: Response) => {
   if (name) {
     // notify websoecket to reconnect user
     // thats a bit counter productive because it directly links to the websocket
-    webSockets.notifyChangedMe(name);
+    webSockets.reloadUser(name);
     // ---
     const index = getHtml(
       t`Mail verification`,
