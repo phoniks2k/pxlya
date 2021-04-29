@@ -64,6 +64,7 @@ export type Action =
     channel: number,
     user: number,
     isPing: boolean,
+    isRead: boolean,
   }
   | { type: 'RECEIVE_CHAT_HISTORY', cid: number, history: Array }
   | { type: 'OPEN_CHAT_CHANNEL', cid: number }

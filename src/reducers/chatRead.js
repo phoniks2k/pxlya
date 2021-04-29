@@ -18,17 +18,12 @@ export type ChatReadState = {
   // booleans if channel is unread
   // {cid: unread, ...}
   unread: Object,
-  // currently open chat channels can contain duplications
-  // just used to keep track of what channels we are seeing in
-  // windows to decide if readTS gets changed,
-  chatChannels: Array,
 };
 
 const initialState: ChatReadState = {
   mute: [],
   readTs: {},
   unread: {},
-  chatChannels: [],
 };
 
 
@@ -56,38 +51,6 @@ export default function chatRead(
         ...state,
         readTs,
         unread,
-      };
-    }
-
-    case 'OPEN_CHAT_CHANNEL': {
-      const { cid } = action;
-      return {
-        ...state,
-        chatChannels: [
-          ...state.chatChannels,
-          cid,
-        ],
-        readTs: {
-          ...state.readTs,
-          [cid]: Date.now() + TIME_DIFF_THREASHOLD,
-        },
-        unread: {
-          ...state.unread,
-          [cid]: false,
-        },
-      };
-    }
-
-    case 'CLOSE_CHAT_CHANNEL': {
-      const { cid } = action;
-      const chatChannels = [...state.chatChannels];
-      const pos = chatChannels.indexOf(cid);
-      if (pos !== -1) {
-        chatChannels.splice(pos, 1);
-      }
-      return {
-        ...state,
-        chatChannels,
       };
     }
 
@@ -123,23 +86,56 @@ export default function chatRead(
     }
 
     case 'RECEIVE_CHAT_MESSAGE': {
-      const { channel: cid } = action;
-      const { chatChannels } = state;
-      const readTs = chatChannels.includes(cid)
+      const { channel: cid, isRead } = action;
+      const readTs = isRead
         ? {
           ...state.readTs,
           // 15s treshold for desync
           [cid]: Date.now() + TIME_DIFF_THREASHOLD,
         } : state.readTs;
-      const unread = chatChannels.includes(cid)
-        ? {
+      const unread = isRead
+        ? state.unread
+        : {
           ...state.unread,
           [cid]: true,
-        } : state.unread;
+        };
       return {
         ...state,
         readTs,
         unread,
+      };
+    }
+
+    case 'OPEN_WINDOW': {
+      const cid = action.args.chatChannel;
+      if (!cid) {
+        return state;
+      }
+      return {
+        ...state,
+        readTs: {
+          ...state.readTs,
+          [cid]: Date.now() + TIME_DIFF_THREASHOLD,
+        },
+        unread: {
+          ...state.unread,
+          [cid]: false,
+        },
+      };
+    }
+
+    case 'SET_CHAT_CHANNEL': {
+      const { cid } = action;
+      return {
+        ...state,
+        readTs: {
+          ...state.readTs,
+          [cid]: Date.now() + TIME_DIFF_THREASHOLD,
+        },
+        unread: {
+          ...state.unread,
+          [cid]: false,
+        },
       };
     }
 

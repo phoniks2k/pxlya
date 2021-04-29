@@ -25,6 +25,8 @@ const Window = ({ id }) => {
 
   const startMove = useCallback((event) => {
     event.preventDefault();
+    dispatch(focusWindow());
+
     let {
       clientX: startX,
       clientY: startY,
@@ -50,6 +52,8 @@ const Window = ({ id }) => {
 
   const startResize = useCallback((event) => {
     event.preventDefault();
+    dispatch(focusWindow());
+
     let {
       clientX: startX,
       clientY: startY,
@@ -111,7 +115,7 @@ const Window = ({ id }) => {
   return (
     <div
       className={`window ${windowType}`}
-      onMouseDown={() => dispatch(focusWindow(id))}
+      onClick={() => dispatch(focusWindow(id))}
       style={{
         left: xPos,
         top: yPos,

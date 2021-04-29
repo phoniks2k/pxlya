@@ -224,6 +224,7 @@ export function receiveChatMessage(
   channel: number,
   user: number,
   isPing: boolean,
+  isRead: boolean,
 ): Action {
   return {
     type: 'RECEIVE_CHAT_MESSAGE',
@@ -233,6 +234,7 @@ export function receiveChatMessage(
     channel,
     user,
     isPing,
+    isRead,
   };
 }
 

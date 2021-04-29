@@ -166,7 +166,8 @@ class ProtocolClient extends EventEmitter {
         case 5: {
           // chat message
           const [name, text, country, channelId, userId] = data;
-          this.emit('chatMessage', name, text, country, channelId, userId);
+          this.emit('chatMessage',
+            name, text, country, Number(channelId), userId);
           return;
         }
 

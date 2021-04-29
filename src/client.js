@@ -63,14 +63,16 @@ function init() {
   ) => {
     const state = store.getState();
     const { nameRegExp } = state.user;
+    const isRead = Object.values(state.windows.args).find(((args) => args.chatChannel === channelId));
     const isPing = (nameRegExp && text.match(nameRegExp));
     store.dispatch(receiveChatMessage(
       name,
       text,
       country,
-      Number(channelId),
+      channelId,
       userId,
       isPing,
+      !!isRead,
     ));
   });
   ProtocolClient.on('changedMe', () => {
