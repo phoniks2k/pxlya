@@ -2,8 +2,8 @@
  * LogIn Form
  * @flow
  */
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import {
@@ -31,86 +31,64 @@ const inputStyles = {
   maxWidth: '35em',
 };
 
-class LogInForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      nameoremail: '',
-      password: '',
-      submitting: false,
+const LogInForm = () => {
+  const [nameoremail, setNameOrEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState([]);
 
-      errors: [],
-    };
+  const dispatch = useDispatch();
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  const handleSubmit = async () => {
+    if (submitting) {
+      return;
+    }
 
-  async handleSubmit(e) {
-    e.preventDefault();
+    const valErrors = validate(nameoremail, password);
+    if (valErrors.length > 0) {
+      setErrors(valErrors);
+      return;
+    }
 
-    const { nameoremail, password, submitting } = this.state;
-    const { login } = this.props;
-    if (submitting) return;
-
-    const errors = validate(nameoremail, password);
-
-    this.setState({ errors });
-    if (errors.length > 0) return;
-
-    this.setState({ submitting: true });
-    const { errors: resperrors, me } = await requestLogin(
+    setSubmitting(true);
+    const { errors: respErrors, me } = await requestLogin(
       nameoremail,
       password,
     );
-    if (resperrors) {
-      this.setState({
-        errors: resperrors,
-        submitting: false,
-      });
+    setSubmitting(false);
+    if (respErrors) {
+      setErrors(respErrors);
       return;
     }
-    login(me);
-  }
-
-  render() {
-    const {
-      errors, nameoremail, password, submitting,
-    } = this.state;
-    return (
-      <form onSubmit={this.handleSubmit}>
-        {errors.map((error) => (
-          <p key={error}><span>{t`Error`}</span>:&nbsp;{error}</p>
-        ))}
-        <input
-          value={nameoremail}
-          style={inputStyles}
-          onChange={(evt) => this.setState({ nameoremail: evt.target.value })}
-          type="text"
-          placeholder={t`Name or Email`}
-        /><br />
-        <input
-          value={password}
-          style={inputStyles}
-          onChange={(evt) => this.setState({ password: evt.target.value })}
-          type="password"
-          placeholder={t`Password`}
-        />
-        <p>
-          <button type="submit">
-            {(submitting) ? '...' : t`LogIn`}
-          </button>
-        </p>
-      </form>
-    );
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    login(me) {
-      dispatch(loginUser(me));
-    },
+    dispatch(loginUser(me));
   };
-}
 
-export default connect(null, mapDispatchToProps)(LogInForm);
+  return (
+    <form onSubmit={handleSubmit}>
+      {errors.map((error) => (
+        <p key={error}><span>{t`Error`}</span>:&nbsp;{error}</p>
+      ))}
+      <input
+        value={nameoremail}
+        style={inputStyles}
+        onChange={(evt) => setNameOrEmail(evt.target.value)}
+        type="text"
+        placeholder={t`Name or Email`}
+      /><br />
+      <input
+        value={password}
+        style={inputStyles}
+        onChange={(evt) => setPassword(evt.target.value)}
+        type="password"
+        placeholder={t`Password`}
+      />
+      <p>
+        <button type="submit">
+          {(submitting) ? '...' : t`LogIn`}
+        </button>
+      </p>
+    </form>
+  );
+};
+
+export default React.memo(LogInForm);

@@ -173,7 +173,7 @@ const Chat = ({
         }
       </ul>
       {(ownName) ? (
-        <div classNam="chatinput">
+        <div className="chatinput">
           <form
             onSubmit={(e) => handleSubmit(e)}
             style={{ display: 'flex', flexDirection: 'row' }}

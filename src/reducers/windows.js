@@ -327,6 +327,43 @@ export default function windows(
       };
     }
 
+    case 'CHANGE_WINDOW_TYPE': {
+      const {
+        windowId,
+        windowType,
+      } = action;
+      const args = {
+        ...state.args,
+        [windowId]: {
+          ...action.args,
+        },
+      };
+      if (windowId === 0) {
+        return {
+          ...state,
+          args,
+          modal: {
+            ...state.modal,
+            windowType,
+          },
+        };
+      }
+      const newWindows = state.windows.map((win) => {
+        if (win.windowId !== windowId) {
+          return win;
+        }
+        return {
+          ...win,
+          windowType,
+        };
+      });
+      return {
+        ...state,
+        args,
+        windows: newWindows,
+      };
+    }
+
     case 'FOCUS_WINDOW': {
       const {
         windowId,

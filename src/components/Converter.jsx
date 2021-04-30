@@ -270,8 +270,8 @@ function Converter({
   );
 
   return (
-    <p style={{ textAlign: 'center' }}>
-      <p className="modalcotext">{t`Choose Canvas`}:&nbsp;
+    <div style={{ textAlign: 'center' }}>
+      <div className="modalcotext">{t`Choose Canvas`}:&nbsp;
         <select
           onChange={(e) => {
             const sel = e.target;
@@ -296,9 +296,9 @@ function Converter({
           ))
         }
         </select>
-      </p>
+      </div>
       <h3 className="modaltitle">{t`Palette Download`}</h3>
-      <p className="modalcotext">
+      <div className="modalcotext">
         {jt`Palette for ${gimpLink}`}:&nbsp;
         <button
           type="button"
@@ -319,7 +319,7 @@ function Converter({
         <p>
           {jt`Credit for the Palette of the Moon goes to ${starhouseLink}.`}
         </p>
-      </p>
+      </div>
       <h3 className="modaltitle">{t`Image Converter`}</h3>
       <p className="modalcotext">{t`Convert an image to canvas colors`}</p>
       <input
@@ -611,7 +611,7 @@ function Converter({
               )}
           </div>
         ) : null}
-    </p>
+    </div>
   );
 }
 

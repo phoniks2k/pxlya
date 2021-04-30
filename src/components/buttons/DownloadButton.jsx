@@ -4,15 +4,12 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { MdFileDownload } from 'react-icons/md';
 import fileDownload from 'js-file-download';
 import { t } from 'ttag';
 
 import { getRenderer } from '../../ui/renderer';
-
-import type { State } from '../../reducers';
-
 
 /**
  * https://jsfiddle.net/AbdiasSoftware/7PRNN/
@@ -29,23 +26,21 @@ function download(view) {
 }
 
 
-const DownloadButton = ({ view }) => (
-  <div
-    id="downloadbutton"
-    className="actionbuttons"
-    role="button"
-    title={t`Make Screenshot`}
-    tabIndex={0}
-    onClick={() => download(view)}
-  >
-    <MdFileDownload />
-  </div>
-);
+const DownloadButton = () => {
+  const view = useSelector((state) => state.canvas.view);
 
-// TODO optimize
-function mapStateToProps(state: State) {
-  const { view } = state.canvas;
-  return { view };
-}
+  return (
+    <div
+      id="downloadbutton"
+      className="actionbuttons"
+      role="button"
+      title={t`Make Screenshot`}
+      tabIndex={0}
+      onClick={() => download(view)}
+    >
+      <MdFileDownload />
+    </div>
+  );
+};
 
-export default connect(mapStateToProps)(DownloadButton);
+export default React.memo(DownloadButton);

@@ -3,12 +3,13 @@
  * @flow
  */
 
-import React, {
-  useRef, useEffect,
-} from 'react';
+import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
+import {
+  useClickOutside,
+} from '../hooks/clickOutside';
 import {
   hideContextMenu,
   addToChatInputMessage,
@@ -29,22 +30,7 @@ const UserContextMenu = () => {
   const dispatch = useDispatch();
   const close = () => dispatch(hideContextMenu());
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        event.stopPropagation();
-        close();
-      }
-    };
-    document.addEventListener('click', handleClickOutside, {
-      capture: true,
-    });
-    return () => {
-      document.removeEventListener('click', handleClickOutside, {
-        capture: true,
-      });
-    };
-  }, [wrapperRef]);
+  useClickOutside([wrapperRef], close);
 
   return (
     <div

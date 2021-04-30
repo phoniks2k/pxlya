@@ -604,6 +604,15 @@ export function showUserAreaModal(): Action {
   );
 }
 
+export function changeWindowType(windowId, windowType, args = null) {
+  return {
+    type: 'CHANGE_WINDOW_TYPE',
+    windowId,
+    windowType,
+    args,
+  };
+}
+
 export function showRegisterModal(): Action {
   return showModal(
     'REGISTER',

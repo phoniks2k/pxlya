@@ -5,44 +5,36 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { MdPalette } from 'react-icons/md';
 import { t } from 'ttag';
 
 import { toggleOpenPalette } from '../../actions';
 
-const PalselButton = ({
-  palette, onToggle, selectedColor, paletteOpen,
-}) => (
-  <div
-    id="palselbutton"
-    className={`actionbuttons ${(paletteOpen) ? '' : 'pressed'}`}
-    style={{
-      color: palette.isDark(selectedColor) ? 'white' : 'black',
-      backgroundColor: palette.colors[selectedColor],
-    }}
-    role="button"
-    title={(paletteOpen) ? t`Close Palette` : t`Open Palette`}
-    tabIndex={0}
-    onClick={onToggle}
-  >
-    <MdPalette />
-  </div>
-);
+const PalselButton = () => {
+  const paletteOpen = useSelector((state) => state.gui.paletteOpen);
+  const [palette, selectedColor] = useSelector((state) => [
+    state.canvas.palette,
+    state.canvas.selectedColor,
+  ], shallowEqual);
+  const dispatch = useDispatch();
 
-// TODO simplify...
-function mapStateToProps(state: State) {
-  const { paletteOpen } = state.gui;
-  const { palette, selectedColor } = state.canvas;
-  return { palette, selectedColor, paletteOpen };
-}
+  return (
+    <div
+      id="palselbutton"
+      className={`actionbuttons ${(paletteOpen) ? '' : 'pressed'}`}
+      style={{
+        color: palette.isDark(selectedColor) ? 'white' : 'black',
+        backgroundColor: palette.colors[selectedColor],
+      }}
+      role="button"
+      title={(paletteOpen) ? t`Close Palette` : t`Open Palette`}
+      tabIndex={0}
+      onClick={() => dispatch(toggleOpenPalette())}
+    >
+      <MdPalette />
+    </div>
+  );
+};
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onToggle() {
-      dispatch(toggleOpenPalette());
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PalselButton);
+export default React.memo(PalselButton);

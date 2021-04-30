@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'ttag';
 
 import {
@@ -13,105 +13,83 @@ import {
 } from '../actions';
 import MdToggleButtonHover from './MdToggleButtonHover';
 
-const SocialSettings = ({
-  blocked,
-  fetching,
-  blockDm,
-  setBlockDm,
-  unblock,
-  done,
-}) => (
-  <div className="inarea">
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'nowrap',
-        margin: 10,
-      }}
-    >
-      <span
+const SocialSettings = ({ done }) => {
+  const blocked = useSelector((state) => state.chat.blocked);
+  const blockDm = useSelector((state) => state.user.blockDm);
+  const fetching = useSelector((state) => state.fetching.fetchingApi);
+  const dispatch = useDispatch();
+
+  return (
+    <div className="inarea">
+      <div
         style={{
-          flex: 'auto',
+          display: 'flex',
+          flexWrap: 'nowrap',
+          margin: 10,
+        }}
+      >
+        <span
+          style={{
+            flex: 'auto',
+            textAlign: 'left',
+          }}
+          className="modaltitle"
+        >
+          {t`Block all Private Messages`}
+        </span>
+        <MdToggleButtonHover
+          value={blockDm}
+          onToggle={() => {
+            if (!fetching) {
+              dispatch(setBlockingDm(!blockDm));
+            }
+          }}
+        />
+      </div>
+      <div className="modaldivider" />
+      <p
+        style={{
           textAlign: 'left',
+          marginLeft: 10,
         }}
         className="modaltitle"
-      >
-        {t`Block all Private Messages`}
-      </span>
-      <MdToggleButtonHover
-        value={blockDm}
-        onToggle={() => {
-          if (!fetching) {
-            setBlockDm(!blockDm);
+      >{t`Unblock Users`}</p>
+      {
+        (blocked.length) ? (
+          <span
+            className="unblocklist"
+          >
+            {
+            blocked.map((bl) => (
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  if (!fetching) {
+                    dispatch(setUserBlock(bl[0], bl[1], false));
+                  }
+                }}
+              >
+                {`⦸ ${bl[1]}`}
+              </div>
+            ))
           }
-        }}
-      />
-    </div>
-    <div className="modaldivider" />
-    <p
-      style={{
-        textAlign: 'left',
-        marginLeft: 10,
-      }}
-      className="modaltitle"
-    >{t`Unblock Users`}</p>
-    {
-      (blocked.length) ? (
-        <span
-          className="unblocklist"
-        >
-          {
-          blocked.map((bl) => (
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => {
-                if (!fetching) {
-                  unblock(bl[0], bl[1]);
-                }
-              }}
-            >
-              {`⦸ ${bl[1]}`}
-            </div>
-          ))
-        }
-        </span>
-      )
-        : (
-          <p className="modaltext">{t`You have no users blocked`}</p>
+          </span>
         )
-    }
-    <div className="modaldivider" />
-    <button
-      type="button"
-      onClick={done}
-      style={{ margin: 10 }}
-    >
-      Done
-    </button>
-  </div>
-);
+          : (
+            <p className="modaltext">{t`You have no users blocked`}</p>
+          )
+      }
+      <div className="modaldivider" />
+      <button
+        type="button"
+        onClick={done}
+        style={{ margin: 10 }}
+      >
+        Done
+      </button>
+    </div>
+  );
+};
 
-function mapStateToProps(state: State) {
-  const { blocked } = state.chat;
-  const { blockDm } = state.user;
-  const { fetchingApi: fetching } = state.fetching;
-  return {
-    blocked,
-    blockDm,
-    fetching,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    setBlockDm(block) {
-      dispatch(setBlockingDm(block));
-    },
-    unblock(userId, userName) {
-      dispatch(setUserBlock(userId, userName, false));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SocialSettings);
+export default React.memo(SocialSettings);

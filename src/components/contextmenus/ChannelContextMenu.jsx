@@ -3,49 +3,31 @@
  * @flow
  */
 
-import React, {
-  useRef, useEffect,
-} from 'react';
-import { connect } from 'react-redux';
+import React, { useRef, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
+import {
+  useClickOutside,
+} from '../hooks/clickOutside';
 import {
   hideContextMenu,
   setLeaveChannel,
   muteChatChannel,
   unmuteChatChannel,
 } from '../../actions';
-import type { State } from '../../reducers';
 
-const ChannelContextMenu = ({
-  xPos,
-  yPos,
-  cid,
-  channels,
-  leave,
-  muteArr,
-  mute,
-  unmute,
-  close,
-}) => {
+const ChannelContextMenu = () => {
   const wrapperRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        event.stopPropagation();
-        close();
-      }
-    };
-    document.addEventListener('click', handleClickOutside, {
-      capture: true,
-    });
-    return () => {
-      document.removeEventListener('click', handleClickOutside, {
-        capture: true,
-      });
-    };
-  }, [wrapperRef]);
+  const channels = useSelector((state) => state.chat.channels);
+  const muteArr = useSelector((state) => state.chatRead.mute);
+  const { xPos, yPos, args } = useSelector((state) => state.contextMenu);
+  const { cid } = args;
+  const dispatch = useDispatch();
+  const close = useCallback(() => dispatch(hideContextMenu()), [dispatch]);
+
+  useClickOutside([wrapperRef], close);
 
   const isMuted = muteArr.includes(cid);
 
@@ -62,9 +44,9 @@ const ChannelContextMenu = ({
         role="button"
         onClick={() => {
           if (isMuted) {
-            unmute(cid);
+            dispatch(unmuteChatChannel(cid));
           } else {
-            mute(cid);
+            dispatch(muteChatChannel(cid));
           }
         }}
         tabIndex={0}
@@ -77,7 +59,7 @@ const ChannelContextMenu = ({
         <div
           role="button"
           onClick={() => {
-            leave(cid);
+            dispatch(setLeaveChannel(cid));
             close();
           }}
           tabIndex={0}
@@ -89,43 +71,4 @@ const ChannelContextMenu = ({
   );
 };
 
-function mapStateToProps(state: State) {
-  const {
-    xPos,
-    yPos,
-    args,
-  } = state.contextMenu;
-  const {
-    channels,
-  } = state.chat;
-  const {
-    cid,
-  } = args;
-  const { mute: muteArr } = state.chatRead;
-  return {
-    xPos,
-    yPos,
-    cid,
-    channels,
-    muteArr,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    close() {
-      dispatch(hideContextMenu());
-    },
-    leave(cid) {
-      dispatch(setLeaveChannel(cid));
-    },
-    mute(cid) {
-      dispatch(muteChatChannel(cid));
-    },
-    unmute(cid) {
-      dispatch(unmuteChatChannel(cid));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChannelContextMenu);
+export default React.memo(ChannelContextMenu);
