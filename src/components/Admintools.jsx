@@ -195,7 +195,7 @@ function Admintools({
   }, []);
 
   return (
-    <p style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
+    <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
       {resp && (
         <div style={{
           borderStyle: 'solid',
@@ -593,7 +593,7 @@ function Admintools({
           <br />
         </div>
       )}
-    </p>
+    </div>
   );
 }
 

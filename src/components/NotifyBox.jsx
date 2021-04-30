@@ -3,42 +3,34 @@
  * @flow
  */
 
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-
-import type { State } from '../reducers';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 
-const NotifyBox = ({ notification }) => {
+const NotifyBox = () => {
   const [className, setClassName] = useState('notifybox');
-  const [value, setValue] = useState(notification);
+  const notification = useSelector((state) => state.user.notification);
 
-  if (notification) {
-    let newClassName = 'notifybox';
-    if (notification && typeof notification !== 'string') {
-      if (notification > 0) newClassName += ' green';
-      else newClassName += ' red';
+  useEffect(() => {
+    if (notification) {
+      let newClassName = 'notifybox';
+      if (notification && typeof notification !== 'string') {
+        if (notification > 0) newClassName += ' green';
+        else newClassName += ' red';
+      }
+      if (newClassName !== className) {
+        setClassName(newClassName);
+      }
     }
-    if (newClassName !== className) {
-      setClassName(newClassName);
-    }
-    if (notification !== value) {
-      setValue(notification);
-    }
-  }
+  }, [notification]);
 
   return (
     <div
       className={(notification) ? `${className} show` : className}
     >
-      {value}
+      {notification}
     </div>
   );
 };
 
-function mapStateToProps(state: State) {
-  const { notification } = state.user;
-  return { notification };
-}
-
-export default connect(mapStateToProps)(NotifyBox);
+export default React.memo(NotifyBox);

@@ -4,11 +4,9 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { Md3DRotation } from 'react-icons/md';
 import { t } from 'ttag';
-
-import type { State } from '../../reducers';
 
 
 /**
@@ -21,28 +19,26 @@ function globe(canvasId, canvasIdent, canvasSize, view) {
 }
 
 
-const GlobeButton = ({
-  canvasId, canvasIdent, canvasSize, view,
-}) => (
-  <div
-    role="button"
-    tabIndex={-1}
-    id="globebutton"
-    title={t`Globe View`}
-    className="actionbuttons"
-    onClick={() => globe(canvasId, canvasIdent, canvasSize, view)}
-  >
-    <Md3DRotation />
-  </div>
-);
+const GlobeButton = () => {
+  const [canvasId, canvasIdent, canvasSize, view] = useSelector((state) => [
+    state.canvas.canvasId,
+    state.canvas.canvasIdent,
+    state.canvas.canvasSize,
+    state.canvas.view,
+  ], shallowEqual);
 
-function mapStateToProps(state: State) {
-  const {
-    canvasId, canvasIdent, canvasSize, view,
-  } = state.canvas;
-  return {
-    canvasId, canvasIdent, canvasSize, view,
-  };
-}
+  return (
+    <div
+      role="button"
+      tabIndex={-1}
+      id="globebutton"
+      title={t`Globe View`}
+      className="actionbuttons"
+      onClick={() => globe(canvasId, canvasIdent, canvasSize, view)}
+    >
+      <Md3DRotation />
+    </div>
+  );
+};
 
-export default connect(mapStateToProps)(GlobeButton);
+export default React.memo(GlobeButton);

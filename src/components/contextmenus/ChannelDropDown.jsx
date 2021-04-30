@@ -5,11 +5,13 @@
  */
 
 import React, {
-  useRef, useState, useEffect, useCallback, useLayoutEffect,
+  useRef, useState, useEffect, useCallback,
 } from 'react';
 import { useSelector } from 'react-redux';
 import { MdChat } from 'react-icons/md';
 import { FaUserFriends } from 'react-icons/fa';
+
+import { useConditionalClickOutside } from '../hooks/clickOutside';
 
 const ChannelDropDown = ({
   setChatChannel,
@@ -37,35 +39,18 @@ const ChannelDropDown = ({
     setOffset(buttonRef.current.clientHeight);
   }, [buttonRef]);
 
-  const handleClickOutside = useCallback((event) => {
-    if (wrapperRef.current
-      && !wrapperRef.current.contains(event.target)
-      && !buttonRef.current.contains(event.target)
-    ) {
-      event.stopPropagation();
-      setShow(false);
-    }
-  }, []);
+  useConditionalClickOutside(
+    [wrapperRef],
+    show,
+    useCallback(() => setShow(false), []),
+  );
 
-  const handleWindowResize = useCallback(() => {
-    setShow(false);
-  }, []);
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (show) {
       if (channels[chatChannel]) {
         const chType = (channels[chatChannel][1] === 1) ? 1 : 0;
         setType(chType);
       }
-      document.addEventListener('click', handleClickOutside, {
-        capture: true,
-      });
-      window.addEventListener('resize', handleWindowResize);
-    } else {
-      document.removeEventListener('click', handleClickOutside, {
-        capture: true,
-      });
-      window.removeEventListener('resize', handleWindowResize);
     }
   }, [show]);
 
@@ -133,7 +118,7 @@ const ChannelDropDown = ({
         ref={buttonRef}
         role="button"
         tabIndex={-1}
-        onClick={() => setShow(!show)}
+        onClick={() => setShow(true)}
         className={`channelbtn${(show) ? ' selected' : ''}`}
       >
         {(unreadAny && chatNotify && !show) && (

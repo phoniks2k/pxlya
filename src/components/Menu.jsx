@@ -5,24 +5,16 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import HelpButton from './buttons/HelpButton';
 import SettingsButton from './buttons/SettingsButton';
 import LogInButton from './buttons/LogInButton';
 import DownloadButton from './buttons/DownloadButton';
-/*
- * removed MinecraftButton cause it didn't get used in over a year
- * also CSS rule got removed
- * and MinecraftModal from ModalRoot
- * and MinecraftTPButton from App
- * (support for it will be otherwise still kept)
- */
 
-function Menu({
-  menuOpen,
-}) {
+const Menu = () => {
   const [render, setRender] = useState(false);
+  const menuOpen = useSelector((state) => state.gui.menuOpen);
 
   useEffect(() => {
     window.setTimeout(() => {
@@ -47,11 +39,6 @@ function Menu({
       </div>
     )
   );
-}
+};
 
-function mapStateToProps(state: State) {
-  const { menuOpen } = state.gui;
-  return { menuOpen };
-}
-
-export default connect(mapStateToProps)(Menu);
+export default React.memo(Menu);

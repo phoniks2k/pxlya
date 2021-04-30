@@ -5,6 +5,9 @@
 
 import React, { useState } from 'react';
 import { t } from 'ttag';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setMailreg } from '../actions';
 import { validatePassword } from '../utils/validation';
 import { requestPasswordChange } from '../actions/fetch';
 
@@ -25,13 +28,16 @@ function validate(mailreg, password, newPassword, confirmPassword) {
   return errors;
 }
 
-const ChangePassword = ({ mailreg, done, cancel }) => {
+const ChangePassword = ({ done }) => {
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState([]);
+
+  const mailreg = useSelector((state) => state.user.mailreg);
+  const dispatch = useDispatch();
 
   if (success) {
     return (
@@ -66,6 +72,7 @@ const ChangePassword = ({ mailreg, done, cancel }) => {
             setSubmitting(false);
             return;
           }
+          dispatch(setMailreg(true));
           setSuccess(true);
         }}
       >
@@ -104,7 +111,7 @@ const ChangePassword = ({ mailreg, done, cancel }) => {
         </button>
         <button
           type="button"
-          onClick={cancel}
+          onClick={done}
         >
           {t`Cancel`}
         </button>

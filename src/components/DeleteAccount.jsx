@@ -3,8 +3,8 @@
  * @flow
  */
 
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import { validatePassword } from '../utils/validation';
@@ -20,76 +20,55 @@ function validate(password) {
   return errors;
 }
 
-class DeleteAccount extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      password: '',
-      submitting: false,
+const DeleteAccount = ({ done }) => {
+  const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [errors, setErrors] = useState([]);
 
-      errors: [],
-    };
+  const dispatch = useDispatch();
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  async handleSubmit(e) {
-    e.preventDefault();
-
-    const { password, submitting } = this.state;
-    if (submitting) return;
-
-    const errors = validate(password);
-
-    this.setState({ errors });
-    if (errors.length > 0) return;
-    this.setState({ submitting: true });
-
-    const { errors: resperrors } = await requestDeleteAccount(password);
-    if (resperrors) {
-      this.setState({
-        errors: resperrors,
-        submitting: false,
-      });
+  const handleSubmit = async () => {
+    if (submitting) {
       return;
     }
-    const { logout } = this.props;
-    logout();
-  }
 
-  render() {
-    const { errors, password, submitting } = this.state;
-    const { done } = this.props;
-    return (
-      <div className="inarea" style={{ backgroundColor: '#ff6666' }}>
-        <form onSubmit={this.handleSubmit}>
-          {errors.map((error) => (
-            <p key={error} className="errormessage"><span>{t`Error`}</span>
-              :&nbsp;{error}</p>
-          ))}
-          <input
-            value={password}
-            onChange={(evt) => this.setState({ password: evt.target.value })}
-            type="password"
-            placeholder={t`Password`}
-          />
-          <br />
-          <button type="submit">
-            {(submitting) ? '...' : t`Yes, Delete My Account!`}
-          </button>
-          <button type="button" onClick={done}>{t`Cancel`}</button>
-        </form>
-      </div>
-    );
-  }
-}
+    const valErrors = validate(password);
+    if (valErrors.length > 0) {
+      setErrors(valErrors);
+      return;
+    }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    async logout() {
-      dispatch(logoutUser());
-    },
+    setSubmitting(true);
+    const { errors: respErrors } = await requestDeleteAccount(password);
+    setSubmitting(false);
+    if (respErrors) {
+      setErrors(respErrors);
+      return;
+    }
+    dispatch(logoutUser());
   };
-}
 
-export default connect(null, mapDispatchToProps)(DeleteAccount);
+  return (
+    <div className="inarea" style={{ backgroundColor: '#ff6666' }}>
+      <form onSubmit={handleSubmit}>
+        {errors.map((error) => (
+          <p key={error} className="errormessage"><span>{t`Error`}</span>
+            :&nbsp;{error}</p>
+        ))}
+        <input
+          value={password}
+          onChange={(evt) => setPassword(evt.target.value)}
+          type="password"
+          placeholder={t`Password`}
+        />
+        <br />
+        <button type="submit">
+          {(submitting) ? '...' : t`Yes, Delete My Account!`}
+        </button>
+        <button type="button" onClick={done}>{t`Cancel`}</button>
+      </form>
+    </div>
+  );
+};
+
+export default React.memo(DeleteAccount);

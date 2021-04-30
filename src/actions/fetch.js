@@ -220,8 +220,15 @@ export function requestPasswordChange(newPassword, password) {
 
 export async function requestResendVerify() {
   return makeAPIGETRequest(
-    './api/auth/resend_verify',
+    'api/auth/resend_verify',
   );
+}
+
+export async function requestLogOut() {
+  const ret = makeAPIGETRequest(
+    'api/auth/logout',
+  );
+  return !ret.errors;
 }
 
 export function requestNameChange(name) {

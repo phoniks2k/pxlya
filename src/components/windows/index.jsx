@@ -1,9 +1,6 @@
 /*
  * @flow
  */
-
-import React from 'react';
-
 import Help from './Help';
 import Settings from './Settings';
 import UserArea from './UserArea';
@@ -14,7 +11,7 @@ import Chat from './Chat';
 import ForgotPassword from './ForgotPassword';
 
 export default {
-  NONE: <div />,
+  NONE: null,
   HELP: Help,
   SETTINGS: Settings,
   USERAREA: UserArea,
@@ -23,5 +20,5 @@ export default {
   CHAT: Chat,
   CANVAS_SELECTION: CanvasSelect,
   ARCHIVE: Archive,
-  /* other modals */
+  /* other windows */
 };

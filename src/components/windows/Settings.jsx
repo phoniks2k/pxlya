@@ -120,7 +120,7 @@ function Settings({
   chatNotify,
 }) {
   return (
-    <p style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: 30 }}>
+    <div style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: 30 }}>
       <SettingsItem
         title={t`Show Grid`}
         description={t`Turn on grid to highlight pixel borders.`}
@@ -203,7 +203,7 @@ function Settings({
           </div>
         </div>
       )}
-    </p>
+    </div>
   );
 }
 

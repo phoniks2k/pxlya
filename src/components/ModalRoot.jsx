@@ -44,7 +44,7 @@ const ModalRoot = () => {
     return null;
   }
 
-  const Content = COMPONENTS[windowType || 'NONE'];
+  const Content = COMPONENTS[windowType];
 
   return (
     (render || open)
