@@ -421,15 +421,6 @@ export function setName(
   };
 }
 
-export function setMinecraftName(
-  minecraftname: string,
-): Action {
-  return {
-    type: 'SET_MINECRAFT_NAME',
-    minecraftname,
-  };
-}
-
 export function setMailreg(
   mailreg: boolean,
 ): Action {

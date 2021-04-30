@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import ChatMessage from '../ChatMessage';
-import ChannelDropDown from '../ChannelDropDown';
+import ChannelDropDown from '../contextmenus/ChannelDropDown';
 
 import {
   showUserAreaModal,

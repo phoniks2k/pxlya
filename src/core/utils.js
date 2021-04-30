@@ -38,6 +38,14 @@ export function clamp(n: number, min: number, max: number): number {
   return Math.max(min, Math.min(n, max));
 }
 
+/*
+ * convert YYYY-MM-DD to YYYYMMDD
+ */
+export function dateToString(date: string) {
+  // YYYY-MM-DD
+  return date.substr(0, 4) + date.substr(5, 2) + date.substr(8, 2);
+}
+
 // z is assumed to be height here
 // in ui and rendeer, y is height
 export function getChunkOfPixel(

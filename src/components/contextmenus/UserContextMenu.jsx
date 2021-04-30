@@ -15,7 +15,7 @@ import {
   startDm,
   setUserBlock,
   setChatChannel,
-} from '../actions';
+} from '../../actions';
 
 const UserContextMenu = () => {
   const wrapperRef = useRef(null);

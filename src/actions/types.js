@@ -132,7 +132,6 @@ export type Action =
   | { type: 'LOGOUT' }
   | { type: 'RECEIVE_STATS', totalRanking: Object, totalDailyRanking: Object }
   | { type: 'SET_NAME', name: string }
-  | { type: 'SET_MINECRAFT_NAME', minecraftname: string }
   | { type: 'SET_MAILREG', mailreg: boolean }
   | { type: 'REM_FROM_MESSAGES', message: string }
   | { type: 'SHOW_CONTEXT_MENU',

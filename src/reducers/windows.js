@@ -501,7 +501,7 @@ export default function windows(
       const yMax = height - SCREEN_MARGIN_S;
       let modified = false;
 
-      const newWindows = [];
+      let newWindows = [];
       for (let i = 0; i < state.windows.length; i += 1) {
         const win = state.windows[i];
         const {
@@ -523,6 +523,26 @@ export default function windows(
         } else {
           newWindows.push(win);
         }
+      }
+
+      if (action.type === 'RECEIVE_ME') {
+        const args = { ...state.args };
+        newWindows = newWindows.filter((win) => {
+          if (win.open) return true;
+          // eslint-disable-next-line no-console
+          console.log(
+            `Cleaning up window from previous session: ${win.windowId}`,
+          );
+          delete args[win.windowId];
+          return false;
+        });
+
+        return {
+          ...state,
+          showWindows: true,
+          windows: newWindows,
+          args,
+        };
       }
 
       return {

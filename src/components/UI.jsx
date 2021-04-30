@@ -15,8 +15,8 @@ import Palette from './Palette';
 import Alert from './Alert';
 import HistorySelect from './HistorySelect';
 import Mobile3DControls from './Mobile3DControls';
-import UserContextMenu from './UserContextMenu';
-import ChannelContextMenu from './ChannelContextMenu';
+import UserContextMenu from './contextmenus/UserContextMenu';
+import ChannelContextMenu from './contextmenus/ChannelContextMenu';
 
 
 const CONTEXT_MENUS = {

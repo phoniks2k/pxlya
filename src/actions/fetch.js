@@ -7,11 +7,13 @@
 
 import { t } from 'ttag';
 
+import { dateToString } from '../core/utils';
+
 /*
  * Adds customizeable timeout to fetch
  * defaults to 8s
  */
-async function fetchWithTimeout(resource, options) {
+async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 8000 } = options;
 
   const controller = new AbortController();
@@ -189,6 +191,26 @@ export async function requestSolveCaptcha(text) {
   return res;
 }
 
+export async function requestHistoricalTimes(day, canvasId) {
+  try {
+    const date = dateToString(day);
+    const url = `api/history?day=${date}&id=${canvasId}`;
+    const response = await fetchWithTimeout(url);
+    if (response.status !== 200) {
+      return [];
+    }
+    const times = await response.json();
+    const parsedTimes = times
+      .map((a) => `${a.substr(0, 2)}:${a.substr(-2, 2)}`);
+    return [
+      '00:00',
+      ...parsedTimes,
+    ];
+  } catch {
+    return [];
+  }
+}
+
 export function requestPasswordChange(newPassword, password) {
   return makeAPIPOSTRequest(
     'api/auth/change_passwd',
@@ -199,13 +221,6 @@ export function requestPasswordChange(newPassword, password) {
 export async function requestResendVerify() {
   return makeAPIGETRequest(
     './api/auth/resend_verify',
-  );
-}
-
-export function requestMcLink(accepted) {
-  return makeAPIPOSTRequest(
-    'api/auth/mclink',
-    { accepted },
   );
 }
 

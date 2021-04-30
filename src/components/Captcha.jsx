@@ -6,6 +6,8 @@
  * @flow
  */
 
+/* eslint-disable jsx-a11y/no-autofocus */
+
 import React, { useState } from 'react';
 import { t } from 'ttag';
 
@@ -96,6 +98,7 @@ const Captcha = ({ callback, close }) => {
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
+        autoFocus
         style={{
           width: '6em',
           fontSize: 21,

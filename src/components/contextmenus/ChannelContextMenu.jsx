@@ -14,8 +14,8 @@ import {
   setLeaveChannel,
   muteChatChannel,
   unmuteChatChannel,
-} from '../actions';
-import type { State } from '../reducers';
+} from '../../actions';
+import type { State } from '../../reducers';
 
 const ChannelContextMenu = ({
   xPos,
