@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { Md3DRotation } from 'react-icons/md';
 import { t } from 'ttag';
 
-import type { State } from '../reducers';
+import type { State } from '../../reducers';
 
 
 /**

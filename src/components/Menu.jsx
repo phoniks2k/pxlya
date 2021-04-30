@@ -7,10 +7,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import HelpButton from './HelpButton';
-import SettingsButton from './SettingsButton';
-import LogInButton from './LogInButton';
-import DownloadButton from './DownloadButton';
+import HelpButton from './buttons/HelpButton';
+import SettingsButton from './buttons/SettingsButton';
+import LogInButton from './buttons/LogInButton';
+import DownloadButton from './buttons/DownloadButton';
 /*
  * removed MinecraftButton cause it didn't get used in over a year
  * also CSS rule got removed

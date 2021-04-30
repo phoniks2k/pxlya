@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { FaCog } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showSettingsModal } from '../actions';
+import { showSettingsModal } from '../../actions';
 
 
 const SettingsButton = ({ open }) => (

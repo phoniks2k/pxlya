@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { toggleOpenMenu } from '../actions';
+import { toggleOpenMenu } from '../../actions';
 
 const ExpandMenuButton = ({ menuOpen, expand }) => (
   <div

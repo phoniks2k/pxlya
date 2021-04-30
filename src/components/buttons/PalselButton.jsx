@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { MdPalette } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { toggleOpenPalette } from '../actions';
+import { toggleOpenPalette } from '../../actions';
 
 const PalselButton = ({
   palette, onToggle, selectedColor, paletteOpen,

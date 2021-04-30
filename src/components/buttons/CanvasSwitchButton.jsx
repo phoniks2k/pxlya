@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { FaGlobe } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showCanvasSelectionModal } from '../actions';
+import { showCanvasSelectionModal } from '../../actions';
 
 
 const CanvasSwitchButton = ({ open }) => (

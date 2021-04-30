@@ -5,31 +5,32 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { MdPerson } from 'react-icons/md';
+import { FaQuestion } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showUserAreaModal } from '../actions';
+import { showHelpModal } from '../../actions';
 
 
-const LogInButton = ({ open }) => (
+const HelpButton = ({ open }) => (
   <div
-    id="loginbutton"
+    id="helpbutton"
     className="actionbuttons"
     onClick={open}
     role="button"
-    title={t`User Area`}
+    title={t`Help`}
     tabIndex={-1}
   >
-    <MdPerson />
+    <FaQuestion />
   </div>
 );
+
 
 function mapDispatchToProps(dispatch) {
   return {
     open() {
-      dispatch(showUserAreaModal());
+      dispatch(showHelpModal());
     },
   };
 }
 
-export default connect(null, mapDispatchToProps)(LogInButton);
+export default connect(null, mapDispatchToProps)(HelpButton);

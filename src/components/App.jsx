@@ -12,12 +12,12 @@ import store from '../ui/store';
 
 import Style from './Style';
 import CoordinatesBox from './CoordinatesBox';
-import CanvasSwitchButton from './CanvasSwitchButton';
+import CanvasSwitchButton from './buttons/CanvasSwitchButton';
 import OnlineBox from './OnlineBox';
-import ChatButton from './ChatButton';
+import ChatButton from './buttons/ChatButton';
 import Menu from './Menu';
 import UI from './UI';
-import ExpandMenuButton from './ExpandMenuButton';
+import ExpandMenuButton from './buttons/ExpandMenuButton';
 import ModalRoot from './ModalRoot';
 import WindowManager from './WindowManager';
 
