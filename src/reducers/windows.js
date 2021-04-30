@@ -24,6 +24,48 @@ function generateWindowId(state) {
   return windowId;
 }
 
+function clampSize(prefWidth, prefHeight, margin = false) {
+  const width = prefWidth || 550;
+  const height = prefHeight || 330;
+  let maxWidth = window.innerWidth;
+  let maxHeight = window.innerHeight;
+  if (margin) {
+    maxWidth = Math.floor(maxWidth * 0.75);
+    maxHeight = Math.floor(maxHeight * 0.75);
+  }
+  return [
+    clamp(
+      width,
+      MIN_WIDTH,
+      maxWidth,
+    ),
+    clamp(
+      height,
+      MIN_HEIGHT,
+      maxHeight,
+    ),
+  ];
+}
+
+function clampPos(prefXPos, prefYPos, width, height) {
+  const xPos = (prefXPos || prefXPos === 0) ? prefXPos
+    : Math.floor((window.innerWidth - width) / 2);
+  const yPos = (prefYPos || prefYPos === 0) ? prefYPos
+    : Math.floor((window.innerHeight - height) / 2);
+  return [
+    clamp(
+      xPos,
+      SCREEN_MARGIN_EW - width,
+      window.innerWidth - SCREEN_MARGIN_EW,
+    ),
+    clamp(
+      yPos,
+      0,
+      window.innerHeight - SCREEN_MARGIN_S,
+    ),
+  ];
+}
+
 export type WindowsState = {
   // modal is considerd as "fullscreen window"
   // its windowId is considered 0 and args are under args[0]
@@ -32,6 +74,16 @@ export type WindowsState = {
     windowType: ?string,
     title: ?string,
     open: boolean,
+    // used to remember and restore the size
+    // of a maximized window when restoring
+    // {
+    //   xPos: number,
+    //   yPos: number,
+    //   width: number,
+    //   height: number,
+    //   cloneable: boolean,
+    // }
+    prevWinSize: Object,
   },
   // [
   //   {
@@ -62,6 +114,7 @@ const initialState: WindowsState = {
     windowType: null,
     title: null,
     open: false,
+    prevWinSize: {},
   },
   windows: [],
   args: {},
@@ -73,12 +126,24 @@ export default function windows(
 ): WindowsState {
   switch (action.type) {
     case 'OPEN_WINDOW': {
+      /*
+       * prefered xPos, yPos, height adn width
+       * can be given in action (but doesn't have to)
+       */
       const {
         windowType,
         title,
         cloneable,
         args,
+        xPos: prefXPos,
+        yPos: prefYPos,
+        width: prefWidth,
+        height: prefHeight,
       } = action;
+
+      const [width, height] = clampSize(prefWidth, prefHeight, true);
+      const [xPos, yPos] = clampPos(prefXPos, prefYPos, width, height);
+
       const fullscreen = !state.showWindows || action.fullscreen;
       if (fullscreen) {
         return {
@@ -87,6 +152,13 @@ export default function windows(
             windowType,
             title,
             open: true,
+            prevWinSize: {
+              width,
+              height,
+              xPos,
+              yPos,
+              cloneable,
+            },
           },
           args: {
             ...state.args,
@@ -97,12 +169,6 @@ export default function windows(
         };
       }
       const windowId = generateWindowId(state);
-      const {
-        innerWidth: screenWidth,
-        innerHeight: screenHeight,
-      } = window;
-      const width = Math.min(550, Math.floor(screenWidth * 0.75));
-      const height = Math.min(300, Math.floor(screenHeight * 0.75));
       return {
         ...state,
         windows: [
@@ -115,8 +181,8 @@ export default function windows(
             title,
             width,
             height,
-            xPos: Math.floor((screenWidth - width) / 2),
-            yPos: Math.floor((screenHeight - height) / 2),
+            xPos,
+            yPos,
             cloneable,
           },
         ],
@@ -141,6 +207,7 @@ export default function windows(
             windowType: null,
             title: null,
             open: false,
+            prevWinSize: {},
           },
           args,
         };
@@ -291,7 +358,15 @@ export default function windows(
         ...state.args,
         0: state.args[windowId],
       };
-      const { windowType, title } = state.windows
+      const {
+        windowType,
+        title,
+        xPos,
+        yPos,
+        width,
+        height,
+        cloneable,
+      } = state.windows
         .find((w) => w.windowId === windowId);
       delete args[windowId];
       return {
@@ -300,6 +375,13 @@ export default function windows(
           windowType,
           title,
           open: true,
+          prevWinSize: {
+            xPos,
+            yPos,
+            width,
+            height,
+            cloneable,
+          },
         },
         windows: state.windows.filter((w) => w.windowId !== windowId),
         args,
@@ -308,14 +390,18 @@ export default function windows(
 
     case 'RESTORE_WINDOW': {
       const windowId = generateWindowId(state);
-      const { windowType, title } = state.modal;
-      const cloneable = true;
-      const {
-        innerWidth: screenWidth,
-        innerHeight: screenHeight,
-      } = window;
-      const width = Math.min(550, Math.floor(screenWidth * 0.75));
-      const height = Math.min(300, Math.floor(screenHeight * 0.75));
+      const { windowType, title, prevWinSize } = state.modal;
+      const [width, height] = clampSize(
+        prevWinSize.width,
+        prevWinSize.height,
+      );
+      const [xPos, yPos] = clampPos(
+        prevWinSize.xPos,
+        prevWinSize.yPos,
+        width,
+        height,
+      );
+      const cloneable = prevWinSize.cloneable || true;
       return {
         ...state,
         modal: {
@@ -332,8 +418,8 @@ export default function windows(
             title,
             width,
             height,
-            xPos: Math.floor((screenWidth - width) / 2),
-            yPos: Math.floor((screenHeight - height) / 2),
+            xPos,
+            yPos,
             cloneable,
           },
         ],
@@ -352,20 +438,18 @@ export default function windows(
         xDiff,
         yDiff,
       } = action;
-      const {
-        innerWidth: width,
-        innerHeight: height,
-      } = window;
       const newWindows = state.windows.map((win) => {
         if (win.windowId !== windowId) return win;
+        const [xPos, yPos] = clampPos(
+          win.xPos + xDiff,
+          win.yPos + yDiff,
+          win.width,
+          win.height,
+        );
         return {
           ...win,
-          xPos: clamp(
-            win.xPos + xDiff,
-            -win.width + SCREEN_MARGIN_EW,
-            width - SCREEN_MARGIN_EW,
-          ),
-          yPos: clamp(win.yPos + yDiff, 0, height - SCREEN_MARGIN_S),
+          xPos,
+          yPos,
         };
       });
       return {
@@ -382,18 +466,15 @@ export default function windows(
       } = action;
       const newWindows = state.windows.map((win) => {
         if (win.windowId !== windowId) return win;
+        const [width, height] = clampSize(
+          win.width + xDiff,
+          win.height + yDiff,
+          false,
+        );
         return {
           ...win,
-          width: clamp(
-            win.width + xDiff,
-            Math.max(MIN_WIDTH, SCREEN_MARGIN_EW - win.xPos),
-            window.innerWidth,
-          ),
-          height: clamp(
-            win.height + yDiff,
-            MIN_HEIGHT,
-            window.innerHeight,
-          ),
+          width: Math.max(width, SCREEN_MARGIN_EW - win.xPos),
+          height,
         };
       });
       return {
@@ -405,9 +486,9 @@ export default function windows(
     case 'RECEIVE_ME':
     case 'WINDOW_RESIZE': {
       const {
-        width,
-        height,
-      } = action;
+        innerWidth: width,
+        innerHeight: height,
+      } = window;
 
       if (width <= SCREEN_WIDTH_THRESHOLD) {
         return {

@@ -108,7 +108,7 @@ function init() {
   // listen for resize
   //
   function onWindowResize() {
-    store.dispatch(windowResize(window.innerWidth, window.innerHeight));
+    store.dispatch(windowResize());
   }
   window.addEventListener('resize', onWindowResize);
   onWindowResize();

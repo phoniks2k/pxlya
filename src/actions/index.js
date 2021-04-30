@@ -163,11 +163,9 @@ export function setMobile(mobile: boolean): Action {
   };
 }
 
-export function windowResize(width: number, height: number): Action {
+export function windowResize(): Action {
   return {
     type: 'WINDOW_RESIZE',
-    width,
-    height,
   };
 }
 
@@ -572,6 +570,10 @@ export function openWindow(
   fullscreen: boolean,
   cloneable: boolean,
   args: Object,
+  xPos: number = null,
+  yPos: number = null,
+  width: number = null,
+  height: number = null,
 ): Action {
   return {
     type: 'OPEN_WINDOW',
@@ -580,6 +582,10 @@ export function openWindow(
     fullscreen,
     cloneable,
     args,
+    xPos,
+    yPos,
+    width,
+    height,
   };
 }
 
@@ -823,8 +829,17 @@ export function hideAllWindowTypes(
 }
 
 export function openChatWindow(): Action {
-  return openWindow('CHAT', t`Chat`, false, true,
-    { chatChannel: 1, inputMessage: '' });
+  return openWindow(
+    'CHAT',
+    t`Chat`,
+    false,
+    true,
+    { chatChannel: 1, inputMessage: '' },
+    window.innerWidth - 350 - 62,
+    window.innerHeight - 220 - 64,
+    350,
+    220,
+  );
 }
 
 /*

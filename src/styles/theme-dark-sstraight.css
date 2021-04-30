@@ -33,6 +33,11 @@ tr:nth-child(even) {
 .window {
   background-color: rgba(59, 59, 59, 0.98);
   border-radius: 4px;
+  color: #ff8c22;
+}
+
+.win-topbar {
+  color: black;
 }
 
 .win-title {
