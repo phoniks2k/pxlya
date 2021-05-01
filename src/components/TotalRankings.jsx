@@ -4,38 +4,35 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import type { State } from '../reducers';
+const TotalRankings = () => {
+  const totalRanking = useSelector((state) => state.ranks.totalRanking);
 
-const TotalRankings = ({ totalRanking }) => (
-  <div style={{ overflowY: 'auto', display: 'inline-block' }}>
-    <table>
-      <tr>
-        <th>#</th>
-        <th>user</th>
-        <th>Pixels</th>
-        <th># Today</th>
-        <th>Pixels Today</th>
-      </tr>
-      {
-        totalRanking.map((rank) => (
-          <tr>
-            <td>{rank.ranking}</td>
-            <td>{rank.name}</td>
-            <td>{rank.totalPixels}</td>
-            <td>{rank.dailyRanking}</td>
-            <td>{rank.dailyTotalPixels}</td>
-          </tr>
-        ))
-      }
-    </table>
-  </div>
-);
+  return (
+    <div style={{ overflowY: 'auto', display: 'inline-block' }}>
+      <table>
+        <tr>
+          <th>#</th>
+          <th>user</th>
+          <th>Pixels</th>
+          <th># Today</th>
+          <th>Pixels Today</th>
+        </tr>
+        {
+          totalRanking.map((rank) => (
+            <tr>
+              <td>{rank.ranking}</td>
+              <td>{rank.name}</td>
+              <td>{rank.totalPixels}</td>
+              <td>{rank.dailyRanking}</td>
+              <td>{rank.dailyTotalPixels}</td>
+            </tr>
+          ))
+        }
+      </table>
+    </div>
+  );
+};
 
-function mapStateToProps(state: State) {
-  const { totalRanking } = state.ranks;
-  return { totalRanking };
-}
-
-export default connect(mapStateToProps)(TotalRankings);
+export default React.memo(TotalRankings);

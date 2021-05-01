@@ -3,12 +3,12 @@
  * @flow
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
 import CanvasItem from '../CanvasItem';
-import { changeWindowType } from '../../actions';
+import { changeWindowType, selectCanvas } from '../../actions';
 
 
 const CanvasSelect = ({ windowId }) => {
@@ -17,6 +17,8 @@ const CanvasSelect = ({ windowId }) => {
     state.canvas.showHiddenCanvases,
   ], shallowEqual);
   const dispatch = useDispatch();
+  const selCanvas = useCallback((canvasId) => dispatch(selectCanvas(canvasId)),
+    [dispatch]);
 
   return (
     <p style={{
@@ -39,9 +41,14 @@ const CanvasSelect = ({ windowId }) => {
       </p>
       {
           Object.keys(canvases).map((canvasId) => (
-            (canvases[canvasId].hid && !showHiddenCanvases)
-              ? null
-              : <CanvasItem canvasId={canvasId} canvas={canvases[canvasId]} />
+            (!canvases[canvasId].hid || showHiddenCanvases)
+              && (
+                <CanvasItem
+                  canvasId={canvasId}
+                  canvas={canvases[canvasId]}
+                  selCanvas={selCanvas}
+                />
+              )
           ))
         }
     </p>

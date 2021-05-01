@@ -4,33 +4,28 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FaGlobe } from 'react-icons/fa';
 import { t } from 'ttag';
 
 import { showCanvasSelectionModal } from '../../actions';
 
 
-const CanvasSwitchButton = ({ open }) => (
-  <div
-    id="canvasbutton"
-    className="actionbuttons"
-    onClick={open}
-    role="button"
-    title={t`Canvas Selection`}
-    tabIndex={-1}
-  >
-    <FaGlobe />
-  </div>
-);
+const CanvasSwitchButton = () => {
+  const dispatch = useDispatch();
 
-function mapDispatchToProps(dispatch) {
-  return {
-    open() {
-      dispatch(showCanvasSelectionModal());
-    },
-  };
-}
+  return (
+    <div
+      id="canvasbutton"
+      className="actionbuttons"
+      onClick={() => dispatch(showCanvasSelectionModal())}
+      role="button"
+      title={t`Canvas Selection`}
+      tabIndex={-1}
+    >
+      <FaGlobe />
+    </div>
+  );
+};
 
-export default connect(null,
-  mapDispatchToProps)(CanvasSwitchButton);
+export default React.memo(CanvasSwitchButton);

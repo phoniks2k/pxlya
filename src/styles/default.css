@@ -246,6 +246,27 @@ tr:nth-child(even) {
   color: #212121;
 }
 
+.cvbtn {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: #c5c5c5;
+  border-style: solid;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cvbtn:hover {
+  background: #c2bebc26;
+}
+
+.cvimg {
+  max-width: 20%;
+  opacity: 0.3;
+  padding: 2;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .channeldd {
   background-color: rgba(226, 226, 226);
   color: #212121;

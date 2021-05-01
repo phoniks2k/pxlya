@@ -4,32 +4,28 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FaCog } from 'react-icons/fa';
 import { t } from 'ttag';
 
 import { showSettingsModal } from '../../actions';
 
 
-const SettingsButton = ({ open }) => (
-  <div
-    id="settingsbutton"
-    className="actionbuttons"
-    onClick={open}
-    role="button"
-    title={t`Settings`}
-    tabIndex={-1}
-  >
-    <FaCog />
-  </div>
-);
+const SettingsButton = () => {
+  const dispatch = useDispatch();
 
-function mapDispatchToProps(dispatch) {
-  return {
-    open() {
-      dispatch(showSettingsModal());
-    },
-  };
-}
+  return (
+    <div
+      id="settingsbutton"
+      className="actionbuttons"
+      onClick={() => dispatch(showSettingsModal())}
+      role="button"
+      title={t`Settings`}
+      tabIndex={-1}
+    >
+      <FaCog />
+    </div>
+  );
+};
 
-export default connect(null, mapDispatchToProps)(SettingsButton);
+export default React.memo(SettingsButton);

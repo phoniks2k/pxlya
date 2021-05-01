@@ -4,39 +4,20 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
 import { t } from 'ttag';
 
 import { THREE_CANVAS_HEIGHT } from '../core/constants';
-import { selectCanvas } from '../actions';
 
 
-const buttonStyle = {
-  marginTop: 8,
-  marginBottom: 8,
-  border: '#c5c5c5',
-  borderStyle: 'solid',
-  borderRadius: 8,
-  cursor: 'pointer',
-};
-
-const imageStyle = {
-  maxWidth: '20%',
-  opacity: 0.3,
-  padding: 2,
-  display: 'inline-block',
-  verticalAlign: 'middle',
-};
-
-const CanvasItem = ({ canvasId, canvas, changeCanvas }) => (
+const CanvasItem = ({ canvasId, canvas, selCanvas }) => (
   <div
-    style={buttonStyle}
-    onClick={() => { changeCanvas(canvasId); }}
+    className="cvbtn"
+    onClick={() => selCanvas(canvasId)}
     role="button"
     tabIndex={0}
   >
     <img
-      style={imageStyle}
+      className="cvimg"
       alt="preview"
       src={`/preview${canvasId}.png`}
     />
@@ -71,12 +52,4 @@ const CanvasItem = ({ canvasId, canvas, changeCanvas }) => (
   </div>
 );
 
-function mapDispatchToProps(dispatch) {
-  return {
-    changeCanvas(canvasId) {
-      dispatch(selectCanvas(canvasId));
-    },
-  };
-}
-
-export default connect(null, mapDispatchToProps)(CanvasItem);
+export default React.memo(CanvasItem);

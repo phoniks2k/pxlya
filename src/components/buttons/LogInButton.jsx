@@ -4,32 +4,28 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { t } from 'ttag';
 
 import { showUserAreaModal } from '../../actions';
 
 
-const LogInButton = ({ open }) => (
-  <div
-    id="loginbutton"
-    className="actionbuttons"
-    onClick={open}
-    role="button"
-    title={t`User Area`}
-    tabIndex={-1}
-  >
-    <MdPerson />
-  </div>
-);
+const LogInButton = () => {
+  const dispatch = useDispatch();
 
-function mapDispatchToProps(dispatch) {
-  return {
-    open() {
-      dispatch(showUserAreaModal());
-    },
-  };
-}
+  return (
+    <div
+      id="loginbutton"
+      className="actionbuttons"
+      onClick={() => dispatch(showUserAreaModal())}
+      role="button"
+      title={t`User Area`}
+      tabIndex={-1}
+    >
+      <MdPerson />
+    </div>
+  );
+};
 
-export default connect(null, mapDispatchToProps)(LogInButton);
+export default React.memo(LogInButton);
