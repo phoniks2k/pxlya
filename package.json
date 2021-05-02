@@ -13,7 +13,7 @@
     "build-en": "npm run extract && npm run minify-css",
     "webpack": "webpack --config ./webpack.config.web.babel.js && parallel-webpack --config ./webpack.config.client.babel.js",
     "minify-css": "babel-node scripts/minifyCss.js",
-    "extract": "webpack --env extract --config ./webpack.config.web.babel.js && webpack --env extract --config ./webpack.config.client.babel.js",
+    "extract": "webpack --env extract --config ./webpack.config.web.babel.js && webpack --env extract --env debug --config ./webpack.config.client.babel.js",
     "babel-node": "cd $INIT_CWD && babel-node",
     "lint": "cd $INIT_CWD && eslint --ext .jsx --ext .js",
     "lint:src": "eslint --ext .jsx --ext .js src",
