@@ -208,7 +208,17 @@ async function renderOutputImage(opts) {
 
 
 function Converter() {
-  const [selectedCanvas, selectCanvas] = useState(0);
+  const [
+    canvasId,
+    canvases,
+    showHiddenCanvases,
+  ] = useSelector((state) => [
+    state.canvas.canvasId,
+    state.canvas.canvases,
+    state.canvas.showHiddenCanvases,
+  ], shallowEqual);
+
+  const [selectedCanvas, selectCanvas] = useState(canvasId);
   const [selectedFile, selectFile] = useState(null);
   const [selectedStrategy, selectStrategy] = useState('nearest');
   const [selectedColorDist, selectColorDist] = useState('euclidean');
@@ -225,20 +235,6 @@ function Converter() {
     offsetX: 0,
     offsetY: 0,
   });
-
-  const [
-    canvasId,
-    canvases,
-    showHiddenCanvases,
-  ] = useSelector((state) => [
-    state.canvas.canvasId,
-    state.canvas.canvases,
-    state.canvas.showHiddenCanvases,
-  ], shallowEqual);
-
-  useEffect(() => {
-    selectCanvas(canvasId);
-  }, []);
 
   const input = document.createElement('canvas');
 

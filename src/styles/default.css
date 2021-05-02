@@ -152,6 +152,8 @@ tr:nth-child(even) {
   cursor: move;
   flex-grow: 1;
   line-height: 17px;
+  white-space: nowrap;
+  overflow: hidden;
   height: 17px;
   margin: 2px;
   padding-left: 10px;
@@ -170,7 +172,7 @@ tr:nth-child(even) {
   margin: 2px;
   text-align: center;
   height: 17px;
-  width: 17px;
+  min-width: 17px;
   line-height: 17px;
   font-size: 17px;
   font-weight: bold;
