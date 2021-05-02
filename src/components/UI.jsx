@@ -4,9 +4,8 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 
-import type { State } from '../reducers';
 import CoolDownBox from './CoolDownBox';
 import NotifyBox from './NotifyBox';
 import GlobeButton from './buttons/GlobeButton';
@@ -25,13 +24,21 @@ const CONTEXT_MENUS = {
   /* other context menus */
 };
 
-const UI = ({
-  isHistoricalView,
-  is3D,
-  isOnMobile,
-  menuOpen,
-  menuType,
-}) => {
+const UI = () => {
+  const [
+    isHistoricalView,
+    is3D,
+    isOnMobile,
+    menuOpen,
+    menuType,
+  ] = useSelector((state) => [
+    state.canvas.isHistoricalView,
+    state.canvas.is3D,
+    state.user.isOnMobile,
+    state.contextMenu.menuOpen,
+    state.contextMenu.menuType,
+  ], shallowEqual);
+
   const contextMenu = (menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null;
 
   if (isHistoricalView) {
@@ -52,25 +59,4 @@ const UI = ({
   ];
 };
 
-function mapStateToProps(state: State) {
-  const {
-    isHistoricalView,
-    is3D,
-  } = state.canvas;
-  const {
-    isOnMobile,
-  } = state.user;
-  const {
-    menuOpen,
-    menuType,
-  } = state.contextMenu;
-  return {
-    isHistoricalView,
-    is3D,
-    isOnMobile,
-    menuOpen,
-    menuType,
-  };
-}
-
-export default connect(mapStateToProps)(UI);
+export default React.memo(UI);

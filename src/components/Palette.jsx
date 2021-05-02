@@ -4,10 +4,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import { selectColor } from '../actions';
-import type { State } from '../reducers';
 import useWindowSize from './hooks/resize';
 
 
@@ -90,15 +89,22 @@ function getStylesByWindowSize(
   }];
 }
 
-function Palette({
-  colors,
-  selectedColor,
-  paletteOpen,
-  compactPalette,
-  select,
-  clrIgnore,
-}) {
+const Palette = () => {
   const [render, setRender] = useState(false);
+  const [
+    paletteOpen,
+    compactPalette,
+    colors,
+    clrIgnore,
+    selectedColor,
+  ] = useSelector((state) => [
+    state.gui.paletteOpen,
+    state.gui.compactPalette,
+    state.canvas.palette.colors,
+    state.canvas.clrIgnore,
+    state.canvas.selectedColor,
+  ], shallowEqual);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.setTimeout(() => {
@@ -139,32 +145,12 @@ function Palette({
               ? 'selected'
               : 'unselected'}
             color={color}
-            onClick={() => select(index + clrIgnore)}
+            onClick={() => dispatch(selectColor(index + clrIgnore))}
           />
         ))}
       </div>
     )
   );
-}
+};
 
-function mapStateToProps(state: State) {
-  const { paletteOpen, compactPalette } = state.gui;
-  const { palette, clrIgnore, selectedColor } = state.canvas;
-  return {
-    colors: palette.colors,
-    selectedColor,
-    paletteOpen,
-    compactPalette,
-    clrIgnore,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    select(color) {
-      dispatch(selectColor(color));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Palette);
+export default React.memo(Palette);

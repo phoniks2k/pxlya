@@ -4,13 +4,11 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import copy from '../utils/clipboard';
 import { notify } from '../actions';
-
-import type { State } from '../reducers';
 
 
 function renderCoordinates(cell): string {
@@ -18,31 +16,26 @@ function renderCoordinates(cell): string {
 }
 
 
-const CoordinatesBox = ({ view, hover, notifyCopy }) => (
-  <div
-    className="coorbox"
-    onClick={() => { copy(window.location.hash); notifyCopy(); }}
-    role="button"
-    title={t`Copy to Clipboard`}
-    tabIndex="0"
-  >{
-    renderCoordinates(hover
-    || view.map(Math.round))
-  }</div>
-);
+const CoordinatesBox = () => {
+  const view = useSelector((state) => state.canvas.view);
+  const hover = useSelector((state) => state.gui.hover);
+  const dispatch = useDispatch();
 
-function mapDispatchToProps(dispatch) {
-  return {
-    notifyCopy() {
-      dispatch(notify(t`Copied!`));
-    },
-  };
-}
+  return (
+    <div
+      className="coorbox"
+      onClick={() => {
+        copy(window.location.hash);
+        dispatch(notify(t`Copied!`));
+      }}
+      role="button"
+      title={t`Copy to Clipboard`}
+      tabIndex="0"
+    >{
+      renderCoordinates(hover
+      || view.map(Math.round))
+    }</div>
+  );
+};
 
-function mapStateToProps(state: State) {
-  const { view } = state.canvas;
-  const { hover } = state.gui;
-  return { view, hover };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CoordinatesBox);
+export default React.memo(CoordinatesBox);

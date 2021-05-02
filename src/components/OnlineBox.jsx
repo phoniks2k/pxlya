@@ -4,37 +4,40 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { FaUser, FaPaintBrush } from 'react-icons/fa';
 import { t } from 'ttag';
 import { numberToString } from '../core/utils';
 
 
-import type { State } from '../reducers';
+const OnlineBox = () => {
+  const [
+    online,
+    totalPixels,
+    name,
+  ] = useSelector((state) => [
+    state.ranks.online,
+    state.ranks.totalPixels,
+    state.user.name,
+  ], shallowEqual);
 
+  return (
+    <div>
+      {(online || name)
+        ? (
+          <div className="onlinebox">
+            {(online)
+              && <span title={t`User online`}>{online} <FaUser />&nbsp;</span>}
+            {(name != null)
+                && (
+                <span title={t`Pixels placed`}>
+                  {numberToString(totalPixels)} <FaPaintBrush />
+                </span>
+                )}
+          </div>
+        ) : null}
+    </div>
+  );
+};
 
-const OnlineBox = ({ online, totalPixels, name }) => (
-  <div>
-    {(online || name)
-      ? (
-        <div className="onlinebox">
-          {(online)
-            && <span title={t`User online`}>{online} <FaUser />&nbsp;</span>}
-          {(name != null)
-              && (
-              <span title={t`Pixels placed`}>
-                {numberToString(totalPixels)} <FaPaintBrush />
-              </span>
-              )}
-        </div>
-      ) : null}
-  </div>
-);
-
-function mapStateToProps(state: State) {
-  const { online, totalPixels } = state.ranks;
-  const { name } = state.user;
-  return { online, totalPixels, name };
-}
-
-export default connect(mapStateToProps)(OnlineBox);
+export default React.memo(OnlineBox);

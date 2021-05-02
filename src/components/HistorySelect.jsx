@@ -8,7 +8,7 @@ import React, {
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { dateToString } from '../core/utils';
+import { dateToString, getToday } from '../core/utils';
 import { selectHistoricalTime } from '../actions';
 import { requestHistoricalTimes } from '../actions/fetch';
 
@@ -23,15 +23,6 @@ function stringToDate(dateString) {
 function stringToTime(timeString) {
   if (!timeString) return null;
   return `${timeString.substr(0, 2)}:${timeString.substr(2, 2)}`;
-}
-
-function getToday() {
-  const date = new Date();
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  if (month < 10) month = `0${month}`;
-  if (day < 10) day = `0${day}`;
-  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 const HistorySelect = () => {

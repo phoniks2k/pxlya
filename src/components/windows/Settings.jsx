@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { c, t } from 'ttag';
 
 import LanguageSelect from '../LanguageSelect';
@@ -21,8 +21,6 @@ import {
   toggleHistoricalView,
   selectStyle,
 } from '../../actions';
-
-import type { State } from '../../reducers';
 
 
 const flexy = {
@@ -97,28 +95,32 @@ const SettingsItem = ({
   </div>
 );
 
-function Settings({
-  isMuted,
-  isGridShown,
-  isPixelNotifyShown,
-  isPotato,
-  isLightGrid,
-  isHistoricalView,
-  onMute,
-  autoZoomIn,
-  compactPalette,
-  selectedStyle,
-  onToggleGrid,
-  onTogglePixelNotify,
-  onToggleAutoZoomIn,
-  onToggleCompactPalette,
-  onToggleChatNotify,
-  onTogglePotatoMode,
-  onToggleLightGrid,
-  onToggleHistoricalView,
-  onSelectStyle,
-  chatNotify,
-}) {
+function Settings() {
+  const [
+    isGridShown,
+    isPixelNotifyShown,
+    autoZoomIn,
+    compactPalette,
+    isPotato,
+    isLightGrid,
+    selectedStyle,
+    isMuted,
+    chatNotify,
+    isHistoricalView,
+  ] = useSelector((state) => [
+    state.gui.showGrid,
+    state.gui.showPixelNotify,
+    state.gui.autoZoomIn,
+    state.gui.compactPalette,
+    state.gui.isPotato,
+    state.gui.isLightGrid,
+    state.gui.style,
+    state.audio.mute,
+    state.audio.chatNotify,
+    state.canvas.isHistoricalView,
+  ], shallowEqual);
+  const dispatch = useDispatch();
+
   return (
     <div style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: 30 }}>
       <SettingsItem
@@ -126,14 +128,14 @@ function Settings({
         description={t`Turn on grid to highlight pixel borders.`}
         keyBind={c('keybinds').t`G`}
         value={isGridShown}
-        onToggle={onToggleGrid}
+        onToggle={() => dispatch(toggleGrid())}
       />
       <SettingsItem
         title={t`Show Pixel Activity`}
         description={t`Show circles where pixels are placed.`}
         keyBind={c('keybinds').t`X`}
         value={isPixelNotifyShown}
-        onToggle={onTogglePixelNotify}
+        onToggle={() => dispatch(togglePixelNotify())}
       />
       <SettingsItem
         title={t`Disable Game Sounds`}
@@ -141,39 +143,39 @@ function Settings({
         description={t`All sound effects will be disabled.`}
         keyBind={c('keybinds').t`M`}
         value={isMuted}
-        onToggle={onMute}
+        onToggle={() => dispatch(toggleMute())}
       />
       <SettingsItem
         title={t`Enable chat notifications`}
         description={t`Play a sound when new chat messages arrive`}
         value={chatNotify}
-        onToggle={onToggleChatNotify}
+        onToggle={() => dispatch(toggleChatNotify())}
       />
       <SettingsItem
         title={t`Auto Zoom In`}
         // eslint-disable-next-line max-len
         description={t`Zoom in instead of placing a pixel when you tap the canvas and your zoom is small.`}
         value={autoZoomIn}
-        onToggle={onToggleAutoZoomIn}
+        onToggle={() => dispatch(toggleAutoZoomIn())}
       />
       <SettingsItem
         title={t`Compact Palette`}
         // eslint-disable-next-line max-len
         description={t`Display Palette in a compact form that takes less screen space.`}
         value={compactPalette}
-        onToggle={onToggleCompactPalette}
+        onToggle={() => dispatch(toggleCompactPalette())}
       />
       <SettingsItem
         title={t`Potato Mode`}
         description={t`For when you are playing on a potato.`}
         value={isPotato}
-        onToggle={onTogglePotatoMode}
+        onToggle={() => dispatch(togglePotatoMode())}
       />
       <SettingsItem
         title={t`Light Grid`}
         description={t`Show Grid in white instead of black.`}
         value={isLightGrid}
-        onToggle={onToggleLightGrid}
+        onToggle={() => dispatch(toggleLightGrid())}
       />
       {(window.ssv && window.ssv.backupurl) && (
       <SettingsItem
@@ -181,7 +183,7 @@ function Settings({
         description={t`Check out past versions of the canvas.`}
         value={isHistoricalView}
         keyBind={c('keybinds').t`H`}
-        onToggle={onToggleHistoricalView}
+        onToggle={() => dispatch(toggleHistoricalView())}
       />
       )}
       {(window.ssv && window.ssv.availableStyles) && (
@@ -190,7 +192,7 @@ function Settings({
           description={t`How pixelplanet should look like.`}
           values={Object.keys(window.ssv.availableStyles)}
           selected={selectedStyle}
-          onSelect={onSelectStyle}
+          onSelect={(style) => dispatch(selectStyle(style))}
         />
       )}
       {(window.ssv && navigator.cookieEnabled && window.ssv.langs) && (
@@ -207,70 +209,4 @@ function Settings({
   );
 }
 
-function mapStateToProps(state: State) {
-  const { mute, chatNotify } = state.audio;
-  const {
-    showGrid,
-    showPixelNotify,
-    autoZoomIn,
-    compactPalette,
-    isPotato,
-    isLightGrid,
-    style: selectedStyle,
-  } = state.gui;
-  const isMuted = mute;
-  const {
-    isHistoricalView,
-  } = state.canvas;
-  const isGridShown = showGrid;
-  const isPixelNotifyShown = showPixelNotify;
-  return {
-    isMuted,
-    isGridShown,
-    isPixelNotifyShown,
-    autoZoomIn,
-    compactPalette,
-    chatNotify,
-    isPotato,
-    isLightGrid,
-    isHistoricalView,
-    selectedStyle,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onMute() {
-      dispatch(toggleMute());
-    },
-    onToggleGrid() {
-      dispatch(toggleGrid());
-    },
-    onTogglePixelNotify() {
-      dispatch(togglePixelNotify());
-    },
-    onToggleAutoZoomIn() {
-      dispatch(toggleAutoZoomIn());
-    },
-    onToggleCompactPalette() {
-      dispatch(toggleCompactPalette());
-    },
-    onToggleChatNotify() {
-      dispatch(toggleChatNotify());
-    },
-    onTogglePotatoMode() {
-      dispatch(togglePotatoMode());
-    },
-    onToggleLightGrid() {
-      dispatch(toggleLightGrid());
-    },
-    onToggleHistoricalView() {
-      dispatch(toggleHistoricalView());
-    },
-    onSelectStyle(style) {
-      dispatch(selectStyle(style));
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default React.memo(Settings);

@@ -4,10 +4,10 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
-import type { State } from '../reducers';
+import { getToday } from '../core/utils';
 
 const keptState = {
   coords: null,
@@ -146,19 +146,10 @@ async function submitMakeMod(
 }
 
 
-function Admintools({
-  canvasId,
-  canvases,
-  userlvl,
-}) {
-  const curDate = new Date();
-  let day = curDate.getDate();
-  let month = curDate.getMonth() + 1;
-  if (month < 10) month = `0${month}`;
-  if (day < 10) day = `0${day}`;
-  const maxDate = `${curDate.getFullYear()}-${month}-${day}`;
+function Admintools() {
+  const maxDate = getToday();
 
-  const [selectedCanvas, selectCanvas] = useState(canvasId);
+  const [selectedCanvas, selectCanvas] = useState(0);
   const [imageAction, selectImageAction] = useState('build');
   const [iPAction, selectIPAction] = useState('ban');
   const [protAction, selectProtAction] = useState('protect');
@@ -172,6 +163,20 @@ function Admintools({
   const [resp, setResp] = useState(null);
   const [modlist, setModList] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+
+  const [
+    canvasId,
+    canvases,
+    userlvl,
+  ] = useSelector((state) => [
+    state.canvas.canvasId,
+    state.canvas.canvases,
+    state.user.userlvl,
+  ], shallowEqual);
+
+  useEffect(() => {
+    selectCanvas(canvasId);
+  }, [canvasId]);
 
   let descAction;
   switch (imageAction) {
@@ -597,10 +602,4 @@ function Admintools({
   );
 }
 
-function mapStateToProps(state: State) {
-  const { canvasId, canvases } = state.canvas;
-  const { userlvl } = state.user;
-  return { canvasId, canvases, userlvl };
-}
-
-export default connect(mapStateToProps)(Admintools);
+export default React.memo(Admintools);

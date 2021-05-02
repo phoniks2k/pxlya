@@ -4,21 +4,13 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import type { State } from '../reducers';
-
-function Style({ style }) {
+function Style() {
+  const style = useSelector((state) => state.gui.style);
   const cssUri = window.ssv.availableStyles[style];
   return (style === 'default') ? null
     : (<link rel="stylesheet" type="text/css" href={cssUri} />);
 }
 
-function mapStateToProps(state: State) {
-  const {
-    style,
-  } = state.gui;
-  return { style };
-}
-
-export default connect(mapStateToProps)(Style);
+export default React.memo(Style);

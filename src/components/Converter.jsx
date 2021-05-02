@@ -4,12 +4,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 import fileDownload from 'js-file-download';
 import { utils, applyPalette } from 'image-q';
 import { jt, t } from 'ttag';
 
-import type { State } from '../reducers';
 import printGIMPPalette from '../core/exportGPL';
 import { copyCanvasToClipboard } from '../utils/clipboard';
 
@@ -208,12 +207,8 @@ async function renderOutputImage(opts) {
 }
 
 
-function Converter({
-  canvasId,
-  canvases,
-  showHiddenCanvases,
-}) {
-  const [selectedCanvas, selectCanvas] = useState(canvasId);
+function Converter() {
+  const [selectedCanvas, selectCanvas] = useState(0);
   const [selectedFile, selectFile] = useState(null);
   const [selectedStrategy, selectStrategy] = useState('nearest');
   const [selectedColorDist, selectColorDist] = useState('euclidean');
@@ -230,6 +225,21 @@ function Converter({
     offsetX: 0,
     offsetY: 0,
   });
+
+  const [
+    canvasId,
+    canvases,
+    showHiddenCanvases,
+  ] = useSelector((state) => [
+    state.canvas.canvasId,
+    state.canvas.canvases,
+    state.canvas.showHiddenCanvases,
+  ], shallowEqual);
+
+  useEffect(() => {
+    selectCanvas(canvasId);
+  }, []);
+
   const input = document.createElement('canvas');
 
   useEffect(() => {
@@ -615,13 +625,4 @@ function Converter({
   );
 }
 
-function mapStateToProps(state: State) {
-  const {
-    canvasId,
-    canvases,
-    showHiddenCanvases,
-  } = state.canvas;
-  return { canvasId, canvases, showHiddenCanvases };
-}
-
-export default connect(mapStateToProps)(Converter);
+export default React.memo(Converter);

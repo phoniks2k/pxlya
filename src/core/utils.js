@@ -46,6 +46,18 @@ export function dateToString(date: string) {
   return date.substr(0, 4) + date.substr(5, 2) + date.substr(8, 2);
 }
 
+/*
+ * get current date in YYYY-MM-DD
+ */
+export function getToday() {
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  if (month < 10) month = `0${month}`;
+  if (day < 10) day = `0${day}`;
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
 // z is assumed to be height here
 // in ui and rendeer, y is height
 export function getChunkOfPixel(
