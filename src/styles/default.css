@@ -127,6 +127,11 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
+#wm {
+  position: absolute;
+  z-index: 3;
+}
+
 .window {
   position: fixed;
   background-color: rgba(252, 252, 252, 0.95);
@@ -134,7 +139,6 @@ tr:nth-child(even) {
   border-width: thin;
   overflow: hidden;
   padding: 3px;
-  z-index: 3;
   transition: opacity 200ms ease-in-out;
   opacity: 0;
 }

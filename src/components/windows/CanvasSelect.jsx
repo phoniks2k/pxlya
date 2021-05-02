@@ -21,7 +21,7 @@ const CanvasSelect = ({ windowId }) => {
     [dispatch]);
 
   return (
-    <p style={{
+    <div style={{
       textAlign: 'center',
       paddingLeft: '5%',
       paddingRight: '5%',
@@ -51,7 +51,7 @@ const CanvasSelect = ({ windowId }) => {
               )
           ))
         }
-    </p>
+    </div>
   );
 };
 

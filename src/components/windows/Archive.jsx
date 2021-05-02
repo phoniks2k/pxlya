@@ -15,7 +15,7 @@ const imageStyle = {
 };
 
 const Archive = () => (
-  <p style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
+  <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
     <p className="modaltext">
       {t`While we tend to not delete canvases, some canvases are started for fun or as a request by users who currently like a meme. \
 Those canvases can get boring after a while and after weeks of no major change and if they really aren't worth being kept active, we decide to remove them.`}<br />
@@ -42,7 +42,7 @@ Those canvases can get boring after a while and after weeks of no major change a
       alt="political-compass"
       src="https://storage.pixelplanet.fun/compass-final.png"
     />
-  </p>
+  </div>
 );
 
 export default Archive;

@@ -15,6 +15,8 @@ const MIN_HEIGHT = 50;
 // if screen smaller than this, hide all windows and just
 // allow Modals
 const SCREEN_WIDTH_THRESHOLD = 604;
+// how many windows can be open
+const MAX_AMOUNT_WINDOWS = 100;
 
 function generateWindowId(state) {
   let windowId = Math.floor(Math.random() * 99999) + 1;
@@ -24,6 +26,9 @@ function generateWindowId(state) {
   return windowId;
 }
 
+/*
+ * clamp size and position to screen borders and restrictions
+ */
 function clampSize(prefWidth, prefHeight, margin = false) {
   const width = prefWidth || 550;
   const height = prefHeight || 330;
@@ -66,10 +71,29 @@ function clampPos(prefXPos, prefYPos, width, height) {
   ];
 }
 
+/*
+ * resort the zIndex, remove gaps
+ */
+function sortWindows(newState) {
+  if (newState.zMax >= MAX_AMOUNT_WINDOWS * 0.5) {
+    const orderedZ = newState.windows.map((win) => win.z)
+      .sort((a, b) => !b || (a && a >= b));
+    newState.windows = newState.windows.map((win) => ({
+      ...win,
+      z: orderedZ.indexOf(win.z),
+    }));
+    newState.zMax = orderedZ.length - 1;
+  }
+  return newState;
+}
+
 export type WindowsState = {
+  // if windows get shown, false on small screens
+  showWindows: boolean,
+  // highest zIndex of window
+  zMax: number,
   // modal is considerd as "fullscreen window"
   // its windowId is considered 0 and args are under args[0]
-  showWindows: boolean,
   modal: {
     windowType: ?string,
     title: ?string,
@@ -90,6 +114,7 @@ export type WindowsState = {
   //     windowId: number,
   //     open: boolean,
   //     hidden: boolean,
+  //     z: number,
   //     windowType: string,
   //     title: string,
   //     width: number,
@@ -110,6 +135,7 @@ export type WindowsState = {
 
 const initialState: WindowsState = {
   showWindows: true,
+  zMax: 0,
   modal: {
     windowType: null,
     title: null,
@@ -168,29 +194,36 @@ export default function windows(
           },
         };
       }
+      if (state.windows.length >= MAX_AMOUNT_WINDOWS) {
+        return state;
+      }
       const windowId = generateWindowId(state);
-      return {
+      const newZMax = state.zMax + 1;
+      let newWindows = [
+        ...state.windows,
+        {
+          windowId,
+          windowType,
+          open: true,
+          hidden: false,
+          z: newZMax,
+          title,
+          width,
+          height,
+          xPos,
+          yPos,
+          cloneable,
+        },
+      ];
+      return sortWindows({
         ...state,
-        windows: [
-          ...state.windows,
-          {
-            windowId,
-            windowType,
-            open: true,
-            hidden: false,
-            title,
-            width,
-            height,
-            xPos,
-            yPos,
-            cloneable,
-          },
-        ],
+        zMax: newZMax,
+        windows: newWindows,
         args: {
           ...state.args,
           [windowId]: args,
         },
-      };
+      });
     }
 
     case 'REMOVE_WINDOW': {
@@ -349,9 +382,7 @@ export default function windows(
         };
       }
       const newWindows = state.windows.map((win) => {
-        if (win.windowId !== windowId) {
-          return win;
-        }
+        if (win.windowId !== windowId) return win;
         return {
           ...win,
           windowType,
@@ -369,22 +400,30 @@ export default function windows(
         windowId,
       } = action;
       const {
-        windows: oldWindows,
+        windows: oldWindows, zMax,
       } = state;
-      if (oldWindows.length === 0
-        || oldWindows[oldWindows.length - 1].windowId === windowId
-      ) {
-        return state;
+
+      let newWindows = [];
+
+      for (let i = 0; i < oldWindows.length; i += 1) {
+        const win = oldWindows[i];
+        if (win.windowId !== windowId) {
+          newWindows.push(win);
+        } else {
+          if (win.z === zMax) {
+            return state;
+          }
+          newWindows.push({
+            ...win,
+            z: zMax + 1,
+          });
+        }
       }
-      const newWindows = oldWindows.filter((w) => w.windowId !== windowId);
-      const win = oldWindows.find((w) => w.windowId === windowId);
-      if (win) {
-        newWindows.push(win);
-      }
-      return {
+      return sortWindows({
         ...state,
+        zMax: zMax + 1,
         windows: newWindows,
-      };
+      });
     }
 
     case 'MAXIMIZE_WINDOW': {

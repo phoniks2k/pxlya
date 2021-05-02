@@ -52,6 +52,7 @@ const Window = ({ id }) => {
     width, height,
     xPos, yPos,
     windowType,
+    z,
     title,
     open,
     hidden,
@@ -104,6 +105,7 @@ const Window = ({ id }) => {
         top: yPos,
         width,
         height,
+        zIndex: z,
       }}
     >
       <div
