@@ -19,6 +19,7 @@ import {
   setChatInputMessage,
   fetchChatMessages,
   showContextMenu,
+  setWindowTitle,
 } from '../../actions';
 import ProtocolClient from '../../socket/ProtocolClient';
 import splitChatMessage from '../../core/chatMessageFilter';
@@ -39,9 +40,9 @@ const Chat = ({
 
   const dispatch = useDispatch();
 
-  const setChannel = useCallback((cid) => dispatch(
-    setChatChannel(windowId, cid),
-  ), [dispatch]);
+  const setChannel = useCallback((cid) => {
+    dispatch(setChatChannel(windowId, cid));
+  }, [dispatch]);
 
   const ownName = useSelector((state) => state.user.name);
   // eslint-disable-next-line max-len
@@ -60,6 +61,13 @@ const Chat = ({
   if (channels[chatChannel] && !messages[chatChannel] && !fetching) {
     dispatch(fetchChatMessages(chatChannel));
   }
+
+  useEffect(() => {
+    if (channels[chatChannel]) {
+      const channelName = channels[chatChannel][0];
+      dispatch(setWindowTitle(windowId, `Chan: ${channelName}`));
+    }
+  }, [chatChannel]);
 
   useLayoutEffect(() => {
     stayScrolled();

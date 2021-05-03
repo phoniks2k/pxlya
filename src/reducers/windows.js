@@ -199,7 +199,7 @@ export default function windows(
       }
       const windowId = generateWindowId(state);
       const newZMax = state.zMax + 1;
-      let newWindows = [
+      const newWindows = [
         ...state.windows,
         {
           windowId,
@@ -378,6 +378,7 @@ export default function windows(
           modal: {
             ...state.modal,
             windowType,
+            title: '',
           },
         };
       }
@@ -386,6 +387,7 @@ export default function windows(
         return {
           ...win,
           windowType,
+          title: '',
         };
       });
       return {
@@ -403,7 +405,7 @@ export default function windows(
         windows: oldWindows, zMax,
       } = state;
 
-      let newWindows = [];
+      const newWindows = [];
 
       for (let i = 0; i < oldWindows.length; i += 1) {
         const win = oldWindows[i];
@@ -625,6 +627,24 @@ export default function windows(
         ...state,
         showWindows: true,
         windows: (modified) ? newWindows : state.windows,
+      };
+    }
+
+    case 'SET_WINDOW_TITLE': {
+      const {
+        windowId,
+        title,
+      } = action;
+      const newWindows = state.windows.map((win) => {
+        if (win.windowId !== windowId) return win;
+        return {
+          ...win,
+          title,
+        };
+      });
+      return {
+        ...state,
+        windows: newWindows,
       };
     }
 

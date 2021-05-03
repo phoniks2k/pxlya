@@ -15,7 +15,7 @@ function useDrag(elRef, startHandler, diffHandler) {
   const startDrag = useCallback((event) => {
     event.preventDefault();
     event.stopPropagation();
-    startHandler && startHandler();
+    if (startHandler) startHandler();
 
     let {
       clientX: startX,

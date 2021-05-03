@@ -593,14 +593,14 @@ export function showModal(modalType: string, title: string): Action {
 export function showSettingsModal(): Action {
   return showModal(
     'SETTINGS',
-    t`Settings`,
+    '',
   );
 }
 
 export function showUserAreaModal(): Action {
   return showModal(
     'USERAREA',
-    t`User Area`,
+    '',
   );
 }
 
@@ -610,6 +610,14 @@ export function changeWindowType(windowId, windowType, args = null) {
     windowId,
     windowType,
     args,
+  };
+}
+
+export function setWindowTitle(windowId, title) {
+  return {
+    type: 'SET_WINDOW_TITLE',
+    windowId,
+    title,
   };
 }
 
@@ -636,14 +644,14 @@ export function showHelpModal(): Action {
 export function showArchiveModal(): Action {
   return showModal(
     'ARCHIVE',
-    t`Canvas Archive`,
+    t`Look at past Canvases`,
   );
 }
 
 export function showCanvasSelectionModal(): Action {
   return showModal(
     'CANVAS_SELECTION',
-    t`Canvas Selection`,
+    '',
   );
 }
 
@@ -831,7 +839,7 @@ export function hideAllWindowTypes(
 export function openChatWindow(): Action {
   return openWindow(
     'CHAT',
-    t`Chat`,
+    '',
     false,
     true,
     { chatChannel: 1, inputMessage: '' },

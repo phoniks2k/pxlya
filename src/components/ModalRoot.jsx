@@ -44,7 +44,7 @@ const ModalRoot = () => {
     return null;
   }
 
-  const Content = COMPONENTS[windowType];
+  const [Content, name] = COMPONENTS[windowType];
 
   return (
     (render || open)
@@ -60,7 +60,7 @@ const ModalRoot = () => {
         <div
           className={(open && render) ? 'Modal show' : 'Modal'}
         >
-          <h2>{title}</h2>
+          <h2>{(title) ? `${name} - ${title}` : name}</h2>
           <div
             onClick={() => dispatch(closeWindow(0))}
             className="ModalClose"

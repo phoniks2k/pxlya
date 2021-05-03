@@ -99,6 +99,7 @@ export type Action =
     windowType: number,
     args: Object,
   }
+  | { type: 'SET_WINDOW_TITLE', windowId: number, title: string }
   | { type: 'BLOCK_USER', userId: number, userName: string }
   | { type: 'UNBLOCK_USER', userId: number, userName: string }
   | { type: 'SET_BLOCKING_DM', blockDm: boolean }

@@ -87,7 +87,7 @@ const Window = ({ id }) => {
     }, 10);
   }, [open, hidden]);
 
-  const Content = COMPONENTS[windowType];
+  const [Content, name] = COMPONENTS[windowType];
 
   if (!render && hidden) {
     return null;
@@ -123,7 +123,7 @@ const Window = ({ id }) => {
           ref={titleBarRef}
           title={t`Move`}
         >
-          {title}
+          {(title) ? `${name} - ${title}` : name}
         </span>
         <span
           className="win-topbtn"
