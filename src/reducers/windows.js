@@ -480,8 +480,10 @@ export default function windows(
         height,
       );
       const cloneable = prevWinSize.cloneable || true;
-      return {
+      const newZMax = state.zMax + 1;
+      return sortWindows({
         ...state,
+        zMax: newZMax,
         modal: {
           ...state.modal,
           open: false,
@@ -498,6 +500,7 @@ export default function windows(
             height,
             xPos,
             yPos,
+            z: newZMax,
             cloneable,
           },
         ],
@@ -507,7 +510,7 @@ export default function windows(
             ...state.args[0],
           },
         },
-      };
+      });
     }
 
     case 'MOVE_WINDOW': {
