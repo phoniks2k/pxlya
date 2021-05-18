@@ -595,7 +595,7 @@ tr:nth-child(even) {
   overflow-y: scroll;
 }
 .chatinput {
-  height: 22px;
+  height: 24px;
   white-space: nowrap;
 }
 .chatname {

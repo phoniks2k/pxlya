@@ -184,7 +184,7 @@ const Chat = ({
         <div className="chatinput">
           <form
             onSubmit={(e) => handleSubmit(e)}
-            style={{ display: 'flex', flexDirection: 'row' }}
+            style={{ display: 'flex', flexDirection: 'row', height: '100%' }}
           >
             <input
               style={{ flexGrow: 1, minWidth: 40 }}
