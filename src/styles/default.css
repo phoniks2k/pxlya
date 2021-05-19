@@ -203,7 +203,7 @@ tr:nth-child(even) {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100% - 2px);
+  height: 100%;
 }
 
 .win-content {
