@@ -10,12 +10,15 @@ import { BACKUP_DIR } from '../../core/config';
 
 async function history(req: Request, res: Response) {
   const { day, id } = req.query;
-  if (!BACKUP_DIR || !day || !id || day.includes('/') || day.includes('\\')) {
+  if (!BACKUP_DIR || !day || !id
+      || day.includes('/') || day.includes('\\') || day.length !== 8
+  ) {
     res.status(404).end();
   }
   const yyyy = day.slice(0, 4);
-  const mmdd = day.slice(4);
-  const path = `${BACKUP_DIR}/${yyyy}/${mmdd}/${id}`;
+  const mm = day.slice(4, 2);
+  const dd = day.slice(6);
+  const path = `${BACKUP_DIR}/${yyyy}/${mm}/${dd}/${id}`;
 
   try {
     if (!fs.existsSync(path)) {

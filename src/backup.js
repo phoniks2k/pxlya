@@ -110,7 +110,7 @@ function getDateFolder() {
   let day = date.getDate();
   if (month < 10) month = `0${month}`;
   if (day < 10) day = `0${day}`;
-  const dayDir = `${date.getFullYear()}${month}${day}`;
+  const dayDir = `${date.getFullYear()}/${month}/${day}`;
   const backupDir = `${dir}/${dayDir}`;
   return backupDir;
 }
@@ -118,13 +118,11 @@ function getDateFolder() {
 async function dailyBackup() {
   const backupDir = getDateFolder();
   if (!fs.existsSync(backupDir)) {
-    fs.mkdirSync(backupDir);
+    fs.mkdirSync(backupDir, { recursive: true });
   }
 
   await backupRedis.flushallAsync('ASYNC');
-  if (!fs.existsSync(backupDir)) {
-    fs.mkdirSync(backupDir);
-  }
+
   try {
     await updateBackupRedis(canvasRedis, backupRedis, canvases);
     await createPngBackup(backupRedis, canvases, backupDir);
@@ -137,7 +135,7 @@ async function dailyBackup() {
 async function incrementialBackup() {
   const backupDir = getDateFolder();
   if (!fs.existsSync(backupDir)) {
-    fs.mkdirSync(backupDir);
+    fs.mkdirSync(backupDir, { recursive: true });
   }
   try {
     await incrementialBackupRedis(
