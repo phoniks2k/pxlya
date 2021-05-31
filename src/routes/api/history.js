@@ -13,7 +13,9 @@ async function history(req: Request, res: Response) {
   if (!BACKUP_DIR || !day || !id || day.includes('/') || day.includes('\\')) {
     res.status(404).end();
   }
-  const path = `${BACKUP_DIR}/${day}/${id}`;
+  const yyyy = day.slice(0, 4);
+  const mmdd = day.slice(4);
+  const path = `${BACKUP_DIR}/${yyyy}/${mmdd}/${id}`;
 
   try {
     if (!fs.existsSync(path)) {

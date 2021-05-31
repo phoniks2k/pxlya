@@ -120,7 +120,7 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
             image = PIL.Image.new('RGBA', (w, h))
             for iy in range(yc, hc + 1):
                 for ix in range(xc, wc + 1):
-                    url = 'https://storage.pixelplanet.fun/%s/%s/tiles/%s/%s.png' % (iter_date, canvas_id, ix, iy)
+                    url = 'https://storage.pixelplanet.fun/%s/%s/%s/tiles/%s/%s.png' % (iter_date[0:4], iter_date[4:], canvas_id, ix, iy)
                     offx = ix * 256 + offset - x
                     offy = iy * 256 + offset - y
                     tasks.append(fetch(session, url, offx, offy, image, bkg, True))
@@ -153,7 +153,7 @@ async def get_area(canvas, x, y, w, h, start_date, end_date):
                 image_rel = image.copy()
                 for iy in range(yc, hc + 1):
                     for ix in range(xc, wc + 1):
-                        url = 'https://storage.pixelplanet.fun/%s/%s/%s/%s/%s.png' % (iter_date, canvas_id, time, ix, iy)
+                        url = 'https://storage.pixelplanet.fun/%s/%s/%s/%s/%s/%s.png' % (iter_date[0:4], iter_date[4:], canvas_id, time, ix, iy)
                         offx = ix * 256 + offset - x
                         offy = iy * 256 + offset - y
                         tasks.append(fetch(session, url, offx, offy, image_rel, bkg))
