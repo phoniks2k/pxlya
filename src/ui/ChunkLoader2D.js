@@ -254,7 +254,8 @@ class ChunkLoader {
     const { canvasId } = this;
 
     const center = [historicalCanvasMaxTiledZoom, cx, cy];
-    let url = `${window.ssv.backupurl}/${historicalDate}/`;
+    // eslint-disable-next-line max-len
+    let url = `${window.ssv.backupurl}/${historicalDate.slice(0, 4)}/${historicalDate.slice(4)}}/`;
     if (historicalTime) {
       // incremential tiles
       url += `${canvasId}/${historicalTime}/${cx}/${cy}.png`;
