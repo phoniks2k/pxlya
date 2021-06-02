@@ -7,10 +7,9 @@ DATE_YESTERDAY=`printf "%(%Y/%m/%d)T" $(( $(printf "%(%s)T" -1) - 24*3600 ))`
 #delete older daily backup folders from local filesystem if exist
 if [ -d "${TMPDIR}/${DATE_YESTERDAY}" ]
   then
+    echo "Deleting past day from tmp-folder ${DATE_YESTERDAY}"
     rm -rf "${TMPDIR}/${DATE_YESTERDAY}"
 fi
-
-exit
 
 rsync -r ${TMPDIR}/ backup@ayylmao:/backup/pixelplanet/canvas
 

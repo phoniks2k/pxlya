@@ -16,7 +16,7 @@ async function history(req: Request, res: Response) {
     res.status(404).end();
   }
   const yyyy = day.slice(0, 4);
-  const mm = day.slice(4, 2);
+  const mm = day.slice(4, 6);
   const dd = day.slice(6);
   const path = `${BACKUP_DIR}/${yyyy}/${mm}/${dd}/${id}`;
 
