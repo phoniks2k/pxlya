@@ -32,7 +32,8 @@ export default async function rollbackToDate(
     return 0;
   }
   const dir = path.resolve(__dirname, BACKUP_DIR);
-  const backupDir = `${dir}/${date}/${canvasId}/tiles`;
+  // eslint-disable-next-line max-len
+  const backupDir = `${dir}/${date.slice(0, 4)}/${date.slice(4, 6)}/${date.slice(6)}/${canvasId}/tiles`;
   if (!fs.existsSync(backupDir)) {
     return 0;
   }

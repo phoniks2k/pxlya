@@ -299,7 +299,7 @@ export async function executeRollback(
     error = 'Corner coordinates are alligned wrong';
   } else if (!date) {
     error = 'No date given';
-  } else if (Number.isNaN(Number(date))) {
+  } else if (Number.isNaN(Number(date)) || date.length !== 8) {
     error = 'Invalid date';
   } else if (!canvas) {
     error = 'Invalid canvas selected';
