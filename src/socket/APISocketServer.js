@@ -14,9 +14,7 @@ import WebSocket from 'ws';
 import WebSocketEvents from './WebSocketEvents';
 import webSockets from './websockets';
 import { getIPFromRequest } from '../utils/ip';
-import Minecraft from '../core/minecraft';
 import { setPixelByCoords } from '../core/setPixel';
-import { drawByCoords } from '../core/draw';
 import logger from '../core/logger';
 import { APISOCKET_KEY } from '../core/config';
 import chatProvider from '../core/ChatProvider';
@@ -42,7 +40,6 @@ async function verifyClient(info, done) {
 
 class APISocketServer extends WebSocketEvents {
   wss: WebSocket.Server;
-  mc: Minecraft;
 
   constructor() {
     super();
@@ -59,7 +56,6 @@ class APISocketServer extends WebSocketEvents {
       verifyClient,
     });
     this.wss = wss;
-    this.mc = new Minecraft();
 
     wss.on('error', (e) => {
       logger.error(`APIWebSocket Server Error ${e.message}`);
@@ -196,79 +192,11 @@ class APISocketServer extends WebSocketEvents {
         if (!minecraftid && !ip) {
           setPixelByCoords('0', clr, x, y);
           ws.send(JSON.stringify(['retpxl', null, null, true, 0, 0]));
-          return;
         }
-        const user = this.mc.minecraftid2User(minecraftid);
-        user.ip = ip;
-        const {
-          error, success, waitSeconds, coolDownSeconds,
-        } = await drawByCoords(user, '0', clr, x, y, null);
-        ws.send(JSON.stringify([
-          'retpxl',
-          (minecraftid) || ip,
-          (error) || null,
-          success,
-          waitSeconds,
-          (coolDownSeconds) || null,
-        ]));
+        // minecraftid support got removed
         return;
       }
       logger.info(`APISocket message  ${message}`);
-      if (command === 'login') {
-        const [minecraftid, minecraftname, ip] = packet;
-        const user = await this.mc.reportLogin(minecraftid, minecraftname);
-        // get userinfo
-        user.ip = ip;
-        const wait = await user.getWait(0);
-        const waitSeconds = (wait) ? wait / 1000 : null;
-        const name = (user.id == null) ? null : user.regUser.name;
-        ws.send(JSON.stringify([
-          'mcme',
-          minecraftid,
-          waitSeconds,
-          name,
-        ]));
-        return;
-      }
-      if (command === 'userlst') {
-        const [userlist] = packet;
-        if (!Array.isArray(userlist) || !Array.isArray(userlist[0])) {
-          logger.error('Got invalid minecraft userlist on APISocketServer');
-          return;
-        }
-        this.mc.reportUserlist(userlist);
-        return;
-      }
-      if (command === 'logout') {
-        const [minecraftid] = packet;
-        this.mc.reportLogout(minecraftid);
-        return;
-      }
-      if (command === 'mcchat') {
-        const [minecraftname, msg] = packet;
-        const user = this.mc.minecraftname2User(minecraftname);
-        const chatname = (user.id)
-          ? `[MC] ${user.regUser.name}`
-          : `[MC] ${minecraftname}`;
-        chatProvider.broadcastChatMessage(
-          chatname,
-          msg,
-          chatProvider.enChannelId,
-          chatProvider.infoUserId,
-          'xx',
-          false,
-        );
-        this.broadcastChatMessage(
-          chatname,
-          msg,
-          chatProvider.enChannelId,
-          chatProvider.infoUserId,
-          'xx',
-          true,
-          ws,
-        );
-        return;
-      }
       if (command === 'chat') {
         const [name, msg, country, channelId] = packet;
         chatProvider.broadcastChatMessage(
@@ -289,18 +217,6 @@ class APISocketServer extends WebSocketEvents {
           ws,
         );
         return;
-      }
-      if (command === 'linkacc') {
-        const [minecraftid, minecraftname, name] = packet;
-        const ret = await Minecraft.linkacc(minecraftid, minecraftname, name);
-        if (!ret) {
-          webSockets.notifyChangedMe(name);
-        }
-        ws.send(JSON.stringify([
-          'linkret',
-          minecraftid,
-          ret,
-        ]));
       }
     } catch (err) {
       logger.error(`Got undecipherable api-ws message ${message}`);
