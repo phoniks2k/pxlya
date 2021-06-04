@@ -45,14 +45,6 @@ downloads the history from an canvas area between two dates.
 Useage: `historyDownload.py canvasId startX_startY endX_endY start_date end_date
 This is used for creating timelapses, see the cmd help to know how
 
-## historyCopy.py
-same as historyDownload, just that its designed for running on the storage server by copying the chunks. Also instead of time you define the amount of days you want to make a timelapse of.
-
-## backupSync.sh
-shell script that can be launched with backup.js to sync to a storage server after every backup. It uses rsync which is much faster than ftp, sftp or any other methode.
-### Note:
-Backups aka historical view does use lots of files and might eventually hit the inode limit of your file system, consider to use mksquashfs to compress past backups into one read-only image and mount them
-
 ## liveLog.sh
 shell script that watches the pixel.log file and outputs the stats of the current IPs placing there
 Usage: `./liveLog.sh LOGFILE CANVASID STARTX_STARTY ENDX_ENDY`

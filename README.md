@@ -188,10 +188,8 @@ pm2 stop web
 ```
 
 ### If using Cloudflare / Reverse Proxy
-In order to get the real IP and not use the cloudflare Proxy IP for placing pixels, we filter those out. The cloudflare IPs are in src/utils/cloudflareip.js and used in src/utils/ip.js. If for some reason cloudflare ads more IPs to it, you can see them at https://www.cloudflare.com/ips/ and add them.
-If you use any other Reverse Proxy, you can define it's IPs there too.
 
-If USE\_XREALIP is set, we take the IP from the X-Real-Ip header without checking for cloudflare IPs. Use this if you have pixelplanet running behind nginx use the nginx set\_realip module to give us the client ip on the X-Real-Ip header. And be sure to also forward X-Forwarded-Port and set X-Forwarded-Proto.
+If USE\_XREALIP is set, we take the IP from the X-Real-Ip header. Use this if you have pixelplanet running behind nginx and cloudflare. Use the nginx set\_realip module to give us the client ip on the X-Real-Ip header (and set it up so that just cloudflare are trusted proxy IPs, or else players could fake their IP). And be sure to also forward X-Forwarded-Port and set X-Forwarded-Proto.
 
 ### Auto-Start
 To have the canvas with all it's components autostart at systemstart,
@@ -220,11 +218,11 @@ The backup script gets built when building pixelplanet and also gets copied to b
 node backup.js REDIS_URL_CANVAS REDIS_URL_BACKUP BACKUP_DIRECTORY [INTERVAL] [COMMAND]
 ```
 
-Make sure to get the order right, because the backup redis instance will be overwritten every hour.
+Make sure to get the order right, because the backup redis instance will be overwritten every day.
 Interval is the time in minutes between incremential backups. If interval is undefined, it will just make one backup and then exit.
-If command is defined, it will be executed after every backup (just one command, with no arguments, like "dosomething.sh"), this is useful for synchronisation with a storage server i.e..
+If command is defined, it will be executed after every backup (just one command, with no arguments, like "dosomething.sh"), this is useful for synchronisation with a storage server i.e.. Look into utils/backupServer for some scripts and info on how to run it.
 
-Alternatively you can run it with pm2, just like pixelplanet. An example ecosystem-backup.example.yml file will be located in the build directory.
+You can run it with pm2, just like pixelplanet. An example ecosystem-backup.example.yml file will be located in the build directory.
 
 Note:
 - You do not have to run backups or historical view, it's optional.
