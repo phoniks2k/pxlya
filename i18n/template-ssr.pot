@@ -57,6 +57,14 @@ msgstr ""
 msgid "Stop flooding."
 msgstr ""
 
+#: src/ssr-components/Main.jsx:73
+msgid "PixelPlanet.fun"
+msgstr ""
+
+#: src/ssr-components/Main.jsx:75
+msgid "Place color pixels on an map styled canvas with other players online"
+msgstr ""
+
 #: src/ssr-components/Globe.jsx:44
 msgid "Double click on globe to go back."
 msgstr ""
@@ -71,14 +79,6 @@ msgstr ""
 
 #: src/ssr-components/Globe.jsx:52
 msgid "A 3D globe of our whole map"
-msgstr ""
-
-#: src/ssr-components/Main.jsx:73
-msgid "PixelPlanet.fun"
-msgstr ""
-
-#: src/ssr-components/Main.jsx:75
-msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
 #: src/routes/reset_password.js:58
@@ -290,6 +290,66 @@ msgstr ""
 msgid "Server error occured"
 msgstr ""
 
+#: src/routes/api/auth/verify.js:25
+#: src/routes/api/auth/verify.js:32
+msgid "Mail verification"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:26
+msgid "You are now verified :)"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:32
+msgid ""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
+msgstr ""
+
+#: src/routes/api/auth/logout.js:13
+msgid "You are not even logged in."
+msgstr ""
+
+#: src/routes/api/auth/register.js:31
+msgid "E-Mail already in use."
+msgstr ""
+
+#: src/routes/api/auth/register.js:33
+msgid "Username already in use."
+msgstr ""
+
+#: src/routes/api/auth/register.js:61
+msgid "Failed to create new user :("
+msgstr ""
+
+#: src/routes/api/auth/register.js:77
+msgid "Failed to establish session after register :("
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:41
+#: src/routes/api/auth/change_passwd.js:37
+#: src/routes/api/auth/delete_account.js:38
+msgid "You are not authenticated."
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:50
+#: src/routes/api/auth/change_passwd.js:46
+#: src/routes/api/auth/delete_account.js:48
+msgid "Incorrect password!"
+msgstr ""
+
+#: src/ssr-components/RedirectionPage.jsx:20
+msgid "You will be automatically redirected after 15s"
+msgstr ""
+
+#: src/ssr-components/RedirectionPage.jsx:21
+#, javascript-format
+msgid "Or ${ clickHere } to go back to pixelplanet"
+msgstr ""
+
+#: src/ssr-components/RedirectionPage.jsx:25
+msgid "PixelPlanet.fun Accounts"
+msgstr ""
+
 #: src/canvasesDesc.js:19
 msgid "Earth"
 msgstr ""
@@ -346,64 +406,4 @@ msgstr ""
 
 #: src/canvasesDesc.js:34
 msgid "Black and White canvas"
-msgstr ""
-
-#: src/routes/api/auth/logout.js:13
-msgid "You are not even logged in."
-msgstr ""
-
-#: src/routes/api/auth/register.js:31
-msgid "E-Mail already in use."
-msgstr ""
-
-#: src/routes/api/auth/register.js:33
-msgid "Username already in use."
-msgstr ""
-
-#: src/routes/api/auth/register.js:61
-msgid "Failed to create new user :("
-msgstr ""
-
-#: src/routes/api/auth/register.js:77
-msgid "Failed to establish session after register :("
-msgstr ""
-
-#: src/routes/api/auth/verify.js:25
-#: src/routes/api/auth/verify.js:32
-msgid "Mail verification"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:26
-msgid "You are now verified :)"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:32
-msgid ""
-"Your mail verification code is invalid or already expired :(, please "
-"request a new one."
-msgstr ""
-
-#: src/routes/api/auth/change_mail.js:41
-#: src/routes/api/auth/change_passwd.js:37
-#: src/routes/api/auth/delete_account.js:38
-msgid "You are not authenticated."
-msgstr ""
-
-#: src/routes/api/auth/change_mail.js:50
-#: src/routes/api/auth/change_passwd.js:46
-#: src/routes/api/auth/delete_account.js:48
-msgid "Incorrect password!"
-msgstr ""
-
-#: src/ssr-components/RedirectionPage.jsx:20
-msgid "You will be automatically redirected after 15s"
-msgstr ""
-
-#: src/ssr-components/RedirectionPage.jsx:21
-#, javascript-format
-msgid "Or ${ clickHere } to go back to pixelplanet"
-msgstr ""
-
-#: src/ssr-components/RedirectionPage.jsx:25
-msgid "PixelPlanet.fun Accounts"
 msgstr ""

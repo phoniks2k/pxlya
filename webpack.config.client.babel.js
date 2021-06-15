@@ -42,7 +42,7 @@ export function buildWebpackClientConfig(
   }
 
   const babelPlugins = [
-    '@babel/transform-flow-strip-types',
+    '@babel/plugin-transform-flow-strip-types',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     '@babel/plugin-proposal-function-sent',
     '@babel/plugin-proposal-export-namespace-from',
