@@ -11,7 +11,7 @@ import {
   setBlockingDm,
   setUserBlock,
 } from '../actions';
-import MdToggleButtonHover from './MdToggleButtonHover';
+import MdToggleButton from './MdToggleButton';
 
 const SocialSettings = ({ done }) => {
   const blocked = useSelector((state) => state.chat.blocked);
@@ -37,7 +37,7 @@ const SocialSettings = ({ done }) => {
         >
           {t`Block all Private Messages`}
         </span>
-        <MdToggleButtonHover
+        <MdToggleButton
           value={blockDm}
           onToggle={() => {
             if (!fetching) {

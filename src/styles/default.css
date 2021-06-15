@@ -57,6 +57,10 @@ a:hover {
   font-weight: bold;
 }
 
+.warn {
+  color: #e53737;
+}
+
 .modallink {
   text-decoration: none;
   color: #428bca;
