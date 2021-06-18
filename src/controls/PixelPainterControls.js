@@ -250,7 +250,7 @@ class PixelPlainterControls {
           this.renderer,
           this.clickTapStartCoords,
         );
-      }, 800);
+      }, 600);
     }
   }
 
@@ -267,7 +267,7 @@ class PixelPlainterControls {
         clickTapStartCoords[1] - pageY,
       ];
       // thresholds for single click / holding
-      if (clickTapStartTime > Date.now() - 250
+      if (clickTapStartTime > Date.now() - 580
         && coordsDiff[0] < 2 && coordsDiff[1] < 2) {
         const { viewport } = this;
         const state = store.getState();
