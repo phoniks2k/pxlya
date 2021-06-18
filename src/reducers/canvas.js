@@ -38,16 +38,13 @@ export type CanvasState = {
   historicalTime: string,
   // object with all canvas informations from all canvases like colors and size
   canvases: Object,
+  // last canvas view, scale and viewscale
+  // just used to get back to the previous coordinates when switching
+  // between canvases an back
+  // { 0: {scale: 12, viewscale: 12, view: [122, 1232]}, ... }
+  prevCanvasCoords: Object,
   showHiddenCanvases: boolean,
 };
-
-/*
- * check if we got coords from index.html
- */
-function getGivenCoords() {
-  // if (window.ssv.coordx && window.ssv.coordy) return [window.ssv.coordx, window.ssv.coordy];
-  return [0, 0, 0];
-}
 
 /*
  * parse url hash and sets view to coordinates
@@ -130,7 +127,7 @@ function getViewFromURL(canvases: Object) {
       palette: new Palette(canvasd.colors, 0),
       clrIgnore: canvasd.cli,
       selectedColor: canvasd.cli,
-      view: getGivenCoords(),
+      view: [0, 0, 0],
       viewscale: DEFAULT_SCALE,
       scale: DEFAULT_SCALE,
       canvases,
@@ -144,6 +141,7 @@ const initialState: CanvasState = {
   historicalDate: null,
   historicalTime: null,
   showHiddenCanvases: false,
+  prevCanvasCoords: {},
 };
 
 
@@ -268,13 +266,26 @@ export default function canvasReducer(
 
     case 'SELECT_CANVAS': {
       let { canvasId } = action;
-      const { canvases } = state;
+      const { canvases, prevCanvasCoords, canvasId: prevCanvasId } = state;
+      if (canvasId === prevCanvasId) {
+        return state;
+      }
 
       let canvas = canvases[canvasId];
       if (!canvas) {
         canvasId = DEFAULT_CANVAS_ID;
         canvas = canvases[DEFAULT_CANVAS_ID];
       }
+      // get previous view, scale and viewscale if possible
+      let viewscale = DEFAULT_SCALE;
+      let scale = DEFAULT_SCALE;
+      let view = [0, 0, 0];
+      if (prevCanvasCoords[canvasId]) {
+        view = prevCanvasCoords[canvasId].view;
+        viewscale = prevCanvasCoords[canvasId].viewscale;
+        scale = prevCanvasCoords[canvasId].scale;
+      }
+      //---
       const {
         size: canvasSize,
         sd: canvasStartDate,
@@ -290,10 +301,14 @@ export default function canvasReducer(
         canvas.historicalSizes,
       );
       const palette = new Palette(colors, 0);
-      const view = (canvasId === 0) ? getGivenCoords() : [0, 0, 0];
       if (!is3D) {
         view.length = 2;
       }
+      const {
+        view: prevView,
+        scale: prevScale,
+        viewscale: prevViewscale,
+      } = state;
       return {
         ...state,
         canvasId,
@@ -305,10 +320,19 @@ export default function canvasReducer(
         palette,
         clrIgnore,
         view,
-        viewscale: DEFAULT_SCALE,
-        scale: DEFAULT_SCALE,
+        viewscale,
+        scale,
         isHistoricalView,
         historicalCanvasSize,
+        // rember view, scale and viewscale
+        prevCanvasCoords: {
+          ...state.prevCanvasCoords,
+          [prevCanvasId]: {
+            view: prevView,
+            scale: prevScale,
+            viewscale: prevViewscale,
+          },
+        },
       };
     }
 

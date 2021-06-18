@@ -33,7 +33,6 @@ import generateMainPage from './ssr-components/Main';
 import { SECOND, MONTH } from './core/constants';
 import { PORT, HOST, GUILDED_INVITE } from './core/config';
 
-import { ccToCoords } from './utils/location';
 import { startAllCanvasLoops } from './core/tileserver';
 
 startAllCanvasLoops();
@@ -183,12 +182,7 @@ app.get('/', async (req, res) => {
     return;
   }
 
-  // get start coordinates based on cloudflare header country
-  const country = req.headers['cf-ipcountry'];
-
-  const countryCoords = (country) ? ccToCoords(country) : [0, 0];
-
-  res.status(200).send(generateMainPage(countryCoords, req.lang));
+  res.status(200).send(generateMainPage(req.lang));
 });
 
 

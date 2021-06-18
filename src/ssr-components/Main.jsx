@@ -55,12 +55,9 @@ const css = [
  * @param lang language code
  * @return html of mainpage
  */
-function generateMainPage(countryCoords: Cell, lang: string): string {
-  const [x, y] = countryCoords;
+function generateMainPage(lang: string): string {
   const ssvR = {
     ...ssv,
-    coordx: x,
-    coordy: y,
     lang: lang === 'default' ? 'en' : lang,
   };
   const scripts = (assets[`client-${lang}`])
