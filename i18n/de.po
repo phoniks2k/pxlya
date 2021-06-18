@@ -10,11 +10,48 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.3\n"
 
-#: src/components/CoordinatesBox.jsx:37 src/controls/keypress.js:59
+#: src/controls/keypress.js:39
+#, javascript-format
+msgid "Switched to ${ canvasName }"
+msgstr "Gewechselt zu ${ canvasName }"
+
+#: src/controls/keypress.js:61
+msgid "Grid ON"
+msgstr "Raster Ein"
+
+#: src/controls/keypress.js:62
+msgid "Grid OFF"
+msgstr "Raster Aus"
+
+#: src/controls/keypress.js:70
+msgid "Pixel Notify ON"
+msgstr "Pixelaktivität Ein"
+
+#: src/controls/keypress.js:71
+msgid "Pixel Notify OFF"
+msgstr "Pixelaktivität Aus"
+
+#: src/controls/keypress.js:76
+msgid "Muted Sound"
+msgstr "Ton stummgeschaltet"
+
+#: src/controls/keypress.js:77
+msgid "Unmuted Sound"
+msgstr "Ton eingeschaltet"
+
+#: src/components/CoordinatesBox.jsx:29 src/controls/keypress.js:83
 msgid "Copied!"
 msgstr "Kopiert!"
+
+#: src/controls/keypress.js:89
+msgid "Show Hidden Canvases"
+msgstr "Zeige versteckte Leinwände"
+
+#: src/controls/keypress.js:90
+msgid "Hide Hidden Canvases"
+msgstr "Verstecke geheime Leinwände"
 
 #: src/ui/placePixel.js:53
 msgid "Error :("
@@ -107,68 +144,37 @@ msgstr "Konnte ein Pixel setzen"
 msgid "Error ${ retCode }"
 msgstr "Fehler ${ retCode }"
 
-#: src/actions/index.js:599 src/components/SettingsButton.jsx:20
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: src/actions/index.js:606 src/components/LogInButton.jsx:20
-msgid "User Area"
-msgstr "Spielerbereich"
-
-#: src/actions/index.js:613
+#: src/actions/index.js:627
 msgid "Register New Account"
 msgstr "Registriere neues Konto"
 
-#: src/actions/index.js:620
+#: src/actions/index.js:634
 msgid "Restore my Password"
 msgstr "Passwort wiederherstellen"
 
-#: src/actions/index.js:627
+#: src/actions/index.js:641
 msgid "Welcome to PixelPlanet.fun"
 msgstr "Willkommen auf PixelPlanet.fun"
 
-#: src/actions/index.js:633
-msgid "Canvas Archive"
-msgstr "Leinwand Archiv"
+#: src/actions/index.js:647
+msgid "Look at past Canvases"
+msgstr "Zeige vergangene Leinwände"
 
-#: src/actions/index.js:640 src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr "Leinwand auswahl"
-
-#: src/actions/index.js:827
-msgid "Chat"
-msgstr "Unterhaltung"
-
-#: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
+#: src/components/Converter.jsx:615 src/components/CoordinatesBox.jsx:32
 msgid "Copy to Clipboard"
 msgstr "Kopiere in die Zwischenablage"
 
-#: src/components/ChatButton.jsx:90
-msgid "Close Chat"
-msgstr "Schließe Chat"
-
-#: src/components/ChatButton.jsx:90
-msgid "Open Chat"
-msgstr "Öffne Chat"
-
-#: src/components/OnlineBox.jsx:22
+#: src/components/OnlineBox.jsx:30
 msgid "User online"
 msgstr "Spieler anwesend"
 
-#: src/components/OnlineBox.jsx:25
+#: src/components/OnlineBox.jsx:33
 msgid "Pixels placed"
 msgstr "Pixels gesetzt"
 
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Close Menu"
-msgstr "Schließe Menü"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Open Menu"
-msgstr "Öffne Menü"
-
-#: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:82
-#: src/components/ModalRoot.jsx:69 src/components/Window.jsx:126
+#: src/components/Admintools.jsx:224 src/components/ModalRoot.jsx:69
+#: src/components/Window.jsx:138
+#: src/components/contextmenus/ChannelContextMenu.jsx:67
 msgid "Close"
 msgstr "Schließen"
 
@@ -176,126 +182,182 @@ msgstr "Schließen"
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: src/actions/fetch.js:38
+#: src/components/buttons/CanvasSwitchButton.jsx:23
+#: src/components/windows/index.js:22
+msgid "Canvas Selection"
+msgstr "Leinwand auswahl"
+
+#: src/components/buttons/ChatButton.jsx:92
+msgid "Close Chat"
+msgstr "Schließe Chat"
+
+#: src/components/buttons/ChatButton.jsx:92
+msgid "Open Chat"
+msgstr "Öffne Chat"
+
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Close Menu"
+msgstr "Schließe Menü"
+
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Open Menu"
+msgstr "Öffne Menü"
+
+#: src/actions/fetch.js:40
 msgid "You made too many requests"
 msgstr "Zu viele Anfragen gesendet"
 
-#: src/actions/fetch.js:42
+#: src/actions/fetch.js:44
 #, javascript-format
 msgid "try again after ${ ti }min"
 msgstr "versuche es nach ${ ti }min nochmal"
 
-#: src/actions/fetch.js:53
+#: src/actions/fetch.js:55
 msgid "Connection error ${ code } :("
 msgstr "Verbindungsfehler ${ code } :("
 
-#: src/actions/fetch.js:78 src/actions/fetch.js:97
+#: src/actions/fetch.js:80 src/actions/fetch.js:99
 msgid "Could not connect to server, please try again later :("
 msgstr ""
 "Kann nich zum Server verbinden, bitte versuche es später noch einmal :("
 
-#: src/actions/fetch.js:119 src/actions/fetch.js:138 src/actions/fetch.js:157
-#: src/actions/fetch.js:176
+#: src/actions/fetch.js:121 src/actions/fetch.js:140 src/actions/fetch.js:159
+#: src/actions/fetch.js:178
 msgid "Unknown Error"
 msgstr "Unbekannter Fehler"
 
-#: src/actions/fetch.js:186
+#: src/actions/fetch.js:188
 msgid "Server answered with gibberish :("
 msgstr "Server antwortete mit wirrwarr :("
 
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr "Hilfe"
+#: src/components/HistorySelect.jsx:144
+msgid "Loading"
+msgstr "Lade..."
 
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr "Erstelle eine Bildschirmaufnahme"
+#: src/components/HistorySelect.jsx:145
+msgid "Select Date above"
+msgstr "Datum auswählen"
 
-#: src/components/GlobeButton.jsx:31
-msgid "Globe View"
-msgstr "Globus Ansicht"
-
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
-msgstr "Schließe Palette"
-
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
-msgstr "Öffne Palette"
-
-#: src/components/UserContextMenu.jsx:64
-msgid "Ping"
-msgstr "Erwähnen"
-
-#: src/components/UserContextMenu.jsx:89
-msgid "DM"
-msgstr "DM"
-
-#: src/components/UserContextMenu.jsx:99
-msgid "Block"
-msgstr "Blocke"
-
-#: src/components/ChannelContextMenu.jsx:70
-msgid "Mute"
-msgstr "Stummschalten"
-
-#: src/components/Window.jsx:105
+#: src/components/Window.jsx:117
 msgid "Clone"
 msgstr "Klonen"
 
-#: src/components/Window.jsx:112
+#: src/components/Window.jsx:124
 msgid "Move"
 msgstr "Verschieben"
 
-#: src/components/Window.jsx:119
+#: src/components/Window.jsx:131
 msgid "Maximize"
 msgstr "Maximieren"
 
-#: src/components/Window.jsx:133
+#: src/components/Window.jsx:145
 msgid "Resize"
 msgstr "Größe ändern"
 
-#: src/components/Captcha.jsx:41 src/components/ChangeMail.jsx:88
-#: src/components/ChangeName.jsx:67 src/components/ChangePassword.jsx:73
-#: src/components/DeleteAccount.jsx:67 src/components/LogInForm.jsx:82
-#: src/components/NewPasswordForm.jsx:79 src/components/SignUpForm.jsx:100
+#: src/components/buttons/HelpButton.jsx:23 src/components/windows/index.js:16
+msgid "Help"
+msgstr "Hilfe"
+
+#: src/components/buttons/SettingsButton.jsx:23
+#: src/components/windows/index.js:17
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/components/buttons/LogInButton.jsx:23 src/components/windows/index.js:18
+msgid "User Area"
+msgstr "Spielerbereich"
+
+#: src/components/buttons/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr "Erstelle eine Bildschirmaufnahme"
+
+#: src/components/buttons/GlobeButton.jsx:35
+msgid "Globe View"
+msgstr "Globus Ansicht"
+
+#: src/components/buttons/PalselButton.jsx:31
+msgid "Close Palette"
+msgstr "Schließe Palette"
+
+#: src/components/buttons/PalselButton.jsx:31
+msgid "Open Palette"
+msgstr "Öffne Palette"
+
+#: src/components/contextmenus/ChannelContextMenu.jsx:55
+msgid "Mute"
+msgstr "Stummschalten"
+
+#: src/components/contextmenus/UserContextMenu.jsx:53
+msgid "Ping"
+msgstr "Erwähnen"
+
+#: src/components/contextmenus/UserContextMenu.jsx:78
+msgid "DM"
+msgstr "DM"
+
+#: src/components/contextmenus/UserContextMenu.jsx:88
+msgid "Block"
+msgstr "Blocke"
+
+#: src/components/windows/index.js:19
+msgid "Registration"
+msgstr "Registrieren"
+
+#: src/components/windows/index.js:20
+msgid "Forgot Password"
+msgstr "Passwort vergessen"
+
+#: src/components/windows/index.js:21
+msgid "Chat"
+msgstr "Unterhaltung"
+
+#: src/components/windows/index.js:23
+msgid "Canvas Archive"
+msgstr "Leinwand Archiv"
+
+#: src/components/Captcha.jsx:43 src/components/ChangeMail.jsx:72
+#: src/components/ChangeName.jsx:58 src/components/ChangePassword.jsx:80
+#: src/components/DeleteAccount.jsx:55 src/components/LogInForm.jsx:69
+#: src/components/windows/ForgotPassword.jsx:75
+#: src/components/windows/Register.jsx:83
 msgid "Error"
 msgstr "Fehler"
 
-#: src/components/Captcha.jsx:45
+#: src/components/Captcha.jsx:47
 msgid "Type the characters from the following image:"
 msgstr "Gebe die Zeichen aus dem folgenden Bild ein:"
 
-#: src/components/Captcha.jsx:48
+#: src/components/Captcha.jsx:50
 msgid "Tip: Not case-sensitive; I and l are the same"
 msgstr ""
 "Tipp: Groß- und Kleinschreibung wird nicht berücksichtigt; l und I sind "
 "dasselbe"
 
-#: src/components/Captcha.jsx:72
+#: src/components/Captcha.jsx:74
 msgid "Could not load captcha"
 msgstr "Konnte Captcha nicht laden"
 
-#: src/components/Captcha.jsx:76
+#: src/components/Captcha.jsx:78
 msgid "Can't read? Reload:"
 msgstr "Unlesbar? Hier neu laden:"
 
-#: src/components/Captcha.jsx:80
+#: src/components/Captcha.jsx:82
 msgid "Reload"
 msgstr "Neu laden"
 
-#: src/components/Captcha.jsx:92
+#: src/components/Captcha.jsx:94
 msgid "Enter Characters"
 msgstr "Zeichen eingeben"
 
-#: src/components/Captcha.jsx:117 src/components/ChangeMail.jsx:109
-#: src/components/ChangeName.jsx:79 src/components/ChangePassword.jsx:109
-#: src/components/DeleteAccount.jsx:80 src/components/NewPasswordForm.jsx:92
-#: src/components/SignUpForm.jsx:144
+#: src/components/Captcha.jsx:120 src/components/ChangeMail.jsx:93
+#: src/components/ChangeName.jsx:70 src/components/ChangePassword.jsx:116
+#: src/components/DeleteAccount.jsx:68
+#: src/components/windows/ForgotPassword.jsx:88
+#: src/components/windows/Register.jsx:125
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/components/Captcha.jsx:124
+#: src/components/Captcha.jsx:127
 msgid "Send"
 msgstr "Senden"
 
@@ -499,97 +561,51 @@ msgstr ""
 msgid "Partners:"
 msgstr "Partner:"
 
-#: src/components/windows/UserArea.jsx:33
-msgid "Login to access more features and stats."
-msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
-
-#: src/components/windows/UserArea.jsx:35
-msgid "Login with Name or Mail:"
-msgstr "Mit Name oder Mail anmelden:"
-
-#: src/components/windows/UserArea.jsx:42
-msgid "I forgot my Password."
-msgstr "Ich habe mein Passwort vergessen."
-
-#: src/components/windows/UserArea.jsx:43
-msgid "or login with:"
-msgstr "oder melde dich an mit:"
-
-#: src/components/windows/UserArea.jsx:84
-msgid "or register here:"
-msgstr "oder registriere dich hier:"
-
-#: src/components/windows/UserArea.jsx:85
-msgid "Register"
-msgstr "Registrieren"
-
-#: src/components/windows/UserArea.jsx:107
-msgid "Profile"
-msgstr "Profil"
-
-#: src/components/windows/UserArea.jsx:113
-msgid "Ranking"
-msgstr "Rangliste"
-
-#: src/components/windows/UserArea.jsx:116
-msgid "Converter"
-msgstr "Konverter"
-
-#: src/components/windows/UserArea.jsx:122
-msgid "Admintools"
-msgstr "Admin Werkzeuge"
-
-#: src/components/windows/UserArea.jsx:122
-msgid "Modtools"
-msgstr "Mod Werkzeuge"
-
-#: src/components/windows/UserArea.jsx:123
-msgid "Loading..."
-msgstr "Lade..."
-
-#: src/components/windows/ForgotPassword.jsx:20
-#: src/components/windows/Register.jsx:21
-#: src/components/windows/UserArea.jsx:130
-msgid "Consider joining us on Guilded:"
-msgstr "Triff uns und andere Spieler auf guilded:"
-
-#: src/components/windows/Settings.jsx:125
+#: src/components/windows/Settings.jsx:133
 msgid "Show Grid"
 msgstr "Zeige Raster"
 
-#: src/components/windows/Settings.jsx:126
+#: src/components/windows/Settings.jsx:138
 msgid "Turn on grid to highlight pixel borders."
 msgstr "Aktiviere das Raster um  Pixelgrenzen zu sehen."
 
-#: src/components/windows/Settings.jsx:132
+#: src/components/windows/Settings.jsx:141
 msgid "Show Pixel Activity"
 msgstr "Zeige Pixelaktivität"
 
-#: src/components/windows/Settings.jsx:133
+#: src/components/windows/Settings.jsx:146
 msgid "Show circles where pixels are placed."
 msgstr "Zeige Kreise wo Pixel von Spielern gesetzt werden."
 
-#: src/components/windows/Settings.jsx:139
+#: src/components/windows/Settings.jsx:149
 msgid "Disable Game Sounds"
 msgstr "Deaktiviere Spiel Ton"
 
-#: src/components/windows/Settings.jsx:141
+#: src/components/windows/Settings.jsx:155
 msgid "All sound effects will be disabled."
 msgstr "Alle Toneffekte werden ausgeschaltet."
 
-#: src/components/windows/Settings.jsx:147
+#: src/components/windows/Settings.jsx:159
+msgid ""
+"Your Browser doesn't allow us to use AudioContext to play sounds. Do you "
+"have some privacy feature blocking us?"
+msgstr ""
+"Dein Browser erlaubt uns nicht, mit AudioContext Töne abzuspielen. Werden "
+"wir von Privatsphäreneinstellungen blockiert?"
+
+#: src/components/windows/Settings.jsx:165
 msgid "Enable chat notifications"
 msgstr "Aktiviere Chat Benachrichtigungen"
 
-#: src/components/windows/Settings.jsx:148
+#: src/components/windows/Settings.jsx:169
 msgid "Play a sound when new chat messages arrive"
 msgstr "Spiele ein Geräusch wenn eine neue Chat Nachricht eintrifft"
 
-#: src/components/windows/Settings.jsx:153
+#: src/components/windows/Settings.jsx:172
 msgid "Auto Zoom In"
 msgstr "Automaticher Zoom"
 
-#: src/components/windows/Settings.jsx:155
+#: src/components/windows/Settings.jsx:177
 msgid ""
 "Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
 "small."
@@ -597,66 +613,120 @@ msgstr ""
 "Zoome rein anstatt ein Pixel zu setzen wenn auf kleineren Zoomlevel geklickt "
 "wird."
 
-#: src/components/windows/Settings.jsx:160
+#: src/components/windows/Settings.jsx:180
 msgid "Compact Palette"
 msgstr "Kompakte Palette"
 
-#: src/components/windows/Settings.jsx:162
+#: src/components/windows/Settings.jsx:185
 msgid "Display Palette in a compact form that takes less screen space."
 msgstr ""
 "Zeige die Palette in einer kleineren Form an, welche weniger Platz benötigt."
 
-#: src/components/windows/Settings.jsx:167
+#: src/components/windows/Settings.jsx:188
 msgid "Potato Mode"
 msgstr "Erdapfel Modus"
 
-#: src/components/windows/Settings.jsx:168
+#: src/components/windows/Settings.jsx:192
 msgid "For when you are playing on a potato."
 msgstr "Wenn du auf einer Kartoffel spielst."
 
-#: src/components/Converter.jsx:423 src/components/windows/Settings.jsx:173
+#: src/components/Converter.jsx:429 src/components/windows/Settings.jsx:195
 msgid "Light Grid"
 msgstr "Helles Raster"
 
-#: src/components/windows/Settings.jsx:174
+#: src/components/windows/Settings.jsx:199
 msgid "Show Grid in white instead of black."
 msgstr "Zeige das Raster in weiß anstatt schwarz."
 
-#: src/components/windows/Settings.jsx:180
+#: src/components/windows/Settings.jsx:203
 msgid "Historical View"
 msgstr "Historische Ansicht"
 
-#: src/components/windows/Settings.jsx:181
+#: src/components/windows/Settings.jsx:208
 msgid "Check out past versions of the canvas."
 msgstr "Siehe vergangene Versionen der Leinwand."
 
-#: src/components/windows/Settings.jsx:189
+#: src/components/windows/Settings.jsx:213
 msgid "Themes"
 msgstr "Themen"
 
-#: src/components/windows/Settings.jsx:190
+#: src/components/windows/Settings.jsx:218
 msgid "How pixelplanet should look like."
 msgstr "Wähle aus wie pixelplanet aussehen soll."
 
-#: src/components/windows/Settings.jsx:200
+#: src/components/windows/Settings.jsx:225
 msgid "Select Language"
 msgstr "Sprache Auswählen"
 
-#: src/components/windows/Register.jsx:18
+#: src/components/windows/UserArea.jsx:27
+msgid "Profile"
+msgstr "Profil"
+
+#: src/components/windows/UserArea.jsx:30
+msgid "Ranking"
+msgstr "Rangliste"
+
+#: src/components/windows/UserArea.jsx:33
+msgid "Converter"
+msgstr "Konverter"
+
+#: src/components/windows/UserArea.jsx:39
+msgid "Admintools"
+msgstr "Admin Werkzeuge"
+
+#: src/components/windows/UserArea.jsx:39
+msgid "Modtools"
+msgstr "Mod Werkzeuge"
+
+#: src/components/windows/UserArea.jsx:40
+msgid "Loading..."
+msgstr "Lade..."
+
+#: src/components/windows/UserArea.jsx:47
+msgid "Consider joining us on Guilded:"
+msgstr "Triff uns und andere Spieler auf guilded:"
+
+#: src/components/windows/Register.jsx:81
 msgid "Register new account here"
 msgstr "Registriere ein neues Konto hier"
 
-#: src/components/windows/CanvasSelect.jsx:29
+#: src/components/windows/Register.jsx:92
+msgid "Name"
+msgstr "Name"
+
+#: src/components/windows/ForgotPassword.jsx:82
+#: src/components/windows/Register.jsx:100
+msgid "Email"
+msgstr "Email"
+
+#: src/components/ChangeMail.jsx:80 src/components/DeleteAccount.jsx:62
+#: src/components/LogInForm.jsx:83 src/components/windows/Register.jsx:108
+msgid "Password"
+msgstr "Passwort"
+
+#: src/components/windows/Register.jsx:116
+msgid "Confirm Password"
+msgstr "Passwort bestätigen"
+
+#: src/components/Admintools.jsx:311 src/components/Admintools.jsx:392
+#: src/components/Admintools.jsx:466 src/components/Admintools.jsx:510
+#: src/components/Admintools.jsx:594
+#: src/components/windows/ForgotPassword.jsx:86
+#: src/components/windows/Register.jsx:119
+msgid "Submit"
+msgstr "Absenden"
+
+#: src/components/windows/CanvasSelect.jsx:32
 msgid ""
-"Select the canvas you want to use. Every canvas is unique and has different "
-"palettes, cooldown and requirements. Archive of closed canvases can be "
+"Select the canvas you want to use.  Every canvas is unique and has different "
+"palettes, cooldown and requirements.  Archive of closed canvases can be "
 "accessed here:"
 msgstr ""
 "Wähle die Leinwand aus welche du benutzen willst. Jede Leinwand ist "
 "einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
 "Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
 
-#: src/components/windows/CanvasSelect.jsx:37
+#: src/components/windows/CanvasSelect.jsx:40
 msgid "Archive"
 msgstr "Archiv"
 
@@ -707,305 +777,29 @@ msgstr ""
 "kodiertes webm zu archivieren. Eine Bildschirmaufnahme aus dem Video ergibt "
 "eine perfekte 1:1 Abbildung der Leinwand zu dieser Zeit."
 
-#: src/components/windows/Chat.jsx:137
-msgid "Channel settings"
-msgstr "Kanal Einstellungen"
-
-#: src/components/windows/Chat.jsx:152
-msgid "Start chatting here"
-msgstr "Beginne hier zu unterhalten"
-
-#: src/components/windows/Chat.jsx:189
-msgid "Chat here"
-msgstr "Chatte hier"
-
-#: src/components/windows/Chat.jsx:212
-msgid "You must be logged in to chat"
-msgstr "Melde dich an um dich zu unterhalten"
-
-#: src/components/windows/ForgotPassword.jsx:16
-msgid "Enter your mail address and we will send you a new password:"
-msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
-
-#: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
-msgstr "Heutige Pixel"
-
-#: src/components/UserArea.jsx:61
-msgid "Daily Rank"
-msgstr "Tägliche Rangliste"
-
-#: src/components/UserArea.jsx:66
-msgid "Placed Pixels"
-msgstr "Plazierte Pixel"
-
-#: src/components/UserArea.jsx:70
-msgid "Total Rank"
-msgstr "Gesamt Rang"
-
-#: src/components/UserArea.jsx:75
-#, javascript-format
-msgid "Your name is: ${ name }"
-msgstr "Dein Name ist: ${ name }"
-
-#: src/components/UserArea.jsx:81
-msgid "Log out"
-msgstr "Abmelden"
-
-#: src/components/UserArea.jsx:93
-msgid "Change Username"
-msgstr "Ändere Namen"
-
-#: src/components/UserArea.jsx:108
-msgid "Change Mail"
-msgstr "Ändere Mail"
-
-#: src/components/UserArea.jsx:122
-msgid "Change Password"
-msgstr "Passwort ändern"
-
-#: src/components/UserArea.jsx:134
-msgid "Delete Account"
-msgstr "Lösche Konto"
-
-#: src/components/UserArea.jsx:147
-msgid "Social Settings"
-msgstr "Soziale Einstellungen"
-
-#: src/components/LogInForm.jsx:89
-msgid "Name or Email"
-msgstr "Name oder Email"
-
-#: src/components/ChangeMail.jsx:96 src/components/DeleteAccount.jsx:74
-#: src/components/LogInForm.jsx:96 src/components/SignUpForm.jsx:125
-msgid "Password"
-msgstr "Passwort"
-
-#: src/components/LogInForm.jsx:100
-msgid "LogIn"
-msgstr "Einloggen"
-
-#: src/components/Rankings.jsx:37
-msgid "Total"
-msgstr "Gesamt"
-
-#: src/components/Rankings.jsx:45
-msgid "Daily"
-msgstr "Täglich"
-
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-"Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
-"Mitternacht UTC zurückgestellt."
-
-#: src/components/ChangeMail.jsx:107 src/components/ChangeName.jsx:77
-#: src/components/ChangePassword.jsx:103 src/components/LanguageSelect.jsx:73
-msgid "Save"
-msgstr "Speichern"
-
-#: src/components/SignUpForm.jsx:109
-msgid "Name"
-msgstr "Name"
-
-#: src/components/NewPasswordForm.jsx:86 src/components/SignUpForm.jsx:117
-msgid "Email"
-msgstr "Email"
-
-#: src/components/SignUpForm.jsx:135
-msgid "Confirm Password"
-msgstr "Passwort bestätigen"
-
-#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:90
-#: src/components/SignUpForm.jsx:138
-msgid "Submit"
-msgstr "Absenden"
-
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
-msgstr "Abklingzeit"
-
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
-msgstr "Gesamtzeit"
-
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
-msgstr "Gewertet"
-
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr "Vorraussetzungen"
-
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr "Konto"
-
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr "und ${ canvas.req } gesetzte Pixel"
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
-msgstr "Dimensionen"
-
-#: src/components/NewPasswordForm.jsx:69
+#: src/components/windows/ForgotPassword.jsx:60
 msgid "Sent you a mail with instructions to reset your password."
 msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
 
-#: src/components/Admintools.jsx:179
-msgid "Build image on canvas."
-msgstr "Zeiche Bild auf Leinwand."
+#: src/components/windows/ForgotPassword.jsx:71
+msgid "Enter your mail address and we will send you a new password:"
+msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
 
-#: src/components/Admintools.jsx:182
-msgid "Build image and set it to protected."
-msgstr "Lade Bild und schütze es."
+#: src/components/windows/Chat.jsx:146
+msgid "Channel settings"
+msgstr "Kanal Einstellungen"
 
-#: src/components/Admintools.jsx:185
-msgid "Build image, but reset cooldown to unset-pixel cd."
-msgstr "Lade Bild und setze Abklingzeit wenn möglich zurück."
+#: src/components/windows/Chat.jsx:161
+msgid "Start chatting here"
+msgstr "Beginne hier zu unterhalten"
 
-#: src/components/Admintools.jsx:248
-msgid "Image Upload"
-msgstr "Bild Hochladen"
+#: src/components/windows/Chat.jsx:198
+msgid "Chat here"
+msgstr "Chatte hier"
 
-#: src/components/Admintools.jsx:249
-msgid "Upload images to canvas"
-msgstr "Lade ein Bild zur Leinwand hoch"
-
-#: src/components/Admintools.jsx:251
-msgid "File"
-msgstr "Datei"
-
-#: src/components/Admintools.jsx:271
-msgid "Coordinates in X_Y format:"
-msgstr "Koordinaten in X_Y Format:"
-
-#: src/components/Admintools.jsx:311
-msgid "Pixel Protection"
-msgstr "Pixel beschützen"
-
-#: src/components/Admintools.jsx:313
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-"Setze Gebiet auf geschützt (falls genauere Kontrolle erwünscht, lade Bild "
-"mit Transparenz mit \"protect\" hoch)"
-
-#: src/components/Admintools.jsx:392
-msgid "Rollback to Date"
-msgstr "Spule zum Datum zurück"
-
-#: src/components/Admintools.jsx:394
-msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
-msgstr ""
-"Spule einen Beraich auf der Leinwand zum angegebenen Datum zurück (00:00 UTC)"
-
-#: src/components/Admintools.jsx:468
-msgid "IP Actions"
-msgstr "IP Aktionen"
-
-#: src/components/Admintools.jsx:470
-msgid "Do stuff with IPs (one IP per line)"
-msgstr "Mache etwas mit IPs (eine IP pro Zeile)"
-
-#: src/components/Admintools.jsx:510
-msgid "Manage Moderators"
-msgstr "Verwalte Moderatoren"
-
-#: src/components/Admintools.jsx:512
-msgid "Remove Moderator"
-msgstr "Entferne Moderator"
-
-#: src/components/Admintools.jsx:544
-msgid "There are no mods"
-msgstr "Es gibt keine Moderatoren"
-
-#: src/components/Admintools.jsx:549
-msgid "Assign new Mod"
-msgstr "Moderator zuweisen"
-
-#: src/components/Admintools.jsx:552
-msgid "Enter UserName of new Mod"
-msgstr "Gebe Name des neuen Moderators ein"
-
-#: src/components/Admintools.jsx:561
-msgid "User Name"
-msgstr "Spielerbereich"
-
-#: src/components/Converter.jsx:274
-msgid "Choose Canvas"
-msgstr "Wähle Leinwand"
-
-#: src/components/Converter.jsx:300
-msgid "Palette Download"
-msgstr "Palette herunterladen"
-
-#: src/components/Converter.jsx:302
-#, javascript-format
-msgid "Palette for ${ gimpLink }"
-msgstr "Palette für ${ gimpLink }"
-
-#: src/components/Converter.jsx:320
-#, javascript-format
-msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
-msgstr "Vielen Dank an ${ starhouseLink } für die Palette der Mond Leinwand."
-
-#: src/components/Converter.jsx:323
-msgid "Image Converter"
-msgstr "Bild Konverter"
-
-#: src/components/Converter.jsx:324
-msgid "Convert an image to canvas colors"
-msgstr "Konvertiere ein Bild zu Leinwand Farben"
-
-#: src/components/Converter.jsx:335
-msgid "Choose Strategy"
-msgstr "Wähle Strategie"
-
-#: src/components/Converter.jsx:362
-msgid "Choose Color Mode"
-msgstr "Wähle Farb Modus"
-
-#: src/components/Converter.jsx:400
-msgid "Add Grid (uncheck if you need a 1:1 template)"
-msgstr "Zeichne Raster (deaktiviere falls du eine 1:1 Vorlage benötigst)"
-
-#: src/components/Converter.jsx:425 src/components/Converter.jsx:441
-msgid "Offset"
-msgstr "Abweichung"
-
-#: src/components/Converter.jsx:471
-msgid "Scale Image"
-msgstr "Skaliere Bild"
-
-#: src/components/Converter.jsx:483
-msgid "Width"
-msgstr "Breite"
-
-#: src/components/Converter.jsx:513
-msgid "Height"
-msgstr "Höhe"
-
-#: src/components/Converter.jsx:551
-msgid "Keep Ratio"
-msgstr "Seitenverhältniss beibehalten"
-
-#: src/components/Converter.jsx:564
-msgid "Anti Aliasing"
-msgstr "Kantenglättung"
-
-#: src/components/Converter.jsx:578
-msgid "Reset"
-msgstr "Zurücksetzen"
-
-#: src/components/Converter.jsx:597
-msgid "Download Template"
-msgstr "Bild herunterladen"
+#: src/components/windows/Chat.jsx:221
+msgid "You must be logged in to chat"
+msgstr "Melde dich an um dich zu unterhalten"
 
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
@@ -1055,19 +849,283 @@ msgstr "Passwort muss mindestens 6 Zeichen lang sein."
 msgid "Password must be shorter than 60 characters."
 msgstr "Passwort muss kleiner als 60 Zeichen sein."
 
-#: src/components/UserMessages.jsx:38
-msgid "A new verification mail is getting sent to you."
-msgstr "Eine neue Bestätigungsmail wurde gesendet."
+#: src/components/ChangeMail.jsx:91 src/components/ChangeName.jsx:68
+#: src/components/ChangePassword.jsx:110 src/components/LanguageSelect.jsx:73
+msgid "Save"
+msgstr "Speichern"
 
-#: src/components/UserMessages.jsx:66
-msgid "You successfully linked your mc account."
-msgstr "Minecraft Konto wurde erfolgreich verknüpft."
+#: src/components/LogInArea.jsx:21
+msgid "Login to access more features and stats."
+msgstr "Melde dich and um mehr Funktionen und Statistikan zu sehen."
 
-#: src/components/UserMessages.jsx:67
-msgid "You denied."
-msgstr "Abgelehnt."
+#: src/components/LogInArea.jsx:23
+msgid "Login with Name or Mail:"
+msgstr "Mit Name oder Mail anmelden:"
 
-#: src/components/UserMessages.jsx:85
+#: src/components/LogInArea.jsx:30
+msgid "I forgot my Password."
+msgstr "Ich habe mein Passwort vergessen."
+
+#: src/components/LogInArea.jsx:31
+msgid "or login with:"
+msgstr "oder melde dich an mit:"
+
+#: src/components/LogInArea.jsx:72
+msgid "or register here:"
+msgstr "oder registriere dich hier:"
+
+#: src/components/LogInArea.jsx:79
+msgid "Register"
+msgstr "Registrieren"
+
+#: src/components/Admintools.jsx:184
+msgid "Build image on canvas."
+msgstr "Zeiche Bild auf Leinwand."
+
+#: src/components/Admintools.jsx:187
+msgid "Build image and set it to protected."
+msgstr "Lade Bild und schütze es."
+
+#: src/components/Admintools.jsx:190
+msgid "Build image, but reset cooldown to unset-pixel cd."
+msgstr "Lade Bild und setze Abklingzeit wenn möglich zurück."
+
+#: src/components/Admintools.jsx:253
+msgid "Image Upload"
+msgstr "Bild Hochladen"
+
+#: src/components/Admintools.jsx:254
+msgid "Upload images to canvas"
+msgstr "Lade ein Bild zur Leinwand hoch"
+
+#: src/components/Admintools.jsx:256
+msgid "File"
+msgstr "Datei"
+
+#: src/components/Admintools.jsx:276
+msgid "Coordinates in X_Y format:"
+msgstr "Koordinaten in X_Y Format:"
+
+#: src/components/Admintools.jsx:316
+msgid "Pixel Protection"
+msgstr "Pixel beschützen"
+
+#: src/components/Admintools.jsx:318
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+msgstr ""
+"Setze Gebiet auf geschützt (falls genauere Kontrolle erwünscht, lade Bild "
+"mit Transparenz mit \"protect\" hoch)"
+
+#: src/components/Admintools.jsx:397
+msgid "Rollback to Date"
+msgstr "Spule zum Datum zurück"
+
+#: src/components/Admintools.jsx:399
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr ""
+"Spule einen Beraich auf der Leinwand zum angegebenen Datum zurück (00:00 UTC)"
+
+#: src/components/Admintools.jsx:473
+msgid "IP Actions"
+msgstr "IP Aktionen"
+
+#: src/components/Admintools.jsx:475
+msgid "Do stuff with IPs (one IP per line)"
+msgstr "Mache etwas mit IPs (eine IP pro Zeile)"
+
+#: src/components/Admintools.jsx:515
+msgid "Manage Moderators"
+msgstr "Verwalte Moderatoren"
+
+#: src/components/Admintools.jsx:517
+msgid "Remove Moderator"
+msgstr "Entferne Moderator"
+
+#: src/components/Admintools.jsx:549
+msgid "There are no mods"
+msgstr "Es gibt keine Moderatoren"
+
+#: src/components/Admintools.jsx:554
+msgid "Assign new Mod"
+msgstr "Moderator zuweisen"
+
+#: src/components/Admintools.jsx:557
+msgid "Enter UserName of new Mod"
+msgstr "Gebe Name des neuen Moderators ein"
+
+#: src/components/Admintools.jsx:566
+msgid "User Name"
+msgstr "Spielerbereich"
+
+#: src/components/Rankings.jsx:28
+msgid "Total"
+msgstr "Gesamt"
+
+#: src/components/Rankings.jsx:36
+msgid "Daily"
+msgstr "Täglich"
+
+#: src/components/Rankings.jsx:40
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+"Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
+"Mitternacht UTC zurückgestellt."
+
+#: src/components/UserAreaContent.jsx:63
+msgid "Todays Placed Pixels"
+msgstr "Heutige Pixel"
+
+#: src/components/UserAreaContent.jsx:67
+msgid "Daily Rank"
+msgstr "Tägliche Rangliste"
+
+#: src/components/UserAreaContent.jsx:72
+msgid "Placed Pixels"
+msgstr "Plazierte Pixel"
+
+#: src/components/UserAreaContent.jsx:76
+msgid "Total Rank"
+msgstr "Gesamt Rang"
+
+#: src/components/UserAreaContent.jsx:81
+#, javascript-format
+msgid "Your name is: ${ name }"
+msgstr "Dein Name ist: ${ name }"
+
+#: src/components/UserAreaContent.jsx:87
+msgid "Log out"
+msgstr "Abmelden"
+
+#: src/components/UserAreaContent.jsx:93
+msgid "Change Username"
+msgstr "Ändere Namen"
+
+#: src/components/UserAreaContent.jsx:102
+msgid "Change Mail"
+msgstr "Ändere Mail"
+
+#: src/components/UserAreaContent.jsx:110
+msgid "Change Password"
+msgstr "Passwort ändern"
+
+#: src/components/UserAreaContent.jsx:116
+msgid "Delete Account"
+msgstr "Lösche Konto"
+
+#: src/components/UserAreaContent.jsx:123
+msgid "Social Settings"
+msgstr "Soziale Einstellungen"
+
+#: src/components/Converter.jsx:280
+msgid "Choose Canvas"
+msgstr "Wähle Leinwand"
+
+#: src/components/Converter.jsx:306
+msgid "Palette Download"
+msgstr "Palette herunterladen"
+
+#: src/components/Converter.jsx:308
+#, javascript-format
+msgid "Palette for ${ gimpLink }"
+msgstr "Palette für ${ gimpLink }"
+
+#: src/components/Converter.jsx:326
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr "Vielen Dank an ${ starhouseLink } für die Palette der Mond Leinwand."
+
+#: src/components/Converter.jsx:329
+msgid "Image Converter"
+msgstr "Bild Konverter"
+
+#: src/components/Converter.jsx:330
+msgid "Convert an image to canvas colors"
+msgstr "Konvertiere ein Bild zu Leinwand Farben"
+
+#: src/components/Converter.jsx:341
+msgid "Choose Strategy"
+msgstr "Wähle Strategie"
+
+#: src/components/Converter.jsx:368
+msgid "Choose Color Mode"
+msgstr "Wähle Farb Modus"
+
+#: src/components/Converter.jsx:406
+msgid "Add Grid (uncheck if you need a 1:1 template)"
+msgstr "Zeichne Raster (deaktiviere falls du eine 1:1 Vorlage benötigst)"
+
+#: src/components/Converter.jsx:431 src/components/Converter.jsx:447
+msgid "Offset"
+msgstr "Abweichung"
+
+#: src/components/Converter.jsx:477
+msgid "Scale Image"
+msgstr "Skaliere Bild"
+
+#: src/components/Converter.jsx:489
+msgid "Width"
+msgstr "Breite"
+
+#: src/components/Converter.jsx:519
+msgid "Height"
+msgstr "Höhe"
+
+#: src/components/Converter.jsx:557
+msgid "Keep Ratio"
+msgstr "Seitenverhältniss beibehalten"
+
+#: src/components/Converter.jsx:570
+msgid "Anti Aliasing"
+msgstr "Kantenglättung"
+
+#: src/components/Converter.jsx:584
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: src/components/Converter.jsx:603
+msgid "Download Template"
+msgstr "Bild herunterladen"
+
+#: src/components/CanvasItem.jsx:27
+msgid "Cooldown"
+msgstr "Abklingzeit"
+
+#: src/components/CanvasItem.jsx:33
+msgid "Stacking till"
+msgstr "Gesamtzeit"
+
+#: src/components/CanvasItem.jsx:35
+msgid "Ranked"
+msgstr "Gewertet"
+
+#: src/components/CanvasItem.jsx:37
+msgid "Requirements"
+msgstr "Vorraussetzungen"
+
+#: src/components/CanvasItem.jsx:39
+msgid "User Account"
+msgstr "Konto"
+
+#: src/components/CanvasItem.jsx:41
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr "und ${ canvas.req } gesetzte Pixel"
+
+#: src/components/CanvasItem.jsx:45
+msgid "Dimensions"
+msgstr "Dimensionen"
+
+#: src/components/LogInForm.jsx:76
+msgid "Name or Email"
+msgstr "Name oder Email"
+
+#: src/components/LogInForm.jsx:87
+msgid "LogIn"
+msgstr "Einloggen"
+
+#: src/components/UserMessages.jsx:28
 msgid ""
 "Please verify your mail address&nbsp;\n"
 "or your account could get deleted after a few days."
@@ -1075,86 +1133,77 @@ msgstr ""
 "Bitte bestätige deine E-Mail Adresse oder dein Konto könnte nach einigen "
 "Tagen gelöscht werden."
 
-#: src/components/UserMessages.jsx:102
+#: src/components/UserMessages.jsx:49
+msgid "A new verification mail is getting sent to you."
+msgstr "Eine neue Bestätigungsmail wurde gesendet."
+
+#: src/components/UserMessages.jsx:53
 msgid "Click here to request a new verification mail."
 msgstr "Klicke hier um eine neue Bestätigungsmail zu beantragen."
 
-#: src/components/UserMessages.jsx:111
-#, javascript-format
-msgid "You requested to link your mc account ${ minecraftname }."
-msgstr "Anfrage um das Minecraft Konto ${ minecraftname } zu verknüpfen."
-
-#: src/components/UserMessages.jsx:131
-msgid "Accept"
-msgstr "Annehmen"
-
-#: src/components/UserMessages.jsx:141
-msgid "Deny"
-msgstr "Ablehnen"
-
-#: src/components/ChangePassword.jsx:19
+#: src/components/ChangePassword.jsx:22
 msgid "Passwords do not match."
 msgstr "Passwörter stimmen nicht überein."
 
-#: src/components/ChangePassword.jsx:39
+#: src/components/ChangePassword.jsx:45
 msgid "Changed Password successfully."
 msgstr "Passwort erfolgreich geändert."
 
-#: src/components/ChangePassword.jsx:82
+#: src/components/ChangePassword.jsx:89
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-#: src/components/ChangePassword.jsx:90
+#: src/components/ChangePassword.jsx:97
 msgid "New Password"
 msgstr "Neues Passwort"
 
-#: src/components/ChangePassword.jsx:97
+#: src/components/ChangePassword.jsx:104
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
 
-#: src/components/ChangeMail.jsx:73
+#: src/components/ChangeName.jsx:64
+msgid "New Username"
+msgstr "Neuer Name"
+
+#: src/components/ChangeMail.jsx:59
 msgid ""
-"Changed Mail successfully. We sent you a verification mail,               "
+"Changed Mail successfully. We sent you a verification mail,             "
 "please verify your new mail address."
 msgstr ""
 "Erfolgreich änderte Mail Adresse. Wir haben dir eine neue Bestätigungsmail "
 "gesendet."
 
-#: src/components/ChangeMail.jsx:103
+#: src/components/ChangeMail.jsx:87
 msgid "New Mail"
 msgstr "Neue Mail"
 
-#: src/components/DeleteAccount.jsx:78
+#: src/components/DeleteAccount.jsx:66
 msgid "Yes, Delete My Account!"
 msgstr "Ja, löche mein Konto!"
 
-#: src/components/ChangeName.jsx:73
-msgid "New Username"
-msgstr "Neuer Name"
-
-#: src/components/SocialSettings.jsx:39
+#: src/components/SocialSettings.jsx:38
 msgid "Block all Private Messages"
 msgstr "Blockiere alle Privaten Nachrichten"
 
-#: src/components/SocialSettings.jsx:57
+#: src/components/SocialSettings.jsx:56
 msgid "Unblock Users"
 msgstr "Entblocke Spieler"
 
-#: src/components/SocialSettings.jsx:81
+#: src/components/SocialSettings.jsx:80
 msgid "You have no users blocked"
 msgstr "Du hast keinen Spieler geblockt"
 
-#: src/components/windows/Help.jsx:15 src/components/windows/Settings.jsx:127
+#: src/components/windows/Help.jsx:15 src/components/windows/Settings.jsx:134
 msgctxt "keybinds"
 msgid "G"
 msgstr "G"
 
-#: src/components/windows/Help.jsx:16 src/components/windows/Settings.jsx:134
+#: src/components/windows/Help.jsx:16 src/components/windows/Settings.jsx:142
 msgctxt "keybinds"
 msgid "X"
 msgstr "X"
 
-#: src/components/windows/Help.jsx:17 src/components/windows/Settings.jsx:183
+#: src/components/windows/Help.jsx:17 src/components/windows/Settings.jsx:205
 msgctxt "keybinds"
 msgid "H"
 msgstr "H"
@@ -1204,10 +1253,26 @@ msgctxt "keybinds"
 msgid "C"
 msgstr "C"
 
-#: src/components/windows/Settings.jsx:142
+#: src/components/windows/Settings.jsx:150
 msgctxt "keybinds"
 msgid "M"
 msgstr "M"
+
+#~ msgid "You successfully linked your mc account."
+#~ msgstr "Minecraft Konto wurde erfolgreich verknüpft."
+
+#~ msgid "You denied."
+#~ msgstr "Abgelehnt."
+
+#, javascript-format
+#~ msgid "You requested to link your mc account ${ minecraftname }."
+#~ msgstr "Anfrage um das Minecraft Konto ${ minecraftname } zu verknüpfen."
+
+#~ msgid "Accept"
+#~ msgstr "Annehmen"
+
+#~ msgid "Deny"
+#~ msgstr "Ablehnen"
 
 #~ msgid "Privacy Policy"
 #~ msgstr "Datenschutzerklärung"
