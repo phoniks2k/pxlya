@@ -56,7 +56,11 @@ class Palette {
    * @param b b
    * @return index of color
    */
-  getIndexOfColor(r: number, g: number, b: number): ColorIndex {
+  getIndexOfColor(
+    r: number,
+    g: number,
+    b: number,
+  ): ColorIndex {
     const { rgb } = this;
     let i = rgb.length / 3;
     while (i > 0) {
@@ -70,6 +74,36 @@ class Palette {
       }
     }
     return null;
+  }
+
+  /*
+   * Get closest matching color index of RGB color
+   * @param r r
+   * @param g g
+   * @param b b
+   * @return index of color
+   */
+  getClosestIndexOfColor(
+    r: number,
+    g: number,
+    b: number,
+  ): ColorIndex {
+    const { rgb } = this;
+    let i = rgb.length / 3;
+    let closestIndex = 0;
+    let closestDistance = null;
+    while (i > 0) {
+      i -= 1;
+      const off = i * 3;
+      let distance = (rgb[off] - r) ** 2;
+      distance += (rgb[off + 1] - g) ** 2;
+      distance += (rgb[off + 2] - b) ** 2;
+      if (closestDistance === null || closestDistance > distance) {
+        closestIndex = i;
+        closestDistance = distance;
+      }
+    }
+    return closestIndex;
   }
 
   /*

@@ -88,7 +88,7 @@ class ChunkRGB {
     const ctx = this.image.getContext('2d');
 
     const rgb = ctx.getImageData(x, y, 1, 1).data;
-    return this.palette.getIndexOfColor(rgb[0], rgb[1], rgb[2]);
+    return this.palette.getClosestIndexOfColor(rgb[0], rgb[1], rgb[2]);
   }
 
   hasColorIn(cell: Cell, color: ColorIndex): boolean {
