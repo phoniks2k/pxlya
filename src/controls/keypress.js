@@ -12,6 +12,7 @@ import {
   togglePixelNotify,
   toggleMute,
   notify,
+  selectCanvas,
 } from '../actions';
 
 const usedKeys = ['g', 'h', 'x', 'm', 'r', 'p'];
@@ -24,12 +25,27 @@ function onKeyPress(event: KeyboardEvent) {
     return;
   }
 
+  let { key } = event;
+
+  const num = Number(key);
+  if (!Number.isNaN(num) && num > 0) {
+    // switch to canvas on num keys
+    const { canvases } = store.getState().canvas;
+    const canvasIds = Object.keys(canvases).filter((id) => !canvases[id].hid);
+    if (num <= canvasIds.length) {
+      const canvasId = canvasIds[num - 1];
+      store.dispatch(selectCanvas(canvasId));
+      const canvasName = canvases[canvasId].title;
+      store.dispatch(notify(t`Switched to ${canvasName}`));
+    }
+    return;
+  }
+
   /*
    * if char of key isn't used by a keybind,
    * we check if the key location is where a
    * key that is used would be on QWERTY
    */
-  let { key } = event;
   if (!usedKeys.includes(key)) {
     key = event.code;
     if (!key.startsWith('Key')) {
@@ -41,19 +57,27 @@ function onKeyPress(event: KeyboardEvent) {
   switch (key) {
     case 'g':
       store.dispatch(toggleGrid());
+      store.dispatch(notify((store.getState().gui.showGrid)
+        ? t`Grid ON`
+        : t`Grid OFF`));
       return;
     case 'h':
       store.dispatch(toggleHistoricalView());
       return;
     case 'x':
       store.dispatch(togglePixelNotify());
+      store.dispatch(notify((store.getState().gui.showPixelNotify)
+        ? t`Pixel Notify ON`
+        : t`Pixel Notify OFF`));
       return;
     case 'm':
       store.dispatch(toggleMute());
+      store.dispatch(notify((store.getState().audio.mute)
+        ? t`Muted Sound`
+        : t`Unmuted Sound`));
       return;
     case 'r': {
-      const state = store.getState();
-      const { hover } = state.gui;
+      const { hover } = store.getState().gui;
       const text = hover.join('_');
       copy(text);
       store.dispatch(notify(t`Copied!`));
@@ -61,6 +85,9 @@ function onKeyPress(event: KeyboardEvent) {
     }
     case 'p':
       store.dispatch(toggleHiddenCanvases());
+      store.dispatch(notify((store.getState().canvas.showHiddenCanvases)
+        ? t`Show Hidden Canvases`
+        : t`Hide Hidden Canvases`));
       break;
     default:
   }
