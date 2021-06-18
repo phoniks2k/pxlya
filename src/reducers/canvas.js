@@ -38,7 +38,7 @@ export type CanvasState = {
   historicalTime: string,
   // object with all canvas informations from all canvases like colors and size
   canvases: Object,
-  // last canvas view, scale and viewscale
+  // last canvas view, scale, selectedColor and viewscale
   // just used to get back to the previous coordinates when switching
   // between canvases an back
   // { 0: {scale: 12, viewscale: 12, view: [122, 1232]}, ... }
@@ -276,16 +276,6 @@ export default function canvasReducer(
         canvasId = DEFAULT_CANVAS_ID;
         canvas = canvases[DEFAULT_CANVAS_ID];
       }
-      // get previous view, scale and viewscale if possible
-      let viewscale = DEFAULT_SCALE;
-      let scale = DEFAULT_SCALE;
-      let view = [0, 0, 0];
-      if (prevCanvasCoords[canvasId]) {
-        view = prevCanvasCoords[canvasId].view;
-        viewscale = prevCanvasCoords[canvasId].viewscale;
-        scale = prevCanvasCoords[canvasId].scale;
-      }
-      //---
       const {
         size: canvasSize,
         sd: canvasStartDate,
@@ -294,6 +284,18 @@ export default function canvasReducer(
         cli: clrIgnore,
         colors,
       } = canvas;
+      // get previous view, scale and viewscale if possible
+      let viewscale = DEFAULT_SCALE;
+      let scale = DEFAULT_SCALE;
+      let view = [0, 0, 0];
+      let selectedColor = clrIgnore;
+      if (prevCanvasCoords[canvasId]) {
+        view = prevCanvasCoords[canvasId].view;
+        viewscale = prevCanvasCoords[canvasId].viewscale;
+        scale = prevCanvasCoords[canvasId].scale;
+        selectedColor = prevCanvasCoords[canvasId].selectedColor;
+      }
+      //---
       const isHistoricalView = !is3D && state.isHistoricalView;
       const historicalCanvasSize = getHistoricalCanvasSize(
         state.historicalDate,
@@ -304,16 +306,11 @@ export default function canvasReducer(
       if (!is3D) {
         view.length = 2;
       }
-      const {
-        view: prevView,
-        scale: prevScale,
-        viewscale: prevViewscale,
-      } = state;
       return {
         ...state,
         canvasId,
         canvasIdent,
-        selectedColor: clrIgnore,
+        selectedColor,
         canvasSize,
         is3D,
         canvasStartDate,
@@ -328,9 +325,10 @@ export default function canvasReducer(
         prevCanvasCoords: {
           ...state.prevCanvasCoords,
           [prevCanvasId]: {
-            view: prevView,
-            scale: prevScale,
-            viewscale: prevViewscale,
+            view: state.view,
+            scale: state.scale,
+            viewscale: state.viewscale,
+            selectedColor: state.selectedColor,
           },
         },
       };
