@@ -62,7 +62,9 @@ function onKeyPress(event: KeyboardEvent) {
         : t`Grid OFF`));
       return;
     case 'h':
-      store.dispatch(toggleHistoricalView());
+      if (window.ssv && window.ssv.backupurl) {
+        store.dispatch(toggleHistoricalView());
+      }
       return;
     case 'x':
       store.dispatch(togglePixelNotify());

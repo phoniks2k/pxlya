@@ -391,81 +391,83 @@ function Admintools() {
       >
         {(submitting) ? '...' : t`Submit`}
       </button>
-
-      <br />
-      <div className="modaldivider" />
-      <h3 className="modaltitle">{t`Rollback to Date`}</h3>
-      <p className="modalcotext">
-        {t`Rollback an area of the canvas to a set date (00:00 UTC)`}
-      </p>
-      <input
-        type="date"
-        value={date}
-        requiredPattern="\d{4}-\d{2}-\d{2}"
-        min={canvases[selectedCanvas].sd}
-        max={maxDate}
-        onChange={(evt) => {
-          selectDate(evt.target.value);
-        }}
-      />
-      <p className="modalcotext">
-        Top-left corner (X_Y):&nbsp;
-        <input
-          value={tlrcoords}
-          style={{
-            display: 'inline-block',
-            width: '100%',
-            maxWidth: '15em',
-          }}
-          type="text"
-          placeholder="X_Y"
-          onChange={(evt) => {
-            const co = evt.target.value.trim();
-            selectTLRCoords(co);
-            keptState.tlrcoords = co;
-          }}
-        />
-      </p>
-      <p className="modalcotext">
-        Bottom-right corner (X_Y):&nbsp;
-        <input
-          value={brrcoords}
-          style={{
-            display: 'inline-block',
-            width: '100%',
-            maxWidth: '15em',
-          }}
-          type="text"
-          placeholder="X_Y"
-          onChange={(evt) => {
-            const co = evt.target.value.trim();
-            selectBRRCoords(co);
-            keptState.brrcoords = co;
-          }}
-        />
-      </p>
-      <button
-        type="button"
-        onClick={() => {
-          if (submitting) {
-            return;
-          }
-          setSubmitting(true);
-          submitRollback(
-            date,
-            selectedCanvas,
-            tlrcoords,
-            brrcoords,
-            (ret) => {
-              setSubmitting(false);
-              setResp(ret);
-            },
-          );
-        }}
-      >
-        {(submitting) ? '...' : t`Submit`}
-      </button>
-
+      {(window.ssv && window.ssv.backupurl) && (
+        <div>
+          <br />
+          <div className="modaldivider" />
+          <h3 className="modaltitle">{t`Rollback to Date`}</h3>
+          <p className="modalcotext">
+            {t`Rollback an area of the canvas to a set date (00:00 UTC)`}
+          </p>
+          <input
+            type="date"
+            value={date}
+            requiredPattern="\d{4}-\d{2}-\d{2}"
+            min={canvases[selectedCanvas].sd}
+            max={maxDate}
+            onChange={(evt) => {
+              selectDate(evt.target.value);
+            }}
+          />
+          <p className="modalcotext">
+            Top-left corner (X_Y):&nbsp;
+            <input
+              value={tlrcoords}
+              style={{
+                display: 'inline-block',
+                width: '100%',
+                maxWidth: '15em',
+              }}
+              type="text"
+              placeholder="X_Y"
+              onChange={(evt) => {
+                const co = evt.target.value.trim();
+                selectTLRCoords(co);
+                keptState.tlrcoords = co;
+              }}
+            />
+          </p>
+          <p className="modalcotext">
+            Bottom-right corner (X_Y):&nbsp;
+            <input
+              value={brrcoords}
+              style={{
+                display: 'inline-block',
+                width: '100%',
+                maxWidth: '15em',
+              }}
+              type="text"
+              placeholder="X_Y"
+              onChange={(evt) => {
+                const co = evt.target.value.trim();
+                selectBRRCoords(co);
+                keptState.brrcoords = co;
+              }}
+            />
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              if (submitting) {
+                return;
+              }
+              setSubmitting(true);
+              submitRollback(
+                date,
+                selectedCanvas,
+                tlrcoords,
+                brrcoords,
+                (ret) => {
+                  setSubmitting(false);
+                  setResp(ret);
+                },
+              );
+            }}
+          >
+            {(submitting) ? '...' : t`Submit`}
+          </button>
+        </div>
+      )}
       {(userlvl === 1) && (
         <div>
           <br />
@@ -510,7 +512,6 @@ function Admintools() {
             {(submitting) ? '...' : t`Submit`}
           </button>
           <br />
-
           <div className="modaldivider" />
           <h3 className="modaltitle">{t`Manage Moderators`}</h3>
           <p className="modalcotext">
