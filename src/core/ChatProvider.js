@@ -1,12 +1,16 @@
 /* @flow */
+import { Op } from 'sequelize';
 import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
 import webSockets from '../socket/websockets';
 import RateLimiter from '../utils/RateLimiter';
-import { Channel, RegUser, UserChannel } from '../data/models';
+import {
+  Channel, RegUser, UserChannel, Message,
+} from '../data/models';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import { cheapDetector } from './isProxy';
+import { DailyCron } from '../utils/cron';
 import ttags from './ttag';
 
 import { CHAT_CHANNELS, EVENT_USER_NAME, INFO_USER_NAME } from './constants';
@@ -46,6 +50,22 @@ export class ChatProvider {
     ];
     this.mutedCountries = [];
     this.chatMessageBuffer = new ChatMessageBuffer();
+    this.clearOldMessages = this.clearOldMessages.bind(this);
+  }
+
+  async clearOldMessages() {
+    const ids = Object.keys(this.defaultChannels);
+    for (let i = 0; i < ids.length; i += 1) {
+      const cid = ids[i];
+      Message.destroy({
+        where: {
+          cid,
+          createdAt: {
+            [Op.lt]: new Date(new Date() - 10 * 24 * 3600 * 1000),
+          },
+        },
+      });
+    }
   }
 
   async initialize() {
@@ -119,6 +139,8 @@ export class ChatProvider {
       raw: true,
     });
     this.eventUserId = eventUser[0].id;
+    this.clearOldMessages();
+    DailyCron.hook(this.clearOldMessages);
   }
 
   getDefaultChannels(lang) {
