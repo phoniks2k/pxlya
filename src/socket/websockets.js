@@ -123,43 +123,11 @@ class WebSockets {
   }
 
   /*
-   * broadcast minecraft linking to API
-   * @param name pixelplanetname
-   * @param minecraftid minecraftid
-   * @param accepted If link request got accepted
-   */
-  broadcastMinecraftLink(
-    name: string,
-    minecraftid: string,
-    accepted: boolean,
-  ) {
-    this.listeners.forEach(
-      (listener) => listener.broadcastMinecraftLink(
-        name,
-        minecraftid,
-        accepted,
-      ),
-    );
-  }
-
-  /*
    * reload user on websocket to get changes
    */
   reloadUser(name: string) {
     this.listeners.forEach(
       (listener) => listener.reloadUser(name),
-    );
-  }
-
-  /*
-   * broadcast mc tp request to API
-   * @param minecraftid minecraftid
-   * @param x x coords
-   * @param y y coords
-   */
-  broadcastMinecraftTP(minecraftid, x, y) {
-    this.listeners.forEach(
-      (listener) => listener.broadcastMinecraftTP(minecraftid, x, y),
     );
   }
 

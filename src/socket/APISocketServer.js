@@ -100,24 +100,6 @@ class APISocketServer extends WebSocketEvents {
     });
   }
 
-  broadcastMinecraftLink(name, minecraftid, accepted) {
-    const sendmsg = JSON.stringify(['linkver', minecraftid, name, accepted]);
-    this.wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(sendmsg);
-      }
-    });
-  }
-
-  broadcastMinecraftTP(minecraftid, x, y) {
-    const sendmsg = JSON.stringify(['mctp', minecraftid, x, y]);
-    this.wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(sendmsg);
-      }
-    });
-  }
-
   broadcastOnlineCounter(buffer) {
     const frame = WebSocket.Sender.frame(buffer, {
       readOnly: true,

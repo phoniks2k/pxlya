@@ -23,7 +23,6 @@ import change_name from './change_name';
 import change_mail from './change_mail';
 // eslint-disable-next-line camelcase
 import restore_password from './restore_password';
-import mclink from './mclink';
 
 import getHtml from '../../../ssr-components/RedirectionPage';
 
@@ -133,8 +132,6 @@ export default (passport) => {
   router.post('/delete_account', delete_account);
 
   router.post('/restore_password', restore_password);
-
-  router.post('/mclink', mclink);
 
   // while previous auth methosed work by redirect,
   // local strategy is an json API

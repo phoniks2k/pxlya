@@ -13,7 +13,6 @@ import User from '../../data/models/User';
 import { getIPFromRequest } from '../../utils/ip';
 
 import me from './me';
-import mctp from './mctp';
 import captcha from './captcha';
 import auth from './auth';
 import ranking from './ranking';
@@ -83,8 +82,6 @@ router.use((req, res, next) => {
   }
   next();
 });
-
-router.post('/mctp', mctp);
 
 router.post('/startdm', startDm);
 

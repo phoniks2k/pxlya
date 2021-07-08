@@ -21,9 +21,6 @@ class WebSocketEvents {
     userId: number,
   ) {}
 
-  broadcastMinecraftLink(name: string, minecraftid: string, accepted: boolean) {
-  }
-
   broadcastAddChatChannel(
     userId: number,
     channelId: number,
@@ -38,9 +35,6 @@ class WebSocketEvents {
   }
 
   reloadUser(name: string) {
-  }
-
-  broadcastMinecraftTP(minecraftid: string, x: number, y: number) {
   }
 
   broadcastOnlineCounter(data: Buffer) {
