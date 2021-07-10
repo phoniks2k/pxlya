@@ -52,8 +52,8 @@ export class ChatProvider {
     this.chatMessageBuffer = new ChatMessageBuffer();
     this.clearOldMessages = this.clearOldMessages.bind(this);
 
-    socketEvents.on('recvChatMessage', (user, message, channelId) => {
-      const errorMsg = this.sendMessage(user, message, channelId);
+    socketEvents.on('recvChatMessage', async (user, message, channelId) => {
+      const errorMsg = await this.sendMessage(user, message, channelId);
       if (errorMsg) {
         this.broadcastChatMessage(
           'info',
