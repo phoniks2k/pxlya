@@ -142,7 +142,7 @@ class SocketServer {
     ) => {
       const text = JSON.stringify([name, message, country, channelId, id]);
       this.wss.clients.forEach((ws) => {
-        if (ws.readyState === WebSocket.OPEN) {
+        if (ws.readyState === WebSocket.OPEN && ws.user) {
           if (chatProvider.userHasChannelAccess(ws.user, channelId)) {
             ws.send(text);
           }
