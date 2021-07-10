@@ -10,14 +10,11 @@
 
 import WebSocket from 'ws';
 
-
-import WebSocketEvents from './WebSocketEvents';
-import webSockets from './websockets';
+import socketEvents from './SocketEvents';
 import { getIPFromRequest } from '../utils/ip';
 import { setPixelByCoords } from '../core/setPixel';
 import logger from '../core/logger';
 import { APISOCKET_KEY } from '../core/config';
-import chatProvider from '../core/ChatProvider';
 
 function heartbeat() {
   this.isAlive = true;
@@ -38,13 +35,11 @@ async function verifyClient(info, done) {
 }
 
 
-class APISocketServer extends WebSocketEvents {
+class APISocketServer {
   wss: WebSocket.Server;
 
   constructor() {
-    super();
     logger.info('Starting API websocket server');
-    webSockets.addListener(this);
 
     const wss = new WebSocket.Server({
       perMessageDeflate: false,
@@ -75,7 +70,15 @@ class APISocketServer extends WebSocketEvents {
       });
     });
 
+    this.broadcast = this.broadcast.bind(this);
+    this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.ping = this.ping.bind(this);
+    this.broadcastChatMessage = this.broadcastChatMessage.bind(this);
+
+    socketEvents.on('broadcast', this.broadcast);
+    socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
+    socketEvents.on('chatMessage', this.broadcastChatMessage);
+
     setInterval(this.ping, 45 * 1000);
   }
 
@@ -100,26 +103,34 @@ class APISocketServer extends WebSocketEvents {
     });
   }
 
-  broadcastOnlineCounter(buffer) {
-    const frame = WebSocket.Sender.frame(buffer, {
-      readOnly: true,
-      mask: false,
-      rsv1: false,
-      opcode: 2,
-      fin: true,
-    });
-    this.wss.clients.forEach((client) => {
-      if (client.subOnline && client.readyState === WebSocket.OPEN) {
-        frame.forEach((data) => {
-          try {
-            // eslint-disable-next-line no-underscore-dangle
-            client._socket.write(data);
-          } catch (error) {
-            logger.error('(!) Catched error on write apisocket:', error);
-          }
-        });
-      }
-    });
+  broadcast(data) {
+    if (typeof data === 'string') {
+      this.wss.clients.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(data);
+        }
+      });
+    } else {
+      const frame = WebSocket.Sender.frame(data, {
+        readOnly: true,
+        mask: false,
+        rsv1: false,
+        opcode: 2,
+        fin: true,
+      });
+      this.wss.clients.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          frame.forEach((buffer) => {
+            try {
+              // eslint-disable-next-line no-underscore-dangle
+              ws._socket.write(buffer);
+            } catch (error) {
+              logger.error(`WebSocket broadcast error: ${error.message}`);
+            }
+          });
+        }
+      });
+    }
   }
 
   broadcastPixelBuffer(canvasId, chunkid, buffer) {
@@ -181,11 +192,17 @@ class APISocketServer extends WebSocketEvents {
       logger.info(`APISocket message  ${message}`);
       if (command === 'chat') {
         const [name, msg, country, channelId] = packet;
-        chatProvider.broadcastChatMessage(
+        /*
+         * do not send message back up ws that sent it
+         * TODO: user id should not be hardcoded,
+         * consider it whenever this actually gets used and
+         * becomes an issue.
+         */
+        socketEvents.broadcastChatMessage(
           name,
           msg,
           channelId,
-          chatProvider.infoUserId,
+          1,
           country,
           false,
         );
@@ -193,7 +210,7 @@ class APISocketServer extends WebSocketEvents {
           name,
           msg,
           channelId,
-          chatProvider.infoUserId,
+          1,
           country,
           true,
           ws,

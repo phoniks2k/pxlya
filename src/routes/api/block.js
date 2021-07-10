@@ -8,7 +8,7 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
-import webSockets from '../../socket/websockets';
+import socketEvents from '../../socket/SocketEvents';
 import { RegUser, UserBlock, Channel } from '../../data/models';
 
 async function block(req: Request, res: Response) {
@@ -108,8 +108,8 @@ async function block(req: Request, res: Response) {
   if (channel) {
     const channelId = channel.id;
     channel.destroy();
-    webSockets.broadcastRemoveChatChannel(user.id, channelId);
-    webSockets.broadcastRemoveChatChannel(userId, channelId);
+    socketEvents.broadcastRemoveChatChannel(user.id, channelId);
+    socketEvents.broadcastRemoveChatChannel(userId, channelId);
   }
 
   if (ret) {

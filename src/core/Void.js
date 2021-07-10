@@ -6,8 +6,7 @@
  *
  * @flow
  */
-import webSockets from '../socket/websockets';
-import WebSocketEvents from '../socket/WebSocketEvents';
+import socketEvents from '../socket/SocketEvents';
 import PixelUpdate from '../socket/packets/PixelUpdateServer';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE } from './constants';
@@ -19,7 +18,7 @@ const TARGET_RADIUS = 62;
 const EVENT_DURATION_MIN = 10;
 // const EVENT_DURATION_MIN = 1;
 
-class Void extends WebSocketEvents {
+class Void {
   i: number;
   j: number;
   maxClr: number;
@@ -33,7 +32,6 @@ class Void extends WebSocketEvents {
   ended: boolean;
 
   constructor(centerCell) {
-    super();
     // chunk coordinates
     const [i, j] = centerCell;
     this.i = i;
@@ -41,7 +39,7 @@ class Void extends WebSocketEvents {
     this.ended = false;
     this.maxClr = canvases[CANVAS_ID].colors.length;
     const area = TARGET_RADIUS ** 2 * Math.PI;
-    const online = webSockets.onlineCounter;
+    const online = socketEvents.onlineCounter;
     // require an average of 0.25 px / min / user
     const requiredSpeed = Math.floor(online / 1.8);
     const ppm = Math.ceil(area / EVENT_DURATION_MIN + requiredSpeed);
@@ -60,7 +58,7 @@ class Void extends WebSocketEvents {
     this.cancel = this.cancel.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
-    webSockets.addListener(this);
+    socketEvents.addListener('pixelUpdate', this.broadcastPixelBuffer);
     this.voidLoop();
   }
 
@@ -162,13 +160,13 @@ class Void extends WebSocketEvents {
   }
 
   cancel() {
-    webSockets.remListener(this);
+    socketEvents.removeListener('pixelUpdate', this.broadcastPixelBuffer);
     this.ended = true;
   }
 
   checkStatus() {
     if (this.ended) {
-      webSockets.remListener(this);
+      socketEvents.removeListener('pixelUpdate', this.broadcastPixelBuffer);
       return 100;
     }
     return Math.floor(this.curRadius * 100 / TARGET_RADIUS);

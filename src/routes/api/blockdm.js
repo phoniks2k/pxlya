@@ -8,7 +8,7 @@
 import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
-import webSockets from '../../socket/websockets';
+import socketEvents from '../../socket/SocketEvents';
 
 async function blockdm(req: Request, res: Response) {
   const { block } = req.body;
@@ -47,8 +47,8 @@ async function blockdm(req: Request, res: Response) {
       const channelId = channel.id;
       const { dmu1id, dmu2id } = channel;
       channel.destroy();
-      webSockets.broadcastRemoveChatChannel(dmu1id, channelId);
-      webSockets.broadcastRemoveChatChannel(dmu2id, channelId);
+      socketEvents.broadcastRemoveChatChannel(dmu1id, channelId);
+      socketEvents.broadcastRemoveChatChannel(dmu2id, channelId);
     }
   }
 

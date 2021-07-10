@@ -5,7 +5,7 @@
 
 import type { Request, Response } from 'express';
 
-import webSockets from '../../../socket/websockets';
+import socketEvents from '../../../socket/SocketEvents';
 import getHtml from '../../../ssr-components/RedirectionPage';
 import { getHostFromRequest } from '../../../utils/ip';
 import mailProvider from '../../../core/mail';
@@ -19,7 +19,7 @@ export default async (req: Request, res: Response) => {
   if (name) {
     // notify websoecket to reconnect user
     // thats a bit counter productive because it directly links to the websocket
-    webSockets.reloadUser(name);
+    socketEvents.reloadUser(name);
     // ---
     const index = getHtml(
       t`Mail verification`,

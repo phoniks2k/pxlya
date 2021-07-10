@@ -3,12 +3,12 @@ import { Op } from 'sequelize';
 import logger from './logger';
 import redis from '../data/redis';
 import User from '../data/models/User';
-import webSockets from '../socket/websockets';
 import RateLimiter from '../utils/RateLimiter';
 import {
   Channel, RegUser, UserChannel, Message,
 } from '../data/models';
 import ChatMessageBuffer from './ChatMessageBuffer';
+import socketEvents from '../socket/SocketEvents';
 import { cheapDetector } from './isProxy';
 import { DailyCron } from '../utils/cron';
 import ttags from './ttag';
@@ -51,6 +51,18 @@ export class ChatProvider {
     this.mutedCountries = [];
     this.chatMessageBuffer = new ChatMessageBuffer();
     this.clearOldMessages = this.clearOldMessages.bind(this);
+
+    socketEvents.on('recvChatMessage', (user, message, channelId) => {
+      const errorMsg = this.sendMessage(user, message, channelId);
+      if (errorMsg) {
+        this.broadcastChatMessage(
+          'info',
+          errorMsg,
+          channelId,
+          this.infoUserId,
+        );
+      }
+    });
   }
 
   async clearOldMessages() {
@@ -174,7 +186,7 @@ export class ChatProvider {
     });
 
     if (created) {
-      webSockets.broadcastAddChatChannel(
+      socketEvents.broadcastAddChatChannel(
         userId,
         channelId,
         channelArray,
@@ -430,7 +442,7 @@ export class ChatProvider {
       id,
       country,
     );
-    webSockets.broadcastChatMessage(
+    socketEvents.broadcastChatMessage(
       name,
       message,
       channelId,
@@ -497,5 +509,4 @@ export class ChatProvider {
   }
 }
 
-const chatProvider = new ChatProvider();
-export default chatProvider;
+export default new ChatProvider();

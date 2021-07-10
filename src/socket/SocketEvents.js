@@ -1,32 +1,17 @@
 /* @flow
  *
- * Serverside communication with websockets.
- * In general all values that get broadcasted here have to be sanitized already.
- *
+ * Events for WebSockets
  */
+import EventEmitter from 'events';
 
 import OnlineCounter from './packets/OnlineCounter';
 import PixelUpdate from './packets/PixelUpdateServer';
 
 
-class WebSockets {
-  listeners: Array<Object>;
-  onlineCounter: number;
-
+class SocketEvents extends EventEmitter {
   constructor() {
-    this.listeners = [];
+    super();
     this.onlineCounter = 0;
-  }
-
-  addListener(listener) {
-    this.listeners.push(listener);
-  }
-
-  remListener(listener) {
-    const index = this.listeners.indexOf(listener);
-    if (index > -1) {
-      this.listeners.splice(index, 1);
-    }
   }
 
   /*
@@ -34,9 +19,7 @@ class WebSockets {
    * @param message Message to send
    */
   broadcast(message: Buffer) {
-    this.listeners.forEach(
-      (listener) => listener.broadcast(message),
-    );
+    this.emit('broadcast', message);
   }
 
   /*
@@ -51,9 +34,21 @@ class WebSockets {
     pixels: Buffer,
   ) {
     const buffer = PixelUpdate.dehydrate(chunkId, pixels);
-    this.listeners.forEach(
-      (listener) => listener.broadcastPixelBuffer(canvasId, chunkId, buffer),
-    );
+    this.emit('pixelUpdate', canvasId, chunkId, buffer);
+  }
+
+  /*
+   * received Chat message on own websocket
+   * @param user User Instance that sent the message
+   * @param message text message
+   * @param channelId numerical channel id
+   */
+  recvChatMessage(
+    user: Object,
+    message: string,
+    channelId: number,
+  ) {
+    this.emit('recvChatMessage', user, message, channelId);
   }
 
   /*
@@ -71,16 +66,14 @@ class WebSockets {
     country: string = 'xx',
     sendapi: boolean = true,
   ) {
-    country = country || 'xx';
-    this.listeners.forEach(
-      (listener) => listener.broadcastChatMessage(
-        name,
-        message,
-        channelId,
-        id,
-        country,
-        sendapi,
-      ),
+    this.emit(
+      'chatMessage',
+      name,
+      message,
+      channelId,
+      id,
+      country || 'xx',
+      sendapi,
     );
   }
 
@@ -95,12 +88,11 @@ class WebSockets {
     channelId: number,
     channelArray: Array,
   ) {
-    this.listeners.forEach(
-      (listener) => listener.broadcastAddChatChannel(
-        userId,
-        channelId,
-        channelArray,
-      ),
+    this.emit(
+      'addChatChannel',
+      userId,
+      channelId,
+      channelArray,
     );
   }
 
@@ -114,21 +106,14 @@ class WebSockets {
     userId: number,
     channelId: number,
   ) {
-    this.listeners.forEach(
-      (listener) => listener.broadcastRemoveChatChannel(
-        userId,
-        channelId,
-      ),
-    );
+    this.emit('remChatChannel', userId, channelId);
   }
 
   /*
    * reload user on websocket to get changes
    */
   reloadUser(name: string) {
-    this.listeners.forEach(
-      (listener) => listener.reloadUser(name),
-    );
+    this.emit('reloadUser', name);
   }
 
   /*
@@ -138,11 +123,8 @@ class WebSockets {
   broadcastOnlineCounter(online: number) {
     this.onlineCounter = online;
     const buffer = OnlineCounter.dehydrate({ online });
-    this.listeners.forEach(
-      (listener) => listener.broadcastOnlineCounter(buffer),
-    );
+    this.emit('broadcast', buffer);
   }
 }
 
-const webSockets = new WebSockets();
-export default webSockets;
+export default new SocketEvents();

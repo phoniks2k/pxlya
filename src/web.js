@@ -194,9 +194,9 @@ const promise = models.sync({ alter: { drop: false } })
 // const promise = models.sync()
   .catch((err) => logger.error(err.stack));
 promise.then(() => {
+  rankings.updateRanking();
+  chatProvider.initialize();
   server.listen(PORT, HOST, () => {
-    rankings.updateRanking();
-    chatProvider.initialize();
     const address = server.address();
     logger.log(
       'info',

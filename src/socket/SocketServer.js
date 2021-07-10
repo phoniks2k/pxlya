@@ -18,10 +18,9 @@ import DeRegisterMultipleChunks from './packets/DeRegisterMultipleChunks';
 import ChangedMe from './packets/ChangedMe';
 import OnlineCounter from './packets/OnlineCounter';
 
+import socketEvents from './SocketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './verifyClient';
-import WebSocketEvents from './WebSocketEvents';
-import webSockets from './websockets';
 import { drawSafeByOffsets } from '../core/draw';
 import { needCaptcha } from '../utils/captcha';
 import { cheapDetector } from '../core/isProxy';
@@ -50,16 +49,14 @@ async function verifyClient(info, done) {
 }
 
 
-class SocketServer extends WebSocketEvents {
+class SocketServer {
   wss: WebSocket.Server;
   CHUNK_CLIENTS: Map<number, Array>;
 
   // constructor(server: http.Server) {
   constructor() {
-    super();
     this.CHUNK_CLIENTS = new Map();
     logger.info('Starting websocket server');
-    webSockets.addListener(this);
 
     const wss = new WebSocket.Server({
       perMessageDeflate: false,
@@ -80,7 +77,6 @@ class SocketServer extends WebSocketEvents {
       ws.isAlive = true;
       ws.canvasId = null;
       ws.startDate = Date.now();
-      ws.on('pong', heartbeat);
       const user = await authenticateClient(req);
       ws.user = user;
       ws.name = user.getName();
@@ -91,15 +87,20 @@ class SocketServer extends WebSocketEvents {
       }));
 
       const ip = getIPFromRequest(req);
+
       ws.on('error', (e) => {
         logger.error(`WebSocket Client Error for ${ws.name}: ${e.message}`);
       });
+
+      ws.on('pong', heartbeat);
+
       ws.on('close', () => {
         // is close called on terminate?
         // possible memory leak?
         ipCounter.delete(ip);
         this.deleteAllChunks(ws);
       });
+
       ws.on('message', (message) => {
         if (typeof message === 'string') {
           this.onTextMessage(message, ws);
@@ -109,18 +110,53 @@ class SocketServer extends WebSocketEvents {
       });
     });
 
+    this.broadcast = this.broadcast.bind(this);
+    this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
+    this.reloadUser = this.reloadUser.bind(this);
     this.ping = this.ping.bind(this);
 
-    /*
-     * i don't tink that we really need that, it just stresses the server
-     * with lots of reconnects at once, the overhead of having a few idle
-     * connections isn't too bad in comparison
-     */
-    // this.killOld = this.killOld.bind(this);
-    // setInterval(this.killOld, 10 * 60 * 1000);
+    socketEvents.on('broadcast', this.broadcast);
+    socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
+    socketEvents.on('reloadUser', this.reloadUser);
+
+    socketEvents.on('chatMessage', (
+      name,
+      message,
+      channelId,
+      id,
+      country,
+    ) => {
+      const text = JSON.stringify([name, message, country, channelId, id]);
+      this.wss.clients.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          if (chatProvider.userHasChannelAccess(ws.user, channelId)) {
+            ws.send(text);
+          }
+        }
+      });
+    });
+
+    socketEvents.on('addChatChannel', (userId, channelId, channelArray) => {
+      this.findAllWsByUerId(userId).forEach((ws) => {
+        ws.user.addChannel(channelId, channelArray);
+        const text = JSON.stringify([
+          'addch', {
+            [channelId]: channelArray,
+          },
+        ]);
+        ws.send(text);
+      });
+    });
+
+    socketEvents.on('remChatChannel', (userId, channelId) => {
+      this.findAllWsByUerId(userId).forEach((ws) => {
+        ws.user.removeChannel(channelId);
+        const text = JSON.stringify(['remch', channelId]);
+        ws.send(text);
+      });
+    });
 
     setInterval(SocketServer.onlineCounterBroadcast, 10 * 1000);
-    // https://github.com/websockets/ws#how-to-detect-and-close-broken-connections
     setInterval(this.ping, 45 * 1000);
   }
 
@@ -129,47 +165,34 @@ class SocketServer extends WebSocketEvents {
    * https://github.com/websockets/ws/issues/617
    * @param data
    */
-  broadcast(data: Buffer) {
-    const frame = WebSocket.Sender.frame(data, {
-      readOnly: true,
-      mask: false,
-      rsv1: false,
-      opcode: 2,
-      fin: true,
-    });
-    this.wss.clients.forEach((ws) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        frame.forEach((buffer) => {
-          try {
-            // eslint-disable-next-line no-underscore-dangle
-            ws._socket.write(buffer);
-          } catch (error) {
-            logger.error(`WebSocket broadcast error: ${error.message}`);
-          }
-        });
-      }
-    });
-  }
-
-  broadcastOnlineCounter(buffer: Buffer) {
-    this.broadcast(buffer);
-  }
-
-  broadcastChatMessage(
-    name: string,
-    message: string,
-    channelId: number,
-    id: number,
-    country: string,
-  ) {
-    const text = JSON.stringify([name, message, country, channelId, id]);
-    this.wss.clients.forEach((ws) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        if (chatProvider.userHasChannelAccess(ws.user, channelId)) {
-          ws.send(text);
+  broadcast(data) {
+    if (typeof data === 'string') {
+      this.wss.clients.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(data);
         }
-      }
-    });
+      });
+    } else {
+      const frame = WebSocket.Sender.frame(data, {
+        readOnly: true,
+        mask: false,
+        rsv1: false,
+        opcode: 2,
+        fin: true,
+      });
+      this.wss.clients.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          frame.forEach((buffer) => {
+            try {
+              // eslint-disable-next-line no-underscore-dangle
+              ws._socket.write(buffer);
+            } catch (error) {
+              logger.error(`WebSocket broadcast error: ${error.message}`);
+            }
+          });
+        }
+      });
+    }
   }
 
   /*
@@ -189,35 +212,18 @@ class SocketServer extends WebSocketEvents {
     return null;
   }
 
-  broadcastAddChatChannel(
-    userId: number,
-    channelId: number,
-    channelArray: Array,
-  ) {
-    this.wss.clients.forEach((ws) => {
+  findAllWsByUerId(userId) {
+    const clients = [];
+    const it = this.wss.clients.keys();
+    let client = it.next();
+    while (!client.done) {
+      const ws = client.value;
       if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
-        ws.user.addChannel(channelId, channelArray);
-        const text = JSON.stringify([
-          'addch', {
-            [channelId]: channelArray,
-          },
-        ]);
-        ws.send(text);
+        clients.push(ws);
       }
-    });
-  }
-
-  broadcastRemoveChatChannel(
-    userId: number,
-    channelId: number,
-  ) {
-    this.wss.clients.forEach((ws) => {
-      if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
-        ws.user.removeChannel(channelId);
-        const text = JSON.stringify(['remch', channelId]);
-        ws.send(text);
-      }
-    });
+      client = it.next();
+    }
+    return clients;
   }
 
   broadcastPixelBuffer(canvasId: number, chunkid, data: Buffer) {
@@ -263,14 +269,6 @@ class SocketServer extends WebSocketEvents {
     });
   }
 
-  killOld() {
-    const now = Date.now();
-    this.wss.clients.forEach((ws) => {
-      const lifetime = now - ws.startDate;
-      if (lifetime > 30 * 60 * 1000 && Math.random() < 0.3) ws.terminate();
-    });
-  }
-
   ping() {
     this.wss.clients.forEach((ws) => {
       if (!ws.isAlive) {
@@ -284,7 +282,7 @@ class SocketServer extends WebSocketEvents {
 
   static onlineCounterBroadcast() {
     const online = ipCounter.amount() || 0;
-    webSockets.broadcastOnlineCounter(online);
+    socketEvents.broadcastOnlineCounter(online);
   }
 
   async onTextMessage(text, ws) {
@@ -319,6 +317,9 @@ class SocketServer extends WebSocketEvents {
          * if DM channel, make sure that other user has DM open
          * (needed because we allow user to leave one-sided
          *  and auto-join on message)
+         *  TODO: if we scale and have multiple websocket servers at some point
+         *  this might be an issue. We would hve to make a shared list of online
+         *  users and act based on that on 'chatMessage' event
          */
         const dmUserId = chatProvider.checkIfDm(user, channelId);
         if (dmUserId) {
@@ -337,20 +338,11 @@ class SocketServer extends WebSocketEvents {
         /*
          * send chat message
          */
-        const errorMsg = await chatProvider.sendMessage(
+        socketEvents.recvChatMessage(
           user,
           message,
           channelId,
         );
-        if (errorMsg) {
-          ws.send(JSON.stringify([
-            'info',
-            errorMsg,
-            'il',
-            channelId,
-            chatProvider.infoUserId,
-          ]));
-        }
       } else {
         logger.info('Got empty message or message from unidentified ws');
       }
