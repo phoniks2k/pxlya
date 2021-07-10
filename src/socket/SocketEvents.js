@@ -52,7 +52,7 @@ class SocketEvents extends EventEmitter {
   }
 
   /*
-   * broadcast chat message
+   * broadcast chat message to all users in channel
    * @param name chatname
    * @param message Message to send
    * @param sendapi If chat message should get boradcasted to api websockets
@@ -74,6 +74,28 @@ class SocketEvents extends EventEmitter {
       id,
       country || 'xx',
       sendapi,
+    );
+  }
+
+  /*
+   * send chat message to a single user in channel
+   */
+  broadcastSUChatMessage(
+    targetUserId: number,
+    name: string,
+    message: string,
+    channelId: number,
+    id: number,
+    country: string = 'xx',
+  ) {
+    this.emit(
+      'suChatMessage',
+      targetUserId,
+      name,
+      message,
+      channelId,
+      id,
+      country || 'xx',
     );
   }
 

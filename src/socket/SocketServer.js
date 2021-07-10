@@ -119,6 +119,20 @@ class SocketServer {
     socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
     socketEvents.on('reloadUser', this.reloadUser);
 
+    socketEvents.on('suChatMessage', (
+      userId,
+      name,
+      message,
+      channelId,
+      id,
+      country,
+    ) => {
+      this.findAllWsByUerId(userId).forEach((ws) => {
+        const text = JSON.stringify([name, message, country, channelId, id]);
+        ws.send(text);
+      });
+    });
+
     socketEvents.on('chatMessage', (
       name,
       message,
@@ -338,11 +352,7 @@ class SocketServer {
         /*
          * send chat message
          */
-        socketEvents.recvChatMessage(
-          user,
-          message,
-          channelId,
-        );
+        socketEvents.recvChatMessage(user, message, channelId);
       } else {
         logger.info('Got empty message or message from unidentified ws');
       }

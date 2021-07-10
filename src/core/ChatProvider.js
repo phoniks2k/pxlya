@@ -55,11 +55,13 @@ export class ChatProvider {
     socketEvents.on('recvChatMessage', async (user, message, channelId) => {
       const errorMsg = await this.sendMessage(user, message, channelId);
       if (errorMsg) {
-        this.broadcastChatMessage(
+        socketEvents.broadcastSUChatMessage(
+          user.id,
           'info',
           errorMsg,
           channelId,
           this.infoUserId,
+          'il',
         );
       }
     });
@@ -314,16 +316,15 @@ export class ChatProvider {
     const { t } = user.ttag;
     const name = user.getName();
 
+    if (!name || !id) {
+      return null;
+    }
+
     if (!user.userlvl && await cheapDetector(user.ip)) {
       logger.info(
         `${name} / ${user.ip} tried to send chat message with proxy`,
       );
       return t`You can not send chat messages with proxy`;
-    }
-
-    if (!name || !id) {
-      // eslint-disable-next-line max-len
-      return t`Couldn\'t send your message, pls log out and back in again.`;
     }
 
     if (message.charAt(0) === '/' && user.userlvl) {
