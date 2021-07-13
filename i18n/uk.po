@@ -1,17 +1,58 @@
 msgid ""
 msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
 "Language-Team: \n"
-"Language: uk_UA\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
+"Last-Translator: \n"
+"Language: uk\n"
+
+#: src/controls/keypress.js:39
+#, javascript-format
+msgid "Switched to ${ canvasName }"
+msgstr "Змінено на полотно ${ canvasName }"
+
+#: src/controls/keypress.js:61
+msgid "Grid ON"
+msgstr "Сітка ON"
+
+#: src/controls/keypress.js:62
+msgid "Grid OFF"
+msgstr "Сітка OFF"
+
+#: src/controls/keypress.js:70
+msgid "Pixel Notify ON"
+msgstr "Піксельна активність ON"
+
+#: src/controls/keypress.js:71
+msgid "Pixel Notify OFF"
+msgstr "Піксельна активність OFF"
+
+#: src/controls/keypress.js:76
+msgid "Muted Sound"
+msgstr "Звуки OFF"
+
+#: src/controls/keypress.js:77
+msgid "Unmuted Sound"
+msgstr "Звуки ON"
+
+#: src/components/CoordinatesBox.jsx:29 src/controls/keypress.js:83
+msgid "Copied!"
+msgstr "Скопійовано!"
+
+#: src/controls/keypress.js:89
+msgid "Show Hidden Canvases"
+msgstr "Показати приховані полотна"
+
+#: src/controls/keypress.js:90
+msgid "Hide Hidden Canvases"
+msgstr "Сховати приховані полотна"
 
 #: src/ui/placePixel.js:53
 msgid "Error :("
@@ -19,391 +60,331 @@ msgstr "Помилка :("
 
 #: src/ui/placePixel.js:54
 msgid "Didn't get an answer from pixelplanet. Maybe try to refresh?"
-msgstr "Не отримано відповіді від pixelplanet. Може спробуєте оновити сторінку?"
+msgstr "Не отримано відповіді від сайту. Може спробуєте оновити сторінку?"
 
-#: src/ui/placePixel.js:56 src/ui/placePixel.js:265
+#: src/ui/placePixel.js:56 src/ui/placePixel.js:237 src/ui/placePixel.js:256
 msgid "OK"
 msgstr "ОК"
 
-#: src/ui/placePixel.js:206
+#: src/ui/placePixel.js:197
 msgid "Invalid Canvas"
 msgstr "Некоректне полотно"
 
-#: src/ui/placePixel.js:207
+#: src/ui/placePixel.js:198
 msgid "This canvas doesn't exist"
 msgstr "Цього полотна не існує"
 
-#: src/ui/placePixel.js:210 src/ui/placePixel.js:214 src/ui/placePixel.js:218
+#: src/ui/placePixel.js:201 src/ui/placePixel.js:205 src/ui/placePixel.js:209
 msgid "Invalid Coordinates"
 msgstr "Некоректні координати"
 
-#: src/ui/placePixel.js:211
+#: src/ui/placePixel.js:202
 msgid "x out of bounds"
 msgstr "x поза межами"
 
-#: src/ui/placePixel.js:215
+#: src/ui/placePixel.js:206
 msgid "y out of bounds"
 msgstr "y поза межами"
 
-#: src/ui/placePixel.js:219
+#: src/ui/placePixel.js:210
 msgid "z out of bounds"
 msgstr "z поза межами"
 
-#: src/ui/placePixel.js:222
+#: src/ui/placePixel.js:213
 msgid "Wrong Color"
-msgstr "Неправильний колір"
+msgstr "Недійсний колір"
 
-#: src/ui/placePixel.js:223
+#: src/ui/placePixel.js:214
 msgid "Invalid color selected"
 msgstr "Вибрано недійсний колір"
 
-#: src/ui/placePixel.js:226
+#: src/ui/placePixel.js:217
 msgid "Just for registered Users"
 msgstr "Тільки для зареєстрованих користувачів"
 
-#: src/ui/placePixel.js:227
+#: src/ui/placePixel.js:218
 msgid "You have to be logged in to place on this canvas"
 msgstr "Ви маєте залогінитись, щоб ставити пікселі на цьому полотні"
 
-#: src/ui/placePixel.js:230
+#: src/ui/placePixel.js:221
 msgid "Place more :)"
 msgstr "Поставте більше пікселів :)"
 
-#: src/ui/placePixel.js:232
+#: src/ui/placePixel.js:223
 msgid "You can not access this canvas yet. You need to place more pixels"
-msgstr "Ви поки не можете отримати доступ до цього полотна. Потрібно поставити більше пікселів"
+msgstr ""
+"Ви поки не можете отримати доступ до цього полотна. Потрібно поставити "
+"більше пікселів"
 
-#: src/ui/placePixel.js:235
+#: src/ui/placePixel.js:226
 msgid "Pixel protected!"
 msgstr "Піксель захищено!"
 
-#: src/ui/placePixel.js:251
+#: src/ui/placePixel.js:235
+msgid "Please prove that you are human"
+msgstr "Будь ласка, підтвердьте, що ви людина"
+
+#: src/ui/placePixel.js:242
 msgid "No Proxies Allowed :("
 msgstr "Проксі заборонені :("
 
-#: src/ui/placePixel.js:252
+#: src/ui/placePixel.js:243
 msgid "You are using a Proxy."
 msgstr "Ви використовуєте проксі."
 
-#: src/ui/placePixel.js:255
+#: src/ui/placePixel.js:246
 msgid "Weird"
 msgstr "Дивно"
 
-#: src/ui/placePixel.js:256
+#: src/ui/placePixel.js:247
 msgid "Couldn't set Pixel"
 msgstr "Не вдалося поставити піксель"
 
-#: src/ui/placePixel.js:262
+#: src/ui/placePixel.js:253
 #, javascript-format
 msgid "Error ${ retCode }"
 msgstr "Помилка ${ retCode }"
 
-#: src/components/CoordinatesBox.jsx:37 src/controls/keypress.js:59
-msgid "Copied!"
-msgstr "Скопійовано!"
-
-#: src/components/Admintools.jsx:219 src/components/ChannelContextMenu.jsx:85
-#: src/components/ModalRoot.jsx:60
-msgid "Close"
-msgstr "Закрити"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Close Menu"
-msgstr "Закрити меню"
-
-#: src/components/ExpandMenuButton.jsx:19
-msgid "Open Menu"
-msgstr "Відкрити меню"
-
-#: src/components/ChatButton.jsx:61
-msgid "Close Chat"
-msgstr "Закрити чат"
-
-#: src/components/ChatButton.jsx:61
-msgid "Open Chat"
-msgstr "Відкрити чат"
-
-#: src/components/CanvasSelectModal.jsx:67
-#: src/components/CanvasSwitchButton.jsx:20
-msgid "Canvas Selection"
-msgstr "Вибір полотна"
-
-#: src/components/OnlineBox.jsx:22
-msgid "User online"
-msgstr "Користувачів онлайн"
-
-#: src/components/OnlineBox.jsx:25
-msgid "Pixels placed"
-msgstr "Пікселів поставлено"
-
-#: src/components/Converter.jsx:609 src/components/CoordinatesBox.jsx:26
-msgid "Copy to Clipboard"
-msgstr "Скопіювати"
-
-#: src/components/ForgotPasswordModal.jsx:16
-msgid "Enter your mail address and we will send you a new password:"
-msgstr "Введіть електронну адресу, і ми надішлемо вам новий пароль:"
-
-#: src/components/ForgotPasswordModal.jsx:20
-#: src/components/RegisterModal.jsx:21 src/components/UserAreaModal.jsx:130
-msgid "Consider joining us on Guilded:"
-msgstr "Приєднуйтесь до нас в Guilded:"
-
-#: src/components/ForgotPasswordModal.jsx:37
-msgid "Restore my Password"
-msgstr "Відновити мій пароль"
-
-#: src/components/ChatModal.jsx:35
-msgid "Chat"
-msgstr "Чат"
-
-#: src/components/ArchiveModal.jsx:20
-msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or "
-"as a request by users who currently like a meme. Those canvases can get "
-"boring after a while and after weeks of no major change and if they really "
-"aren't worth being kept active, we decide to remove them."
-msgstr ""
-"Хоча ми, зазвичай, не видаляємо полотна, деякі з них створюються для "
-"розваги або на прохання гравців, яким сподобався якийсь тренд. Ці полотна "
-"можуть стати нудними через деякий час, і після декількох тижнів без серйозних змін, "
-"якщо цим полотнам дійсно не варто залишатися відкритими, ми вирішуємо їх видалити."
-
-#: src/components/ArchiveModal.jsx:22
-msgid ""
-"Here we collect those canvases to archive them in a proper way (which is "
-"currently just one)."
-msgstr ""
-"Тут ми збираємо ці полотна, щоб належним чином їх архівувати (наразі є лише "
-"одне)."
-
-#: src/components/ArchiveModal.jsx:24
-msgid "Political Compass Canvas"
-msgstr "Полотно Політичний Компас"
-
-#: src/components/ArchiveModal.jsx:31
-msgid ""
-"This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
-"remained active for months till it got shut down on November 30th."
-msgstr ""
-"На це полотно ми отримали запит під час політичних конфліктів на головному "
-"полотні Землі. Це було зображення політичного компасу розміром 1024x1024 з 5-"
-"секундною перезарядкою та 60-секундним її накопиченням. Воно було створене 11-го травня і залишалось "
-"активним на протязі місяців, поки не було закрите 30-го листопада."
-
-#: src/components/ArchiveModal.jsx:32
-msgid ""
-"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
-"screenshot from the timelapse results in a perfect 1:1 representation of how "
-"the canvas was at that time."
-msgstr ""
-"Ми вирішили заархівувати його як таймлапс, закодований у webm без втрат. Скріншот "
-"з таймлапсу дає точне зображення у співвідношенні 1:1 того, як виглядало полотно "
-"на той момент часу."
-
-#: src/components/ArchiveModal.jsx:50
-msgid "Canvas Archive"
-msgstr "Архів полотен"
-
-#: src/components/CanvasSelectModal.jsx:29
-msgid ""
-"Select the canvas you want to use. Every canvas is unique and has different "
-"palettes, cooldown and requirements. Archive of closed canvases can be "
-"accessed here:"
-msgstr ""
-"Виберіть канвас, на якому хочете малювати. Кожне полотно унікальне і має "
-"різні палітри, кулдаун і вимоги. Архів закритих полотен можна "
-"переглянути тут:"
-
-#: src/components/CanvasSelectModal.jsx:37
-msgid "Archive"
-msgstr "Архів"
-
-#: src/components/RegisterModal.jsx:18
-msgid "Register new account here"
-msgstr "Зареєструйте новий аккаунт тут"
-
-#: src/components/RegisterModal.jsx:38
+#: src/actions/index.js:627
 msgid "Register New Account"
 msgstr "Зареєструвати новий аккаунт"
 
-#: src/components/UserAreaModal.jsx:33
-msgid "Login to access more features and stats."
-msgstr "Залогіньтесь для додаткових функцій та статистики."
+#: src/actions/index.js:634
+msgid "Restore my Password"
+msgstr "Відновити мій пароль"
 
-#: src/components/UserAreaModal.jsx:35
-msgid "Login with Name or Mail:"
-msgstr "Увійти за допомогою нікнейму або пошти:"
+#: src/actions/index.js:641
+msgid "Welcome to PixelPlanet.fun"
+msgstr "Ласкаво просимо на PixelPlanet.fun"
 
-#: src/components/UserAreaModal.jsx:42
-msgid "I forgot my Password."
-msgstr "Я забув свій пароль."
+#: src/actions/index.js:647
+msgid "Look at past Canvases"
+msgstr "Переглянути минулі полотна"
 
-#: src/components/UserAreaModal.jsx:43
-msgid "or login with:"
-msgstr "або увійдіть через:"
+#: src/components/Converter.jsx:615 src/components/CoordinatesBox.jsx:32
+msgid "Copy to Clipboard"
+msgstr "Скопіювати"
 
-#: src/components/UserAreaModal.jsx:84
-msgid "or register here:"
-msgstr "або зареєструйтесь тут:"
+#: src/components/OnlineBox.jsx:30
+msgid "User online"
+msgstr "Користувачів онлайн"
 
-#: src/components/UserAreaModal.jsx:85
-msgid "Register"
-msgstr "Зареєструватись"
+#: src/components/OnlineBox.jsx:33
+msgid "Pixels placed"
+msgstr "Пікселів поставлено"
 
-#: src/components/UserAreaModal.jsx:107
-msgid "Profile"
-msgstr "Профіль"
+#: src/components/Admintools.jsx:224 src/components/ModalRoot.jsx:69
+#: src/components/Window.jsx:138
+#: src/components/contextmenus/ChannelContextMenu.jsx:67
+msgid "Close"
+msgstr "Закрити"
 
-#: src/components/UserAreaModal.jsx:113
-msgid "Ranking"
-msgstr "Рейтинг"
+#: src/components/ModalRoot.jsx:78
+msgid "Restore"
+msgstr "Відновити"
 
-#: src/components/UserAreaModal.jsx:116
-msgid "Converter"
-msgstr "Конвертер"
+#: src/components/buttons/CanvasSwitchButton.jsx:23
+#: src/components/windows/index.js:22
+msgid "Canvas Selection"
+msgstr "Вибір полотна"
 
-#: src/components/UserAreaModal.jsx:122
-msgid "Admintools"
-msgstr "Адмінтулз"
+#: src/components/buttons/ChatButton.jsx:92
+msgid "Close Chat"
+msgstr "Закрити чат"
 
-#: src/components/UserAreaModal.jsx:122
-msgid "Modtools"
-msgstr "Модтулз"
+#: src/components/buttons/ChatButton.jsx:92
+msgid "Open Chat"
+msgstr "Відкрити чат"
 
-#: src/components/UserAreaModal.jsx:123
-msgid "Loading..."
-msgstr "Завантаження..."
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Close Menu"
+msgstr "Закрити меню"
 
-#: src/components/LogInButton.jsx:20 src/components/UserAreaModal.jsx:160
-msgid "User Area"
-msgstr "Профіль користувача"
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Open Menu"
+msgstr "Відкрити меню"
 
-#: src/components/SettingsModal.jsx:123
-msgid "Show Grid"
-msgstr "Показувати сітку"
+#: src/actions/fetch.js:40
+msgid "You made too many requests"
+msgstr "Ви зробили занадто багато запитів"
 
-#: src/components/SettingsModal.jsx:124
-msgid "Turn on grid to highlight pixel borders."
-msgstr "Увімкніть сітку, щоб виділити межі пікселів."
+#: src/actions/fetch.js:44
+#, javascript-format
+msgid "try again after ${ ti }min"
+msgstr "спробуйте ще раз через ${ ti }хв"
 
-#: src/components/SettingsModal.jsx:130
-msgid "Show Pixel Activity"
-msgstr "Показувати піксельну активність"
+#: src/actions/fetch.js:55
+msgid "Connection error ${ code } :("
+msgstr "Помилка з'єднання ${ code } :("
 
-#: src/components/SettingsModal.jsx:131
-msgid "Show circles where pixels are placed."
-msgstr "Показувати кола в тих місцях, де були поставлені пікселі."
+#: src/actions/fetch.js:80 src/actions/fetch.js:99
+msgid "Could not connect to server, please try again later :("
+msgstr "Не вдалося підключитися до сервера, спробуйте пізніше :("
 
-#: src/components/SettingsModal.jsx:137
-msgid "Disable Game Sounds"
-msgstr "Вимкнути звуки гри"
+#: src/actions/fetch.js:121 src/actions/fetch.js:140 src/actions/fetch.js:159
+#: src/actions/fetch.js:178
+msgid "Unknown Error"
+msgstr "Невідома помилка"
 
-#: src/components/SettingsModal.jsx:139
-msgid "All sound effects will be disabled."
-msgstr "Всі звукові ефекти будуть вимкнені."
+#: src/actions/fetch.js:188
+msgid "Server answered with gibberish :("
+msgstr "Сервер відповів тарабарщиною :("
 
-#: src/components/SettingsModal.jsx:145
-msgid "Enable chat notifications"
-msgstr "Увімкнути сповіщення чату"
+#: src/components/HistorySelect.jsx:144
+msgid "Loading"
+msgstr "Завантаження"
 
-#: src/components/SettingsModal.jsx:146
-msgid "Play a sound when new chat messages arrive"
-msgstr "Звукові сповіщення, коли в чаті з'являються нові повідомлення"
+#: src/components/HistorySelect.jsx:145
+msgid "Select Date above"
+msgstr "Виберіть дату зверху"
 
-#: src/components/SettingsModal.jsx:151
-msgid "Auto Zoom In"
-msgstr "Автоматичне збільшення"
+#: src/components/Window.jsx:117
+msgid "Clone"
+msgstr "Клонувати"
 
-#: src/components/SettingsModal.jsx:153
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-"Коли ви далеко від поверхні, клік моментально наблизить вас до неї, замість встановлення пікселя."
+#: src/components/Window.jsx:124
+msgid "Move"
+msgstr "Перемістити"
 
-#: src/components/SettingsModal.jsx:158
-msgid "Compact Palette"
-msgstr "Компактна палітра"
+#: src/components/Window.jsx:131
+msgid "Maximize"
+msgstr "Збільшити"
 
-#: src/components/SettingsModal.jsx:160
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-"Відображати палітру в компактній формі, яка займає менше місця на екрані."
+#: src/components/Window.jsx:145
+msgid "Resize"
+msgstr "Змінити розмір"
 
-#: src/components/SettingsModal.jsx:165
-msgid "Potato Mode"
-msgstr "Режим відра"
+#: src/components/buttons/HelpButton.jsx:23 src/components/windows/index.js:16
+msgid "Help"
+msgstr "Допомога"
 
-#: src/components/SettingsModal.jsx:166
-msgid "For when you are playing on a potato."
-msgstr "Для тих випадків, коли ваш пк - відро"
-
-#: src/components/Converter.jsx:423 src/components/SettingsModal.jsx:171
-msgid "Light Grid"
-msgstr "Світла сітка"
-
-#: src/components/SettingsModal.jsx:172
-msgid "Show Grid in white instead of black."
-msgstr "Показувати білу, а не чорну сітку."
-
-#: src/components/SettingsModal.jsx:179
-msgid "Historical View"
-msgstr "Історичний вигляд"
-
-#: src/components/SettingsModal.jsx:180
-msgid "Check out past versions of the canvas."
-msgstr "Перегляньте стан полотна в минулому."
-
-#: src/components/SettingsModal.jsx:188
-msgid "Themes"
-msgstr "Теми"
-
-#: src/components/SettingsModal.jsx:189
-msgid "How pixelplanet should look like."
-msgstr "Як має виглядати pixelplanet."
-
-#: src/components/SettingsButton.jsx:20 src/components/SettingsModal.jsx:267
+#: src/components/buttons/SettingsButton.jsx:23
+#: src/components/windows/index.js:17
 msgid "Settings"
 msgstr "Налаштування"
 
-#: src/components/HelpModal.jsx:34 src/components/HelpModal.jsx:35
-msgid "Privacy Policy"
-msgstr "Політика конфіденційності"
+#: src/components/buttons/LogInButton.jsx:23 src/components/windows/index.js:18
+msgid "User Area"
+msgstr "Профіль користувача"
 
-#: src/components/HelpModal.jsx:36 src/components/HelpModal.jsx:37
-msgid "Terms of Service"
-msgstr "Умови використання"
+#: src/components/buttons/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr "Зробити скріншот"
 
-#: src/components/HelpModal.jsx:40
+#: src/components/buttons/GlobeButton.jsx:35
+msgid "Globe View"
+msgstr "Відкрити глобус"
+
+#: src/components/buttons/PalselButton.jsx:31
+msgid "Close Palette"
+msgstr "Закрити палітру"
+
+#: src/components/buttons/PalselButton.jsx:31
+msgid "Open Palette"
+msgstr "Відкрити палітру"
+
+#: src/components/contextmenus/ChannelContextMenu.jsx:55
+msgid "Mute"
+msgstr "Вимкнути звук"
+
+#: src/components/contextmenus/UserContextMenu.jsx:53
+msgid "Ping"
+msgstr "Відповісти"
+
+#: src/components/contextmenus/UserContextMenu.jsx:78
+msgid "DM"
+msgstr "ПП"
+
+#: src/components/contextmenus/UserContextMenu.jsx:88
+msgid "Block"
+msgstr "ЧС"
+
+#: src/components/windows/index.js:19
+msgid "Registration"
+msgstr "Реєстрація"
+
+#: src/components/windows/index.js:20
+msgid "Forgot Password"
+msgstr "Забув пароль"
+
+#: src/components/windows/index.js:21
+msgid "Chat"
+msgstr "Чат"
+
+#: src/components/windows/index.js:23
+msgid "Canvas Archive"
+msgstr "Архів полотен"
+
+#: src/components/Captcha.jsx:43 src/components/ChangeMail.jsx:72
+#: src/components/ChangeName.jsx:58 src/components/ChangePassword.jsx:80
+#: src/components/DeleteAccount.jsx:55 src/components/LogInForm.jsx:69
+#: src/components/windows/ForgotPassword.jsx:75
+#: src/components/windows/Register.jsx:83
+msgid "Error"
+msgstr "Помилка"
+
+#: src/components/Captcha.jsx:47
+msgid "Type the characters from the following image:"
+msgstr "Введіть символи на картинці:"
+
+#: src/components/Captcha.jsx:50
+msgid "Tip: Not case-sensitive; I and l are the same"
+msgstr "Можна все писати малими літерами; I(i) та l(L) - однакові"
+
+#: src/components/Captcha.jsx:74
+msgid "Could not load captcha"
+msgstr "Не вдалося завантажити капчу"
+
+#: src/components/Captcha.jsx:78
+msgid "Can't read? Reload:"
+msgstr "Не можете прочитати? Перезавантажте:"
+
+#: src/components/Captcha.jsx:82
+msgid "Reload"
+msgstr "Перезавантажити"
+
+#: src/components/Captcha.jsx:94
+msgid "Enter Characters"
+msgstr "Ввести символи"
+
+#: src/components/Captcha.jsx:120 src/components/ChangeMail.jsx:93
+#: src/components/ChangeName.jsx:70 src/components/ChangePassword.jsx:116
+#: src/components/DeleteAccount.jsx:68
+#: src/components/windows/ForgotPassword.jsx:88
+#: src/components/windows/Register.jsx:125
+msgid "Cancel"
+msgstr "Відмінити"
+
+#: src/components/Captcha.jsx:127
+msgid "Send"
+msgstr "Надіслати"
+
+#: src/components/windows/Help.jsx:35
 msgid "your IP"
-msgstr "вашою IP-адресою"
+msgstr "ваша IP-адреса"
 
-#: src/components/HelpModal.jsx:46
+#: src/components/windows/Help.jsx:41
 msgid "Place color pixels on a large canvas with other players online!"
-msgstr "Ставте кольорові пікселі на гігантському полотні разом з іншими гравцями!"
+msgstr ""
+"Ставте кольорові пікселі на гігантському полотні разом з іншими гравцями!"
 
-
-
-#: src/components/HelpModal.jsx:47
+#: src/components/windows/Help.jsx:42
 msgid ""
 "Our main canvas is a huge worldmap, you can place wherever you like, but you "
 "will have to wait a specific Cooldown between pixels. You can check out the "
-"cooldown and requirements on the Canvas Selection menu (globe button on top). "
-"Some canvases have a different cooldown for replacing a user-set pixels than "
-"placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels and 7s on "
-"already set pixels."
+"cooldown and requirements on the Canvas Selection menu (globe button on "
+"top). Some canvases have a different cooldown for replacing a user-set "
+"pixels than placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels "
+"and 7s on already set pixels."
 msgstr ""
-"Наше головне полотно - це величезна карта світу, на якій ви можете розміщувати "
-"пікселі де завгодно, але вам доведеться почекати певний час перезарядки між "
-"ними. Ви можете перевірити час перезарядки та вимоги в меню Вибір "
-"полотна (кнопка з глобусом зверху). Деякі полотна мають інший час "
-"для заміни встановлених іншими користувачами пікселів, тобто 4с./7с. означає "
-"4 с. перезарядка на пустому місці і 7 с. на вже встановлених пікселях."
+"Наше головне полотно - це величезна карта світу, на якій ви можете "
+"розміщувати пікселі де завгодно, але вам доведеться почекати певний час "
+"перезарядки між ними. Ви можете перевірити час перезарядки та вимоги в меню "
+"Вибір полотна (кнопка з глобусом зверху). Деякі полотна мають інший час для "
+"заміни встановлених іншими користувачами пікселів, тобто 4с./7с. означає 4 "
+"с. перезарядки на пустому місці і 7 с. на вже встановлених пікселях."
 
-#: src/components/HelpModal.jsx:51
+#: src/components/windows/Help.jsx:46
 msgid ""
 "Higher zoomlevels take some time to update, the 3D globe gets updated at "
 "least once per day."
@@ -411,138 +392,144 @@ msgstr ""
 "Більш високі рівні масштабування потребують певного часу для оновлення, 3D-"
 "глобус оновлюється принаймні раз на день."
 
-#: src/components/HelpModal.jsx:52
+#: src/components/windows/Help.jsx:47
 msgid "Have fun!"
 msgstr "Веселіться!"
 
-#: src/components/HelpModal.jsx:54
+#: src/components/windows/Help.jsx:49
 msgid "recommended"
 msgstr "рекомендовано"
 
-#: src/components/HelpModal.jsx:55
+#: src/components/windows/Help.jsx:50
 msgid "Source on "
 msgstr "Джерело на "
 
-#: src/components/HelpModal.jsx:56
+#: src/components/windows/Help.jsx:51
 msgid "Map Data"
 msgstr "Дані карти"
 
-#: src/components/HelpModal.jsx:57
+#: src/components/windows/Help.jsx:52
 msgid ""
 "The bare map data that we use, together with converted OpenStreetMap tiles "
 "for orientation, can be downloaded from mega.nz here: "
 msgstr ""
 "Використовувані нами пусті картографічні дані, разом із конвертованими "
-"плитками карти з OpenStreetMap для орієнтації, можна завантажити з mega.nz тут:"
+"плитками карти з OpenStreetMap для орієнтації, можна завантажити з mega.nz "
+"тут: "
 
-#: src/components/HelpModal.jsx:59
+#: src/components/windows/Help.jsx:54
 msgid "Detected as Proxy?"
 msgstr "У вас виявили проксі?"
 
-#: src/components/HelpModal.jsx:61
+#: src/components/windows/Help.jsx:56
 #, javascript-format
 msgid ""
 "If you got detected as proxy, but you are none, please go to our "
 "${ guildedLink } or send us an e-mail with ${ getIPLink } to ${ mailLink }. "
 "Do not post your IP anywhere else. We are sorry for the inconvenience."
 msgstr ""
-"Якщо у вас виявлено проксі, але ви впевнені, що ви його не використовуєте, перейдіть в наш "
-"${guildedLink} або надішліть нам електронне повідомлення з ${getIPLink} на "
-"${mailLink}. Не розміщуйте більше ніде ваш IP. Вибачте за незручності."
+"Якщо у вас виявлено проксі, але ви впевнені, що ви його не використовуєте, "
+"перейдіть в наш ${guildedLink} або надішліть нам електронне повідомлення з "
+"${getIPLink} на ${mailLink}. Не розміщуйте більше ніде вашу IP-адресу. "
+"Вибачте за незручності."
 
-#: src/components/HelpModal.jsx:63 src/components/HelpModal.jsx:80
+#: src/components/windows/Help.jsx:58 src/components/windows/Help.jsx:75
 msgid "Controls"
 msgstr "Елементи управління"
 
-#: src/components/HelpModal.jsx:65
+#: src/components/windows/Help.jsx:60
 msgid "Click a color in palette to select it"
 msgstr "Клацніть колір на палітрі, щоб вибрати його"
 
-#: src/components/HelpModal.jsx:66
+#: src/components/windows/Help.jsx:61
 #, javascript-format
 msgid "Press ${ bindG } to toggle grid"
 msgstr "Натисніть ${ bindG }, щоб перемкнути сітку"
 
-#: src/components/HelpModal.jsx:67
+#: src/components/windows/Help.jsx:62
 msgid "Press ${ bindX } to toggle showing of pixel activity"
 msgstr "Натисніть ${bindX}, щоб перемкнути показ піксельної активності"
 
-#: src/components/HelpModal.jsx:68
+#: src/components/windows/Help.jsx:63
 #, javascript-format
 msgid "Press ${ bindH } to toggle historical view"
 msgstr "Натисніть ${bindH}, щоб перемкнути перегляд історії"
 
-#: src/components/HelpModal.jsx:69
+#: src/components/windows/Help.jsx:64
 msgid "Press ${ bindR } to copy coordinates"
 msgstr "Натисніть ${bindR}, щоб скопіювати координати"
 
-#: src/components/HelpModal.jsx:70
+#: src/components/windows/Help.jsx:65
 #, javascript-format
 msgid "Press ${ bindQ } or ${ bindE } to zoom"
 msgstr "Натисніть ${bindQ} або ${bindE} для масштабування"
 
-#: src/components/HelpModal.jsx:71 src/components/HelpModal.jsx:82
+#: src/components/windows/Help.jsx:66 src/components/windows/Help.jsx:77
 #, javascript-format
 msgid "Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
 msgstr "Натисніть ${bindW}, ${bindA}, ${bindS}, ${bindD} для переміщення"
 
-#: src/components/HelpModal.jsx:72 src/components/HelpModal.jsx:83
+#: src/components/windows/Help.jsx:67 src/components/windows/Help.jsx:78
 #, javascript-format
 msgid ""
 "Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
 msgstr ""
-"Натисніть ${bindAUp}, ${bindALeft}, ${bindADown}, ${bindARight} для переміщення"
+"Натисніть ${bindAUp}, ${bindALeft}, ${bindADown}, ${bindARight} для "
+"переміщення"
 
-#: src/components/HelpModal.jsx:73
+#: src/components/windows/Help.jsx:68
 msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
-msgstr ""
-"Рухайте мишу ${mouseSymbol} або тачпад ${touchSymbol} для переміщення"
+msgstr "Рухайте мишу ${mouseSymbol} або тачпад ${touchSymbol} для переміщення"
 
-#: src/components/HelpModal.jsx:74
+#: src/components/windows/Help.jsx:69
 #, javascript-format
 msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
 msgstr ""
-"Крутіть колесо миші ${mouseSymbol} або щипайте тачпад ${touchSymbol}, щоб наблизити/віддалити полотно"
+"Крутіть колесо миші ${mouseSymbol} або щипайте тачпад ${touchSymbol}, щоб "
+"наблизити/віддалити полотно"
 
-#: src/components/HelpModal.jsx:75
+#: src/components/windows/Help.jsx:70
 msgid "Hold left ${ bindShift } for placing while moving mouse"
-msgstr "Затисніть лівий ${bindShift}, для того щоб автоматично ставити пікселі під час руху миші"
+msgstr ""
+"Затисніть лівий ${bindShift}, для того щоб автоматично ставити пікселі під "
+"час руху миші"
 
-#: src/components/HelpModal.jsx:76
+#: src/components/windows/Help.jsx:71
 #, javascript-format
 msgid ""
 "Hold right ${ bindShift } for placing while moving mouse according to "
 "historical view"
 msgstr ""
-"Затисніть правий ${bindShift}, для того щоб автоматично ставити пікселі під час "
-"руху миші, відповідно до Історичного вигляду"
+"Затисніть правий ${bindShift}, для того щоб автоматично ставити пікселі під "
+"час руху миші, відповідно до Історичного вигляду"
 
-#: src/components/HelpModal.jsx:77 src/components/HelpModal.jsx:88
+#: src/components/windows/Help.jsx:72 src/components/windows/Help.jsx:83
 #, javascript-format
 msgid "${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
 msgstr ""
 "${mouseSymbol} Клацніть лівою клавішею миші або торкніться ${touchSymbol}, "
 "щоб поставити піксель"
 
-#: src/components/HelpModal.jsx:78 src/components/HelpModal.jsx:90
+#: src/components/windows/Help.jsx:73 src/components/windows/Help.jsx:85
 msgid ""
 "Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
 "select current hovering color"
 msgstr ""
-"Клацніть середню кнопку миші ${mouseSymbol} або затисніть "
-"${touchSymbol}, щоб вибрати поточний колір, на який наведений ваш курсор"
+"Клацніть середню кнопку миші ${mouseSymbol} або затисніть ${touchSymbol}, "
+"щоб вибрати поточний колір, на який наведений ваш курсор"
 
-#: src/components/HelpModal.jsx:84
+#: src/components/windows/Help.jsx:79
 msgid "Press ${ bindE } and ${ bindC } to fly up and down"
 msgstr "Натискайте ${bindE} та ${bindC}, щоб літати вгору та вниз"
 
-#: src/components/HelpModal.jsx:85
+#: src/components/windows/Help.jsx:80
 #, javascript-format
 msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
 msgstr ""
-"${mouseSymbol} Затисніть ліву кнопку миші та переміщайте її, щоб повернути камеру"
+"${mouseSymbol} Затисніть ліву кнопку миші та переміщайте її, щоб повернути "
+"камеру"
 
-#: src/components/HelpModal.jsx:86
+#: src/components/windows/Help.jsx:81
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
@@ -551,13 +538,13 @@ msgstr ""
 "${mouseSymbol} Прокрутіть колесо миші або затисніть середню кнопку миші "
 "${mouseSymbol} і перемістіть її, щоб збільшити/зменшити"
 
-#: src/components/HelpModal.jsx:87
+#: src/components/windows/Help.jsx:82
 msgid "${ mouseSymbol } Right click and drag mouse to pan"
 msgstr ""
 "${mouseSymbol} Затисніть праву кнопку миші та перемістіть її для "
 "панорамування"
 
-#: src/components/HelpModal.jsx:89
+#: src/components/windows/Help.jsx:84
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
@@ -565,372 +552,250 @@ msgstr ""
 "${mouseSymbol} Клацніть правою кнопкою миші або ${touchSymbol} двічі "
 "торкніться тачпаду, щоб видалити піксель"
 
-#: src/components/HelpModal.jsx:92
+#: src/components/windows/Help.jsx:87
 msgid "Partners:"
 msgstr "Партнери:"
 
-#: src/components/HelpModal.jsx:97
-#, javascript-format
+#: src/components/windows/Settings.jsx:133
+msgid "Show Grid"
+msgstr "Показувати сітку"
+
+#: src/components/windows/Settings.jsx:138
+msgid "Turn on grid to highlight pixel borders."
+msgstr "Увімкніть сітку, щоб виділити межі пікселів."
+
+#: src/components/windows/Settings.jsx:141
+msgid "Show Pixel Activity"
+msgstr "Показувати піксельну активність"
+
+#: src/components/windows/Settings.jsx:146
+msgid "Show circles where pixels are placed."
+msgstr "Показувати кола в тих місцях, де були поставлені пікселі."
+
+#: src/components/windows/Settings.jsx:149
+msgid "Disable Game Sounds"
+msgstr "Вимкнути звуки гри"
+
+#: src/components/windows/Settings.jsx:155
+msgid "All sound effects will be disabled."
+msgstr "Всі звукові ефекти будуть вимкнені."
+
+#: src/components/windows/Settings.jsx:159
 msgid ""
-"This site is protected by reCAPTCHA and the Google ${ reCaptchaPP } and "
-"${ reCaptchaTOS } apply."
+"Your Browser doesn't allow us to use AudioContext to play sounds. Do you "
+"have some privacy feature blocking us?"
 msgstr ""
-"Цей сайт захищений reCAPTCHA та Google ${reCaptchaPP} та ${reCaptchaTOS}."
+"Ваш браузер не дозволяє нам використовувати AudioContext для програвання "
+"звуків. У вас є якесь налаштування приватності, яке блокує нас?"
 
-#: src/components/HelpModal.jsx:103
+#: src/components/windows/Settings.jsx:165
+msgid "Enable chat notifications"
+msgstr "Увімкнути сповіщення чату"
+
+#: src/components/windows/Settings.jsx:169
+msgid "Play a sound when new chat messages arrive"
+msgstr "Звукові сповіщення, коли в чаті з'являються нові повідомлення"
+
+#: src/components/windows/Settings.jsx:172
+msgid "Auto Zoom In"
+msgstr "Автоматичне збільшення"
+
+#: src/components/windows/Settings.jsx:177
 msgid ""
-"This site is protected by hCAPTCHA and its ${ hCaptchaPP } and "
-"${ hCaptchaTOS } apply."
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
 msgstr ""
-"Цей сайт захищений hCAPTCHA та застосовуються ${hCaptchaPP} та "
-"${hCaptchaTOS}."
+"Коли ви далеко від поверхні, клік моментально наблизить вас до неї, замість "
+"встановлення пікселя."
 
-#: src/components/HelpModal.jsx:113
-msgid "Welcome to PixelPlanet.fun"
-msgstr "Ласкаво просимо на PixelPlanet.fun"
+#: src/components/windows/Settings.jsx:180
+msgid "Compact Palette"
+msgstr "Компактна палітра"
 
-#: src/components/ChannelContextMenu.jsx:73
-msgid "Mute"
-msgstr "Мут"
-
-#: src/components/UserContextMenu.jsx:72
-msgid "Ping"
-msgstr "Тегнути"
-
-#: src/components/UserContextMenu.jsx:97
-msgid "DM"
-msgstr "ПП"
-
-#: src/components/UserContextMenu.jsx:107
-msgid "Block"
-msgstr "Заблокувати"
-
-#: src/components/PalselButton.jsx:25
-msgid "Close Palette"
-msgstr "Закрити Палітру"
-
-#: src/components/PalselButton.jsx:25
-msgid "Open Palette"
-msgstr "Відкрити палітру"
-
-#: src/components/GlobeButton.jsx:31
-msgid "Globe View"
-msgstr "Відкрити глобус"
-
-#: src/components/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr "Зробити скріншот"
-
-#: src/components/HelpButton.jsx:20
-msgid "Help"
-msgstr "Допомога"
-
-#: src/components/Chat.jsx:143
-msgid "Channel settings"
-msgstr "Налаштування каналу"
-
-#: src/components/Chat.jsx:152
-msgid "maximize"
-msgstr "збільшити"
-
-#: src/components/Chat.jsx:168
-msgid "Start chatting here"
-msgstr "Починайте спілкуватися тут"
-
-#: src/components/Chat.jsx:200
-msgid "Chat here"
-msgstr "Спілкуйся тут"
-
-#: src/components/Chat.jsx:220
-msgid "You must be logged in to chat"
-msgstr "Ви повинні залогінитись, щоб спілкуватись"
-
-#: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
-msgstr "Поставлено пікселів сьогодні"
-
-#: src/components/UserArea.jsx:61
-msgid "Daily Rank"
-msgstr "Щоденний рейтинг"
-
-#: src/components/UserArea.jsx:66
-msgid "Placed Pixels"
-msgstr "Поставлено пікселів всього"
-
-#: src/components/UserArea.jsx:70
-msgid "Total Rank"
-msgstr "Загальний рейтинг"
-
-#: src/components/UserArea.jsx:75
-#, javascript-format
-msgid "Your name is: ${ name }"
-msgstr "Ваш нікнейм: ${ name }"
-
-#: src/components/UserArea.jsx:81
-msgid "Log out"
-msgstr "Вийти"
-
-#: src/components/UserArea.jsx:93
-msgid "Change Username"
-msgstr "Змінити нікнейм"
-
-#: src/components/UserArea.jsx:108
-msgid "Change Mail"
-msgstr "Змінити пошту"
-
-#: src/components/UserArea.jsx:122
-msgid "Change Password"
-msgstr "Змінити пароль"
-
-#: src/components/UserArea.jsx:134
-msgid "Delete Account"
-msgstr "Видалити акаунт"
-
-#: src/components/UserArea.jsx:147
-msgid "Social Settings"
-msgstr "Соціальні налаштування"
-
-#: src/components/Rankings.jsx:37
-msgid "Total"
-msgstr "Загальний"
-
-#: src/components/Rankings.jsx:45
-msgid "Daily"
-msgstr "Щоденний"
-
-#: src/components/Rankings.jsx:49
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+#: src/components/windows/Settings.jsx:185
+msgid "Display Palette in a compact form that takes less screen space."
 msgstr ""
-"Рейтинг оновлюється кожні 5 хв. Щоденний рейтинг скидається опівночі по UTC."
+"Відображати палітру в компактній формі, яка займає менше місця на екрані."
 
-#: src/components/ChangeMail.jsx:104 src/components/ChangeName.jsx:82
-#: src/components/ChangePassword.jsx:120 src/components/DeleteAccount.jsx:82
-#: src/components/LogInForm.jsx:97 src/components/NewPasswordForm.jsx:93
-#: src/components/SignUpForm.jsx:118
-msgid "Error"
-msgstr "Помилка"
+#: src/components/windows/Settings.jsx:188
+msgid "Potato Mode"
+msgstr "Режим відра"
 
-#: src/components/LogInForm.jsx:104
-msgid "Name or Email"
-msgstr "Нікнейм або пошта"
+#: src/components/windows/Settings.jsx:192
+msgid "For when you are playing on a potato."
+msgstr "Для тих випадків, коли ваш пк - відро."
 
-#: src/components/ChangeMail.jsx:112 src/components/DeleteAccount.jsx:89
-#: src/components/LogInForm.jsx:111 src/components/SignUpForm.jsx:140
-msgid "Password"
-msgstr "Пароль"
+#: src/components/Converter.jsx:429 src/components/windows/Settings.jsx:195
+msgid "Light Grid"
+msgstr "Світла сітка"
 
-#: src/components/LogInForm.jsx:115
-msgid "LogIn"
-msgstr "Логін"
+#: src/components/windows/Settings.jsx:199
+msgid "Show Grid in white instead of black."
+msgstr "Показувати білу, а не чорну сітку."
 
-#: src/components/Admintools.jsx:179
-msgid "Build image on canvas."
-msgstr "Намалювати арт на полотні."
+#: src/components/windows/Settings.jsx:203
+msgid "Historical View"
+msgstr "Історичний вигляд"
 
-#: src/components/Admintools.jsx:182
-msgid "Build image and set it to protected."
-msgstr "Намалювати арт та запротектити його"
+#: src/components/windows/Settings.jsx:208
+msgid "Check out past versions of the canvas."
+msgstr "Перегляньте стан полотна у минулому."
 
-#: src/components/Admintools.jsx:185
-msgid "Build image, but reset cooldown to unset-pixel cd."
-msgstr "Намалювати арт, але скинути кд до 4с."
+#: src/components/windows/Settings.jsx:213
+msgid "Themes"
+msgstr "Теми"
 
-#: src/components/Admintools.jsx:248
-msgid "Image Upload"
-msgstr "Завантаження зображення"
+#: src/components/windows/Settings.jsx:218
+msgid "How pixelplanet should look like."
+msgstr "Як має виглядати pixelplanet."
 
-#: src/components/Admintools.jsx:249
-msgid "Upload images to canvas"
-msgstr "Завантажити зображення на полотно"
+#: src/components/windows/Settings.jsx:225
+msgid "Select Language"
+msgstr "Змінити мову"
 
-#: src/components/Admintools.jsx:251
-msgid "File"
-msgstr "Файл"
+#: src/components/windows/UserArea.jsx:27
+msgid "Profile"
+msgstr "Профіль"
 
-#: src/components/Admintools.jsx:271
-msgid "Coordinates in X_Y format:"
-msgstr "Координати в X_Y форматі:"
-
-#: src/components/Admintools.jsx:306 src/components/Admintools.jsx:387
-#: src/components/Admintools.jsx:461 src/components/Admintools.jsx:505
-#: src/components/Admintools.jsx:589 src/components/NewPasswordForm.jsx:104
-#: src/components/SignUpForm.jsx:152
-msgid "Submit"
-msgstr "Підтвердити"
-
-#: src/components/Admintools.jsx:311
-msgid "Pixel Protection"
-msgstr "Протект пікселів"
-
-#: src/components/Admintools.jsx:313
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-"Встановити протект областей (якщо вам потрібен більш точний "
-"контроль, робіть протект із завантаженням зображень та альфа-"
-"шарами)"
-
-#: src/components/Admintools.jsx:392
-msgid "Rollback to Date"
-msgstr "Відкотити до дати"
-
-#: src/components/Admintools.jsx:394
-msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
-msgstr "Відкотити частину канвасу до вибраної дати (00:00 UTC)"
-
-#: src/components/Admintools.jsx:468
-msgid "IP Actions"
-msgstr "Дії з IP"
-
-#: src/components/Admintools.jsx:470
-msgid "Do stuff with IPs (one IP per line)"
-msgstr "Робити щось з IP-адресами (по одному IP на рядок)"
-
-#: src/components/Admintools.jsx:510
-msgid "Manage Moderators"
-msgstr "Керувати модераторами"
-
-#: src/components/Admintools.jsx:512
-msgid "Remove Moderator"
-msgstr "Видалити модератора"
-
-#: src/components/Admintools.jsx:544
-msgid "There are no mods"
-msgstr "Модераторів немає"
-
-#: src/components/Admintools.jsx:549
-msgid "Assign new Mod"
-msgstr "Призначити нового модератора"
-
-#: src/components/Admintools.jsx:552
-msgid "Enter UserName of new Mod"
-msgstr "Введіть нікнейм нового модератора"
-
-#: src/components/Admintools.jsx:561
-msgid "User Name"
-msgstr "Нікнейм"
-
-#: src/components/CanvasItem.jsx:46
-msgid "Cooldown"
-msgstr "Кулдаун"
-
-#: src/components/CanvasItem.jsx:52
-msgid "Stacking till"
-msgstr "Стак"
-
-#: src/components/CanvasItem.jsx:54
-msgid "Ranked"
+#: src/components/windows/UserArea.jsx:30
+msgid "Ranking"
 msgstr "Рейтинг"
 
-#: src/components/CanvasItem.jsx:56
-msgid "Requirements"
-msgstr "Вимоги"
+#: src/components/windows/UserArea.jsx:33
+msgid "Converter"
+msgstr "Конвертер"
 
-#: src/components/CanvasItem.jsx:58
-msgid "User Account"
-msgstr "Акаунт юзера"
+#: src/components/windows/UserArea.jsx:39
+msgid "Admintools"
+msgstr "Адмінтулз"
 
-#: src/components/CanvasItem.jsx:60
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr "та ${canvas.req} поставлено пікселі"
+#: src/components/windows/UserArea.jsx:39
+msgid "Modtools"
+msgstr "Модтулз"
 
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
-msgstr "Розміри"
+#: src/components/windows/UserArea.jsx:40
+msgid "Loading..."
+msgstr "Завантаження..."
 
-#: src/components/SignUpForm.jsx:126
+#: src/components/windows/UserArea.jsx:47
+msgid "Consider joining us on Guilded:"
+msgstr "Приєднуйтесь до нас в Guilded:"
+
+#: src/components/windows/Register.jsx:81
+msgid "Register new account here"
+msgstr "Зареєструйте новий аккаунт тут"
+
+#: src/components/windows/Register.jsx:92
 msgid "Name"
 msgstr "Нікнейм"
 
-#: src/components/NewPasswordForm.jsx:100 src/components/SignUpForm.jsx:133
+#: src/components/windows/ForgotPassword.jsx:82
+#: src/components/windows/Register.jsx:100
 msgid "Email"
 msgstr "Пошта"
 
-#: src/components/SignUpForm.jsx:149
+#: src/components/ChangeMail.jsx:80 src/components/DeleteAccount.jsx:62
+#: src/components/LogInForm.jsx:83 src/components/windows/Register.jsx:108
+msgid "Password"
+msgstr "Пароль"
+
+#: src/components/windows/Register.jsx:116
 msgid "Confirm Password"
-msgstr "Підтвердити пароль"
+msgstr "Повторіть пароль"
 
-#: src/components/ChangeMail.jsx:125 src/components/ChangeName.jsx:94
-#: src/components/ChangePassword.jsx:152 src/components/DeleteAccount.jsx:95
-#: src/components/NewPasswordForm.jsx:106 src/components/SignUpForm.jsx:158
-msgid "Cancel"
-msgstr "Скасувати"
+#: src/components/Admintools.jsx:311 src/components/Admintools.jsx:392
+#: src/components/Admintools.jsx:466 src/components/Admintools.jsx:510
+#: src/components/Admintools.jsx:594
+#: src/components/windows/ForgotPassword.jsx:86
+#: src/components/windows/Register.jsx:119
+msgid "Submit"
+msgstr "Підтвердити"
 
-#: src/components/Converter.jsx:274
-msgid "Choose Canvas"
-msgstr "Виберіть канвас"
+#: src/components/windows/CanvasSelect.jsx:32
+msgid ""
+"Select the canvas you want to use.  Every canvas is unique and has different "
+"palettes, cooldown and requirements.  Archive of closed canvases can be "
+"accessed here:"
+msgstr ""
+"Виберіть полотно, на якому хочете малювати. Кожне з них унікальне і має "
+"різні палітри, кулдаун і вимоги. Архів закритих полотен можна переглянути "
+"тут:"
 
-#: src/components/Converter.jsx:300
-msgid "Palette Download"
-msgstr "Завантажити палітру"
+#: src/components/windows/CanvasSelect.jsx:40
+msgid "Archive"
+msgstr "Архів"
 
-#: src/components/Converter.jsx:302
-#, javascript-format
-msgid "Palette for ${ gimpLink }"
-msgstr "Палітра для ${gimpLink}"
+#: src/components/windows/Archive.jsx:20
+msgid ""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren't worth being kept active, we decide to remove them."
+msgstr ""
+"Хоча ми, зазвичай, не видаляємо полотна, деякі з них створюються для розваги "
+"або на прохання гравців, яким сподобався якийсь тренд. Ці полотна можуть "
+"стати нудними через деякий час, і після декількох тижнів без серйозних змін, "
+"якщо цим полотнам дійсно не варто залишатися відкритими, ми вирішуємо їх "
+"видалити."
 
-#: src/components/Converter.jsx:320
-#, javascript-format
-msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
-msgstr "Автор палітри Місяця - ${starhouseLink}."
+#: src/components/windows/Archive.jsx:22
+msgid ""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+msgstr ""
+"Тут ми збираємо ці полотна, щоб належним чином їх архівувати (наразі є лише "
+"одне)."
 
-#: src/components/Converter.jsx:323
-msgid "Image Converter"
-msgstr "Конвертер зображень"
+#: src/components/windows/Archive.jsx:24
+msgid "Political Compass Canvas"
+msgstr "Полотно Політичний Компас"
 
-#: src/components/Converter.jsx:324
-msgid "Convert an image to canvas colors"
-msgstr "Конвертувати зображення у кольори полотна"
+#: src/components/windows/Archive.jsx:31
+msgid ""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+msgstr ""
+"На це полотно ми отримали запит під час політичних конфліктів на головному "
+"полотні Землі. Це було зображення політичного компасу розміром 1024x1024 з 5-"
+"секундною перезарядкою та 60-секундним її накопиченням. Воно було створене "
+"11-го травня і залишалось активним на протязі місяців, поки не було закрите "
+"30-го листопада."
 
-#: src/components/Converter.jsx:335
-msgid "Choose Strategy"
-msgstr "Виберіть стратегію"
+#: src/components/windows/Archive.jsx:32
+msgid ""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
+"screenshot from the timelapse results in a perfect 1:1 representation of how "
+"the canvas was at that time."
+msgstr ""
+"Ми вирішили заархівувати його як таймлапс, закодований у webm без втрат. "
+"Скріншот з таймлапсу дає точне зображення у співвідношенні 1:1 того, як "
+"виглядало полотно на той момент часу."
 
-#: src/components/Converter.jsx:362
-msgid "Choose Color Mode"
-msgstr "Виберіть режим кольорів"
-
-#: src/components/Converter.jsx:400
-msgid "Add Grid (uncheck if you need a 1:1 template)"
-msgstr "Додати сітку (зніміть галочку, якщо вам потрібен шаблон без сітки)"
-
-#: src/components/Converter.jsx:425 src/components/Converter.jsx:441
-msgid "Offset"
-msgstr "Зсув"
-
-#: src/components/Converter.jsx:471
-msgid "Scale Image"
-msgstr "Масштаб зображення"
-
-#: src/components/Converter.jsx:483
-msgid "Width"
-msgstr "Ширина"
-
-#: src/components/Converter.jsx:513
-msgid "Height"
-msgstr "Висота"
-
-#: src/components/Converter.jsx:551
-msgid "Keep Ratio"
-msgstr "Зберігати коефіцієнт зміни розміру"
-
-#: src/components/Converter.jsx:564
-msgid "Anti Aliasing"
-msgstr "Згладжування"
-
-#: src/components/Converter.jsx:578
-msgid "Reset"
-msgstr "Скинути"
-
-#: src/components/Converter.jsx:597
-msgid "Download Template"
-msgstr "Завантажити шаблон"
-
-#: src/components/NewPasswordForm.jsx:83
+#: src/components/windows/ForgotPassword.jsx:60
 msgid "Sent you a mail with instructions to reset your password."
 msgstr "Вам надіслано електронний лист з інструкціями щодо відновлення пароля."
+
+#: src/components/windows/ForgotPassword.jsx:71
+msgid "Enter your mail address and we will send you a new password:"
+msgstr "Введіть електронну адресу, і ми надішлемо вам новий пароль:"
+
+#: src/components/windows/Chat.jsx:146
+msgid "Channel settings"
+msgstr "Налаштування чату"
+
+#: src/components/windows/Chat.jsx:161
+msgid "Start chatting here"
+msgstr "Починайте спілкуватися тут"
+
+#: src/components/windows/Chat.jsx:198
+msgid "Chat here"
+msgstr "Спілкуйтесь тут"
+
+#: src/components/windows/Chat.jsx:221
+msgid "You must be logged in to chat"
+msgstr "Ви повинні залогінитись, щоб спілкуватись"
 
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
@@ -966,7 +831,7 @@ msgstr "Нікнейм має бути коротшим за 26 символів
 
 #: src/utils/validation.js:39
 msgid "Name contains invalid character like @, /, \\ or #"
-msgstr "Нікнеймя містить некоректний символ, такий як @, /, \\ або #"
+msgstr "Нікнейм містить некоректний символ, такий як @, /, \\ або #"
 
 #: src/utils/validation.js:54
 msgid "No password given."
@@ -980,170 +845,409 @@ msgstr "Пароль повинен містити щонайменше 6 сим
 msgid "Password must be shorter than 60 characters."
 msgstr "Пароль повинен бути коротшим за 60 символів."
 
-#: src/utils/validation.js:74
-msgid "Could not connect to server, please try again later :("
-msgstr "Не вдалося підключитися до сервера, спробуйте пізніше :("
-
-#: src/utils/validation.js:80
-msgid "I think we experienced some error :("
-msgstr "Схоже, трапилась певна помилка :("
-
-#: src/components/DeleteAccount.jsx:93
-msgid "Yes, Delete My Account!"
-msgstr "Так, видаліть мій акаунт!"
-
-#: src/components/SocialSettings.jsx:39
-msgid "Block all Private Messages"
-msgstr "Заблокувати всі приватні повідомлення"
-
-#: src/components/SocialSettings.jsx:57
-msgid "Unblock Users"
-msgstr "Розблокувати користувачів"
-
-#: src/components/SocialSettings.jsx:81
-msgid "You have no users blocked"
-msgstr "У вас немає заблокованих користувачів"
-
-#: src/components/ChangeMail.jsx:89
-msgid ""
-"Changed Mail successfully. We sent you a verification mail,               "
-"please verify your new mail address."
-msgstr ""
-"Пошту успішно змінено. Ми надіслали вам лист з "
-"підтвердженням, будь ласка, підтвердьте свою нову поштову "
-"адресу."
-
-#: src/components/ChangeMail.jsx:119
-msgid "New Mail"
-msgstr "Нова пошта"
-
-#: src/components/ChangeMail.jsx:123 src/components/ChangeName.jsx:92
-#: src/components/ChangePassword.jsx:150
+#: src/components/ChangeMail.jsx:91 src/components/ChangeName.jsx:68
+#: src/components/ChangePassword.jsx:110 src/components/LanguageSelect.jsx:73
 msgid "Save"
 msgstr "Зберегти"
 
-#: src/components/ChangeName.jsx:88
-msgid "New Username"
-msgstr "Новий нікнейм"
+#: src/components/LogInArea.jsx:21
+msgid "Login to access more features and stats."
+msgstr "Залогіньтесь для додаткових функцій та статистики."
 
-#: src/components/ChangePassword.jsx:18
-msgid "Passwords do not match."
-msgstr "Паролі не збігаються"
+#: src/components/LogInArea.jsx:23
+msgid "Login with Name or Mail:"
+msgstr "Увійти за допомогою нікнейму або пошти:"
 
-#: src/components/ChangePassword.jsx:103
-msgid "Changed Password successfully."
-msgstr "Пароль успішно змінено."
+#: src/components/LogInArea.jsx:30
+msgid "I forgot my Password."
+msgstr "Я забув свій пароль."
 
-#: src/components/ChangePassword.jsx:129
-msgid "Old Password"
-msgstr "Старий пароль"
+#: src/components/LogInArea.jsx:31
+msgid "or login with:"
+msgstr "або увійдіть через:"
 
-#: src/components/ChangePassword.jsx:137
-msgid "New Password"
-msgstr "Новий пароль"
+#: src/components/LogInArea.jsx:72
+msgid "or register here:"
+msgstr "або зареєструйтесь тут:"
 
-#: src/components/ChangePassword.jsx:146
-msgid "Confirm New Password"
-msgstr "Підтвердити новий пароль"
+#: src/components/LogInArea.jsx:79
+msgid "Register"
+msgstr "Зареєструватись"
 
-#: src/components/UserMessages.jsx:41
-msgid "A new verification mail is getting sent to you."
-msgstr "Новий лист з підтвердженням надіслано."
+#: src/components/Admintools.jsx:184
+msgid "Build image on canvas."
+msgstr "Намалювати арт на полотні."
 
-#: src/components/UserMessages.jsx:75
-msgid "You successfully linked your mc account."
-msgstr "Ви успішно приєднали свій обліковий запис mc."
+#: src/components/Admintools.jsx:187
+msgid "Build image and set it to protected."
+msgstr "Намалювати арт та запротектити його."
 
-#: src/components/UserMessages.jsx:76
-msgid "You denied."
-msgstr "Ви скасували."
+#: src/components/Admintools.jsx:190
+msgid "Build image, but reset cooldown to unset-pixel cd."
+msgstr "Намалювати арт, але скинути кд до 4с."
 
-#: src/components/UserMessages.jsx:94
+#: src/components/Admintools.jsx:253
+msgid "Image Upload"
+msgstr "Завантаження зображення"
+
+#: src/components/Admintools.jsx:254
+msgid "Upload images to canvas"
+msgstr "Завантажити зображення на полотно"
+
+#: src/components/Admintools.jsx:256
+msgid "File"
+msgstr "Файл"
+
+#: src/components/Admintools.jsx:276
+msgid "Coordinates in X_Y format:"
+msgstr "Координати в X_Y форматі:"
+
+#: src/components/Admintools.jsx:316
+msgid "Pixel Protection"
+msgstr "Протект пікселів"
+
+#: src/components/Admintools.jsx:318
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+msgstr ""
+"Встановити протект областей (якщо вам потрібен більш точний контроль, робіть "
+"протект із завантаженням зображень та альфа-шарами)"
+
+#: src/components/Admintools.jsx:397
+msgid "Rollback to Date"
+msgstr "Відкотити до дати"
+
+#: src/components/Admintools.jsx:399
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr "Відкотити частину полотна до вибраної дати (00:00 UTC)"
+
+#: src/components/Admintools.jsx:473
+msgid "IP Actions"
+msgstr "Дії з IP-адресою"
+
+#: src/components/Admintools.jsx:475
+msgid "Do stuff with IPs (one IP per line)"
+msgstr "Робити щось з IP-адресами (по одному IP на рядок)"
+
+#: src/components/Admintools.jsx:515
+msgid "Manage Moderators"
+msgstr "Керувати модераторами"
+
+#: src/components/Admintools.jsx:517
+msgid "Remove Moderator"
+msgstr "Видалити модератора"
+
+#: src/components/Admintools.jsx:549
+msgid "There are no mods"
+msgstr "Модераторів немає"
+
+#: src/components/Admintools.jsx:554
+msgid "Assign new Mod"
+msgstr "Призначити нового модератора"
+
+#: src/components/Admintools.jsx:557
+msgid "Enter UserName of new Mod"
+msgstr "Введіть нікнейм нового модератора"
+
+#: src/components/Admintools.jsx:566
+msgid "User Name"
+msgstr "Нікнейм"
+
+#: src/components/Rankings.jsx:28
+msgid "Total"
+msgstr "Загальний"
+
+#: src/components/Rankings.jsx:36
+msgid "Daily"
+msgstr "Щоденний"
+
+#: src/components/Rankings.jsx:40
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+"Рейтинг оновлюється кожні 5 хв. Щоденний рейтинг обнулюється опівночі по UTC."
+
+#: src/components/UserAreaContent.jsx:63
+msgid "Todays Placed Pixels"
+msgstr "Поставлено пікселів сьогодні"
+
+#: src/components/UserAreaContent.jsx:67
+msgid "Daily Rank"
+msgstr "Щоденний рейтинг"
+
+#: src/components/UserAreaContent.jsx:72
+msgid "Placed Pixels"
+msgstr "Поставлено пікселів всього"
+
+#: src/components/UserAreaContent.jsx:76
+msgid "Total Rank"
+msgstr "Загальний рейтинг"
+
+#: src/components/UserAreaContent.jsx:81
+#, javascript-format
+msgid "Your name is: ${ name }"
+msgstr "Ваш нікнейм: ${ name }"
+
+#: src/components/UserAreaContent.jsx:87
+msgid "Log out"
+msgstr "Вийти"
+
+#: src/components/UserAreaContent.jsx:93
+msgid "Change Username"
+msgstr "Змінити нікнейм"
+
+#: src/components/UserAreaContent.jsx:102
+msgid "Change Mail"
+msgstr "Змінити пошту"
+
+#: src/components/UserAreaContent.jsx:110
+msgid "Change Password"
+msgstr "Змінити пароль"
+
+#: src/components/UserAreaContent.jsx:116
+msgid "Delete Account"
+msgstr "Видалити аккаунт"
+
+#: src/components/UserAreaContent.jsx:123
+msgid "Social Settings"
+msgstr "Соціальні налаштування"
+
+#: src/components/Converter.jsx:280
+msgid "Choose Canvas"
+msgstr "Вибрати полотно"
+
+#: src/components/Converter.jsx:306
+msgid "Palette Download"
+msgstr "Завантажити палітру"
+
+#: src/components/Converter.jsx:308
+#, javascript-format
+msgid "Palette for ${ gimpLink }"
+msgstr "Палітра для ${gimpLink}"
+
+#: src/components/Converter.jsx:326
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr "Автор палітри Місяця - ${starhouseLink}."
+
+#: src/components/Converter.jsx:329
+msgid "Image Converter"
+msgstr "Конвертер зображень"
+
+#: src/components/Converter.jsx:330
+msgid "Convert an image to canvas colors"
+msgstr "Конвертувати зображення у кольори полотна"
+
+#: src/components/Converter.jsx:341
+msgid "Choose Strategy"
+msgstr "Вибрати стратегію"
+
+#: src/components/Converter.jsx:368
+msgid "Choose Color Mode"
+msgstr "Вибрати режим кольорів"
+
+#: src/components/Converter.jsx:406
+msgid "Add Grid (uncheck if you need a 1:1 template)"
+msgstr "Додати сітку (зніміть галочку, якщо вам потрібен шаблон без сітки)"
+
+#: src/components/Converter.jsx:431 src/components/Converter.jsx:447
+msgid "Offset"
+msgstr "Зсув"
+
+#: src/components/Converter.jsx:477
+msgid "Scale Image"
+msgstr "Масштаб зображення"
+
+#: src/components/Converter.jsx:489
+msgid "Width"
+msgstr "Ширина"
+
+#: src/components/Converter.jsx:519
+msgid "Height"
+msgstr "Висота"
+
+#: src/components/Converter.jsx:557
+msgid "Keep Ratio"
+msgstr "Зберігати коефіцієнт зміни розміру"
+
+#: src/components/Converter.jsx:570
+msgid "Anti Aliasing"
+msgstr "Згладжування"
+
+#: src/components/Converter.jsx:584
+msgid "Reset"
+msgstr "Скинути"
+
+#: src/components/Converter.jsx:603
+msgid "Download Template"
+msgstr "Завантажити шаблон"
+
+#: src/components/CanvasItem.jsx:27
+msgid "Cooldown"
+msgstr "Кулдаун"
+
+#: src/components/CanvasItem.jsx:33
+msgid "Stacking till"
+msgstr "Накопичення кулдауну"
+
+#: src/components/CanvasItem.jsx:35
+msgid "Ranked"
+msgstr "Рейтинг"
+
+#: src/components/CanvasItem.jsx:37
+msgid "Requirements"
+msgstr "Вимоги"
+
+#: src/components/CanvasItem.jsx:39
+msgid "User Account"
+msgstr "Аккаунт"
+
+#: src/components/CanvasItem.jsx:41
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr "та ${canvas.req} поставлених пікселів"
+
+#: src/components/CanvasItem.jsx:45
+msgid "Dimensions"
+msgstr "Розміри"
+
+#: src/components/LogInForm.jsx:76
+msgid "Name or Email"
+msgstr "Нікнейм або пошта"
+
+#: src/components/LogInForm.jsx:87
+msgid "LogIn"
+msgstr "Увійти"
+
+#: src/components/UserMessages.jsx:28
 msgid ""
 "Please verify your mail address&nbsp;\n"
 "or your account could get deleted after a few days."
 msgstr ""
-"Будь ласка, підтвердьте вашу електронну адресу &nbsp;\n"
-"інакше ваш аккаунт буде видалений через кілька днів."
+"Будь ласка, підтвердьте вашу електронну адресу,&nbsp;\n"
+"інакше ваш аккаунт буде видалено через кілька днів."
 
-#: src/components/UserMessages.jsx:111
+#: src/components/UserMessages.jsx:49
+msgid "A new verification mail is getting sent to you."
+msgstr "Новий лист з підтвердженням надіслано."
+
+#: src/components/UserMessages.jsx:53
 msgid "Click here to request a new verification mail."
-msgstr "Клацніть тут, щоб надіслати новиий лист для підтвердження."
+msgstr "Клацніть тут, щоб надіслати новий лист для підтвердження."
 
-#: src/components/UserMessages.jsx:120
-#, javascript-format
-msgid "You requested to link your mc account ${ minecraftname }."
-msgstr "Ви запросили приєднання свого облікового запису mc ${minecraftname}."
+#: src/components/ChangePassword.jsx:22
+msgid "Passwords do not match."
+msgstr "Паролі не збігаються."
 
-#: src/components/UserMessages.jsx:140
-msgid "Accept"
-msgstr "Прийняти"
+#: src/components/ChangePassword.jsx:45
+msgid "Changed Password successfully."
+msgstr "Пароль успішно змінено."
 
-#: src/components/UserMessages.jsx:150
-msgid "Deny"
-msgstr "Відмовити"
+#: src/components/ChangePassword.jsx:89
+msgid "Old Password"
+msgstr "Старий пароль"
 
-#: src/components/HelpModal.jsx:15 src/components/SettingsModal.jsx:125
+#: src/components/ChangePassword.jsx:97
+msgid "New Password"
+msgstr "Новий пароль"
+
+#: src/components/ChangePassword.jsx:104
+msgid "Confirm New Password"
+msgstr "Підтвердити новий пароль"
+
+#: src/components/ChangeName.jsx:64
+msgid "New Username"
+msgstr "Новий нікнейм"
+
+#: src/components/ChangeMail.jsx:59
+msgid ""
+"Changed Mail successfully. We sent you a verification mail,             "
+"please verify your new mail address."
+msgstr ""
+"Пошту успішно змінено. Ми надіслали вам лист з підтвердженням, будь ласка, "
+"підтвердьте свою нову поштову адресу."
+
+#: src/components/ChangeMail.jsx:87
+msgid "New Mail"
+msgstr "Нова пошта"
+
+#: src/components/DeleteAccount.jsx:66
+msgid "Yes, Delete My Account!"
+msgstr "Так, видаліть мій аккаунт!"
+
+#: src/components/SocialSettings.jsx:38
+msgid "Block all Private Messages"
+msgstr "Заблокувати всі приватні повідомлення"
+
+#: src/components/SocialSettings.jsx:56
+msgid "Unblock Users"
+msgstr "Розблокувати користувачів"
+
+#: src/components/SocialSettings.jsx:80
+msgid "You have no users blocked"
+msgstr "У вас немає заблокованих користувачів"
+
+#: src/components/windows/Help.jsx:15 src/components/windows/Settings.jsx:134
 msgctxt "keybinds"
 msgid "G"
 msgstr ""
 
-#: src/components/HelpModal.jsx:16 src/components/SettingsModal.jsx:132
+#: src/components/windows/Help.jsx:16 src/components/windows/Settings.jsx:142
 msgctxt "keybinds"
 msgid "X"
 msgstr ""
 
-#: src/components/SettingsModal.jsx:140
-msgctxt "keybinds"
-msgid "M"
-msgstr ""
-
-#: src/components/HelpModal.jsx:17 src/components/SettingsModal.jsx:182
+#: src/components/windows/Help.jsx:17 src/components/windows/Settings.jsx:205
 msgctxt "keybinds"
 msgid "H"
 msgstr ""
 
-#: src/components/HelpModal.jsx:18
+#: src/components/windows/Help.jsx:18
 msgctxt "keybinds"
 msgid "R"
 msgstr ""
 
-#: src/components/HelpModal.jsx:19
+#: src/components/windows/Help.jsx:19
 msgctxt "keybinds"
 msgid "Q"
 msgstr ""
 
-#: src/components/HelpModal.jsx:20
+#: src/components/windows/Help.jsx:20
 msgctxt "keybinds"
 msgid "E"
 msgstr ""
 
-#: src/components/HelpModal.jsx:21
+#: src/components/windows/Help.jsx:21
 msgctxt "keybinds"
 msgid "W"
 msgstr ""
 
-#: src/components/HelpModal.jsx:22
+#: src/components/windows/Help.jsx:22
 msgctxt "keybinds"
 msgid "A"
 msgstr ""
 
-#: src/components/HelpModal.jsx:23
+#: src/components/windows/Help.jsx:23
 msgctxt "keybinds"
 msgid "S"
 msgstr ""
 
-#: src/components/HelpModal.jsx:24
+#: src/components/windows/Help.jsx:24
 msgctxt "keybinds"
 msgid "D"
 msgstr ""
 
-#: src/components/HelpModal.jsx:31
+#: src/components/windows/Help.jsx:31
 msgctxt "keybinds"
 msgid "Shift"
 msgstr ""
 
-#: src/components/HelpModal.jsx:32
+#: src/components/windows/Help.jsx:32
 msgctxt "keybinds"
 msgid "C"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:150
+msgctxt "keybinds"
+msgid "M"
 msgstr ""
