@@ -267,10 +267,6 @@ export default function canvasReducer(
     case 'SELECT_CANVAS': {
       let { canvasId } = action;
       const { canvases, prevCanvasCoords, canvasId: prevCanvasId } = state;
-      if (canvasId === prevCanvasId) {
-        return state;
-      }
-
       let canvas = canvases[canvasId];
       if (!canvas) {
         canvasId = DEFAULT_CANVAS_ID;

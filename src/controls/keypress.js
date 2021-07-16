@@ -30,13 +30,16 @@ function onKeyPress(event: KeyboardEvent) {
   const num = Number(key);
   if (!Number.isNaN(num) && num > 0) {
     // switch to canvas on num keys
-    const { canvases } = store.getState().canvas;
+    const { canvases, canvasId: curCanvasId } = store.getState().canvas;
     const canvasIds = Object.keys(canvases).filter((id) => !canvases[id].hid);
     if (num <= canvasIds.length) {
       const canvasId = canvasIds[num - 1];
-      store.dispatch(selectCanvas(canvasId));
-      const canvasName = canvases[canvasId].title;
-      store.dispatch(notify(t`Switched to ${canvasName}`));
+      // eslint-disable-next-line eqeqeq
+      if (canvasId != curCanvasId) {
+        store.dispatch(selectCanvas(canvasId));
+        const canvasName = canvases[canvasId].title;
+        store.dispatch(notify(t`Switched to ${canvasName}`));
+      }
     }
     return;
   }
