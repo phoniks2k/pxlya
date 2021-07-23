@@ -12,17 +12,32 @@ import {
 export default (store) => (next) => (action) => {
   const { type } = action;
 
-  if (type === 'SET_HISTORICAL_TIME') {
-    const state = store.getState();
-    const renderer = getRenderer();
-    const {
-      historicalDate: oldDate,
-      historicalTime: oldTime,
-    } = state.canvas;
-    renderer.updateOldHistoricalTime(
-      oldDate,
-      oldTime,
-    );
+  let prevScale = null;
+
+  switch (type) {
+    case 'TOGGLE_HISTORICAL_VIEW':
+    case 'SET_SCALE': {
+      const state = store.getState();
+      prevScale = state.canvas.viewscale;
+      break;
+    }
+
+    case 'SET_HISTORICAL_TIME': {
+      const state = store.getState();
+      const renderer = getRenderer();
+      const {
+        historicalDate: oldDate,
+        historicalTime: oldTime,
+      } = state.canvas;
+      renderer.updateOldHistoricalTime(
+        oldDate,
+        oldTime,
+      );
+      break;
+    }
+
+    default:
+      // nothing
   }
 
   // executed after reducers
@@ -78,7 +93,7 @@ export default (store) => (next) => (action) => {
     case 'TOGGLE_HISTORICAL_VIEW':
     case 'SET_SCALE': {
       const renderer = getRenderer();
-      renderer.updateScale(state);
+      renderer.updateScale(state, prevScale);
       break;
     }
 

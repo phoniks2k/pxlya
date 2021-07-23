@@ -65,10 +65,15 @@ export default class MarkdownParser {
 
   /*
    * parses Articles (contains paragraphs, code-blocks, numeration, etc.)
-   * returns when encountering heading of level or lower (iter is at # position)
+   * @param text string of text
+   * @param start number of position in text where to start
+   * @param level the number of heading levels we are in
+   * @param indent ndentation that should be considered
+   * returns when encountering heading of <= level (iter is at # position)
    *   or heading-cancel with three spaces (iter is past newlines)
+   *   or ident is smaller than given
    */
-  parseArticle(text: string, start: number, level = 0) {
+  parseArticle(text: string, start: number, level = 0, indent = 0) {
     let iter = start;
     const mdArray = [];
     let paraStart = iter;
@@ -114,6 +119,11 @@ export default class MarkdownParser {
     }
 
     return [mdArray, iter];
+  }
+
+  parseList(text: string, start: number) {
+    const iter = start;
+    const mdArray = [];
   }
 
   /*

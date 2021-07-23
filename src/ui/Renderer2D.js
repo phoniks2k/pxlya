@@ -176,6 +176,7 @@ class Renderer {
 
   updateScale(
     state,
+    prevScale = null,
   ) {
     const {
       viewscale,
@@ -196,7 +197,12 @@ class Renderer {
     this.tiledZoom = tiledZoom;
     this.relScale = relScale;
     this.updateView(state);
-    this.forceNextRender = true;
+    if (prevScale === null
+      || viewscale < SCALE_THREASHOLD || prevScale < SCALE_THREASHOLD) {
+      this.forceNextRender = true;
+    } else {
+      this.forceNextSubrender = true;
+    }
   }
 
   updateView(state) {
@@ -307,9 +313,6 @@ class Renderer {
     } = state.canvas;
 
     let { relScale } = this;
-    // clear rect is just needed for Google Chrome, else it would flash
-    // regularly
-    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     // Disable smoothing
     // making it dependent on the scale is needed for Google Chrome, else
@@ -544,9 +547,6 @@ class Renderer {
       historicalCanvasSize,
     } = state.canvas;
 
-
-    // clear rect is just needed for Google Chrome, else it would flash
-    context.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     // Disable smoothing
     // making it dependent on the scale is needed for Google Chrome, else
     // scale <1 would look shit
