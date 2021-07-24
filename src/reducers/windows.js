@@ -336,12 +336,14 @@ export default function windows(
       } = action;
       const win = state.windows.find((w) => w.windowId === windowId);
       const newWindowId = generateWindowId(state);
+      const newZMax = state.zMax + 1;
       const {
         innerWidth: width,
         innerHeight: height,
       } = window;
-      return {
+      return sortWindows({
         ...state,
+        zMax: newZMax,
         windows: [
           ...state.windows,
           {
@@ -349,6 +351,7 @@ export default function windows(
             windowId: newWindowId,
             xPos: Math.min(win.xPos + 15, width - SCREEN_MARGIN_EW),
             yPos: Math.min(win.yPos + 15, height - SCREEN_MARGIN_S),
+            z: newZMax,
           },
         ],
         args: {
@@ -357,7 +360,7 @@ export default function windows(
             ...state.args[windowId],
           },
         },
-      };
+      });
     }
 
     case 'CHANGE_WINDOW_TYPE': {
