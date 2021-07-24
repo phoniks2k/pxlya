@@ -15,7 +15,6 @@ export default (store) => (next) => (action) => {
   let prevScale = null;
 
   switch (type) {
-    case 'TOGGLE_HISTORICAL_VIEW':
     case 'SET_SCALE': {
       const state = store.getState();
       prevScale = state.canvas.viewscale;
