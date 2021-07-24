@@ -6,7 +6,7 @@
 
 import type { Cell } from '../core/Cell';
 import type { State } from '../reducers';
-import { TILE_SIZE } from '../core/constants';
+import { TILE_ZOOM_LEVEL, TILE_SIZE } from '../core/constants';
 
 import {
   getTileOfPixel,
@@ -26,8 +26,8 @@ import ChunkLoader from './ChunkLoader2D';
 import pixelNotify from './PixelNotify';
 
 // dimensions of offscreen canvas NOT whole canvas
-const CANVAS_WIDTH = window.screen.width * 2;
-const CANVAS_HEIGHT = window.screen.height * 2;
+const CANVAS_WIDTH = window.screen.width + TILE_ZOOM_LEVEL * TILE_SIZE;
+const CANVAS_HEIGHT = window.screen.height + TILE_ZOOM_LEVEL * TILE_SIZE;
 const SCALE_THREASHOLD = Math.min(
   CANVAS_WIDTH / TILE_SIZE / 3,
   CANVAS_HEIGHT / TILE_SIZE / 3,
@@ -185,12 +185,13 @@ class Renderer {
     pixelNotify.updateScale(viewscale);
     let tiledScale = (viewscale > 0.5)
       ? 0
-      : Math.round(Math.log2(viewscale) / 2);
-    tiledScale = 4 ** tiledScale;
+      : Math.round(Math.log2(viewscale) * 2 / TILE_ZOOM_LEVEL);
+    tiledScale = TILE_ZOOM_LEVEL ** tiledScale;
     const canvasMaxTiledZoom = (isHistoricalView)
       ? this.historicalCanvasMaxTiledZoom
       : this.canvasMaxTiledZoom;
-    const tiledZoom = canvasMaxTiledZoom + Math.log2(tiledScale) / 2;
+    const tiledZoom = canvasMaxTiledZoom + Math.log2(tiledScale)
+      * 2 / TILE_ZOOM_LEVEL;
     const relScale = viewscale / tiledScale;
 
     this.tiledScale = tiledScale;
