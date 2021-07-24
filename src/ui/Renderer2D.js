@@ -26,8 +26,10 @@ import ChunkLoader from './ChunkLoader2D';
 import pixelNotify from './PixelNotify';
 
 // dimensions of offscreen canvas NOT whole canvas
-const CANVAS_WIDTH = window.screen.width + TILE_ZOOM_LEVEL * TILE_SIZE;
-const CANVAS_HEIGHT = window.screen.height + TILE_ZOOM_LEVEL * TILE_SIZE;
+// eslint-disable-next-line max-len
+const CANVAS_WIDTH = 2 * Math.ceil(window.screen.width / 2) + TILE_ZOOM_LEVEL * TILE_SIZE;
+// eslint-disable-next-line max-len
+const CANVAS_HEIGHT = 2 * Math.ceil(window.screen.height / 2) + TILE_ZOOM_LEVEL * TILE_SIZE;
 const SCALE_THREASHOLD = Math.min(
   CANVAS_WIDTH / TILE_SIZE / 3,
   CANVAS_HEIGHT / TILE_SIZE / 3,
