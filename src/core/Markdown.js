@@ -56,7 +56,8 @@ export default class MarkdownParser {
     const chr = text[iter];
     if (chr === '\n'
       || chr === '#'
-      || (chr === '`' && text[iter + 1] === '`' && text[iter + 2] === '`')
+      || (chr === '`' && text[iter + 1] === '`' && text[iter + 2] === '`'
+      || (chr === '-' && text[iter + 1] === ' '))
     ) {
       return true;
     }
@@ -87,6 +88,10 @@ export default class MarkdownParser {
       }
       // beginning of line
       const paraLineStart = iter;
+      if (indent && this.getIndent(text, paraLineStart) <= indent) {
+        //smaller indent occured
+        
+      }
       iter = this.skipSpaces(text, iter);
       if (stoppingCondition(text, iter)) {
         const chr = text[iter];
@@ -102,6 +107,8 @@ export default class MarkdownParser {
             }
             iter += 1;
           }
+        } else if (chr === '-') {
+          const [cbArray, newIter] = this.parseList(text, paraLineStart);
         } else if (chr === '#') {
           break;
         } else if (chr === '`') {
@@ -124,6 +131,29 @@ export default class MarkdownParser {
   parseList(text: string, start: number) {
     const iter = start;
     const mdArray = [];
+  }
+
+  /*
+   * get indentation of line
+   * @param text
+   * @param start integer position of line start of indent to check
+   * @return integer of indentation
+   */
+  getIndent(text: string, start: number) {
+    let iter = start;
+    let indent = 0;
+    while (iter < text.length) {
+      const chr = text[iter];
+      if (chr === '\t') {
+        indent += this.tabWidth;
+      } else if (chr === ' ') {
+        indent += 1;
+      } else {
+        break;
+      }
+      iter += 1;
+    }
+    return getIndent;
   }
 
   /*
