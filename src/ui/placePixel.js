@@ -77,7 +77,7 @@ export function receivePixelUpdate(
       && predPxl[2] === offset
     ) {
       if (predPxl[4] === color) {
-        clientPredictions.splice(i, 1);
+        clientPredictions.splice(p, 1);
       }
       return;
     }
