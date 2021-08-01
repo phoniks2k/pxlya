@@ -37,10 +37,16 @@ export default async (req: Request, res: Response, next) => {
       return;
     }
 
+    let chunk;
     // z is in preeration for 3d chunks that are also
     // divided in height, which is not used yet
     // - this is not used and probably won't ever be used
-    const chunk = await RedisCanvas.getChunk(c, x, y, z);
+    try {
+      chunk = await RedisCanvas.getChunk(c, x, y, z);
+    } catch {
+      res.status(503).end();
+      return;
+    }
 
     res.set({
       'Cache-Control': `public, s-maxage=${60}, max-age=${50}`, // seconds
