@@ -299,11 +299,20 @@ export function setBrightness(hex, dark: boolean = false) {
 }
 
 /*
+ * escape string for use in regexp
+ * @param string input string
+ * @return escaped string
+ */
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
+/*
  * create RegExp to search for ping in chat messages
  * @param name name
  * @return regular expression to search for name in message
  */
 export function createNameRegExp(name: string) {
   if (!name) return null;
-  return new RegExp(`(^|\\s+)(@${name})(\\s+|$)`, 'g');
+  return new RegExp(`(^|\\s+)(@${escapeRegExp(name)})(\\s+|$)`, 'g');
 }
