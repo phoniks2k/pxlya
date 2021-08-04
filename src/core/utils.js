@@ -316,3 +316,16 @@ export function createNameRegExp(name: string) {
   if (!name) return null;
   return new RegExp(`(^|\\s+)(@${escapeRegExp(name)})(\\s+|$)`, 'g');
 }
+
+/*
+ * check if webGL2 is available
+ * @return boolean true if available
+ */
+export function isWebGL2Available() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGL2RenderingContext && canvas.getContext('webgl2'));
+  } catch {
+    return false;
+  }
+}

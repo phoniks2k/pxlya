@@ -89,8 +89,8 @@ export default class MarkdownParser {
       // beginning of line
       const paraLineStart = iter;
       if (indent && this.getIndent(text, paraLineStart) <= indent) {
-        //smaller indent occured
-        
+        // smaller indent occured
+
       }
       iter = this.skipSpaces(text, iter);
       if (stoppingCondition(text, iter)) {
