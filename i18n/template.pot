@@ -3,45 +3,45 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/controls/keypress.js:39
+#: src/controls/keypress.js:41
 #, javascript-format
 msgid "Switched to ${ canvasName }"
 msgstr ""
 
-#: src/controls/keypress.js:61
+#: src/controls/keypress.js:64
 msgid "Grid ON"
 msgstr ""
 
-#: src/controls/keypress.js:62
+#: src/controls/keypress.js:65
 msgid "Grid OFF"
 msgstr ""
 
-#: src/controls/keypress.js:70
+#: src/controls/keypress.js:75
 msgid "Pixel Notify ON"
 msgstr ""
 
-#: src/controls/keypress.js:71
+#: src/controls/keypress.js:76
 msgid "Pixel Notify OFF"
 msgstr ""
 
-#: src/controls/keypress.js:76
+#: src/controls/keypress.js:81
 msgid "Muted Sound"
 msgstr ""
 
-#: src/controls/keypress.js:77
+#: src/controls/keypress.js:82
 msgid "Unmuted Sound"
 msgstr ""
 
 #: src/components/CoordinatesBox.jsx:29
-#: src/controls/keypress.js:83
+#: src/controls/keypress.js:88
 msgid "Copied!"
 msgstr ""
 
-#: src/controls/keypress.js:89
+#: src/controls/keypress.js:94
 msgid "Show Hidden Canvases"
 msgstr ""
 
-#: src/controls/keypress.js:90
+#: src/controls/keypress.js:95
 msgid "Hide Hidden Canvases"
 msgstr ""
 
@@ -138,6 +138,14 @@ msgstr ""
 msgid "Error ${ retCode }"
 msgstr ""
 
+#: src/ui/renderer.js:36
+msgid "Canvas Error"
+msgstr ""
+
+#: src/ui/renderer.js:37
+msgid "Can't render 3D canvas, do you have WebGL2 disabled?"
+msgstr ""
+
 #: src/actions/index.js:627
 msgid "Register New Account"
 msgstr ""
@@ -178,9 +186,12 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: src/components/buttons/CanvasSwitchButton.jsx:23
-#: src/components/windows/index.js:22
-msgid "Canvas Selection"
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Close Menu"
+msgstr ""
+
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Open Menu"
 msgstr ""
 
 #: src/components/buttons/ChatButton.jsx:92
@@ -191,12 +202,9 @@ msgstr ""
 msgid "Open Chat"
 msgstr ""
 
-#: src/components/buttons/ExpandMenuButton.jsx:23
-msgid "Close Menu"
-msgstr ""
-
-#: src/components/buttons/ExpandMenuButton.jsx:23
-msgid "Open Menu"
+#: src/components/buttons/CanvasSwitchButton.jsx:23
+#: src/components/windows/index.js:22
+msgid "Canvas Selection"
 msgstr ""
 
 #: src/actions/fetch.js:40
@@ -283,10 +291,6 @@ msgstr ""
 msgid "Open Palette"
 msgstr ""
 
-#: src/components/contextmenus/ChannelContextMenu.jsx:55
-msgid "Mute"
-msgstr ""
-
 #: src/components/contextmenus/UserContextMenu.jsx:53
 msgid "Ping"
 msgstr ""
@@ -297,6 +301,10 @@ msgstr ""
 
 #: src/components/contextmenus/UserContextMenu.jsx:88
 msgid "Block"
+msgstr ""
+
+#: src/components/contextmenus/ChannelContextMenu.jsx:55
+msgid "Mute"
 msgstr ""
 
 #: src/components/windows/index.js:19
@@ -623,6 +631,17 @@ msgstr ""
 msgid "Select Language"
 msgstr ""
 
+#: src/components/windows/CanvasSelect.jsx:32
+msgid ""
+"Select the canvas you want to use.  Every canvas is unique and has "
+"different palettes, cooldown and requirements.  Archive of closed canvases "
+"can be accessed here:"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:40
+msgid "Archive"
+msgstr ""
+
 #: src/components/windows/UserArea.jsx:27
 msgid "Profile"
 msgstr ""
@@ -649,51 +668,6 @@ msgstr ""
 
 #: src/components/windows/UserArea.jsx:47
 msgid "Consider joining us on Guilded:"
-msgstr ""
-
-#: src/components/windows/Register.jsx:81
-msgid "Register new account here"
-msgstr ""
-
-#: src/components/windows/Register.jsx:92
-msgid "Name"
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:82
-#: src/components/windows/Register.jsx:100
-msgid "Email"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:80
-#: src/components/DeleteAccount.jsx:62
-#: src/components/LogInForm.jsx:83
-#: src/components/windows/Register.jsx:108
-msgid "Password"
-msgstr ""
-
-#: src/components/windows/Register.jsx:116
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/Admintools.jsx:311
-#: src/components/Admintools.jsx:392
-#: src/components/Admintools.jsx:466
-#: src/components/Admintools.jsx:510
-#: src/components/Admintools.jsx:594
-#: src/components/windows/ForgotPassword.jsx:86
-#: src/components/windows/Register.jsx:119
-msgid "Submit"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:32
-msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has "
-"different palettes, cooldown and requirements.  Archive of closed canvases "
-"can be accessed here:"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:40
-msgid "Archive"
 msgstr ""
 
 #: src/components/windows/Archive.jsx:20
@@ -729,12 +703,38 @@ msgid ""
 "how the canvas was at that time."
 msgstr ""
 
-#: src/components/windows/ForgotPassword.jsx:60
-msgid "Sent you a mail with instructions to reset your password."
+#: src/components/windows/Register.jsx:81
+msgid "Register new account here"
 msgstr ""
 
-#: src/components/windows/ForgotPassword.jsx:71
-msgid "Enter your mail address and we will send you a new password:"
+#: src/components/windows/Register.jsx:92
+msgid "Name"
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:82
+#: src/components/windows/Register.jsx:100
+msgid "Email"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:80
+#: src/components/DeleteAccount.jsx:62
+#: src/components/LogInForm.jsx:83
+#: src/components/windows/Register.jsx:108
+msgid "Password"
+msgstr ""
+
+#: src/components/windows/Register.jsx:116
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/Admintools.jsx:311
+#: src/components/Admintools.jsx:392
+#: src/components/Admintools.jsx:467
+#: src/components/Admintools.jsx:512
+#: src/components/Admintools.jsx:595
+#: src/components/windows/ForgotPassword.jsx:86
+#: src/components/windows/Register.jsx:119
+msgid "Submit"
 msgstr ""
 
 #: src/components/windows/Chat.jsx:146
@@ -751,6 +751,14 @@ msgstr ""
 
 #: src/components/windows/Chat.jsx:221
 msgid "You must be logged in to chat"
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:60
+msgid "Sent you a mail with instructions to reset your password."
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:71
+msgid "Enter your mail address and we will send you a new password:"
 msgstr ""
 
 #: src/utils/validation.js:18
@@ -801,13 +809,6 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/components/ChangeMail.jsx:91
-#: src/components/ChangeName.jsx:68
-#: src/components/ChangePassword.jsx:110
-#: src/components/LanguageSelect.jsx:73
-msgid "Save"
-msgstr ""
-
 #: src/components/LogInArea.jsx:21
 msgid "Login to access more features and stats."
 msgstr ""
@@ -832,94 +833,40 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: src/components/Admintools.jsx:184
-msgid "Build image on canvas."
+#: src/components/ChangeMail.jsx:91
+#: src/components/ChangeName.jsx:68
+#: src/components/ChangePassword.jsx:110
+#: src/components/LanguageSelect.jsx:73
+msgid "Save"
 msgstr ""
 
-#: src/components/Admintools.jsx:187
-msgid "Build image and set it to protected."
+#: src/components/CanvasItem.jsx:27
+msgid "Cooldown"
 msgstr ""
 
-#: src/components/Admintools.jsx:190
-msgid "Build image, but reset cooldown to unset-pixel cd."
+#: src/components/CanvasItem.jsx:33
+msgid "Stacking till"
 msgstr ""
 
-#: src/components/Admintools.jsx:253
-msgid "Image Upload"
+#: src/components/CanvasItem.jsx:35
+msgid "Ranked"
 msgstr ""
 
-#: src/components/Admintools.jsx:254
-msgid "Upload images to canvas"
+#: src/components/CanvasItem.jsx:37
+msgid "Requirements"
 msgstr ""
 
-#: src/components/Admintools.jsx:256
-msgid "File"
+#: src/components/CanvasItem.jsx:39
+msgid "User Account"
 msgstr ""
 
-#: src/components/Admintools.jsx:276
-msgid "Coordinates in X_Y format:"
+#: src/components/CanvasItem.jsx:41
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
 msgstr ""
 
-#: src/components/Admintools.jsx:316
-msgid "Pixel Protection"
-msgstr ""
-
-#: src/components/Admintools.jsx:318
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-
-#: src/components/Admintools.jsx:397
-msgid "Rollback to Date"
-msgstr ""
-
-#: src/components/Admintools.jsx:399
-msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
-msgstr ""
-
-#: src/components/Admintools.jsx:473
-msgid "IP Actions"
-msgstr ""
-
-#: src/components/Admintools.jsx:475
-msgid "Do stuff with IPs (one IP per line)"
-msgstr ""
-
-#: src/components/Admintools.jsx:515
-msgid "Manage Moderators"
-msgstr ""
-
-#: src/components/Admintools.jsx:517
-msgid "Remove Moderator"
-msgstr ""
-
-#: src/components/Admintools.jsx:549
-msgid "There are no mods"
-msgstr ""
-
-#: src/components/Admintools.jsx:554
-msgid "Assign new Mod"
-msgstr ""
-
-#: src/components/Admintools.jsx:557
-msgid "Enter UserName of new Mod"
-msgstr ""
-
-#: src/components/Admintools.jsx:566
-msgid "User Name"
-msgstr ""
-
-#: src/components/Rankings.jsx:28
-msgid "Total"
-msgstr ""
-
-#: src/components/Rankings.jsx:36
-msgid "Daily"
-msgstr ""
-
-#: src/components/Rankings.jsx:40
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+#: src/components/CanvasItem.jsx:45
+msgid "Dimensions"
 msgstr ""
 
 #: src/components/UserAreaContent.jsx:63
@@ -965,6 +912,18 @@ msgstr ""
 
 #: src/components/UserAreaContent.jsx:123
 msgid "Social Settings"
+msgstr ""
+
+#: src/components/Rankings.jsx:28
+msgid "Total"
+msgstr ""
+
+#: src/components/Rankings.jsx:36
+msgid "Daily"
+msgstr ""
+
+#: src/components/Rankings.jsx:40
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
 #: src/components/Converter.jsx:280
@@ -1038,33 +997,82 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:27
-msgid "Cooldown"
+#: src/components/Admintools.jsx:184
+msgid "Build image on canvas."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:33
-msgid "Stacking till"
+#: src/components/Admintools.jsx:187
+msgid "Build image and set it to protected."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:35
-msgid "Ranked"
+#: src/components/Admintools.jsx:190
+msgid "Build image, but reset cooldown to unset-pixel cd."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:37
-msgid "Requirements"
+#: src/components/Admintools.jsx:253
+msgid "Image Upload"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:39
-msgid "User Account"
+#: src/components/Admintools.jsx:254
+msgid "Upload images to canvas"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:41
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
+#: src/components/Admintools.jsx:256
+msgid "File"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:45
-msgid "Dimensions"
+#: src/components/Admintools.jsx:276
+msgid "Coordinates in X_Y format:"
+msgstr ""
+
+#: src/components/Admintools.jsx:316
+msgid "Pixel Protection"
+msgstr ""
+
+#: src/components/Admintools.jsx:318
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+msgstr ""
+
+#: src/components/Admintools.jsx:398
+msgid "Rollback to Date"
+msgstr ""
+
+#: src/components/Admintools.jsx:400
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr ""
+
+#: src/components/Admintools.jsx:475
+msgid "IP Actions"
+msgstr ""
+
+#: src/components/Admintools.jsx:477
+msgid "Do stuff with IPs (one IP per line)"
+msgstr ""
+
+#: src/components/Admintools.jsx:516
+msgid "Manage Moderators"
+msgstr ""
+
+#: src/components/Admintools.jsx:518
+msgid "Remove Moderator"
+msgstr ""
+
+#: src/components/Admintools.jsx:550
+msgid "There are no mods"
+msgstr ""
+
+#: src/components/Admintools.jsx:555
+msgid "Assign new Mod"
+msgstr ""
+
+#: src/components/Admintools.jsx:558
+msgid "Enter UserName of new Mod"
+msgstr ""
+
+#: src/components/Admintools.jsx:567
+msgid "User Name"
 msgstr ""
 
 #: src/components/LogInForm.jsx:76
@@ -1113,6 +1121,10 @@ msgstr ""
 msgid "New Username"
 msgstr ""
 
+#: src/components/DeleteAccount.jsx:66
+msgid "Yes, Delete My Account!"
+msgstr ""
+
 #: src/components/ChangeMail.jsx:59
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,             "
@@ -1121,10 +1133,6 @@ msgstr ""
 
 #: src/components/ChangeMail.jsx:87
 msgid "New Mail"
-msgstr ""
-
-#: src/components/DeleteAccount.jsx:66
-msgid "Yes, Delete My Account!"
 msgstr ""
 
 #: src/components/SocialSettings.jsx:38
