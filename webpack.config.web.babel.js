@@ -169,6 +169,10 @@ export default ({
             ),
           },
           {
+            from: path.resolve(__dirname, 'captchaFonts'),
+            to: path.resolve(__dirname, 'build', 'captchaFonts'),
+          },
+          {
             from: path.resolve(
               __dirname, 'deployment', 'example-ecosystem-captchas.yml'
             ),

@@ -3,57 +3,53 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/core/ChatProvider.js:287
+#: src/core/ChatProvider.js:327
 msgid "You can not send chat messages with proxy"
 msgstr ""
 
-#: src/core/ChatProvider.js:292
-msgid "Couldn't send your message, pls log out and back in again."
-msgstr ""
-
-#: src/core/ChatProvider.js:306
+#: src/core/ChatProvider.js:341
 #, javascript-format
 msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
 msgstr ""
 
-#: src/core/ChatProvider.js:310
+#: src/core/ChatProvider.js:345
 msgid "You don't have access to this channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:326
+#: src/core/ChatProvider.js:361
 msgid "Your mail has to be verified in order to chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:331
+#: src/core/ChatProvider.js:366
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr ""
 
-#: src/core/ChatProvider.js:336
+#: src/core/ChatProvider.js:371
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr ""
 
-#: src/core/ChatProvider.js:338
+#: src/core/ChatProvider.js:373
 msgid "You are muted for another ${ muted } seconds"
 msgstr ""
 
-#: src/core/ChatProvider.js:346
+#: src/core/ChatProvider.js:381
 msgid "Ow no! Spam protection decided to mute you"
 msgstr ""
 
-#: src/core/ChatProvider.js:357
+#: src/core/ChatProvider.js:392
 msgid "You can't send a message this long :("
 msgstr ""
 
-#: src/core/ChatProvider.js:361
+#: src/core/ChatProvider.js:396
 msgid "Please use int channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:365
+#: src/core/ChatProvider.js:400
 msgid "Your country is temporary muted from chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:373
+#: src/core/ChatProvider.js:408
 msgid "Stop flooding."
 msgstr ""
 
@@ -73,11 +69,11 @@ msgstr ""
 msgid "A 3D globe of our whole map"
 msgstr ""
 
-#: src/ssr-components/Main.jsx:73
+#: src/ssr-components/Main.jsx:70
 msgid "PixelPlanet.fun"
 msgstr ""
 
-#: src/ssr-components/Main.jsx:75
+#: src/ssr-components/Main.jsx:72
 msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 

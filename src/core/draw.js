@@ -343,7 +343,9 @@ export async function drawByCoords(
   setPixelByCoords(canvasId, color, x, y, z);
 
   user.setWait(waitLeft, canvasId);
-  if (canvas.ranked) {
+  /* hardcode to not count pixels in antarctica */
+  // eslint-disable-next-line eqeqeq
+  if (canvas.ranked && (canvasId != 0 || y < 14450)) {
     user.incrementPixelcount();
   }
   return {
