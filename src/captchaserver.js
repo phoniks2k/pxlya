@@ -4,6 +4,8 @@
 
 /* eslint-disable no-console */
 
+import path from 'path';
+import fs from 'fs';
 import process from 'process';
 import http from 'http';
 import ppfunCaptcha from 'ppfun-captcha';
@@ -14,17 +16,24 @@ import { setCaptchaSolution } from './utils/captcha';
 const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || 'localhost';
 
+const font = fs.readdirSync(path.resolve(__dirname, 'captchaFonts'))
+  .filter((e) => e.endsWith('.ttf'))
+  .map((e) => ppfunCaptcha.loadFont(
+    path.resolve(__dirname, 'captchaFonts', e),
+  ));
+
 const server = http.createServer((req, res) => {
   const captcha = ppfunCaptcha.create({
     width: 500,
     height: 300,
-    fontSize: 220,
+    fontSize: 180,
     stroke: 'black',
     fill: 'none',
-    nodeDeviation: 3.0,
-    connectionPathDeviation: 3.0,
+    nodeDeviation: 2.5,
+    connectionPathDeviation: 10.0,
     style: 'stroke-width: 4;',
     background: '#EFEFEF',
+    font,
   });
 
   const ip = getIPFromRequest(req);
