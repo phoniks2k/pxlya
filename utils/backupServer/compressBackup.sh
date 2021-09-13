@@ -67,13 +67,13 @@ if [ `echo "${TODAY}" | sed 's/.*\///'` == "01" ]
       echo "doing ${SQUASH_FILE}"
       set -e
       echo "mksquashfs ${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH} ${SQUASH_FILE} -b 8192 -no-xattrs -progress -no-exports"
-      mksquashfs "${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH}" ${SQUASH_FILE} -b 8192 -no-xattrs -progress -no-exports
+      /usr/sbin/mksquashfs "${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH}" ${SQUASH_FILE} -b 8192 -no-xattrs -progress -no-exports
       if [ -f "${SQUASH_FILE}" ]; then
         echo "Mount ${SQUASH_FILE}"
         mv "${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH}" "${BACKUPROOT}/${PREV_YEAR}/rem"
         mkdir "${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH}"
         echo "${SQUASH_FILE} ${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH} squashfs ${MOUNT_OPTIONS} 0 0" >> /etc/fstab
-        mount "${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH}"
+        /usr/bin/mount "${BACKUPROOT}/${PREV_YEAR}/${PREV_MONTH}"
         echo "cleaning up old files... this might take a while"
         rm -rf "${BACKUPROOT}/${PREV_YEAR}/rem"
       fi
