@@ -22,7 +22,7 @@ var babelPlugins = [
 module.exports = {
   name: 'script',
   target: 'web',
-  mode: 'production',
+  mode: 'development',
 
   entry: [ path.resolve(__dirname, './mdtest.js') ],
 

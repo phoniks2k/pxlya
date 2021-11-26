@@ -19,10 +19,11 @@
     "@babel/plugin-proposal-numeric-separator",
     "@babel/plugin-proposal-throw-expressions",
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    ["@babel/plugin-proposal-private-property-in-object", { "loose": true }],
     "@babel/proposal-object-rest-spread",
     "@babel/transform-react-constant-elements",
     "@babel/transform-react-inline-elements",
     "transform-react-remove-prop-types",
-    "transform-react-pure-class-to-function",
+    "transform-react-pure-class-to-function"
   ]
 }

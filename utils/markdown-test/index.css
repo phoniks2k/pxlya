@@ -1,0 +1,25 @@
+article {
+  border-style: solid;
+}
+
+.post-para {
+  white-space: pre-line;
+}
+
+section {
+  padding-left: 10px;
+}
+
+pre {
+  border-style: solid;
+  border-width: thin;
+  padding: 5px;
+}
+
+.gt {
+  color: green;
+}
+
+.rt {
+  color: red;
+}

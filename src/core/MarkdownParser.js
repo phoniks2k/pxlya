@@ -15,22 +15,36 @@ export default class MarkdownParser {
     this.parseLinks = opt && opt.parseLinks || false;
     this.tabWidth = opt && opt.tabWidth || 4;
     this.newlineBreaksArticles = opt && opt.newlineBreaksArticles || true;
+    this.keepQuoteArrows = opt && opt.keepQuoteArrows || true;
   }
 
-  parseText(text: string, level = 0, start = 0) {
+  parse(text: string) {
+    return this.parseText(text, 0, 0, '')[0];
+  }
+
+  parseText(text, headingLevel, start, quoteLevel) {
     let mdArray = [];
     let iter = start;
     while (iter < text.length) {
-      const [aMdArray, newIter] = this.parseArticle(text, iter, level);
+      const [aMdArray, newIter, breaking] = this.parseSection(
+        text, iter, headingLevel, quoteLevel,
+      );
       iter = newIter;
       mdArray = mdArray.concat(aMdArray);
+      if (breaking) {
+        break;
+      }
       // either heading hit or article end
-      if (text[iter] === '#') {
+      const chr = text[iter];
+      if (chr === '#') {
         let subLvl = 0;
-        for (;iter + subLvl <= text.length && text[iter + subLvl] === '#'; subLvl += 1) {}
-        if (subLvl <= level || level === 6) {
+        for (;
+          iter + subLvl <= text.length && text[iter + subLvl] === '#';
+          subLvl += 1
+        ) {}
+        if (subLvl <= headingLevel || headingLevel === 6) {
           // end of article
-          // encountered title with same level or lower
+          // encountered title with same headingLevel or lower
           break;
         } else {
           // child article
@@ -39,11 +53,18 @@ export default class MarkdownParser {
           const title = text.slice(iter + subLvl, lineEnd).trimLeft();
           subLvl = Math.min(subLvl, 6);
           const [subMdArray, newIter] = this.parseText(
-            text, subLvl, lineEnd + 1,
+            text, subLvl, lineEnd + 1, quoteLevel,
           );
           mdArray.push(['a', subLvl, title, subMdArray]);
           iter = newIter;
         }
+      } else if (chr === '>' || chr === '<') {
+        // child quote
+        const [subMdArray, newIter] = this.parseText(
+          text, 0, iter - quoteLevel.length, quoteLevel + chr,
+        );
+        mdArray.push([chr, subMdArray]);
+        iter = newIter;
       } else {
         break;
       }
@@ -52,12 +73,10 @@ export default class MarkdownParser {
     return [mdArray, iter];
   }
 
-  stoppingCondition(text: string, iter: number) {
+  static stoppingCondition(text: string, iter: number) {
     const chr = text[iter];
     if (chr === '\n'
       || chr === '#'
-      || (chr === '`' && text[iter + 1] === '`' && text[iter + 2] === '`'
-      || (chr === '-' && text[iter + 1] === ' '))
     ) {
       return true;
     }
@@ -68,54 +87,149 @@ export default class MarkdownParser {
    * parses Articles (contains paragraphs, code-blocks, numeration, etc.)
    * @param text string of text
    * @param start number of position in text where to start
-   * @param level the number of heading levels we are in
+   * @param headingLevel the number of heading headingLevels we are in
    * @param indent ndentation that should be considered
-   * returns when encountering heading of <= level (iter is at # position)
+   * returns when encountering heading of <= headingLevel (iter is at # position)
    *   or heading-cancel with three spaces (iter is past newlines)
    *   or ident is smaller than given
    */
-  parseArticle(text: string, start: number, level = 0, indent = 0) {
+  parseSection(
+    text: string,
+    start: number,
+    headingLevel = 0,
+    quoteLevel = '',
+    indent = 0,
+  ) {
     let iter = start;
+    /*
+     * breaking is currently only used when
+     * end of quote block is reached
+     */
+    let breaking = false;
     const mdArray = [];
     let paraStart = iter;
+    let lineNr = 0;
+
+    const  addParagraph = (start, end) => {
+      let paraText = text.slice(start, end);
+      if (!this.keepQuoteArrows && quoteLevel) {
+        paraText = paraText.split('\n')
+          .map((t) => t.trim().slice(quoteLevel.length))
+          .join('\n');
+      }
+      mdArray.push(['p', paraText]);
+    }
 
     while (true) {
       if (iter >= text.length) {
         if (paraStart < text.length) {
-          mdArray.push(['p', text.slice(paraStart)]);
+          addParagraph(paraStart, text.length);
         }
         break;
       }
-      // beginning of line
-      const paraLineStart = iter;
-      if (indent && this.getIndent(text, paraLineStart) <= indent) {
-        // smaller indent occured
 
+      const paraLineStart = iter;
+      lineNr += 1;
+
+      /*
+       * break when in or out of quote levels
+       */
+      if (!indent || lineNr > 1) {
+        if (text.startsWith(quoteLevel, iter)) {
+          iter += quoteLevel.length;
+          const chr = text[iter];
+          if (chr === '>' || chr === '<') {
+            if (iter - 1 > paraStart) {
+              addParagraph(paraStart, iter - quoteLevel.length - 1);
+            }
+            break;
+          }
+        }
+        else {
+          // quote ended aka less deep quotelevel
+          if (iter - 1 > paraStart) {
+            addParagraph(paraStart, iter - 1);
+          }
+          breaking = true;
+          break;
+        }
+      } else {
+        iter += quoteLevel.length;
       }
-      iter = this.skipSpaces(text, iter);
-      if (stoppingCondition(text, iter)) {
-        const chr = text[iter];
+
+      /*
+       * act on indent
+       */
+      let curIndent;
+      [curIndent, iter] = this.getIndent(text, iter);
+      if (curIndent < indent && lineNr > 1) {
+        if (paraLineStart - 1 > paraStart) {
+          addParagraph(paraStart, paraLineStart - 1);
+        }
+        iter = paraLineStart;
+        break;
+      }
+
+      const chr = text[iter];
+
+      if (chr === '-') {
+        if (paraLineStart - 1 > paraStart) {
+          addParagraph(paraStart, paraLineStart - 1);
+        }
+        let childMdArray;
+        [childMdArray, iter, breaking] = this.parseSection(
+          text,
+          iter + 1,
+          headingLevel,
+          quoteLevel,
+          curIndent + 1,
+        );
+        childMdArray = ['-', childMdArray];
+        // lists are encapsuled by 'ul'
+        if (!mdArray.length || mdArray[mdArray.length - 1][0] !== 'ul') {
+          mdArray.push(['ul', [childMdArray]]);
+        }
+        else {
+          mdArray[mdArray.length - 1][1].push(childMdArray);
+        }
+        if (breaking) {
+          return [mdArray, iter, breaking];
+        }
+        paraStart = iter;
+        continue;
+      }
+
+      /*
+       * code block
+       */
+      if (chr === '`' && text[iter + 1] === '`' && text[iter + 2] === '`') {
+        if (paraLineStart - 1 > paraStart) {
+          addParagraph(paraStart, paraLineStart - 1);
+        }
+        const [cbArray, newIter] = this.parseCodeBlock(text, iter + 3);
+        mdArray.push(cbArray);
+        iter = newIter;
+        paraStart = iter;
+        continue;
+      }
+
+      /* other stopping conditions */
+      if (!indent && MarkdownParser.stoppingCondition(text, iter)) {
         // encountered something - save paragraph
         if (paraLineStart - 1 > paraStart) {
-          mdArray.push(['p', text.slice(paraStart, paraLineStart - 1)]);
+          addParagraph(paraStart, paraLineStart - 1);
         }
+        const chr = text[iter];
         if (chr === '\n') {
           iter = this.skipSpaces(text, iter + 1);
           if (text[iter] === '\n') {
-            if (level > 0 && this.newlineBreaksArticles) {
+            if (headingLevel && this.newlineBreaksArticles) {
               break;
             }
             iter += 1;
           }
-        } else if (chr === '-') {
-          const [cbArray, newIter] = this.parseList(text, paraLineStart);
         } else if (chr === '#') {
           break;
-        } else if (chr === '`') {
-          // code block
-          const [cbArray, newIter] = this.parseCodeBlock(text, iter + 3);
-          mdArray.push(cbArray);
-          iter = newIter;
         }
         paraStart = iter;
         continue;
@@ -125,7 +239,7 @@ export default class MarkdownParser {
       iter += 1;
     }
 
-    return [mdArray, iter];
+    return [mdArray, iter, breaking];
   }
 
   parseList(text: string, start: number) {
@@ -153,7 +267,7 @@ export default class MarkdownParser {
       }
       iter += 1;
     }
-    return getIndent;
+    return [indent, iter];
   }
 
   /*
@@ -161,7 +275,7 @@ export default class MarkdownParser {
    * start is first character after the initializing ```
    * we just parse till the ending occures
    */
-  parseCodeBlock(text: string, start: number) {
+  parseCodeBlock(text, start) {
     const cbStart = this.skipSpaces(text, start, true);
     let iter = cbStart;
     while (true) {
@@ -173,7 +287,7 @@ export default class MarkdownParser {
         && text[iter + 1] === '`'
         && text[iter + 2] === '`'
       ) {
-        const nextIter = this.skipSpaces(text, iter + 3, true);
+        const nextIter = iter + 3;
         return [['cb', text.slice(cbStart, iter)], nextIter];
       }
       for (;iter < text.length && text[iter] !== '\n'; iter += 1) {}

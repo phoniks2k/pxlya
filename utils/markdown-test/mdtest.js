@@ -1,24 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-
-import MarkdownParser from '../../src/core/Markdown';
 import { Parser } from 'commonmark';
 
-const reader = new Parser({smart: true});
+import MarkdownParser from '../../src/core/MarkdownParser';
+
+import Markdown from './Markdown';
+
+const reader = new Parser({ smart: true });
 const a = new MarkdownParser();
 
-function parseText(text, setDuration, setCmDuration) {
+function parseText(text, setDuration, setCmDuration, setMd) {
   let startt = Date.now();
-  const [arr] = a.parseText(text);
+  const arr = a.parse(text);
   setDuration(Date.now() - startt);
   startt = Date.now();
-  const parsed = reader.parse(input.value);
+  reader.parse(text);
   setCmDuration(Date.now() - startt);
-  return JSON.stringify(arr, null, 2);
+  setMd(arr);
 }
 
 const App = () => {
-  const [text, setText] = useState('');
+  const [md, setMd] = useState([]);
   const [duration, setDuration] = useState('');
   const [cmDuration, setCmDuration] = useState('');
 
@@ -27,19 +29,23 @@ const App = () => {
       <textarea
         cols="100"
         rows="30"
-        onChange={(evt) => setText(evt.target.value)}
+        onChange={(evt) => {
+          parseText(evt.target.value, setDuration, setCmDuration, setMd);
+        }}
       />
       <p>Parse-time: {duration}ms / commonmark: {cmDuration}</p>
+      <Markdown mdArray={md} />
       <textarea
         cols="100"
         rows="30"
-        value={parseText(text, setDuration, setCmDuration)}
+        readOnly
+        value={JSON.stringify(md, null, 2)}
       />
     </div>
-  )
+  );
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render(App, document.getElementById('reactroot'));
+  ReactDOM.render(<App />, document.getElementById('reactroot'));
 });
 
