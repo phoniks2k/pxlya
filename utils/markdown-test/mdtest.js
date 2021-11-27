@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Parser } from 'commonmark';
 
-import MarkdownParser from '../../src/core/MarkdownParser';
+import { parse } from '../../src/core/MarkdownParser';
 
 import Markdown from './Markdown';
 
 const reader = new Parser({ smart: true });
-const a = new MarkdownParser();
 
 function parseText(text, setDuration, setCmDuration, setMd) {
   let startt = Date.now();
-  const arr = a.parse(text);
+  const arr = parse(text);
   setDuration(Date.now() - startt);
   startt = Date.now();
   reader.parse(text);

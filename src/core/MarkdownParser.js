@@ -9,361 +9,389 @@
  * @flow
  */
 
-export default class MarkdownParser {
-  static nonWithespace = /\S|$/;
-  static expArticle = /(?:\n|^)\s*?(?=\#)|(?<=(?:\n|^)\s*?(?=\#).*?)\n/;
+let parseMText = () => {};
 
-  constructor(opt) {
-    this.parseLinks = opt && opt.parseLinks || false;
-    this.tabWidth = opt && opt.tabWidth || 4;
-    this.newlineBreaksArticles = opt && opt.newlineBreaksArticles || true;
+class MString {
+  constructor(text, start) {
+    this.txt = text;
+    this.iter = start || 0;
   }
 
-  parse(text: string) {
-    return this.parseText(text, 0, 0)[0];
+  nextChar() {
+    this.iter += 1;
+    return this.txt[this.iter];
   }
 
-  parseText(text, headingLevel, start) {
-    let mdArray = [];
-    let iter = start;
-    while (iter < text.length) {
-      const [aMdArray, newIter] = this.parseSection(
-        text, iter, headingLevel,
-      );
-      iter = newIter;
-      mdArray = mdArray.concat(aMdArray);
-      // either heading hit or article end
-      const chr = text[iter];
-      if (chr === '#') {
-        let subLvl = 0;
-        for (;
-          iter + subLvl <= text.length && text[iter + subLvl] === '#';
-          subLvl += 1
-        ) {}
-        if (subLvl <= headingLevel || headingLevel === 6) {
-          // end of article
-          // encountered title with same headingLevel or lower
-          break;
-        } else {
-          // child article
-          let lineEnd = text.indexOf('\n', iter);
-          if (lineEnd === -1) lineEnd = text.length;
-          const title = text.slice(iter + subLvl, lineEnd).trimLeft();
-          subLvl = Math.min(subLvl, 6);
-          const [subMdArray, newIter] = this.parseText(
-            text, subLvl, lineEnd + 1,
-          );
-          mdArray.push(['a', subLvl, title, subMdArray]);
-          iter = newIter;
-        }
-      } else {
+  done() {
+    return (this.iter >= this.txt.length);
+  }
+
+  moveForward() {
+    this.iter += 1;
+    return (this.iter < this.txt.length);
+  }
+
+  setIter(iter) {
+    this.iter = iter;
+  }
+
+  getChar() {
+    return this.txt[this.iter];
+  }
+
+  slice(start, end) {
+    return this.txt.slice(start, end || this.iter);
+  }
+
+  has(str) {
+    return this.txt.startsWith(str, this.iter);
+  }
+
+  move(cnt) {
+    this.iter += cnt;
+    return (this.iter < this.txt.length);
+  }
+
+  skipSpaces(skipNewlines = false) {
+    for (;this.iter < this.txt.length; this.iter += 1) {
+      const chr = this.txt[this.iter];
+      if (chr !== ' ' && chr !== '\t' && (!skipNewlines || chr !== '\n')) {
         break;
       }
     }
-
-    return [mdArray, iter];
   }
 
-  static stoppingCondition(text: string, iter: number) {
-    const chr = text[iter];
-    if (chr === '\n'
-      || chr === '#'
-    ) {
-      return true;
-    }
-    return false;
+  countRepeatingCharacters() {
+    const chr = this.getChar();
+    let newIter = this.iter + 1;
+    for (;newIter < this.txt.length && this.txt[newIter] === chr;
+      newIter += 1
+    );
+    return newIter - this.iter;
   }
 
-  /*
-   * parses Articles (contains paragraphs, code-blocks, numeration, etc.)
-   * @param text string of text
-   * @param start number of position in text where to start
-   * @param headingLevel the number of heading headingLevels we are in
-   * @param indent ndentation that should be considered
-   * returns when encountering heading of <= headingLevel (iter is at # position)
-   *   or heading-cancel with three spaces (iter is past newlines)
-   *   or ident is smaller than given
-   */
-  parseSection(
-    text: string,
-    start: number,
-    headingLevel = 0,
-    indent = 0,
-  ) {
-    let iter = start;
-    const mdArray = [];
-    let pArray = [];
-    let paraStart = iter;
-    let lineNr = 0;
-
-    const  addParagraph = (start, end) => {
-      /*
-      let paraText = text.slice(start, end);
-      mdArray.push(['p', paraText]);
-      */
-      mdArray.push(['p', pArray]);
-      pArray = [];
+  moveToNextLine() {
+    const lineEnd = this.txt.indexOf('\n', this.iter);
+    if (lineEnd === -1) {
+      this.iter = this.txt.length;
+    } else {
+      this.iter = lineEnd + 1;
     }
-
-    while (true) {
-      if (iter >= text.length) {
-        if (paraStart < text.length) {
-          addParagraph(paraStart, text.length);
-        }
-        break;
-      }
-
-      const paraLineStart = iter;
-      lineNr += 1;
-
-      /*
-       * act on indent
-       */
-      let curIndent;
-      [curIndent, iter] = this.getIndent(text, iter);
-      if (curIndent < indent && lineNr > 1) {
-        if (paraLineStart - 1 > paraStart) {
-          addParagraph(paraStart, paraLineStart - 1);
-        }
-        iter = paraLineStart;
-        break;
-      }
-
-      const chr = text[iter];
-
-      /*
-       * unordered list
-       */
-      let isUnorderedList = false;
-      let isOrderedList = false;
-      if (chr === '-') {
-        isUnorderedList = true;
-        iter += 1;
-      }
-
-      /*
-       * ordered list
-       */
-      if (!Number.isNaN(parseInt(chr))) {
-        let itern = iter + 1;
-        for(;!Number.isNaN(parseInt(text[itern])); itern += 1){}
-        if (text[itern] === '.' || text[itern] === ')') {
-          isOrderedList = true;
-          iter = itern + 1;
-        }
-      }
-
-      if (isUnorderedList || isOrderedList) {
-        if (paraLineStart - 1 > paraStart) {
-          addParagraph(paraStart, paraLineStart - 1);
-        }
-        let childMdArray;
-        [childMdArray, iter] = this.parseSection(
-          text,
-          iter,
-          headingLevel,
-          curIndent + 1,
-        );
-        childMdArray = ['-', childMdArray];
-        // lists are encapsuled
-        const capsule = (isUnorderedList) ? 'ul' : 'ol';
-        if (!mdArray.length || mdArray[mdArray.length - 1][0] !== capsule) {
-          mdArray.push([capsule, [childMdArray]]);
-        }
-        else {
-          mdArray[mdArray.length - 1][1].push(childMdArray);
-        }
-        paraStart = iter;
-        continue;
-      }
-
-      /*
-       * quotes
-       */
-      if (chr === '>' || chr === '<') {
-        if (paraLineStart - 1 > paraStart) {
-          addParagraph(paraStart, paraLineStart - 1);
-        }
-        const [qArray, newIter] = this.parseQuote(text, iter);
-        mdArray.push(qArray);
-        iter = newIter;
-        paraStart = iter;
-        continue;
-      }
-
-      /*
-       * code block
-       */
-      if (text.startsWith('```', iter)) {
-        if (paraLineStart - 1 > paraStart) {
-          addParagraph(paraStart, paraLineStart - 1);
-        }
-        const [cbArray, newIter] = this.parseCodeBlock(text, iter + 3);
-        mdArray.push(cbArray);
-        iter = newIter;
-        paraStart = iter;
-        continue;
-      }
-
-      /* other stopping conditions */
-      if (!indent && MarkdownParser.stoppingCondition(text, iter)) {
-        // encountered something - save paragraph
-        if (paraLineStart - 1 > paraStart) {
-          addParagraph(paraStart, paraLineStart - 1);
-        }
-        const chr = text[iter];
-        if (chr === '\n') {
-          iter = this.skipSpaces(text, iter + 1);
-          if (text[iter] === '\n') {
-            if (headingLevel && this.newlineBreaksArticles) {
-              break;
-            }
-            iter += 1;
-          }
-        } else if (chr === '#') {
-          break;
-        }
-        paraStart = iter;
-        continue;
-      }
-      // rest of line
-      const [pPArray, newIter] = this.parseParagraph(text, iter);
-      if (pPArray) {
-        pArray = pArray.concat(pPArray);
-      }
-      iter = newIter;
-    }
-
-    return [mdArray, iter];
   }
 
-  /*
-   * go to character in line
-   * return position of character or null if not found before next line
-   */
-  goToCharInLine(text, start, chr) {
-    let iter = start;
-    for (;iter < text.length && text[iter] !== '\n' && text[iter] !== chr; iter += 1) {}
-    if (text[iter] === chr) {
-      return iter;
-    }
-    return null;
+  getLine() {
+    const startLine = this.iter;
+    this.moveToNextLine();
+    return this.txt.slice(startLine, this.iter);
   }
 
-  /*
-   * Parse Paragraph till next newline
-   */
-  parseParagraph(text, start) {
-    const pArray = [];
-    let iter = start;
-    let pStart = start;
-    let pEnd = 0;
-    for (;iter < text.length && text[iter] !== '\n'; iter += 1) {
-      let newElem = null;
-      if (text[iter] === '`') {
-        const pos = this.goToCharInLine(text, iter + 1, '`');
-        if (pos) {
-          newElem = ['c', text.slice(iter + 1, pos)];
-          pEnd = iter;
-          iter = pos;
-        }
-      }
-      /*
-      else if (text.startsWith('**', iter) {
-      }
-      */
-      if (pEnd) {
-        if (pStart !== pEnd) {
-          pArray.push(text.slice(pStart, pEnd));
-        }
-        pStart = iter + 1;
-        pEnd = 0;
-        pArray.push(newElem);
-      }
-    }
-    iter += 1;
-    if (pStart !== iter) {
-      pArray.push(text.slice(pStart, iter));
-    }
-    return [pArray, iter];
-  }
-
-  /*
-   * get indentation of line
-   * @param text
-   * @param start integer position of line start of indent to check
-   * @return integer of indentation
-   */
-  getIndent(text: string, start: number) {
-    let iter = start;
+  getIndent(tabWidth) {
     let indent = 0;
-    while (iter < text.length) {
-      const chr = text[iter];
+    while (this.iter < this.txt.length) {
+      const chr = this.getChar();
       if (chr === '\t') {
-        indent += this.tabWidth;
+        indent += tabWidth;
       } else if (chr === ' ') {
         indent += 1;
       } else {
         break;
       }
-      iter += 1;
+      this.iter += 1;
     }
-    return [indent, iter];
+    return indent;
   }
 
-  /*
-   * parse Code Block
-   * start is first character after the initializing ```
-   * we just parse till the ending occures
-   */
-  parseCodeBlock(text, start) {
-    let iter = this.skipSpaces(text, start, false);
-    if (text[iter] === '\n') {
-      iter += 1;
+  goToCharInLine(chr) {
+    let { iter } = this;
+    for (;
+      iter < this.txt.length && this.txt[iter] !== '\n'
+        && this.txt[iter] !== chr;
+      iter += 1
+    );
+    if (this.txt[iter] === chr) {
+      this.iter = iter;
+      return iter;
     }
-    const cbStart = iter;
-    while (true) {
-      if (iter >= text.length) {
-        return [['cb', text.slice(cbStart)], iter];
+    return false;
+  }
+}
+
+/*
+ * Parse Paragraph till next newline
+ */
+function parseMParagraph(text, opts) {
+  const pArray = [];
+  let pStart = text.iter;
+  let pEnd = 0;
+  while (!text.done()) {
+    const chr = text.getChar();
+    let newElem = null;
+    if (chr === '`') {
+      const oldPos = text.iter;
+      text.moveForward();
+      if (text.goToCharInLine('`')) {
+        newElem = ['c', text.slice(oldPos + 1)];
+        pEnd = oldPos;
       }
-      iter = this.skipSpaces(text, iter, true);
-      if (text.startsWith('```', iter)) {
-        const nextIter = iter + 3;
-        return [['cb', text.slice(cbStart, iter)], nextIter];
+    }
+    /*
+    else if (text.startsWith('**', iter) {
+    }
+    */
+    if (pEnd) {
+      if (pStart !== pEnd) {
+        pArray.push(text.slice(pStart, pEnd));
       }
-      for (;iter < text.length && text[iter] !== '\n'; iter += 1) {}
+      pStart = text.iter + 1;
+      pEnd = 0;
+      pArray.push(newElem);
+    }
+    text.moveForward();
+    if (chr === '\n') {
+      break;
+    }
+  }
+  if (pStart !== text.iter) {
+    pArray.push(text.slice(pStart));
+  }
+  return pArray;
+}
+
+/*
+ * parse Code Block
+ * start is first character after the initializing ```
+ * we just parse till the ending occures
+ */
+function parseCodeBlock(text) {
+  text.skipSpaces(false);
+  if (text.getChar === '\n') {
+    text.moveForward();
+  }
+  const cbStart = text.iter;
+  while (!text.done()) {
+    text.skipSpaces(true);
+    if (text.has('```')) {
+      const elem = ['cb', text.slice(cbStart)];
+      text.move(3);
+      return elem;
+    }
+    text.moveToNextLine();
+  }
+  const cbText = text.slice(cbStart);
+  text.move(3);
+  return ['cb', cbText];
+}
+
+/*
+ * parse quote
+ */
+function parseQuote(text, opts) {
+  // either '<' or '>'
+  const quoteChar = text.getChar();
+  let quoteText = '';
+  while (text.getChar() === quoteChar && text.moveForward()) {
+    const line = text.getLine();
+    quoteText += line;
+  }
+  const mQuoteText = new MString(quoteText);
+  return [quoteChar, parseMText(mQuoteText, opts, 0)];
+}
+
+/*
+ * parses Section (contains paragraphs, lists, etc. but no headings or quotes)
+ * @param text MString
+ * @param headingLevel the number of heading headingLevels we are in
+ * @param indent ndentation that should be considered (when inside list)
+ * returns when encountering heading of <= headingLevel (iter is at # position)
+ *   or heading-cancel with three spaces (iter is past newlines)
+ *   or ident is smaller than given
+ */
+function parseMSection(
+  text: string,
+  opts: Object,
+  headingLevel,
+  indent,
+) {
+  const mdArray = [];
+  let pArray = [];
+  let lineNr = 0;
+
+  while (!text.done()) {
+    const paraLineStart = text.iter;
+    lineNr += 1;
+
+    // this also skips spaces
+    const curIndent = text.getIndent(opts.tabWidth);
+
+    /*
+     * act on indent
+     */
+    if (curIndent < indent && lineNr > 1) {
+      text.setIter(paraLineStart);
+      break;
+    }
+
+    const chr = text.getChar();
+
+    /*
+     * break on heading
+     */
+    if (!indent && chr === '#') {
+      break;
+    }
+
+    /*
+     * is unordered list
+     */
+    let isUnorderedList = false;
+    let isOrderedList = false;
+    if (chr === '-') {
+      isUnorderedList = true;
+      text.moveForward();
+    }
+
+    /*
+     * is ordered list
+     */
+    if (!Number.isNaN(parseInt(chr, 10))) {
+      let itern = text.iter + 1;
+      for (;!Number.isNaN(parseInt(text.txt[itern], 10)); itern += 1);
+      const achr = text.txt[itern];
+      if (achr === '.' || achr === ')') {
+        isOrderedList = true;
+        text.setIter(itern + 1);
+      }
+    }
+
+    let pushPArray = false;
+    let insertElem = null;
+
+    if (isUnorderedList || isOrderedList) {
+      /*
+       * parse lists
+       */
+      if (pArray.length) {
+        mdArray.push(['p', pArray]);
+        pArray = [];
+      }
+      let childMdArray;
+      childMdArray = parseMSection(
+        text,
+        opts,
+        headingLevel,
+        curIndent + 1,
+      );
+      childMdArray = ['-', childMdArray];
+      // lists are encapsuled
+      const capsule = (isUnorderedList) ? 'ul' : 'ol';
+      if (!mdArray.length || mdArray[mdArray.length - 1][0] !== capsule) {
+        mdArray.push([capsule, [childMdArray]]);
+      } else {
+        mdArray[mdArray.length - 1][1].push(childMdArray);
+      }
+    } else if (chr === '>' || chr === '<') {
+      /*
+       * quotes
+       */
+      pushPArray = true;
+      insertElem = parseQuote(text, opts);
+    } else if (text.has('```')) {
+      /*
+       * code block
+       */
+      pushPArray = true;
+      text.move(3);
+      insertElem = parseCodeBlock(text);
+    } else if (!indent && chr === '\n') {
+      /*
+       * break on multiple newlines
+       */
+      text.moveForward();
+      text.skipSpaces(false);
+      if (text.getChar() === '\n') {
+        if (headingLevel && opts.newlineBreaksArticles) {
+          break;
+        }
+        text.moveForward();
+      }
+      pushPArray = true;
+    } else {
+      /*
+       * ordinary text aka paragraph
+       */
+      const pPArray = parseMParagraph(text, opts);
+      if (pPArray) {
+        pArray = pArray.concat(pPArray);
+      }
+      continue;
+    }
+
+    if (pushPArray && pArray.length) {
+      mdArray.push(['p', pArray]);
+      pArray = [];
+    }
+
+    if (insertElem) {
+      mdArray.push(insertElem);
     }
   }
 
-  /*
-   * parse quote
-   */
-  parseQuote(text, start) {
-    // either '<' or '>'
-    const quoteChar = text[start];
-    let iter = start;
-    let quoteText = '';
-    while(true) {
-      if (iter >= text.length || text[iter] !== quoteChar) {
+  if (pArray.length) {
+    mdArray.push(['p', pArray]);
+  }
+
+  return mdArray;
+}
+
+parseMText = (text, opts, headingLevel) => {
+  let mdArray = [];
+  while (!text.done()) {
+    const aMdArray = parseMSection(
+      text, opts, headingLevel, 0,
+    );
+    mdArray = mdArray.concat(aMdArray);
+    // either heading hit or article end
+    const chr = text.getChar();
+    if (chr === '#') {
+      let subLvl = text.countRepeatingCharacters();
+      if (subLvl <= headingLevel || headingLevel === 6) {
+        // end of article
+        // encountered title with same headingLevel or lower
         break;
+      } else {
+        // child article
+        text.move(subLvl);
+        const title = text.getLine();
+        subLvl = Math.min(subLvl, 6);
+        const subMdArray = parseMText(
+          text, opts, subLvl,
+        );
+        mdArray.push(['a', subLvl, title, subMdArray]);
       }
-      iter += 1;
-      const startLine = iter;
-      for (;iter < text.length && text[iter] !== '\n'; iter += 1) {}
-      iter += 1;
-      quoteText += text.slice(startLine, iter);
+    } else {
+      break;
     }
-    return [[quoteChar, this.parseText(quoteText, 0, 0)[0]], iter];
   }
 
-  skipSpaces(text: string, start: number, skipNewlines = false) {
-    let iter = start;
-    for (;iter < text.length; iter += 1) {
-      const char = text[iter];
-      if (char !== ' ' && char !== '\t' && (!skipNewlines || char !== '\n')) {
-        break;
-      }
-    }
-    return iter;
-  }
+  return mdArray;
+};
+
+function parseOpts(inOpts) {
+  const opts = {};
+  opts.parseLinks = (inOpts && inOpts.parseLinks) || false;
+  opts.tabWidth = (inOpts && inOpts.tabWidth) || 4;
+  opts.newlineBreaksArticles = (inOpts && inOpts.newlineBreaksArticles) || true;
+  return opts;
+}
+
+export function parseParagraph(text: string, inOpts) {
+  const opts = parseOpts(inOpts);
+  const mText = new MString(text);
+  return parseMParagraph(mText, opts);
+}
+
+export function parse(text: string, inOpts) {
+  const opts = parseOpts(inOpts);
+  const mText = new MString(text);
+  return parseMText(mText, opts, 0);
 }
