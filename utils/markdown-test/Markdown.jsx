@@ -3,6 +3,25 @@
  */
 import React from 'react';
 
+const MarkdownParagraph = ({ pArray }) => (
+  <p>
+  {
+    pArray.map((part) => {
+      if (!Array.isArray(part)) {
+        return part;
+      }
+      const type = part[0];
+      switch (type) {
+        case 'c':
+          return (<code>{part[1]}</code>);
+        default:
+          return type;
+      }
+    })
+  }
+  </p>
+);
+
 const Markdown = ({ mdArray }) => {
   return mdArray.map((part) => {
   const type = part[0];
@@ -35,19 +54,10 @@ const Markdown = ({ mdArray }) => {
     }
     /* Paragraph */
     case 'p': {
-      const text = part[1];
-      return (
-        <p className="post-para">
-          {text}
-        </p>
-      );
+      return <MarkdownParagraph pArray={part[1]} />;
     }
     /* Code Block */
     case 'cb': {
-      /*
-     * using pe instead of code because pre
-     * keeps linebreaks
-     */
       const content = part[1];
       return <pre>{content}</pre>;
     }
@@ -87,7 +97,7 @@ const Markdown = ({ mdArray }) => {
       );
     }
     default:
-      return <p>{part[1]}</p>;
+      return part[0];
   }
 })};
 

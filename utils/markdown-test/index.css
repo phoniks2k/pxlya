@@ -2,7 +2,7 @@ article {
   border-style: solid;
 }
 
-.post-para {
+article p {
   white-space: pre-line;
 }
 

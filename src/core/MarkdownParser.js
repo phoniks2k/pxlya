@@ -1,8 +1,10 @@
 /*
  * Markdown parsing
  *
- * we do not support all markdown, but do additionally parse extra
- * stuff like pixelplanet coords and usernames and bare links
+ * We do not support all markdown, but do additionally parse extra
+ * stuff like pixelplanet coords and usernames and bare links.
+ * This code is written in preparation for a possible imporementation in
+ * WebAssambly, so it's all in a big loop
  *
  * @flow
  */
@@ -90,12 +92,17 @@ export default class MarkdownParser {
   ) {
     let iter = start;
     const mdArray = [];
+    let pArray = [];
     let paraStart = iter;
     let lineNr = 0;
 
     const  addParagraph = (start, end) => {
+      /*
       let paraText = text.slice(start, end);
       mdArray.push(['p', paraText]);
+      */
+      mdArray.push(['p', pArray]);
+      pArray = [];
     }
 
     while (true) {
@@ -187,7 +194,7 @@ export default class MarkdownParser {
       /*
        * code block
        */
-      if (chr === '`' && text[iter + 1] === '`' && text[iter + 2] === '`') {
+      if (text.startsWith('```', iter)) {
         if (paraLineStart - 1 > paraStart) {
           addParagraph(paraStart, paraLineStart - 1);
         }
@@ -220,11 +227,65 @@ export default class MarkdownParser {
         continue;
       }
       // rest of line
-      for (;iter < text.length && text[iter] !== '\n'; iter += 1) {}
-      iter += 1;
+      const [pPArray, newIter] = this.parseParagraph(text, iter);
+      if (pPArray) {
+        pArray = pArray.concat(pPArray);
+      }
+      iter = newIter;
     }
 
     return [mdArray, iter];
+  }
+
+  /*
+   * go to character in line
+   * return position of character or null if not found before next line
+   */
+  goToCharInLine(text, start, chr) {
+    let iter = start;
+    for (;iter < text.length && text[iter] !== '\n' && text[iter] !== chr; iter += 1) {}
+    if (text[iter] === chr) {
+      return iter;
+    }
+    return null;
+  }
+
+  /*
+   * Parse Paragraph till next newline
+   */
+  parseParagraph(text, start) {
+    const pArray = [];
+    let iter = start;
+    let pStart = start;
+    let pEnd = 0;
+    for (;iter < text.length && text[iter] !== '\n'; iter += 1) {
+      let newElem = null;
+      if (text[iter] === '`') {
+        const pos = this.goToCharInLine(text, iter + 1, '`');
+        if (pos) {
+          newElem = ['c', text.slice(iter + 1, pos)];
+          pEnd = iter;
+          iter = pos;
+        }
+      }
+      /*
+      else if (text.startsWith('**', iter) {
+      }
+      */
+      if (pEnd) {
+        if (pStart !== pEnd) {
+          pArray.push(text.slice(pStart, pEnd));
+        }
+        pStart = iter + 1;
+        pEnd = 0;
+        pArray.push(newElem);
+      }
+    }
+    iter += 1;
+    if (pStart !== iter) {
+      pArray.push(text.slice(pStart, iter));
+    }
+    return [pArray, iter];
   }
 
   /*
@@ -266,10 +327,7 @@ export default class MarkdownParser {
         return [['cb', text.slice(cbStart)], iter];
       }
       iter = this.skipSpaces(text, iter, true);
-      if (text[iter] === '`'
-        && text[iter + 1] === '`'
-        && text[iter + 2] === '`'
-      ) {
+      if (text.startsWith('```', iter)) {
         const nextIter = iter + 3;
         return [['cb', text.slice(cbStart, iter)], nextIter];
       }
