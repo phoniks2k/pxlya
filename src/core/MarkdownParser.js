@@ -15,25 +15,21 @@ export default class MarkdownParser {
     this.parseLinks = opt && opt.parseLinks || false;
     this.tabWidth = opt && opt.tabWidth || 4;
     this.newlineBreaksArticles = opt && opt.newlineBreaksArticles || true;
-    this.keepQuoteArrows = opt && opt.keepQuoteArrows || true;
   }
 
   parse(text: string) {
-    return this.parseText(text, 0, 0, '')[0];
+    return this.parseText(text, 0, 0)[0];
   }
 
-  parseText(text, headingLevel, start, quoteLevel) {
+  parseText(text, headingLevel, start) {
     let mdArray = [];
     let iter = start;
     while (iter < text.length) {
-      const [aMdArray, newIter, breaking] = this.parseSection(
-        text, iter, headingLevel, quoteLevel,
+      const [aMdArray, newIter] = this.parseSection(
+        text, iter, headingLevel,
       );
       iter = newIter;
       mdArray = mdArray.concat(aMdArray);
-      if (breaking) {
-        break;
-      }
       // either heading hit or article end
       const chr = text[iter];
       if (chr === '#') {
@@ -53,18 +49,11 @@ export default class MarkdownParser {
           const title = text.slice(iter + subLvl, lineEnd).trimLeft();
           subLvl = Math.min(subLvl, 6);
           const [subMdArray, newIter] = this.parseText(
-            text, subLvl, lineEnd + 1, quoteLevel,
+            text, subLvl, lineEnd + 1,
           );
           mdArray.push(['a', subLvl, title, subMdArray]);
           iter = newIter;
         }
-      } else if (chr === '>' || chr === '<') {
-        // child quote
-        const [subMdArray, newIter] = this.parseText(
-          text, 0, iter - quoteLevel.length, quoteLevel + chr,
-        );
-        mdArray.push([chr, subMdArray]);
-        iter = newIter;
       } else {
         break;
       }
@@ -97,26 +86,15 @@ export default class MarkdownParser {
     text: string,
     start: number,
     headingLevel = 0,
-    quoteLevel = '',
     indent = 0,
   ) {
     let iter = start;
-    /*
-     * breaking is currently only used when
-     * end of quote block is reached
-     */
-    let breaking = false;
     const mdArray = [];
     let paraStart = iter;
     let lineNr = 0;
 
     const  addParagraph = (start, end) => {
       let paraText = text.slice(start, end);
-      if (!this.keepQuoteArrows && quoteLevel) {
-        paraText = paraText.split('\n')
-          .map((t) => t.trim().slice(quoteLevel.length))
-          .join('\n');
-      }
       mdArray.push(['p', paraText]);
     }
 
@@ -130,32 +108,6 @@ export default class MarkdownParser {
 
       const paraLineStart = iter;
       lineNr += 1;
-
-      /*
-       * break when in or out of quote levels
-       */
-      if (!indent || lineNr > 1) {
-        if (text.startsWith(quoteLevel, iter)) {
-          iter += quoteLevel.length;
-          const chr = text[iter];
-          if (chr === '>' || chr === '<') {
-            if (iter - 1 > paraStart) {
-              addParagraph(paraStart, iter - quoteLevel.length - 1);
-            }
-            break;
-          }
-        }
-        else {
-          // quote ended aka less deep quotelevel
-          if (iter - 1 > paraStart) {
-            addParagraph(paraStart, iter - 1);
-          }
-          breaking = true;
-          break;
-        }
-      } else {
-        iter += quoteLevel.length;
-      }
 
       /*
        * act on indent
@@ -172,29 +124,62 @@ export default class MarkdownParser {
 
       const chr = text[iter];
 
+      /*
+       * unordered list
+       */
+      let isUnorderedList = false;
+      let isOrderedList = false;
       if (chr === '-') {
+        isUnorderedList = true;
+        iter += 1;
+      }
+
+      /*
+       * ordered list
+       */
+      if (!Number.isNaN(parseInt(chr))) {
+        let itern = iter + 1;
+        for(;!Number.isNaN(parseInt(text[itern])); itern += 1){}
+        if (text[itern] === '.' || text[itern] === ')') {
+          isOrderedList = true;
+          iter = itern + 1;
+        }
+      }
+
+      if (isUnorderedList || isOrderedList) {
         if (paraLineStart - 1 > paraStart) {
           addParagraph(paraStart, paraLineStart - 1);
         }
         let childMdArray;
-        [childMdArray, iter, breaking] = this.parseSection(
+        [childMdArray, iter] = this.parseSection(
           text,
-          iter + 1,
+          iter,
           headingLevel,
-          quoteLevel,
           curIndent + 1,
         );
         childMdArray = ['-', childMdArray];
-        // lists are encapsuled by 'ul'
-        if (!mdArray.length || mdArray[mdArray.length - 1][0] !== 'ul') {
-          mdArray.push(['ul', [childMdArray]]);
+        // lists are encapsuled
+        const capsule = (isUnorderedList) ? 'ul' : 'ol';
+        if (!mdArray.length || mdArray[mdArray.length - 1][0] !== capsule) {
+          mdArray.push([capsule, [childMdArray]]);
         }
         else {
           mdArray[mdArray.length - 1][1].push(childMdArray);
         }
-        if (breaking) {
-          return [mdArray, iter, breaking];
+        paraStart = iter;
+        continue;
+      }
+
+      /*
+       * quotes
+       */
+      if (chr === '>' || chr === '<') {
+        if (paraLineStart - 1 > paraStart) {
+          addParagraph(paraStart, paraLineStart - 1);
         }
+        const [qArray, newIter] = this.parseQuote(text, iter);
+        mdArray.push(qArray);
+        iter = newIter;
         paraStart = iter;
         continue;
       }
@@ -239,12 +224,7 @@ export default class MarkdownParser {
       iter += 1;
     }
 
-    return [mdArray, iter, breaking];
-  }
-
-  parseList(text: string, start: number) {
-    const iter = start;
-    const mdArray = [];
+    return [mdArray, iter];
   }
 
   /*
@@ -276,8 +256,11 @@ export default class MarkdownParser {
    * we just parse till the ending occures
    */
   parseCodeBlock(text, start) {
-    const cbStart = this.skipSpaces(text, start, true);
-    let iter = cbStart;
+    let iter = this.skipSpaces(text, start, false);
+    if (text[iter] === '\n') {
+      iter += 1;
+    }
+    const cbStart = iter;
     while (true) {
       if (iter >= text.length) {
         return [['cb', text.slice(cbStart)], iter];
@@ -294,6 +277,27 @@ export default class MarkdownParser {
     }
   }
 
+  /*
+   * parse quote
+   */
+  parseQuote(text, start) {
+    // either '<' or '>'
+    const quoteChar = text[start];
+    let iter = start;
+    let quoteText = '';
+    while(true) {
+      if (iter >= text.length || text[iter] !== quoteChar) {
+        break;
+      }
+      iter += 1;
+      const startLine = iter;
+      for (;iter < text.length && text[iter] !== '\n'; iter += 1) {}
+      iter += 1;
+      quoteText += text.slice(startLine, iter);
+    }
+    return [[quoteChar, this.parseText(quoteText, 0, 0)[0]], iter];
+  }
+
   skipSpaces(text: string, start: number, skipNewlines = false) {
     let iter = start;
     for (;iter < text.length; iter += 1) {
@@ -303,59 +307,5 @@ export default class MarkdownParser {
       }
     }
     return iter;
-  }
-
-  parseIndents(text: string) {
-    const lines = text.split('\n');
-    const indents = [];
-    const { tabWidth } = this;
-
-    /*
-     * Get indentation of lines
-     * @param text: string of text to parse
-     * @return [indents, lines]:
-     *   indents: Array of normalized numerical indents
-     *   lines: Array of trimmed lines
-     */
-    for (let i = 0; i < lines.length; i += 1) {
-      const line = lines[i];
-      let indent = 0;
-      for (let c = 0; c < line.length; c += 1) {
-        const chr = line[c];
-        if (chr === '\t') {
-          indent += this.tabWidth;
-        } else if (chr === ' ') {
-          indent += 1;
-        } else {
-          break;
-        }
-      }
-      lines[i] = line.trim();
-      indents.push(indent);
-    }
-
-    // normalize
-    let min = indents[0];
-    let max = indents[0];
-    for (let m = 0; m < indents.length; m += 1) {
-      const indent = indents[m];
-      if (indent < min) min = indent;
-      if (indent > max) max = indent;
-    }
-    let cnt = 0;
-    console.log(min, max);
-    for (let n = min; n <= max; n += 1) {
-      let available = false;
-      for (let c = 0; c < indents.length; c += 1) {
-        if (indents[c] === n) {
-          if (!available) available = true;
-          indents[c] = cnt;
-        }
-      }
-      if (available) cnt += 1;
-    }
-
-    console.log(lines);
-    console.log(indents);
   }
 }

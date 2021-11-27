@@ -70,6 +70,14 @@ const Markdown = ({ mdArray }) => {
         </ul>
       );
     }
+    case 'ol': {
+      const children = part[1];
+      return (
+        <ol>
+          <Markdown mdArray={children} />
+        </ol>
+      );
+    }
     case '-': {
       const children = part[1];
       return (
