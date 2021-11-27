@@ -32,7 +32,7 @@ const App = () => {
           parseText(evt.target.value, setDuration, setCmDuration, setMd);
         }}
       />
-      <p>Parse-time: {duration}ms / commonmark: {cmDuration}</p>
+      <p>Parse-time: {duration}ms / commonmark: {cmDuration}ms</p>
       <Markdown mdArray={md} />
       <textarea
         cols="100"

@@ -3,24 +3,42 @@
  */
 import React from 'react';
 
-const MarkdownParagraph = ({ pArray }) => (
-  <p>
-  {
-    pArray.map((part) => {
-      if (!Array.isArray(part)) {
-        return part;
-      }
-      const type = part[0];
-      switch (type) {
-        case 'c':
-          return (<code>{part[1]}</code>);
-        default:
-          return type;
-      }
-    })
+const MarkdownParagraph = ({ pArray }) => pArray.map((part) => {
+  if (!Array.isArray(part)) {
+    return part;
   }
-  </p>
-);
+  const type = part[0];
+  switch (type) {
+    case 'c':
+      return (<code>{part[1]}</code>);
+    case '*':
+      return (
+        <strong>
+         <MarkdownParagraph pArray={part[1]} />
+        </strong>
+      );
+    case '~':
+      return (
+        <s>
+         <MarkdownParagraph pArray={part[1]} />
+        </s>
+      );
+    case '+':
+      return (
+        <em>
+         <MarkdownParagraph pArray={part[1]} />
+        </em>
+      );
+    case '_':
+      return (
+        <u>
+         <MarkdownParagraph pArray={part[1]} />
+        </u>
+      );
+    default:
+      return type;
+  }
+});
 
 const Markdown = ({ mdArray }) => {
   return mdArray.map((part) => {
@@ -54,7 +72,11 @@ const Markdown = ({ mdArray }) => {
     }
     /* Paragraph */
     case 'p': {
-      return <MarkdownParagraph pArray={part[1]} />;
+      return (
+        <p>
+          <MarkdownParagraph pArray={part[1]} />
+        </p>
+      );
     }
     /* Code Block */
     case 'cb': {

@@ -9,147 +9,73 @@
  * @flow
  */
 
+import MString from './MString';
+
 let parseMText = () => {};
 
-class MString {
-  constructor(text, start) {
-    this.txt = text;
-    this.iter = start || 0;
-  }
-
-  nextChar() {
-    this.iter += 1;
-    return this.txt[this.iter];
-  }
-
-  done() {
-    return (this.iter >= this.txt.length);
-  }
-
-  moveForward() {
-    this.iter += 1;
-    return (this.iter < this.txt.length);
-  }
-
-  setIter(iter) {
-    this.iter = iter;
-  }
-
-  getChar() {
-    return this.txt[this.iter];
-  }
-
-  slice(start, end) {
-    return this.txt.slice(start, end || this.iter);
-  }
-
-  has(str) {
-    return this.txt.startsWith(str, this.iter);
-  }
-
-  move(cnt) {
-    this.iter += cnt;
-    return (this.iter < this.txt.length);
-  }
-
-  skipSpaces(skipNewlines = false) {
-    for (;this.iter < this.txt.length; this.iter += 1) {
-      const chr = this.txt[this.iter];
-      if (chr !== ' ' && chr !== '\t' && (!skipNewlines || chr !== '\n')) {
-        break;
-      }
-    }
-  }
-
-  countRepeatingCharacters() {
-    const chr = this.getChar();
-    let newIter = this.iter + 1;
-    for (;newIter < this.txt.length && this.txt[newIter] === chr;
-      newIter += 1
-    );
-    return newIter - this.iter;
-  }
-
-  moveToNextLine() {
-    const lineEnd = this.txt.indexOf('\n', this.iter);
-    if (lineEnd === -1) {
-      this.iter = this.txt.length;
-    } else {
-      this.iter = lineEnd + 1;
-    }
-  }
-
-  getLine() {
-    const startLine = this.iter;
-    this.moveToNextLine();
-    return this.txt.slice(startLine, this.iter);
-  }
-
-  getIndent(tabWidth) {
-    let indent = 0;
-    while (this.iter < this.txt.length) {
-      const chr = this.getChar();
-      if (chr === '\t') {
-        indent += tabWidth;
-      } else if (chr === ' ') {
-        indent += 1;
-      } else {
-        break;
-      }
-      this.iter += 1;
-    }
-    return indent;
-  }
-
-  goToCharInLine(chr) {
-    let { iter } = this;
-    for (;
-      iter < this.txt.length && this.txt[iter] !== '\n'
-        && this.txt[iter] !== chr;
-      iter += 1
-    );
-    if (this.txt[iter] === chr) {
-      this.iter = iter;
-      return iter;
-    }
-    return false;
-  }
-}
-
 /*
- * Parse Paragraph till next newline
+ * Parse Paragraph till next newline or breakChar (for recursion)
  */
-function parseMParagraph(text, opts) {
+const paraElems = ['*', '~', '+', '_'];
+function parseMParagraph(text, opts, breakChar) {
   const pArray = [];
   let pStart = text.iter;
-  let pEnd = 0;
+  let chr = null;
   while (!text.done()) {
-    const chr = text.getChar();
-    let newElem = null;
-    if (chr === '`') {
+    chr = text.getChar();
+
+    if (chr === breakChar) {
+      break;
+    }
+    if (chr === '\n') {
+      text.moveForward();
+      break;
+    }
+
+    if (chr === '\\') {
+      /*
+       * escape character
+       */
+      if (pStart !== text.iter) {
+        pArray.push(text.slice(pStart));
+      }
+      pStart = text.iter + 1;
+      text.moveForward();
+    }
+    else if (paraElems.includes(chr)) {
+      /*
+       * bold, cursive, underline, etc.
+       */
+      const oldPos = text.iter;
+      text.moveForward();
+      const children = parseMParagraph(text, opts, chr);
+      if (text.getChar() === chr) {
+        if (pStart !== oldPos) {
+          pArray.push(text.slice(pStart, oldPos));
+        }
+        pArray.push([chr, children]);
+        pStart = text.iter + 1;
+      }
+      else {
+        text.setIter(oldPos);
+      }
+    }
+    else if (chr === '`') {
+      /*
+       * inline code
+       */
       const oldPos = text.iter;
       text.moveForward();
       if (text.goToCharInLine('`')) {
-        newElem = ['c', text.slice(oldPos + 1)];
-        pEnd = oldPos;
+        if (pStart !== oldPos) {
+          pArray.push(text.slice(pStart, oldPos));
+        }
+        pArray.push(['c', text.slice(oldPos + 1)]);
+        pStart = text.iter + 1;
       }
     }
-    /*
-    else if (text.startsWith('**', iter) {
-    }
-    */
-    if (pEnd) {
-      if (pStart !== pEnd) {
-        pArray.push(text.slice(pStart, pEnd));
-      }
-      pStart = text.iter + 1;
-      pEnd = 0;
-      pArray.push(newElem);
-    }
+
     text.moveForward();
-    if (chr === '\n') {
-      break;
-    }
   }
   if (pStart !== text.iter) {
     pArray.push(text.slice(pStart));
