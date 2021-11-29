@@ -32,7 +32,6 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "bufferutil": "^4.0.3",
-    "commonmark": "^0.29.3",
     "compression": "^1.7.3",
     "connect-redis": "^6.0.0",
     "cookie": "^0.4.1",
