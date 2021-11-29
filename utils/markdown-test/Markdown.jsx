@@ -3,6 +3,34 @@
  */
 import React from 'react';
 
+/*
+ * gets a descriptive text of the domain of the link
+ * Example:
+ *  https://www.youtube.com/watch?v=G8APgeFfkAk returns 'youtube'
+ *  http://www.google.at returns 'google.at'
+ *  (www. and .com are split)
+ */
+function getLinkDesc(link) {
+  let domainStart = link.indexOf('://') + 3;
+  if (domainStart < 3) {
+    domainStart = 0;
+  }
+  if (link.startsWith('www.', domainStart)) {
+    domainStart += 4;
+  }
+  let domainEnd = link.indexOf('/', domainStart);
+  if (domainEnd === -1) {
+    domainEnd = link.length;
+  }
+  if (link.endsWith('.com', domainEnd)) {
+    domainEnd -= 4;
+  }
+  if (domainEnd <= domainStart) {
+    return link;
+  }
+  return link.slice(domainStart, domainEnd);
+}
+
 const MarkdownParagraph = ({ pArray }) => pArray.map((part) => {
   if (!Array.isArray(part)) {
     return part;
@@ -35,19 +63,32 @@ const MarkdownParagraph = ({ pArray }) => pArray.map((part) => {
          <MarkdownParagraph pArray={part[1]} />
         </u>
       );
-    case 'l':
+    case 'l': {
+      let title = getLinkDesc(part[2]);
+      if (part[1]) {
+        title += ` | ${part[1]}`;
+      }
       return (
         <a href={part[2]}>
-        {part[1]}
+        {title}
         </a>
       );
+    }
+    case 'img': {
+      let title = getLinkDesc(part[2]);
+      if (part[1]) {
+        title += ` | ${part[1]}`;
+      }
+      return (
+        <img src={part[2]} title={part[1] || title} alt={title} />
+      );
+    }
     default:
       return type;
   }
 });
 
-const Markdown = ({ mdArray }) => {
-  return mdArray.map((part) => {
+const Markdown = ({ mdArray }) => mdArray.map((part) => {
   const type = part[0];
   switch (type) {
     /* Heading */
@@ -127,7 +168,7 @@ const Markdown = ({ mdArray }) => {
     default:
       return part[0];
   }
-})};
+});
 
 const MarkdownArticle = ({ mdArray }) => (
   <article>

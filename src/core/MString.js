@@ -107,9 +107,74 @@ export default class MString {
   }
 
   /*
+   * check if the current '[' is part of a [y](z) enclosure
+   * returns [y, z] if it is enclosure, null otherwise
+   * moves iter to last closing braked if it is enclosure
+   */
+  checkIfEnclosure(zIsLink) {
+    const yStart = this.iter + 1;
+
+    let yEnd = yStart;
+    while (this.txt[yEnd] !== ']') {
+      const chr = this.txt[yEnd];
+      if (yEnd >= this.txt.length
+        || chr === '\n'
+        || chr === '['
+        || chr === '('
+      ) {
+        return null;
+      }
+      yEnd += 1;
+    }
+
+    let zStart = yEnd + 1;
+    if (this.txt[zStart] !== '(') {
+      return null;
+    }
+    zStart += 1;
+
+    let zEnd = zStart;
+    let z = null;
+    while (this.txt[zEnd] !== ')') {
+      const chr = this.txt[zEnd];
+      if (zEnd >= this.txt.length
+        || chr === '\n'
+        || chr == '['
+        || chr == '('
+      ) {
+        return null;
+      }
+      if (zIsLink && chr === ':') {
+        // set this.iter temporarily to be able to use thischeckIfLink
+        const oldIter = this.iter;
+        this.iter = zEnd;
+        z = this.checkIfLink();
+        zEnd = this.iter;
+        this.iter = oldIter;
+        if (z === null) {
+          return null;
+        }
+        continue;
+      }
+      zEnd += 1;
+    }
+    if (zEnd < zStart + 1 || ( !z && zIsLink )) {
+      return null;
+    }
+
+    if (!zIsLink) {
+      z = this.txt.slice(zStart, zEnd);
+    }
+    const y = this.txt.slice(yStart, yEnd);
+
+    this.iter = zEnd;
+    return [y, z];
+  }
+
+  /*
    * Convoluted way to check if the current ':' is part of a link
    * we do not check for a 'http' because we might support application links
-   * like telegram://... or discord://..
+   * like tg://... or discord://..
    * returns the link or false if there is none
    * moves iter forward to after the link, if there's one
    */
@@ -126,26 +191,14 @@ export default class MString {
     linkStart += 1;
 
     cIter += 3;
-    /* just some most basic test */
-    let dots = 0;
-    let slashes = 0;
     for (; cIter < this.txt.length
       && !MString.isWhiteSpace(this.txt[cIter])
       && this.txt[cIter] !== ')'; cIter += 1
-    ) {
-      if (this.txt[cIter] === '.') {
-        if (slashes !== 0) {
-          return null;
-        }
-        dots += 1;
-      } else if (this.txt[cIter] === '/') {
-        slashes += 1;
-      }
-    }
-    if (!dots || (!slashes && this.txt[cIter - 1] === '.')) {
+    );
+    if (cIter < this.iter + 4) {
       return null;
     }
-
+    
     /* special case where someone pasted a http link after a text
      * without space in between
      */

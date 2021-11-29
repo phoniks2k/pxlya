@@ -75,14 +75,44 @@ function parseMParagraph(text, opts, breakChar) {
        * pure link
        */
       const link = text.checkIfLink();
-      if (link) {
+      if (link !== null) {
         const startLink = text.iter - link.length;
         if (pStart < startLink) {
           pArray.push(text.slice(pStart, startLink));
         }
-        pArray.push(['l', link, link]);
+        pArray.push(['l', null, link]);
         pStart = text.iter;
         continue;
+      }
+    } else if (chr === '[') {
+      /*
+       * x[y](z) enclosure
+       */
+      let oldPos = text.iter;
+      let x = null;
+      if (text.iter > 0) {
+        text.move(-1);
+        x = text.getChar();
+        text.setIter(oldPos);
+      }
+      /*
+       * x decides what element it is
+       * defaults to ordinary link
+       */
+      let tag = 'l'
+      let zIsLink = true;
+      if (x === '!') {
+        tag = 'img';
+        oldPos -= 1;
+      }
+
+      const encArr = text.checkIfEnclosure(zIsLink);
+      if (encArr !== null) {
+        if (pStart < oldPos) {
+          pArray.push(text.slice(pStart, oldPos));
+        }
+        pArray.push([tag, encArr[0], encArr[1]]);
+        pStart = text.iter + 1;
       }
     }
 
