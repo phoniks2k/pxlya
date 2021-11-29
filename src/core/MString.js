@@ -101,4 +101,62 @@ export default class MString {
     }
     return false;
   }
+
+  static isWhiteSpace(chr) {
+    return (chr === ' ' || chr === '\t' || chr === '\n');
+  }
+
+  /*
+   * Convoluted way to check if the current ':' is part of a link
+   * we do not check for a 'http' because we might support application links
+   * like telegram://... or discord://..
+   * returns the link or false if there is none
+   * moves iter forward to after the link, if there's one
+   */
+  checkIfLink() {
+    let cIter = this.iter;
+    if (!this.txt.startsWith('://', cIter) || cIter < 3) {
+      return null;
+    }
+
+    let linkStart = cIter - 1;
+    for (; linkStart >= 0
+      && !MString.isWhiteSpace(this.txt[linkStart])
+      && this.txt[linkStart] !== '('; linkStart -= 1);
+    linkStart += 1;
+
+    cIter += 3;
+    /* just some most basic test */
+    let dots = 0;
+    let slashes = 0;
+    for (; cIter < this.txt.length
+      && !MString.isWhiteSpace(this.txt[cIter])
+      && this.txt[cIter] !== ')'; cIter += 1
+    ) {
+      if (this.txt[cIter] === '.') {
+        if (slashes !== 0) {
+          return null;
+        }
+        dots += 1;
+      } else if (this.txt[cIter] === '/') {
+        slashes += 1;
+      }
+    }
+    if (!dots || (!slashes && this.txt[cIter - 1] === '.')) {
+      return null;
+    }
+
+    /* special case where someone pasted a http link after a text
+     * without space in between
+     */
+    let link = this.txt.slice(linkStart, cIter);
+    const httpOc = link.indexOf('http');
+    if (httpOc !== -1 && httpOc !== 0) {
+      linkStart += httpOc;
+      link = this.txt.slice(linkStart, cIter);
+    }
+
+    this.iter = cIter;
+    return link;
+  }
 }

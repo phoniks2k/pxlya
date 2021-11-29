@@ -35,6 +35,12 @@ const MarkdownParagraph = ({ pArray }) => pArray.map((part) => {
          <MarkdownParagraph pArray={part[1]} />
         </u>
       );
+    case 'l':
+      return (
+        <a href={part[2]}>
+        {part[1]}
+        </a>
+      );
     default:
       return type;
   }

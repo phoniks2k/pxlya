@@ -41,8 +41,7 @@ function parseMParagraph(text, opts, breakChar) {
       }
       pStart = text.iter + 1;
       text.moveForward();
-    }
-    else if (paraElems.includes(chr)) {
+    } else if (paraElems.includes(chr)) {
       /*
        * bold, cursive, underline, etc.
        */
@@ -55,12 +54,10 @@ function parseMParagraph(text, opts, breakChar) {
         }
         pArray.push([chr, children]);
         pStart = text.iter + 1;
-      }
-      else {
+      } else {
         text.setIter(oldPos);
       }
-    }
-    else if (chr === '`') {
+    } else if (chr === '`') {
       /*
        * inline code
        */
@@ -72,6 +69,20 @@ function parseMParagraph(text, opts, breakChar) {
         }
         pArray.push(['c', text.slice(oldPos + 1)]);
         pStart = text.iter + 1;
+      }
+    } else if (chr === ':') {
+      /*
+       * pure link
+       */
+      const link = text.checkIfLink();
+      if (link) {
+        const startLink = text.iter - link.length;
+        if (pStart < startLink) {
+          pArray.push(text.slice(pStart, startLink));
+        }
+        pArray.push(['l', link, link]);
+        pStart = text.iter;
+        continue;
       }
     }
 
@@ -90,7 +101,7 @@ function parseMParagraph(text, opts, breakChar) {
  */
 function parseCodeBlock(text) {
   text.skipSpaces(false);
-  if (text.getChar === '\n') {
+  if (text.getChar() === '\n') {
     text.moveForward();
   }
   const cbStart = text.iter;
