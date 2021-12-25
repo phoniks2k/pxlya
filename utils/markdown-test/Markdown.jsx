@@ -3,34 +3,6 @@
  */
 import React from 'react';
 
-/*
- * gets a descriptive text of the domain of the link
- * Example:
- *  https://www.youtube.com/watch?v=G8APgeFfkAk returns 'youtube'
- *  http://www.google.at returns 'google.at'
- *  (www. and .com are split)
- */
-function getLinkDesc(link) {
-  let domainStart = link.indexOf('://') + 3;
-  if (domainStart < 3) {
-    domainStart = 0;
-  }
-  if (link.startsWith('www.', domainStart)) {
-    domainStart += 4;
-  }
-  let domainEnd = link.indexOf('/', domainStart);
-  if (domainEnd === -1) {
-    domainEnd = link.length;
-  }
-  if (link.endsWith('.com', domainEnd)) {
-    domainEnd -= 4;
-  }
-  if (domainEnd <= domainStart) {
-    return link;
-  }
-  return link.slice(domainStart, domainEnd);
-}
-
 const MarkdownParagraph = ({ pArray }) => pArray.map((part) => {
   if (!Array.isArray(part)) {
     return part;
