@@ -150,6 +150,8 @@ export async function drawByOffsets(
         coolDown = 0.0;
       } else {
         coolDown *= coolDownFactor;
+        // temporary lowered cooldown
+        coolDown /= 2;
       }
 
       wait += coolDown;
