@@ -49,6 +49,11 @@ export function buildWebpackClientConfig(
     '@babel/plugin-proposal-numeric-separator',
     '@babel/plugin-proposal-throw-expressions',
     ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-proposal-private-methods', { loose: true }],
+    [
+      '@babel/plugin-proposal-private-property-in-object',
+      { loose: true },
+    ],
     '@babel/proposal-object-rest-spread',
     // react-optimize
     '@babel/transform-react-constant-elements',
