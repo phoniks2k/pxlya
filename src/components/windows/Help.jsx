@@ -36,7 +36,7 @@ const Help = () => {
   const mailLink = <a href="mailto:pixelplanetdev@gmail.com">pixelplanetdev@gmail.com</a>;
 
   return (
-    <p style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
+    <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
       <p className="modaltext">
         {t`Place color pixels on a large canvas with other players online!`}<br />
         {t`Our main canvas is a huge worldmap, you can place wherever you like, but you will have to wait a specific \
@@ -85,7 +85,7 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
       <p>{t`Partners:`} <a href="https://www.crazygames.com/c/io" target="_blank" rel="noopener noreferrer">crazygames.com</a></p>
-    </p>
+    </div>
   );
 };
 

@@ -43,18 +43,7 @@ export function buildWebpackClientConfig(
 
   const babelPlugins = [
     '@babel/plugin-transform-flow-strip-types',
-    ['@babel/plugin-proposal-decorators', { legacy: true }],
-    '@babel/plugin-proposal-function-sent',
-    '@babel/plugin-proposal-export-namespace-from',
-    '@babel/plugin-proposal-numeric-separator',
     '@babel/plugin-proposal-throw-expressions',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-proposal-private-methods', { loose: true }],
-    [
-      '@babel/plugin-proposal-private-property-in-object',
-      { loose: true },
-    ],
-    '@babel/proposal-object-rest-spread',
     // react-optimize
     '@babel/transform-react-constant-elements',
     '@babel/transform-react-inline-elements',
@@ -69,7 +58,7 @@ export function buildWebpackClientConfig(
 
     context: __dirname,
     mode: (development) ? 'development' : 'production',
-    devtool: 'source-map',
+    devtool: (development) ? 'eval' : false,
 
     entry: {
       [(locale !== 'default') ? `client-${locale}` : 'client']:
@@ -121,7 +110,7 @@ export function buildWebpackClientConfig(
           ],
         },
         {
-          test: /\.(js|jsx|ts|tsx)$/,
+          test: /\.(js|jsx)$/,
           loader: 'babel-loader',
           include: [
             path.resolve(__dirname, 'src'),
@@ -136,14 +125,13 @@ export function buildWebpackClientConfig(
                 targets: {
                   browsers: pkg.browserslist,
                 },
-                modules: false,
                 useBuiltIns: 'usage',
                 corejs: {
                   version: 3,
                 },
                 debug: false,
               }],
-              '@babel/typescript',
+              //'@babel/typescript',
               '@babel/react',
             ],
             plugins: babelPlugins,
@@ -214,7 +202,6 @@ export function buildWebpackClientConfig(
      * maybe some day in the future it might be
      * better than babel-loader cacheDirectory,
      * but right now it isn't
-     *
     cache: {
       type: 'filesystem',
       cacheDirectory: path.resolve(
@@ -225,6 +212,7 @@ export function buildWebpackClientConfig(
       ),
     },
      */
+    cache: false,
   };
 }
 
@@ -250,12 +238,12 @@ function buildWebpackClientConfigAllLangs(development, analyze) {
 }
 
 export default ({
-  debug, analyze, extract, locale,
+  development, analyze, extract, locale,
 }) => {
   if (extract || locale) {
     return buildWebpackClientConfig(
-      debug, analyze, locale || 'default', extract,
+      development, analyze, locale || 'default', extract,
     );
   }
-  return buildWebpackClientConfigAllLangs(debug, analyze);
+  return buildWebpackClientConfigAllLangs(development, analyze);
 };

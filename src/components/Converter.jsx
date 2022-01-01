@@ -6,9 +6,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import fileDownload from 'js-file-download';
-import iq from 'image-q';
 import { jt, t } from 'ttag';
 
+import {
+  ColorDistanceCalculators,
+  ImageQuantizerKernels,
+  quantizeImage,
+  getImageDataOfFile,
+} from '../utils/image';
 import printGIMPPalette from '../core/exportGPL';
 import { copyCanvasToClipboard } from '../utils/clipboard';
 
@@ -43,181 +48,63 @@ function readFile(
   fr.readAsDataURL(file);
 }
 
-const ColorDistanceCalculators = [
-  'Euclidean',
-  'Manhattan',
-  'CIEDE2000',
-  'CIE94Textiles',
-  'CIE94GraphicArts',
-  'EuclideanBT709NoAlpha',
-  'EuclideanBT709',
-  'ManhattanBT709',
-  'CMetric',
-  'PNGQuant',
-  'ManhattanNommyde',
-];
-
-function quantize(
-  pointContainer,
-  colors,
-  colorDist,
-  strategy,
-  onProgress,
-) {
-  return new Promise((resolve, reject) => {
-    // read colors into palette
-    const palette = new iq.utils.Palette();
-    palette.add(iq.utils.Point.createByRGBA(0, 0, 0, 0));
-    colors.forEach((clr) => {
-      const [r, g, b] = clr;
-      const point = iq.utils.Point.createByRGBA(r, g, b, 255);
-      palette.add(point);
-    });
-    // construct color distance calculator
-    let distance;
-    switch (colorDist) {
-      case 'Euclidean':
-        distance = new iq.distance.Euclidean();
-        break;
-      case 'Manhattan':
-        distance = new iq.distance.Manhattan();
-        break;
-      case 'CIEDE2000':
-        distance = new iq.distance.CIEDE2000();
-        break;
-      case 'CIE94Textiles':
-        distance = new iq.distance.CIE94Textiles();
-        break;
-      case 'CIE94GraphicArts':
-        distance = new iq.distance.CIE94GraphicArts();
-        break;
-      case 'EuclideanBT709NoAlpha':
-        distance = new iq.distance.EuclideanBT709NoAlpha();
-        break;
-      case 'EuclideanBT709':
-        distance = new iq.distance.EuclideanBT709();
-        break;
-      case 'ManhattanBT709':
-        distance = new iq.distance.ManhattanBT709();
-        break;
-      case 'CMetric':
-        distance = new iq.distance.CMetric();
-        break;
-      case 'PNGQuant':
-        distance = new iq.distance.PNGQuant();
-        break;
-      case 'ManhattanNommyde':
-        distance = new iq.distance.ManhattanNommyde();
-        break;
-      default:
-        distance = new iq.distance.Euclidean();
-    }
-    // construct image quantizer
-    let imageQuantizer;
-    if (strategy === 'Nearest') {
-      imageQuantizer = new iq.image.NearestColor(distance);
-    } else if (strategy === 'Riemersma') {
-      imageQuantizer = new iq.image.ErrorDiffusionRiemersma(distance);
-    } else {
-      imageQuantizer = new iq.image.ErrorDiffusionArray(
-        distance,
-        iq.image.ErrorDiffusionArrayKernel[strategy],
-        true,
-        0,
-        false,
-      );
-    }
-    // quantize
-    let outPointContainer;
-    const iterator = imageQuantizer.quantize(pointContainer, palette);
-    const next = () => {
-      try {
-        const result = iterator.next();
-        if (result.done) {
-          resolve(outPointContainer);
-        } else {
-          if (result.value.pointContainer) {
-            outPointContainer = result.value.pointContainer;
-          }
-          if (onProgress) onProgress(result.value.progress);
-          setTimeout(next, 10);
-        }
-      } catch (error) {
-        reject(error);
-      }
-    };
-    setTimeout(next, 10);
-  });
+function createCanvasFromImageData(imgData) {
+  const { width, height } = imgData;
+  const inputCanvas = document.createElement('canvas');
+  inputCanvas.width = width;
+  inputCanvas.height = height;
+  const inputCtx = inputCanvas.getContext('2d');
+  inputCtx.putImageData(imgData, 0, 0);
+  return inputCanvas;
 }
 
-function drawPixels(idxi8, width, height) {
-  const can = document.createElement('canvas');
-  can.width = width;
-  can.height = height;
-  const ctx = can.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
-  ctx.mozImageSmoothingEnabled = false;
-  ctx.webkitImageSmoothingEnabled = false;
-  ctx.msImageSmoothingEnabled = false;
-
-  const imgd = ctx.createImageData(can.width, can.height);
-  const { data } = imgd;
-  for (let i = 0, len = data.length; i < len; ++i) data[i] = idxi8[i];
-
-  ctx.putImageData(imgd, 0, 0);
-  return can;
-}
-
-function addGrid(img, lightGrid, offsetX, offsetY) {
+function addGrid(imgData, lightGrid, offsetX, offsetY) {
+  const image = createCanvasFromImageData(imgData);
+  const { width, height } = image;
   const can = document.createElement('canvas');
   const ctx = can.getContext('2d');
-  can.width = img.width * 5;
-  can.height = img.height * 5;
+  can.width = width * 5;
+  can.height = height * 5;
   ctx.imageSmoothingEnabled = false;
   ctx.mozImageSmoothingEnabled = false;
   ctx.webkitImageSmoothingEnabled = false;
   ctx.msImageSmoothingEnabled = false;
   ctx.save();
   ctx.scale(5.0, 5.0);
-  ctx.drawImage(img, 0, 0);
+  ctx.drawImage(image, 0, 0);
   ctx.restore();
   ctx.fillStyle = (lightGrid) ? '#DDDDDD' : '#222222';
-  for (let i = 0; i <= img.width; i += 1) {
+  for (let i = 0; i <= width; i += 1) {
     const thick = ((i + (offsetX * 1)) % 10 === 0) ? 2 : 1;
     ctx.fillRect(i * 5, 0, thick, can.height);
   }
-  for (let j = 0; j <= img.height; j += 1) {
+  for (let j = 0; j <= height; j += 1) {
     const thick = ((j + (offsetY * 1)) % 10 === 0) ? 2 : 1;
     ctx.fillRect(0, j * 5, can.width, thick);
   }
-  return can;
+  return ctx.getImageData(0, 0, can.width, can.height);
 }
 
-function scaleImage(img, width, height, doAA) {
+function scaleImage(imgData, width, height, doAA) {
   const can = document.createElement('canvas');
   const ctxo = can.getContext('2d');
   can.width = width;
   can.height = height;
-  const scaleX = width / img.width;
-  const scaleY = height / img.height;
+  const scaleX = width / imgData.width;
+  const scaleY = height / imgData.height;
   if (doAA) {
     // scale with canvas for antialiasing
+    const image = createCanvasFromImageData(imgData);
     ctxo.save();
     ctxo.scale(scaleX, scaleY);
-    ctxo.drawImage(img, 0, 0);
+    ctxo.drawImage(image, 0, 0);
     ctxo.restore();
-    return can;
+    return ctxo.getImageData(0, 0, width, height);
   }
   // scale manually
   const imdo = ctxo.createImageData(width, height);
   const { data: datao } = imdo;
-  const cani = document.createElement('canvas');
-  cani.width = img.width;
-  cani.height = img.height;
-  const ctxi = cani.getContext('2d');
-  ctxi.drawImage(img, 0, 0);
-  const imdi = ctxi.getImageData(0, 0, img.width, img.height);
-  const { data: datai } = imdi;
+  const { data: datai } = imgData;
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       let posi = (Math.round(x / scaleX) + Math.round(y / scaleY)
@@ -229,30 +116,29 @@ function scaleImage(img, width, height, doAA) {
       datao[poso] = datai[posi];
     }
   }
-  ctxo.putImageData(imdo, 0, 0);
-  return can;
+  return imdo;
 }
 
-let newOpts = null;
+let renderOpts = null;
 let rendering = false;
 async function renderOutputImage(opts) {
   if (!opts.file) {
     return;
   }
+  renderOpts = opts;
   if (rendering) {
-    newOpts = opts;
+    console.log('skip rendering');
     return;
   }
+  console.log('render');
   rendering = true;
-  let renderOpts = opts;
   while (renderOpts) {
-    newOpts = null;
     const {
       file, dither, grid, scaling,
     } = renderOpts;
+    renderOpts = null;
     if (file) {
       let image = file;
-      let pointContainer = null;
       if (scaling.enabled) {
         // scale
         const { width, height, aa } = scaling;
@@ -262,29 +148,18 @@ async function renderOutputImage(opts) {
           height,
           aa,
         );
-        pointContainer = iq.utils.PointContainer.fromHTMLCanvasElement(image);
-      } else {
-        pointContainer = iq.utils.PointContainer.fromHTMLImageElement(image);
       }
       // dither
       const { colors, strategy, colorDist } = dither;
       const progEl = document.getElementById('qprog');
-      // eslint-disable-next-line no-await-in-loop
-      pointContainer = await quantize(
-        pointContainer,
-        colors,
-        colorDist,
+      image = await quantizeImage(colors, image, {
         strategy,
-        (progress) => {
+        colorDist,
+        onProgress: (progress) => {
           progEl.innerHTML = `Loading... ${Math.round(progress)} %`;
         },
-      );
+      });
       progEl.innerHTML = 'Done';
-      image = drawPixels(
-        pointContainer.toUint8Array(),
-        image.width,
-        image.height,
-      );
       // grid
       if (grid.enabled) {
         const { light, offsetX, offsetY } = grid;
@@ -300,10 +175,8 @@ async function renderOutputImage(opts) {
       output.width = image.width;
       output.height = image.height;
       const ctx = output.getContext('2d');
-      ctx.drawImage(image, 0, 0);
+      ctx.putImageData(image, 0, 0);
     }
-    // render again if requested in the meantime
-    renderOpts = newOpts;
   }
   rendering = false;
 }
@@ -321,7 +194,7 @@ function Converter() {
   ], shallowEqual);
 
   const [selectedCanvas, selectCanvas] = useState(canvasId);
-  const [selectedFile, selectFile] = useState(null);
+  const [inputImageData, setInputImageData] = useState(null);
   const [selectedStrategy, selectStrategy] = useState('Nearest');
   const [selectedColorDist, selectColorDist] = useState('Euclidean');
   const [selectedScaleKeepRatio, selectScaleKeepRatio] = useState(true);
@@ -339,7 +212,7 @@ function Converter() {
   });
 
   useEffect(() => {
-    if (selectedFile) {
+    if (inputImageData) {
       const canvas = canvases[selectedCanvas];
       const dither = {
         colors: canvas.colors.slice(canvas.cli),
@@ -347,13 +220,20 @@ function Converter() {
         colorDist: selectedColorDist,
       };
       renderOutputImage({
-        file: selectedFile,
+        file: inputImageData,
         dither,
         grid: gridData,
         scaling: scaleData,
       });
     }
-  });
+  }, [
+    inputImageData,
+    selectedStrategy,
+    selectedColorDist,
+    scaleData,
+    selectedCanvas,
+    gridData,
+  ]);
 
   const {
     enabled: gridEnabled,
@@ -379,6 +259,7 @@ function Converter() {
     <div style={{ textAlign: 'center' }}>
       <div className="modalcotext">{t`Choose Canvas`}:&nbsp;
         <select
+          value={selectedCanvas}
           onChange={(e) => {
             const sel = e.target;
             selectCanvas(sel.options[sel.selectedIndex].value);
@@ -391,7 +272,6 @@ function Converter() {
               ? null
               : (
                 <option
-                  selected={canvas === selectedCanvas}
                   value={canvas}
                 >
                   {
@@ -431,28 +311,36 @@ function Converter() {
       <input
         type="file"
         id="imgfile"
-        onChange={(evt) => {
+        onChange={async (evt) => {
           const fileSel = evt.target;
           const file = (!fileSel.files || !fileSel.files[0])
             ? null : fileSel.files[0];
-          readFile(file, selectFile, setScaleData);
+          if (!file) {
+            setInputImageData(null);
+            return;
+          }
+          const imageData = await getImageDataOfFile(file);
+          setScaleData({
+            enabled: false,
+            width: imageData.width,
+            height: imageData.height,
+            aa: true,
+          });
+          setInputImageData(imageData);
         }}
       />
       <p className="modalcotext">{t`Choose Strategy`}:&nbsp;
         <select
+          value={selectedStrategy}
           onChange={(e) => {
             const sel = e.target;
             selectStrategy(sel.options[sel.selectedIndex].value);
           }}
         >
           {
-            ['Nearest',
-              'Riemersma',
-              ...Object.keys(iq.image.ErrorDiffusionArrayKernel),
-            ].map((strat) => (
+            ImageQuantizerKernels.map((strat) => (
               <option
                 value={strat}
-                selected={(selectedStrategy === strat)}
               >{strat}</option>
             ))
           }
@@ -460,6 +348,7 @@ function Converter() {
       </p>
       <p className="modalcotext">{t`Choose Color Mode`}:&nbsp;
         <select
+          value={selectedColorDist}
           onChange={(e) => {
             const sel = e.target;
             selectColorDist(sel.options[sel.selectedIndex].value);
@@ -469,7 +358,6 @@ function Converter() {
             ColorDistanceCalculators.map((strat) => (
               <option
                 value={strat}
-                selected={(selectedColorDist === strat)}
               >{strat}</option>
             ))
           }
@@ -581,8 +469,8 @@ function Converter() {
                   const newWidth = (e.target.value > 1024)
                     ? 1024 : e.target.value;
                   if (!newWidth) return;
-                  if (selectedScaleKeepRatio && selectedFile) {
-                    const ratio = selectedFile.width / selectedFile.height;
+                  if (selectedScaleKeepRatio && inputImageData) {
+                    const ratio = inputImageData.width / inputImageData.height;
                     const newHeight = Math.round(newWidth / ratio);
                     if (newHeight <= 0) return;
                     setScaleData({
@@ -611,8 +499,8 @@ function Converter() {
                   const nuHeight = (e.target.value > 1024)
                     ? 1024 : e.target.value;
                   if (!nuHeight) return;
-                  if (selectedScaleKeepRatio && selectedFile) {
-                    const ratio = selectedFile.width / selectedFile.height;
+                  if (selectedScaleKeepRatio && inputImageData) {
+                    const ratio = inputImageData.width / inputImageData.height;
                     const nuWidth = Math.round(ratio * nuHeight);
                     if (nuWidth <= 0) return;
                     setScaleData({
@@ -655,11 +543,11 @@ function Converter() {
             <button
               type="button"
               onClick={() => {
-                if (selectedFile) {
+                if (inputImageData) {
                   setScaleData({
                     ...scaleData,
-                    width: selectedFile.width,
-                    height: selectedFile.height,
+                    width: inputImageData.width,
+                    height: inputImageData.height,
                   });
                 }
               }}
@@ -669,7 +557,7 @@ function Converter() {
           </div>
         )
         : null}
-      {(selectedFile)
+      {(inputImageData)
         ? (
           <div>
             <p id="qprog">...</p>
@@ -704,4 +592,4 @@ function Converter() {
   );
 }
 
-export default React.memo(Converter);
+export default Converter;

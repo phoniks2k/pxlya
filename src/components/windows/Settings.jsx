@@ -55,6 +55,7 @@ const SettingsItemSelect = ({
       <h3 style={titleStyles} className="modaltitle">{title}</h3>
       {(icon) && <img alt="" src={icon} />}
       <select
+        value={selected}
         onChange={(e) => {
           const sel = e.target;
           onSelect(sel.options[sel.selectedIndex].value);
@@ -63,7 +64,6 @@ const SettingsItemSelect = ({
         {
           values.map((value) => (
             <option
-              selected={value === selected}
               value={value}
             >
               {value}

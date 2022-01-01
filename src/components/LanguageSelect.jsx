@@ -35,6 +35,7 @@ function LanguageSelect() {
     <div style={{ textAlign: 'right' }}>
       <span>
         <select
+          value={langSel}
           onChange={(e) => {
             const sel = e.target;
             setLangSel(sel.options[sel.selectedIndex].value);
@@ -43,7 +44,6 @@ function LanguageSelect() {
           {
             langs.map(([l]) => (
               <option
-                selected={l === langSel}
                 value={l}
               >
                 {l.toUpperCase()}

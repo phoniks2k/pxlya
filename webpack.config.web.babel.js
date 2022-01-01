@@ -7,10 +7,7 @@ import nodeExternals from 'webpack-node-externals';
 import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 
-import patch from './scripts/patch';
 import pkg from './package.json';
-
-patch();
 
 const basePackageValues = {
   name: pkg.name,
@@ -29,18 +26,7 @@ const ttag = {};
 
 const babelPlugins = [
   '@babel/plugin-transform-flow-strip-types',
-  ['@babel/plugin-proposal-decorators', { legacy: true }],
-  '@babel/plugin-proposal-function-sent',
-  '@babel/plugin-proposal-export-namespace-from',
-  '@babel/plugin-proposal-numeric-separator',
   '@babel/plugin-proposal-throw-expressions',
-  ['@babel/plugin-proposal-class-properties', { loose: true }],
-  ['@babel/plugin-proposal-private-methods', { loose: true }],
-  [
-    '@babel/plugin-proposal-private-property-in-object',
-    { loose: true },
-  ],
-  '@babel/proposal-object-rest-spread',
   // react-optimize
   '@babel/transform-react-constant-elements',
   '@babel/transform-react-inline-elements',
@@ -51,7 +37,7 @@ const babelPlugins = [
 
 
 export default ({
-  debug, extract,
+  development, extract,
 }) => {
   if (extract) {
     ttag.extract = {
@@ -65,7 +51,7 @@ export default ({
     target: 'node',
 
     context: __dirname,
-    mode: (debug) ? 'development' : 'production',
+    mode: (development) ? 'development' : 'production',
 
     entry: {
       web: [path.resolve(__dirname, 'src', 'web.js')],
@@ -140,7 +126,7 @@ export default ({
 
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': debug ? '"development"' : '"production"',
+        'process.env.NODE_ENV': development ? '"development"' : '"production"',
         'process.env.BROWSER': false,
       }),
       // create package.json for deployment

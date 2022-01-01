@@ -162,7 +162,7 @@ msgstr ""
 msgid "Look at past Canvases"
 msgstr ""
 
-#: src/components/Converter.jsx:615
+#: src/components/Converter.jsx:586
 #: src/components/CoordinatesBox.jsx:32
 msgid "Copy to Clipboard"
 msgstr ""
@@ -186,6 +186,11 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
+#: src/components/buttons/CanvasSwitchButton.jsx:23
+#: src/components/windows/index.js:22
+msgid "Canvas Selection"
+msgstr ""
+
 #: src/components/buttons/ExpandMenuButton.jsx:23
 msgid "Close Menu"
 msgstr ""
@@ -200,11 +205,6 @@ msgstr ""
 
 #: src/components/buttons/ChatButton.jsx:92
 msgid "Open Chat"
-msgstr ""
-
-#: src/components/buttons/CanvasSwitchButton.jsx:23
-#: src/components/windows/index.js:22
-msgid "Canvas Selection"
 msgstr ""
 
 #: src/actions/fetch.js:40
@@ -602,7 +602,7 @@ msgstr ""
 msgid "For when you are playing on a potato."
 msgstr ""
 
-#: src/components/Converter.jsx:429
+#: src/components/Converter.jsx:400
 #: src/components/windows/Settings.jsx:195
 msgid "Light Grid"
 msgstr ""
@@ -631,17 +631,6 @@ msgstr ""
 msgid "Select Language"
 msgstr ""
 
-#: src/components/windows/CanvasSelect.jsx:32
-msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has "
-"different palettes, cooldown and requirements.  Archive of closed canvases "
-"can be accessed here:"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:40
-msgid "Archive"
-msgstr ""
-
 #: src/components/windows/UserArea.jsx:27
 msgid "Profile"
 msgstr ""
@@ -668,39 +657,6 @@ msgstr ""
 
 #: src/components/windows/UserArea.jsx:47
 msgid "Consider joining us on Guilded:"
-msgstr ""
-
-#: src/components/windows/Archive.jsx:20
-msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or "
-"as a request by users who currently like a meme. Those canvases can get "
-"boring after a while and after weeks of no major change and if they really "
-"aren't worth being kept active, we decide to remove them."
-msgstr ""
-
-#: src/components/windows/Archive.jsx:22
-msgid ""
-"Here we collect those canvases to archive them in a proper way (which is "
-"currently just one)."
-msgstr ""
-
-#: src/components/windows/Archive.jsx:24
-msgid "Political Compass Canvas"
-msgstr ""
-
-#: src/components/windows/Archive.jsx:31
-msgid ""
-"This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
-"remained active for months till it got shut down on November 30th."
-msgstr ""
-
-#: src/components/windows/Archive.jsx:32
-msgid ""
-"We decided to archive it as a timelapse with lossless encoded webm. Taking "
-"a screenshot from the timelapse results in a perfect 1:1 representation of "
-"how the canvas was at that time."
 msgstr ""
 
 #: src/components/windows/Register.jsx:81
@@ -735,6 +691,50 @@ msgstr ""
 #: src/components/windows/ForgotPassword.jsx:86
 #: src/components/windows/Register.jsx:119
 msgid "Submit"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:32
+msgid ""
+"Select the canvas you want to use.  Every canvas is unique and has "
+"different palettes, cooldown and requirements.  Archive of closed canvases "
+"can be accessed here:"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:40
+msgid "Archive"
+msgstr ""
+
+#: src/components/windows/Archive.jsx:20
+msgid ""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren't worth being kept active, we decide to remove them."
+msgstr ""
+
+#: src/components/windows/Archive.jsx:22
+msgid ""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+msgstr ""
+
+#: src/components/windows/Archive.jsx:24
+msgid "Political Compass Canvas"
+msgstr ""
+
+#: src/components/windows/Archive.jsx:31
+msgid ""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+msgstr ""
+
+#: src/components/windows/Archive.jsx:32
+msgid ""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking "
+"a screenshot from the timelapse results in a perfect 1:1 representation of "
+"how the canvas was at that time."
 msgstr ""
 
 #: src/components/windows/Chat.jsx:146
@@ -809,64 +809,11 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/components/LogInArea.jsx:21
-msgid "Login to access more features and stats."
-msgstr ""
-
-#: src/components/LogInArea.jsx:23
-msgid "Login with Name or Mail:"
-msgstr ""
-
-#: src/components/LogInArea.jsx:30
-msgid "I forgot my Password."
-msgstr ""
-
-#: src/components/LogInArea.jsx:31
-msgid "or login with:"
-msgstr ""
-
-#: src/components/LogInArea.jsx:72
-msgid "or register here:"
-msgstr ""
-
-#: src/components/LogInArea.jsx:79
-msgid "Register"
-msgstr ""
-
 #: src/components/ChangeMail.jsx:91
 #: src/components/ChangeName.jsx:68
 #: src/components/ChangePassword.jsx:110
 #: src/components/LanguageSelect.jsx:73
 msgid "Save"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:27
-msgid "Cooldown"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:33
-msgid "Stacking till"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:35
-msgid "Ranked"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:37
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:39
-msgid "User Account"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:41
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:45
-msgid "Dimensions"
 msgstr ""
 
 #: src/components/UserAreaContent.jsx:63
@@ -914,6 +861,30 @@ msgstr ""
 msgid "Social Settings"
 msgstr ""
 
+#: src/components/LogInArea.jsx:21
+msgid "Login to access more features and stats."
+msgstr ""
+
+#: src/components/LogInArea.jsx:23
+msgid "Login with Name or Mail:"
+msgstr ""
+
+#: src/components/LogInArea.jsx:30
+msgid "I forgot my Password."
+msgstr ""
+
+#: src/components/LogInArea.jsx:31
+msgid "or login with:"
+msgstr ""
+
+#: src/components/LogInArea.jsx:72
+msgid "or register here:"
+msgstr ""
+
+#: src/components/LogInArea.jsx:79
+msgid "Register"
+msgstr ""
+
 #: src/components/Rankings.jsx:28
 msgid "Total"
 msgstr ""
@@ -924,77 +895,6 @@ msgstr ""
 
 #: src/components/Rankings.jsx:40
 msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-
-#: src/components/Converter.jsx:280
-msgid "Choose Canvas"
-msgstr ""
-
-#: src/components/Converter.jsx:306
-msgid "Palette Download"
-msgstr ""
-
-#: src/components/Converter.jsx:308
-#, javascript-format
-msgid "Palette for ${ gimpLink }"
-msgstr ""
-
-#: src/components/Converter.jsx:326
-#, javascript-format
-msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
-msgstr ""
-
-#: src/components/Converter.jsx:329
-msgid "Image Converter"
-msgstr ""
-
-#: src/components/Converter.jsx:330
-msgid "Convert an image to canvas colors"
-msgstr ""
-
-#: src/components/Converter.jsx:341
-msgid "Choose Strategy"
-msgstr ""
-
-#: src/components/Converter.jsx:368
-msgid "Choose Color Mode"
-msgstr ""
-
-#: src/components/Converter.jsx:406
-msgid "Add Grid (uncheck if you need a 1:1 template)"
-msgstr ""
-
-#: src/components/Converter.jsx:431
-#: src/components/Converter.jsx:447
-msgid "Offset"
-msgstr ""
-
-#: src/components/Converter.jsx:477
-msgid "Scale Image"
-msgstr ""
-
-#: src/components/Converter.jsx:489
-msgid "Width"
-msgstr ""
-
-#: src/components/Converter.jsx:519
-msgid "Height"
-msgstr ""
-
-#: src/components/Converter.jsx:557
-msgid "Keep Ratio"
-msgstr ""
-
-#: src/components/Converter.jsx:570
-msgid "Anti Aliasing"
-msgstr ""
-
-#: src/components/Converter.jsx:584
-msgid "Reset"
-msgstr ""
-
-#: src/components/Converter.jsx:603
-msgid "Download Template"
 msgstr ""
 
 #: src/components/Admintools.jsx:184
@@ -1075,12 +975,104 @@ msgstr ""
 msgid "User Name"
 msgstr ""
 
-#: src/components/LogInForm.jsx:76
-msgid "Name or Email"
+#: src/components/Converter.jsx:260
+msgid "Choose Canvas"
 msgstr ""
 
-#: src/components/LogInForm.jsx:87
-msgid "LogIn"
+#: src/components/Converter.jsx:286
+msgid "Palette Download"
+msgstr ""
+
+#: src/components/Converter.jsx:288
+#, javascript-format
+msgid "Palette for ${ gimpLink }"
+msgstr ""
+
+#: src/components/Converter.jsx:306
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr ""
+
+#: src/components/Converter.jsx:309
+msgid "Image Converter"
+msgstr ""
+
+#: src/components/Converter.jsx:310
+msgid "Convert an image to canvas colors"
+msgstr ""
+
+#: src/components/Converter.jsx:332
+msgid "Choose Strategy"
+msgstr ""
+
+#: src/components/Converter.jsx:349
+msgid "Choose Color Mode"
+msgstr ""
+
+#: src/components/Converter.jsx:377
+msgid "Add Grid (uncheck if you need a 1:1 template)"
+msgstr ""
+
+#: src/components/Converter.jsx:402
+#: src/components/Converter.jsx:418
+msgid "Offset"
+msgstr ""
+
+#: src/components/Converter.jsx:448
+msgid "Scale Image"
+msgstr ""
+
+#: src/components/Converter.jsx:460
+msgid "Width"
+msgstr ""
+
+#: src/components/Converter.jsx:490
+msgid "Height"
+msgstr ""
+
+#: src/components/Converter.jsx:528
+msgid "Keep Ratio"
+msgstr ""
+
+#: src/components/Converter.jsx:541
+msgid "Anti Aliasing"
+msgstr ""
+
+#: src/components/Converter.jsx:555
+msgid "Reset"
+msgstr ""
+
+#: src/components/Converter.jsx:574
+msgid "Download Template"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:27
+msgid "Cooldown"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:33
+msgid "Stacking till"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:35
+msgid "Ranked"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:37
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:39
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:41
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:45
+msgid "Dimensions"
 msgstr ""
 
 #: src/components/UserMessages.jsx:28
@@ -1117,12 +1109,12 @@ msgstr ""
 msgid "Confirm New Password"
 msgstr ""
 
-#: src/components/ChangeName.jsx:64
-msgid "New Username"
-msgstr ""
-
 #: src/components/DeleteAccount.jsx:66
 msgid "Yes, Delete My Account!"
+msgstr ""
+
+#: src/components/ChangeName.jsx:64
+msgid "New Username"
 msgstr ""
 
 #: src/components/ChangeMail.jsx:59
@@ -1145,6 +1137,14 @@ msgstr ""
 
 #: src/components/SocialSettings.jsx:80
 msgid "You have no users blocked"
+msgstr ""
+
+#: src/components/LogInForm.jsx:76
+msgid "Name or Email"
+msgstr ""
+
+#: src/components/LogInForm.jsx:87
+msgid "LogIn"
 msgstr ""
 
 #: src/components/windows/Help.jsx:15

@@ -14,13 +14,16 @@ const DailyRankings = () => {
   return (
     <div style={{ overflowY: 'auto', display: 'inline-block' }}>
       <table>
-        <tr>
-          <th>#</th>
-          <th>user</th>
-          <th>Pixels</th>
-          <th># Total</th>
-          <th>Total Pixels</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>user</th>
+            <th>Pixels</th>
+            <th># Total</th>
+            <th>Total Pixels</th>
+          </tr>
+        </thead>
+        <tbody>
         {
           totalDailyRanking.map((rank) => (
             <tr>
@@ -32,6 +35,7 @@ const DailyRankings = () => {
             </tr>
           ))
         }
+        </tbody>
       </table>
     </div>
   );

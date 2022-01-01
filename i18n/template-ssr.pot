@@ -302,10 +302,6 @@ msgstr ""
 msgid "Failed to establish session after register :("
 msgstr ""
 
-#: src/routes/api/auth/logout.js:13
-msgid "You are not even logged in."
-msgstr ""
-
 #: src/routes/api/auth/verify.js:25
 #: src/routes/api/auth/verify.js:32
 msgid "Mail verification"
@@ -319,6 +315,10 @@ msgstr ""
 msgid ""
 "Your mail verification code is invalid or already expired :(, please "
 "request a new one."
+msgstr ""
+
+#: src/routes/api/auth/logout.js:13
+msgid "You are not even logged in."
 msgstr ""
 
 #: src/routes/api/auth/change_mail.js:41
