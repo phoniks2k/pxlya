@@ -23,31 +23,6 @@ function downloadOutput() {
   output.toBlob((blob) => fileDownload(blob, 'ppfunconvert.png'));
 }
 
-function readFile(
-  file,
-  selectFile,
-  setScaleData,
-) {
-  if (!file) {
-    return;
-  }
-  const fr = new FileReader();
-  fr.onload = () => {
-    const img = new Image();
-    img.onload = () => {
-      setScaleData({
-        enabled: false,
-        width: img.width,
-        height: img.height,
-        aa: true,
-      });
-      selectFile(img);
-    };
-    img.src = fr.result;
-  };
-  fr.readAsDataURL(file);
-}
-
 function createCanvasFromImageData(imgData) {
   const { width, height } = imgData;
   const inputCanvas = document.createElement('canvas');
@@ -108,7 +83,7 @@ function scaleImage(imgData, width, height, doAA) {
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       let posi = (Math.round(x / scaleX) + Math.round(y / scaleY)
-          * img.width) * 4;
+          * imgData.width) * 4;
       let poso = (x + y * width) * 4;
       datao[poso++] = datai[posi++];
       datao[poso++] = datai[posi++];
@@ -152,6 +127,7 @@ async function renderOutputImage(opts) {
       // dither
       const { colors, strategy, colorDist } = dither;
       const progEl = document.getElementById('qprog');
+      // eslint-disable-next-line no-await-in-loop
       image = await quantizeImage(colors, image, {
         strategy,
         colorDist,
@@ -315,11 +291,8 @@ function Converter() {
           const fileSel = evt.target;
           const file = (!fileSel.files || !fileSel.files[0])
             ? null : fileSel.files[0];
-          if (!file) {
-            setInputImageData(null);
-            return;
-          }
           const imageData = await getImageDataOfFile(file);
+          setInputImageData(null);
           setScaleData({
             enabled: false,
             width: imageData.width,

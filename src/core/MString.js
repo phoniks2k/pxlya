@@ -139,8 +139,8 @@ export default class MString {
       const chr = this.txt[zEnd];
       if (zEnd >= this.txt.length
         || chr === '\n'
-        || chr == '['
-        || chr == '('
+        || chr === '['
+        || chr === '('
       ) {
         return null;
       }
@@ -158,7 +158,7 @@ export default class MString {
       }
       zEnd += 1;
     }
-    if (zEnd < zStart + 1 || ( !z && zIsLink )) {
+    if (zEnd < zStart + 1 || (!z && zIsLink)) {
       return null;
     }
 
@@ -198,7 +198,7 @@ export default class MString {
     if (cIter < this.iter + 4) {
       return null;
     }
-    
+
     /* special case where someone pasted a http link after a text
      * without space in between
      */

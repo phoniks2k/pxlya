@@ -3,6 +3,7 @@
     "plugin:flowtype/recommended",
     "airbnb"
   ],
+  "parser":"@babel/eslint-parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -21,6 +22,8 @@
     "browser": true
   },
   "rules": {
+    "function-paren-newline": "off",
+    "function-call-argument-newline":"off",
     "max-len": [1, 80, 2, {"ignoreComments": true}],
     "no-bitwise": 0,
     "no-plusplus" : "off",
@@ -33,6 +36,7 @@
     "jsx-a11y/no-static-element-interactions":"off",
     "no-continue": "off",
     "no-multiple-empty-lines": "off",
+    "react/function-component-definition": "off",
     "lines-between-class-members":["warn", "always",{"exceptAfterSingleLine": true}]
   }
 }

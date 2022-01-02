@@ -21,11 +21,13 @@ import ExpandMenuButton from './buttons/ExpandMenuButton';
 import ModalRoot from './ModalRoot';
 import WindowManager from './WindowManager';
 
+const iconContextValue = { style: { verticalAlign: 'middle' } };
+
 const App = () => (
   <div>
     <Style />
     <div id="outstreamContainer" />
-    <IconContext.Provider value={{ style: { verticalAlign: 'middle' } }}>
+    <IconContext.Provider value={iconContextValue}>
       <CanvasSwitchButton />
       <Menu />
       <ChatButton />

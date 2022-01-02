@@ -57,15 +57,14 @@ export function getImageDataOfFile(file) {
   });
 }
 
-function createPointContainerFromImageData(imageData) {
-  const { width, height, data } = imageData;
-  console.log('create container from image data', data);
-  const pointContainer = new utils.PointContainer();
-  pointContainer.setWidth(width);
-  pointContainer.setHeight(height);
-  const pointArray = pointContainer.getPointArray();
+function* loadData(data, pointArray) {
   let i = 0;
   while (i < data.length) {
+    /*
+    if (!(i % 80)) {
+      yield Math.floor(i / data.length);
+    }
+    */
     const point = utils.Point.createByRGBA(
       data[i++],
       data[i++],
@@ -74,7 +73,30 @@ function createPointContainerFromImageData(imageData) {
     );
     pointArray.push(point);
   }
-  return pointContainer;
+}
+
+async function createPointContainerFromImageData(imageData, onProgress) {
+  return new Promise((resolve) => {
+    const { width, height, data } = imageData;
+    const pointContainer = new utils.PointContainer();
+    pointContainer.setWidth(width);
+    pointContainer.setHeight(height);
+    const pointArray = pointContainer.getPointArray();
+
+    const iterator = loadData(data, pointArray);
+    const next = () => {
+      const result = iterator.next();
+      if (result.done) {
+        resolve(pointContainer);
+      } else {
+        if (onProgress) {
+          onProgress(result.value);
+        }
+        setTimeout(next, 0);
+      }
+    };
+    setTimeout(next, 0);
+  });
 }
 
 function createImageDataFromPointContainer(pointContainer) {
@@ -90,12 +112,11 @@ function createImageDataFromPointContainer(pointContainer) {
   return idata;
 }
 
-export function quantizeImage(colors, imageData, opts) {
-  console.log('quantize image');
+function quantizePointContainer(colors, pointContainer, opts) {
+  const strategy = opts.strategy || 'Nearest';
+  const colorDist = opts.colorDist || 'Euclidean';
+
   return new Promise((resolve, reject) => {
-    const pointContainer = createPointContainerFromImageData(imageData);
-    const strategy = opts.strategy || 'Nearest';
-    const colorDist = opts.colorDist || 'Euclidean';
     // create palette
     const palette = new utils.Palette();
     palette.add(utils.Point.createByRGBA(0, 0, 0, 0));
@@ -104,7 +125,6 @@ export function quantizeImage(colors, imageData, opts) {
       const point = utils.Point.createByRGBA(r, g, b, 255);
       palette.add(point);
     }
-    console.log('palette', palette);
     // construct color distance calculator
     let distCalc;
     switch (colorDist) {
@@ -145,6 +165,7 @@ export function quantizeImage(colors, imageData, opts) {
         distCalc = new distance.Euclidean();
     }
     // idk why i need this :/
+    // eslint-disable-next-line no-underscore-dangle
     if (distCalc._setDefaults) distCalc._setDefaults();
     // construct image quantizer
     let imageQuantizer;
@@ -161,20 +182,22 @@ export function quantizeImage(colors, imageData, opts) {
         false,
       );
     }
-    console.log('quantizer', imageQuantizer);
     // quantize
-    let outPointContainer;
     const iterator = imageQuantizer.quantize(pointContainer, palette);
     const next = () => {
       try {
         const result = iterator.next();
         if (result.done) {
-          resolve(createImageDataFromPointContainer(outPointContainer));
+          resolve(createImageDataFromPointContainer(pointContainer));
         } else {
           if (result.value.pointContainer) {
-            outPointContainer = result.value.pointContainer;
+            pointContainer = result.value.pointContainer;
           }
-          if (opts.onProgress) opts.onProgress(result.value.progress);
+          if (opts.onProgress) {
+            opts.onProgress(
+              Math.floor(25 + result.value.progress * 3 / 4),
+            );
+          }
           setTimeout(next, 0);
         }
       } catch (error) {
@@ -183,4 +206,19 @@ export function quantizeImage(colors, imageData, opts) {
     };
     setTimeout(next, 0);
   });
+}
+
+export function quantizeImage(colors, imageData, opts) {
+  return createPointContainerFromImageData(
+    imageData,
+    (value) => {
+      if (opts.onProgress) {
+        opts.onProgress(value);
+      }
+    },
+  ).then((pointContainer) => quantizePointContainer(
+    colors,
+    pointContainer,
+    opts,
+  ));
 }

@@ -25,13 +25,6 @@ const basePackageValues = {
 const ttag = {};
 
 const babelPlugins = [
-  '@babel/plugin-transform-flow-strip-types',
-  '@babel/plugin-proposal-throw-expressions',
-  // react-optimize
-  '@babel/transform-react-constant-elements',
-  '@babel/transform-react-inline-elements',
-  'transform-react-remove-prop-types',
-  'transform-react-pure-class-to-function',
   ['ttag', ttag],
 ];
 
@@ -66,21 +59,19 @@ export default ({
     },
 
     resolve: {
-      extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+      extensions: ['.js', '.jsx'],
     },
 
     module: {
       rules: [
         {
-          test: /\.(js|jsx|ts|tsx)$/,
+          test: /\.(js|jsx)$/,
           loader: 'babel-loader',
           include: [
             path.resolve(__dirname, 'src'),
           ],
           options: {
             cacheDirectory: false,
-
-            babelrc: false,
             presets: [
               ['@babel/preset-env', {
                 targets: {
@@ -88,10 +79,7 @@ export default ({
                 },
                 modules: false,
                 useBuiltIns: false,
-                debug: false,
               }],
-              '@babel/typescript',
-              '@babel/react',
             ],
             plugins: babelPlugins,
           },

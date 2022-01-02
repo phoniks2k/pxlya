@@ -116,7 +116,7 @@ export function getCanvasBoundaries(canvasSize: number): number {
 // z is assumed to be height here
 // in ui and rendeer, y is height
 export function getOffsetOfPixel(
-  canvasSize: number = null,
+  canvasSize: number,
   x: number,
   y: number,
   z: number = null,

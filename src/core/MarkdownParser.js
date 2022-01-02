@@ -99,8 +99,8 @@ function parseMParagraph(text, opts, breakChar) {
        * x decides what element it is
        * defaults to ordinary link
        */
-      let tag = 'l'
-      let zIsLink = true;
+      let tag = 'l';
+      const zIsLink = true;
       if (x === '!') {
         tag = 'img';
         oldPos -= 1;

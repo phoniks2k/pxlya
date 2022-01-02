@@ -23,7 +23,7 @@ export class ChatProvider {
     this.infoUserId = 1;
     this.eventUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
-    this.cyrillic = new RegExp('[\u0436-\u043B]');
+    this.cyrillic = /[\u0436-\u043B]'/;
     this.filters = [
       {
         regexp: /ADMIN/gi,

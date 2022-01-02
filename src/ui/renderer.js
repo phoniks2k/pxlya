@@ -13,7 +13,7 @@ import { sweetAlert } from '../actions';
 import { isWebGL2Available } from '../core/utils';
 
 const dummyRenderer = {
-  is3D: null, 
+  is3D: null,
   render: () => null,
   destructor: () => null,
   renderPixel: () => null,
@@ -41,7 +41,7 @@ export async function initRenderer(store, is3D: boolean) {
       renderer = dummyRenderer;
     } else {
       /* eslint-disable-next-line max-len */
-      const module = await import(/* webpackChunkName: "voxel" */ '../ui/Renderer3D');
+      const module = await import(/* webpackChunkName: "voxel" */ './Renderer3D');
       const Renderer3D = module.default;
       renderer = new Renderer3D(store);
     }

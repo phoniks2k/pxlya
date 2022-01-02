@@ -24,7 +24,7 @@ const DailyRankings = () => {
           </tr>
         </thead>
         <tbody>
-        {
+          {
           totalDailyRanking.map((rank) => (
             <tr>
               <td>{rank.dailyRanking}</td>

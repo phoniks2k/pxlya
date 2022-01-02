@@ -22,7 +22,7 @@ const TotalRankings = () => {
           </tr>
         </thead>
         <tbody>
-        {
+          {
           totalRanking.map((rank) => (
             <tr>
               <td>{rank.ranking}</td>

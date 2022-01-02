@@ -42,13 +42,6 @@ export function buildWebpackClientConfig(
   }
 
   const babelPlugins = [
-    '@babel/plugin-transform-flow-strip-types',
-    '@babel/plugin-proposal-throw-expressions',
-    // react-optimize
-    '@babel/transform-react-constant-elements',
-    '@babel/transform-react-inline-elements',
-    'transform-react-remove-prop-types',
-    'transform-react-pure-class-to-function',
     ['ttag', ttag],
   ];
 
@@ -80,7 +73,7 @@ export function buildWebpackClientConfig(
       alias: {
         ttag: 'ttag/dist/mock',
       },
-      extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+      extensions: ['.js', '.jsx'],
     },
 
     module: {
@@ -114,25 +107,26 @@ export function buildWebpackClientConfig(
           loader: 'babel-loader',
           include: [
             path.resolve(__dirname, 'src'),
+            ...['image-q'].map((moduleName) => (
+              path.resolve(__dirname + '/node_modules/' + moduleName)
+            ))
           ],
           options: {
             // should be !extract and adhere to .po timestamps
             // in cacheIdentifier
             cacheDirectory: false,
-            babelrc: false,
             presets: [
               ['@babel/preset-env', {
                 targets: {
                   browsers: pkg.browserslist,
                 },
+                /*
                 useBuiltIns: 'usage',
                 corejs: {
                   version: 3,
                 },
-                debug: false,
+                */
               }],
-              //'@babel/typescript',
-              '@babel/react',
             ],
             plugins: babelPlugins,
           },

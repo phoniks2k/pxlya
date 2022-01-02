@@ -19,7 +19,7 @@ const WindowManager = () => {
 
   return (
     <div id="wm">
-    {
+      {
       windowIds.map((id) => (<Window key={id} id={id} />))
     }
     </div>
