@@ -1,6 +1,5 @@
 /**
- *
- * @flow
+ * Converts images to canvas palettes
  */
 
 import React, { useState, useEffect } from 'react';
@@ -11,8 +10,10 @@ import { jt, t } from 'ttag';
 import {
   ColorDistanceCalculators,
   ImageQuantizerKernels,
+  readFileIntoCanvas,
+  scaleImage,
   quantizeImage,
-  getImageDataOfFile,
+  addGrid,
 } from '../utils/image';
 import printGIMPPalette from '../core/exportGPL';
 import { copyCanvasToClipboard } from '../utils/clipboard';
@@ -23,119 +24,45 @@ function downloadOutput() {
   output.toBlob((blob) => fileDownload(blob, 'ppfunconvert.png'));
 }
 
-function createCanvasFromImageData(imgData) {
-  const { width, height } = imgData;
-  const inputCanvas = document.createElement('canvas');
-  inputCanvas.width = width;
-  inputCanvas.height = height;
-  const inputCtx = inputCanvas.getContext('2d');
-  inputCtx.putImageData(imgData, 0, 0);
-  return inputCanvas;
-}
-
-function addGrid(imgData, lightGrid, offsetX, offsetY) {
-  const image = createCanvasFromImageData(imgData);
-  const { width, height } = image;
-  const can = document.createElement('canvas');
-  const ctx = can.getContext('2d');
-  can.width = width * 5;
-  can.height = height * 5;
-  ctx.imageSmoothingEnabled = false;
-  ctx.mozImageSmoothingEnabled = false;
-  ctx.webkitImageSmoothingEnabled = false;
-  ctx.msImageSmoothingEnabled = false;
-  ctx.save();
-  ctx.scale(5.0, 5.0);
-  ctx.drawImage(image, 0, 0);
-  ctx.restore();
-  ctx.fillStyle = (lightGrid) ? '#DDDDDD' : '#222222';
-  for (let i = 0; i <= width; i += 1) {
-    const thick = ((i + (offsetX * 1)) % 10 === 0) ? 2 : 1;
-    ctx.fillRect(i * 5, 0, thick, can.height);
-  }
-  for (let j = 0; j <= height; j += 1) {
-    const thick = ((j + (offsetY * 1)) % 10 === 0) ? 2 : 1;
-    ctx.fillRect(0, j * 5, can.width, thick);
-  }
-  return ctx.getImageData(0, 0, can.width, can.height);
-}
-
-function scaleImage(imgData, width, height, doAA) {
-  const can = document.createElement('canvas');
-  const ctxo = can.getContext('2d');
-  can.width = width;
-  can.height = height;
-  const scaleX = width / imgData.width;
-  const scaleY = height / imgData.height;
-  if (doAA) {
-    // scale with canvas for antialiasing
-    const image = createCanvasFromImageData(imgData);
-    ctxo.save();
-    ctxo.scale(scaleX, scaleY);
-    ctxo.drawImage(image, 0, 0);
-    ctxo.restore();
-    return ctxo.getImageData(0, 0, width, height);
-  }
-  // scale manually
-  const imdo = ctxo.createImageData(width, height);
-  const { data: datao } = imdo;
-  const { data: datai } = imgData;
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      let posi = (Math.round(x / scaleX) + Math.round(y / scaleY)
-          * imgData.width) * 4;
-      let poso = (x + y * width) * 4;
-      datao[poso++] = datai[posi++];
-      datao[poso++] = datai[posi++];
-      datao[poso++] = datai[posi++];
-      datao[poso] = datai[posi];
-    }
-  }
-  return imdo;
-}
-
 let renderOpts = null;
 let rendering = false;
 async function renderOutputImage(opts) {
-  if (!opts.file) {
+  if (!opts.imgCanvas) {
     return;
   }
   renderOpts = opts;
   if (rendering) {
-    console.log('skip rendering');
     return;
   }
-  console.log('render');
   rendering = true;
   while (renderOpts) {
     const {
-      file, dither, grid, scaling,
+      colors, imgCanvas, ditherOpts, grid, scaling,
     } = renderOpts;
     renderOpts = null;
-    if (file) {
-      let image = file;
+    if (imgCanvas) {
+      let image = imgCanvas;
       if (scaling.enabled) {
         // scale
         const { width, height, aa } = scaling;
         image = scaleImage(
-          file,
+          imgCanvas,
           width,
           height,
           aa,
         );
       }
       // dither
-      const { colors, strategy, colorDist } = dither;
       const progEl = document.getElementById('qprog');
+      progEl.innerText = 'Loading...';
       // eslint-disable-next-line no-await-in-loop
       image = await quantizeImage(colors, image, {
-        strategy,
-        colorDist,
+        ...ditherOpts,
         onProgress: (progress) => {
-          progEl.innerHTML = `Loading... ${Math.round(progress)} %`;
+          progEl.innerText = `Loading... ${Math.round(progress)} %`;
         },
       });
-      progEl.innerHTML = 'Done';
+      progEl.innerText = 'Done';
       // grid
       if (grid.enabled) {
         const { light, offsetX, offsetY } = grid;
@@ -151,7 +78,7 @@ async function renderOutputImage(opts) {
       output.width = image.width;
       output.height = image.height;
       const ctx = output.getContext('2d');
-      ctx.putImageData(image, 0, 0);
+      ctx.drawImage(image, 0, 0);
     }
   }
   rendering = false;
@@ -170,10 +97,15 @@ function Converter() {
   ], shallowEqual);
 
   const [selectedCanvas, selectCanvas] = useState(canvasId);
-  const [inputImageData, setInputImageData] = useState(null);
+  const [inputImageCanvas, setInputImageCanvas] = useState(null);
   const [selectedStrategy, selectStrategy] = useState('Nearest');
   const [selectedColorDist, selectColorDist] = useState('Euclidean');
   const [selectedScaleKeepRatio, selectScaleKeepRatio] = useState(true);
+  const [extraOpts, setExtraOpts] = useState({
+    serpentine: true,
+    minColorDistance: 0,
+    GIMPerror: false,
+  });
   const [scaleData, setScaleData] = useState({
     enabled: false,
     width: 10,
@@ -181,36 +113,45 @@ function Converter() {
     aa: true,
   });
   const [gridData, setGridData] = useState({
-    enabled: true,
+    enabled: false,
     light: false,
     offsetX: 0,
     offsetY: 0,
   });
+  const [extraRender, setExtraRender] = useState(false);
+  const [gridRender, setGridRender] = useState(false);
+  const [scalingRender, setScalingRender] = useState(false);
 
   useEffect(() => {
-    if (inputImageData) {
+    if (inputImageCanvas) {
       const canvas = canvases[selectedCanvas];
-      const dither = {
-        colors: canvas.colors.slice(canvas.cli),
-        strategy: selectedStrategy,
-        colorDist: selectedColorDist,
-      };
       renderOutputImage({
-        file: inputImageData,
-        dither,
+        colors: canvas.colors.slice(canvas.cli),
+        imgCanvas: inputImageCanvas,
+        ditherOpts: {
+          strategy: selectedStrategy,
+          colorDist: selectedColorDist,
+          ...extraOpts,
+        },
         grid: gridData,
         scaling: scaleData,
       });
     }
   }, [
-    inputImageData,
+    selectedCanvas,
+    inputImageCanvas,
     selectedStrategy,
     selectedColorDist,
+    extraOpts,
     scaleData,
-    selectedCanvas,
     gridData,
   ]);
 
+  const {
+    serpentine,
+    minColorDistance,
+    GIMPerror,
+  } = extraOpts;
   const {
     enabled: gridEnabled,
     light: gridLight,
@@ -223,6 +164,24 @@ function Converter() {
     height: scalingHeight,
     aa: scalingAA,
   } = scaleData;
+
+  const showExtraOptions = selectedStrategy !== 'Nearest'
+    && selectedStrategy !== 'Riemersma';
+  useEffect(() => {
+    if (showExtraOptions) {
+      setTimeout(() => setExtraRender(true), 10);
+    }
+  }, [selectedStrategy]);
+  useEffect(() => {
+    if (gridEnabled) {
+      setTimeout(() => setGridRender(true), 10);
+    }
+  }, [gridData.enabled]);
+  useEffect(() => {
+    if (scalingEnabled) {
+      setTimeout(() => setScalingRender(true), 10);
+    }
+  }, [scaleData.enabled]);
 
   const gimpLink = <a href="https://www.gimp.org">GIMP</a>;
   const starhouseLink = (
@@ -291,15 +250,15 @@ function Converter() {
           const fileSel = evt.target;
           const file = (!fileSel.files || !fileSel.files[0])
             ? null : fileSel.files[0];
-          const imageData = await getImageDataOfFile(file);
-          setInputImageData(null);
+          const imageData = await readFileIntoCanvas(file);
+          setInputImageCanvas(null);
           setScaleData({
             enabled: false,
             width: imageData.width,
             height: imageData.height,
             aa: true,
           });
-          setInputImageData(imageData);
+          setInputImageCanvas(imageData);
         }}
       />
       <p className="modalcotext">{t`Choose Strategy`}:&nbsp;
@@ -319,6 +278,59 @@ function Converter() {
           }
         </select>
       </p>
+      {(showExtraOptions || extraRender) && (
+        <div
+          className={(showExtraOptions && extraRender)
+            ? 'convBox show'
+            : 'convBox'}
+          onTransitionEnd={() => {
+            if (!showExtraOptions) setExtraRender(false);
+          }}
+        >
+          <p style={{ fontHeight: 16 }} className="modalcotext">
+            <input
+              type="checkbox"
+              checked={serpentine}
+              onChange={(e) => {
+                setExtraOpts({
+                  ...extraOpts,
+                  serpentine: e.target.checked,
+                });
+              }}
+            />
+            {t`Serpentine`}
+          </p>
+          <span className="modalcotext">{t`Minimum Color Distance`}:&nbsp;
+            <input
+              type="number"
+              step="1"
+              min="0"
+              max="100"
+              style={{ width: '4em' }}
+              value={minColorDistance}
+              onChange={(e) => {
+                setExtraOpts({
+                  ...extraOpts,
+                  minColorDistance: e.target.value,
+                });
+              }}
+            />&nbsp;
+          </span>
+          <p style={{ fontHeight: 16 }} className="modalcotext">
+            <input
+              type="checkbox"
+              checked={GIMPerror}
+              onChange={(e) => {
+                setExtraOpts({
+                  ...extraOpts,
+                  GIMPerror: e.target.checked,
+                });
+              }}
+            />
+            {t`Calculate like GIMP`}
+          </p>
+        </div>
+      )}
       <p className="modalcotext">{t`Choose Color Mode`}:&nbsp;
         <select
           value={selectedColorDist}
@@ -349,64 +361,60 @@ function Converter() {
         />
         {t`Add Grid (uncheck if you need a 1:1 template)`}
       </p>
-      {(gridEnabled)
-        ? (
-          <div style={{
-            borderStyle: 'solid',
-            borderColor: '#D4D4D4',
-            borderWidth: 2,
-            padding: 5,
-            display: 'inline-block',
+      {(gridEnabled || gridRender) && (
+        <div
+          className={(gridEnabled && gridRender) ? 'convBox show' : 'convBox'}
+          onTransitionEnd={() => {
+            if (!gridEnabled) setGridRender(false);
           }}
-          >
-            <p style={{ fontHeight: 16 }} className="modalcotext">
-              <input
-                type="checkbox"
-                checked={gridLight}
-                onChange={(e) => {
-                  setGridData({
-                    ...gridData,
-                    light: e.target.checked,
-                  });
-                }}
-              />
-              {t`Light Grid`}
-            </p>
-            <span className="modalcotext">{t`Offset`} X:&nbsp;
-              <input
-                type="number"
-                step="1"
-                min="0"
-                max="10"
-                style={{ width: '2em' }}
-                value={gridOffsetX}
-                onChange={(e) => {
-                  setGridData({
-                    ...gridData,
-                    offsetX: e.target.value,
-                  });
-                }}
-              />&nbsp;
-            </span>
-            <span className="modalcotext">{t`Offset`} Y:&nbsp;
-              <input
-                type="number"
-                step="1"
-                min="0"
-                max="10"
-                style={{ width: '2em' }}
-                value={gridOffsetY}
-                onChange={(e) => {
-                  setGridData({
-                    ...gridData,
-                    offsetY: e.target.value,
-                  });
-                }}
-              />
-            </span>
-          </div>
-        )
-        : null}
+        >
+          <p style={{ fontHeight: 16 }} className="modalcotext">
+            <input
+              type="checkbox"
+              checked={gridLight}
+              onChange={(e) => {
+                setGridData({
+                  ...gridData,
+                  light: e.target.checked,
+                });
+              }}
+            />
+            {t`Light Grid`}
+          </p>
+          <span className="modalcotext">{t`Offset`} X:&nbsp;
+            <input
+              type="number"
+              step="1"
+              min="0"
+              max="10"
+              style={{ width: '2em' }}
+              value={gridOffsetX}
+              onChange={(e) => {
+                setGridData({
+                  ...gridData,
+                  offsetX: e.target.value,
+                });
+              }}
+            />&nbsp;
+          </span>
+          <span className="modalcotext">{t`Offset`} Y:&nbsp;
+            <input
+              type="number"
+              step="1"
+              min="0"
+              max="10"
+              style={{ width: '2em' }}
+              value={gridOffsetY}
+              onChange={(e) => {
+                setGridData({
+                  ...gridData,
+                  offsetY: e.target.value,
+                });
+              }}
+            />
+          </span>
+        </div>
+      )}
       <p style={{ fontHeight: 16 }} className="modalcotext">
         <input
           type="checkbox"
@@ -420,117 +428,117 @@ function Converter() {
         />
         {t`Scale Image`}
       </p>
-      {(scalingEnabled)
-        ? (
-          <div style={{
-            borderStyle: 'solid',
-            borderColor: '#D4D4D4',
-            borderWidth: 2,
-            padding: 5,
-            display: 'inline-block',
+      {(scalingEnabled || scalingRender) && (
+        <div
+          className={(scalingEnabled && scalingRender)
+            ? 'convBox show'
+            : 'convBox'}
+          onTransitionEnd={() => {
+            if (!scalingEnabled) setScalingRender(false);
           }}
-          >
-            <span className="modalcotext">{t`Width`}:&nbsp;
-              <input
-                type="number"
-                step="1"
-                min="1"
-                max="1024"
-                style={{ width: '3em' }}
-                value={scalingWidth}
-                onChange={(e) => {
-                  const newWidth = (e.target.value > 1024)
-                    ? 1024 : e.target.value;
-                  if (!newWidth) return;
-                  if (selectedScaleKeepRatio && inputImageData) {
-                    const ratio = inputImageData.width / inputImageData.height;
-                    const newHeight = Math.round(newWidth / ratio);
-                    if (newHeight <= 0) return;
-                    setScaleData({
-                      ...scaleData,
-                      width: newWidth,
-                      height: newHeight,
-                    });
-                    return;
-                  }
+        >
+          <span className="modalcotext">{t`Width`}:&nbsp;
+            <input
+              type="number"
+              step="1"
+              min="1"
+              max="1024"
+              style={{ width: '3em' }}
+              value={scalingWidth}
+              onChange={(e) => {
+                const newWidth = (e.target.value > 1024)
+                  ? 1024 : e.target.value;
+                if (!newWidth) return;
+                if (selectedScaleKeepRatio && inputImageCanvas) {
+                  const ratio = inputImageCanvas.width
+                    / inputImageCanvas.height;
+                  const newHeight = Math.round(newWidth / ratio);
+                  if (newHeight <= 0) return;
                   setScaleData({
                     ...scaleData,
                     width: newWidth,
+                    height: newHeight,
                   });
-                }}
-              />&nbsp;
-            </span>
-            <span className="modalcotext">{t`Height`}:&nbsp;
-              <input
-                type="number"
-                step="1"
-                min="1"
-                max="1024"
-                style={{ width: '3em' }}
-                value={scalingHeight}
-                onChange={(e) => {
-                  const nuHeight = (e.target.value > 1024)
-                    ? 1024 : e.target.value;
-                  if (!nuHeight) return;
-                  if (selectedScaleKeepRatio && inputImageData) {
-                    const ratio = inputImageData.width / inputImageData.height;
-                    const nuWidth = Math.round(ratio * nuHeight);
-                    if (nuWidth <= 0) return;
-                    setScaleData({
-                      ...scaleData,
-                      width: nuWidth,
-                      height: nuHeight,
-                    });
-                    return;
-                  }
+                  return;
+                }
+                setScaleData({
+                  ...scaleData,
+                  width: newWidth,
+                });
+              }}
+            />&nbsp;
+          </span>
+          <span className="modalcotext">{t`Height`}:&nbsp;
+            <input
+              type="number"
+              step="1"
+              min="1"
+              max="1024"
+              style={{ width: '3em' }}
+              value={scalingHeight}
+              onChange={(e) => {
+                const nuHeight = (e.target.value > 1024)
+                  ? 1024 : e.target.value;
+                if (!nuHeight) return;
+                if (selectedScaleKeepRatio && inputImageCanvas) {
+                  const ratio = inputImageCanvas.width
+                    / inputImageCanvas.height;
+                  const nuWidth = Math.round(ratio * nuHeight);
+                  if (nuWidth <= 0) return;
                   setScaleData({
                     ...scaleData,
+                    width: nuWidth,
                     height: nuHeight,
                   });
-                }}
-              />
-            </span>
-            <p style={{ fontHeight: 16 }} className="modalcotext">
-              <input
-                type="checkbox"
-                checked={selectedScaleKeepRatio}
-                onChange={(e) => {
-                  selectScaleKeepRatio(e.target.checked);
-                }}
-              />
-              {t`Keep Ratio`}
-            </p>
-            <p style={{ fontHeight: 16 }} className="modalcotext">
-              <input
-                type="checkbox"
-                checked={scalingAA}
-                onChange={(e) => {
-                  setScaleData({
-                    ...scaleData,
-                    aa: e.target.checked,
-                  });
-                }}
-              />
-              {t`Anti Aliasing`}
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                if (inputImageData) {
-                  setScaleData({
-                    ...scaleData,
-                    width: inputImageData.width,
-                    height: inputImageData.height,
-                  });
+                  return;
                 }
+                setScaleData({
+                  ...scaleData,
+                  height: nuHeight,
+                });
               }}
-            >
-              {t`Reset`}
-            </button>
-          </div>
-        )
-        : null}
-      {(inputImageData)
+            />
+          </span>
+          <p style={{ fontHeight: 16 }} className="modalcotext">
+            <input
+              type="checkbox"
+              checked={selectedScaleKeepRatio}
+              onChange={(e) => {
+                selectScaleKeepRatio(e.target.checked);
+              }}
+            />
+            {t`Keep Ratio`}
+          </p>
+          <p style={{ fontHeight: 16 }} className="modalcotext">
+            <input
+              type="checkbox"
+              checked={scalingAA}
+              onChange={(e) => {
+                setScaleData({
+                  ...scaleData,
+                  aa: e.target.checked,
+                });
+              }}
+            />
+            {t`Anti Aliasing`}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              if (inputImageCanvas) {
+                setScaleData({
+                  ...scaleData,
+                  width: inputImageCanvas.width,
+                  height: inputImageCanvas.height,
+                });
+              }
+            }}
+          >
+            {t`Reset`}
+          </button>
+        </div>
+      )}
+      {(inputImageCanvas)
         ? (
           <div>
             <p id="qprog">...</p>

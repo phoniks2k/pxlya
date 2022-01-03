@@ -1,16 +1,13 @@
-/* @flow */
-
-
 const OP_CODE = 0xA0;
 
 export default {
   OP_CODE,
-  hydrate(data: Buffer) {
-    // SERVER (Client)
+  hydrate(data) {
+    // SERVER (Receiver)
     const canvasId = data[1];
     return canvasId;
   },
-  dehydrate(canvasId): ArrayBuffer {
+  dehydrate(canvasId) {
     // CLIENT (Sender)
     const buffer = new ArrayBuffer(1 + 1);
     const view = new DataView(buffer);

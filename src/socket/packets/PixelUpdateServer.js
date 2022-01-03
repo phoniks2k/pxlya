@@ -1,17 +1,15 @@
-/* @flow */
-
-
-type PixelUpdatePacket = {
-  x: number,
-  y: number,
-  pixels: Array,
-};
+/*
+ * Packet for sending and receiving pixels per chunk
+ * Multiple pixels can be sent at once
+ * Server side.
+ *
+ * */
 
 const OP_CODE = 0xC1;
 
 export default {
   OP_CODE,
-  hydrate(data: Buffer): PixelUpdatePacket {
+  hydrate(data) {
     /*
      * chunk coordinates
      */
@@ -45,7 +43,7 @@ export default {
    * @param chunkId id consisting of chunk coordinates
    * @param pixels Buffer with offset and color of one or more pixels
    */
-  dehydrate(chunkId, pixels): Buffer {
+  dehydrate(chunkId, pixels) {
     const index = new Uint8Array([OP_CODE, chunkId >> 8, chunkId & 0xFF]);
     return Buffer.concat([index, pixels]);
   },

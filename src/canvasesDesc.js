@@ -2,7 +2,6 @@
  * Create canvases.json with localized translated
  * descriptions.
  *
- * @flow
  */
 
 import canvases from './canvases.json';

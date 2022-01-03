@@ -1,6 +1,6 @@
 /**
  *
- * @flow
+ * check for captcha requirement
  */
 
 import logger from '../core/logger';
@@ -51,7 +51,7 @@ function evaluateChar(charC, charU) {
  * Compare captcha to result
  * @return true if same
  */
-function evaluateResult(captchaText: string, userText: string) {
+function evaluateResult(captchaText, userText) {
   if (captchaText.length !== userText.length) {
     return false;
   }
@@ -74,8 +74,8 @@ function evaluateResult(captchaText: string, userText: string) {
  * @param ttl time to be valid in seconds
  */
 export function setCaptchaSolution(
-  text: string,
-  ip: string,
+  text,
+  ip,
 ) {
   const key = `capt:${ip}`;
   return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
@@ -91,8 +91,8 @@ export function setCaptchaSolution(
  *         2 if wrong
  */
 export async function checkCaptchaSolution(
-  text: string,
-  ip: string,
+  text,
+  ip,
 ) {
   const ipn = getIPv6Subnet(ip);
   const key = `capt:${ip}`;
@@ -119,13 +119,13 @@ export async function checkCaptchaSolution(
  * @param ip
  * @return boolean true if needed
  */
-export async function needCaptcha(ip: string) {
+export async function needCaptcha(ip) {
   if (!CAPTCHA_URL) {
     return false;
   }
 
   const key = `human:${getIPv6Subnet(ip)}`;
-  const ttl: number = await redis.ttlAsync(key);
+  const ttl = await redis.ttlAsync(key);
   if (ttl > 0) {
     return false;
   }

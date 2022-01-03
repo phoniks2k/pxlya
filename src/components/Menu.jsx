@@ -17,9 +17,9 @@ const Menu = () => {
   const menuOpen = useSelector((state) => state.gui.menuOpen);
 
   useEffect(() => {
-    window.setTimeout(() => {
-      if (menuOpen) setRender(true);
-    }, 10);
+    if (menuOpen) {
+      setTimeout(() => setRender(true), 10);
+    }
   }, [menuOpen]);
 
   const onTransitionEnd = () => {

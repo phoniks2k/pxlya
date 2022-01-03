@@ -1,16 +1,13 @@
-/* @flow */
-
-
 const OP_CODE = 0xA1;
 
 export default {
   OP_CODE,
-  hydrate(data: Buffer) {
-    // SERVER (Client)
+  hydrate(data) {
+    // SERVER (Receiver)
     const i = data[1] << 8 | data[2];
     return i;
   },
-  dehydrate(chunkid): ArrayBuffer {
+  dehydrate(chunkid) {
     // CLIENT (Sender)
     const buffer = new ArrayBuffer(1 + 2);
     const view = new DataView(buffer);

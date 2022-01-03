@@ -1,6 +1,5 @@
 /*
  * rate limiter utils
- * @flow
  */
 
 
@@ -11,11 +10,11 @@
  * @param onCooldown If we force to wait the whole burst time once the limit is reached
  */
 class RateLimiter {
-  msPerTick: number;
-  burstTime: number;
-  cooldownCompletely: boolean;
-  onCooldown: boolean;
-  wait: number;
+  msPerTick;
+  burstTime;
+  cooldownCompletely;
+  onCooldown;
+  wait;
 
   constructor(ticksPerMin = 20, burst = 20, cooldownCompletely = false) {
     this.wait = Date.now();

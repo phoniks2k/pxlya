@@ -26,7 +26,7 @@ const UserMessages = () => {
         && (
           <p className="usermessages">
             {t`Please verify your mail address&nbsp;
-            or your account could get deleted after a few days.`}&nbsp;
+            or your account could get deleted after a few days.`}
             {(verifyAnswer)
               ? (
                 <span

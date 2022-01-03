@@ -1,7 +1,6 @@
 /*
  * Hooks for renderer
  *
- * @flow
  */
 
 import {

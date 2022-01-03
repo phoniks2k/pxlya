@@ -1,9 +1,3 @@
-/**
- *
- * @flow
- */
-
-
 export default class Counter<T> {
   map: Map<T, number>;
 

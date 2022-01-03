@@ -7,6 +7,9 @@
 import { utils, distance, image } from 'image-q';
 
 
+/*
+ * available color distance calculators
+ */
 export const ColorDistanceCalculators = [
   'Euclidean',
   'Manhattan',
@@ -21,6 +24,9 @@ export const ColorDistanceCalculators = [
   'ManhattanNommyde',
 ];
 
+/*
+ * available dithers
+ */
 export const ImageQuantizerKernels = [
   'Nearest',
   'Riemersma',
@@ -35,7 +41,74 @@ export const ImageQuantizerKernels = [
   'SierraLite',
 ];
 
-export function getImageDataOfFile(file) {
+export function addGrid(imgCanvas, lightGrid, offsetX, offsetY) {
+  const { width, height } = imgCanvas;
+  const can = document.createElement('canvas');
+  const ctx = can.getContext('2d');
+  can.width = width * 5;
+  can.height = height * 5;
+  ctx.imageSmoothingEnabled = false;
+  ctx.mozImageSmoothingEnabled = false;
+  ctx.webkitImageSmoothingEnabled = false;
+  ctx.msImageSmoothingEnabled = false;
+  ctx.save();
+  ctx.scale(5.0, 5.0);
+  ctx.drawImage(imgCanvas, 0, 0);
+  ctx.restore();
+  ctx.fillStyle = (lightGrid) ? '#DDDDDD' : '#222222';
+  for (let i = 0; i <= width; i += 1) {
+    const thick = ((i + (offsetX * 1)) % 10 === 0) ? 2 : 1;
+    ctx.fillRect(i * 5, 0, thick, can.height);
+  }
+  for (let j = 0; j <= height; j += 1) {
+    const thick = ((j + (offsetY * 1)) % 10 === 0) ? 2 : 1;
+    ctx.fillRect(0, j * 5, can.width, thick);
+  }
+  return can;
+}
+
+export function scaleImage(imgCanvas, width, height, doAA) {
+  const can = document.createElement('canvas');
+  can.width = width;
+  can.height = height;
+  const ctxo = can.getContext('2d');
+  const scaleX = width / imgCanvas.width;
+  const scaleY = height / imgCanvas.height;
+  if (doAA) {
+    // scale with canvas for antialiasing
+    ctxo.save();
+    ctxo.scale(scaleX, scaleY);
+    ctxo.drawImage(imgCanvas, 0, 0);
+    ctxo.restore();
+  } else {
+    // scale manually
+    const ctxi = imgCanvas.getContext('2d');
+    const imdi = ctxi.getImageData(0, 0, imgCanvas.width, imgCanvas.height);
+    const imdo = ctxo.createImageData(width, height);
+    const { data: datai } = imdi;
+    const { data: datao } = imdo;
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        let posi = (Math.round(x / scaleX) + Math.round(y / scaleY)
+            * imgCanvas.width) * 4;
+        let poso = (x + y * width) * 4;
+        datao[poso++] = datai[posi++];
+        datao[poso++] = datai[posi++];
+        datao[poso++] = datai[posi++];
+        datao[poso] = datai[posi];
+      }
+    }
+    ctxo.putImageData(imdo, 0, 0);
+  }
+  return can;
+}
+
+/*
+ * read File object into canvas
+ * @param file
+ * @return HTMLCanvas
+ */
+export function readFileIntoCanvas(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
     fr.onload = () => {
@@ -46,8 +119,7 @@ export function getImageDataOfFile(file) {
         cani.height = img.height;
         const ctxi = cani.getContext('2d');
         ctxi.drawImage(img, 0, 0);
-        const imdi = ctxi.getImageData(0, 0, img.width, img.height);
-        resolve(imdi);
+        resolve(cani);
       };
       img.onerror = (error) => reject(error);
       img.src = fr.result;
@@ -57,49 +129,12 @@ export function getImageDataOfFile(file) {
   });
 }
 
-function* loadData(data, pointArray) {
-  let i = 0;
-  while (i < data.length) {
-    /*
-    if (!(i % 80)) {
-      yield Math.floor(i / data.length);
-    }
-    */
-    const point = utils.Point.createByRGBA(
-      data[i++],
-      data[i++],
-      data[i++],
-      data[i++],
-    );
-    pointArray.push(point);
-  }
-}
-
-async function createPointContainerFromImageData(imageData, onProgress) {
-  return new Promise((resolve) => {
-    const { width, height, data } = imageData;
-    const pointContainer = new utils.PointContainer();
-    pointContainer.setWidth(width);
-    pointContainer.setHeight(height);
-    const pointArray = pointContainer.getPointArray();
-
-    const iterator = loadData(data, pointArray);
-    const next = () => {
-      const result = iterator.next();
-      if (result.done) {
-        resolve(pointContainer);
-      } else {
-        if (onProgress) {
-          onProgress(result.value);
-        }
-        setTimeout(next, 0);
-      }
-    };
-    setTimeout(next, 0);
-  });
-}
-
-function createImageDataFromPointContainer(pointContainer) {
+/*
+ * converts pointContainer to HTMLCanvas
+ * @param pointContainer
+ * @return HTMLCanvas
+ */
+function createCanvasFromPointContainer(pointContainer) {
   const width = pointContainer.getWidth();
   const height = pointContainer.getHeight();
   const data = pointContainer.toUint8Array();
@@ -109,9 +144,24 @@ function createImageDataFromPointContainer(pointContainer) {
   const ctx = can.getContext('2d');
   const idata = ctx.createImageData(width, height);
   idata.data.set(data);
-  return idata;
+  ctx.putImageData(idata, 0, 0);
+  return can;
 }
 
+/*
+ * quantizes point container
+ * @param colors Array of [r, g, b] color Arrays
+ * @param pointContainer pointContainer of input image
+ * @param opts Object with configuration:
+ *    strategy: String of dithering strategy (ImageQuantizerKernels)
+ *    colorDist: String of color distance calc (ColorDistanceCalculators)
+ *    onProgress: function that gets called with integer of progress percentage
+ *  and only available for not Nearest or Riemersma
+ *    serpentine: type of dithering
+ *    minColorDistance: minimal distance on which we start to dither
+ *    GIMPerror: calculate error like GIMP
+ * @return Promise that resolves to HTMLCanvasElement of output image
+ */
 function quantizePointContainer(colors, pointContainer, opts) {
   const strategy = opts.strategy || 'Nearest';
   const colorDist = opts.colorDist || 'Euclidean';
@@ -164,7 +214,7 @@ function quantizePointContainer(colors, pointContainer, opts) {
       default:
         distCalc = new distance.Euclidean();
     }
-    // idk why i need this :/
+    // could be needed for some reason sometimes
     // eslint-disable-next-line no-underscore-dangle
     if (distCalc._setDefaults) distCalc._setDefaults();
     // construct image quantizer
@@ -174,12 +224,23 @@ function quantizePointContainer(colors, pointContainer, opts) {
     } else if (strategy === 'Riemersma') {
       imageQuantizer = new image.ErrorDiffusionRiemersma(distCalc);
     } else {
+      // minColorDistance is a percentage
+      let minColorDistance = 0;
+      // eslint-disable-next-line no-prototype-builtins
+      if (opts.hasOwnProperty('minColorDistance')) {
+        const mcdNumber = Number(opts.minColorDistance);
+        if (!Number.isNaN(mcdNumber)) {
+          minColorDistance = mcdNumber / 100 * 0.2;
+        }
+      }
+
       imageQuantizer = new image.ErrorDiffusionArray(
         distCalc,
         image.ErrorDiffusionArrayKernel[strategy],
-        true,
-        0,
-        false,
+        // eslint-disable-next-line no-prototype-builtins
+        opts.hasOwnProperty('serpentine') ? opts.serpentine : true,
+        minColorDistance,
+        !!opts.GIMPerror,
       );
     }
     // quantize
@@ -188,7 +249,7 @@ function quantizePointContainer(colors, pointContainer, opts) {
       try {
         const result = iterator.next();
         if (result.done) {
-          resolve(createImageDataFromPointContainer(pointContainer));
+          resolve(createCanvasFromPointContainer(pointContainer));
         } else {
           if (result.value.pointContainer) {
             pointContainer = result.value.pointContainer;
@@ -208,17 +269,17 @@ function quantizePointContainer(colors, pointContainer, opts) {
   });
 }
 
-export function quantizeImage(colors, imageData, opts) {
-  return createPointContainerFromImageData(
-    imageData,
-    (value) => {
-      if (opts.onProgress) {
-        opts.onProgress(value);
-      }
-    },
-  ).then((pointContainer) => quantizePointContainer(
+/*
+ * quantize HTMLCanvas to palette
+ * see quantizePointContainer for parameter meanings
+ */
+export function quantizeImage(colors, imageCanvas, opts) {
+  const pointContainer = utils.PointContainer.fromHTMLCanvasElement(
+    imageCanvas,
+  );
+  return quantizePointContainer(
     colors,
     pointContainer,
     opts,
-  ));
+  );
 }

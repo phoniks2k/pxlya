@@ -4,6 +4,9 @@
   ],
   "parser":"@babel/eslint-parser",
   "parserOptions": {
+    "babelOptions":{
+      "rootMode": "upward"
+    },
     "ecmaFeatures": {
       "jsx": true
     }

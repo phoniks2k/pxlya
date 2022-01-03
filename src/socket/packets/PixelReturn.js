@@ -1,11 +1,9 @@
-/* @flow */
-
-
 const OP_CODE = 0xC3;
 
 export default {
   OP_CODE,
-  hydrate(data: DataView) {
+  hydrate(data) {
+    // Client (receiver)
     const retCode = data.getUint8(1);
     const wait = data.getUint32(2);
     const coolDownSeconds = data.getInt16(6);
@@ -17,7 +15,8 @@ export default {
       pxlCnt,
     };
   },
-  dehydrate(retCode, wait, coolDown, pxlCnt): Buffer {
+  dehydrate(retCode, wait, coolDown, pxlCnt) {
+    // Server (sender)
     const buffer = Buffer.allocUnsafe(1 + 1 + 4 + 2 + 1);
     buffer.writeUInt8(OP_CODE, 0);
     buffer.writeUInt8(retCode, 1);

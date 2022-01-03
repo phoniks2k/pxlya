@@ -1,22 +1,18 @@
 /*
  * Packet for sending and receiving pixels per chunk
  * Multiple pixels can be sent at once
+ * Client side
  *
- * @flow
  */
-
-
-type PixelUpdatePacket = {
-  x: number,
-  y: number,
-  pixels: Array,
-};
 
 const OP_CODE = 0xC1;
 
 export default {
   OP_CODE,
-  hydrate(data: DataView): PixelUpdatePacket {
+  /*
+   * @param data DataVies
+   */
+  hydrate(data) {
     /*
      * chunk coordinates
      */
@@ -40,7 +36,7 @@ export default {
     };
   },
 
-  dehydrate(i, j, pixels): Buffer {
+  dehydrate(i, j, pixels) {
     const buffer = new ArrayBuffer(1 + 1 + 1 + pixels.length * 4);
     const view = new DataView(buffer);
     view.setUint8(0, OP_CODE);

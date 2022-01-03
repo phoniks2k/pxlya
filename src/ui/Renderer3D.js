@@ -5,7 +5,7 @@
  */
 
 import * as THREE from 'three';
-import { Sky } from './Sky';
+import Sky from './Sky';
 
 import InfiniteGridHelper from './InfiniteGridHelper';
 import VoxelPainterControls from '../controls/VoxelPainterControls';
@@ -99,7 +99,6 @@ class Renderer {
       rayleigh: 2,
       mieCoefficient: 0.005,
       mieDirectionalG: 0.8,
-      luminance: 1,
       inclination: 0.49, // elevation / inclination
       azimuth: 0.25, // Facing front,
       sun: !true,
@@ -107,7 +106,6 @@ class Renderer {
     const { uniforms } = sky.material;
     uniforms.turbidity.value = effectController.turbidity;
     uniforms.rayleigh.value = effectController.rayleigh;
-    uniforms.luminance.value = effectController.luminance;
     uniforms.mieCoefficient.value = effectController.mieCoefficient;
     uniforms.mieDirectionalG.value = effectController.mieDirectionalG;
     uniforms.sunPosition.value.set(400000, 400000, 400000);

@@ -1,11 +1,11 @@
-/* @flow */
-
-
 const OP_CODE = 0xA4;
 
 export default {
   OP_CODE,
-  dehydrate(chunks: Array): ArrayBuffer {
+  /*
+   * @param chunks Array of chunks
+   */
+  dehydrate(chunks) {
     // CLIENT (Sender)
     const buffer = new ArrayBuffer(1 + 1 + chunks.length * 2);
     const view = new Uint16Array(buffer);

@@ -354,6 +354,22 @@ tr:nth-child(even) {
   visibility: visible;
 }
 
+.convBox {
+  border-style: solid;
+  border-color: #D4D4D4;
+  border-width: 2px;
+  padding: 2px;
+  display: inline-block;
+  max-height: 0px;
+  visibility: hidden;
+  transition: 0.3s;
+  overflow: hidden;
+}
+.convBox.show {
+  visibility: visible;
+  max-height: 160px;
+}
+
 #helpbutton {
   left: 16px;
   top: 180px;
