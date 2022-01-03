@@ -1,12 +1,10 @@
-/* @flow
- *
+/*
  * creation of tiles
  *
  */
 
 import fs from 'fs';
 
-import type { Cell } from './Cell';
 import logger from './logger';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
@@ -31,14 +29,14 @@ import { mod, getMaxTiledZoom } from './utils';
 const CanvasUpdaters = {};
 
 class CanvasUpdater {
-  TileLoadingQueues: Array;
-  palette: Palette;
-  id: number;
-  canvas: Object;
-  firstZoomtileWidth: number;
-  canvasTileFolder: string;
+  TileLoadingQueues;
+  palette;
+  id;
+  canvas;
+  firstZoomtileWidth;
+  canvasTileFolder;
 
-  constructor(id: number) {
+  constructor(id) {
     this.updateZoomlevelTiles = this.updateZoomlevelTiles.bind(this);
 
     this.TileLoadingQueues = [];
@@ -54,7 +52,7 @@ class CanvasUpdater {
   /*
    * @param zoom tilezoomlevel to update
    */
-  async updateZoomlevelTiles(zoom: number) {
+  async updateZoomlevelTiles(zoom) {
     const queue = this.TileLoadingQueues[zoom];
     if (typeof queue === 'undefined') return;
 
@@ -104,7 +102,7 @@ class CanvasUpdater {
    * register changed chunk, queue corespongind tile to reload
    * @param chunk Chunk coordinates
    */
-  registerChunkChange(chunk: Cell) {
+  registerChunkChange(chunk) {
     const queue = this.TileLoadingQueues[Math.max(this.maxTiledZoom - 1, 0)];
     if (typeof queue === 'undefined') return;
 
@@ -154,7 +152,7 @@ class CanvasUpdater {
   }
 }
 
-export function registerChunkChange(canvasId: number, chunk: Cell) {
+export function registerChunkChange(canvasId, chunk) {
   if (CanvasUpdaters[canvasId]) {
     CanvasUpdaters[canvasId].registerChunkChange(chunk);
   }

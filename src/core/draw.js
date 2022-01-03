@@ -1,8 +1,8 @@
-/* @flow */
-
+/*
+ * draw pixel on canvas
+ */
 import { using } from 'bluebird';
 
-import type { User } from '../data/models';
 import { redlock } from '../data/redis';
 import {
   getPixelFromChunkOffset,
@@ -34,12 +34,12 @@ import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
  * @return Promise<Object>
  */
 export async function drawByOffsets(
-  user: User,
-  canvasId: number,
-  i: number,
-  j: number,
-  pixels: Array,
-): Promise<Object> {
+  user,
+  canvasId,
+  i,
+  j,
+  pixels,
+) {
   let wait = 0;
   let coolDown = 0;
   let retCode = 0;
@@ -199,13 +199,13 @@ export async function drawByOffsets(
  * @returns {Promise.<Object>}
  */
 export async function drawByCoords(
-  user: User,
-  canvasId: number,
-  color: ColorIndex,
-  x: number,
-  y: number,
-  z: number = null,
-): Promise<Object> {
+  user,
+  canvasId,
+  color,
+  x,
+  y,
+  z = null,
+) {
   if (!({}.hasOwnProperty.call(canvases, canvasId))) {
     return {
       error: 'This canvas does not exist',
@@ -369,13 +369,13 @@ export async function drawByCoords(
  * @param z (optional for 3d canvas)
  */
 export function drawSafeByCoords(
-  user: User,
-  canvasId: number,
-  color: ColorIndex,
-  x: number,
-  y: number,
-  z: number = null,
-): Promise<Object> {
+  user,
+  canvasId,
+  color,
+  x,
+  y,
+  z = null,
+) {
   // can just check for one unique occurence,
   // we use ip, because id for logged out users is
   // always null
@@ -407,12 +407,12 @@ export function drawSafeByCoords(
  * @return Promise<Object>
  */
 export function drawSafeByOffsets(
-  user: User,
-  canvasId: number,
-  i: number,
-  j: number,
-  pixels: Array,
-): Promise<Object> {
+  user,
+  canvasId,
+  i,
+  j,
+  pixels,
+) {
   // can just check for one unique occurence,
   // we use ip, because id for logged out users is
   // always null

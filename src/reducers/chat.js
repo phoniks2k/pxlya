@@ -1,10 +1,6 @@
-/* @flow */
-
 import { MAX_CHAT_MESSAGES } from '../core/constants';
 
-import type { Action } from '../actions/types';
-
-export type ChatState = {
+const initialState = {
   /*
    * {
    *   cid: [
@@ -21,23 +17,17 @@ export type ChatState = {
    *   ...
    * }
    */
-  channels: Object,
-  // [[uId, userName], [userId2, userName2],...]
-  blocked: Array,
-  // { cid: [message1,message2,message3,...]}
-  messages: Object,
-}
-
-const initialState: ChatState = {
   channels: {},
+  // [[uId, userName], [userId2, userName2],...]
   blocked: [],
+  // { cid: [message1,message2,message3,...]}
   messages: {},
 };
 
 export default function chat(
-  state: ChatState = initialState,
-  action: Action,
-): ChatState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'RECEIVE_ME':
     case 'LOGIN': {

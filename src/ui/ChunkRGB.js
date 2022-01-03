@@ -1,8 +1,3 @@
-/* @flow */
-
-import type { Cell } from '../core/Cell';
-import type { Palette } from '../core/Palette';
-
 import { TILE_SIZE } from '../core/constants';
 
 
@@ -11,10 +6,10 @@ class ChunkRGB {
   image: HTMLCanvasElement;
   ready: boolean;
   timestamp: number;
-  palette: Palette;
+  palette;
   isBasechunk: boolean;
 
-  constructor(palette: Palette, zoom = 0, cx = 0, cy = 0) {
+  constructor(palette, zoom = 0, cx = 0, cy = 0) {
     // isBasechunk gets set to true by RECEIVE_BIG_CHUNK
     // if true => chunk got requested from api/chunk and
     //            receives websocket pixel updates
@@ -79,11 +74,11 @@ class ChunkRGB {
     }
   }
 
-  static getIndexFromCell([x, y]: Cell): number {
+  static getIndexFromCell([x, y]): number {
     return x + (TILE_SIZE * y);
   }
 
-  getColorIndex(cell: Cell): ColorIndex {
+  getColorIndex(cell) {
     const [x, y] = cell;
     const ctx = this.image.getContext('2d');
 
@@ -91,7 +86,7 @@ class ChunkRGB {
     return this.palette.getClosestIndexOfColor(rgb[0], rgb[1], rgb[2]);
   }
 
-  hasColorIn(cell: Cell, color: ColorIndex): boolean {
+  hasColorIn(cell, color): boolean {
     const index = ChunkRGB.getIndexFromCell(cell);
 
     const ctx = this.image.getContext('2d');
@@ -101,7 +96,7 @@ class ChunkRGB {
     return (intView[index] === this.palette.abgr[color]);
   }
 
-  setColor(cell: Cell, color: ColorIndex): boolean {
+  setColor(cell, color): boolean {
     const [x, y] = cell;
     const ctx = this.image.getContext('2d');
     ctx.fillStyle = this.palette.colors[color];

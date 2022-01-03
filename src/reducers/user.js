@@ -1,55 +1,31 @@
-/* @flow */
-
-import type { Action } from '../actions/types';
-
 import { createNameRegExp } from '../core/utils';
 
-
-export type UserState = {
-  name: string,
-  center: Cell,
-  wait: ?Date,
-  coolDown: ?number, // ms
-  lastCoolDownEnd: ?Date,
-  requestingPixel: boolean,
-  // messages are sent by api/me, like not_verified status
-  messages: Array,
-  mailreg: boolean,
-  // minecraft
-  minecraftname: string,
-  // blocking all Dms
-  blockDm: boolean,
-  // if user is using touchscreen
-  isOnMobile: boolean,
-  // small notifications for received cooldown
-  notification: string,
-  // 1: Admin, 2: Mod, 0: ordinary user
-  userlvl: number,
-  // regExp for detecting ping
-  nameRegExp: RegExp,
-};
-
-const initialState: UserState = {
+const initialState = {
   name: null,
   center: [0, 0],
   wait: null,
-  coolDown: null,
+  coolDown: null, // ms
   lastCoolDownEnd: null,
   requestingPixel: true,
+  // messages are sent by api/me, like not_verified status
   messages: [],
   mailreg: false,
-  minecraftname: null,
+  // blocking all Dms
   blockDm: false,
+  // if user is using touchscreen
   isOnMobile: false,
+  // small notifications for received cooldown
   notification: null,
+  // 1: Admin, 2: Mod, 0: ordinary user
   userlvl: 0,
+  // regExp for detecting ping
   nameRegExp: null,
 };
 
 export default function user(
-  state: UserState = initialState,
-  action: Action,
-): UserState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'COOLDOWN_SET': {
       const { coolDown } = action;
@@ -112,7 +88,6 @@ export default function user(
       const {
         name,
         mailreg,
-        minecraftname,
         blockDm,
         userlvl,
       } = action;
@@ -123,7 +98,6 @@ export default function user(
         name,
         messages,
         mailreg,
-        minecraftname,
         blockDm,
         userlvl,
         nameRegExp,
@@ -136,7 +110,6 @@ export default function user(
         name: null,
         messages: [],
         mailreg: false,
-        minecraftname: null,
         blockDm: false,
         userlvl: 0,
         nameRegExp: null,
@@ -158,14 +131,6 @@ export default function user(
       return {
         ...state,
         blockDm,
-      };
-    }
-
-    case 'SET_MINECRAFT_NAME': {
-      const { minecraftname } = action;
-      return {
-        ...state,
-        minecraftname,
       };
     }
 

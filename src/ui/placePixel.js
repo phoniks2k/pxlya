@@ -65,10 +65,10 @@ export function requestFromQueue(store) {
 
 export function receivePixelUpdate(
   store,
-  i: number,
-  j: number,
-  offset: number,
-  color: ColorIndex,
+  i,
+  j,
+  offset,
+  color,
 ) {
   for (let p = 0; p < clientPredictions.length; p += 1) {
     const predPxl = clientPredictions[p];
@@ -91,9 +91,9 @@ export function receivePixelUpdate(
  */
 function revertPredictionsAt(
   store,
-  sI: number,
-  sJ: number,
-  sOffset: number,
+  sI,
+  sJ,
+  sOffset,
 ) {
   let p = 0;
   while (p < clientPredictions.length) {
@@ -123,11 +123,11 @@ function revertPredictionsAt(
 
 export function tryPlacePixel(
   store,
-  i: number,
-  j: number,
-  offset: number,
-  color: ColorIndex,
-  curColor: ColorIndex,
+  i,
+  j,
+  offset,
+  color,
+  curColor,
 ) {
   store.dispatch(updatePixel(i, j, offset, color));
   clientPredictions.push([i, j, offset, curColor, color]);
@@ -155,9 +155,9 @@ export function tryPlacePixel(
 
 export function receivePixelReturn(
   store,
-  retCode: number,
-  wait: number,
-  coolDownSeconds: number,
+  retCode,
+  wait,
+  coolDownSeconds,
   pxlCnt,
 ) {
   clearTimeout(pixelTimeout);

@@ -1,11 +1,8 @@
 /*
  * Renders 2D canvases
  *
- * @flow
  */
 
-import type { Cell } from '../core/Cell';
-import type { State } from '../reducers';
 import { TILE_ZOOM_LEVEL, TILE_SIZE } from '../core/constants';
 
 import {
@@ -42,7 +39,7 @@ class Renderer {
   canvasId: number = null;
   chunkLoader: Object = null;
   //--
-  centerChunk: Cell;
+  centerChunk;
   tiledScale: number;
   tiledZoom: number;
   hover: boolean;
@@ -120,7 +117,7 @@ class Renderer {
     this.controls = new PixelPainterControls(this, this.viewport, store);
   }
 
-  updateCanvasData(state: State) {
+  updateCanvasData(state) {
     const {
       canvasId,
     } = state.canvas;
@@ -238,9 +235,9 @@ class Renderer {
     i: number,
     j: number,
     offset: number,
-    color: ColorIndex,
+    color,
   ) {
-    const state: State = this.store.getState();
+    const state = this.store.getState();
     const {
       canvasSize,
       palette,
@@ -299,7 +296,7 @@ class Renderer {
 
 
   renderChunks(
-    state: State,
+    state,
   ) {
     const context = this.canvas.getContext('2d');
     if (!context) return;
@@ -400,7 +397,7 @@ class Renderer {
     if (!this.chunkLoader) {
       return;
     }
-    const state: State = this.store.getState();
+    const state = this.store.getState();
     if (state.canvas.isHistoricalView) {
       this.renderHistorical(state);
     } else {
@@ -412,7 +409,7 @@ class Renderer {
   // keep in mind that everything we got here gets executed 60 times per second
   // avoiding unneccessary stuff is important
   renderMain(
-    state: State,
+    state,
   ) {
     const {
       viewport,
@@ -533,7 +530,7 @@ class Renderer {
 
 
   renderHistoricalChunks(
-    state: State,
+    state,
   ) {
     const context = this.canvas.getContext('2d');
     if (!context) return;
@@ -662,7 +659,7 @@ class Renderer {
   // keep in mind that everything we got here gets executed 60 times per second
   // avoiding unneccessary stuff is important
   renderHistorical(
-    state: State,
+    state,
   ) {
     const {
       viewport,

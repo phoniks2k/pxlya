@@ -14,29 +14,6 @@ import contextMenu from './contextMenu';
 import chatRead from './chatRead';
 import fetching from './fetching';
 
-import type { AudioState } from './audio';
-import type { CanvasState } from './canvas';
-import type { GUIState } from './gui';
-import type { UserState } from './user';
-import type { RanksState } from './ranks';
-import type { AlertState } from './alert';
-import type { ChatState } from './chat';
-import type { ContextMenuState } from './contextMenu';
-import type { FetchingState } from './fetching';
-
-export type State = {
-  audio: AudioState,
-  canvas: CanvasState,
-  gui: GUIState,
-  user: UserState,
-  ranks: RanksState,
-  alert: AlertState,
-  chat: ChatState,
-  contextMenu: ContextMenuState,
-  chatRead: ChatReadState,
-  fetching: FetchingState,
-};
-
 const config = {
   key: 'primary',
   storage: localForage,

@@ -1,14 +1,5 @@
-/* @flow */
-
 import { t } from 'ttag';
 
-import type {
-  Action,
-  ThunkAction,
-  PromiseAction,
-} from './types';
-import type { Cell } from '../core/Cell';
-import type { ColorIndex } from '../core/Palette';
 import {
   requestStartDm,
   requestBlock,
@@ -17,11 +8,11 @@ import {
 } from './fetch';
 
 export function sweetAlert(
-  title: string,
-  text: string,
-  icon: string,
-  confirmButtonText: string,
-): Action {
+  title,
+  text,
+  icon,
+  confirmButtonText,
+) {
   return {
     type: 'ALERT',
     title,
@@ -31,178 +22,178 @@ export function sweetAlert(
   };
 }
 
-export function closeAlert(): Action {
+export function closeAlert() {
   return {
     type: 'CLOSE_ALERT',
   };
 }
 
-export function toggleHistoricalView(): Action {
+export function toggleHistoricalView() {
   return {
     type: 'TOGGLE_HISTORICAL_VIEW',
   };
 }
 
-export function toggleHiddenCanvases(): Action {
+export function toggleHiddenCanvases() {
   return {
     type: 'TOGGLE_HIDDEN_CANVASES',
   };
 }
 
-export function toggleGrid(): Action {
+export function toggleGrid() {
   return {
     type: 'TOGGLE_GRID',
   };
 }
 
-export function togglePixelNotify(): Action {
+export function togglePixelNotify() {
   return {
     type: 'TOGGLE_PIXEL_NOTIFY',
   };
 }
 
-export function toggleAutoZoomIn(): Action {
+export function toggleAutoZoomIn() {
   return {
     type: 'TOGGLE_AUTO_ZOOM_IN',
   };
 }
 
-export function toggleMute(): Action {
+export function toggleMute() {
   return {
     type: 'TOGGLE_MUTE',
   };
 }
 
-export function toggleCompactPalette(): Action {
+export function toggleCompactPalette() {
   return {
     type: 'TOGGLE_COMPACT_PALETTE',
   };
 }
 
-export function toggleChatNotify(): Action {
+export function toggleChatNotify() {
   return {
     type: 'TOGGLE_CHAT_NOTIFY',
   };
 }
 
-export function togglePotatoMode(): Action {
+export function togglePotatoMode() {
   return {
     type: 'TOGGLE_POTATO_MODE',
   };
 }
 
-export function toggleLightGrid(): Action {
+export function toggleLightGrid() {
   return {
     type: 'TOGGLE_LIGHT_GRID',
   };
 }
 
-export function toggleOpenPalette(): Action {
+export function toggleOpenPalette() {
   return {
     type: 'TOGGLE_OPEN_PALETTE',
   };
 }
 
-export function selectStyle(style: string): Action {
+export function selectStyle(style) {
   return {
     type: 'SELECT_STYLE',
     style,
   };
 }
 
-export function toggleOpenMenu(): Action {
+export function toggleOpenMenu() {
   return {
     type: 'TOGGLE_OPEN_MENU',
   };
 }
 
-export function setRequestingPixel(requestingPixel: boolean): Action {
+export function setRequestingPixel(requestingPixel: boolean) {
   return {
     type: 'SET_REQUESTING_PIXEL',
     requestingPixel,
   };
 }
 
-export function setNotification(notification: string): Action {
+export function setNotification(notification) {
   return {
     type: 'SET_NOTIFICATION',
     notification,
   };
 }
 
-export function unsetNotification(): Action {
+export function unsetNotification() {
   return {
     type: 'UNSET_NOTIFICATION',
   };
 }
 
-export function setHover(hover: Cell): Action {
+export function setHover(hover) {
   return {
     type: 'SET_HOVER',
     hover,
   };
 }
 
-export function unsetHover(): Action {
+export function unsetHover() {
   return {
     type: 'UNSET_HOVER',
   };
 }
 
-export function setWait(wait: ?number): Action {
+export function setWait(wait: ?number) {
   return {
     type: 'SET_WAIT',
     wait,
   };
 }
 
-export function setMobile(mobile: boolean): Action {
+export function setMobile(mobile: boolean) {
   return {
     type: 'SET_MOBILE',
     mobile,
   };
 }
 
-export function windowResize(): Action {
+export function windowResize() {
   return {
     type: 'WINDOW_RESIZE',
   };
 }
 
-export function selectColor(color: ColorIndex): Action {
+export function selectColor(color) {
   return {
     type: 'SELECT_COLOR',
     color,
   };
 }
 
-export function selectCanvas(canvasId: number): Action {
+export function selectCanvas(canvasId) {
   return {
     type: 'SELECT_CANVAS',
     canvasId,
   };
 }
 
-export function placedPixels(amount: number): Action {
+export function placedPixels(amount) {
   return {
     type: 'PLACED_PIXELS',
     amount,
   };
 }
 
-export function pixelWait(): Action {
+export function pixelWait() {
   return {
     type: 'PIXEL_WAIT',
   };
 }
 
-export function pixelFailure(): Action {
+export function pixelFailure() {
   return {
     type: 'PIXEL_FAILURE',
   };
 }
 
-export function receiveOnline(online: number): Action {
+export function receiveOnline(online) {
   return {
     type: 'RECEIVE_ONLINE',
     online,
@@ -210,14 +201,14 @@ export function receiveOnline(online: number): Action {
 }
 
 export function receiveChatMessage(
-  name: string,
-  text: string,
-  country: string,
-  channel: number,
-  user: number,
+  name,
+  text,
+  country,
+  channel,
+  user,
   isPing: boolean,
   isRead: boolean,
-): Action {
+) {
   return {
     type: 'RECEIVE_CHAT_MESSAGE',
     name,
@@ -231,7 +222,7 @@ export function receiveChatMessage(
 }
 
 let lastNotify = null;
-export function notify(notification: string) {
+export function notify(notification) {
   return async (dispatch) => {
     dispatch(setNotification(notification));
     if (lastNotify) {
@@ -244,14 +235,14 @@ export function notify(notification: string) {
   };
 }
 
-export function setViewCoordinates(view: Cell): Action {
+export function setViewCoordinates(view) {
   return {
     type: 'SET_VIEW_COORDINATES',
     view,
   };
 }
 
-export function move([dx, dy]: Cell): ThunkAction {
+export function move([dx, dy]) {
   return (dispatch, getState) => {
     const { view } = getState().canvas;
 
@@ -260,7 +251,7 @@ export function move([dx, dy]: Cell): ThunkAction {
   };
 }
 
-export function moveDirection([vx, vy]: Cell): ThunkAction {
+export function moveDirection([vx, vy]) {
   return (dispatch, getState) => {
     const { viewscale } = getState().canvas;
 
@@ -269,31 +260,31 @@ export function moveDirection([vx, vy]: Cell): ThunkAction {
   };
 }
 
-export function moveNorth(): ThunkAction {
+export function moveNorth() {
   return (dispatch) => {
     dispatch(moveDirection([0, -1]));
   };
 }
 
-export function moveWest(): ThunkAction {
+export function moveWest() {
   return (dispatch) => {
     dispatch(moveDirection([-1, 0]));
   };
 }
 
-export function moveSouth(): ThunkAction {
+export function moveSouth() {
   return (dispatch) => {
     dispatch(moveDirection([0, 1]));
   };
 }
 
-export function moveEast(): ThunkAction {
+export function moveEast() {
   return (dispatch) => {
     dispatch(moveDirection([1, 0]));
   };
 }
 
-export function setScale(scale: number, zoompoint: Cell): Action {
+export function setScale(scale, zoompoint) {
   return {
     type: 'SET_SCALE',
     scale,
@@ -301,7 +292,7 @@ export function setScale(scale: number, zoompoint: Cell): Action {
   };
 }
 
-export function zoomIn(zoompoint): ThunkAction {
+export function zoomIn(zoompoint) {
   return (dispatch, getState) => {
     const { scale } = getState().canvas;
     const zoomscale = scale >= 1.0 ? scale * 1.1 : scale * 1.04;
@@ -309,7 +300,7 @@ export function zoomIn(zoompoint): ThunkAction {
   };
 }
 
-export function zoomOut(zoompoint): ThunkAction {
+export function zoomOut(zoompoint) {
   return (dispatch, getState) => {
     const { scale } = getState().canvas;
     const zoomscale = scale >= 1.0 ? scale / 1.1 : scale / 1.04;
@@ -317,7 +308,7 @@ export function zoomOut(zoompoint): ThunkAction {
   };
 }
 
-export function requestBigChunk(center: Cell): Action {
+export function requestBigChunk(center) {
   return {
     type: 'REQUEST_BIG_CHUNK',
     center,
@@ -325,8 +316,8 @@ export function requestBigChunk(center: Cell): Action {
 }
 
 export function preLoadedBigChunk(
-  center: Cell,
-): Action {
+  center,
+) {
   return {
     type: 'PRE_LOADED_BIG_CHUNK',
     center,
@@ -334,9 +325,9 @@ export function preLoadedBigChunk(
 }
 
 export function receiveBigChunk(
-  center: Cell,
+  center,
   chunk: Uint8Array,
-): Action {
+) {
   return {
     type: 'RECEIVE_BIG_CHUNK',
     center,
@@ -344,7 +335,7 @@ export function receiveBigChunk(
   };
 }
 
-export function receiveBigChunkFailure(center: Cell, error: Error): Action {
+export function receiveBigChunkFailure(center, error: Error) {
   return {
     type: 'RECEIVE_BIG_CHUNK_FAILURE',
     center,
@@ -353,8 +344,8 @@ export function receiveBigChunkFailure(center: Cell, error: Error): Action {
 }
 
 export function receiveCoolDown(
-  wait: number,
-): Action {
+  wait,
+) {
   return {
     type: 'RECEIVE_COOLDOWN',
     wait,
@@ -362,11 +353,11 @@ export function receiveCoolDown(
 }
 
 export function updatePixel(
-  i: number,
-  j: number,
-  offset: number,
-  color: ColorIndex,
-): Action {
+  i,
+  j,
+  offset,
+  color,
+) {
   return {
     type: 'UPDATE_PIXEL',
     i,
@@ -377,8 +368,8 @@ export function updatePixel(
 }
 
 export function loginUser(
-  me: Object,
-): Action {
+  me,
+) {
   return {
     type: 'LOGIN',
     ...me,
@@ -386,8 +377,8 @@ export function loginUser(
 }
 
 export function receiveMe(
-  me: Object,
-): Action {
+  me,
+) {
   return {
     type: 'RECEIVE_ME',
     ...me,
@@ -395,15 +386,15 @@ export function receiveMe(
 }
 
 export function logoutUser(
-): Action {
+) {
   return {
     type: 'LOGOUT',
   };
 }
 
 export function receiveStats(
-  rankings: Object,
-): Action {
+  rankings,
+) {
   const { ranking: totalRanking, dailyRanking: totalDailyRanking } = rankings;
   return {
     type: 'RECEIVE_STATS',
@@ -413,8 +404,8 @@ export function receiveStats(
 }
 
 export function setName(
-  name: string,
-): Action {
+  name,
+) {
   return {
     type: 'SET_NAME',
     name,
@@ -423,7 +414,7 @@ export function setName(
 
 export function setMailreg(
   mailreg: boolean,
-): Action {
+) {
   return {
     type: 'SET_MAILREG',
     mailreg,
@@ -431,15 +422,15 @@ export function setMailreg(
 }
 
 export function remFromMessages(
-  message: string,
-): Action {
+  message,
+) {
   return {
     type: 'REM_FROM_MESSAGES',
     message,
   };
 }
 
-export function fetchStats(): PromiseAction {
+export function fetchStats() {
   return async (dispatch) => {
     const response = await fetch('api/ranking', { credentials: 'include' });
     if (response.ok) {
@@ -450,7 +441,7 @@ export function fetchStats(): PromiseAction {
   };
 }
 
-export function fetchMe(): PromiseAction {
+export function fetchMe() {
   return async (dispatch) => {
     const response = await fetch('api/me', {
       credentials: 'include',
@@ -464,9 +455,9 @@ export function fetchMe(): PromiseAction {
 }
 
 function receiveChatHistory(
-  cid: number,
-  history: Array,
-): Action {
+  cid,
+  history,
+) {
   return {
     type: 'RECEIVE_CHAT_HISTORY',
     cid,
@@ -474,14 +465,14 @@ function receiveChatHistory(
   };
 }
 
-function setChatFetching(fetching: boolean): Action {
+function setChatFetching(fetching: boolean) {
   return {
     type: 'SET_CHAT_FETCHING',
     fetching,
   };
 }
 
-function setApiFetching(fetching: boolean): Action {
+function setApiFetching(fetching: boolean) {
   return {
     type: 'SET_API_FETCHING',
     fetching,
@@ -489,8 +480,8 @@ function setApiFetching(fetching: boolean): Action {
 }
 
 export function fetchChatMessages(
-  cid: number,
-): PromiseAction {
+  cid,
+) {
   return async (dispatch) => {
     dispatch(setChatFetching(true));
     const response = await fetch(`api/chathistory?cid=${cid}&limit=50`, {
@@ -510,20 +501,20 @@ export function fetchChatMessages(
   };
 }
 
-function setCoolDown(coolDown): Action {
+function setCoolDown(coolDown) {
   return {
     type: 'COOLDOWN_SET',
     coolDown,
   };
 }
 
-function endCoolDown(): Action {
+function endCoolDown() {
   return {
     type: 'COOLDOWN_END',
   };
 }
 
-function getPendingActions(state): Array<Action> {
+function getPendingActions(state) {
   const actions = [];
   const now = Date.now();
 
@@ -539,7 +530,7 @@ function getPendingActions(state): Array<Action> {
   return actions;
 }
 
-export function initTimer(): ThunkAction {
+export function initTimer() {
   return (dispatch, getState) => {
     function tick() {
       const state = getState();
@@ -556,16 +547,16 @@ export function initTimer(): ThunkAction {
  * fullscreen means to open as modal
  */
 export function openWindow(
-  windowType: string,
-  title: string,
+  windowType,
+  title,
   fullscreen: boolean,
   cloneable: boolean,
-  args: Object,
-  xPos: number = null,
-  yPos: number = null,
-  width: number = null,
-  height: number = null,
-): Action {
+  args,
+  xPos = null,
+  yPos = null,
+  width = null,
+  height = null,
+) {
   return {
     type: 'OPEN_WINDOW',
     windowType,
@@ -580,7 +571,7 @@ export function openWindow(
   };
 }
 
-export function showModal(modalType: string, title: string): Action {
+export function showModal(modalType, title) {
   return openWindow(
     modalType,
     title,
@@ -590,14 +581,14 @@ export function showModal(modalType: string, title: string): Action {
   );
 }
 
-export function showSettingsModal(): Action {
+export function showSettingsModal() {
   return showModal(
     'SETTINGS',
     '',
   );
 }
 
-export function showUserAreaModal(): Action {
+export function showUserAreaModal() {
   return showModal(
     'USERAREA',
     '',
@@ -621,34 +612,34 @@ export function setWindowTitle(windowId, title) {
   };
 }
 
-export function showRegisterModal(): Action {
+export function showRegisterModal() {
   return showModal(
     'REGISTER',
     t`Register New Account`,
   );
 }
 
-export function showForgotPasswordModal(): Action {
+export function showForgotPasswordModal() {
   return showModal(
     'FORGOT_PASSWORD',
     t`Restore my Password`,
   );
 }
 
-export function showHelpModal(): Action {
+export function showHelpModal() {
   return showModal(
     'HELP',
     t`Welcome to PixelPlanet.fun`,
   );
 }
-export function showArchiveModal(): Action {
+export function showArchiveModal() {
   return showModal(
     'ARCHIVE',
     t`Look at past Canvases`,
   );
 }
 
-export function showCanvasSelectionModal(): Action {
+export function showCanvasSelectionModal() {
   return showModal(
     'CANVAS_SELECTION',
     '',
@@ -656,11 +647,11 @@ export function showCanvasSelectionModal(): Action {
 }
 
 export function showContextMenu(
-  menuType: string,
-  xPos: number,
-  yPos: number,
-  args: Object,
-): Action {
+  menuType,
+  xPos,
+  yPos,
+  args,
+) {
   return {
     type: 'SHOW_CONTEXT_MENU',
     menuType,
@@ -670,28 +661,28 @@ export function showContextMenu(
   };
 }
 
-export function openChatChannel(cid: number): Action {
+export function openChatChannel(cid) {
   return {
     type: 'OPEN_CHAT_CHANNEL',
     cid,
   };
 }
 
-export function closeChatChannel(cid: number): Action {
+export function closeChatChannel(cid) {
   return {
     type: 'CLOSE_CHAT_CHANNEL',
     cid,
   };
 }
 
-export function addChatChannel(channel: Object): Action {
+export function addChatChannel(channel) {
   return {
     type: 'ADD_CHAT_CHANNEL',
     channel,
   };
 }
 
-export function blockUser(userId: number, userName: string): Action {
+export function blockUser(userId, userName) {
   return {
     type: 'BLOCK_USER',
     userId,
@@ -699,7 +690,7 @@ export function blockUser(userId: number, userName: string): Action {
   };
 }
 
-export function unblockUser(userId: number, userName: string): Action {
+export function unblockUser(userId, userName) {
   return {
     type: 'UNBLOCK_USER',
     userId,
@@ -707,35 +698,35 @@ export function unblockUser(userId: number, userName: string): Action {
   };
 }
 
-export function blockingDm(blockDm: boolean): Action {
+export function blockingDm(blockDm: boolean) {
   return {
     type: 'SET_BLOCKING_DM',
     blockDm,
   };
 }
 
-export function removeChatChannel(cid: number): Action {
+export function removeChatChannel(cid) {
   return {
     type: 'REMOVE_CHAT_CHANNEL',
     cid,
   };
 }
 
-export function muteChatChannel(cid: number): Action {
+export function muteChatChannel(cid) {
   return {
     type: 'MUTE_CHAT_CHANNEL',
     cid,
   };
 }
 
-export function unmuteChatChannel(cid: number): Action {
+export function unmuteChatChannel(cid) {
   return {
     type: 'UNMUTE_CHAT_CHANNEL',
     cid,
   };
 }
 
-export function setChatChannel(windowId: number, cid: number): Action {
+export function setChatChannel(windowId, cid) {
   return {
     type: 'SET_CHAT_CHANNEL',
     windowId,
@@ -743,7 +734,7 @@ export function setChatChannel(windowId: number, cid: number): Action {
   };
 }
 
-export function setChatInputMessage(windowId: number, msg: string): Action {
+export function setChatInputMessage(windowId, msg) {
   return {
     type: 'SET_CHAT_INPUT_MSG',
     windowId,
@@ -751,7 +742,7 @@ export function setChatInputMessage(windowId: number, msg: string): Action {
   };
 }
 
-export function addToChatInputMessage(windowId: number, msg: string): Action {
+export function addToChatInputMessage(windowId, msg) {
   return {
     type: 'ADD_CHAT_INPUT_MSG',
     windowId,
@@ -759,48 +750,48 @@ export function addToChatInputMessage(windowId: number, msg: string): Action {
   };
 }
 
-export function closeWindow(windowId): Action {
+export function closeWindow(windowId) {
   return {
     type: 'CLOSE_WINDOW',
     windowId,
   };
 }
 
-export function removeWindow(windowId): Action {
+export function removeWindow(windowId) {
   return {
     type: 'REMOVE_WINDOW',
     windowId,
   };
 }
 
-export function focusWindow(windowId): Action {
+export function focusWindow(windowId) {
   return {
     type: 'FOCUS_WINDOW',
     windowId,
   };
 }
 
-export function cloneWindow(windowId): Action {
+export function cloneWindow(windowId) {
   return {
     type: 'CLONE_WINDOW',
     windowId,
   };
 }
 
-export function maximizeWindow(windowId): Action {
+export function maximizeWindow(windowId) {
   return {
     type: 'MAXIMIZE_WINDOW',
     windowId,
   };
 }
 
-export function restoreWindow(): Action {
+export function restoreWindow() {
   return {
     type: 'RESTORE_WINDOW',
   };
 }
 
-export function moveWindow(windowId, xDiff, yDiff): Action {
+export function moveWindow(windowId, xDiff, yDiff) {
   return {
     type: 'MOVE_WINDOW',
     windowId,
@@ -809,7 +800,7 @@ export function moveWindow(windowId, xDiff, yDiff): Action {
   };
 }
 
-export function resizeWindow(windowId, xDiff, yDiff): Action {
+export function resizeWindow(windowId, xDiff, yDiff) {
   return {
     type: 'RESIZE_WINDOW',
     windowId,
@@ -818,7 +809,7 @@ export function resizeWindow(windowId, xDiff, yDiff): Action {
   };
 }
 
-export function closeAllWindowTypes(windowType: string): Action {
+export function closeAllWindowTypes(windowType) {
   return {
     type: 'CLOSE_ALL_WINDOW_TYPE',
     windowType,
@@ -826,9 +817,9 @@ export function closeAllWindowTypes(windowType: string): Action {
 }
 
 export function hideAllWindowTypes(
-  windowType: string,
+  windowType,
   hide: boolean,
-): Action {
+) {
   return {
     type: 'HIDE_ALL_WINDOW_TYPE',
     windowType,
@@ -836,7 +827,7 @@ export function hideAllWindowTypes(
   };
 }
 
-export function openChatWindow(): Action {
+export function openChatWindow() {
   return openWindow(
     'CHAT',
     '',
@@ -851,9 +842,9 @@ export function openChatWindow(): Action {
 }
 
 /*
- * query: Object with either userId: number or userName: string
+ * query with either userId or userName
  */
-export function startDm(windowId, query): PromiseAction {
+export function startDm(windowId, query) {
   return async (dispatch) => {
     dispatch(setApiFetching(true));
     const res = await requestStartDm(query);
@@ -873,7 +864,7 @@ export function startDm(windowId, query): PromiseAction {
   };
 }
 
-export function gotCoolDownDelta(delta: number) {
+export function gotCoolDownDelta(delta) {
   return {
     type: 'COOLDOWN_DELTA',
     delta,
@@ -881,8 +872,8 @@ export function gotCoolDownDelta(delta: number) {
 }
 
 export function setUserBlock(
-  userId: number,
-  userName: string,
+  userId,
+  userName,
   block: boolean,
 ) {
   return async (dispatch) => {
@@ -925,7 +916,7 @@ export function setBlockingDm(
 }
 
 export function setLeaveChannel(
-  cid: number,
+  cid,
 ) {
   return async (dispatch) => {
     dispatch(setApiFetching(true));
@@ -944,25 +935,25 @@ export function setLeaveChannel(
   };
 }
 
-export function hideContextMenu(): Action {
+export function hideContextMenu() {
   return {
     type: 'HIDE_CONTEXT_MENU',
   };
 }
 
-export function reloadUrl(): Action {
+export function reloadUrl() {
   return {
     type: 'RELOAD_URL',
   };
 }
 
-export function onViewFinishChange(): Action {
+export function onViewFinishChange() {
   return {
     type: 'ON_VIEW_FINISH_CHANGE',
   };
 }
 
-export function selectHistoricalTime(date: string, time: string) {
+export function selectHistoricalTime(date, time) {
   return {
     type: 'SET_HISTORICAL_TIME',
     date,
@@ -970,7 +961,7 @@ export function selectHistoricalTime(date: string, time: string) {
   };
 }
 
-export function urlChange(): PromiseAction {
+export function urlChange() {
   return (dispatch) => {
     dispatch(reloadUrl());
   };

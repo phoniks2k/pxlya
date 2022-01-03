@@ -1,7 +1,3 @@
-/* @flow */
-
-import type { Cell } from './Cell';
-import type { State } from '../reducers';
 
 import {
   TILE_SIZE,
@@ -15,7 +11,7 @@ import {
  * @param m
  * @returns {number} remainder
  */
-export function mod(n: number, m: number): number {
+export function mod(n, m) {
   return ((n % m) + m) % m;
 }
 
@@ -30,18 +26,18 @@ export function getRandomInt(min, max) {
   return min + (Math.floor(Math.random() * range));
 }
 
-export function distMax([x1, y1]: Cell, [x2, y2]: Cell): number {
+export function distMax([x1, y1], [x2, y2]) {
   return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 }
 
-export function clamp(n: number, min: number, max: number): number {
+export function clamp(n, min, max) {
   return Math.max(min, Math.min(n, max));
 }
 
 /*
  * convert YYYY-MM-DD to YYYYMMDD
  */
-export function dateToString(date: string) {
+export function dateToString(date) {
   // YYYY-MM-DD
   return date.substr(0, 4) + date.substr(5, 2) + date.substr(8, 2);
 }
@@ -61,11 +57,11 @@ export function getToday() {
 // z is assumed to be height here
 // in ui and rendeer, y is height
 export function getChunkOfPixel(
-  canvasSize: number,
-  x: number,
-  y: number,
-  z: number = null,
-): Cell {
+  canvasSize,
+  x,
+  y,
+  z = null,
+) {
   const tileSize = (z === null) ? TILE_SIZE : THREE_TILE_SIZE;
   const width = (z == null) ? y : z;
   const cx = Math.floor((x + (canvasSize / 2)) / tileSize);
@@ -74,25 +70,25 @@ export function getChunkOfPixel(
 }
 
 export function getTileOfPixel(
-  tileScale: number,
-  pixel: Cell,
-  canvasSize: number = null,
-): Cell {
+  tileScale,
+  pixel,
+  canvasSize = null,
+) {
   const target = pixel.map(
     (x) => Math.floor((x + canvasSize / 2) / TILE_SIZE * tileScale),
   );
   return target;
 }
 
-export function getMaxTiledZoom(canvasSize: number): number {
+export function getMaxTiledZoom(canvasSize) {
   if (!canvasSize) return 0;
   return Math.log2(canvasSize / TILE_SIZE) / TILE_ZOOM_LEVEL * 2;
 }
 
 export function getHistoricalCanvasSize(
-  historicalDate: string,
-  canvasSize: number,
-  historicalSizes: Array,
+  historicalDate,
+  canvasSize,
+  historicalSizes,
 ) {
   if (historicalDate && historicalSizes) {
     let i = historicalSizes.length;
@@ -107,7 +103,7 @@ export function getHistoricalCanvasSize(
   return canvasSize;
 }
 
-export function getCanvasBoundaries(canvasSize: number): number {
+export function getCanvasBoundaries(canvasSize) {
   const canvasMinXY = -canvasSize / 2;
   const canvasMaxXY = canvasSize / 2 - 1;
   return [canvasMinXY, canvasMaxXY];
@@ -116,11 +112,11 @@ export function getCanvasBoundaries(canvasSize: number): number {
 // z is assumed to be height here
 // in ui and rendeer, y is height
 export function getOffsetOfPixel(
-  canvasSize: number,
-  x: number,
-  y: number,
-  z: number = null,
-): number {
+  canvasSize,
+  x,
+  y,
+  z = null,
+) {
   const tileSize = (z === null) ? TILE_SIZE : THREE_TILE_SIZE;
   const width = (z == null) ? y : z;
   let offset = (z === null) ? 0 : (y * tileSize * tileSize);
@@ -138,7 +134,7 @@ export function getOffsetOfPixel(
  * @param ident ident string
  * @return key
  */
-export function getIdFromObject(obj: Object, ident: string): number {
+export function getIdFromObject(obj, ident) {
   const ids = Object.keys(obj);
   for (let i = 0; i < ids.length; i += 1) {
     const key = ids[i];
@@ -152,12 +148,12 @@ export function getIdFromObject(obj: Object, ident: string): number {
 // z is returned as height here
 // in ui and rendeer, y is height
 export function getPixelFromChunkOffset(
-  i: number,
-  j: number,
-  offset: number,
-  canvasSize: number,
+  i,
+  j,
+  offset,
+  canvasSize,
   is3d: boolean = false,
-): Cell {
+) {
   const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
   const cx = offset % tileSize;
   const off = offset - cx;
@@ -172,17 +168,17 @@ export function getPixelFromChunkOffset(
 }
 
 export function getCellInsideChunk(
-  canvasSize: number,
-  pixel: Cell,
-): Cell {
+  canvasSize,
+  pixel,
+) {
   return pixel.map((x) => mod(x + canvasSize / 2, TILE_SIZE));
 }
 
 export function screenToWorld(
-  state: State,
-  $viewport: HTMLCanvasElement,
-  [x, y]: Cell,
-): Cell {
+  state,
+  $viewport,
+  [x, y],
+) {
   const { view, viewscale } = state.canvas;
   const [viewX, viewY] = view;
   const { width, height } = $viewport;
@@ -193,10 +189,10 @@ export function screenToWorld(
 }
 
 export function worldToScreen(
-  state: State,
-  $viewport: HTMLCanvasElement,
-  [x, y]: Cell,
-): Cell {
+  state,
+  $viewport,
+  [x, y],
+) {
   const { view, viewscale } = state.canvas;
   const [viewX, viewY] = view;
   const { width, height } = $viewport;
@@ -207,11 +203,11 @@ export function worldToScreen(
 }
 
 export function durationToString(
-  ms: number,
+  ms,
   smallest: boolean = false,
-): string {
+) {
   const seconds = Math.ceil(ms / 1000);
-  let timestring: string;
+  let timestring;
   if (seconds < 60 && smallest) {
     timestring = seconds;
   } else {
@@ -222,7 +218,7 @@ export function durationToString(
 }
 
 const postfix = ['k', 'M', 'B'];
-export function numberToString(num: number): string {
+export function numberToString(num) {
   if (!num) {
     return 'N/A';
   }
@@ -246,7 +242,7 @@ export function numberToString(num: number): string {
   return '';
 }
 
-export function numberToStringFull(num: number): string {
+export function numberToStringFull(num) {
   if (num < 0) {
     return `${num} :-(`;
   } if (num < 1000) {
@@ -262,7 +258,7 @@ export function numberToStringFull(num: number): string {
 /*
  * generates a color based on a given string
  */
-export function colorFromText(str: string) {
+export function colorFromText(str) {
   if (!str) return '#000000';
 
   let hash = 0;
@@ -312,7 +308,7 @@ function escapeRegExp(string) {
  * @param name name
  * @return regular expression to search for name in message
  */
-export function createNameRegExp(name: string) {
+export function createNameRegExp(name) {
   if (!name) return null;
   return new RegExp(`(^|\\s+)(@${escapeRegExp(name)})(\\s+|$)`, 'g');
 }

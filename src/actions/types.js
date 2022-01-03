@@ -1,6 +1,5 @@
 /* @flow */
 
-import type { Cell } from '../core/Cell';
 import type { ColorIndex } from '../core/Palette';
 import type { State } from '../reducers';
 
@@ -30,7 +29,7 @@ export type Action =
   | { type: 'SET_NOTIFICATION', notification: string }
   | { type: 'UNSET_NOTIFICATION' }
   | { type: 'SET_REQUESTING_PIXEL', requestingPixel: boolean }
-  | { type: 'SET_HOVER', hover: Cell }
+  | { type: 'SET_HOVER', hover: Array }
   | { type: 'UNSET_HOVER' }
   | { type: 'SET_WAIT', wait: ?number }
   | { type: 'RECEIVE_COOLDOWN', wait: number }
@@ -44,12 +43,12 @@ export type Action =
   | { type: 'PLACED_PIXELS', amount: number }
   | { type: 'PIXEL_WAIT' }
   | { type: 'PIXEL_FAILURE' }
-  | { type: 'SET_VIEW_COORDINATES', view: Cell }
-  | { type: 'SET_SCALE', scale: number, zoompoint: Cell }
-  | { type: 'REQUEST_BIG_CHUNK', center: Cell }
-  | { type: 'PRE_LOADED_BIG_CHUNK', center: Cell }
-  | { type: 'RECEIVE_BIG_CHUNK', center: Cell, chunk: Uint8Array }
-  | { type: 'RECEIVE_BIG_CHUNK_FAILURE', center: Cell, error: Error }
+  | { type: 'SET_VIEW_COORDINATES', view: Array }
+  | { type: 'SET_SCALE', scale: number, zoompoint: Array }
+  | { type: 'REQUEST_BIG_CHUNK', center: Array }
+  | { type: 'PRE_LOADED_BIG_CHUNK', center: Array }
+  | { type: 'RECEIVE_BIG_CHUNK', center: Array, chunk: Uint8Array }
+  | { type: 'RECEIVE_BIG_CHUNK_FAILURE', center: Array, error: Error }
   | { type: 'UPDATE_PIXEL',
     i: number,
     j: number,

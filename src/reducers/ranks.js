@@ -1,32 +1,19 @@
-/* @flow */
 
-import type { Action } from '../actions/types';
-
-export type RanksState = {
-  totalPixels: number,
-  dailyTotalPixels: number,
-  ranking: number,
-  dailyRanking: number,
-  // global stats
-  online: ?number,
-  totalRanking: Object,
-  totalDailyRanking: Object,
-};
-
-const initialState: RanksState = {
+const initialState = {
   totalPixels: 0,
   dailyTotalPixels: 0,
   ranking: 1488,
   dailyRanking: 1488,
+  // global stats
   online: 1,
   totalRanking: {},
   totalDailyRanking: {},
 };
 
 export default function ranks(
-  state: RanksState = initialState,
-  action: Action,
-): RanksState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'PLACED_PIXELS': {
       let { totalPixels, dailyTotalPixels } = state;

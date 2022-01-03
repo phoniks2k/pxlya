@@ -1,36 +1,27 @@
 /*
  * local save state for chat stuff
  *
- * @flow
  */
-
-import type { Action } from '../actions/types';
 
 const TIME_DIFF_THREASHOLD = 15000;
 
-export type ChatReadState = {
+const initialState = {
   // channels that are muted
   // [cid, cid2, ...]
-  mute: Array,
+  mute: [],
   // timestamps of last read
   // {cid: lastTs, ...}
-  readTs: Object,
+  readTs: {},
   // booleans if channel is unread
   // {cid: unread, ...}
-  unread: Object,
-};
-
-const initialState: ChatReadState = {
-  mute: [],
-  readTs: {},
   unread: {},
 };
 
 
 export default function chatRead(
-  state: ModalState = initialState,
-  action: Action,
-): ChatReadState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'RECEIVE_ME':
     case 'LOGIN': {

@@ -1,23 +1,4 @@
-/* @flow */
-
-import type { Action } from '../actions/types';
-import type { Cell } from '../core/Cell';
-
-
-export type GUIState = {
-  showGrid: boolean,
-  showPixelNotify: boolean,
-  hover: ?Cell,
-  autoZoomIn: boolean,
-  isPotato: boolean,
-  isLightGrid: boolean,
-  compactPalette: boolean,
-  paletteOpen: boolean,
-  menuOpen: boolean,
-  style: string,
-};
-
-const initialState: GUIState = {
+const initialState = {
   showGrid: false,
   showPixelNotify: false,
   hover: null,
@@ -32,9 +13,9 @@ const initialState: GUIState = {
 
 
 export default function gui(
-  state: GUIState = initialState,
-  action: Action,
-): GUIState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'TOGGLE_GRID': {
       return {

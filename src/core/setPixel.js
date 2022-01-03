@@ -1,7 +1,6 @@
 /*
  * Set pixels on canvas.
  * Pixels get collected in a cache for 5ms and sent to players at once.
- * @flow
  * */
 import RedisCanvas from '../data/models/RedisCanvas';
 import {
@@ -22,11 +21,11 @@ import canvases from './canvases.json';
  * @param offset Offset of pixel withing chunk
  */
 export function setPixelByOffset(
-  canvasId: number,
-  color: ColorIndex,
-  i: number,
-  j: number,
-  offset: number,
+  canvasId,
+  color,
+  i,
+  j,
+  offset,
 ) {
   RedisCanvas.setPixelInChunk(i, j, offset, color, canvasId);
   pixelCache.append(canvasId, color, i, j, offset);
@@ -42,11 +41,11 @@ export function setPixelByOffset(
  * @param z optional, if given its 3d canvas
  */
 export function setPixelByCoords(
-  canvasId: number,
-  color: ColorIndex,
-  x: number,
-  y: number,
-  z: number = null,
+  canvasId,
+  color,
+  x,
+  y,
+  z = null,
 ) {
   const canvasSize = canvases[canvasId].size;
   const [i, j] = getChunkOfPixel(canvasSize, x, y, z);

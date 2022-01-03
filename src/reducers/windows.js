@@ -1,10 +1,6 @@
 /*
  * state for open windows and modal and its content
- *
- * @flow
  */
-
-import type { Action } from '../actions/types';
 
 import { clamp } from '../core/utils';
 
@@ -87,17 +83,17 @@ function sortWindows(newState) {
   return newState;
 }
 
-export type WindowsState = {
+const initialState = {
   // if windows get shown, false on small screens
-  showWindows: boolean,
+  showWindows: true,
   // highest zIndex of window
-  zMax: number,
+  zMax: 0,
   // modal is considerd as "fullscreen window"
   // its windowId is considered 0 and args are under args[0]
   modal: {
-    windowType: ?string,
-    title: ?string,
-    open: boolean,
+    windowType: null,
+    title: null,
+    open: false,
     // used to remember and restore the size
     // of a maximized window when restoring
     // {
@@ -107,7 +103,7 @@ export type WindowsState = {
     //   height: number,
     //   cloneable: boolean,
     // }
-    prevWinSize: Object,
+    prevWinSize: {},
   },
   // [
   //   {
@@ -124,32 +120,19 @@ export type WindowsState = {
   //     cloneable: boolean,
   //   },
   // ]
-  windows: Array,
+  windows: [],
   // {
   //   windowId: {
   //    ...
   //   }
   // }
-  args: Object,
-}
-
-const initialState: WindowsState = {
-  showWindows: true,
-  zMax: 0,
-  modal: {
-    windowType: null,
-    title: null,
-    open: false,
-    prevWinSize: {},
-  },
-  windows: [],
   args: {},
 };
 
 export default function windows(
-  state: WindowsState = initialState,
-  action: Action,
-): WindowsState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'OPEN_WINDOW': {
       /*

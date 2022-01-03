@@ -1,16 +1,4 @@
-/* @flow */
-
-import type { Action } from '../actions/types';
-
-export type AlertState = {
-  alertOpen: boolean,
-  alertType: ?string,
-  alertTitle: ?string,
-  alertMessage: ?string,
-  alertBtn: ?string,
-};
-
-const initialState: AlertState = {
+const initialState = {
   alertOpen: false,
   alertType: null,
   alertTitle: null,
@@ -19,9 +7,9 @@ const initialState: AlertState = {
 };
 
 export default function alert(
-  state: AlertState = initialState,
-  action: Action,
-): AlertState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'ALERT': {
       const {

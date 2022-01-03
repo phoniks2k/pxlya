@@ -1,20 +1,9 @@
 /**
  * https://stackoverflow.com/questions/35623656/how-can-i-display-a-modal-dialog-in-redux-that-performs-asynchronous-actions/35641680#35641680
  *
- * @flow
  */
 
-import type { Action } from '../actions/types';
-
-export type ContextMenuState = {
-  menuOpen: boolean,
-  menuType: ?string,
-  xPos: number,
-  yPos: number,
-  args: Object,
-};
-
-const initialState: ContextMenuState = {
+const initialState = {
   menuOpen: false,
   menuType: null,
   xPos: 0,
@@ -24,9 +13,9 @@ const initialState: ContextMenuState = {
 
 
 export default function contextMenu(
-  state: ModalState = initialState,
-  action: Action,
-): ContextMenuState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'SHOW_CONTEXT_MENU': {
       const {

@@ -1,8 +1,3 @@
-/* @flow */
-
-import type { Action } from '../actions/types';
-import type { Cell } from '../core/Cell';
-import type { ColorIndex } from '../core/Palette';
 import Palette from '../core/Palette';
 import {
   clamp,
@@ -23,13 +18,13 @@ import {
 export type CanvasState = {
   canvasId: number,
   canvasIdent: string,
-  selectedColor: ColorIndex,
+  selectedColor: number,
   is3D: boolean,
   canvasSize: number,
   canvasStartDate: string,
   palette: Palette,
   clrIgnore: number,
-  view: Cell,
+  view: Array,
   scale: number,
   viewscale: number,
   isHistoricalView: boolean,
@@ -135,7 +130,7 @@ function getViewFromURL(canvases: Object) {
   }
 }
 
-const initialState: CanvasState = {
+const initialState = {
   ...getViewFromURL(DEFAULT_CANVASES),
   isHistoricalView: false,
   historicalDate: null,
@@ -146,8 +141,8 @@ const initialState: CanvasState = {
 
 
 export default function canvasReducer(
-  state: CanvasState = initialState,
-  action: Action,
+  state = initialState,
+  action,
 ): CanvasState {
   switch (action.type) {
     case 'SET_SCALE': {

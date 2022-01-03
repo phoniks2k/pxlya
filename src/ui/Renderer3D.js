@@ -229,7 +229,7 @@ class Renderer {
     return this.threeRenderer.domElement;
   }
 
-  updateCanvasData(state: State) {
+  updateCanvasData(state) {
     const {
       canvasId,
       view,

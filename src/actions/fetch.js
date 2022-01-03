@@ -2,7 +2,6 @@
  * Collect api fetch commands for actions here
  * (chunk and tiles requests in ui/ChunkLoader*.js)
  *
- * @flow
  */
 
 import { t } from 'ttag';
@@ -107,7 +106,7 @@ async function makeAPIGETRequest(url) {
  * @param block true if block, false if unblock
  * @return error string or null if successful
  */
-export async function requestBlock(userId: number, block: boolean) {
+export async function requestBlock(userId, block) {
   const res = await makeAPIPOSTRequest(
     'api/block',
     { userId, block },
@@ -123,7 +122,7 @@ export async function requestBlock(userId: number, block: boolean) {
 
 /*
  * start new DM channel with user
- * @param query Object with either userId: number or userName: string
+ * @param query Object with either userId or userName: string
  * @return channel Array on success, error string if not
  */
 export async function requestStartDm(query) {
@@ -145,7 +144,7 @@ export async function requestStartDm(query) {
  * @param block true if blocking all dms, false if unblocking
  * @return error string or null if successful
  */
-export async function requestBlockDm(block: boolean) {
+export async function requestBlockDm(block) {
   const res = await makeAPIPOSTRequest(
     'api/blockdm',
     { block },
@@ -164,7 +163,7 @@ export async function requestBlockDm(block: boolean) {
  * @param channelId 8nteger id of channel
  * @return error string or null if successful
  */
-export async function requestLeaveChan(channelId: boolean) {
+export async function requestLeaveChan(channelId) {
   const res = await makeAPIPOSTRequest(
     'api/leavechan',
     { channelId },

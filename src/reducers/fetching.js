@@ -1,27 +1,18 @@
 /*
  * keeps track of some api fetching states
  *
- * @flow
  */
 
-import type { Action } from '../actions/types';
-
-export type FetchingState = {
-  fetchingChunks: number,
-  fetchingChat: boolean,
-  fetchinApi: boolean,
-}
-
-const initialState: FetchingState = {
+const initialState = {
   fetchingChunks: 0,
   fetchingChat: false,
   fetchinApi: false,
 };
 
 export default function fetching(
-  state: FetchingState = initialState,
-  action: Action,
-): FetchingState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'SET_CHAT_FETCHING': {
       const { fetching: fetchingChat } = action;

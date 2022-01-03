@@ -1,23 +1,15 @@
 /* @flow */
 
-import type { Action } from '../actions/types';
-
-
-export type AudioState = {
-  mute: boolean,
-  chatNotify: boolean,
-};
-
-const initialState: AudioState = {
+const initialState = {
   mute: false,
   chatNotify: true,
 };
 
 
 export default function audio(
-  state: AudioState = initialState,
-  action: Action,
-): AudioState {
+  state = initialState,
+  action,
+) {
   switch (action.type) {
     case 'TOGGLE_MUTE':
       return {
