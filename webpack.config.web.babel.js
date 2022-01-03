@@ -15,7 +15,7 @@ const basePackageValues = {
   private: true,
   engines: pkg.engines,
   scripts: {
-    start: 'node --nouse-idle-notification --expose-gc web.js',
+    start: 'node --nouse-idle-notification --expose-gc server.js',
   },
   dependencies: {
     mysql2: '',
@@ -40,21 +40,22 @@ export default ({
   }
 
   return {
-    name: 'web',
+    name: 'server',
     target: 'node',
 
     context: __dirname,
     mode: (development) ? 'development' : 'production',
 
     entry: {
-      web: [path.resolve(__dirname, 'src', 'web.js')],
+      server: [path.resolve(__dirname, 'src', 'server.js')],
       backup: [path.resolve(__dirname, 'src', 'backup.js')],
       captchaserver: [path.resolve(__dirname, 'src', 'captchaserver.js')],
     },
 
     output: {
-      path: path.resolve(__dirname, 'build'),
-      libraryTarget: 'commonjs2',
+      library: {
+        type: 'commonjs2',
+      },
       clean: true,
     },
 
@@ -78,7 +79,6 @@ export default ({
                   node: pkg.engines.node.replace(/^\D+/g, ''),
                 },
                 modules: false,
-                useBuiltIns: false,
               }],
             ],
             plugins: babelPlugins,
@@ -127,7 +127,7 @@ export default ({
         patterns: [
           {
             from: path.resolve(__dirname, 'public'),
-            to: path.resolve(__dirname, 'build', 'public'),
+            to: path.resolve(__dirname, 'dist', 'public'),
           },
           path.resolve(__dirname, 'src', 'canvases.json'),
           path.resolve(__dirname, 'src', 'proxies.json'),
@@ -136,7 +136,7 @@ export default ({
               __dirname, 'deployment', 'example-ecosystem.yml'
             ),
             to: path.resolve(
-              __dirname, 'build', 'ecosystem.yml'
+              __dirname, 'dist', 'ecosystem.yml'
             ),
           },
           {
@@ -144,19 +144,19 @@ export default ({
               __dirname, 'deployment', 'example-ecosystem-backup.yml'
             ),
             to: path.resolve(
-              __dirname, 'build', 'ecosystem-backup.yml'
+              __dirname, 'dist', 'ecosystem-backup.yml'
             ),
           },
           {
             from: path.resolve(__dirname, 'captchaFonts'),
-            to: path.resolve(__dirname, 'build', 'captchaFonts'),
+            to: path.resolve(__dirname, 'dist', 'captchaFonts'),
           },
           {
             from: path.resolve(
               __dirname, 'deployment', 'example-ecosystem-captchas.yml'
             ),
             to: path.resolve(
-              __dirname, 'build', 'ecosystem-captchas.yml'
+              __dirname, 'dist', 'ecosystem-captchas.yml'
             ),
           },
         ],
@@ -168,7 +168,6 @@ export default ({
       reasons: false,
       hash: false,
       version: false,
-      timings: true,
       chunkModules: false,
     },
 

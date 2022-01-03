@@ -16,8 +16,8 @@ import CleanCSS from 'clean-css';
 import crypto from 'crypto';
 import mkdirp from 'mkdirp';
 
-const assetdir = path.resolve(__dirname, '..', 'build', 'public', 'assets');
-const builddir = path.resolve(__dirname, '..', 'build');
+const assetdir = path.resolve(__dirname, '..', 'dist', 'public', 'assets');
+const builddir = path.resolve(__dirname, '..', 'dist');
 
 const FOLDER = path.resolve(__dirname, '..', 'src', 'styles');
 const FILES = fs.readdirSync(FOLDER).filter((e) => e.startsWith('theme-'));
@@ -58,7 +58,7 @@ async function minifyCss() {
 
 async function doMinifyCss() {
   try {
-    mkdirp.sync(path.resolve(__dirname, '..', 'build', 'public', 'assets'));
+    mkdirp.sync(assetdir);
     await minifyCss();
   } catch (e) {
     console.log('ERROR while minifying css', e);

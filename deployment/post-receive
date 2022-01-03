@@ -1,16 +1,12 @@
 #!/bin/bash
-# This hook builds pixelplanet after a push, and deploys it
+# This hook dists pixelplanet after a push, and deploys it
 # If it is the production branch, it will deploy it on the life system, and other branch will get deployed to the dev-canvas (a second canvas that is running on the server)
 # canvases.json, proxies.json and ecosystem.yml are already in the terget directories
-# Update messages will get sent via the Webhooks to Discord
 #
 # To set up a server to use this, you have to go through the building steps manually first.
-# This hook just builds the canvas, it does not install new packages if needed. So this has to be done manually first
+# And the configured ecosystem-x.yml files need to be in the target folder already, as they don't get copied from the build directory.
+# This hook just buildss the canvas, it does not install new packages if needed. So this has to be done manually first
 #
-#discord webhook for dev canvas
-WEBHOOK='https://discordapp.com/api/webhooks/5440815510.....'
-#discord webhook for production canvas
-PWEBHOOK='https://discordapp.com/api/webhooks/54413213......'
 #folder for building the canvas (the git repository will get checkout there and the canvas will get buil thtere)
 BUILDDIR="/home/pixelpla/pixelplanet-build"
 #folder for dev canvas
@@ -25,51 +21,45 @@ do
         echo "---UPDATING REPO ON PRODUCTION SERVER---"
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard origin/production
-        curl -H "Content-Type: application/json" --data-binary '{ "username": "PixelPlanet Server", "avatar_url": "https://pixelplanet.fun/favicon.ico", "content": "Restarting canvas for Updates..." }' "$PWEBHOOK"
         COMMITS=`git log --pretty=format:'- %s%b' $newrev ^$oldrev`
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
         echo "---BUILDING pixelplanet---"
         cd "$BUILDDIR"
         npm run build
         echo "---RESTARTING CANVAS---"
-        cp -r build/*.js "${PFOLDER}/"
-        cp -r build/public "${PFOLDER}/"
-        cp -r build/captchaFonts "${PFOLDER}/"
-        cp -r build/package.json "${PFOLDER}/"
-        cp -r build/assets.json "${PFOLDER}/"
-        cp -r build/styleassets.json "${PFOLDER}/"
+        cp -r dist/*.js "${PFOLDER}/"
+        cp -r dist/public "${PFOLDER}/"
+        cp -r dist/captchaFonts "${PFOLDER}/"
+        cp -r dist/package.json "${PFOLDER}/"
+        cp -r dist/assets.json "${PFOLDER}/"
+        cp -r dist/styleassets.json "${PFOLDER}/"
         mkdir -p "${PFOLDER}/log"
-        #cp ecosystem-production.yml "${PFOLDER}/ecosystem.yml"
         cd "$PFOLDER"
-        pm2 stop web
-        pm2 stop backup
-        pm2 stop captchas
+        pm2 stop ppfun-server
+        pm2 stop ppfun-backups
+        pm2 stop ppfun-captchas
         pm2 start ecosystem.yml
         pm2 start ecosystem-backup.yml
         pm2 start ecosystem-captchas.yml
-        curl -H "Content-Type: application/json" --data-binary '{ "username": "PixelPlanet Server", "avatar_url": "https://pixelplanet.fun/favicon.ico", "content": "...Done", "embeds": [{"title": "New Commits", "url": "https://pixelplanet.fun", "description": "'"$COMMITS"'", "color": 15258703}] }' "$PWEBHOOK"
     else
         echo "---UPDATING REPO ON DEV SERVER---"
-        pm2 stop web-dev
+        pm2 stop ppfun-server-dev
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard "origin/$branch"
-        #curl -H "Content-Type: application/json" --data-binary '{ "username": "PixelPlanet Server", "avatar_url": "https://pixelplanet.fun/favicon.ico", "content": "Restarting pixelplanet development canvas for update..." }' "$WEBHOOK"
         COMMITS=`git log --pretty=format:'- %s%b' $newrev ^$oldrev`
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
         echo "---BUILDING pixelplanet---"
         cd "$BUILDDIR"
-        nice -n 19 npm run build
+        nice -n 19 npm run build-en
         echo "---RESTARTING CANVAS---"
-        cp -r build/*.js "${DEVFOLDER}/"
-        cp -r build/public "${DEVFOLDER}/"
-        cp -r build/captchaFonts "${DEVFOLDER}/"
-        cp -r build/package.json "${DEVFOLDER}/"
-        cp -r build/assets.json "${DEVFOLDER}/"
-        cp -r build/styleassets.json "${DEVFOLDER}/"
+        cp -r dist/*.js "${DEVFOLDER}/"
+        cp -r dist/public "${DEVFOLDER}/"
+        cp -r dist/captchaFonts "${DEVFOLDER}/"
+        cp -r dist/package.json "${DEVFOLDER}/"
+        cp -r dist/assets.json "${DEVFOLDER}/"
+        cp -r dist/styleassets.json "${DEVFOLDER}/"
         mkdir -p "${PFOLDER}/log"
-        #cp ecosystem-dev.yml "${DEVFOLDER}/ecosystem.yml"
         cd "$DEVFOLDER"
         pm2 start ecosystem.yml
-        #curl -H "Content-Type: application/json" --data-binary '{ "username": "PixelPlanet Server", "avatar_url": "https://pixelplanet.fun/favicon.ico", "content": "...Done\nhttp://dev.pixelplanet.fun is now on branch '"$branch"'", "embeds": [{"title": "New Commits", "url": "https://pixelplanet.fun", "description": "'"$COMMITS"'", "color": 15258703}] }' "$WEBHOOK"
     fi
   done

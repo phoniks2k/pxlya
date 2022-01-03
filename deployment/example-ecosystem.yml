@@ -1,6 +1,6 @@
 apps:
-  - script   : ./web.js
-    name     : 'web'
+  - script   : ./server.js
+    name     : 'ppfun-server'
     node_args: --nouse-idle-notification --expose-gc
     env:
       PORT: 80

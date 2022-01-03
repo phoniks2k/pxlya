@@ -43,7 +43,7 @@ npm run build
 ```
 
 
-All needed files to run it got created in `./build`
+All needed files to run it got created in `./dist`
 
 Notes:
 
@@ -171,7 +171,7 @@ Notes:
 General logs are in `~/pm2/log/`, you can view them with
 
 ```
-pm2 log web 
+pm2 log ppfun-server
 ```
 
 you can flush the logs with 
@@ -184,7 +184,7 @@ Pixel placing logs are in `./log/pixels.log`and proxycheck logs in `./log/proxie
 
 ### Stopping
 ```
-pm2 stop web
+pm2 stop ppfun-server
 ```
 
 ### If using Cloudflare / Reverse Proxy
@@ -212,7 +212,7 @@ PixelPlanet includes a backup script that creates full canvas backups daily in t
 
 It requires a [second running redis instance](https://www.digitalocean.com/community/questions/multiple-redis-instances-on-ubuntu-16-04).
 
-The backup script gets built when building pixelplanet and also gets copied to build/ directory. You can run it with:
+The backup script gets built when building pixelplanet and also gets copied to dist/ directory. You can run it with:
 
 ```
 node backup.js REDIS_URL_CANVAS REDIS_URL_BACKUP BACKUP_DIRECTORY [INTERVAL] [COMMAND]
@@ -222,7 +222,7 @@ Make sure to get the order right, because the backup redis instance will be over
 Interval is the time in minutes between incremential backups. If interval is undefined, it will just make one backup and then exit.
 If command is defined, it will be executed after every backup (just one command, with no arguments, like "dosomething.sh"), this is useful for synchronisation with a storage server i.e.. Look into utils/backupServer for some scripts and info on how to run it.
 
-You can run it with pm2, just like pixelplanet. An example ecosystem-backup.example.yml file will be located in the build directory.
+You can run it with pm2, just like pixelplanet. An example ecosystem-backup.example.yml file will be located in the dist directory.
 
 Note:
 - You do not have to run backups or historical view, it's optional.

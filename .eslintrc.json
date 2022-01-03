@@ -1,6 +1,5 @@
 {
   "extends": [
-    "plugin:flowtype/recommended",
     "airbnb"
   ],
   "parser":"@babel/eslint-parser",
@@ -10,7 +9,6 @@
     }
   },
   "plugins": [
-      "flowtype",
       "react",
       "jsx-a11y",
       "import"

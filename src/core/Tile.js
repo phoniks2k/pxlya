@@ -1,7 +1,5 @@
 /*
  * * basic functions for creating zommed tiles
- *
- * @flow
  * */
 
 // Tile creation is allowed to be slow
@@ -10,8 +8,6 @@
 import sharp from 'sharp';
 import fs from 'fs';
 
-import type { Cell } from './Cell';
-import type { Palette } from './Palette';
 import logger from './logger';
 import { getMaxTiledZoom } from './utils';
 import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
@@ -25,9 +21,9 @@ import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
  * @param buffer Uint8Array for RGB values of tile
  */
 function deleteSubtilefromTile(
-  palette: Palette,
-  subtilesInTile: number,
-  cell: Cell,
+  palette,
+  subtilesInTile,
+  cell,
   buffer: Uint8Array,
 ) {
   const [dx, dy] = cell;
@@ -53,14 +49,14 @@ function deleteSubtilefromTile(
  * @param buffer Uint8Array for RGB values of tile
  */
 function addRGBSubtiletoTile(
-  subtilesInTile: number,
-  cell: Cell,
+  subtilesInTile,
+  cell,
   subtile: Buffer,
   buffer: Uint8Array,
 ) {
   const [dx, dy] = cell;
   const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
-  let pos: number = 0;
+  let pos = 0;
   for (let row = 0; row < TILE_SIZE; row += 1) {
     let channelOffset = (chunkOffset + row * TILE_SIZE * subtilesInTile) * 3;
     const max = channelOffset + TILE_SIZE * 3;
@@ -80,16 +76,16 @@ function addRGBSubtiletoTile(
  * @param buffer RGB Buffer of tile
  */
 function addIndexedSubtiletoTile(
-  palette: Palette,
-  subtilesInTile: number,
-  cell: Cell,
+  palette,
+  subtilesInTile,
+  cell,
   subtile: Buffer,
   buffer: Uint8Array,
 ) {
   const [dx, dy] = cell;
   const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
-  let pos: number = 0;
-  let clr: number;
+  let pos = 0;
+  let clr;
   for (let row = 0; row < TILE_SIZE; row += 1) {
     let channelOffset = (chunkOffset + row * TILE_SIZE * subtilesInTile) * 3;
     const max = channelOffset + TILE_SIZE * 3;
@@ -107,7 +103,7 @@ function addIndexedSubtiletoTile(
  * @param cell tile [z, x, y]
  * @return filename of tile
  */
-function tileFileName(canvasTileFolder: string, cell: Cell): string {
+function tileFileName(canvasTileFolder, cell) {
   const [z, x, y] = cell;
   const filename = `${canvasTileFolder}/${z}/${x}/${y}.png`;
   return filename;
@@ -124,11 +120,11 @@ function tileFileName(canvasTileFolder: string, cell: Cell): string {
  */
 export async function createZoomTileFromChunk(
   redisCanvas: Object,
-  canvasSize: number,
-  canvasId: number,
-  canvasTileFolder: string,
-  palette: Palette,
-  cell: Cell,
+  canvasSize,
+  canvasId,
+  canvasTileFolder,
+  palette,
+  cell,
 ): boolean {
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
@@ -189,9 +185,9 @@ export async function createZoomTileFromChunk(
  * @return trie if successfully created tile, false if tile empty
  */
 export async function createZoomedTile(
-  canvasTileFolder: string,
-  palette: Palette,
-  cell: Cell,
+  canvasTileFolder,
+  palette,
+  cell,
 ): boolean {
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
@@ -243,8 +239,8 @@ export async function createZoomedTile(
  * @param palette Palette to use
  */
 export async function createEmptyTile(
-  canvasTileFolder: string,
-  palette: Palette,
+  canvasTileFolder,
+  palette,
 ) {
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * 3,
@@ -283,10 +279,10 @@ export async function createEmptyTile(
  */
 export async function createTexture(
   redisCanvas: Object,
-  canvasId: number,
-  canvasSize: numbr,
+  canvasId,
+  canvasSize,
   canvasTileFolder,
-  palette: Palette,
+  palette,
 ) {
   // dont create textures larger than 4096
   const targetSize = Math.min(canvasSize, 4096);
@@ -359,10 +355,10 @@ export async function createTexture(
  */
 export async function initializeTiles(
   redisCanvas: Object,
-  canvasSize: number,
-  canvasId: number,
-  canvasTileFolder: string,
-  palette: Palette,
+  canvasSize,
+  canvasId,
+  canvasTileFolder,
+  palette,
   force: boolean = false,
 ) {
   logger.info(

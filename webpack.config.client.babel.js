@@ -13,7 +13,7 @@ import pkg from './package.json';
  * Emit a file with assets paths
  */
 const assetPlugin = new AssetsPlugin({
-  path: path.resolve(__dirname, 'build'),
+  path: path.resolve(__dirname, 'dist'),
   filename: 'assets.json',
   update: true,
   entrypoints: true,
@@ -61,7 +61,7 @@ export function buildWebpackClientConfig(
     },
 
     output: {
-      path: path.resolve(__dirname, 'build', 'public', 'assets'),
+      path: path.resolve(__dirname, 'dist', 'public', 'assets'),
       publicPath: '/assets/',
       filename: '[name].[chunkhash:8].js',
       chunkFilename: (locale !== 'default')
@@ -112,20 +112,11 @@ export function buildWebpackClientConfig(
             ))
           ],
           options: {
-            // should be !extract and adhere to .po timestamps
-            // in cacheIdentifier
-            cacheDirectory: false,
             presets: [
               ['@babel/preset-env', {
                 targets: {
                   browsers: pkg.browserslist,
                 },
-                /*
-                useBuiltIns: 'usage',
-                corejs: {
-                  version: 3,
-                },
-                */
               }],
             ],
             plugins: babelPlugins,
@@ -188,14 +179,13 @@ export function buildWebpackClientConfig(
       reasons: false,
       hash: false,
       version: false,
-      timings: true,
       chunkModules: false,
     },
 
     /*
      * maybe some day in the future it might be
-     * better than babel-loader cacheDirectory,
-     * but right now it isn't
+     * usesable - but then remember to 
+     * wreck the cache when .po files changed
     cache: {
       type: 'filesystem',
       cacheDirectory: path.resolve(
