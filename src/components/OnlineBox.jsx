@@ -31,36 +31,35 @@ const OnlineBox = () => {
   const onlineUsers = (onlineCanvas) ? online[canvasId] : online.total;
 
   return (
-    <div>
-      {(onlineUsers || name)
+    <div
+      className="onlinebox"
+      role="button"
+      tabIndex="0"
+      onClick={() => dispatch(toggleOnlineCanvas())}
+    >
+      {(onlineCanvas)
         ? (
-          <div
-            className="onlinebox"
-            role="button"
-            tabIndex="0"
-            onClick={() => dispatch(toggleOnlineCanvas())}
+          <span
+            title={t`Online Users on Canvas`}
           >
-            {(onlineUsers)
-              && (
-              <span
-                title={(onlineCanvas)
-                  ? t`Online Users on Canvas`
-                  : t`Total Online Users`}
-              >
-                {onlineUsers}
-                <FaUser />
-                {(onlineCanvas) && <FaFlipboard />}
-                 &nbsp;
-              </span>
-              )}
-            {(name != null)
-                && (
-                <span title={t`Pixels placed`}>
-                  {numberToString(totalPixels)} <FaPaintBrush />
-                </span>
-                )}
-          </div>
-        ) : null}
+            {online[canvasId] || 0}<FaUser /><FaFlipboard />
+          </span>
+        )
+        : (
+          <span
+            title={t`Total Online Users`}
+          >
+            {online.total}<FaUser />
+          </span>
+        )
+      }
+       &nbsp;
+      {(name != null)
+          && (
+          <span title={t`Pixels placed`}>
+            {numberToString(totalPixels)} <FaPaintBrush />
+          </span>
+      )}
     </div>
   );
 };

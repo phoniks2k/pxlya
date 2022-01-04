@@ -31,7 +31,7 @@ export default {
   dehydrate(online) {
     // SERVER (sender)
     if (!process.env.BROWSER) {
-      const canvasIds = Object.keys(online);
+      const canvasIds = Object.keys(online).filter((id) => id !== 'total');
 
       const buffer = Buffer.allocUnsafe(3 + canvasIds.length * (1 + 2));
       buffer.writeUInt8(OP_CODE, 0);

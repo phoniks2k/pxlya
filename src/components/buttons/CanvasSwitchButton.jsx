@@ -1,11 +1,10 @@
 /**
  *
- * @flow
  */
 
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { FaGlobe } from 'react-icons/fa';
+import { FaFlipboard } from 'react-icons/fa';
 import { t } from 'ttag';
 
 import { showCanvasSelectionModal } from '../../actions';
@@ -23,7 +22,7 @@ const CanvasSwitchButton = () => {
       title={t`Canvas Selection`}
       tabIndex={-1}
     >
-      <FaGlobe />
+      <FaFlipboard />
     </div>
   );
 };
