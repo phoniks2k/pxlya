@@ -4,7 +4,7 @@
 import WebSocket from 'ws';
 
 import logger from '../core/logger';
-import canvases from '../canvases.json';
+import canvases from './canvases.json';
 import Counter from '../utils/Counter';
 import { getIPFromRequest } from '../utils/ip';
 

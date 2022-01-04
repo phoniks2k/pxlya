@@ -45,6 +45,14 @@ msgstr ""
 msgid "Hide Hidden Canvases"
 msgstr ""
 
+#: src/ui/renderer.js:36
+msgid "Canvas Error"
+msgstr ""
+
+#: src/ui/renderer.js:37
+msgid "Can't render 3D canvas, do you have WebGL2 disabled?"
+msgstr ""
+
 #: src/ui/placePixel.js:53
 msgid "Error :("
 msgstr ""
@@ -138,40 +146,36 @@ msgstr ""
 msgid "Error ${ retCode }"
 msgstr ""
 
-#: src/ui/renderer.js:36
-msgid "Canvas Error"
-msgstr ""
-
-#: src/ui/renderer.js:37
-msgid "Can't render 3D canvas, do you have WebGL2 disabled?"
-msgstr ""
-
-#: src/actions/index.js:627
+#: src/actions/index.js:632
 msgid "Register New Account"
 msgstr ""
 
-#: src/actions/index.js:634
+#: src/actions/index.js:639
 msgid "Restore my Password"
 msgstr ""
 
-#: src/actions/index.js:641
+#: src/actions/index.js:646
 msgid "Welcome to PixelPlanet.fun"
 msgstr ""
 
-#: src/actions/index.js:647
+#: src/actions/index.js:652
 msgid "Look at past Canvases"
 msgstr ""
 
-#: src/components/Converter.jsx:559
+#: src/components/Converter.jsx:567
 #: src/components/CoordinatesBox.jsx:32
 msgid "Copy to Clipboard"
 msgstr ""
 
-#: src/components/OnlineBox.jsx:30
-msgid "User online"
+#: src/components/OnlineBox.jsx:43
+msgid "Online Users on Canvas"
 msgstr ""
 
-#: src/components/OnlineBox.jsx:33
+#: src/components/OnlineBox.jsx:50
+msgid "Total Online Users"
+msgstr ""
+
+#: src/components/OnlineBox.jsx:59
 msgid "Pixels placed"
 msgstr ""
 
@@ -186,32 +190,37 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: src/actions/fetch.js:40
+#: src/components/buttons/CanvasSwitchButton.jsx:22
+#: src/components/windows/index.js:22
+msgid "Canvas Selection"
+msgstr ""
+
+#: src/actions/fetch.js:39
 msgid "You made too many requests"
 msgstr ""
 
-#: src/actions/fetch.js:44
+#: src/actions/fetch.js:43
 #, javascript-format
 msgid "try again after ${ ti }min"
 msgstr ""
 
-#: src/actions/fetch.js:55
+#: src/actions/fetch.js:54
 msgid "Connection error ${ code } :("
 msgstr ""
 
-#: src/actions/fetch.js:80
-#: src/actions/fetch.js:99
+#: src/actions/fetch.js:79
+#: src/actions/fetch.js:98
 msgid "Could not connect to server, please try again later :("
 msgstr ""
 
-#: src/actions/fetch.js:121
-#: src/actions/fetch.js:140
-#: src/actions/fetch.js:159
-#: src/actions/fetch.js:178
+#: src/actions/fetch.js:120
+#: src/actions/fetch.js:139
+#: src/actions/fetch.js:158
+#: src/actions/fetch.js:177
 msgid "Unknown Error"
 msgstr ""
 
-#: src/actions/fetch.js:188
+#: src/actions/fetch.js:187
 msgid "Server answered with gibberish :("
 msgstr ""
 
@@ -221,11 +230,6 @@ msgstr ""
 
 #: src/components/buttons/ChatButton.jsx:92
 msgid "Open Chat"
-msgstr ""
-
-#: src/components/buttons/CanvasSwitchButton.jsx:23
-#: src/components/windows/index.js:22
-msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/buttons/ExpandMenuButton.jsx:23
@@ -602,7 +606,7 @@ msgstr ""
 msgid "For when you are playing on a potato."
 msgstr ""
 
-#: src/components/Converter.jsx:373
+#: src/components/Converter.jsx:382
 #: src/components/windows/Settings.jsx:195
 msgid "Light Grid"
 msgstr ""
@@ -693,39 +697,15 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: src/components/windows/CanvasSelect.jsx:32
+#: src/components/windows/CanvasSelect.jsx:33
 msgid ""
 "Select the canvas you want to use.  Every canvas is unique and has "
 "different palettes, cooldown and requirements.  Archive of closed canvases "
 "can be accessed here:"
 msgstr ""
 
-#: src/components/windows/CanvasSelect.jsx:40
+#: src/components/windows/CanvasSelect.jsx:41
 msgid "Archive"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:146
-msgid "Channel settings"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:161
-msgid "Start chatting here"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:198
-msgid "Chat here"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:221
-msgid "You must be logged in to chat"
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:60
-msgid "Sent you a mail with instructions to reset your password."
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:71
-msgid "Enter your mail address and we will send you a new password:"
 msgstr ""
 
 #: src/components/windows/Archive.jsx:20
@@ -759,6 +739,30 @@ msgid ""
 "We decided to archive it as a timelapse with lossless encoded webm. Taking "
 "a screenshot from the timelapse results in a perfect 1:1 representation of "
 "how the canvas was at that time."
+msgstr ""
+
+#: src/components/windows/Chat.jsx:146
+msgid "Channel settings"
+msgstr ""
+
+#: src/components/windows/Chat.jsx:161
+msgid "Start chatting here"
+msgstr ""
+
+#: src/components/windows/Chat.jsx:198
+msgid "Chat here"
+msgstr ""
+
+#: src/components/windows/Chat.jsx:221
+msgid "You must be logged in to chat"
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:60
+msgid "Sent you a mail with instructions to reset your password."
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:71
+msgid "Enter your mail address and we will send you a new password:"
 msgstr ""
 
 #: src/utils/validation.js:18
@@ -809,6 +813,13 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
+#: src/components/ChangeMail.jsx:91
+#: src/components/ChangeName.jsx:68
+#: src/components/ChangePassword.jsx:110
+#: src/components/LanguageSelect.jsx:73
+msgid "Save"
+msgstr ""
+
 #: src/components/LogInArea.jsx:21
 msgid "Login to access more features and stats."
 msgstr ""
@@ -831,13 +842,6 @@ msgstr ""
 
 #: src/components/LogInArea.jsx:79
 msgid "Register"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:91
-#: src/components/ChangeName.jsx:68
-#: src/components/ChangePassword.jsx:110
-#: src/components/LanguageSelect.jsx:73
-msgid "Save"
 msgstr ""
 
 #: src/components/UserAreaContent.jsx:63
@@ -883,6 +887,18 @@ msgstr ""
 
 #: src/components/UserAreaContent.jsx:123
 msgid "Social Settings"
+msgstr ""
+
+#: src/components/Rankings.jsx:28
+msgid "Total"
+msgstr ""
+
+#: src/components/Rankings.jsx:36
+msgid "Daily"
+msgstr ""
+
+#: src/components/Rankings.jsx:40
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
 #: src/components/Admintools.jsx:184
@@ -963,115 +979,127 @@ msgstr ""
 msgid "User Name"
 msgstr ""
 
-#: src/components/Rankings.jsx:28
-msgid "Total"
-msgstr ""
-
-#: src/components/Rankings.jsx:36
-msgid "Daily"
-msgstr ""
-
-#: src/components/Rankings.jsx:40
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-
-#: src/components/Converter.jsx:236
+#: src/components/Converter.jsx:195
 msgid "Choose Canvas"
 msgstr ""
 
-#: src/components/Converter.jsx:262
+#: src/components/Converter.jsx:221
 msgid "Palette Download"
 msgstr ""
 
-#: src/components/Converter.jsx:264
+#: src/components/Converter.jsx:223
 #, javascript-format
 msgid "Palette for ${ gimpLink }"
 msgstr ""
 
-#: src/components/Converter.jsx:282
+#: src/components/Converter.jsx:241
 #, javascript-format
 msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
 msgstr ""
 
-#: src/components/Converter.jsx:285
+#: src/components/Converter.jsx:244
 msgid "Image Converter"
 msgstr ""
 
-#: src/components/Converter.jsx:286
+#: src/components/Converter.jsx:245
 msgid "Convert an image to canvas colors"
 msgstr ""
 
-#: src/components/Converter.jsx:305
+#: src/components/Converter.jsx:264
 msgid "Choose Strategy"
 msgstr ""
 
-#: src/components/Converter.jsx:322
+#: src/components/Converter.jsx:301
+msgid "Serpentine"
+msgstr ""
+
+#: src/components/Converter.jsx:303
+msgid "Minimum Color Distance"
+msgstr ""
+
+#: src/components/Converter.jsx:330
+msgid "Calculate like GIMP"
+msgstr ""
+
+#: src/components/Converter.jsx:334
 msgid "Choose Color Mode"
 msgstr ""
 
-#: src/components/Converter.jsx:350
+#: src/components/Converter.jsx:362
 msgid "Add Grid (uncheck if you need a 1:1 template)"
 msgstr ""
 
-#: src/components/Converter.jsx:375
-#: src/components/Converter.jsx:391
+#: src/components/Converter.jsx:384
+#: src/components/Converter.jsx:400
 msgid "Offset"
 msgstr ""
 
-#: src/components/Converter.jsx:421
+#: src/components/Converter.jsx:429
 msgid "Scale Image"
 msgstr ""
 
-#: src/components/Converter.jsx:433
+#: src/components/Converter.jsx:440
 msgid "Width"
 msgstr ""
 
-#: src/components/Converter.jsx:463
+#: src/components/Converter.jsx:471
 msgid "Height"
 msgstr ""
 
-#: src/components/Converter.jsx:501
+#: src/components/Converter.jsx:510
 msgid "Keep Ratio"
 msgstr ""
 
-#: src/components/Converter.jsx:514
+#: src/components/Converter.jsx:523
 msgid "Anti Aliasing"
 msgstr ""
 
-#: src/components/Converter.jsx:528
+#: src/components/Converter.jsx:537
 msgid "Reset"
 msgstr ""
 
-#: src/components/Converter.jsx:547
+#: src/components/Converter.jsx:555
 msgid "Download Template"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:27
-msgid "Cooldown"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:33
-msgid "Stacking till"
+#: src/components/CanvasItem.jsx:30
+msgid "Online Users"
 msgstr ""
 
 #: src/components/CanvasItem.jsx:35
-msgid "Ranked"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:37
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:39
-msgid "User Account"
+msgid "Cooldown"
 msgstr ""
 
 #: src/components/CanvasItem.jsx:41
+msgid "Stacking till"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:43
+msgid "Ranked"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:44
+msgid "Yes"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:44
+msgid "No"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:45
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:47
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:49
 #, javascript-format
 msgid "and ${ canvas.req } Pixels set"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:45
+#: src/components/CanvasItem.jsx:53
 msgid "Dimensions"
 msgstr ""
 
@@ -1097,10 +1125,6 @@ msgstr ""
 msgid "Click here to request a new verification mail."
 msgstr ""
 
-#: src/components/ChangeName.jsx:64
-msgid "New Username"
-msgstr ""
-
 #: src/components/ChangePassword.jsx:22
 msgid "Passwords do not match."
 msgstr ""
@@ -1119,6 +1143,10 @@ msgstr ""
 
 #: src/components/ChangePassword.jsx:104
 msgid "Confirm New Password"
+msgstr ""
+
+#: src/components/ChangeName.jsx:64
+msgid "New Username"
 msgstr ""
 
 #: src/components/ChangeMail.jsx:59
