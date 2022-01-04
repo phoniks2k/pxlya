@@ -236,6 +236,7 @@ class Renderer {
     j: number,
     offset: number,
     color,
+    notify,
   ) {
     const state = this.store.getState();
     const {
@@ -263,7 +264,9 @@ class Renderer {
 
     context.fillStyle = palette.colors[color];
     context.fillRect(px, py, scaleM, scaleM);
-    pixelNotify.addPixel(x, y);
+    if (notify) {
+      pixelNotify.addPixel(x, y);
+    }
 
     this.forceNextSubrender = true;
   }

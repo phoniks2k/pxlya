@@ -101,9 +101,10 @@ export default (store) => (next) => (action) => {
         j,
         offset,
         color,
+        notify,
       } = action;
       const renderer = getRenderer();
-      renderer.renderPixel(i, j, offset, color);
+      renderer.renderPixel(i, j, offset, color, notify);
       break;
     }
 

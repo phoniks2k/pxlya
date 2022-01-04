@@ -320,6 +320,7 @@ class SocketServer {
       }
       client = it.next();
     }
+    console.log(online);
     socketEvents.broadcastOnlineCounter(online);
   }
 

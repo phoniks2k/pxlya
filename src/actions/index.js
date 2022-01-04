@@ -358,11 +358,18 @@ export function receiveCoolDown(
   };
 }
 
+/*
+ * draw pixel on canvas
+ * @param i, j, offset Chunk and offset in chunk
+ * @param color integer Color Index
+ * @param notify Bool if pixel notification appears (false when my own pixel)
+ */
 export function updatePixel(
   i,
   j,
   offset,
   color,
+  notify = true,
 ) {
   return {
     type: 'UPDATE_PIXEL',
@@ -370,6 +377,7 @@ export function updatePixel(
     j,
     offset,
     color,
+    notify,
   };
 }
 

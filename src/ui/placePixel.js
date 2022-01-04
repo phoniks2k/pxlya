@@ -114,7 +114,7 @@ function revertPredictionsAt(
 
   while (p < clientPredictions.length) {
     const [i, j, offset, color] = clientPredictions[p];
-    store.dispatch(updatePixel(i, j, offset, color));
+    store.dispatch(updatePixel(i, j, offset, color, false));
     p += 1;
   }
 
@@ -129,7 +129,7 @@ export function tryPlacePixel(
   color,
   curColor,
 ) {
-  store.dispatch(updatePixel(i, j, offset, color));
+  store.dispatch(updatePixel(i, j, offset, color, false));
   clientPredictions.push([i, j, offset, curColor, color]);
 
   if (pixelQueue.length) {

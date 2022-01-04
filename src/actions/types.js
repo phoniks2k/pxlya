@@ -55,6 +55,7 @@ export type Action =
     j: number,
     offset: number,
     color: ColorIndex,
+    notify: boolean,
   }
   | { type: 'RECEIVE_ONLINE', online: number }
   | { type: 'RECEIVE_CHAT_MESSAGE',
