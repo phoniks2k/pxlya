@@ -252,13 +252,10 @@ Run `npm run lint:src` to check for code errors and warnings or `npm run lint --
 Please do not produce too many additional warnings.
 
 [ttag](https://github.com/ttag-org/ttag/) is used for handling translations. For server-side rendering the `Accept-Language` header gets checked and the first locale used and on-the-fly translated (`src/core/ttag.js` provides the functions for it). On the client-side a seperate bundle for every language gets provided.
-To update the language definitions in `i18n/template.pot` and `i18n/template-ssr.pot` run 
+The language definitions in `i18n/template.pot` and `i18n/template-ssr.pot` get updated when doing a dev build with
 ```
-npm run extract
+npm run build:dev
 ```
+which also only builds the default local in a development environment for debugging.
 
 You can use `npm run babel-node ./your/script.js` to execute a script with local babel.
-
-`npm run upgrade` can be use for interactively upgrading npm packages.
-
-

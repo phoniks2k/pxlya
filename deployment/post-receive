@@ -50,7 +50,7 @@ do
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
         echo "---BUILDING pixelplanet---"
         cd "$BUILDDIR"
-        nice -n 19 npm run build-en
+        nice -n 19 npm run build:dev
         echo "---RESTARTING CANVAS---"
         cp -r dist/*.js "${DEVFOLDER}/"
         cp -r dist/public "${DEVFOLDER}/"

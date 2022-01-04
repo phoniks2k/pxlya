@@ -45,6 +45,14 @@ export function buildWebpackClientConfig(
     ['ttag', ttag],
   ];
 
+  // cache invalidates if .po file changed
+  const buildDependencies = {
+    config: [__filename],
+  }
+  if (locale !== 'default') {
+    buildDependencies.i18n = [ttag.resolve.translations];
+  }
+
   return {
     name: 'client',
     target: 'web',
@@ -182,52 +190,56 @@ export function buildWebpackClientConfig(
       chunkModules: false,
     },
 
-    /*
-     * maybe some day in the future it might be
-     * usesable - but then remember to 
-     * wreck the cache when .po files changed
     cache: {
       type: 'filesystem',
-      cacheDirectory: path.resolve(
-        __dirname,
-        'node_modules',
-        '.cache',
-        'webpack',
-      ),
+      name: (development) ? `${locale}-dev` : locale,
+      buildDependencies,
     },
-     */
-    cache: false,
   };
+}
+
+export function getAllAvailableLocals() {
+  const langDir = path.resolve(__dirname, 'i18n');
+  const langs = fs.readdirSync(langDir)
+    .filter((e) => (e.endsWith('.po') && !e.startsWith('ssr')))
+    .map((l) => l.slice(0, -3));
+  langs.push('default');
+  return langs;
 }
 
 /*
  * return array of webpack configuartions for all languages
  */
-function buildWebpackClientConfigAllLangs(development, analyze) {
-  let webpackConfigClient = [
-    buildWebpackClientConfig(development, analyze, 'default', false),
-  ];
-  /*
-   * get available translations
-   */
-  const langDir = path.resolve(__dirname, 'i18n');
-  const langs = fs.readdirSync(langDir)
-    .filter((e) => (e.endsWith('.po') && !e.startsWith('ssr')))
-    .map((l) => l.slice(0, -3));
-  webpackConfigClient = webpackConfigClient.concat(
-    langs.map((l) => buildWebpackClientConfig(development, analyze, l)),
-  );
-
+function buildWebpackClientConfigAllLangs() {
+  const langs = getAllAvailableLocals();
+  const webpackConfigClient = [];
+  for (let l = 0; l < langs.length; l += 1) {
+    const lang = langs[l];
+    const cfg = buildWebpackClientConfig(false, false, lang, false);
+    webpackConfigClient.push(cfg);
+  }
   return webpackConfigClient;
 }
 
+/*
+ * Per default get configuration of all packages
+ * If any argument is given, it will only get one
+ * ('default' aka english if locale is unset)
+ *
+ * @param development If development mode
+ * @param extract if translatable strings get in i18n templates should
+ *   get updated
+ * @param locale language get single configuration of specific locale
+ * @param analyze launch BundleAnalyzerPlugin after build
+ * @return webpack configuration
+ */
 export default ({
   development, analyze, extract, locale,
 }) => {
-  if (extract || locale) {
+  if (extract || analyze || locale || development) {
     return buildWebpackClientConfig(
       development, analyze, locale || 'default', extract,
     );
   }
-  return buildWebpackClientConfigAllLangs(development, analyze);
+  return buildWebpackClientConfigAllLangs(development);
 };

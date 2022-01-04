@@ -28,7 +28,7 @@ const babelPlugins = [
   ['ttag', ttag],
 ];
 
-console.log('IGNORE GPJWP (generate-package-json-webpack-plugin) WARNINGS / ERRORS, ITS CURRENT VERSION IS A BIG BUGGY, BUT STILL WORKS');
+console.log('IGNORE GPJWP (generate-package-json-webpack-plugin) WARNINGS / ERRORS, ITS CURRENT VERSION IS A BIT BUGGY, BUT STILL WORKS');
 
 export default ({
   development, extract,
