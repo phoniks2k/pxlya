@@ -330,6 +330,7 @@ tr:nth-child(even) {
 .onlinebox {
   left: 16px;
   bottom: 57px;
+  cursor: pointer;
   white-space: nowrap;
 }
 
@@ -800,7 +801,7 @@ tr:nth-child(even) {
   padding: 0;
 }
 
-.actionbuttons:hover, .coorbox:hover, .menu > div:hover {
+.actionbuttons:hover, .coorbox:hover, .menu > div:hover, .onlinebox:hover {
   background-color: #d2d2d2cc;
 }
 

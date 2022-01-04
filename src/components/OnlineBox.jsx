@@ -4,9 +4,11 @@
  */
 
 import React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
-import { FaUser, FaPaintBrush } from 'react-icons/fa';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { FaUser, FaPaintBrush, FaFlipboard } from 'react-icons/fa';
 import { t } from 'ttag';
+
+import { toggleOnlineCanvas } from '../actions';
 import { numberToString } from '../core/utils';
 
 
@@ -15,19 +17,42 @@ const OnlineBox = () => {
     online,
     totalPixels,
     name,
+    onlineCanvas,
+    canvasId,
   ] = useSelector((state) => [
     state.ranks.online,
     state.ranks.totalPixels,
     state.user.name,
+    state.gui.onlineCanvas,
+    state.canvas.canvasId,
   ], shallowEqual);
+  const dispatch = useDispatch();
+
+  const onlineUsers = (onlineCanvas) ? online[canvasId] : online.total;
 
   return (
     <div>
-      {(online || name)
+      {(onlineUsers || name)
         ? (
-          <div className="onlinebox">
-            {(online)
-              && <span title={t`User online`}>{online} <FaUser />&nbsp;</span>}
+          <div
+            className="onlinebox"
+            role="button"
+            tabIndex="0"
+            onClick={() => dispatch(toggleOnlineCanvas())}
+          >
+            {(onlineUsers)
+              && (
+              <span
+                title={(onlineCanvas)
+                  ? t`Online Users on Canvas`
+                  : t`Total Online Users`}
+              >
+                {onlineUsers}
+                <FaUser />
+                {(onlineCanvas) && <FaFlipboard />}
+                 &nbsp;
+              </span>
+              )}
             {(name != null)
                 && (
                 <span title={t`Pixels placed`}>

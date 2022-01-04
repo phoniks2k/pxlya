@@ -5,7 +5,15 @@ const initialState = {
   ranking: 1488,
   dailyRanking: 1488,
   // global stats
-  online: 1,
+  /*
+   * {
+   *   total: totalUsersOnline,
+   *   canvasId: onlineAtCanvas,
+   * }
+   */
+  online: {
+    total: 0,
+  },
   totalRanking: {},
   totalDailyRanking: {},
 };

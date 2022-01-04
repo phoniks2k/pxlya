@@ -4,6 +4,7 @@
 import WebSocket from 'ws';
 
 import logger from '../core/logger';
+import canvases from '../canvases.json';
 import Counter from '../utils/Counter';
 import { getIPFromRequest } from '../utils/ip';
 
@@ -82,11 +83,7 @@ class SocketServer {
       ws.name = user.getName();
       cheapDetector(user.ip);
 
-      ws.send(OnlineCounter.dehydrate({
-        online: ipCounter.amount() || 0,
-      }));
-
-      const ip = getIPFromRequest(req);
+      ws.send(OnlineCounter.dehydrate(socketEvents.onlineCounter));
 
       ws.on('error', (e) => {
         logger.error(`WebSocket Client Error for ${ws.name}: ${e.message}`);
@@ -95,9 +92,7 @@ class SocketServer {
       ws.on('pong', heartbeat);
 
       ws.on('close', () => {
-        // is close called on terminate?
-        // possible memory leak?
-        ipCounter.delete(ip);
+        ipCounter.delete(getIPFromRequest(req));
         this.deleteAllChunks(ws);
       });
 
@@ -114,6 +109,7 @@ class SocketServer {
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
     this.ping = this.ping.bind(this);
+    this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
 
     socketEvents.on('broadcast', this.broadcast);
     socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
@@ -170,7 +166,7 @@ class SocketServer {
       });
     });
 
-    setInterval(SocketServer.onlineCounterBroadcast, 10 * 1000);
+    setInterval(this.onlineCounterBroadcast, 10 * 1000);
     setInterval(this.ping, 45 * 1000);
   }
 
@@ -294,8 +290,36 @@ class SocketServer {
     });
   }
 
-  static onlineCounterBroadcast() {
-    const online = ipCounter.amount() || 0;
+  onlineCounterBroadcast() {
+    const online = {};
+    online.total = ipCounter.amount() || 0;
+    const ipsPerCanvas = {};
+    const it = this.wss.clients.keys();
+    let client = it.next();
+    while (!client.done) {
+      const ws = client.value;
+      if (ws.readyState === WebSocket.OPEN
+        && ws.user
+      ) {
+        const canvasId = ws.canvasId || 0;
+        const { ip } = ws.user;
+        // only count unique IPs per canvas
+        if (!ipsPerCanvas[canvasId]) {
+          ipsPerCanvas[canvasId] = [ip];
+        } else if (ipsPerCanvas[canvasId].includes(ip)) {
+          client = it.next();
+          continue;
+        } else {
+          ipsPerCanvas[canvasId].push(ip);
+        }
+        //--
+        if (!online[canvasId]) {
+          online[canvasId] = 0;
+        }
+        online[canvasId] += 1;
+      }
+      client = it.next();
+    }
     socketEvents.broadcastOnlineCounter(online);
   }
 
@@ -406,6 +430,7 @@ class SocketServer {
         }
         case RegisterCanvas.OP_CODE: {
           const canvasId = RegisterCanvas.hydrate(buffer);
+          if (!canvases[canvasId]) return;
           if (ws.canvasId !== null && ws.canvasId !== canvasId) {
             this.deleteAllChunks(ws);
           }

@@ -9,7 +9,9 @@ import { t } from 'ttag';
 import { THREE_CANVAS_HEIGHT } from '../core/constants';
 
 
-const CanvasItem = ({ canvasId, canvas, selCanvas }) => (
+const CanvasItem = ({
+  canvasId, canvas, selCanvas, online,
+}) => (
   <div
     className="cvbtn"
     onClick={() => selCanvas(canvasId)}
@@ -23,6 +25,12 @@ const CanvasItem = ({ canvasId, canvas, selCanvas }) => (
     />
     <p className="modalcvtext">
       <span className="modaltitle">{canvas.title}</span><br />
+      {(online) && (
+        <>
+          {t`Online Users`}:&nbsp;
+          <span className="modalinfo">{online}</span><br />
+        </>
+      )}
       <span className="modalinfo">{canvas.desc}</span><br />
       {t`Cooldown`}:&nbsp;
       <span className="modalinfo">
@@ -33,7 +41,7 @@ const CanvasItem = ({ canvasId, canvas, selCanvas }) => (
       {t`Stacking till`}:&nbsp;
       <span className="modalinfo"> {canvas.cds / 1000}s</span><br />
       {t`Ranked`}:&nbsp;
-      <span className="modalinfo">{(canvas.ranked) ? 'Yes' : 'No'}</span><br />
+      <span className="modalinfo">{(canvas.ranked) ? t`Yes` : t`No`}</span><br />
       {(canvas.req !== -1) ? <span>{t`Requirements`}:<br /></span> : null}
       <span className="modalinfo">
         {(canvas.req !== -1) ? <span>{t`User Account`} </span> : null}

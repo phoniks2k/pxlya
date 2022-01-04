@@ -7,7 +7,11 @@ const initialState = {
   isLightGrid: false,
   compactPalette: false,
   paletteOpen: true,
+  // top-left button menu
   menuOpen: false,
+  // show online users per canvas instead of total
+  onlineCanvas: false,
+  // selected theme
   style: 'default',
 };
 
@@ -35,6 +39,13 @@ export default function gui(
       return {
         ...state,
         autoZoomIn: !state.autoZoomIn,
+      };
+    }
+
+    case 'TOGGLE_ONLINE_CANVAS': {
+      return {
+        ...state,
+        onlineCanvas: !state.onlineCanvas,
       };
     }
 

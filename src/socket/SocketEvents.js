@@ -11,7 +11,13 @@ import PixelUpdate from './packets/PixelUpdateServer';
 class SocketEvents extends EventEmitter {
   constructor() {
     super();
-    this.onlineCounter = 0;
+    /*
+     * {
+     *  canvasId: onlineUsers,
+     *  ...
+     *  }
+     */
+    this.onlineCounter = {};
   }
 
   /*
@@ -144,7 +150,7 @@ class SocketEvents extends EventEmitter {
    */
   broadcastOnlineCounter(online: number) {
     this.onlineCounter = online;
-    const buffer = OnlineCounter.dehydrate({ online });
+    const buffer = OnlineCounter.dehydrate(online);
     this.emit('broadcast', buffer);
   }
 }

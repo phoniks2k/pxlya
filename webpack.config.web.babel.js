@@ -107,8 +107,8 @@ export default ({
     externals: [
       /\/proxies\.json$/,
       /\/canvases\.json$/,
-      /^\.\/styleassets\.json$/,
-      /^\.\/assets\.json$/,
+      /\/styleassets\.json$/,
+      /\/assets\.json$/,
       nodeExternals(),
     ],
 

@@ -17,6 +17,7 @@ export type Action =
   | { type: 'TOGGLE_GRID' }
   | { type: 'TOGGLE_PIXEL_NOTIFY' }
   | { type: 'TOGGLE_AUTO_ZOOM_IN' }
+  | { type: 'TOGGLE_ONLINE_CANVAS' }
   | { type: 'TOGGLE_MUTE' }
   | { type: 'TOGGLE_OPEN_PALETTE' }
   | { type: 'TOGGLE_COMPACT_PALETTE' }

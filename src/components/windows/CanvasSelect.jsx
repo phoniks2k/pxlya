@@ -12,9 +12,10 @@ import { changeWindowType, selectCanvas } from '../../actions';
 
 
 const CanvasSelect = ({ windowId }) => {
-  const [canvases, showHiddenCanvases] = useSelector((state) => [
+  const [canvases, showHiddenCanvases, online] = useSelector((state) => [
     state.canvas.canvases,
     state.canvas.showHiddenCanvases,
+    state.ranks.online,
   ], shallowEqual);
   const dispatch = useDispatch();
   const selCanvas = useCallback((canvasId) => dispatch(selectCanvas(canvasId)),
@@ -44,6 +45,8 @@ const CanvasSelect = ({ windowId }) => {
             (!canvases[canvasId].hid || showHiddenCanvases)
               && (
                 <CanvasItem
+                  key={canvasId}
+                  online={online[canvasId]}
                   canvasId={canvasId}
                   canvas={canvases[canvasId]}
                   selCanvas={selCanvas}

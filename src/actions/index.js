@@ -58,6 +58,12 @@ export function toggleAutoZoomIn() {
   };
 }
 
+export function toggleOnlineCanvas() {
+  return {
+    type: 'TOGGLE_ONLINE_CANVAS',
+  };
+}
+
 export function toggleMute() {
   return {
     type: 'TOGGLE_MUTE',

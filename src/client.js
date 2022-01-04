@@ -51,7 +51,7 @@ function init() {
   ProtocolClient.on('cooldownPacket', (coolDown) => {
     store.dispatch(receiveCoolDown(coolDown));
   });
-  ProtocolClient.on('onlineCounter', ({ online }) => {
+  ProtocolClient.on('onlineCounter', (online) => {
     store.dispatch(receiveOnline(online));
   });
   ProtocolClient.on('chatMessage', (
