@@ -96,11 +96,12 @@ class SocketServer {
         this.deleteAllChunks(ws);
       });
 
-      ws.on('message', (message) => {
-        if (typeof message === 'string') {
-          this.onTextMessage(message, ws);
+      ws.on('message', (data, isBinary) => {
+        if (isBinary) {
+          this.onBinaryMessage(data, ws);
         } else {
-          this.onBinaryMessage(message, ws);
+          const message = data.toString();
+          this.onTextMessage(message, ws);
         }
       });
     });
@@ -320,7 +321,6 @@ class SocketServer {
       }
       client = it.next();
     }
-    console.log(online);
     socketEvents.broadcastOnlineCounter(online);
   }
 
