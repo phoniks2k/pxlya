@@ -4,6 +4,7 @@
 import WebSocket from 'ws';
 
 import logger from '../core/logger';
+// eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import Counter from '../utils/Counter';
 import { getIPFromRequest } from '../utils/ip';

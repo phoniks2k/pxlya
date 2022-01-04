@@ -28,8 +28,6 @@ const OnlineBox = () => {
   ], shallowEqual);
   const dispatch = useDispatch();
 
-  const onlineUsers = (onlineCanvas) ? online[canvasId] : online.total;
-
   return (
     <div
       className="onlinebox"
@@ -51,15 +49,14 @@ const OnlineBox = () => {
           >
             {online.total}<FaUser />
           </span>
-        )
-      }
+        )}
        &nbsp;
       {(name != null)
           && (
           <span title={t`Pixels placed`}>
             {numberToString(totalPixels)} <FaPaintBrush />
           </span>
-      )}
+          )}
     </div>
   );
 };

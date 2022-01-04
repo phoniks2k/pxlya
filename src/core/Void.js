@@ -4,7 +4,6 @@
  * users fight it with background pixels
  * if it reaches the TARGET_RADIUS size, the event is lost
  *
- * @flow
  */
 import socketEvents from '../socket/SocketEvents';
 import PixelUpdate from '../socket/packets/PixelUpdateServer';
@@ -19,17 +18,24 @@ const EVENT_DURATION_MIN = 10;
 // const EVENT_DURATION_MIN = 1;
 
 class Void {
-  i: number;
-  j: number;
-  maxClr: number;
-  msTimeout: number;
-  pixelStack: Array;
-  area: Object;
-  userArea: Object;
-  curRadius: number;
-  curAngle: number;
-  curAngleDelta: number;
-  ended: boolean;
+  // chunk coords
+  i;
+  j;
+  // number highest possible colorIndex
+  maxClr;
+  // timeout between pixels in ms
+  msTimeout;
+  // array of pixels that we place before continue building (instant-defense)
+  pixelStack;
+  // Uint8Array to log pixels in area
+  area;
+  userArea;
+  // current numberical data
+  curRadius;
+  curAngle;
+  curAngleDelta;
+  // boolean if ended
+  ended;
 
   constructor(centerCell) {
     // chunk coordinates
@@ -39,16 +45,13 @@ class Void {
     this.ended = false;
     this.maxClr = canvases[CANVAS_ID].colors.length;
     const area = TARGET_RADIUS ** 2 * Math.PI;
-    const online = socketEvents.onlineCounter;
+    const online = socketEvents.onlineCounter.total || 0;
     // require an average of 0.25 px / min / user
     const requiredSpeed = Math.floor(online / 1.8);
     const ppm = Math.ceil(area / EVENT_DURATION_MIN + requiredSpeed);
-    // timeout between pixels
     this.msTimeout = 60 * 1000 / ppm;
-    // area where we log placed pixels
     this.area = new Uint8Array(TILE_SIZE * 3 * TILE_SIZE * 3);
     this.userArea = new Uint8Array(TILE_SIZE * 3 * TILE_SIZE * 3);
-    // array of pixels that we place before continue building (instant-defense)
     this.pixelStack = [];
     this.curRadius = 0;
     this.curAngle = 0;

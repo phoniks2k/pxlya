@@ -1,5 +1,4 @@
-/* @flow
- *
+/*
  * Events for WebSockets
  */
 import EventEmitter from 'events';
@@ -13,31 +12,34 @@ class SocketEvents extends EventEmitter {
     super();
     /*
      * {
+     *   total: totalUsersOnline,
      *  canvasId: onlineUsers,
      *  ...
      *  }
      */
-    this.onlineCounter = {};
+    this.onlineCounter = {
+      total: 0,
+    };
   }
 
   /*
    * broadcast message via websocket
-   * @param message Message to send
+   * @param message Buffer Message to send
    */
-  broadcast(message: Buffer) {
+  broadcast(message) {
     this.emit('broadcast', message);
   }
 
   /*
    * broadcast pixel message via websocket
-   * @param canvasId ident of canvas
-   * @param chunkid id consisting of i,j chunk coordinates
+   * @param canvasId number ident of canvas
+   * @param chunkid number id consisting of i,j chunk coordinates
    * @param pxls buffer with offset and color of one or more pixels
    */
   broadcastPixels(
-    canvasId: number,
-    chunkId: number,
-    pixels: Buffer,
+    canvasId,
+    chunkId,
+    pixels,
   ) {
     const buffer = PixelUpdate.dehydrate(chunkId, pixels);
     this.emit('pixelUpdate', canvasId, chunkId, buffer);
@@ -50,9 +52,9 @@ class SocketEvents extends EventEmitter {
    * @param channelId numerical channel id
    */
   recvChatMessage(
-    user: Object,
-    message: string,
-    channelId: number,
+    user,
+    message,
+    channelId,
   ) {
     this.emit('recvChatMessage', user, message, channelId);
   }
@@ -65,12 +67,12 @@ class SocketEvents extends EventEmitter {
    *                (usefull if the api is supposed to not answer to its own messages)
    */
   broadcastChatMessage(
-    name: string,
-    message: string,
-    channelId: number,
-    id: number,
-    country: string = 'xx',
-    sendapi: boolean = true,
+    name,
+    message,
+    channelId,
+    id,
+    country = 'xx',
+    sendapi = true,
   ) {
     this.emit(
       'chatMessage',
@@ -87,12 +89,12 @@ class SocketEvents extends EventEmitter {
    * send chat message to a single user in channel
    */
   broadcastSUChatMessage(
-    targetUserId: number,
-    name: string,
-    message: string,
-    channelId: number,
-    id: number,
-    country: string = 'xx',
+    targetUserId,
+    name,
+    message,
+    channelId,
+    id,
+    country = 'xx',
   ) {
     this.emit(
       'suChatMessage',
@@ -112,9 +114,9 @@ class SocketEvents extends EventEmitter {
    * @param channelArray array with channel info [name, type, lastTs]
    */
   broadcastAddChatChannel(
-    userId: number,
-    channelId: number,
-    channelArray: Array,
+    userId,
+    channelId,
+    channelArray,
   ) {
     this.emit(
       'addChatChannel',
@@ -131,8 +133,8 @@ class SocketEvents extends EventEmitter {
    *        (i.e. false if the user already gets it via api response)
    */
   broadcastRemoveChatChannel(
-    userId: number,
-    channelId: number,
+    userId,
+    channelId,
   ) {
     this.emit('remChatChannel', userId, channelId);
   }
@@ -140,15 +142,16 @@ class SocketEvents extends EventEmitter {
   /*
    * reload user on websocket to get changes
    */
-  reloadUser(name: string) {
+  reloadUser(name) {
     this.emit('reloadUser', name);
   }
 
   /*
    * broadcast online counter
-   * @param online Number of users online
+   * @param online Object of total and canvas online users
+   *   (see this.onlineCounter)
    */
-  broadcastOnlineCounter(online: number) {
+  broadcastOnlineCounter(online) {
     this.onlineCounter = online;
     const buffer = OnlineCounter.dehydrate(online);
     this.emit('broadcast', buffer);
