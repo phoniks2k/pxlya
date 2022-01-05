@@ -3,8 +3,6 @@
 // eslint-disable-next-line no-unused-vars
 import fetch from 'isomorphic-fetch'; // TODO put in the beggining with webpack!
 
-import './styles/font.css';
-
 import onKeyPress from './controls/keypress';
 import {
   fetchMe,

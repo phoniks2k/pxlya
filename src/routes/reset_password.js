@@ -5,35 +5,18 @@
  */
 
 import express from 'express';
-import expressLimiter from 'express-limiter';
 import bodyParser from 'body-parser';
 
 import type { Request, Response } from 'express';
 
-import redis from '../data/redis';
 import logger from '../core/logger';
 import getPasswordResetHtml from '../ssr-components/PasswordReset';
-import { MINUTE } from '../core/constants';
 
 import mailProvider from '../core/mail';
 import { RegUser } from '../data/models';
 
 
 const router = express.Router();
-const limiter = expressLimiter(router, redis);
-
-
-/*
- * rate limiting to prevent bruteforce attacks
- */
-router.use('/',
-  limiter({
-    lookup: 'headers.cf-connecting-ip',
-    total: 24,
-    expire: 5 * MINUTE,
-    skipHeaders: true,
-  }));
-
 
 /*
  * decode form data to req.body

@@ -7,17 +7,14 @@
  */
 
 import express from 'express';
-import expressLimiter from 'express-limiter';
 import type { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 
 import { getIPFromRequest } from '../utils/ip';
-import redis from '../data/redis';
 import session from '../core/session';
 import passport from '../core/passport';
 import { admintoolsLogger } from '../core/logger';
-import { MINUTE } from '../core/constants';
 import {
   executeIPAction,
   executeImageAction,
@@ -30,8 +27,6 @@ import {
 
 
 const router = express.Router();
-const limiter = expressLimiter(router, redis);
-
 
 /*
  * multer middleware for getting POST parameters
@@ -43,19 +38,6 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024,
   },
 });
-
-
-/*
- * rate limiting to prevent bruteforce attacks
- * TODO: do that with nginx
- */
-router.use('/',
-  limiter({
-    lookup: 'headers.cf-connecting-ip',
-    total: 240,
-    expire: 5 * MINUTE,
-    skipHeaders: true,
-  }));
 
 
 /*

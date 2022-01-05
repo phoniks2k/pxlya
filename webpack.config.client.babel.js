@@ -130,18 +130,6 @@ export function buildWebpackClientConfig(
             plugins: babelPlugins,
           },
         },
-        {
-          test: /\.css/,
-          use: ['style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: development,
-                modules: false,
-              },
-            },
-          ],
-        },
       ],
     },
 
