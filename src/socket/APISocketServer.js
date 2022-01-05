@@ -60,7 +60,6 @@ class APISocketServer {
       ws.isAlive = true;
       ws.subChat = false;
       ws.subPxl = false;
-      ws.subOnline = false;
       ws.on('pong', heartbeat);
 
       ws.on('message', (message) => {
@@ -171,9 +170,6 @@ class APISocketServer {
         }
         if (even === 'pxl') {
           ws.subPxl = true;
-        }
-        if (even === 'online') {
-          ws.subOnline = true;
         }
         logger.info(`APISocket client subscribed to  ${command}`);
         return;

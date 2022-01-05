@@ -21,10 +21,9 @@ All chat messages, except the once you send with `chat` or `mcchat`, will be sen
 channelId is an integer, channel 0 is `en` channel 1 is `int` and maybe more to come.
 id is the user id
 country is the [two-letter country code](https://www.nationsonline.org/oneworld/country_code_list.htm) in lowercase
-### Subscribe to online user counter
-```["sub", "online"]```
+### Online user counter
 
-Online counter will be sent to you as typical binary packages all 15s
+Online counter will be sent to you as typical binary package (see `src/socket/packets/OnlineCounter.js`)
 ### Subscribe to pixel packages
 ```["sub", "pxl"]```
 
