@@ -13,6 +13,7 @@ import {
   setPixelByOffset,
   setPixelByCoords,
 } from './setPixel';
+import rankings from './ranking';
 import rpgEvent from './event';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
@@ -46,18 +47,16 @@ export async function drawByOffsets(
   let pxlCnt = 0;
 
   const canvas = canvases[canvasId];
-  if (!canvas) {
-    // canvas doesn't exist
-    return {
-      wait,
-      coolDown,
-      pxlCnt,
-      retCode: 1,
-    };
-  }
-  const { size: canvasSize, v: is3d } = canvas;
 
   try {
+    if (!canvas) {
+      // canvas doesn't exist
+      throw new Error(1);
+    }
+
+    const canvasSize = canvas.size;
+    const is3d = !!canvas.v;
+
     wait = await user.getWait(canvasId);
 
     const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
@@ -74,19 +73,26 @@ export async function drawByOffsets(
       // (we don't have to check for <0 becaue it is received as uint)
       throw new Error(3);
     }
-    if (canvas.req !== -1) {
+
+    const isAdmin = (user.userlvl === 1);
+
+    if (canvas.req !== undefined && !isAdmin) {
       if (user.id === null) {
         // not logged in
         throw new Error(6);
       }
-      const totalPixels = await user.getTotalPixels();
-      if (totalPixels < canvas.req) {
-        // not enough pixels placed yet
-        throw new Error(7);
+      if (canvas.req > 0) {
+        const totalPixels = await user.getTotalPixels();
+        if (totalPixels < canvas.req) {
+          // not enough pixels placed yet
+          throw new Error(7);
+        }
+      }
+      if (canvas.req === 'top' && !rankings.prevTop.includes(user.id)) {
+        throw new Error(12);
       }
     }
 
-    const isAdmin = (user.userlvl === 1);
     let coolDownFactor = 1;
     if (rpgEvent.success) {
       if (rpgEvent.success === 1) {
@@ -118,6 +124,8 @@ export async function drawByOffsets(
         offset,
       );
 
+      const clrIgnore = canvas.cli || 0;
+
       /*
        * pixel validation
        */
@@ -128,7 +136,7 @@ export async function drawByOffsets(
         throw new Error(4);
       }
       if (color >= canvas.colors.length
-        || (color < canvas.cli && !(canvas.v && color === 0))
+        || (color < clrIgnore && !(canvas.v && color === 0))
       ) {
         // color out of bounds
         throw new Error(5);
@@ -145,7 +153,8 @@ export async function drawByOffsets(
         throw new Error(8);
       }
 
-      coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
+      coolDown = ((setColor & 0x3F) >= clrIgnore && canvas.pcd)
+        ? canvas.pcd : canvas.bcd;
       if (isAdmin) {
         coolDown = 0.0;
       } else {
@@ -191,6 +200,7 @@ export async function drawByOffsets(
  *
  * Old version of draw that returns explicit error messages
  * used for http json api/pixel, used with coordinates
+ * Is not used anywhere currently, but we keep it around.
  * @param user
  * @param canvasId
  * @param x
@@ -206,13 +216,14 @@ export async function drawByCoords(
   y,
   z = null,
 ) {
-  if (!({}.hasOwnProperty.call(canvases, canvasId))) {
+  const canvas = canvases[canvasId];
+
+  if (!canvas) {
     return {
       error: 'This canvas does not exist',
       success: false,
     };
   }
-  const canvas = canvases[canvasId];
 
   const canvasMaxXY = canvas.size / 2;
   const canvasMinXY = -canvasMaxXY;
@@ -222,6 +233,9 @@ export async function drawByCoords(
       success: false,
     };
   }
+
+  const clrIgnore = canvas.cli || 0;
+
   if (canvas.v) {
     if (z < canvasMinXY || z >= canvasMaxXY) {
       return {
@@ -254,7 +268,7 @@ export async function drawByCoords(
         success: false,
       };
     }
-    if (color < canvas.cli) {
+    if (color < clrIgnore) {
       return {
         error: 'Invalid color selected',
         success: false,
@@ -301,7 +315,11 @@ export async function drawByCoords(
   const isAdmin = (user.userlvl === 1);
   const setColor = await RedisCanvas.getPixel(canvasId, x, y, z);
 
-  let coolDown = (setColor & 0x3F) < canvas.cli ? canvas.bcd : canvas.pcd;
+  /*
+   * bitwise operation to get rid of protection
+   */
+  let coolDown = ((setColor & 0x3F) >= clrIgnore && canvas.pcd)
+    ? canvas.pcd : canvas.bcd;
   if (isAdmin) {
     coolDown = 0.0;
   } else if (rpgEvent.success) {

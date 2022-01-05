@@ -10,61 +10,57 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: src/core/ChatProvider.js:287
+#: src/core/ChatProvider.js:327
 msgid "You can not send chat messages with proxy"
 msgstr "Du kannst keine Nachrichten senden wenn du ein Proxy benutzt"
 
-#: src/core/ChatProvider.js:292
-msgid "Couldn't send your message, pls log out and back in again."
-msgstr "Konnte die Nachricht nicht senden, bitte logge duch aus und wieder an."
-
-#: src/core/ChatProvider.js:306
+#: src/core/ChatProvider.js:341
 #, javascript-format
 msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
 msgstr "Du sendest zu viele Nachrichten, du musst ${ waitTime }s warten :("
 
-#: src/core/ChatProvider.js:310
+#: src/core/ChatProvider.js:345
 msgid "You don't have access to this channel"
 msgstr "Du hast keinen Zugriff zu diesen Kanal"
 
-#: src/core/ChatProvider.js:326
+#: src/core/ChatProvider.js:361
 msgid "Your mail has to be verified in order to chat"
 msgstr "E-Mail muss verifiziert sein um Nachrichten zu senden"
 
-#: src/core/ChatProvider.js:331
+#: src/core/ChatProvider.js:366
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr ""
 "Du bsit permanent stummgeschaltet, gehe zu unser guilded um dagegen "
 "einzusprechen"
 
-#: src/core/ChatProvider.js:336
+#: src/core/ChatProvider.js:371
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr "Du bist für ${ timeMin } Minuten stummgeschaltet"
 
-#: src/core/ChatProvider.js:338
+#: src/core/ChatProvider.js:373
 msgid "You are muted for another ${ muted } seconds"
 msgstr "Du bist for ${ muted } Sekunden stummgeschaltet"
 
-#: src/core/ChatProvider.js:346
+#: src/core/ChatProvider.js:381
 msgid "Ow no! Spam protection decided to mute you"
 msgstr "Oh nein! Spam-Schutz hat dich stummgeschaltet"
 
-#: src/core/ChatProvider.js:357
+#: src/core/ChatProvider.js:392
 msgid "You can't send a message this long :("
 msgstr "Do kannst keine so langen Nachrichten senden"
 
-#: src/core/ChatProvider.js:361
+#: src/core/ChatProvider.js:396
 msgid "Please use int channel"
 msgstr "Bitte benutze int Kanal"
 
-#: src/core/ChatProvider.js:365
+#: src/core/ChatProvider.js:400
 msgid "Your country is temporary muted from chat"
 msgstr "Dein Land ist temporär stummgeschaltet"
 
-#: src/core/ChatProvider.js:373
+#: src/core/ChatProvider.js:408
 msgid "Stop flooding."
 msgstr "Stoppe zu spamen."
 
@@ -84,39 +80,39 @@ msgstr "PixelPlanet.Fun 3D Globus"
 msgid "A 3D globe of our whole map"
 msgstr "Ein interaktvier 3D Globus unserer gesamten Karte"
 
-#: src/ssr-components/Main.jsx:73
+#: src/ssr-components/Main.jsx:70
 msgid "PixelPlanet.fun"
 msgstr "PixelPlanet.Fun"
 
-#: src/ssr-components/Main.jsx:75
+#: src/ssr-components/Main.jsx:72
 msgid "Place color pixels on an map styled canvas with other players online"
 msgstr "Zeichne mit farbigen Pixel auf einer Weltkarte mit anderen Spielern"
 
-#: src/routes/reset_password.js:58
+#: src/routes/reset_password.js:41
 msgid "You sent an empty password or invalid data :("
 msgstr "Du hast ein ungültiges Passwort oder Daten gesendet :("
 
-#: src/routes/reset_password.js:70
+#: src/routes/reset_password.js:53
 msgid "This password-reset link isn't valid anymore :("
 msgstr "Dieser Passwort-Wiederherstellungslink ist nichtmehr gültig :("
 
-#: src/routes/reset_password.js:81
+#: src/routes/reset_password.js:64
 msgid "Your passwords do not match :("
 msgstr "Passwörter stimmen nicht überein :("
 
-#: src/routes/reset_password.js:96
+#: src/routes/reset_password.js:79
 msgid "User doesn't exist in our database :("
 msgstr "Spieler existiert nicht in unserer Datenbank :("
 
-#: src/routes/reset_password.js:108
+#: src/routes/reset_password.js:91
 msgid "Passowrd successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
-#: src/routes/reset_password.js:127
+#: src/routes/reset_password.js:110
 msgid "Invalid url :( Please check your mail again."
 msgstr "Ungültige Adresse :( Bitte kontrolliere die Mail nochmal."
 
-#: src/routes/reset_password.js:140
+#: src/routes/reset_password.js:123
 msgid ""
 "This passwort reset link is wrong or already expired, please request a new "
 "one (Note: you can use those links just once)"
@@ -331,10 +327,6 @@ msgstr "Konnte keinen neuen Benutzer erstellen :("
 msgid "Failed to establish session after register :("
 msgstr "Konnte keine Sitzung nach registrierung starten :("
 
-#: src/routes/api/auth/logout.js:13
-msgid "You are not even logged in."
-msgstr "Du bist nichteinmal angemeldet."
-
 #: src/routes/api/auth/verify.js:25 src/routes/api/auth/verify.js:32
 msgid "Mail verification"
 msgstr "E-Mail verifizieren"
@@ -350,6 +342,10 @@ msgid ""
 msgstr ""
 "Dein E-Mail verifikations Code ist ungültig oder bereits abgelaufen :(, "
 "bitte fordere einen neuen an."
+
+#: src/routes/api/auth/logout.js:13
+msgid "You are not even logged in."
+msgstr "Du bist nichteinmal angemeldet."
 
 #: src/routes/api/auth/change_mail.js:41
 #: src/routes/api/auth/change_passwd.js:37
@@ -376,33 +372,37 @@ msgstr "Oder ${ clickHere } um zu pixelplanet zurückzukehren"
 msgid "PixelPlanet.fun Accounts"
 msgstr "PixelPlanet.Fun Konten"
 
-#: src/canvasesDesc.js:19
+#: src/canvasesDesc.js:18
 msgid "Earth"
 msgstr "Erde"
 
-#: src/canvasesDesc.js:20
+#: src/canvasesDesc.js:19
 msgid "Moon"
 msgstr "Mond"
 
-#: src/canvasesDesc.js:21
+#: src/canvasesDesc.js:20
 msgid "3D Canvas"
 msgstr "3D Leinwand"
 
-#: src/canvasesDesc.js:22
+#: src/canvasesDesc.js:21
 msgid "Coronavirus"
 msgstr "Coronavirus"
 
-#: src/canvasesDesc.js:23
+#: src/canvasesDesc.js:22
 msgid "PixelZone"
 msgstr "PixelZone"
 
-#: src/canvasesDesc.js:24
+#: src/canvasesDesc.js:23
 msgid "PixelCanvas"
 msgstr "PixelCanvas"
 
-#: src/canvasesDesc.js:25
+#: src/canvasesDesc.js:24
 msgid "1bit"
 msgstr "1bit"
+
+#: src/canvasesDesc.js:25
+msgid "Top10"
+msgstr "Top10"
 
 #: src/canvasesDesc.js:28
 msgid "Our main canvas, a huge map of the world. Place everywhere you like"
@@ -436,6 +436,21 @@ msgstr "Kopie von PixelCanvas"
 #: src/canvasesDesc.js:34
 msgid "Black and White canvas"
 msgstr "Schwarz/Weiß Leinwand"
+
+#: src/canvasesDesc.js:35
+msgid ""
+"A canvas for the most active players from the the previous day. Daily "
+"ranking updates at 00:00 UTC."
+msgstr ""
+"Eine Leinwand für die zehn aktivsten Spieler des Vortages. Tägliche Reihung "
+"wird um 00:00 UTC aktualisiert."
+
+#~ msgid "Top10 Only Canvas"
+#~ msgstr "Tip10 Exklusiv"
+
+#~ msgid "Couldn't send your message, pls log out and back in again."
+#~ msgstr ""
+#~ "Konnte die Nachricht nicht senden, bitte logge duch aus und wieder an."
 
 #~ msgid "Could not connect to server, please try again later :("
 #~ msgstr ""

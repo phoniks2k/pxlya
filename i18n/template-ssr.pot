@@ -77,31 +77,31 @@ msgstr ""
 msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
-#: src/routes/reset_password.js:58
+#: src/routes/reset_password.js:41
 msgid "You sent an empty password or invalid data :("
 msgstr ""
 
-#: src/routes/reset_password.js:70
+#: src/routes/reset_password.js:53
 msgid "This password-reset link isn't valid anymore :("
 msgstr ""
 
-#: src/routes/reset_password.js:81
+#: src/routes/reset_password.js:64
 msgid "Your passwords do not match :("
 msgstr ""
 
-#: src/routes/reset_password.js:96
+#: src/routes/reset_password.js:79
 msgid "User doesn't exist in our database :("
 msgstr ""
 
-#: src/routes/reset_password.js:108
+#: src/routes/reset_password.js:91
 msgid "Passowrd successfully changed."
 msgstr ""
 
-#: src/routes/reset_password.js:127
+#: src/routes/reset_password.js:110
 msgid "Invalid url :( Please check your mail again."
 msgstr ""
 
-#: src/routes/reset_password.js:140
+#: src/routes/reset_password.js:123
 msgid ""
 "This passwort reset link is wrong or already expired, please request a new "
 "one (Note: you can use those links just once)"
@@ -374,32 +374,42 @@ msgstr ""
 msgid "1bit"
 msgstr ""
 
-#: src/canvasesDesc.js:27
-msgid "Our main canvas, a huge map of the world. Place everywhere you like"
+#: src/canvasesDesc.js:25
+msgid "Top10"
 msgstr ""
 
 #: src/canvasesDesc.js:28
+msgid "Our main canvas, a huge map of the world. Place everywhere you like"
+msgstr ""
+
+#: src/canvasesDesc.js:29
 msgid ""
 "Moon canvas. Safe space for art. No flags or large text (unless part of "
 "art) or art larger than 1.5k x 1.5k pixels."
 msgstr ""
 
-#: src/canvasesDesc.js:29
+#: src/canvasesDesc.js:30
 msgid "Place Voxels on a 3D canvas with others"
 msgstr ""
 
-#: src/canvasesDesc.js:30
+#: src/canvasesDesc.js:31
 msgid "Special canvas to spread awareness of SARS-CoV2"
 msgstr ""
 
-#: src/canvasesDesc.js:31
+#: src/canvasesDesc.js:32
 msgid "Mirror of PixelZone"
 msgstr ""
 
-#: src/canvasesDesc.js:32
+#: src/canvasesDesc.js:33
 msgid "Mirror of PixelCanvas"
 msgstr ""
 
-#: src/canvasesDesc.js:33
+#: src/canvasesDesc.js:34
 msgid "Black and White canvas"
+msgstr ""
+
+#: src/canvasesDesc.js:35
+msgid ""
+"A canvas for the most active players from the the previous day. Daily "
+"ranking updates at 00:00 UTC."
 msgstr ""

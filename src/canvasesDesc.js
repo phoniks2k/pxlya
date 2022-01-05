@@ -22,6 +22,7 @@ function getCanvases(t) {
     5: t`PixelZone`,
     6: t`PixelCanvas`,
     7: t`1bit`,
+    8: t`Top10`,
   };
   const canvasDesc = {
     0: t`Our main canvas, a huge map of the world. Place everywhere you like`,
@@ -31,6 +32,7 @@ function getCanvases(t) {
     5: t`Mirror of PixelZone`,
     6: t`Mirror of PixelCanvas`,
     7: t`Black and White canvas`,
+    8: t`A canvas for the most active players from the the previous day. Daily ranking updates at 00:00 UTC.`,
   };
   /*
    * no edit below here needed when adding/removing canvas
@@ -42,8 +44,12 @@ function getCanvases(t) {
   for (let i = 0; i < canvasKeys.length; i += 1) {
     const key = canvasKeys[i];
     localicedCanvases[key] = { ...canvases[key] };
-    localicedCanvases[key].desc = canvasDesc[key] || `Canvas ${key}`;
-    localicedCanvases[key].title = canvasTitles[key] || `Canvas ${key}`;
+    localicedCanvases[key].desc = canvasDesc[key]
+      || canvases[key].desc
+      || `Canvas ${key}`;
+    localicedCanvases[key].title = canvasTitles[key]
+      || canvases[key].title
+      || `Canvas ${key}`;
   }
 
   return localicedCanvases;

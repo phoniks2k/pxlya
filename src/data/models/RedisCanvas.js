@@ -88,8 +88,7 @@ class RedisCanvas {
     const key = `ch:${canvasId}:${i}:${j}`;
 
     if (!chunks.has(key)) {
-      const is3D = canvases[canvasId].v;
-      if (is3D) {
+      if (canvases[canvasId].v) {
         await redis.setAsync(key, THREE_EMPTY_CHUNK_BUFFER, 'NX');
       } else {
         await redis.setAsync(key, EMPTY_CHUNK_BUFFER, 'NX');

@@ -62,9 +62,9 @@ function getViewFromURL(canvases: Object) {
     const canvas = (canvasId === null)
       ? canvases[DEFAULT_CANVAS_ID]
       : canvases[canvasId];
+    const clrIgnore = canvas.cli || 0;
     const {
       colors,
-      cli: clrIgnore,
       sd: canvasStartDate,
       size: canvasSize,
     } = canvas;
@@ -120,8 +120,8 @@ function getViewFromURL(canvases: Object) {
       canvasStartDate: null,
       canvasMaxTiledZoom: getMaxTiledZoom(canvasd.size),
       palette: new Palette(canvasd.colors, 0),
-      clrIgnore: canvasd.cli,
-      selectedColor: canvasd.cli,
+      clrIgnore: canvasd.cli || 0,
+      selectedColor: canvasd.cli || 0,
       view: [0, 0, 0],
       viewscale: DEFAULT_SCALE,
       scale: DEFAULT_SCALE,
@@ -267,12 +267,12 @@ export default function canvasReducer(
         canvasId = DEFAULT_CANVAS_ID;
         canvas = canvases[DEFAULT_CANVAS_ID];
       }
+      const clrIgnore = canvas.cli || 0;
       const {
         size: canvasSize,
         sd: canvasStartDate,
         ident: canvasIdent,
         v: is3D,
-        cli: clrIgnore,
         colors,
       } = canvas;
       // get previous view, scale and viewscale if possible
@@ -334,13 +334,14 @@ export default function canvasReducer(
         canvasId = DEFAULT_CANVAS_ID;
         canvasIdent = canvases[DEFAULT_CANVAS_ID].ident;
       }
+      const canvas = canvases[canvasId];
+      const clrIgnore = canvas.cli || 0;
+      const is3D = !!canvases.v;
       const {
         size: canvasSize,
         sd: canvasStartDate,
-        v: is3D,
-        cli: clrIgnore,
         colors,
-      } = canvases[canvasId];
+      } = canvas;
       const palette = new Palette(colors, 0);
 
       if (!is3D) {

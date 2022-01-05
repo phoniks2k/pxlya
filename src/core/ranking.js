@@ -6,6 +6,7 @@
 import Sequelize from 'sequelize';
 import Model from '../data/sequelize';
 import RegUser from '../data/models/RegUser';
+import { saveDailyTop, loadDailyTop } from '../data/models/prevDayTop';
 import logger from './logger';
 
 import { MINUTE } from './constants';
@@ -17,10 +18,19 @@ class Ranks {
   constructor() {
     this.updateRanking = this.updateRanking.bind(this);
     this.resetDailyRanking = this.resetDailyRanking.bind(this);
+    this.prevTop = [];
+    this.ranks = {
+      dailyRanking: [],
+      ranking: [],
+    };
 
-    this.ranks = {};
+    this.loadPrevDayTop();
     setInterval(this.updateRanking, 5 * MINUTE);
     DailyCron.hook(this.resetDailyRanking);
+  }
+
+  async loadPrevDayTop() {
+    this.prevTop = await loadDailyTop();
   }
 
   async updateRanking() {
@@ -36,6 +46,7 @@ class Ranks {
     // populate dictionaries
     const ranking = await RegUser.findAll({
       attributes: [
+        'id',
         'name',
         'totalPixels',
         'ranking',
@@ -57,6 +68,7 @@ class Ranks {
     });
     const dailyRanking = await RegUser.findAll({
       attributes: [
+        'id',
         'name',
         'totalPixels',
         'ranking',
@@ -81,6 +93,7 @@ class Ranks {
   }
 
   async resetDailyRanking() {
+    this.prevTop = await saveDailyTop(this.ranks.dailyRanking);
     logger.info('Resetting Daily Ranking');
     await RegUser.update({ dailyTotalPixels: 0 }, { where: {} });
     await this.updateRanking();

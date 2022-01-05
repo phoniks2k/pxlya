@@ -126,7 +126,7 @@ function Converter() {
     if (inputImageCanvas) {
       const canvas = canvases[selectedCanvas];
       renderOutputImage({
-        colors: canvas.colors.slice(canvas.cli),
+        colors: (canvas.cli) ? canvas.colors.slice(canvas.cli) : canvas.colors,
         imgCanvas: inputImageCanvas,
         ditherOpts: {
           strategy: selectedStrategy,
@@ -184,11 +184,6 @@ function Converter() {
   }, [scaleData.enabled]);
 
   const gimpLink = <a href="https://www.gimp.org">GIMP</a>;
-  const starhouseLink = (
-    <a href="https://twitter.com/starhousedev">
-      starhouse
-    </a>
-  );
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -237,9 +232,6 @@ function Converter() {
         >
           Download
         </button>
-        <p>
-          {jt`Credit for the Palette of the Moon goes to ${starhouseLink}.`}
-        </p>
       </div>
       <h3 className="modaltitle">{t`Image Converter`}</h3>
       <p className="modalcotext">{t`Convert an image to canvas colors`}</p>

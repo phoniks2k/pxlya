@@ -124,28 +124,27 @@ Notes:
 - The HTML for SocialMedia logins is in src/componets/UserAreaModal.js , delete stuff from there if you don't need it
 - The HTML for the Help Screen is in src/components/HelpModal.js
 
-Canvas specific configuartion like colors and cooldown is in `canvases.json` for all canvases. The titles and descriptions of the canvases are also in `src/canvasesDesc.js` for translation reasons. Changing them requires a rebuild.
+Canvas specific configuartion like colors and cooldown is in `canvases.json` for all canvases. The titles and descriptions of the canvases are in `src/canvasesDesc.js` for translation reasons. Changing them requires a rebuild.
 Meaning of some values:
 
-| Key    | Description                                       |
-|--------|:--------------------------------------------------|
-| ident  | Unique character used in the url                  |
-| title  | Title                                             |
-| size   | canvas size, power of 4 and between 256 and 65536 |
-| bcd    | Base cooldown for unset pixels                    |
-| pcd    | Cooldown for placing on set pixels                |
-| cds    | Stack time of Cooldown                            |
-| cli    | Number of colors on the palette to ignore         |
-| ranked | If pixels on canvas count on player statistic     |
-| req    | requieremt to place on the canvas                 |
-| sd     | Start-date of the canvas for historical view      |
-| desc   | Small desctiption text                            |
-| v      | If 3D voxel canvas (boolean)                      |
-| hid    | Hidden canvases, can be just seen by pressing P   |
+| Key    | Description                                                     |
+|--------|:----------------------------------------------------------------|
+| ident  | Unique character used in the url                                |
+| size   | canvas size, power of 4 and between 256 and 65536               |
+| bcd    | Base cooldown for unset pixels                                  |
+| pcd    | Cooldown for placing on set pixels (defaults to same as bcd)    |
+| cds    | Stack time of Cooldown                                          |
+| cli    | Number of leading colors on the palette to ignore (default: 0)  |
+| ranked | If pixels on canvas count on player statistic (default: false)  |
+| req    | requieremt to place on the canvas                               |
+| sd     | Start-date of the canvas for historical view                    |
+| v      | If 3D voxel canvas (boolean) (default: false)                   |
+| hid    | Hidden canvases, can be just seen by pressing P (default: false)|
 
+Values that have defaults and `req` are optional.
 The canvas size limit can be surpassed by changing the websocket packages in src/socket/packages/ to send chunk coordinates in 16bit.
-req is an integer and if >0 is the amount of total pixels placed before being allowed to play there,  if -1 it has no requirement and if 0 it is limited to registered users. 
-The colors that are ignored via cli are used for making the canvas (blue ocean and white continents) and to know if the pixel is already set by a user or not.
+If `req` is 0, the canvas is only available for registered Useers. If it is a number >0 it is the amount of total pixels placed before a player is allowed to play there. If it is `top`, then it is only accessible for the Top10 players of the previous day.
+The colors that are ignored via `cli` are used for making the canvas (blue ocean and white continents) and to know if the pixel is already set by a user or not.
 If you want to add a new canvas, be sure that you additionally create `public/loading${canvasId}.png`, `public/assets3d/normal${canvasId}.jpg`, `public/preview${canvasId}.png` and `public/assets3d/specular${canvasId}.jpg`, check out the existing ones to see what those files are for.
 
 The default configuration values can be seen in `src/core/config.js` and for the canvases in `src/core/constats.js`

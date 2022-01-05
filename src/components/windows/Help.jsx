@@ -1,6 +1,5 @@
 /**
  *
- * @flow
  */
 
 import React from 'react';
@@ -31,6 +30,8 @@ const Help = () => {
   const bindShift = <kbd>⇧ {c('keybinds').t`Shift`}</kbd>;
   const bindC = <kbd>{c('keybinds').t`C`}</kbd>;
 
+  const starhouseLink = <a href="https://twitter.com/starhousedev">starhouse </a>;
+  const vinikLink = <a href="https://twitter.com/Vinikdev">Vinikdev</a>;
   const guildedLink = <a href="https://pixelplanet.fun/guilded">guilded</a>;
   const getIPLink = <a href="https://www.whatismyip.com/">{t`your IP`}</a>;
   const mailLink = <a href="mailto:pixelplanetdev@gmail.com">pixelplanetdev@gmail.com</a>;
@@ -84,7 +85,17 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`${mouseSymbol} Right click or ${touchSymbol} double-tap to remove a pixel`}<br />
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
-      <p>{t`Partners:`} <a href="https://www.crazygames.com/c/io" target="_blank" rel="noopener noreferrer">crazygames.com</a></p>
+      <h3 className="modaltitle">Palette Credits</h3>
+      <div className="modaltext">
+        {jt`We thanks those artists very much, they offered their palettes to the public on`}&nbsp;
+        <a href="https://lospec.com/">lospec.com</a>
+        <p>
+          {jt`Credit for the Palette of the Moon goes to ${starhouseLink}.`}
+        </p>
+        <p>
+          {jt`Credit for the Palette of the Top10 canvas goes to ${vinikLink}.`}
+        </p>
+      </div>
     </div>
   );
 };

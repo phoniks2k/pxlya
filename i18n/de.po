@@ -10,46 +10,46 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals = 2; plural = (n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: src/controls/keypress.js:39
+#: src/controls/keypress.js:41
 #, javascript-format
 msgid "Switched to ${ canvasName }"
 msgstr "Gewechselt zu ${ canvasName }"
 
-#: src/controls/keypress.js:61
+#: src/controls/keypress.js:64
 msgid "Grid ON"
 msgstr "Raster Ein"
 
-#: src/controls/keypress.js:62
+#: src/controls/keypress.js:65
 msgid "Grid OFF"
 msgstr "Raster Aus"
 
-#: src/controls/keypress.js:70
+#: src/controls/keypress.js:75
 msgid "Pixel Notify ON"
 msgstr "Pixelaktivität Ein"
 
-#: src/controls/keypress.js:71
+#: src/controls/keypress.js:76
 msgid "Pixel Notify OFF"
 msgstr "Pixelaktivität Aus"
 
-#: src/controls/keypress.js:76
+#: src/controls/keypress.js:81
 msgid "Muted Sound"
 msgstr "Ton stummgeschaltet"
 
-#: src/controls/keypress.js:77
+#: src/controls/keypress.js:82
 msgid "Unmuted Sound"
 msgstr "Ton eingeschaltet"
 
-#: src/components/CoordinatesBox.jsx:29 src/controls/keypress.js:83
+#: src/components/CoordinatesBox.jsx:29 src/controls/keypress.js:88
 msgid "Copied!"
 msgstr "Kopiert!"
 
-#: src/controls/keypress.js:89
+#: src/controls/keypress.js:94
 msgid "Show Hidden Canvases"
 msgstr "Zeige versteckte Leinwände"
 
-#: src/controls/keypress.js:90
+#: src/controls/keypress.js:95
 msgid "Hide Hidden Canvases"
 msgstr "Verstecke geheime Leinwände"
 
@@ -63,7 +63,7 @@ msgstr ""
 "Keine Antwort von pixelplanet erhalten. Vielleicht versuche die Seite neu zu "
 "laden?"
 
-#: src/ui/placePixel.js:56 src/ui/placePixel.js:237 src/ui/placePixel.js:256
+#: src/ui/placePixel.js:56 src/ui/placePixel.js:237 src/ui/placePixel.js:260
 msgid "OK"
 msgstr "OK"
 
@@ -132,43 +132,63 @@ msgid "You are using a Proxy."
 msgstr "Du benutzt ein Proxy."
 
 #: src/ui/placePixel.js:246
+msgid "Not allowed"
+msgstr "Nicht erlaubt"
+
+#: src/ui/placePixel.js:247
+msgid "Just the Top10 of yesterday can place here"
+msgstr "Nur die Top10 Spieler von gestern dürfen hier spielen"
+
+#: src/ui/placePixel.js:250
 msgid "Weird"
 msgstr "Komisch"
 
-#: src/ui/placePixel.js:247
+#: src/ui/placePixel.js:251
 msgid "Couldn't set Pixel"
 msgstr "Konnte ein Pixel setzen"
 
-#: src/ui/placePixel.js:253
+#: src/ui/placePixel.js:257
 #, javascript-format
 msgid "Error ${ retCode }"
 msgstr "Fehler ${ retCode }"
 
-#: src/actions/index.js:627
+#: src/ui/renderer.js:36
+msgid "Canvas Error"
+msgstr "Leinwand Fehler"
+
+#: src/ui/renderer.js:37
+msgid "Can't render 3D canvas, do you have WebGL2 disabled?"
+msgstr "Kann die 3D Leinwand nicht laden. Ist WebGL2 im Browser deaktiviert?"
+
+#: src/actions/index.js:632
 msgid "Register New Account"
 msgstr "Registriere neues Konto"
 
-#: src/actions/index.js:634
+#: src/actions/index.js:639
 msgid "Restore my Password"
 msgstr "Passwort wiederherstellen"
 
-#: src/actions/index.js:641
+#: src/actions/index.js:646
 msgid "Welcome to PixelPlanet.fun"
 msgstr "Willkommen auf PixelPlanet.fun"
 
-#: src/actions/index.js:647
+#: src/actions/index.js:652
 msgid "Look at past Canvases"
 msgstr "Zeige vergangene Leinwände"
 
-#: src/components/Converter.jsx:615 src/components/CoordinatesBox.jsx:32
+#: src/components/Converter.jsx:559 src/components/CoordinatesBox.jsx:32
 msgid "Copy to Clipboard"
 msgstr "Kopiere in die Zwischenablage"
 
-#: src/components/OnlineBox.jsx:30
-msgid "User online"
-msgstr "Spieler anwesend"
+#: src/components/OnlineBox.jsx:41
+msgid "Online Users on Canvas"
+msgstr "Spieler auf dieser Leinwand"
 
-#: src/components/OnlineBox.jsx:33
+#: src/components/OnlineBox.jsx:48
+msgid "Total Online Users"
+msgstr "Spieler insgesamt"
+
+#: src/components/OnlineBox.jsx:56
 msgid "Pixels placed"
 msgstr "Pixels gesetzt"
 
@@ -182,7 +202,34 @@ msgstr "Schließen"
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: src/components/buttons/CanvasSwitchButton.jsx:23
+#: src/actions/fetch.js:39
+msgid "You made too many requests"
+msgstr "Zu viele Anfragen gesendet"
+
+#: src/actions/fetch.js:43
+#, javascript-format
+msgid "try again after ${ ti }min"
+msgstr "versuche es nach ${ ti }min nochmal"
+
+#: src/actions/fetch.js:54
+msgid "Connection error ${ code } :("
+msgstr "Verbindungsfehler ${ code } :("
+
+#: src/actions/fetch.js:79 src/actions/fetch.js:98
+msgid "Could not connect to server, please try again later :("
+msgstr ""
+"Kann nich zum Server verbinden, bitte versuche es später noch einmal :("
+
+#: src/actions/fetch.js:120 src/actions/fetch.js:139 src/actions/fetch.js:158
+#: src/actions/fetch.js:177
+msgid "Unknown Error"
+msgstr "Unbekannter Fehler"
+
+#: src/actions/fetch.js:187
+msgid "Server answered with gibberish :("
+msgstr "Server antwortete mit wirrwarr :("
+
+#: src/components/buttons/CanvasSwitchButton.jsx:22
 #: src/components/windows/index.js:22
 msgid "Canvas Selection"
 msgstr "Leinwand auswahl"
@@ -203,32 +250,9 @@ msgstr "Schließe Menü"
 msgid "Open Menu"
 msgstr "Öffne Menü"
 
-#: src/actions/fetch.js:40
-msgid "You made too many requests"
-msgstr "Zu viele Anfragen gesendet"
-
-#: src/actions/fetch.js:44
-#, javascript-format
-msgid "try again after ${ ti }min"
-msgstr "versuche es nach ${ ti }min nochmal"
-
-#: src/actions/fetch.js:55
-msgid "Connection error ${ code } :("
-msgstr "Verbindungsfehler ${ code } :("
-
-#: src/actions/fetch.js:80 src/actions/fetch.js:99
-msgid "Could not connect to server, please try again later :("
-msgstr ""
-"Kann nich zum Server verbinden, bitte versuche es später noch einmal :("
-
-#: src/actions/fetch.js:121 src/actions/fetch.js:140 src/actions/fetch.js:159
-#: src/actions/fetch.js:178
-msgid "Unknown Error"
-msgstr "Unbekannter Fehler"
-
-#: src/actions/fetch.js:188
-msgid "Server answered with gibberish :("
-msgstr "Server antwortete mit wirrwarr :("
+#: src/components/buttons/HelpButton.jsx:23 src/components/windows/index.js:16
+msgid "Help"
+msgstr "Hilfe"
 
 #: src/components/HistorySelect.jsx:144
 msgid "Loading"
@@ -253,10 +277,6 @@ msgstr "Maximieren"
 #: src/components/Window.jsx:145
 msgid "Resize"
 msgstr "Größe ändern"
-
-#: src/components/buttons/HelpButton.jsx:23 src/components/windows/index.js:16
-msgid "Help"
-msgstr "Hilfe"
 
 #: src/components/buttons/SettingsButton.jsx:23
 #: src/components/windows/index.js:17
@@ -283,10 +303,6 @@ msgstr "Schließe Palette"
 msgid "Open Palette"
 msgstr "Öffne Palette"
 
-#: src/components/contextmenus/ChannelContextMenu.jsx:55
-msgid "Mute"
-msgstr "Stummschalten"
-
 #: src/components/contextmenus/UserContextMenu.jsx:53
 msgid "Ping"
 msgstr "Erwähnen"
@@ -298,6 +314,10 @@ msgstr "DM"
 #: src/components/contextmenus/UserContextMenu.jsx:88
 msgid "Block"
 msgstr "Blocke"
+
+#: src/components/contextmenus/ChannelContextMenu.jsx:55
+msgid "Mute"
+msgstr "Stummschalten"
 
 #: src/components/windows/index.js:19
 msgid "Registration"
@@ -361,16 +381,16 @@ msgstr "Abbrechen"
 msgid "Send"
 msgstr "Senden"
 
-#: src/components/windows/Help.jsx:35
+#: src/components/windows/Help.jsx:36
 msgid "your IP"
 msgstr "deiner IP"
 
-#: src/components/windows/Help.jsx:41
+#: src/components/windows/Help.jsx:42
 msgid "Place color pixels on a large canvas with other players online!"
 msgstr ""
 "Zeichne gemeinsam mit anderen Spielern auf einer großen Leinwand online!"
 
-#: src/components/windows/Help.jsx:42
+#: src/components/windows/Help.jsx:43
 msgid ""
 "Our main canvas is a huge worldmap, you can place wherever you like, but you "
 "will have to wait a specific Cooldown between pixels. You can check out the "
@@ -388,7 +408,7 @@ msgstr ""
 "warten muss, allerdings 7s wenn man über ein Pixel eines anderen Spielers "
 "setzt."
 
-#: src/components/windows/Help.jsx:46
+#: src/components/windows/Help.jsx:47
 msgid ""
 "Higher zoomlevels take some time to update, the 3D globe gets updated at "
 "least once per day."
@@ -396,23 +416,23 @@ msgstr ""
 "Die höheren Zoomlevel brauchen etwas Zeit um aktualisiert zu werden, der 3D "
 "Globus wird mindestens einmal pro tag neu geladen."
 
-#: src/components/windows/Help.jsx:47
+#: src/components/windows/Help.jsx:48
 msgid "Have fun!"
 msgstr "Viel Spaß!"
 
-#: src/components/windows/Help.jsx:49
+#: src/components/windows/Help.jsx:50
 msgid "recommended"
 msgstr "empfohlen"
 
-#: src/components/windows/Help.jsx:50
+#: src/components/windows/Help.jsx:51
 msgid "Source on "
 msgstr "Quelltext auf "
 
-#: src/components/windows/Help.jsx:51
+#: src/components/windows/Help.jsx:52
 msgid "Map Data"
 msgstr "Karten Dateien"
 
-#: src/components/windows/Help.jsx:52
+#: src/components/windows/Help.jsx:53
 msgid ""
 "The bare map data that we use, together with converted OpenStreetMap tiles "
 "for orientation, can be downloaded from mega.nz here: "
@@ -421,11 +441,11 @@ msgstr ""
 "OpenStreetMap  Kacheln zur orientierung können auf mega.nz heruntergeladen "
 "werden: "
 
-#: src/components/windows/Help.jsx:54
+#: src/components/windows/Help.jsx:55
 msgid "Detected as Proxy?"
 msgstr "Als Proxy erkannt?"
 
-#: src/components/windows/Help.jsx:56
+#: src/components/windows/Help.jsx:57
 #, javascript-format
 msgid ""
 "If you got detected as proxy, but you are none, please go to our "
@@ -437,43 +457,43 @@ msgstr ""
 "${ getIPLink } auf ${ mailLink }. Sende deine IP zu niemanden sonst. Wir "
 "entschuldigen uns für die Unannehmlichkeiten."
 
-#: src/components/windows/Help.jsx:58 src/components/windows/Help.jsx:75
+#: src/components/windows/Help.jsx:59 src/components/windows/Help.jsx:76
 msgid "Controls"
 msgstr "Steuerung"
 
-#: src/components/windows/Help.jsx:60
+#: src/components/windows/Help.jsx:61
 msgid "Click a color in palette to select it"
 msgstr "Klicke auf eine Farbe in der Palette um sie auszuwählen"
 
-#: src/components/windows/Help.jsx:61
+#: src/components/windows/Help.jsx:62
 #, javascript-format
 msgid "Press ${ bindG } to toggle grid"
 msgstr "Drücke ${ bindG } um das Raster ein- und auszuschalten"
 
-#: src/components/windows/Help.jsx:62
+#: src/components/windows/Help.jsx:63
 msgid "Press ${ bindX } to toggle showing of pixel activity"
 msgstr "Drücke ${ bindX } um Pixel Aktivität anzuzeigen"
 
-#: src/components/windows/Help.jsx:63
+#: src/components/windows/Help.jsx:64
 #, javascript-format
 msgid "Press ${ bindH } to toggle historical view"
 msgstr "Drücke ${ bindH } um zur historischen Ansicht zu wechseln"
 
-#: src/components/windows/Help.jsx:64
+#: src/components/windows/Help.jsx:65
 msgid "Press ${ bindR } to copy coordinates"
 msgstr "Drücke ${ bindR } um aktuelle Koordinaten zu kopieren"
 
-#: src/components/windows/Help.jsx:65
+#: src/components/windows/Help.jsx:66
 #, javascript-format
 msgid "Press ${ bindQ } or ${ bindE } to zoom"
 msgstr "Drücke ${ bindQ } oder ${ bindE } um zu zoomen"
 
-#: src/components/windows/Help.jsx:66 src/components/windows/Help.jsx:77
+#: src/components/windows/Help.jsx:67 src/components/windows/Help.jsx:78
 #, javascript-format
 msgid "Press ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } to move"
 msgstr "Drücke ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } zum navigieren"
 
-#: src/components/windows/Help.jsx:67 src/components/windows/Help.jsx:78
+#: src/components/windows/Help.jsx:68 src/components/windows/Help.jsx:79
 #, javascript-format
 msgid ""
 "Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
@@ -481,26 +501,26 @@ msgstr ""
 "Drücke ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } zum "
 "navigieren"
 
-#: src/components/windows/Help.jsx:68
+#: src/components/windows/Help.jsx:69
 msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
 msgstr ""
 "Ziehe mit der ${ mouseSymbol } Maus oder ${ touchSymbol } wische zum "
 "navigieren"
 
-#: src/components/windows/Help.jsx:69
+#: src/components/windows/Help.jsx:70
 #, javascript-format
 msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
 msgstr ""
 "Scrolle ${ mouseSymbol } mit them Mausrad oder ${ touchSymbol } benutze Zwei-"
 "Finger-Zoom um zu zoomen"
 
-#: src/components/windows/Help.jsx:70
+#: src/components/windows/Help.jsx:71
 msgid "Hold left ${ bindShift } for placing while moving mouse"
 msgstr ""
 "Halte die linke ${ bindShift } Taste gedrückt um Pixel unter der Maus zu "
 "setzen"
 
-#: src/components/windows/Help.jsx:71
+#: src/components/windows/Help.jsx:72
 #, javascript-format
 msgid ""
 "Hold right ${ bindShift } for placing while moving mouse according to "
@@ -509,14 +529,14 @@ msgstr ""
 "Halte die rechte ${ bindShift } Taste gedrückt um Pixel unter der Maus nach "
 "der aktuellen historischen Ansicht zu setzen"
 
-#: src/components/windows/Help.jsx:72 src/components/windows/Help.jsx:83
+#: src/components/windows/Help.jsx:73 src/components/windows/Help.jsx:84
 #, javascript-format
 msgid "${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
 msgstr ""
 "${ mouseSymbol } Linksklick oder ${ touchSymbol } tippe um ein Pixel zu "
 "platzieren"
 
-#: src/components/windows/Help.jsx:73 src/components/windows/Help.jsx:85
+#: src/components/windows/Help.jsx:74 src/components/windows/Help.jsx:86
 msgid ""
 "Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
 "select current hovering color"
@@ -524,17 +544,17 @@ msgstr ""
 "Klicke ${ mouseSymbol } die mittlere Maustaste oder ${ touchSymbol } tippe "
 "lange um eine Farbe von der Leinwand auszuwählen"
 
-#: src/components/windows/Help.jsx:79
+#: src/components/windows/Help.jsx:80
 msgid "Press ${ bindE } and ${ bindC } to fly up and down"
 msgstr "Drücke ${ bindE } oder ${ bindC } um hoch und runter zu fliegen"
 
-#: src/components/windows/Help.jsx:80
+#: src/components/windows/Help.jsx:81
 #, javascript-format
 msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
 msgstr ""
 "${ mouseSymbol } Halte die linke Maustaste gedrückt und ziehe um zu rotieren"
 
-#: src/components/windows/Help.jsx:81
+#: src/components/windows/Help.jsx:82
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
@@ -543,13 +563,13 @@ msgstr ""
 "${ mouseSymbol } Scrolle mit dem Mausrad oder halte ${ mouseSymbol } die "
 "mittlere Maustaste gedrückt und ziehe um zu zoomen"
 
-#: src/components/windows/Help.jsx:82
+#: src/components/windows/Help.jsx:83
 msgid "${ mouseSymbol } Right click and drag mouse to pan"
 msgstr ""
 "${ mouseSymbol } Halte die rechte Maustaste gedrückt und ziehe um dich zu "
 "bewegen"
 
-#: src/components/windows/Help.jsx:84
+#: src/components/windows/Help.jsx:85
 #, javascript-format
 msgid ""
 "${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
@@ -557,9 +577,22 @@ msgstr ""
 "${ mouseSymbol } Rechtsklick oder ${ touchSymbol } tippe zweimal um ein "
 "Voxel zu entfernen"
 
-#: src/components/windows/Help.jsx:87
-msgid "Partners:"
-msgstr "Partner:"
+#: src/components/windows/Help.jsx:90
+msgid ""
+"We thanks those artists very much, they offered their palettes to the public "
+"on"
+msgstr ""
+"Wir bedanken uns bei diesen Künstlern für ihre Paletten, welche sie der "
+"Öffentlichkeit zugänglich machten auf"
+
+#: src/components/windows/Help.jsx:93
+#, javascript-format
+msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
+msgstr "Vielen Dank an ${ starhouseLink } für die Palette der Mond Leinwand."
+
+#: src/components/windows/Help.jsx:96
+msgid "Credit for the Palette of the Top10 canvas goes to ${ vinikLink }."
+msgstr "Vielen Dank an ${ vinikLink } für die Palette der Top10 Leinwand."
 
 #: src/components/windows/Settings.jsx:133
 msgid "Show Grid"
@@ -630,7 +663,7 @@ msgstr "Erdapfel Modus"
 msgid "For when you are playing on a potato."
 msgstr "Wenn du auf einer Kartoffel spielst."
 
-#: src/components/Converter.jsx:429 src/components/windows/Settings.jsx:195
+#: src/components/Converter.jsx:374 src/components/windows/Settings.jsx:195
 msgid "Light Grid"
 msgstr "Helles Raster"
 
@@ -709,14 +742,14 @@ msgid "Confirm Password"
 msgstr "Passwort bestätigen"
 
 #: src/components/Admintools.jsx:311 src/components/Admintools.jsx:392
-#: src/components/Admintools.jsx:466 src/components/Admintools.jsx:510
-#: src/components/Admintools.jsx:594
+#: src/components/Admintools.jsx:467 src/components/Admintools.jsx:512
+#: src/components/Admintools.jsx:595
 #: src/components/windows/ForgotPassword.jsx:86
 #: src/components/windows/Register.jsx:119
 msgid "Submit"
 msgstr "Absenden"
 
-#: src/components/windows/CanvasSelect.jsx:32
+#: src/components/windows/CanvasSelect.jsx:33
 msgid ""
 "Select the canvas you want to use.  Every canvas is unique and has different "
 "palettes, cooldown and requirements.  Archive of closed canvases can be "
@@ -726,7 +759,7 @@ msgstr ""
 "einzigartig und hat unterschiedliche Parletten, Abklingzeiten und "
 "Vorraussetzungen. Archiv von vergangenen Leinwänden kann hier gesehen werden:"
 
-#: src/components/windows/CanvasSelect.jsx:40
+#: src/components/windows/CanvasSelect.jsx:41
 msgid "Archive"
 msgstr "Archiv"
 
@@ -777,14 +810,6 @@ msgstr ""
 "kodiertes webm zu archivieren. Eine Bildschirmaufnahme aus dem Video ergibt "
 "eine perfekte 1:1 Abbildung der Leinwand zu dieser Zeit."
 
-#: src/components/windows/ForgotPassword.jsx:60
-msgid "Sent you a mail with instructions to reset your password."
-msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
-
-#: src/components/windows/ForgotPassword.jsx:71
-msgid "Enter your mail address and we will send you a new password:"
-msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
-
 #: src/components/windows/Chat.jsx:146
 msgid "Channel settings"
 msgstr "Kanal Einstellungen"
@@ -800,6 +825,14 @@ msgstr "Chatte hier"
 #: src/components/windows/Chat.jsx:221
 msgid "You must be logged in to chat"
 msgstr "Melde dich an um dich zu unterhalten"
+
+#: src/components/windows/ForgotPassword.jsx:60
+msgid "Sent you a mail with instructions to reset your password."
+msgstr "Sendete eine E-Mail mit Instruktionen um das Passwort zurückzusetzen."
+
+#: src/components/windows/ForgotPassword.jsx:71
+msgid "Enter your mail address and we will send you a new password:"
+msgstr "Gib deine Mail Adresse an und wir senden dir ein neues Passwort:"
 
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
@@ -878,101 +911,6 @@ msgstr "oder registriere dich hier:"
 msgid "Register"
 msgstr "Registrieren"
 
-#: src/components/Admintools.jsx:184
-msgid "Build image on canvas."
-msgstr "Zeiche Bild auf Leinwand."
-
-#: src/components/Admintools.jsx:187
-msgid "Build image and set it to protected."
-msgstr "Lade Bild und schütze es."
-
-#: src/components/Admintools.jsx:190
-msgid "Build image, but reset cooldown to unset-pixel cd."
-msgstr "Lade Bild und setze Abklingzeit wenn möglich zurück."
-
-#: src/components/Admintools.jsx:253
-msgid "Image Upload"
-msgstr "Bild Hochladen"
-
-#: src/components/Admintools.jsx:254
-msgid "Upload images to canvas"
-msgstr "Lade ein Bild zur Leinwand hoch"
-
-#: src/components/Admintools.jsx:256
-msgid "File"
-msgstr "Datei"
-
-#: src/components/Admintools.jsx:276
-msgid "Coordinates in X_Y format:"
-msgstr "Koordinaten in X_Y Format:"
-
-#: src/components/Admintools.jsx:316
-msgid "Pixel Protection"
-msgstr "Pixel beschützen"
-
-#: src/components/Admintools.jsx:318
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-"Setze Gebiet auf geschützt (falls genauere Kontrolle erwünscht, lade Bild "
-"mit Transparenz mit \"protect\" hoch)"
-
-#: src/components/Admintools.jsx:397
-msgid "Rollback to Date"
-msgstr "Spule zum Datum zurück"
-
-#: src/components/Admintools.jsx:399
-msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
-msgstr ""
-"Spule einen Beraich auf der Leinwand zum angegebenen Datum zurück (00:00 UTC)"
-
-#: src/components/Admintools.jsx:473
-msgid "IP Actions"
-msgstr "IP Aktionen"
-
-#: src/components/Admintools.jsx:475
-msgid "Do stuff with IPs (one IP per line)"
-msgstr "Mache etwas mit IPs (eine IP pro Zeile)"
-
-#: src/components/Admintools.jsx:515
-msgid "Manage Moderators"
-msgstr "Verwalte Moderatoren"
-
-#: src/components/Admintools.jsx:517
-msgid "Remove Moderator"
-msgstr "Entferne Moderator"
-
-#: src/components/Admintools.jsx:549
-msgid "There are no mods"
-msgstr "Es gibt keine Moderatoren"
-
-#: src/components/Admintools.jsx:554
-msgid "Assign new Mod"
-msgstr "Moderator zuweisen"
-
-#: src/components/Admintools.jsx:557
-msgid "Enter UserName of new Mod"
-msgstr "Gebe Name des neuen Moderators ein"
-
-#: src/components/Admintools.jsx:566
-msgid "User Name"
-msgstr "Spielerbereich"
-
-#: src/components/Rankings.jsx:28
-msgid "Total"
-msgstr "Gesamt"
-
-#: src/components/Rankings.jsx:36
-msgid "Daily"
-msgstr "Täglich"
-
-#: src/components/Rankings.jsx:40
-msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-"Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
-"Mitternacht UTC zurückgestellt."
-
 #: src/components/UserAreaContent.jsx:63
 msgid "Todays Placed Pixels"
 msgstr "Heutige Pixel"
@@ -1018,102 +956,220 @@ msgstr "Lösche Konto"
 msgid "Social Settings"
 msgstr "Soziale Einstellungen"
 
-#: src/components/Converter.jsx:280
+#: src/components/Admintools.jsx:184
+msgid "Build image on canvas."
+msgstr "Zeiche Bild auf Leinwand."
+
+#: src/components/Admintools.jsx:187
+msgid "Build image and set it to protected."
+msgstr "Lade Bild und schütze es."
+
+#: src/components/Admintools.jsx:190
+msgid "Build image, but reset cooldown to unset-pixel cd."
+msgstr "Lade Bild und setze Abklingzeit wenn möglich zurück."
+
+#: src/components/Admintools.jsx:253
+msgid "Image Upload"
+msgstr "Bild Hochladen"
+
+#: src/components/Admintools.jsx:254
+msgid "Upload images to canvas"
+msgstr "Lade ein Bild zur Leinwand hoch"
+
+#: src/components/Admintools.jsx:256
+msgid "File"
+msgstr "Datei"
+
+#: src/components/Admintools.jsx:276
+msgid "Coordinates in X_Y format:"
+msgstr "Koordinaten in X_Y Format:"
+
+#: src/components/Admintools.jsx:316
+msgid "Pixel Protection"
+msgstr "Pixel beschützen"
+
+#: src/components/Admintools.jsx:318
+msgid ""
+"Set protection of areas         (if you need finer grained control,         "
+"use protect with image upload and alpha layers)"
+msgstr ""
+"Setze Gebiet auf geschützt (falls genauere Kontrolle erwünscht, lade Bild "
+"mit Transparenz mit \"protect\" hoch)"
+
+#: src/components/Admintools.jsx:398
+msgid "Rollback to Date"
+msgstr "Spule zum Datum zurück"
+
+#: src/components/Admintools.jsx:400
+msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
+msgstr ""
+"Spule einen Beraich auf der Leinwand zum angegebenen Datum zurück (00:00 UTC)"
+
+#: src/components/Admintools.jsx:475
+msgid "IP Actions"
+msgstr "IP Aktionen"
+
+#: src/components/Admintools.jsx:477
+msgid "Do stuff with IPs (one IP per line)"
+msgstr "Mache etwas mit IPs (eine IP pro Zeile)"
+
+#: src/components/Admintools.jsx:516
+msgid "Manage Moderators"
+msgstr "Verwalte Moderatoren"
+
+#: src/components/Admintools.jsx:518
+msgid "Remove Moderator"
+msgstr "Entferne Moderator"
+
+#: src/components/Admintools.jsx:550
+msgid "There are no mods"
+msgstr "Es gibt keine Moderatoren"
+
+#: src/components/Admintools.jsx:555
+msgid "Assign new Mod"
+msgstr "Moderator zuweisen"
+
+#: src/components/Admintools.jsx:558
+msgid "Enter UserName of new Mod"
+msgstr "Gebe Name des neuen Moderators ein"
+
+#: src/components/Admintools.jsx:567
+msgid "User Name"
+msgstr "Spielerbereich"
+
+#: src/components/Rankings.jsx:28
+msgid "Total"
+msgstr "Gesamt"
+
+#: src/components/Rankings.jsx:36
+msgid "Daily"
+msgstr "Täglich"
+
+#: src/components/Rankings.jsx:40
+msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+"Die Rangliste wird alle 5min aktualisiert. Die tägliche Liste wird um "
+"Mitternacht UTC zurückgestellt."
+
+#: src/components/Converter.jsx:190
 msgid "Choose Canvas"
 msgstr "Wähle Leinwand"
 
-#: src/components/Converter.jsx:306
+#: src/components/Converter.jsx:216
 msgid "Palette Download"
 msgstr "Palette herunterladen"
 
-#: src/components/Converter.jsx:308
+#: src/components/Converter.jsx:218
 #, javascript-format
 msgid "Palette for ${ gimpLink }"
 msgstr "Palette für ${ gimpLink }"
 
-#: src/components/Converter.jsx:326
-#, javascript-format
-msgid "Credit for the Palette of the Moon goes to ${ starhouseLink }."
-msgstr "Vielen Dank an ${ starhouseLink } für die Palette der Mond Leinwand."
-
-#: src/components/Converter.jsx:329
+#: src/components/Converter.jsx:236
 msgid "Image Converter"
 msgstr "Bild Konverter"
 
-#: src/components/Converter.jsx:330
+#: src/components/Converter.jsx:237
 msgid "Convert an image to canvas colors"
 msgstr "Konvertiere ein Bild zu Leinwand Farben"
 
-#: src/components/Converter.jsx:341
+#: src/components/Converter.jsx:256
 msgid "Choose Strategy"
 msgstr "Wähle Strategie"
 
-#: src/components/Converter.jsx:368
+#: src/components/Converter.jsx:293
+msgid "Serpentine"
+msgstr "Serpentine"
+
+#: src/components/Converter.jsx:295
+msgid "Minimum Color Distance"
+msgstr "Minimum Farb Distanz"
+
+#: src/components/Converter.jsx:322
+msgid "Calculate like GIMP"
+msgstr "Berechne wie GIMP"
+
+#: src/components/Converter.jsx:326
 msgid "Choose Color Mode"
 msgstr "Wähle Farb Modus"
 
-#: src/components/Converter.jsx:406
+#: src/components/Converter.jsx:354
 msgid "Add Grid (uncheck if you need a 1:1 template)"
 msgstr "Zeichne Raster (deaktiviere falls du eine 1:1 Vorlage benötigst)"
 
-#: src/components/Converter.jsx:431 src/components/Converter.jsx:447
+#: src/components/Converter.jsx:376 src/components/Converter.jsx:392
 msgid "Offset"
 msgstr "Abweichung"
 
-#: src/components/Converter.jsx:477
+#: src/components/Converter.jsx:421
 msgid "Scale Image"
 msgstr "Skaliere Bild"
 
-#: src/components/Converter.jsx:489
+#: src/components/Converter.jsx:432
 msgid "Width"
 msgstr "Breite"
 
-#: src/components/Converter.jsx:519
+#: src/components/Converter.jsx:463
 msgid "Height"
 msgstr "Höhe"
 
-#: src/components/Converter.jsx:557
+#: src/components/Converter.jsx:502
 msgid "Keep Ratio"
 msgstr "Seitenverhältniss beibehalten"
 
-#: src/components/Converter.jsx:570
+#: src/components/Converter.jsx:515
 msgid "Anti Aliasing"
 msgstr "Kantenglättung"
 
-#: src/components/Converter.jsx:584
+#: src/components/Converter.jsx:529
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: src/components/Converter.jsx:603
+#: src/components/Converter.jsx:547
 msgid "Download Template"
 msgstr "Bild herunterladen"
 
-#: src/components/CanvasItem.jsx:27
+#: src/components/CanvasItem.jsx:30
+msgid "Online Users"
+msgstr "Spieler online"
+
+#: src/components/CanvasItem.jsx:35
 msgid "Cooldown"
 msgstr "Abklingzeit"
 
-#: src/components/CanvasItem.jsx:33
+#: src/components/CanvasItem.jsx:41
 msgid "Stacking till"
 msgstr "Gesamtzeit"
 
-#: src/components/CanvasItem.jsx:35
+#: src/components/CanvasItem.jsx:43
 msgid "Ranked"
 msgstr "Gewertet"
 
-#: src/components/CanvasItem.jsx:37
+#: src/components/CanvasItem.jsx:45
+msgid "Yes"
+msgstr "Ja"
+
+#: src/components/CanvasItem.jsx:45
+msgid "No"
+msgstr "Nein"
+
+#: src/components/CanvasItem.jsx:51
 msgid "Requirements"
 msgstr "Vorraussetzungen"
 
-#: src/components/CanvasItem.jsx:39
+#: src/components/CanvasItem.jsx:54
 msgid "User Account"
 msgstr "Konto"
 
-#: src/components/CanvasItem.jsx:41
+#: src/components/CanvasItem.jsx:56
 #, javascript-format
 msgid "and ${ canvas.req } Pixels set"
 msgstr "und ${ canvas.req } gesetzte Pixel"
 
-#: src/components/CanvasItem.jsx:45
+#: src/components/CanvasItem.jsx:59
+msgid "Top 10 Daily Ranking"
+msgstr "Top 10 Platzierung am Vortag"
+
+#: src/components/CanvasItem.jsx:65
 msgid "Dimensions"
 msgstr "Dimensionen"
 
@@ -1124,22 +1180,6 @@ msgstr "Name oder Email"
 #: src/components/LogInForm.jsx:87
 msgid "LogIn"
 msgstr "Einloggen"
-
-#: src/components/UserMessages.jsx:28
-msgid ""
-"Please verify your mail address&nbsp;\n"
-"or your account could get deleted after a few days."
-msgstr ""
-"Bitte bestätige deine E-Mail Adresse oder dein Konto könnte nach einigen "
-"Tagen gelöscht werden."
-
-#: src/components/UserMessages.jsx:49
-msgid "A new verification mail is getting sent to you."
-msgstr "Eine neue Bestätigungsmail wurde gesendet."
-
-#: src/components/UserMessages.jsx:53
-msgid "Click here to request a new verification mail."
-msgstr "Klicke hier um eine neue Bestätigungsmail zu beantragen."
 
 #: src/components/ChangePassword.jsx:22
 msgid "Passwords do not match."
@@ -1160,6 +1200,22 @@ msgstr "Neues Passwort"
 #: src/components/ChangePassword.jsx:104
 msgid "Confirm New Password"
 msgstr "Neues Passwort bestätigen"
+
+#: src/components/UserMessages.jsx:28
+msgid ""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
+msgstr ""
+"Bitte bestätige deine E-Mail Adresse oder dein Konto könnte nach einigen "
+"Tagen gelöscht werden."
+
+#: src/components/UserMessages.jsx:49
+msgid "A new verification mail is getting sent to you."
+msgstr "Eine neue Bestätigungsmail wurde gesendet."
+
+#: src/components/UserMessages.jsx:53
+msgid "Click here to request a new verification mail."
+msgstr "Klicke hier um eine neue Bestätigungsmail zu beantragen."
 
 #: src/components/ChangeName.jsx:64
 msgid "New Username"
@@ -1193,62 +1249,62 @@ msgstr "Entblocke Spieler"
 msgid "You have no users blocked"
 msgstr "Du hast keinen Spieler geblockt"
 
-#: src/components/windows/Help.jsx:15 src/components/windows/Settings.jsx:134
+#: src/components/windows/Help.jsx:14 src/components/windows/Settings.jsx:134
 msgctxt "keybinds"
 msgid "G"
 msgstr "G"
 
-#: src/components/windows/Help.jsx:16 src/components/windows/Settings.jsx:142
+#: src/components/windows/Help.jsx:15 src/components/windows/Settings.jsx:142
 msgctxt "keybinds"
 msgid "X"
 msgstr "X"
 
-#: src/components/windows/Help.jsx:17 src/components/windows/Settings.jsx:205
+#: src/components/windows/Help.jsx:16 src/components/windows/Settings.jsx:205
 msgctxt "keybinds"
 msgid "H"
 msgstr "H"
 
-#: src/components/windows/Help.jsx:18
+#: src/components/windows/Help.jsx:17
 msgctxt "keybinds"
 msgid "R"
 msgstr "R"
 
-#: src/components/windows/Help.jsx:19
+#: src/components/windows/Help.jsx:18
 msgctxt "keybinds"
 msgid "Q"
 msgstr "Q"
 
-#: src/components/windows/Help.jsx:20
+#: src/components/windows/Help.jsx:19
 msgctxt "keybinds"
 msgid "E"
 msgstr "E"
 
-#: src/components/windows/Help.jsx:21
+#: src/components/windows/Help.jsx:20
 msgctxt "keybinds"
 msgid "W"
 msgstr "W"
 
-#: src/components/windows/Help.jsx:22
+#: src/components/windows/Help.jsx:21
 msgctxt "keybinds"
 msgid "A"
 msgstr "A"
 
-#: src/components/windows/Help.jsx:23
+#: src/components/windows/Help.jsx:22
 msgctxt "keybinds"
 msgid "S"
 msgstr "S"
 
-#: src/components/windows/Help.jsx:24
+#: src/components/windows/Help.jsx:23
 msgctxt "keybinds"
 msgid "D"
 msgstr "D"
 
-#: src/components/windows/Help.jsx:31
+#: src/components/windows/Help.jsx:30
 msgctxt "keybinds"
 msgid "Shift"
 msgstr "Shift"
 
-#: src/components/windows/Help.jsx:32
+#: src/components/windows/Help.jsx:31
 msgctxt "keybinds"
 msgid "C"
 msgstr "C"
@@ -1257,6 +1313,12 @@ msgstr "C"
 msgctxt "keybinds"
 msgid "M"
 msgstr "M"
+
+#~ msgid "Partners:"
+#~ msgstr "Partner:"
+
+#~ msgid "User online"
+#~ msgstr "Spieler anwesend"
 
 #~ msgid "You successfully linked your mc account."
 #~ msgstr "Minecraft Konto wurde erfolgreich verknüpft."

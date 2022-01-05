@@ -242,6 +242,10 @@ export function receivePixelReturn(
       errorTitle = t`No Proxies Allowed :(`;
       msg = t`You are using a Proxy.`;
       break;
+    case 12:
+      errorTitle = t`Not allowed`;
+      msg = t`Just the Top10 of yesterday can place here`;
+      break;
     default:
       errorTitle = t`Weird`;
       msg = t`Couldn't set Pixel`;

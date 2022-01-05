@@ -178,11 +178,12 @@ export function buildWebpackClientConfig(
       chunkModules: false,
     },
 
-    cache: {
-      type: 'filesystem',
-      name: (development) ? `${locale}-dev` : locale,
-      buildDependencies,
-    },
+    cache: (extract) ? false
+      : {
+        type: 'filesystem',
+        name: (development) ? `${locale}-dev` : locale,
+        buildDependencies,
+      },
   };
 }
 

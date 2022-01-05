@@ -1,7 +1,6 @@
 {
   "0": {
     "ident":"d",
-    "title": "Earth",
     "colors": [
       [ 202, 227, 255 ],
       [ 255, 255, 255 ],
@@ -37,19 +36,15 @@
       [ 130, 0, 128 ]
     ],
     "size": 65536,
-    "hid": false,
     "cli": 2,
     "bcd": 4000,
     "pcd" : 7000,
     "cds": 60000,
     "ranked" : true,
-    "req": -1,
-    "sd": "2020-01-07",
-    "desc": "Our main canvas, a huge map of the world. Place everywhere you like"
+    "sd": "2020-01-07"
   },
   "1": {
     "ident": "m",
-    "title": "Moon",
     "colors" : [
       [ 49,	46,	47 ],
       [ 99,	92,	90 ],
@@ -91,19 +86,15 @@
         4096
       ]
     ],
-    "hid": false,
     "cli": 2,
     "bcd": 15000,
-    "pcd": 15000,
     "cds": 900000,
     "ranked" : true,
     "req": 20000,
-    "sd": "2020-01-08",
-    "desc": "Moon canvas. Safe space for art. No flags or large text (unless part of art)"
+    "sd": "2020-01-08"
   },
   "2": {
     "ident":"v",
-    "title": "3D Canvas",
     "colors": [
       [ 255, 255, 255 ],
       [ 255, 255, 255 ],
@@ -169,20 +160,15 @@
       [ 174,	215,	185	]
     ],
     "size": 1024,
-    "hid": false,
     "v": true,
     "cli": 2,
     "bcd": 2000,
-    "pcd" : 2000,
     "cds": 60000,
-    "ranked" : false,
     "req": 0,
-    "sd": "2020-01-08",
-    "desc": "Place Voxels on a 3D canvas with others"
+    "sd": "2020-01-08"
   },
   "3": {
     "ident": "c",
-    "title": "Coronavirus",
     "colors" : [
       [ 226,	218,	0 ],
       [ 33,	28,	15 ],
@@ -208,19 +194,14 @@
       [ 230, 206, 172 ]
     ],
     "size" : 256,
-    "hid": false,
     "cli": 2,
     "bcd": 500,
-    "pcd": 500,
     "cds": 60000,
-    "ranked" : false,
     "req": 0,
-    "sd": "2020-03-15",
-    "desc": "Special canvas to spread awareness of SARS-CoV2"
+    "sd": "2020-03-15"
   },
   "5": {
     "ident": "y",
-    "title": "PixelZone",
     "colors": [
       [ 38, 38, 38 ],
       [ 0, 0, 0 ],
@@ -241,18 +222,12 @@
         ],
     "size": 16384,
     "hid": true,
-    "cli": 0,
     "bcd": 4000,
-    "pcd": 4000,
     "cds": 4000,
-    "ranked": false,
-    "req": -1,
-    "sd": "2020-07-05",
-    "desc": "Mirror of PixelZone"
+    "sd": "2020-07-05"
   },
   "6": {
     "ident": "z",
-    "title": "PixelCanvas",
     "colors": [
       [ 255, 255, 255 ],
       [ 228, 228, 228 ],
@@ -273,18 +248,12 @@
         ],
     "size": 16384,
     "hid": true,
-    "cli": 0,
     "bcd": 10000,
-    "pcd": 10000,
     "cds": 10000,
-    "ranked": false,
-    "req": -1,
-    "sd": "2020-07-05",
-    "desc": "Mirror of PixelCanvas"
+    "sd": "2020-07-05"
   },
   "7": {
     "ident": "w",
-    "title": "1bit",
     "colors": [
       [ 0, 0, 0 ],
       [ 255, 255, 255 ],
@@ -292,14 +261,46 @@
       [ 255, 255, 255 ]
         ],
     "size": 65536,
-    "hid": false,
     "cli": 2,
     "bcd": 7000,
     "pcd": 15000,
     "cds": 1000000,
     "ranked": true,
     "req": 5000,
-    "sd": "2020-11-09",
-    "desc": "Black and White canvas"
+    "sd": "2020-11-09"
+  },
+  "8": {
+    "ident": "t",
+    "colors": [
+      [ 197, 204, 184 ],
+      [ 111, 103, 118 ],
+      [ 154, 154, 151 ],
+      [ 139, 85, 128 ],
+      [ 195, 136, 144 ],
+      [ 165, 147, 165 ],
+      [ 102, 96, 146 ],
+      [ 154, 79, 80 ],
+      [ 194, 141, 117 ],
+      [ 124, 161, 192 ],
+      [ 65, 106, 163 ],
+      [ 141, 98, 104 ],
+      [ 190, 149, 92 ],
+      [ 104, 172, 169 ],
+      [ 56, 112, 128 ],
+      [ 110, 105, 98 ],
+      [ 147, 161, 103 ],
+      [ 110, 170, 120 ],
+      [ 85, 112, 100 ],
+      [ 157, 159, 127 ],
+      [ 126, 158, 153 ],
+      [ 93, 104, 114 ],
+      [ 67, 52, 85 ],
+      [ 0, 0, 0 ]
+    ],
+    "size": 1024,
+    "bcd": 15000,
+    "cds": 900000,
+    "req": "top",
+    "sd": "2022-01"
   }
 }
