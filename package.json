@@ -37,7 +37,7 @@
     "express-session": "^1.17.2",
     "global": "^4.3.2",
     "http-proxy-agent": "^5.0.0",
-    "image-q": "^3.0.5",
+    "image-q": "^3.0.7",
     "isomorphic-fetch": "^3.0.0",
     "js-file-download": "^0.4.12",
     "localforage": "^1.10.0",
