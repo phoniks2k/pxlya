@@ -12,7 +12,7 @@ const PREV_DAILY_TOP_KEY = 'prevtop';
  * @param dailyRanking Array of dailyRanking
  */
 export async function saveDailyTop(dailyRanking) {
-  const top10 = dailyRanking.slice(10).map((user) => user.id);
+  const top10 = dailyRanking.slice(0, 10).map((user) => user.id);
   const jsonTop = JSON.stringify(top10);
   logger.info(`Saving current daily top 10 into redis: ${jsonTop}`);
   await redis.setAsync(PREV_DAILY_TOP_KEY, jsonTop);
