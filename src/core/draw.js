@@ -45,10 +45,10 @@ export async function drawByOffsets(
   let coolDown = 0;
   let retCode = 0;
   let pxlCnt = 0;
-
-  const canvas = canvases[canvasId];
+  let rankedPxlCnt = 0;
 
   try {
+    const canvas = canvases[canvasId];
     if (!canvas) {
       // canvas doesn't exist
       throw new Error(1);
@@ -103,10 +103,6 @@ export async function drawByOffsets(
         coolDownFactor = 2;
       }
     }
-
-    /*
-     * TODO benchmark if requesting by pixel or chunk is better
-     */
 
     while (pixels.length) {
       const [offset, color] = pixels.pop();
@@ -171,7 +167,13 @@ export async function drawByOffsets(
       }
 
       setPixelByOffset(canvasId, color, i, j, offset);
+
       pxlCnt += 1;
+      /* hardcode to not count pixels in antarctica */
+      // eslint-disable-next-line eqeqeq
+      if (canvas.ranked && (canvasId != 0 || y < 14450)) {
+        rankedPxlCnt += 1;
+      }
     }
   } catch (e) {
     retCode = parseInt(e.message, 10);
@@ -182,8 +184,8 @@ export async function drawByOffsets(
 
   if (pxlCnt) {
     user.setWait(wait, canvasId);
-    if (canvas.ranked) {
-      user.incrementPixelcount(pxlCnt);
+    if (rankedPxlCnt) {
+      user.incrementPixelcount(rankedPxlCnt);
     }
   }
 
