@@ -1,6 +1,6 @@
 /**
  *
- * @flow
+ * basic functions to get data fromheaders and parse IPs
  */
 
 import logger from '../core/logger';
@@ -8,15 +8,20 @@ import logger from '../core/logger';
 import { USE_XREALIP } from '../core/config';
 
 
-export function getHostFromRequest(req): ?string {
+export function getHostFromRequest(req, includeProto = true) {
   const { headers } = req;
-  const host = headers['x-forwarded-host'] || headers.host;
-  const proto = headers['x-forwarded-proto'] || 'http';
+  const host = headers['x-forwarded-host']
+    || headers.host
+    || headers[':authority'];
+  if (!includeProto) {
+    return host;
+  }
 
+  const proto = headers['x-forwarded-proto'] || 'http';
   return `${proto}://${host}`;
 }
 
-export function getIPFromRequest(req): ?string {
+export function getIPFromRequest(req) {
   if (USE_XREALIP) {
     const ip = req.headers['x-real-ip'];
     if (ip) {
@@ -38,7 +43,7 @@ export function getIPFromRequest(req): ?string {
   return conip;
 }
 
-export function getIPv6Subnet(ip: string): string {
+export function getIPv6Subnet(ip) {
   if (ip.includes(':')) {
     // eslint-disable-next-line max-len
     const ipv6sub = `${ip.split(':').slice(0, 4).join(':')}:0000:0000:0000:0000`;

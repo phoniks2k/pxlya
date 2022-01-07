@@ -7,7 +7,7 @@ import logger from '../core/logger';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import Counter from '../utils/Counter';
-import { getIPFromRequest } from '../utils/ip';
+import { getIPFromRequest, getHostFromRequest } from '../utils/ip';
 
 import CoolDownPacket from './packets/CoolDownPacket';
 import PixelUpdate from './packets/PixelUpdateServer';
@@ -40,7 +40,13 @@ async function verifyClient(info, done) {
 
   // Limiting socket connections per ip
   const ip = getIPFromRequest(req);
-  logger.info(`Got ws request from ${ip} via ${headers.origin}`);
+  // CORS
+  const { origin } = headers;
+  if (!origin || !origin.endsWith(getHostFromRequest(req, false))) {
+    // eslint-disable-next-line max-len
+    logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(req, false)}`);
+    return done(false);
+  }
   if (ipCounter.get(ip) > 50) {
     logger.info(`Client ${ip} has more than 50 connections open.`);
     return done(false);

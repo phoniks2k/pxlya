@@ -188,7 +188,7 @@ pm2 stop ppfun-server
 
 ### If using Cloudflare / Reverse Proxy
 
-If USE\_XREALIP is set, we take the IP from the X-Real-Ip header. Use this if you have pixelplanet running behind nginx and cloudflare. Use the nginx set\_realip module to give us the client ip on the X-Real-Ip header (and set it up so that just cloudflare are trusted proxy IPs, or else players could fake their IP). And be sure to also forward X-Forwarded-Port and set X-Forwarded-Proto.
+If USE\_XREALIP is set, we take the IP from the X-Real-Ip header. Use this if you have pixelplanet running behind nginx and cloudflare. Use the nginx set\_realip module to give us the client ip on the X-Real-Ip header (and set it up so that just cloudflare are trusted proxy IPs, or else players could fake their IP). And be sure to also set X-Forwarded-Port and set X-Forwarded-Proto, because we use it for CORS and redirecion.
 
 ### Auto-Start
 To have the canvas with all it's components autostart at systemstart,
