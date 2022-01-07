@@ -5,7 +5,6 @@ apps:
     env:
       PORT: 80
       HOST: "localhost"
-      ASSET_SERVER: "http://localhost"
       REDIS_URL: 'redis://localhost:6379'
       MYSQL_HOST: "localhost"
       MYSQL_USER: "pixelplanet"

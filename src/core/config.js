@@ -9,7 +9,7 @@ if (process.env.BROWSER) {
   );
 }
 
-export const PORT = process.env.PORT || 80;
+export const PORT = process.env.PORT || 8080;
 export const HOST = process.env.HOST || 'localhost';
 
 export const GMAIL_USER = process.env.GMAIL_USER || null;
@@ -30,7 +30,7 @@ export const BACKUP_DIR = process.env.BACKUP_DIR || null;
 // Proxycheck
 export const USE_PROXYCHECK = parseInt(process.env.USE_PROXYCHECK, 10) || false;
 
-export const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6380';
+export const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 // Database
 export const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
 export const MYSQL_DATABASE = process.env.MYSQL_DATABASE || 'pixelplanet';
