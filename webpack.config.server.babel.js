@@ -150,7 +150,7 @@ export default ({
             ),
           },
           {
-            from: path.resolve(__dirname, 'captchaFonts'),
+            from: path.resolve(__dirname, 'deployment', 'captchaFonts'),
             to: path.resolve(__dirname, 'dist', 'captchaFonts'),
           },
           {

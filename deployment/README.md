@@ -1,6 +1,9 @@
 # Utils and informations of current deployment
 Files here might be very specific to the setup of pixelplanet.fun and might not be relevant for everyone
 
+## exalple-ecosystem-x.yml and captchaFonts
+Examples of configurations, will be copied into ./dist on build
+
 ## updtmsg
 Basic nodejs script to print a message and a youtube video, used as a message while updating
 

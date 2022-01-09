@@ -53,14 +53,6 @@ msgstr ""
 msgid "Stop flooding."
 msgstr ""
 
-#: src/ssr-components/Main.jsx:70
-msgid "PixelPlanet.fun"
-msgstr ""
-
-#: src/ssr-components/Main.jsx:72
-msgid "Place color pixels on an map styled canvas with other players online"
-msgstr ""
-
 #: src/ssr-components/Globe.jsx:44
 msgid "Double click on globe to go back."
 msgstr ""
@@ -75,6 +67,14 @@ msgstr ""
 
 #: src/ssr-components/Globe.jsx:52
 msgid "A 3D globe of our whole map"
+msgstr ""
+
+#: src/ssr-components/Main.jsx:70
+msgid "PixelPlanet.fun"
+msgstr ""
+
+#: src/ssr-components/Main.jsx:72
+msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
 #: src/routes/reset_password.js:41
@@ -327,6 +327,10 @@ msgstr ""
 msgid "PixelPlanet.fun Accounts"
 msgstr ""
 
+#: src/routes/api/auth/logout.js:13
+msgid "You are not even logged in."
+msgstr ""
+
 #: src/routes/api/auth/verify.js:25
 #: src/routes/api/auth/verify.js:32
 msgid "Mail verification"
@@ -340,10 +344,6 @@ msgstr ""
 msgid ""
 "Your mail verification code is invalid or already expired :(, please "
 "request a new one."
-msgstr ""
-
-#: src/routes/api/auth/logout.js:13
-msgid "You are not even logged in."
 msgstr ""
 
 #: src/canvasesDesc.js:18
