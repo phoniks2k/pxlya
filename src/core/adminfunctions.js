@@ -10,7 +10,7 @@ import sharp from 'sharp';
 import Sequelize from 'sequelize';
 import redis from '../data/redis';
 
-import { admintoolsLogger } from './logger';
+import { modtoolsLogger } from './logger';
 import { getIPv6Subnet } from '../utils/ip';
 import { Blacklist, Whitelist, RegUser } from '../data/models';
 // eslint-disable-next-line import/no-unresolved
@@ -46,7 +46,7 @@ export async function executeIPAction(action: string, ips: string): string {
     const ipKey = getIPv6Subnet(ip);
     const key = `isprox:${ipKey}`;
 
-    admintoolsLogger.info(`ADMINTOOLS: ${action} ${ip}`);
+    modtoolsLogger.info(`ADMINTOOLS: ${action} ${ip}`);
     switch (action) {
       case 'ban':
         await Blacklist.findOrCreate({
@@ -150,7 +150,7 @@ export async function executeImageAction(
     );
 
     // eslint-disable-next-line max-len
-    admintoolsLogger.info(`ADMINTOOLS: Loaded image wth ${pxlCount} pixels to ${x}/${y}`);
+    modtoolsLogger.info(`ADMINTOOLS: Loaded image wth ${pxlCount} pixels to ${x}/${y}`);
     return [
       200,
       `Successfully loaded image wth ${pxlCount} pixels to ${x}/${y}`,
@@ -238,7 +238,7 @@ export async function executeProtAction(
     height,
     protect,
   );
-  admintoolsLogger.info(
+  modtoolsLogger.info(
     // eslint-disable-next-line max-len
     `ADMINTOOLS: Set protect to ${protect} for ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
   );
@@ -333,7 +333,7 @@ export async function executeRollback(
     height,
     date,
   );
-  admintoolsLogger.info(
+  modtoolsLogger.info(
     // eslint-disable-next-line max-len
     `ADMINTOOLS: Rollback to ${date} for ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
   );

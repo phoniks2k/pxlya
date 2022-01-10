@@ -16,14 +16,19 @@ export default async (req: Request, res: Response) => {
   const { t } = req.ttag;
 
   try {
-    const { text } = req.body;
+    const { text, id } = req.body;
     if (!text) {
       res.status(400)
         .json({ errors: [t`No captcha text given`] });
       return;
     }
+    if (!id) {
+      res.status(400)
+        .json({ errors: [t`No captcha id given`] });
+      return;
+    }
 
-    const ret = await checkCaptchaSolution(text, ip);
+    const ret = await checkCaptchaSolution(text, ip, id);
 
     switch (ret) {
       case 0:

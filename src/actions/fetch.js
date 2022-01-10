@@ -177,10 +177,10 @@ export async function requestLeaveChan(channelId) {
   return t`Unknown Error`;
 }
 
-export async function requestSolveCaptcha(text) {
+export async function requestSolveCaptcha(text, captchaid) {
   const res = await makeAPIPOSTRequest(
     'api/captcha',
-    { text },
+    { text, id: captchaid },
   );
   if (!res.errors && !res.success) {
     return {
@@ -193,7 +193,7 @@ export async function requestSolveCaptcha(text) {
 export async function requestHistoricalTimes(day, canvasId) {
   try {
     const date = dateToString(day);
-    const url = `api/history?day=${date}&id=${canvasId}`;
+    const url = `history?day=${date}&id=${canvasId}`;
     const response = await fetchWithTimeout(url);
     if (response.status !== 200) {
       return [];
@@ -269,5 +269,17 @@ export function requestDeleteAccount(password) {
   return makeAPIPOSTRequest(
     'api/auth/delete_account',
     { password },
+  );
+}
+
+export function requestRankings() {
+  return makeAPIGETRequest(
+    'ranking',
+  );
+}
+
+export function requestMe() {
+  return makeAPIGETRequest(
+    'api/me',
   );
 }

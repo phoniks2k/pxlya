@@ -26,6 +26,7 @@ async function verifyClient(info, done) {
   const ip = getIPFromRequest(req);
 
   if (!headers.authorization
+    || !APISOCKET_KEY
     || headers.authorization !== `Bearer ${APISOCKET_KEY}`) {
     logger.warn(`API ws request from ${ip} authenticated`);
     return done(false);

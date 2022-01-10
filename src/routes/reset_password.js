@@ -5,7 +5,6 @@
  */
 
 import express from 'express';
-import bodyParser from 'body-parser';
 
 import type { Request, Response } from 'express';
 
@@ -21,7 +20,7 @@ const router = express.Router();
 /*
  * decode form data to req.body
  */
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(express.urlencoded({ extended: true }));
 
 
 /*

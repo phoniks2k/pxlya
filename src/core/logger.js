@@ -48,12 +48,12 @@ export const proxyLogger = createLogger({
   ],
 });
 
-export const admintoolsLogger = createLogger({
+export const modtoolsLogger = createLogger({
   format: format.printf(({ message }) => message),
   transports: [
     new DailyRotateFile({
       level: 'info',
-      filename: './log/admintools-%DATE%.log',
+      filename: './log/modtools-%DATE%.log',
       maxSize: '20m',
       maxFiles: '14d',
       colorize: false,

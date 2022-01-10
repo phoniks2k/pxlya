@@ -64,30 +64,6 @@ msgstr "Dein Land ist temporär stummgeschaltet"
 msgid "Stop flooding."
 msgstr "Stoppe zu spamen."
 
-#: src/ssr-components/Globe.jsx:44
-msgid "Double click on globe to go back."
-msgstr "Doppelklick um zurück zu gehen."
-
-#: src/ssr-components/Globe.jsx:45
-msgid "Loading..."
-msgstr "Lade..."
-
-#: src/ssr-components/Globe.jsx:51
-msgid "PixelPlanet.Fun 3DGlobe"
-msgstr "PixelPlanet.Fun 3D Globus"
-
-#: src/ssr-components/Globe.jsx:52
-msgid "A 3D globe of our whole map"
-msgstr "Ein interaktvier 3D Globus unserer gesamten Karte"
-
-#: src/ssr-components/Main.jsx:70
-msgid "PixelPlanet.fun"
-msgstr "PixelPlanet.Fun"
-
-#: src/ssr-components/Main.jsx:72
-msgid "Place color pixels on an map styled canvas with other players online"
-msgstr "Zeichne mit farbigen Pixel auf einer Weltkarte mit anderen Spielern"
-
 #: src/routes/reset_password.js:41
 msgid "You sent an empty password or invalid data :("
 msgstr "Du hast ein ungültiges Passwort oder Daten gesendet :("
@@ -119,6 +95,30 @@ msgid ""
 msgstr ""
 "Dieser Passwort Wiederherstellungslink ist falsch oder abgelaufen, bitte "
 "beantrage einen neuen (Hinweis: Du kannst diese Links nur einmal verwenden)"
+
+#: src/ssr-components/Globe.jsx:44
+msgid "Double click on globe to go back."
+msgstr "Doppelklick um zurück zu gehen."
+
+#: src/ssr-components/Globe.jsx:45
+msgid "Loading..."
+msgstr "Lade..."
+
+#: src/ssr-components/Globe.jsx:51
+msgid "PixelPlanet.Fun 3DGlobe"
+msgstr "PixelPlanet.Fun 3D Globus"
+
+#: src/ssr-components/Globe.jsx:52
+msgid "A 3D globe of our whole map"
+msgstr "Ein interaktvier 3D Globus unserer gesamten Karte"
+
+#: src/ssr-components/Main.jsx:70
+msgid "PixelPlanet.fun"
+msgstr "PixelPlanet.Fun"
+
+#: src/ssr-components/Main.jsx:72
+msgid "Place color pixels on an map styled canvas with other players online"
+msgstr "Zeichne mit farbigen Pixel auf einer Weltkarte mit anderen Spielern"
 
 #: src/core/mail.js:65
 #, javascript-format
@@ -243,6 +243,38 @@ msgstr "PixelPlanet.Fun Passwort Wiederherstellung"
 msgid "Reset your password here"
 msgstr "Setze hier dein Passwort zurück"
 
+#: src/routes/api/captcha.js:22
+msgid "No captcha text given"
+msgstr "Keinen Captcha Text eingegeben"
+
+#: src/routes/api/captcha.js:36
+msgid "You took too long, try again."
+msgstr "Do hast zu lange benötigt."
+
+#: src/routes/api/captcha.js:42
+msgid "You failed your captcha"
+msgstr "Captcha Text ist falsch"
+
+#: src/routes/api/captcha.js:48
+msgid "Unknown Captcha Error"
+msgstr "Unbekannter Captcha Fehler"
+
+#: src/routes/api/captcha.js:55
+msgid "Server error occured"
+msgstr "Server Fehler"
+
+#: src/routes/api/modtools.js:51
+msgid "You are not logged in"
+msgstr "Du bist nicht angemeldet."
+
+#: src/routes/api/modtools.js:63
+msgid "You are not allowed to access this page"
+msgstr "Du hast keinen Zugriff zu diese Seite"
+
+#: src/routes/api/modtools.js:129
+msgid "Just admins can do that"
+msgstr "Nur Administratoren können dies tun"
+
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
 msgstr "E-Mail Feld kann nicht leer sein."
@@ -290,26 +322,6 @@ msgstr "Passwort muss mindestens 6 Zeichen lang sein."
 #: src/utils/validation.js:60
 msgid "Password must be shorter than 60 characters."
 msgstr "Passwort muss kürzer als 60 Zeichen sein."
-
-#: src/routes/api/captcha.js:22
-msgid "No captcha text given"
-msgstr "Keinen Captcha Text eingegeben"
-
-#: src/routes/api/captcha.js:36
-msgid "You took too long, try again."
-msgstr "Do hast zu lange benötigt."
-
-#: src/routes/api/captcha.js:42
-msgid "You failed your captcha"
-msgstr "Captcha Text ist falsch"
-
-#: src/routes/api/captcha.js:48
-msgid "Unknown Captcha Error"
-msgstr "Unbekannter Captcha Fehler"
-
-#: src/routes/api/captcha.js:55
-msgid "Server error occured"
-msgstr "Server Fehler"
 
 #: src/routes/api/auth/register.js:31
 msgid "E-Mail already in use."

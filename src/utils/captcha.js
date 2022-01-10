@@ -71,13 +71,17 @@ function evaluateResult(captchaText, userText) {
  *
  * @param text Solution of captcha
  * @param ip
- * @param ttl time to be valid in seconds
+ * @param captchaid
  */
 export function setCaptchaSolution(
   text,
   ip,
+  captchaid = null,
 ) {
-  const key = `capt:${ip}`;
+  let key = `capt:${ip}`;
+  if (captchaid) {
+    key += `:${captchaid}`;
+  }
   return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
 }
 
@@ -93,9 +97,13 @@ export function setCaptchaSolution(
 export async function checkCaptchaSolution(
   text,
   ip,
+  captchaid = null,
 ) {
   const ipn = getIPv6Subnet(ip);
-  const key = `capt:${ip}`;
+  let key = `capt:${ip}`;
+  if (captchaid) {
+    key += `:${captchaid}`;
+  }
   const solution = await redis.getAsync(key);
   if (solution) {
     if (evaluateResult(solution.toString('utf8'), text)) {
@@ -109,7 +117,7 @@ export async function checkCaptchaSolution(
     );
     return 2;
   }
-  logger.info(`CAPTCHA ${ip} timed out`);
+  logger.info(`CAPTCHA ${ip}:${captchaid} timed out`);
   return 1;
 }
 

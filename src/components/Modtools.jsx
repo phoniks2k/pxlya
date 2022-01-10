@@ -1,5 +1,5 @@
 /*
- * Admintools
+ * Modtools
  * @flow
  */
 
@@ -31,7 +31,7 @@ async function submitImageAction(
   data.append('image', file);
   data.append('canvasid', canvas);
   data.append('coords', coords);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -51,7 +51,7 @@ async function submitProtAction(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -72,7 +72,7 @@ async function submitRollback(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -88,7 +88,7 @@ async function submitIPAction(
   const iplist = document.getElementById('iparea').value;
   data.append('ip', iplist);
   data.append('ipaction', action);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -101,7 +101,7 @@ async function getModList(
 ) {
   const data = new FormData();
   data.append('modlist', true);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -119,7 +119,7 @@ async function submitRemMod(
 ) {
   const data = new FormData();
   data.append('remmod', userId);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -133,7 +133,7 @@ async function submitMakeMod(
 ) {
   const data = new FormData();
   data.append('makemod', userName);
-  const resp = await fetch('./admintools', {
+  const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -146,7 +146,7 @@ async function submitMakeMod(
 }
 
 
-function Admintools() {
+function Modtools() {
   const maxDate = getToday();
 
   const [selectedCanvas, selectCanvas] = useState(0);
@@ -603,4 +603,4 @@ function Admintools() {
   );
 }
 
-export default React.memo(Admintools);
+export default React.memo(Modtools);

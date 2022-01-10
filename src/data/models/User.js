@@ -223,8 +223,6 @@ class User {
       return {
         name: null,
         mailVerified: false,
-        mcVerified: false,
-        minecraftname: null,
         blockDm: false,
         totalPixels: 0,
         dailyTotalPixels: 0,
@@ -242,8 +240,6 @@ class User {
     return {
       name: regUser.name,
       mailVerified: regUser.mailVerified,
-      mcVerified: regUser.mcVerified,
-      minecraftname: regUser.minecraftname,
       blockDm: regUser.blockDm,
       totalPixels: regUser.totalPixels,
       dailyTotalPixels: regUser.dailyTotalPixels,

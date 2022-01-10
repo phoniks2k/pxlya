@@ -5,6 +5,8 @@ import {
   requestBlock,
   requestBlockDm,
   requestLeaveChan,
+  requestRankings,
+  requestMe,
 } from './fetch';
 
 export function sweetAlert(
@@ -446,10 +448,8 @@ export function remFromMessages(
 
 export function fetchStats() {
   return async (dispatch) => {
-    const response = await fetch('api/ranking', { credentials: 'include' });
-    if (response.ok) {
-      const rankings = await response.json();
-
+    const rankings = await requestRankings();
+    if (!rankings.errors) {
       dispatch(receiveStats(rankings));
     }
   };
@@ -457,12 +457,8 @@ export function fetchStats() {
 
 export function fetchMe() {
   return async (dispatch) => {
-    const response = await fetch('api/me', {
-      credentials: 'include',
-    });
-
-    if (response.ok) {
-      const me = await response.json();
+    const me = await requestMe();
+    if (!me.errors) {
       dispatch(receiveMe(me));
     }
   };

@@ -5,7 +5,7 @@
 
 import type { Request, Response } from 'express';
 
-import rankings from '../../core/ranking';
+import rankings from '../core/ranking';
 
 
 export default async (req: Request, res: Response) => {

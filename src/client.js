@@ -1,4 +1,6 @@
-/* @flow */
+/*
+ * Entrypoint for main client script
+ */
 
 // eslint-disable-next-line no-unused-vars
 import fetch from 'isomorphic-fetch'; // TODO put in the beggining with webpack!
@@ -117,6 +119,8 @@ function init() {
   ProtocolClient.connect();
 
   store.dispatch(fetchStats());
+  // TODO: We don't have to do this this often
+  // the client might not even look at it
   setInterval(() => { store.dispatch(fetchStats()); }, 300000);
 }
 init();
@@ -156,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // on captcha received
-window.onCaptcha = async function onCaptcha(token: string) {
+window.onCaptcha = async function onCaptcha(token) {
   const body = JSON.stringify({
     token,
   });

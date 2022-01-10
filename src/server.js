@@ -1,42 +1,30 @@
-/* @flow */
+/*
+ * Entrypoint for main server script
+ */
 
 import url from 'url';
-import path from 'path';
 import compression from 'compression';
 import express from 'express';
 import http from 'http';
-import etag from 'etag';
-
 
 // import baseCss from './components/base.tcss';
 import forceGC from './core/forceGC';
-import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import logger from './core/logger';
 import rankings from './core/ranking';
 import models from './data/models';
+import routes from './routes';
 import chatProvider from './core/ChatProvider';
-import { expressTTag } from './core/ttag';
 
 import SocketServer from './socket/SocketServer';
 import APISocketServer from './socket/APISocketServer';
 
-import {
-  api,
-  tiles,
-  chunks,
-  admintools,
-  resetPassword,
-} from './routes';
-import generateGlobePage from './ssr-components/Globe';
-import generateMainPage from './ssr-components/Main';
 
-import { SECOND, MONTH } from './core/constants';
-import { PORT, HOST, GUILDED_INVITE } from './core/config';
+import { PORT, HOST } from './core/config';
+import { SECOND } from './core/constants';
 
 import { startAllCanvasLoops } from './core/tileserver';
 
 startAllCanvasLoops();
-
 
 const app = express();
 app.disable('x-powered-by');
@@ -70,19 +58,6 @@ function wsupgrade(request, socket, head) {
 }
 server.on('upgrade', wsupgrade);
 
-
-//
-// API
-// -----------------------------------------------------------------------------
-app.use('/api', api);
-
-
-//
-// Serving Zoomed Tiless
-// -----------------------------------------------------------------------------
-app.use('/tiles', tiles);
-
-
 /*
  * use gzip compression for following calls
 /* level from -1 (default, 6) to 0 (no) from 1 (fastest) to 9 (best)
@@ -98,93 +73,7 @@ app.use(compression({
   },
 }));
 
-
-//
-// public folder
-// (this should be served with nginx or other webserver)
-// -----------------------------------------------------------------------------
-app.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: 3 * MONTH,
-  extensions: ['html'],
-}));
-
-
-//
-// Redirecct to guilded
-// -----------------------------------------------------------------------------
-app.use('/guilded', (req, res) => {
-  res.redirect(GUILDED_INVITE);
-});
-
-
-//
-// Serving Chunks
-// -----------------------------------------------------------------------------
-app.get('/chunks/:c([0-9]+)/:x([0-9]+)/:y([0-9]+)(/)?:z([0-9]+)?.bmp', chunks);
-
-//
-// Admintools
-// -----------------------------------------------------------------------------
-app.use('/admintools', admintools);
-
-/*
- * decide which language to use
- */
-app.use(expressTTag);
-
-
-//
-// Password Reset Link
-// -----------------------------------------------------------------------------
-app.use('/reset_password', resetPassword);
-
-
-//
-// 3D Globe (react generated)
-// -----------------------------------------------------------------------------
-const globeEtag = etag(
-  assets.globe.js.join('_'),
-  { weak: true },
-);
-app.get('/globe', async (req, res) => {
-  res.set({
-    'Cache-Control': `private, max-age=${15 * 60}`, // seconds
-    'Content-Type': 'text/html; charset=utf-8',
-    ETag: globeEtag,
-  });
-
-  if (req.headers['if-none-match'] === globeEtag) {
-    res.status(304).end();
-    return;
-  }
-
-  res.status(200).send(generateGlobePage(req.lang));
-});
-
-
-//
-// Main Page (react generated)
-// -----------------------------------------------------------------------------
-const indexEtag = etag(
-  assets.client.js.join('_'),
-  { weak: true },
-);
-
-app.get('/', async (req, res) => {
-  res.set({
-    'Cache-Control': `private, max-age=${15 * 60}`, // seconds
-    'Content-Type': 'text/html; charset=utf-8',
-    ETag: indexEtag,
-  });
-
-  if (req.headers['if-none-match'] === indexEtag) {
-    res.status(304).end();
-    return;
-  }
-
-  res.status(200).send(generateMainPage(req.lang));
-});
-
+app.use(routes);
 
 //
 // ip config

@@ -6,7 +6,7 @@
 import fs from 'fs';
 import type { Request, Response } from 'express';
 
-import { BACKUP_DIR } from '../../core/config';
+import { BACKUP_DIR } from '../core/config';
 
 async function history(req: Request, res: Response) {
   const { day, id } = req.query;

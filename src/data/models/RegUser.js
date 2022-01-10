@@ -88,16 +88,6 @@ const RegUser = Model.define('User', {
     allowNull: true,
   },
 
-  minecraftid: {
-    type: DataType.CHAR(36),
-    allowNull: true,
-  },
-
-  minecraftname: {
-    type: DataType.CHAR(16),
-    allowNull: true,
-  },
-
   // when mail verification got requested,
   // used for purging unverified accounts
   verificationReqAt: {
@@ -125,10 +115,6 @@ const RegUser = Model.define('User', {
       return this.verified & 0x01;
     },
 
-    mcVerified(): boolean {
-      return this.verified & 0x02;
-    },
-
     blockDm(): boolean {
       return this.blocks & 0x01;
     },
@@ -141,11 +127,6 @@ const RegUser = Model.define('User', {
   setterMethods: {
     mailVerified(num: boolean) {
       const val = (num) ? (this.verified | 0x01) : (this.verified & ~0x01);
-      this.setDataValue('verified', val);
-    },
-
-    mcVerified(num: boolean) {
-      const val = (num) ? (this.verified | 0x02) : (this.verified & ~0x02);
       this.setDataValue('verified', val);
     },
 

@@ -1,13 +1,7 @@
-/**
- * @flow
- */
-
 import express from 'express';
-import bodyParser from 'body-parser';
 
 import session from '../../core/session';
 import passport from '../../core/passport';
-import { expressTTag } from '../../core/ttag';
 import logger from '../../core/logger';
 import User from '../../data/models/User';
 import { getIPFromRequest } from '../../utils/ip';
@@ -15,23 +9,17 @@ import { getIPFromRequest } from '../../utils/ip';
 import me from './me';
 import captcha from './captcha';
 import auth from './auth';
-import ranking from './ranking';
-import history from './history';
 import chatHistory from './chathistory';
 import startDm from './startdm';
 import leaveChan from './leavechan';
 import block from './block';
 import blockdm from './blockdm';
+import modtools from './modtools';
 
 
 const router = express.Router();
 
-// this route doesn't need passport
-router.get('/ranking', ranking);
-
-router.get('/history', history);
-
-router.use(bodyParser.json());
+router.use(express.json());
 
 router.use((err, req, res, next) => {
   if (err) {
@@ -42,11 +30,6 @@ router.use((err, req, res, next) => {
     next();
   }
 });
-
-/*
- * make localisations available
- */
-router.use(expressTTag);
 
 // captcah doesn't need a user
 router.post('/captcha', captcha);
@@ -71,6 +54,12 @@ router.use(session);
  */
 router.use(passport.initialize());
 router.use(passport.session());
+
+/*
+ * modtools
+ * (does not json bodies, but urlencoded)
+ */
+router.use('/modtools', modtools);
 
 /*
  * create dummy user with just ip if not

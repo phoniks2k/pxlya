@@ -1,6 +1,6 @@
 /**
- * basic admin api
- * is used by ../components/Admintools
+ * basic mod api
+ * is used by ../components/Modtools
  *
  * @flow
  *
@@ -8,13 +8,10 @@
 
 import express from 'express';
 import type { Request, Response } from 'express';
-import bodyParser from 'body-parser';
 import multer from 'multer';
 
-import { getIPFromRequest } from '../utils/ip';
-import session from '../core/session';
-import passport from '../core/passport';
-import { admintoolsLogger } from '../core/logger';
+import { getIPFromRequest } from '../../utils/ip';
+import { modtoolsLogger } from '../../core/logger';
 import {
   executeIPAction,
   executeImageAction,
@@ -23,7 +20,7 @@ import {
   getModList,
   removeMod,
   makeMod,
-} from '../core/adminfunctions';
+} from '../../core/adminfunctions';
 
 
 const router = express.Router();
@@ -32,7 +29,7 @@ const router = express.Router();
  * multer middleware for getting POST parameters
  * into req.file (if file) and req.body for text
  */
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(express.urlencoded({ extended: true }));
 const upload = multer({
   limits: {
     fileSize: 5 * 1024 * 1024,
@@ -41,18 +38,16 @@ const upload = multer({
 
 
 /*
- * make sure User is logged in and mod or admin
+ * make sure User is logged in and mod or mod
  */
-router.use(session);
-router.use(passport.initialize());
-router.use(passport.session());
 router.use(async (req, res, next) => {
   const ip = getIPFromRequest(req);
   if (!req.user) {
-    admintoolsLogger.info(
-      `ADMINTOOLS: ${ip} tried to access admintools without login`,
+    modtoolsLogger.info(
+      `MODTOOLS: ${ip} tried to access modtools without login`,
     );
-    res.status(403).send('You are not logged in');
+    const { t } = req.ttag;
+    res.status(403).send(t`You are not logged in`);
     return;
   }
   /*
@@ -60,14 +55,15 @@ router.use(async (req, res, next) => {
    * 2 = Mod
    */
   if (!req.user.userlvl) {
-    admintoolsLogger.info(
-      `ADMINTOOLS: ${ip} / ${req.user.id} tried to access admintools`,
+    modtoolsLogger.info(
+      `MODTOOLS: ${ip} / ${req.user.id} tried to access modtools`,
     );
-    res.status(403).send('You are not allowed to access this page');
+    const { t } = req.ttag;
+    res.status(403).send(t`You are not allowed to access this page`);
     return;
   }
-  admintoolsLogger.info(
-    `ADMINTOOLS: ${req.user.id} / ${req.user.regUser.name} is using admintools`,
+  modtoolsLogger.info(
+    `MODTOOLS: ${req.user.id} / ${req.user.regUser.name} is using modtools`,
   );
 
   next();
@@ -128,7 +124,8 @@ router.post('/', upload.single('image'), async (req, res, next) => {
  */
 router.use(async (req, res, next) => {
   if (req.user.userlvl !== 1) {
-    res.status(403).send('Just admins can do that');
+    const { t } = req.ttag;
+    res.status(403).send(t`Just admins can do that`);
     return;
   }
   next();

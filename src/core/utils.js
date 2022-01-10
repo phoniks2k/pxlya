@@ -26,6 +26,14 @@ export function getRandomInt(min, max) {
   return min + (Math.floor(Math.random() * range));
 }
 
+/*
+ * generates random string with a-z,0-9
+ * 11 chars length
+ */
+export function getRandomString() {
+  return Math.random().toString(36).substring(2, 15);
+}
+
 export function distMax([x1, y1], [x2, y2]) {
   return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 }

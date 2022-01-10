@@ -1,9 +1,9 @@
 # API Websocket
 
-This websocket provides unlimited access to many functions of the site, it is used for Discord Chat Bridge and Minecraft Bridge.
+This websocket provides unlimited access to many functions of the site, it is used for Discord Chat Bridge and similar stuff.
 
 Websocket url:
-`https://[old.]pixelplanet.fun/mcws`
+`https://[dev.]pixelplanet.fun/mcws`
 
 Connection just possible with header:
 

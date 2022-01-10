@@ -2,15 +2,12 @@
  *
  * starts a DM session
  *
- * @flow
  */
-
-import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
 import socketEvents from '../../socket/SocketEvents';
 
-async function leaveChan(req: Request, res: Response) {
+async function leaveChan(req, res) {
   const channelId = parseInt(req.body.channelId, 10);
   const { user } = req;
 

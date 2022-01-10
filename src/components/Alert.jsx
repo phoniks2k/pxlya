@@ -53,7 +53,7 @@ const Alert = () => {
           <p className="modaltext">
             {alertMessage}
           </p>
-          <p>
+          <div>
             {(alertType === 'captcha')
               ? <Captcha close={close} />
               : (
@@ -64,7 +64,7 @@ const Alert = () => {
                   {alertBtn}
                 </button>
               )}
-          </p>
+          </div>
         </div>
       </div>
     )

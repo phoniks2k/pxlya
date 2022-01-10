@@ -15,7 +15,7 @@ import Rankings from '../Rankings';
 // eslint-disable-next-line max-len
 const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ '../Converter'));
 // eslint-disable-next-line max-len
-const Admintools = React.lazy(() => import(/* webpackChunkName: "admintools" */ '../Admintools'));
+const Modtools = React.lazy(() => import(/* webpackChunkName: "modtools" */ '../Modtools'));
 
 const UserArea = ({ windowId }) => {
   const name = useSelector((state) => state.user.name);
@@ -36,9 +36,9 @@ const UserArea = ({ windowId }) => {
           </Suspense>
         </div>
         {userlvl && (
-        <div label={(userlvl === 1) ? t`Admintools` : t`Modtools`}>
+        <div label={(userlvl === 1) ? t`Modtools` : t`Modtools`}>
           <Suspense fallback={<div>{t`Loading...`}</div>}>
-            <Admintools />
+            <Modtools />
           </Suspense>
         </div>
         )}
