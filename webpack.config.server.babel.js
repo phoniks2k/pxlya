@@ -19,6 +19,9 @@ const basePackageValues = {
   },
   dependencies: {
     mysql2: '',
+    bufferutil: '',
+    'utf-8-validate': '',
+    bufferutil: '',
   },
 };
 

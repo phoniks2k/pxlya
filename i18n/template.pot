@@ -3,48 +3,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/controls/keypress.js:41
-#, javascript-format
-msgid "Switched to ${ canvasName }"
-msgstr ""
-
-#: src/controls/keypress.js:64
-msgid "Grid ON"
-msgstr ""
-
-#: src/controls/keypress.js:65
-msgid "Grid OFF"
-msgstr ""
-
-#: src/controls/keypress.js:75
-msgid "Pixel Notify ON"
-msgstr ""
-
-#: src/controls/keypress.js:76
-msgid "Pixel Notify OFF"
-msgstr ""
-
-#: src/controls/keypress.js:81
-msgid "Muted Sound"
-msgstr ""
-
-#: src/controls/keypress.js:82
-msgid "Unmuted Sound"
-msgstr ""
-
-#: src/components/CoordinatesBox.jsx:29
-#: src/controls/keypress.js:88
-msgid "Copied!"
-msgstr ""
-
-#: src/controls/keypress.js:94
-msgid "Show Hidden Canvases"
-msgstr ""
-
-#: src/controls/keypress.js:95
-msgid "Hide Hidden Canvases"
-msgstr ""
-
 #: src/ui/placePixel.js:53
 msgid "Error :("
 msgstr ""
@@ -146,6 +104,48 @@ msgstr ""
 msgid "Error ${ retCode }"
 msgstr ""
 
+#: src/controls/keypress.js:41
+#, javascript-format
+msgid "Switched to ${ canvasName }"
+msgstr ""
+
+#: src/controls/keypress.js:64
+msgid "Grid ON"
+msgstr ""
+
+#: src/controls/keypress.js:65
+msgid "Grid OFF"
+msgstr ""
+
+#: src/controls/keypress.js:75
+msgid "Pixel Notify ON"
+msgstr ""
+
+#: src/controls/keypress.js:76
+msgid "Pixel Notify OFF"
+msgstr ""
+
+#: src/controls/keypress.js:81
+msgid "Muted Sound"
+msgstr ""
+
+#: src/controls/keypress.js:82
+msgid "Unmuted Sound"
+msgstr ""
+
+#: src/components/CoordinatesBox.jsx:29
+#: src/controls/keypress.js:88
+msgid "Copied!"
+msgstr ""
+
+#: src/controls/keypress.js:94
+msgid "Show Hidden Canvases"
+msgstr ""
+
+#: src/controls/keypress.js:95
+msgid "Hide Hidden Canvases"
+msgstr ""
+
 #: src/ui/renderer.js:36
 msgid "Canvas Error"
 msgstr ""
@@ -227,17 +227,17 @@ msgstr ""
 msgid "Server answered with gibberish :("
 msgstr ""
 
-#: src/components/buttons/CanvasSwitchButton.jsx:22
-#: src/components/windows/index.js:22
-msgid "Canvas Selection"
-msgstr ""
-
 #: src/components/buttons/ChatButton.jsx:92
 msgid "Close Chat"
 msgstr ""
 
 #: src/components/buttons/ChatButton.jsx:92
 msgid "Open Chat"
+msgstr ""
+
+#: src/components/buttons/CanvasSwitchButton.jsx:22
+#: src/components/windows/index.js:22
+msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/buttons/ExpandMenuButton.jsx:23
@@ -254,6 +254,22 @@ msgstr ""
 
 #: src/components/HistorySelect.jsx:145
 msgid "Select Date above"
+msgstr ""
+
+#: src/components/Window.jsx:117
+msgid "Clone"
+msgstr ""
+
+#: src/components/Window.jsx:124
+msgid "Move"
+msgstr ""
+
+#: src/components/Window.jsx:131
+msgid "Maximize"
+msgstr ""
+
+#: src/components/Window.jsx:145
+msgid "Resize"
 msgstr ""
 
 #: src/components/buttons/HelpButton.jsx:23
@@ -275,20 +291,8 @@ msgstr ""
 msgid "Make Screenshot"
 msgstr ""
 
-#: src/components/Window.jsx:117
-msgid "Clone"
-msgstr ""
-
-#: src/components/Window.jsx:124
-msgid "Move"
-msgstr ""
-
-#: src/components/Window.jsx:131
-msgid "Maximize"
-msgstr ""
-
-#: src/components/Window.jsx:145
-msgid "Resize"
+#: src/components/buttons/GlobeButton.jsx:35
+msgid "Globe View"
 msgstr ""
 
 #: src/components/buttons/PalselButton.jsx:31
@@ -297,14 +301,6 @@ msgstr ""
 
 #: src/components/buttons/PalselButton.jsx:31
 msgid "Open Palette"
-msgstr ""
-
-#: src/components/buttons/GlobeButton.jsx:35
-msgid "Globe View"
-msgstr ""
-
-#: src/components/contextmenus/ChannelContextMenu.jsx:55
-msgid "Mute"
 msgstr ""
 
 #: src/components/contextmenus/UserContextMenu.jsx:53
@@ -317,6 +313,10 @@ msgstr ""
 
 #: src/components/contextmenus/UserContextMenu.jsx:88
 msgid "Block"
+msgstr ""
+
+#: src/components/contextmenus/ChannelContextMenu.jsx:55
+msgid "Mute"
 msgstr ""
 
 #: src/components/windows/index.js:19
@@ -335,272 +335,30 @@ msgstr ""
 msgid "Canvas Archive"
 msgstr ""
 
-#: src/components/Captcha.jsx:43
+#: src/components/Captcha.jsx:69
 #: src/components/ChangeMail.jsx:72
 #: src/components/ChangeName.jsx:58
 #: src/components/ChangePassword.jsx:80
 #: src/components/DeleteAccount.jsx:55
+#: src/components/GlobalCaptcha.jsx:38
 #: src/components/LogInForm.jsx:69
 #: src/components/windows/ForgotPassword.jsx:75
-#: src/components/windows/Register.jsx:83
+#: src/components/windows/Register.jsx:87
 msgid "Error"
 msgstr ""
 
-#: src/components/Captcha.jsx:47
-msgid "Type the characters from the following image:"
-msgstr ""
-
-#: src/components/Captcha.jsx:50
-msgid "Tip: Not case-sensitive; I and l are the same"
-msgstr ""
-
-#: src/components/Captcha.jsx:74
-msgid "Could not load captcha"
-msgstr ""
-
-#: src/components/Captcha.jsx:78
-msgid "Can't read? Reload:"
-msgstr ""
-
-#: src/components/Captcha.jsx:82
-msgid "Reload"
-msgstr ""
-
-#: src/components/Captcha.jsx:94
-msgid "Enter Characters"
-msgstr ""
-
-#: src/components/Captcha.jsx:120
 #: src/components/ChangeMail.jsx:93
 #: src/components/ChangeName.jsx:70
 #: src/components/ChangePassword.jsx:116
 #: src/components/DeleteAccount.jsx:68
+#: src/components/GlobalCaptcha.jsx:48
 #: src/components/windows/ForgotPassword.jsx:88
-#: src/components/windows/Register.jsx:125
+#: src/components/windows/Register.jsx:131
 msgid "Cancel"
 msgstr ""
 
-#: src/components/Captcha.jsx:127
+#: src/components/GlobalCaptcha.jsx:55
 msgid "Send"
-msgstr ""
-
-#: src/components/windows/Register.jsx:81
-msgid "Register new account here"
-msgstr ""
-
-#: src/components/windows/Register.jsx:92
-msgid "Name"
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:82
-#: src/components/windows/Register.jsx:100
-msgid "Email"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:80
-#: src/components/DeleteAccount.jsx:62
-#: src/components/LogInForm.jsx:83
-#: src/components/windows/Register.jsx:108
-msgid "Password"
-msgstr ""
-
-#: src/components/windows/Register.jsx:116
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/Modtools.jsx:311
-#: src/components/Modtools.jsx:392
-#: src/components/Modtools.jsx:467
-#: src/components/Modtools.jsx:512
-#: src/components/Modtools.jsx:595
-#: src/components/windows/ForgotPassword.jsx:86
-#: src/components/windows/Register.jsx:119
-msgid "Submit"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:133
-msgid "Show Grid"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:138
-msgid "Turn on grid to highlight pixel borders."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:141
-msgid "Show Pixel Activity"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:146
-msgid "Show circles where pixels are placed."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:149
-msgid "Disable Game Sounds"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:155
-msgid "All sound effects will be disabled."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:159
-msgid ""
-"Your Browser doesn't allow us to use AudioContext to play sounds. Do you "
-"have some privacy feature blocking us?"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:165
-msgid "Enable chat notifications"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:169
-msgid "Play a sound when new chat messages arrive"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:172
-msgid "Auto Zoom In"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:177
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:180
-msgid "Compact Palette"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:185
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:188
-msgid "Potato Mode"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:192
-msgid "For when you are playing on a potato."
-msgstr ""
-
-#: src/components/Converter.jsx:374
-#: src/components/windows/Settings.jsx:195
-msgid "Light Grid"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:199
-msgid "Show Grid in white instead of black."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:203
-msgid "Historical View"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:208
-msgid "Check out past versions of the canvas."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:213
-msgid "Themes"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:218
-msgid "How pixelplanet should look like."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:225
-msgid "Select Language"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:33
-msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has "
-"different palettes, cooldown and requirements.  Archive of closed canvases "
-"can be accessed here:"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:41
-msgid "Archive"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:146
-msgid "Channel settings"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:161
-msgid "Start chatting here"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:198
-msgid "Chat here"
-msgstr ""
-
-#: src/components/windows/Chat.jsx:221
-msgid "You must be logged in to chat"
-msgstr ""
-
-#: src/components/windows/Archive.jsx:20
-msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or "
-"as a request by users who currently like a meme. Those canvases can get "
-"boring after a while and after weeks of no major change and if they really "
-"aren't worth being kept active, we decide to remove them."
-msgstr ""
-
-#: src/components/windows/Archive.jsx:22
-msgid ""
-"Here we collect those canvases to archive them in a proper way (which is "
-"currently just one)."
-msgstr ""
-
-#: src/components/windows/Archive.jsx:24
-msgid "Political Compass Canvas"
-msgstr ""
-
-#: src/components/windows/Archive.jsx:31
-msgid ""
-"This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass "
-"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
-"remained active for months till it got shut down on November 30th."
-msgstr ""
-
-#: src/components/windows/Archive.jsx:32
-msgid ""
-"We decided to archive it as a timelapse with lossless encoded webm. Taking "
-"a screenshot from the timelapse results in a perfect 1:1 representation of "
-"how the canvas was at that time."
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:60
-msgid "Sent you a mail with instructions to reset your password."
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:71
-msgid "Enter your mail address and we will send you a new password:"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:27
-msgid "Profile"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:30
-msgid "Ranking"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:33
-msgid "Converter"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:39
-msgid "Modtools"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:40
-msgid "Loading..."
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:47
-msgid "Consider joining us on Guilded:"
 msgstr ""
 
 #: src/components/windows/Help.jsx:36
@@ -780,6 +538,266 @@ msgstr ""
 msgid "Credit for the Palette of the Top10 canvas goes to ${ vinikLink }."
 msgstr ""
 
+#: src/components/windows/UserArea.jsx:27
+msgid "Profile"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:30
+msgid "Ranking"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:33
+msgid "Converter"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:39
+msgid "Modtools"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:40
+msgid "Loading..."
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:47
+msgid "Consider joining us on Guilded:"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:133
+msgid "Show Grid"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:138
+msgid "Turn on grid to highlight pixel borders."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:141
+msgid "Show Pixel Activity"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:146
+msgid "Show circles where pixels are placed."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:149
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:155
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:159
+msgid ""
+"Your Browser doesn't allow us to use AudioContext to play sounds. Do you "
+"have some privacy feature blocking us?"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:165
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:169
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:172
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:177
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:180
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:185
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:188
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:192
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/Converter.jsx:374
+#: src/components/windows/Settings.jsx:195
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:199
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:203
+msgid "Historical View"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:208
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:213
+msgid "Themes"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:218
+msgid "How pixelplanet should look like."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:225
+msgid "Select Language"
+msgstr ""
+
+#: src/components/windows/Register.jsx:85
+msgid "Register new account here"
+msgstr ""
+
+#: src/components/windows/Register.jsx:90
+#: src/components/windows/Register.jsx:96
+msgid "Name"
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:82
+#: src/components/windows/Register.jsx:98
+#: src/components/windows/Register.jsx:104
+msgid "Email"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:80
+#: src/components/DeleteAccount.jsx:62
+#: src/components/LogInForm.jsx:83
+#: src/components/windows/Register.jsx:106
+#: src/components/windows/Register.jsx:112
+msgid "Password"
+msgstr ""
+
+#: src/components/windows/Register.jsx:114
+#: src/components/windows/Register.jsx:120
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/windows/Register.jsx:122
+msgid "Captcha"
+msgstr ""
+
+#: src/components/Modtools.jsx:311
+#: src/components/Modtools.jsx:392
+#: src/components/Modtools.jsx:467
+#: src/components/Modtools.jsx:512
+#: src/components/Modtools.jsx:595
+#: src/components/windows/ForgotPassword.jsx:86
+#: src/components/windows/Register.jsx:125
+msgid "Submit"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:33
+msgid ""
+"Select the canvas you want to use.  Every canvas is unique and has "
+"different palettes, cooldown and requirements.  Archive of closed canvases "
+"can be accessed here:"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:41
+msgid "Archive"
+msgstr ""
+
+#: src/components/windows/Archive.jsx:20
+msgid ""
+"While we tend to not delete canvases, some canvases are started for fun or "
+"as a request by users who currently like a meme. Those canvases can get "
+"boring after a while and after weeks of no major change and if they really "
+"aren't worth being kept active, we decide to remove them."
+msgstr ""
+
+#: src/components/windows/Archive.jsx:22
+msgid ""
+"Here we collect those canvases to archive them in a proper way (which is "
+"currently just one)."
+msgstr ""
+
+#: src/components/windows/Archive.jsx:24
+msgid "Political Compass Canvas"
+msgstr ""
+
+#: src/components/windows/Archive.jsx:31
+msgid ""
+"This canvas got requested during a time of political conflicts on the main "
+"Earth canvas. It was a 1024x1024 representation of the political compass "
+"with a 5s cooldown and 60s stacking. It got launched on May 11th and "
+"remained active for months till it got shut down on November 30th."
+msgstr ""
+
+#: src/components/windows/Archive.jsx:32
+msgid ""
+"We decided to archive it as a timelapse with lossless encoded webm. Taking "
+"a screenshot from the timelapse results in a perfect 1:1 representation of "
+"how the canvas was at that time."
+msgstr ""
+
+#: src/components/windows/Chat.jsx:146
+msgid "Channel settings"
+msgstr ""
+
+#: src/components/windows/Chat.jsx:161
+msgid "Start chatting here"
+msgstr ""
+
+#: src/components/windows/Chat.jsx:198
+msgid "Chat here"
+msgstr ""
+
+#: src/components/windows/Chat.jsx:221
+msgid "You must be logged in to chat"
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:60
+msgid "Sent you a mail with instructions to reset your password."
+msgstr ""
+
+#: src/components/windows/ForgotPassword.jsx:71
+msgid "Enter your mail address and we will send you a new password:"
+msgstr ""
+
+#: src/components/Captcha.jsx:42
+#: src/components/Captcha.jsx:105
+msgid "Could not load captcha"
+msgstr ""
+
+#: src/components/Captcha.jsx:60
+msgid "Type the characters from the following image:"
+msgstr ""
+
+#: src/components/Captcha.jsx:63
+msgid "Tip: Not case-sensitive; I and l are the same"
+msgstr ""
+
+#: src/components/Captcha.jsx:113
+msgid "Load Captcha"
+msgstr ""
+
+#: src/components/Captcha.jsx:118
+msgid "Click to Load Captcha"
+msgstr ""
+
+#: src/components/Captcha.jsx:124
+msgid "Can't read? Reload:"
+msgstr ""
+
+#: src/components/Captcha.jsx:128
+msgid "Reload"
+msgstr ""
+
+#: src/components/Captcha.jsx:138
+msgid "Enter Characters"
+msgstr ""
+
 #: src/utils/validation.js:18
 msgid "Email can't be empty."
 msgstr ""
@@ -828,56 +846,28 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/components/ChangeMail.jsx:91
-#: src/components/ChangeName.jsx:68
-#: src/components/ChangePassword.jsx:110
-#: src/components/LanguageSelect.jsx:73
-msgid "Save"
+#: src/components/LogInArea.jsx:21
+msgid "Login to access more features and stats."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:30
-msgid "Online Users"
+#: src/components/LogInArea.jsx:23
+msgid "Login with Name or Mail:"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:35
-msgid "Cooldown"
+#: src/components/LogInArea.jsx:30
+msgid "I forgot my Password."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:41
-msgid "Stacking till"
+#: src/components/LogInArea.jsx:31
+msgid "or login with:"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:43
-msgid "Ranked"
+#: src/components/LogInArea.jsx:72
+msgid "or register here:"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:45
-msgid "Yes"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:45
-msgid "No"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:51
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:54
-msgid "User Account"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:56
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:59
-msgid "Top 10 Daily Ranking"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:65
-msgid "Dimensions"
+#: src/components/LogInArea.jsx:79
+msgid "Register"
 msgstr ""
 
 #: src/components/UserAreaContent.jsx:63
@@ -1093,28 +1083,64 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
-#: src/components/LogInArea.jsx:21
-msgid "Login to access more features and stats."
+#: src/components/ChangeMail.jsx:91
+#: src/components/ChangeName.jsx:68
+#: src/components/ChangePassword.jsx:110
+#: src/components/LanguageSelect.jsx:73
+msgid "Save"
 msgstr ""
 
-#: src/components/LogInArea.jsx:23
-msgid "Login with Name or Mail:"
+#: src/components/CanvasItem.jsx:30
+msgid "Online Users"
 msgstr ""
 
-#: src/components/LogInArea.jsx:30
-msgid "I forgot my Password."
+#: src/components/CanvasItem.jsx:35
+msgid "Cooldown"
 msgstr ""
 
-#: src/components/LogInArea.jsx:31
-msgid "or login with:"
+#: src/components/CanvasItem.jsx:41
+msgid "Stacking till"
 msgstr ""
 
-#: src/components/LogInArea.jsx:72
-msgid "or register here:"
+#: src/components/CanvasItem.jsx:43
+msgid "Ranked"
 msgstr ""
 
-#: src/components/LogInArea.jsx:79
-msgid "Register"
+#: src/components/CanvasItem.jsx:45
+msgid "Yes"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:45
+msgid "No"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:51
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:54
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:56
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:59
+msgid "Top 10 Daily Ranking"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:65
+msgid "Dimensions"
+msgstr ""
+
+#: src/components/LogInForm.jsx:76
+msgid "Name or Email"
+msgstr ""
+
+#: src/components/LogInForm.jsx:87
+msgid "LogIn"
 msgstr ""
 
 #: src/components/ChangePassword.jsx:22
@@ -1135,6 +1161,24 @@ msgstr ""
 
 #: src/components/ChangePassword.jsx:104
 msgid "Confirm New Password"
+msgstr ""
+
+#: src/components/UserMessages.jsx:28
+msgid ""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
+msgstr ""
+
+#: src/components/UserMessages.jsx:49
+msgid "A new verification mail is getting sent to you."
+msgstr ""
+
+#: src/components/UserMessages.jsx:53
+msgid "Click here to request a new verification mail."
+msgstr ""
+
+#: src/components/ChangeName.jsx:64
+msgid "New Username"
 msgstr ""
 
 #: src/components/ChangeMail.jsx:59
@@ -1163,32 +1207,6 @@ msgstr ""
 msgid "You have no users blocked"
 msgstr ""
 
-#: src/components/UserMessages.jsx:28
-msgid ""
-"Please verify your mail address&nbsp;\n"
-"or your account could get deleted after a few days."
-msgstr ""
-
-#: src/components/UserMessages.jsx:49
-msgid "A new verification mail is getting sent to you."
-msgstr ""
-
-#: src/components/UserMessages.jsx:53
-msgid "Click here to request a new verification mail."
-msgstr ""
-
-#: src/components/ChangeName.jsx:64
-msgid "New Username"
-msgstr ""
-
-#: src/components/LogInForm.jsx:76
-msgid "Name or Email"
-msgstr ""
-
-#: src/components/LogInForm.jsx:87
-msgid "LogIn"
-msgstr ""
-
 #: src/components/windows/Help.jsx:14
 #: src/components/windows/Settings.jsx:134
 msgctxt "keybinds"
@@ -1199,11 +1217,6 @@ msgstr ""
 #: src/components/windows/Settings.jsx:142
 msgctxt "keybinds"
 msgid "X"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:150
-msgctxt "keybinds"
-msgid "M"
 msgstr ""
 
 #: src/components/windows/Help.jsx:16
@@ -1255,4 +1268,9 @@ msgstr ""
 #: src/components/windows/Help.jsx:31
 msgctxt "keybinds"
 msgid "C"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:150
+msgctxt "keybinds"
+msgid "M"
 msgstr ""
