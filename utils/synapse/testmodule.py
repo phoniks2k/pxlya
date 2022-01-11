@@ -52,6 +52,8 @@ class MyAuthProvider:
             if not resp["success"]:
                 raise Exception(resp["errors"][0])
             userdata = resp['userdata']
+            if not userdata['verified']:
+                raise Exception('User is not mail verified');
             return (userdata['id'], userdata['name'], userdata['email'])
         except Exception as e:
             logger.warning('Could not login via ppfun: %s', e)

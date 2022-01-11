@@ -1,10 +1,10 @@
 import express from 'express';
 
-import logger from '../../core/logger';
-import RegUser from '../../data/models/RegUser';
-import { getIPFromRequest } from '../../utils/ip';
-import { compareToHash } from '../../utils/hash';
-import { APISOCKET_KEY } from '../../core/config';
+import logger from '../core/logger';
+import RegUser from '../data/models/RegUser';
+import { getIPFromRequest } from '../utils/ip';
+import { compareToHash } from '../utils/hash';
+import { APISOCKET_KEY } from '../core/config';
 
 const router = express.Router();
 
@@ -48,6 +48,7 @@ router.post('/checklogin', async (req, res) => {
       'name',
       'email',
       'password',
+      'verified',
     ],
   };
   let userString;
@@ -100,6 +101,7 @@ router.post('/checklogin', async (req, res) => {
       id: reguser.id,
       name: reguser.name,
       email: reguser.email,
+      verified: !!reguser.verified,
     },
   });
 });
