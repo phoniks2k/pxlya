@@ -28,7 +28,7 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
-    const ret = await checkCaptchaSolution(text, ip, id);
+    const ret = await checkCaptchaSolution(text, ip, false, id);
 
     switch (ret) {
       case 0:

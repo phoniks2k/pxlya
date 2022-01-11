@@ -805,6 +805,16 @@ tr:nth-child(even) {
   background-color: #ffa9a9cc;
 }
 
+.reginput {
+  display: inline-block;
+  width: 100%;
+  max-width: 35em;
+}
+
+.errormessage {
+  color: #b73c3c;
+}
+
 .cooldownbox {
   top: 16px;
   width: 48px;

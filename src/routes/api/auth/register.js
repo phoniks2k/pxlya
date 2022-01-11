@@ -17,8 +17,11 @@ import {
   validateName,
   validatePassword,
 } from '../../../utils/validation';
+import {
+  checkCaptchaSolution,
+} from '../../../utils/captcha';
 
-async function validate(email, name, password, t, gettext) {
+async function validate(email, name, password, captcha, captchaid, t, gettext) {
   const errors = [];
   const emailerror = gettext(validateEMail(email));
   if (emailerror) errors.push(emailerror);
@@ -26,6 +29,8 @@ async function validate(email, name, password, t, gettext) {
   if (nameerror) errors.push(nameerror);
   const passworderror = gettext(validatePassword(password));
   if (passworderror) errors.push(passworderror);
+
+  if (!captcha || !captchaid) errors.push(t`No Captcha given`);
 
   let reguser = await RegUser.findOne({ where: { email } });
   if (reguser) errors.push(t`E-Mail already in use.`);
@@ -36,9 +41,34 @@ async function validate(email, name, password, t, gettext) {
 }
 
 export default async (req: Request, res: Response) => {
-  const { email, name, password } = req.body;
+  const {
+    email, name, password, captcha, captchaid,
+  } = req.body;
   const { t, gettext } = req.ttag;
-  const errors = await validate(email, name, password, t, gettext);
+  const errors = await validate(
+    email, name, password, captcha, captchaid, t, gettext,
+  );
+
+  const ip = getIPFromRequest(req);
+  if (!errors.length) {
+    const captchaPass = await checkCaptchaSolution(
+      captcha, ip, true, captchaid,
+    );
+    switch (captchaPass) {
+      case 0:
+        break;
+      case 1:
+        errors.push(t`You took too long, try again.`);
+        break;
+      case 2:
+        errors.push(t`You failed your captcha`);
+        break;
+      default:
+        errors.push(t`Unknown Captcha Error`);
+        break;
+    }
+  }
+
   if (errors.length > 0) {
     res.status(400);
     res.json({
@@ -63,7 +93,6 @@ export default async (req: Request, res: Response) => {
     return;
   }
 
-  const ip = getIPFromRequest(req);
   logger.info(`Created new user ${name} ${email} ${ip}`);
 
   const { user, lang } = req;

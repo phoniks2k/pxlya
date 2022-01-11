@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Captcha from './Captcha';
+import GlobalCaptcha from './GlobalCaptcha';
 import { closeAlert } from '../actions';
 
 const Alert = () => {
@@ -55,7 +55,7 @@ const Alert = () => {
           </p>
           <div>
             {(alertType === 'captcha')
-              ? <Captcha close={close} />
+              ? <GlobalCaptcha close={close} />
               : (
                 <button
                   type="button"

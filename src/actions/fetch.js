@@ -251,10 +251,12 @@ export function requestLogin(nameoremail, password) {
   );
 }
 
-export function requestRegistration(name, email, password) {
+export function requestRegistration(name, email, password, captcha, captchaid) {
   return makeAPIPOSTRequest(
     'api/auth/register',
-    { name, email, password },
+    {
+      name, email, password, captcha, captchaid,
+    },
   );
 }
 

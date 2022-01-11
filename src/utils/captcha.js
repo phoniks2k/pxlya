@@ -90,6 +90,8 @@ export function setCaptchaSolution(
  *
  * @param text Solution of captcha
  * @param ip
+ * @param onetime If the captcha is just one time or should be remembered
+ *   for this ip
  * @return 0 if solution right
  *         1 if timed out
  *         2 if wrong
@@ -97,6 +99,7 @@ export function setCaptchaSolution(
 export async function checkCaptchaSolution(
   text,
   ip,
+  onetime = false,
   captchaid = null,
 ) {
   const ipn = getIPv6Subnet(ip);
@@ -107,8 +110,10 @@ export async function checkCaptchaSolution(
   const solution = await redis.getAsync(key);
   if (solution) {
     if (evaluateResult(solution.toString('utf8'), text)) {
-      const solvkey = `human:${ipn}`;
-      await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
+      if (!onetime) {
+        const solvkey = `human:${ipn}`;
+        await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
+      }
       logger.info(`CAPTCHA ${ip} successfully solved captcha`);
       return 0;
     }

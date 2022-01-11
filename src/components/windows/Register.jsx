@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
+import Captcha from '../Captcha';
 import {
   validateEMail, validateName, validatePassword,
 } from '../../utils/validation';
@@ -29,26 +30,26 @@ function validate(name, email, password, confirmPassword) {
   return errors;
 }
 
-const inputStyles = {
-  display: 'inline-block',
-  width: '100%',
-  maxWidth: '35em',
-};
-
 const Register = ({ windowId }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [submitting, setSubmitting] = useState('');
   const [errors, setErrors] = useState([]);
+  // used to be able to force Captcha rerender on error
+  const [captKey, setCaptKey] = useState(Date.now());
 
   const dispatch = useDispatch();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
     if (submitting) {
       return;
     }
+
+    const name = evt.target.name.value;
+    const email = evt.target.email.value;
+    const password = evt.target.password.value;
+    const confirmPassword = evt.target.confirmpassword.value;
+    const captcha = evt.target.captcha.value;
+    const captchaid = evt.target.captchaid.value;
 
     const valErrors = validate(name, email, password, confirmPassword);
     if (valErrors.length > 0) {
@@ -61,9 +62,12 @@ const Register = ({ windowId }) => {
       name,
       email,
       password,
+      captcha,
+      captchaid,
     );
     setSubmitting(false);
     if (respErrors) {
+      setCaptKey(Date.now());
       setErrors(respErrors);
       return;
     }
@@ -83,38 +87,40 @@ const Register = ({ windowId }) => {
           <p key={error} className="errormessage"><span>{t`Error`}</span>
             :&nbsp;{error}</p>
         ))}
+        <p className="modaltitle">{t`Name`}:</p>
         <input
-          style={inputStyles}
-          value={name}
+          name="name"
+          className="reginput"
           autoComplete="username"
-          onChange={(evt) => setName(evt.target.value)}
           type="text"
           placeholder={t`Name`}
-        /><br />
+        />
+        <p className="modaltitle">{t`Email`}:</p>
         <input
-          style={inputStyles}
-          value={email}
+          name="email"
+          className="reginput"
           autoComplete="email"
-          onChange={(evt) => setEmail(evt.target.value)}
           type="text"
           placeholder={t`Email`}
-        /><br />
+        />
+        <p className="modaltitle">{t`Password`}:</p>
         <input
-          style={inputStyles}
-          value={password}
+          name="password"
+          className="reginput"
           autoComplete="new-password"
-          onChange={(evt) => setPassword(evt.target.value)}
           type="password"
           placeholder={t`Password`}
-        /><br />
+        />
+        <p className="modaltitle">{t`Confirm Password`}:</p>
         <input
-          style={inputStyles}
-          value={confirmPassword}
+          name="confirmpassword"
+          className="reginput"
           autoComplete="new-password"
-          onChange={(evt) => setConfirmPassword(evt.target.value)}
           type="password"
           placeholder={t`Confirm Password`}
-        /><br />
+        />
+        <p className="modaltitle">{t`Captcha`}:</p>
+        <Captcha autoload={false} width={60} key={captKey} />
         <button type="submit">
           {(submitting) ? '...' : t`Submit`}
         </button>
