@@ -11,6 +11,8 @@
 import WebSocket from 'ws';
 
 import socketEvents from './SocketEvents';
+import chatProvider from '../core/ChatProvider';
+import RegUser from '../data/models/RegUser';
 import { getIPFromRequest } from '../utils/ip';
 import { setPixelByCoords } from '../core/setPixel';
 import logger from '../core/logger';
@@ -95,9 +97,16 @@ class APISocketServer {
     sendapi,
     ws = null,
   ) {
-    if (!sendapi) return;
+    if (!sendapi) {
+      return;
+    }
+    // send only messages from default and lang channels
+    if (!chatProvider.defaultChannels[channelId]
+      && !chatProvider.langChannels[channelId]) {
+      return;
+    }
 
-    const sendmsg = JSON.stringify(['msg', name, msg, country, channelId]);
+    const sendmsg = JSON.stringify(['msg', name, id, msg, country, channelId]);
     this.wss.clients.forEach((client) => {
       if (client !== ws
         && client.subChat
@@ -153,6 +162,41 @@ class APISocketServer {
     this.broadcast(buffer, (client) => client.subPxl);
   }
 
+  static getPublicChannels() {
+    const chanReply = ['chans'];
+    const defaultChanKeys = Object.keys(chatProvider.defaultChannels);
+    const langChanKeys = Object.keys(chatProvider.langChannels);
+    for (let i = 0; i < defaultChanKeys.length; i += 1) {
+      const id = defaultChanKeys[i];
+      const [name] = chatProvider.defaultChannels[id];
+      chanReply.push([parseInt(id, 10), name]);
+    }
+    for (let i = 0; i < langChanKeys.length; i += 1) {
+      const name = langChanKeys[i];
+      const { id } = chatProvider.langChannels[name];
+      chanReply.push([id, name]);
+    }
+    return chanReply;
+  }
+
+  static async getFlagOfUser(userId) {
+    try {
+      const reguser = await RegUser.findOne({
+        attributes: ['flag'],
+        where: {
+          id: userId,
+        },
+      });
+      if (!reguser) {
+        throw new Error('User not found');
+      }
+      return reguser.flag;
+    } catch {
+      logger.info(`Flag to user ${userId} could not be determined`);
+    }
+    return null;
+  }
+
   async onTextMessage(message, ws) {
     try {
       const packet = JSON.parse(message);
@@ -165,14 +209,15 @@ class APISocketServer {
         const even = packet[0];
         if (even === 'chat') {
           ws.subChat = true;
+          ws.send(JSON.stringify(APISocketServer.getPublicChannels()));
         } else if (even === 'pxl') {
           ws.subPxl = true;
         } else if (even === 'online') {
           ws.subOnline = true;
         } else {
-          logger.info(`APISocket wanted to sub to unexisting  ${command}`);
+          logger.info(`APISocket wanted to sub to unexisting  ${even}`);
         }
-        logger.info(`APISocket client subscribed to  ${command}`);
+        logger.info(`APISocket client subscribed to ${even}`);
         return;
       }
       if (command === 'setpxl') {
@@ -186,20 +231,17 @@ class APISocketServer {
         // minecraftid support got removed
         return;
       }
-      logger.info(`APISocket message  ${message}`);
       if (command === 'chat') {
-        const [name, msg, country, channelId] = packet;
+        const [name, id, msg, country, channelId] = packet;
+        const uid = id || 1;
         /*
          * do not send message back up ws that sent it
-         * TODO: user id should not be hardcoded,
-         * consider it whenever this actually gets used and
-         * becomes an issue.
          */
         socketEvents.broadcastChatMessage(
           name,
           msg,
           channelId,
-          1,
+          uid,
           country,
           false,
         );
@@ -207,15 +249,22 @@ class APISocketServer {
           name,
           msg,
           channelId,
-          1,
+          uid,
           country,
           true,
           ws,
         );
         return;
       }
+      if (command === 'getflag') {
+        const [uid] = packet;
+        const flag = await APISocketServer.getFlagOfUser(uid);
+        ws.send(JSON.stringify(['flag', uid, flag]));
+        return;
+      }
+      logger.info(`Received unknown api-ws message ${message}`);
     } catch (err) {
-      logger.error(`Got undecipherable api-ws message ${message}`);
+      logger.error(`Got undecipherable api-ws message ${message}, ${err}`);
     }
   }
 

@@ -19,9 +19,13 @@ send
 
 ```["sub", "chat"]```
 
+you get a reply with the list of public channels you are now receiving messages of 
+
+```["chans", [id1, name1], [id2, name2], ...]```
+
 All chat messages, except the once you send with `chat` or `mcchat`, will be sent to you in the form:
 
-```["msg", name, message, id, country, channelId]```
+```["msg", name, uid, message, country, channelId]```
 channelId is an integer, channel 0 is `en` channel 1 is `int` and maybe more to come.
 id is the user id
 country is the [two-letter country code](https://www.nationsonline.org/oneworld/country_code_list.htm) in lowercase
@@ -41,6 +45,18 @@ send
 ```["sub", "pxl"]```
 
 All pixels (including your own) will be sent to you as typical binary packages
+
+### Get flag of User
+
+send
+
+```['getflag', userId]```
+
+receive
+
+```['flag', userId, flag]``
+
+Flag is in lowercase two-letter country code and null if user doesn't exist or had no flag set yet
 
 ### Set Pixel
 
@@ -64,7 +80,7 @@ coolDownSeconds is the added cooldown (negative if pixel couldn't be set because
 
 ### Send Chat Message
 
-```["chat", name, message, country, channelId]```
+```["chat", name, userId, message, country, channelId]```
 
 channelId is an integer, channel 0 is `en` channel 1 is `int` and maybe more to come.
 (messages with the name "info" will be displayed as red notifications in the chat window)
