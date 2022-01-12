@@ -16,7 +16,7 @@ export default class InfiniteGridHelper extends THREE.Mesh {
     size2 = size2 || 100;
 
     distance = distance || 8000;
-    const planeAxes = axes.substr(0, 2);
+    const planeAxes = axes.substring(0, 2);
     const geometry = new THREE.PlaneBufferGeometry(2, 2, 1, 1);
     const material = new THREE.ShaderMaterial({
 

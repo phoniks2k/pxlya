@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
-import { getToday } from '../core/utils';
+import { getToday, dateToString } from '../core/utils';
 
 const keptState = {
   coords: null,
@@ -67,7 +67,7 @@ async function submitRollback(
   callback,
 ) {
   const data = new FormData();
-  const timeString = date.substr(0, 4) + date.substr(5, 2) + date.substr(8, 2);
+  const timeString = dateToString(date);
   data.append('rollback', timeString);
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);

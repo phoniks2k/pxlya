@@ -54,7 +54,7 @@ function onKeyPress(event: KeyboardEvent) {
     if (!key.startsWith('Key')) {
       return;
     }
-    key = key.substr(-1).toLowerCase();
+    key = key.slice(-1).toLowerCase();
   }
 
   switch (key) {

@@ -96,7 +96,7 @@ function ChatMessage({
               <span
                 className="ping"
                 style={{
-                  color: setBrightness(colorFromText(txt.substr(1)), dark),
+                  color: setBrightness(colorFromText(txt.substring(1)), dark),
                 }}
               >{txt}</span>
             );
@@ -105,7 +105,7 @@ function ChatMessage({
               <span
                 className="mention"
                 style={{
-                  color: setBrightness(colorFromText(txt.substr(1)), dark),
+                  color: setBrightness(colorFromText(txt.substring(1)), dark),
                 }}
               >{txt}</span>
             );

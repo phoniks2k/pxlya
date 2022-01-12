@@ -47,7 +47,7 @@ export function clamp(n, min, max) {
  */
 export function dateToString(date) {
   // YYYY-MM-DD
-  return date.substr(0, 4) + date.substr(5, 2) + date.substr(8, 2);
+  return ate.substring(0, 4) + date.substring(5, 7) + date.substring(8)
 }
 
 /*
@@ -291,9 +291,9 @@ export function setBrightness(hex, dark: boolean = false) {
     hex = hex.replace(/(.)/g, '$1$1');
   }
 
-  let r = Math.floor(parseInt(hex.substr(0, 2), 16) / 2);
-  let g = Math.floor(parseInt(hex.substr(2, 2), 16) / 2);
-  let b = Math.floor(parseInt(hex.substr(4, 2), 16) / 2);
+  let r = Math.floor(parseInt(hex.substring(0, 2), 16) / 2);
+  let g = Math.floor(parseInt(hex.substring(2, 4), 16) / 2);
+  let b = Math.floor(parseInt(hex.substring(4, 6), 16) / 2);
   if (dark) {
     r += 128;
     g += 128;

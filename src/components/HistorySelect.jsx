@@ -17,12 +17,12 @@ function stringToDate(dateString) {
   if (!dateString) return null;
   // YYYYMMDD
   // eslint-disable-next-line max-len
-  return `${dateString.substr(0, 4)}-${dateString.substr(4, 2)}-${dateString.substr(6, 2)}`;
+  return `${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6)}`;
 }
 
 function stringToTime(timeString) {
   if (!timeString) return null;
-  return `${timeString.substr(0, 2)}:${timeString.substr(2, 2)}`;
+  return `${timeString.substring(0, 2)}:${timeString.substring(2)}`;
 }
 
 const HistorySelect = () => {
@@ -47,7 +47,7 @@ const HistorySelect = () => {
   const dispatch = useDispatch();
 
   const setTime = useCallback((date, time) => {
-    const timeString = time.substr(0, 2) + time.substr(-2, 2);
+    const timeString = time.substring(0, 2) + time.substring(3, 5);
     const dateString = dateToString(date);
     dispatch(selectHistoricalTime(dateString, timeString));
   }, [dispatch]);

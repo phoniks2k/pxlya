@@ -646,7 +646,7 @@ export default function windows(
         msg,
       } = action;
       let { inputMessage } = state.args[windowId];
-      const lastChar = inputMessage.substr(-1);
+      const lastChar = inputMessage.slice(-1);
       const pad = (lastChar && lastChar !== ' ') ? ' ' : '';
       inputMessage += pad + msg;
       return {

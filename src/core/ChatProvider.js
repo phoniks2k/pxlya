@@ -233,7 +233,7 @@ export class ChatProvider {
   adminCommands(message: string, channelId: number) {
     // admin commands
     const cmdArr = message.split(' ');
-    const cmd = cmdArr[0].substr(1);
+    const cmd = cmdArr[0].substring(1);
     const args = cmdArr.slice(1);
     switch (cmd) {
       case 'mute': {
@@ -460,7 +460,8 @@ export class ChatProvider {
   }
 
   async mute(plainName, channelId, timeMin = null) {
-    const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
+    const name = (plainName.startsWith('@'))
+      ? plainName.substring(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
       return `Couldn't find user ${name}`;
@@ -489,7 +490,8 @@ export class ChatProvider {
   }
 
   async unmute(plainName, channelId) {
-    const name = (plainName.startsWith('@')) ? plainName.substr(1) : plainName;
+    const name = (plainName.startsWith('@'))
+      ? plainName.substring(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
       return `Couldn't find user ${name}`;
