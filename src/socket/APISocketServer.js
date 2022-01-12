@@ -62,8 +62,9 @@ class APISocketServer {
       ws.subPxl = false;
       ws.on('pong', heartbeat);
 
-      ws.on('message', (message) => {
-        if (typeof message === 'string') {
+      ws.on('message', (data, isBinary) => {
+        if (!isBinary) {
+          const message = data.toString();
           this.onTextMessage(message, ws);
         }
       });
