@@ -4,7 +4,7 @@
  * @flow
  */
 
-import ProtocolClient from '../socket/ProtocolClient';
+import SocketClient from '../socket/SocketClient';
 
 export default (store) => (next) => (action) => {
   switch (action.type) {
@@ -14,14 +14,14 @@ export default (store) => (next) => (action) => {
         break;
       }
       const [, cx, cy] = action.center;
-      ProtocolClient.registerChunk([cx, cy]);
+      SocketClient.registerChunk([cx, cy]);
       break;
     }
 
     case 'SET_NAME':
     case 'LOGIN':
     case 'LOGOUT': {
-      ProtocolClient.reconnect();
+      SocketClient.reconnect();
       break;
     }
 
@@ -38,7 +38,7 @@ export default (store) => (next) => (action) => {
     case 'RECEIVE_ME': {
       const state = store.getState();
       const { canvasId } = state.canvas;
-      ProtocolClient.setCanvas(canvasId);
+      SocketClient.setCanvas(canvasId);
       break;
     }
 

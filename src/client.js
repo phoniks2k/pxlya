@@ -29,12 +29,12 @@ import store from './ui/store';
 import renderApp from './components/App';
 
 import { initRenderer, getRenderer } from './ui/renderer';
-import ProtocolClient from './socket/ProtocolClient';
+import SocketClient from './socket/SocketClient';
 
 function init() {
   initRenderer(store, false);
 
-  ProtocolClient.on('pixelUpdate', ({
+  SocketClient.on('pixelUpdate', ({
     i, j, pixels,
   }) => {
     pixels.forEach((pxl) => {
@@ -43,18 +43,18 @@ function init() {
       receivePixelUpdate(store, i, j, offset, color & 0x7F);
     });
   });
-  ProtocolClient.on('pixelReturn', ({
+  SocketClient.on('pixelReturn', ({
     retCode, wait, coolDownSeconds, pxlCnt,
   }) => {
     receivePixelReturn(store, retCode, wait, coolDownSeconds, pxlCnt);
   });
-  ProtocolClient.on('cooldownPacket', (coolDown) => {
+  SocketClient.on('cooldownPacket', (coolDown) => {
     store.dispatch(receiveCoolDown(coolDown));
   });
-  ProtocolClient.on('onlineCounter', (online) => {
+  SocketClient.on('onlineCounter', (online) => {
     store.dispatch(receiveOnline(online));
   });
-  ProtocolClient.on('chatMessage', (
+  SocketClient.on('chatMessage', (
     name,
     text,
     country,
@@ -84,13 +84,13 @@ function init() {
       !!isRead,
     ));
   });
-  ProtocolClient.on('changedMe', () => {
+  SocketClient.on('changedMe', () => {
     store.dispatch(fetchMe());
   });
-  ProtocolClient.on('remch', (cid) => {
+  SocketClient.on('remch', (cid) => {
     store.dispatch(removeChatChannel(cid));
   });
-  ProtocolClient.on('addch', (channel) => {
+  SocketClient.on('addch', (channel) => {
     store.dispatch(addChatChannel(channel));
   });
 
@@ -116,7 +116,7 @@ function init() {
   store.dispatch(initTimer());
 
   store.dispatch(fetchMe());
-  ProtocolClient.connect();
+  SocketClient.connect();
 
   store.dispatch(fetchStats());
   // TODO: We don't have to do this this often
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const [zc, xc, yc] = value.cell;
           if (!renderer.isChunkInView(zc, xc, yc)) {
             if (value.isBasechunk) {
-              ProtocolClient.deRegisterChunk([xc, yc]);
+              SocketClient.deRegisterChunk([xc, yc]);
             }
             chunks.delete(key);
             value.destructor();
@@ -176,7 +176,7 @@ window.onCaptcha = async function onCaptcha(token) {
   const {
     i, j, pixels,
   } = window.pixel;
-  ProtocolClient.requestPlacePixels(i, j, pixels);
+  SocketClient.requestPlacePixels(i, j, pixels);
 
   if (typeof window.hcaptcha !== 'undefined') {
     window.hcaptcha.reset();

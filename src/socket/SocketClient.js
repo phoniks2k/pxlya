@@ -18,7 +18,7 @@ import ChangedMe from './packets/ChangedMe';
 
 const chunks = [];
 
-class ProtocolClient extends EventEmitter {
+class SocketClient extends EventEmitter {
   url: string;
   ws: WebSocket;
   canvasId: number;
@@ -30,7 +30,7 @@ class ProtocolClient extends EventEmitter {
 
   constructor() {
     super();
-    console.log('creating ProtocolClient');
+    console.log('Creating WebSocketClient');
     this.isConnecting = false;
     this.isConnected = false;
     this.ws = null;
@@ -243,4 +243,4 @@ class ProtocolClient extends EventEmitter {
   }
 }
 
-export default new ProtocolClient();
+export default new SocketClient();

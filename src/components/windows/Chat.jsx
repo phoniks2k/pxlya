@@ -21,7 +21,7 @@ import {
   showContextMenu,
   setWindowTitle,
 } from '../../actions';
-import ProtocolClient from '../../socket/ProtocolClient';
+import SocketClient from '../../socket/SocketClient';
 import splitChatMessage from '../../core/chatMessageFilter';
 
 function escapeRegExp(string) {
@@ -100,7 +100,7 @@ const Chat = ({
     const msg = inputMessage.trim();
     if (!msg) return;
     // send message via websocket
-    ProtocolClient.sendChatMessage(msg, chatChannel);
+    SocketClient.sendChatMessage(msg, chatChannel);
     dispatch(setChatInputMessage(windowId, ''));
   }
 

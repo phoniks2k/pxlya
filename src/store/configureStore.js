@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
 
 import audio from './audio';
-import protocolClientHook from './protocolClientHook';
+import socketClientHook from './socketClientHook';
 import rendererHook from './rendererHook';
 // import ads from './ads';
 import array from './array';
@@ -28,7 +28,7 @@ const store = createStore(
       audio,
       notifications,
       title,
-      protocolClientHook,
+      socketClientHook,
       rendererHook,
       placePixelControl,
       extensions,

@@ -17,7 +17,7 @@ import {
   pixelWait,
   updatePixel,
 } from '../actions';
-import ProtocolClient from '../socket/ProtocolClient';
+import SocketClient from '../socket/SocketClient';
 
 let pixelTimeout = null;
 /*
@@ -59,7 +59,7 @@ export function requestFromQueue(store) {
 
   lastRequestValues = pixelQueue.shift();
   const { i, j, pixels } = lastRequestValues;
-  ProtocolClient.requestPlacePixels(i, j, pixels);
+  SocketClient.requestPlacePixels(i, j, pixels);
   store.dispatch(setRequestingPixel(false));
 }
 
