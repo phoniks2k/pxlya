@@ -61,6 +61,7 @@ class APISocketServer {
       ws.isAlive = true;
       ws.subChat = false;
       ws.subPxl = false;
+      ws.subOnline = false;
       ws.on('pong', heartbeat);
 
       ws.on('message', (data, isBinary) => {
@@ -72,11 +73,13 @@ class APISocketServer {
     });
 
     this.broadcast = this.broadcast.bind(this);
+    this.broadcastOnlineCounter = this.broadcastOnlineCounter.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.ping = this.ping.bind(this);
     this.broadcastChatMessage = this.broadcastChatMessage.bind(this);
 
     socketEvents.on('broadcast', this.broadcast);
+    socketEvents.on('onlineCounter', this.broadcastOnlineCounter);
     socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
     socketEvents.on('chatMessage', this.broadcastChatMessage);
 
@@ -104,11 +107,13 @@ class APISocketServer {
     });
   }
 
-  broadcast(data) {
+  broadcast(data, filter = null) {
     if (typeof data === 'string') {
       this.wss.clients.forEach((ws) => {
         if (ws.readyState === WebSocket.OPEN) {
-          ws.send(data);
+          if (!filter || filter(ws)) {
+            ws.send(data);
+          }
         }
       });
     } else {
@@ -121,40 +126,31 @@ class APISocketServer {
       });
       this.wss.clients.forEach((ws) => {
         if (ws.readyState === WebSocket.OPEN) {
-          frame.forEach((buffer) => {
-            try {
-              // eslint-disable-next-line no-underscore-dangle
-              ws._socket.write(buffer);
-            } catch (error) {
-              logger.error(`WebSocket broadcast error: ${error.message}`);
-            }
-          });
+          if (!filter || filter(ws)) {
+            frame.forEach((buffer) => {
+              try {
+                // eslint-disable-next-line no-underscore-dangle
+                ws._socket.write(buffer);
+              } catch (error) {
+                logger.error(`WebSocket broadcast error: ${error.message}`);
+              }
+            });
+          }
         }
       });
     }
   }
 
+  broadcastOnlineCounter(data) {
+    this.broadcast(data, (client) => client.subOnline);
+  }
+
   broadcastPixelBuffer(canvasId, chunkid, buffer) {
-    if (canvasId !== 0 && canvasId !== '0') return;
-    const frame = WebSocket.Sender.frame(buffer, {
-      readOnly: true,
-      mask: false,
-      rsv1: false,
-      opcode: 2,
-      fin: true,
-    });
-    this.wss.clients.forEach((client) => {
-      if (client.subPxl && client.readyState === WebSocket.OPEN) {
-        frame.forEach((data) => {
-          try {
-            // eslint-disable-next-line no-underscore-dangle
-            client._socket.write(data);
-          } catch (error) {
-            logger.error('(!) Catched error on write apisocket:', error);
-          }
-        });
-      }
-    });
+    // just canvas 0 for now
+    if (canvasId !== 0 && canvasId !== '0') {
+      return;
+    }
+    this.broadcast(buffer, (client) => client.subPxl);
   }
 
   async onTextMessage(message, ws) {
@@ -169,9 +165,12 @@ class APISocketServer {
         const even = packet[0];
         if (even === 'chat') {
           ws.subChat = true;
-        }
-        if (even === 'pxl') {
+        } else if (even === 'pxl') {
           ws.subPxl = true;
+        } else if (even === 'online') {
+          ws.subOnline = true;
+        } else {
+          logger.info(`APISocket wanted to sub to unexisting  ${command}`);
         }
         logger.info(`APISocket client subscribed to  ${command}`);
         return;

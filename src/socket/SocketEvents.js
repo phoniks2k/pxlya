@@ -154,7 +154,7 @@ class SocketEvents extends EventEmitter {
   broadcastOnlineCounter(online) {
     this.onlineCounter = online;
     const buffer = OnlineCounter.dehydrate(online);
-    this.emit('broadcast', buffer);
+    this.emit('onlineCounter', buffer);
   }
 }
 

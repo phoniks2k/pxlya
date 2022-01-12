@@ -120,6 +120,7 @@ class SocketServer {
     this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
 
     socketEvents.on('broadcast', this.broadcast);
+    socketEvents.on('onlineCounter', this.broadcast);
     socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
     socketEvents.on('reloadUser', this.reloadUser);
 

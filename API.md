@@ -12,7 +12,11 @@ Authorization: "Bearer APISOCKETKEY"
 ```
 
 All requests are made as JSON encoded array.
+
 ### Subscribe to chat messages
+
+send
+
 ```["sub", "chat"]```
 
 All chat messages, except the once you send with `chat` or `mcchat`, will be sent to you in the form:
@@ -21,13 +25,23 @@ All chat messages, except the once you send with `chat` or `mcchat`, will be sen
 channelId is an integer, channel 0 is `en` channel 1 is `int` and maybe more to come.
 id is the user id
 country is the [two-letter country code](https://www.nationsonline.org/oneworld/country_code_list.htm) in lowercase
-### Online user counter
 
-Online counter will be sent to you as typical binary package (see `src/socket/packets/OnlineCounter.js`)
+### Subscribe to online user counter
+
+send
+
+```["sub", "online"]```
+
+Online counter will be sent to you all 10s as typical binary package (see `src/socket/packets/OnlineCounter.js`)
+
 ### Subscribe to pixel packages
+
+send
+
 ```["sub", "pxl"]```
 
 All pixels (including your own) will be sent to you as typical binary packages
+
 ### Set Pixel
 
 ```[ "setpxl", minecraftid, ip, x, y, clr ]```
@@ -49,6 +63,7 @@ waitSeconds is the current cooldown.
 coolDownSeconds is the added cooldown (negative if pixel couldn't be set because max cooldown got reached)
 
 ### Send Chat Message
+
 ```["chat", name, message, country, channelId]```
 
 channelId is an integer, channel 0 is `en` channel 1 is `int` and maybe more to come.
