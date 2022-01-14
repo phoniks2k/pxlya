@@ -24,6 +24,14 @@ async function getUrlAndId() {
   return null;
 }
 
+const floatStyle = {
+  width: '100%',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%,-50%)',
+}
+
 /*
  * autoload: Load captcha immediately and autofocus input textbox
  * width: width of the captcha image
@@ -78,47 +86,39 @@ const Captcha = ({ autoload, width }) => {
           backgroundColor: '#e0e0e0',
         }}
       >
-        <div
-          style={{
-            width: '100%',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%,-50%)',
-          }}
-        >
-          {(captchaData.url)
-            ? (
-              <img
-                style={{
-                  width: '100%',
-                  opacity: (imgLoaded) ? 1 : 0,
-                  transition: '100ms',
-                }}
-                src={captchaData.url}
-                alt="CAPTCHA"
-                onLoad={() => {
-                  setErrors([]);
-                  setImgLoaded(true);
-                }}
-                onError={() => {
-                  setErrors([t`Could not load captcha`]);
-                }}
-              />
-            )
-            : (
-              <span
-                role="button"
-                tabIndex={0}
-                title={t`Load Captcha`}
-                className="modallink"
-                onClick={reloadCaptcha}
-                onKeyPress={reloadCaptcha}
-              >
-                {t`Click to Load Captcha`}
-              </span>
-            )}
-        </div>
+        {(captchaData.url)
+          ? (
+            <img
+              style={{
+                ...floatStyle,
+                // width: '100%',
+                opacity: (imgLoaded) ? 1 : 0,
+                transition: '100ms',
+              }}
+              src={captchaData.url}
+              alt="CAPTCHA"
+              onLoad={() => {
+                setErrors([]);
+                setImgLoaded(true);
+              }}
+              onError={() => {
+                setErrors([t`Could not load captcha`]);
+              }}
+            />
+          )
+          : (
+            <span
+              style={floatStyle}
+              role="button"
+              tabIndex={0}
+              title={t`Load Captcha`}
+              className="modallink"
+              onClick={reloadCaptcha}
+              onKeyPress={reloadCaptcha}
+            >
+              {t`Click to Load Captcha`}
+            </span>
+          )}
       </div>
       <p className="modaltext">
         {t`Can't read? Reload:`}&nbsp;
