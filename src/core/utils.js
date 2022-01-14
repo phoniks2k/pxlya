@@ -47,7 +47,7 @@ export function clamp(n, min, max) {
  */
 export function dateToString(date) {
   // YYYY-MM-DD
-  return ate.substring(0, 4) + date.substring(5, 7) + date.substring(8)
+  return date.substring(0, 4) + date.substring(5, 7) + date.substring(8);
 }
 
 /*

@@ -106,7 +106,14 @@ class APISocketServer {
       return;
     }
 
-    const sendmsg = JSON.stringify(['msg', name, id, msg, country, channelId]);
+    const sendmsg = JSON.stringify([
+      'msg',
+      name,
+      parseInt(id, 10),
+      msg,
+      country,
+      parseInt(channelId, 10),
+    ]);
     this.wss.clients.forEach((client) => {
       if (client !== ws
         && client.subChat
