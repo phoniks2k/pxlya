@@ -19,6 +19,7 @@ export class ChatProvider {
   constructor() {
     this.defaultChannels = {};
     this.langChannels = {};
+    this.publicChannelIds = [];
     this.enChannelId = 0;
     this.infoUserId = 1;
     this.eventUserId = 1;
@@ -102,6 +103,7 @@ export class ChatProvider {
         type,
         lastTs,
       ];
+      this.publicChannelIds.push(id);
     }
     // find or create non-english lang channels
     const langs = Object.keys(ttags);
@@ -123,6 +125,7 @@ export class ChatProvider {
         type,
         lastTs,
       };
+      this.publicChannelIds.push(id);
     }
     // find or create default users
     let name = INFO_USER_NAME;

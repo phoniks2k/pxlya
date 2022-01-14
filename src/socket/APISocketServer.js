@@ -101,8 +101,7 @@ class APISocketServer {
       return;
     }
     // send only messages from default and lang channels
-    if (!chatProvider.defaultChannels[channelId]
-      && !chatProvider.langChannels[channelId]) {
+    if (!chatProvider.publicChannelIds.includes(channelId)) {
       return;
     }
 
