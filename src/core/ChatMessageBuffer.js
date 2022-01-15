@@ -7,7 +7,7 @@
 import Sequelize from 'sequelize';
 import logger from './logger';
 
-import { RegUser, Message, Channel } from '../data/models';
+import { Message, Channel } from '../data/models';
 
 const MAX_BUFFER_TIME = 120000;
 
@@ -59,9 +59,11 @@ class ChatMessageBuffer {
     flag,
   ) {
     Message.create({
+      name,
+      flag,
+      message,
       cid,
       uid,
-      message,
     });
     Channel.update({
       lastMessage: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -83,20 +85,11 @@ class ChatMessageBuffer {
 
   static async getMessagesFromDatabase(cid, limit = 200) {
     const messagesModel = await Message.findAll({
-      include: [
-        {
-          model: RegUser,
-          as: 'user',
-          foreignKey: 'uid',
-          attributes: [
-            'id',
-            'name',
-            'flag',
-          ],
-        },
-      ],
       attributes: [
         'message',
+        'uid',
+        'name',
+        'flag',
       ],
       where: { cid },
       limit,
@@ -108,10 +101,10 @@ class ChatMessageBuffer {
     while (i > 0) {
       i -= 1;
       const {
+        name,
         message,
-        'user.name': name,
-        'user.flag': flag,
-        'user.id': uid,
+        flag,
+        uid,
       } = messagesModel[i];
       messages.push([
         name,

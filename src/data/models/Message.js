@@ -2,8 +2,6 @@
  *
  * Database layout for Chat Message History
  *
- * @flow
- *
  */
 
 import DataType from 'sequelize';
@@ -17,6 +15,18 @@ const Message = Model.define('Message', {
     type: DataType.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
+  },
+
+  name: {
+    type: `${DataType.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
+    defaultValue: 'mx',
+    allowNull: false,
+  },
+
+  flag: {
+    type: DataType.CHAR(2),
+    defaultValue: 'xx',
+    allowNull: false,
   },
 
   message: {

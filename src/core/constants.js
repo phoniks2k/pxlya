@@ -96,3 +96,4 @@ export const MAX_CHAT_MESSAGES = 100;
 
 export const EVENT_USER_NAME = 'event';
 export const INFO_USER_NAME = 'info';
+export const APISOCKET_USER_NAME = 'apisocket';

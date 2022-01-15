@@ -13,7 +13,12 @@ import { cheapDetector } from './isProxy';
 import { DailyCron } from '../utils/cron';
 import ttags from './ttag';
 
-import { CHAT_CHANNELS, EVENT_USER_NAME, INFO_USER_NAME } from './constants';
+import {
+  CHAT_CHANNELS,
+  EVENT_USER_NAME,
+  INFO_USER_NAME,
+  APISOCKET_USER_NAME,
+} from './constants';
 
 export class ChatProvider {
   constructor() {
@@ -23,6 +28,7 @@ export class ChatProvider {
     this.enChannelId = 0;
     this.infoUserId = 1;
     this.eventUserId = 1;
+    this.apiSocketUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
     this.cyrillic = /[\u0436-\u043B]'/;
     this.filters = [
@@ -156,6 +162,20 @@ export class ChatProvider {
       raw: true,
     });
     this.eventUserId = eventUser[0].id;
+    name = APISOCKET_USER_NAME;
+    const apiSocketUser = await RegUser.findOrCreate({
+      attributes: [
+        'id',
+      ],
+      where: { name },
+      defaults: {
+        name,
+        verified: 3,
+        email: 'event@example.com',
+      },
+      raw: true,
+    });
+    this.apiSocketUserId = apiSocketUser[0].id;
     this.clearOldMessages();
     DailyCron.hook(this.clearOldMessages);
   }

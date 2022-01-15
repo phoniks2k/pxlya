@@ -239,11 +239,11 @@ class APISocketServer {
       }
       if (command === 'chat') {
         const [name, id, msg, country, channelId] = packet;
-        const uid = id || 1;
+        const uid = id || chatProvider.apiSocketUserId;
         /*
          * do not send message back up ws that sent it
          */
-        socketEvents.broadcastChatMessage(
+        chatProvider.broadcastChatMessage(
           name,
           msg,
           channelId,
