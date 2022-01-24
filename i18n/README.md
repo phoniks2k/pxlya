@@ -4,7 +4,7 @@ Two translation files for each language are needed, `ssr-[locale].po` and `[loca
 
 Translation files can be created out of the templates [template.pot](https://github.com/pixelplanetdev/pixelplanet/raw/master/i18n/template.pot) and [template-ssr.pot](https://github.com/pixelplanetdev/pixelplanet/raw/master/i18n/template-ssr.pot). They are standard GNU gettext files and can be edited in any ordinary texteditor or po-Editor.
 
-All translated languages will get an own chat channel in the future that just people who use this language can access.
+All translated languages get an own chat channel that just people who use this language can access.
 
 ## With poedit
 

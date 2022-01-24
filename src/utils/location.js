@@ -63,6 +63,7 @@ const lang2CC = {
   ru: 'ru',
   fr: 'fr',
   es: 'es',
+  ca: 'ct',
 };
 export function langCodeToCC(lang: string) {
   return lang2CC[lang] || lang;
