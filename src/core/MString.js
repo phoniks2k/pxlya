@@ -212,4 +212,56 @@ export default class MString {
     this.iter = cIter;
     return link;
   }
+
+  /*
+   * Check if current '#' is part of ppfun coordinates (example: #d,23,11,-10)
+   * @return null if not coords, otherwise the coords string
+   */
+  checkIfCoords() {
+    let cIter = this.iter + 1;
+    while (cIter < this.txt.length) {
+      const chr = this.txt[cIter];
+      if (chr === ',') {
+        break;
+      }
+      if (MString.isWhiteSpace(chr)
+        || !Number.isNaN(Number(chr))
+      ) {
+        return null;
+      }
+      cIter += 1;
+    }
+    if (cIter >= this.txt.length
+      || cIter - this.iter > 12
+      || cIter === this.iter
+    ) {
+      return null;
+    }
+    cIter += 1;
+    const curChr = this.txt[cIter];
+    if (curChr !== '-' && Number.isNaN(curChr)) {
+      return null;
+    }
+    cIter += 1;
+    let sectCount = 1;
+    while (cIter < this.txt.length && !MString.isWhiteSpace(this.txt[cIter])) {
+      const chr = this.txt[cIter];
+      if (chr === ',') {
+        sectCount += 1;
+      } else if (chr !== '-' && Number.isNaN(Number(chr))) {
+        return null;
+      }
+      cIter += 1;
+    }
+    if (sectCount < 2
+      || sectCount > 3
+      || this.txt[cIter - 1] === ','
+    ) {
+      return null;
+    }
+
+    const coords = this.txt.slice(this.iter, cIter);
+    this.iter = cIter;
+    return coords;
+  }
 }

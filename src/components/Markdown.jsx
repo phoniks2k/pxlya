@@ -3,9 +3,10 @@
  */
 import React from 'react';
 
-import MdLink from '../../src/components/MdLink';
+import MdLink from './MdLink';
 import MdMention from './MdMention';
 
+// eslint-disable-next-line max-len
 export const MarkdownParagraph = React.memo(({ pArray }) => pArray.map((part) => {
   if (!Array.isArray(part)) {
     return part;
@@ -76,12 +77,14 @@ const Markdown = ({ mdArray }) => mdArray.map((part) => {
         default:
           headingElem = <h4>{heading}</h4>;
       }
-      return [
-        headingElem,
-        <section>
-          <Markdown mdArray={children} />
-        </section>,
-      ];
+      return (
+        <>
+          {headingElem}
+          <section>
+            <Markdown mdArray={children} />
+          </section>
+        </>
+      );
     }
     /* Paragraph */
     case 'p': {

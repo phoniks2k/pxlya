@@ -1,5 +1,6 @@
+const pkg = require('./package.json');
+
 module.exports = function (api) {
-  api.cache(true);
   const plugins = [
     '@babel/plugin-transform-flow-strip-types',
     '@babel/plugin-proposal-throw-expressions',
@@ -13,11 +14,18 @@ module.exports = function (api) {
   const presets = [
     [
       "@babel/preset-env",
-      {
-        "targets": {
-          "node": "current"
+      api.caller(caller => caller && caller.target === "node")
+        ? {
+          targets: {
+            node: pkg.engines.node.replace(/^\D+/g, ''),
+          },
+          modules: false,
         }
-      }
+        : {
+          targets: {
+            browsers: pkg.browserslist,
+          },
+        }
     ],
     '@babel/react',
   ];

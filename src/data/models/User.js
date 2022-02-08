@@ -219,8 +219,21 @@ class User {
   }
 
   getUserData(): Object {
+    const {
+      id,
+      userlvl,
+      channels,
+      blocked,
+    } = this;
+    const data = {
+      id,
+      userlvl,
+      channels,
+      blocked,
+    };
     if (this.regUser == null) {
       return {
+        ...data,
         name: null,
         mailVerified: false,
         blockDm: false,
@@ -229,15 +242,11 @@ class User {
         ranking: null,
         dailyRanking: null,
         mailreg: false,
-        userlvl: 0,
-        channels: this.channels,
-        blocked: this.blocked,
       };
     }
-    const {
-      regUser, userlvl, channels, blocked,
-    } = this;
+    const { regUser } = this;
     return {
+      ...data,
       name: regUser.name,
       mailVerified: regUser.mailVerified,
       blockDm: regUser.blockDm,
@@ -246,9 +255,6 @@ class User {
       ranking: regUser.ranking,
       dailyRanking: regUser.dailyRanking,
       mailreg: !!(regUser.password),
-      userlvl,
-      channels,
-      blocked,
     };
   }
 }

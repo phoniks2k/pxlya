@@ -1,8 +1,6 @@
-import { createNameRegExp } from '../core/utils';
-
 const initialState = {
+  id: null,
   name: null,
-  center: [0, 0],
   wait: null,
   coolDown: null, // ms
   lastCoolDownEnd: null,
@@ -18,8 +16,6 @@ const initialState = {
   notification: null,
   // 1: Admin, 2: Mod, 0: ordinary user
   userlvl: 0,
-  // regExp for detecting ping
-  nameRegExp: null,
 };
 
 export default function user(
@@ -86,43 +82,41 @@ export default function user(
     case 'RECEIVE_ME':
     case 'LOGIN': {
       const {
+        id,
         name,
         mailreg,
         blockDm,
         userlvl,
       } = action;
-      const nameRegExp = createNameRegExp(name);
       const messages = (action.messages) ? action.messages : [];
       return {
         ...state,
+        id,
         name,
         messages,
         mailreg,
         blockDm,
         userlvl,
-        nameRegExp,
       };
     }
 
     case 'LOGOUT': {
       return {
         ...state,
+        id: null,
         name: null,
         messages: [],
         mailreg: false,
         blockDm: false,
         userlvl: 0,
-        nameRegExp: null,
       };
     }
 
     case 'SET_NAME': {
       const { name } = action;
-      const nameRegExp = createNameRegExp(name);
       return {
         ...state,
         name,
-        nameRegExp,
       };
     }
 

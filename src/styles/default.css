@@ -665,17 +665,20 @@ tr:nth-child(even) {
   white-space: nowrap;
 }
 .chatname {
-  color: #4B0000;
   font-size: 13px;
+  white-space: nowrap;
+  display: inline-block;
 }
 .chatmsg {
   color: #030303;
   font-size: 13px;
   user-select: text;
   margin: 0;
+  display: flex;
+  flex-direction: row;
 }
-.chatmsg > span {
-  display: inline-block;
+.msg {
+  flex: 1;
 }
 .msg.info {
   color: #cc0000;
@@ -685,6 +688,9 @@ tr:nth-child(even) {
 }
 .msg.greentext{
   color: green;
+}
+.msg.redtext{
+  color: red;
 }
 .ping {
   background-color: #ffff87;
@@ -904,4 +910,19 @@ tr:nth-child(even) {
 
 .Modal.show, .Alert.show, .OverlayAlert.show, .OverlayModal.show, .window.show {
     opacity: 1;
+}
+
+.vemb {
+  overflow: hidden;
+  position: relative;
+  height: 0;
+  padding-bottom: 66%;
+}
+
+.vembc {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }

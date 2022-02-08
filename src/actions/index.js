@@ -760,6 +760,16 @@ export function addToChatInputMessage(windowId, msg) {
   };
 }
 
+export function addToChatInputMessageAndFocus(windowId, msg) {
+  return (dispatch) => {
+    dispatch(addToChatInputMessage(windowId, msg));
+    const inputElem = document.getElementById(`chtipt-${windowId}`);
+    if (inputElem) {
+      inputElem.focus();
+    }
+  };
+}
+
 export function closeWindow(windowId) {
   return {
     type: 'CLOSE_WINDOW',

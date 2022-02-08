@@ -12,7 +12,7 @@ import {
 } from '../hooks/clickOutside';
 import {
   hideContextMenu,
-  addToChatInputMessage,
+  addToChatInputMessageAndFocus,
   startDm,
   setUserBlock,
   setChatChannel,
@@ -45,7 +45,9 @@ const UserContextMenu = () => {
         role="button"
         tabIndex={0}
         onClick={() => {
-          dispatch(addToChatInputMessage(windowId, `@${name} `));
+          dispatch(
+            addToChatInputMessageAndFocus(windowId, `@[${name}](${uid}) `),
+          );
           close();
         }}
         style={{ borderTop: 'none' }}

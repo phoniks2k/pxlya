@@ -3,48 +3,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/controls/keypress.js:41
-#, javascript-format
-msgid "Switched to ${ canvasName }"
-msgstr ""
-
-#: src/controls/keypress.js:64
-msgid "Grid ON"
-msgstr ""
-
-#: src/controls/keypress.js:65
-msgid "Grid OFF"
-msgstr ""
-
-#: src/controls/keypress.js:75
-msgid "Pixel Notify ON"
-msgstr ""
-
-#: src/controls/keypress.js:76
-msgid "Pixel Notify OFF"
-msgstr ""
-
-#: src/controls/keypress.js:81
-msgid "Muted Sound"
-msgstr ""
-
-#: src/controls/keypress.js:82
-msgid "Unmuted Sound"
-msgstr ""
-
-#: src/components/CoordinatesBox.jsx:29
-#: src/controls/keypress.js:88
-msgid "Copied!"
-msgstr ""
-
-#: src/controls/keypress.js:94
-msgid "Show Hidden Canvases"
-msgstr ""
-
-#: src/controls/keypress.js:95
-msgid "Hide Hidden Canvases"
-msgstr ""
-
 #: src/ui/placePixel.js:53
 msgid "Error :("
 msgstr ""
@@ -146,6 +104,48 @@ msgstr ""
 msgid "Error ${ retCode }"
 msgstr ""
 
+#: src/controls/keypress.js:41
+#, javascript-format
+msgid "Switched to ${ canvasName }"
+msgstr ""
+
+#: src/controls/keypress.js:64
+msgid "Grid ON"
+msgstr ""
+
+#: src/controls/keypress.js:65
+msgid "Grid OFF"
+msgstr ""
+
+#: src/controls/keypress.js:75
+msgid "Pixel Notify ON"
+msgstr ""
+
+#: src/controls/keypress.js:76
+msgid "Pixel Notify OFF"
+msgstr ""
+
+#: src/controls/keypress.js:81
+msgid "Muted Sound"
+msgstr ""
+
+#: src/controls/keypress.js:82
+msgid "Unmuted Sound"
+msgstr ""
+
+#: src/components/CoordinatesBox.jsx:29
+#: src/controls/keypress.js:88
+msgid "Copied!"
+msgstr ""
+
+#: src/controls/keypress.js:94
+msgid "Show Hidden Canvases"
+msgstr ""
+
+#: src/controls/keypress.js:95
+msgid "Hide Hidden Canvases"
+msgstr ""
+
 #: src/ui/renderer.js:36
 msgid "Canvas Error"
 msgstr ""
@@ -170,11 +170,6 @@ msgstr ""
 msgid "Look at past Canvases"
 msgstr ""
 
-#: src/components/Converter.jsx:559
-#: src/components/CoordinatesBox.jsx:32
-msgid "Copy to Clipboard"
-msgstr ""
-
 #: src/components/OnlineBox.jsx:41
 msgid "Online Users on Canvas"
 msgstr ""
@@ -187,6 +182,11 @@ msgstr ""
 msgid "Pixels placed"
 msgstr ""
 
+#: src/components/Converter.jsx:559
+#: src/components/CoordinatesBox.jsx:32
+msgid "Copy to Clipboard"
+msgstr ""
+
 #: src/components/ModalRoot.jsx:69
 #: src/components/Modtools.jsx:224
 #: src/components/Window.jsx:138
@@ -196,6 +196,27 @@ msgstr ""
 
 #: src/components/ModalRoot.jsx:78
 msgid "Restore"
+msgstr ""
+
+#: src/components/buttons/ChatButton.jsx:92
+msgid "Close Chat"
+msgstr ""
+
+#: src/components/buttons/ChatButton.jsx:92
+msgid "Open Chat"
+msgstr ""
+
+#: src/components/buttons/CanvasSwitchButton.jsx:22
+#: src/components/windows/index.js:19
+msgid "Canvas Selection"
+msgstr ""
+
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Close Menu"
+msgstr ""
+
+#: src/components/buttons/ExpandMenuButton.jsx:23
+msgid "Open Menu"
 msgstr ""
 
 #: src/actions/fetch.js:39
@@ -227,25 +248,8 @@ msgstr ""
 msgid "Server answered with gibberish :("
 msgstr ""
 
-#: src/components/buttons/CanvasSwitchButton.jsx:22
-#: src/components/windows/index.js:22
-msgid "Canvas Selection"
-msgstr ""
-
-#: src/components/buttons/ChatButton.jsx:92
-msgid "Close Chat"
-msgstr ""
-
-#: src/components/buttons/ChatButton.jsx:92
-msgid "Open Chat"
-msgstr ""
-
-#: src/components/buttons/ExpandMenuButton.jsx:23
-msgid "Close Menu"
-msgstr ""
-
-#: src/components/buttons/ExpandMenuButton.jsx:23
-msgid "Open Menu"
+#: src/components/buttons/GlobeButton.jsx:35
+msgid "Globe View"
 msgstr ""
 
 #: src/components/HistorySelect.jsx:144
@@ -254,6 +258,33 @@ msgstr ""
 
 #: src/components/HistorySelect.jsx:145
 msgid "Select Date above"
+msgstr ""
+
+#: src/components/buttons/PalselButton.jsx:31
+msgid "Close Palette"
+msgstr ""
+
+#: src/components/buttons/PalselButton.jsx:31
+msgid "Open Palette"
+msgstr ""
+
+#: src/components/buttons/HelpButton.jsx:23
+#: src/components/windows/index.js:13
+msgid "Help"
+msgstr ""
+
+#: src/components/buttons/SettingsButton.jsx:23
+#: src/components/windows/index.js:14
+msgid "Settings"
+msgstr ""
+
+#: src/components/buttons/DownloadButton.jsx:37
+msgid "Make Screenshot"
+msgstr ""
+
+#: src/components/buttons/LogInButton.jsx:23
+#: src/components/windows/index.js:15
+msgid "User Area"
 msgstr ""
 
 #: src/components/Window.jsx:117
@@ -272,37 +303,6 @@ msgstr ""
 msgid "Resize"
 msgstr ""
 
-#: src/components/buttons/GlobeButton.jsx:35
-msgid "Globe View"
-msgstr ""
-
-#: src/components/buttons/PalselButton.jsx:31
-msgid "Close Palette"
-msgstr ""
-
-#: src/components/buttons/PalselButton.jsx:31
-msgid "Open Palette"
-msgstr ""
-
-#: src/components/buttons/HelpButton.jsx:23
-#: src/components/windows/index.js:16
-msgid "Help"
-msgstr ""
-
-#: src/components/buttons/SettingsButton.jsx:23
-#: src/components/windows/index.js:17
-msgid "Settings"
-msgstr ""
-
-#: src/components/buttons/LogInButton.jsx:23
-#: src/components/windows/index.js:18
-msgid "User Area"
-msgstr ""
-
-#: src/components/buttons/DownloadButton.jsx:37
-msgid "Make Screenshot"
-msgstr ""
-
 #: src/components/contextmenus/UserContextMenu.jsx:53
 msgid "Ping"
 msgstr ""
@@ -319,19 +319,19 @@ msgstr ""
 msgid "Mute"
 msgstr ""
 
-#: src/components/windows/index.js:19
+#: src/components/windows/index.js:16
 msgid "Registration"
 msgstr ""
 
-#: src/components/windows/index.js:20
+#: src/components/windows/index.js:17
 msgid "Forgot Password"
 msgstr ""
 
-#: src/components/windows/index.js:21
+#: src/components/windows/index.js:18
 msgid "Chat"
 msgstr ""
 
-#: src/components/windows/index.js:23
+#: src/components/windows/index.js:20
 msgid "Canvas Archive"
 msgstr ""
 
@@ -538,30 +538,6 @@ msgstr ""
 msgid "Credit for the Palette of the Top10 canvas goes to ${ vinikLink }."
 msgstr ""
 
-#: src/components/windows/UserArea.jsx:27
-msgid "Profile"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:30
-msgid "Ranking"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:33
-msgid "Converter"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:39
-msgid "Modtools"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:40
-msgid "Loading..."
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:47
-msgid "Consider joining us on Guilded:"
-msgstr ""
-
 #: src/components/windows/Settings.jsx:133
 msgid "Show Grid"
 msgstr ""
@@ -655,48 +631,6 @@ msgstr ""
 msgid "Select Language"
 msgstr ""
 
-#: src/components/windows/Register.jsx:85
-msgid "Register new account here"
-msgstr ""
-
-#: src/components/windows/Register.jsx:90
-#: src/components/windows/Register.jsx:96
-msgid "Name"
-msgstr ""
-
-#: src/components/windows/ForgotPassword.jsx:82
-#: src/components/windows/Register.jsx:98
-#: src/components/windows/Register.jsx:104
-msgid "Email"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:80
-#: src/components/DeleteAccount.jsx:62
-#: src/components/LogInForm.jsx:83
-#: src/components/windows/Register.jsx:106
-#: src/components/windows/Register.jsx:112
-msgid "Password"
-msgstr ""
-
-#: src/components/windows/Register.jsx:114
-#: src/components/windows/Register.jsx:120
-msgid "Confirm Password"
-msgstr ""
-
-#: src/components/windows/Register.jsx:122
-msgid "Captcha"
-msgstr ""
-
-#: src/components/Modtools.jsx:311
-#: src/components/Modtools.jsx:392
-#: src/components/Modtools.jsx:467
-#: src/components/Modtools.jsx:512
-#: src/components/Modtools.jsx:595
-#: src/components/windows/ForgotPassword.jsx:86
-#: src/components/windows/Register.jsx:125
-msgid "Submit"
-msgstr ""
-
 #: src/components/windows/CanvasSelect.jsx:33
 msgid ""
 "Select the canvas you want to use.  Every canvas is unique and has "
@@ -749,6 +683,22 @@ msgstr ""
 msgid "Enter your mail address and we will send you a new password:"
 msgstr ""
 
+#: src/components/windows/ForgotPassword.jsx:82
+#: src/components/windows/Register.jsx:98
+#: src/components/windows/Register.jsx:104
+msgid "Email"
+msgstr ""
+
+#: src/components/Modtools.jsx:311
+#: src/components/Modtools.jsx:392
+#: src/components/Modtools.jsx:467
+#: src/components/Modtools.jsx:512
+#: src/components/Modtools.jsx:595
+#: src/components/windows/ForgotPassword.jsx:86
+#: src/components/windows/Register.jsx:125
+msgid "Submit"
+msgstr ""
+
 #: src/components/windows/Chat.jsx:146
 msgid "Channel settings"
 msgstr ""
@@ -763,6 +713,56 @@ msgstr ""
 
 #: src/components/windows/Chat.jsx:221
 msgid "You must be logged in to chat"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:27
+msgid "Profile"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:30
+msgid "Ranking"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:33
+msgid "Converter"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:39
+msgid "Modtools"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:40
+msgid "Loading..."
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:47
+msgid "Consider joining us on Guilded:"
+msgstr ""
+
+#: src/components/windows/Register.jsx:85
+msgid "Register new account here"
+msgstr ""
+
+#: src/components/windows/Register.jsx:90
+#: src/components/windows/Register.jsx:96
+msgid "Name"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:80
+#: src/components/DeleteAccount.jsx:62
+#: src/components/LogInForm.jsx:83
+#: src/components/windows/Register.jsx:106
+#: src/components/windows/Register.jsx:112
+msgid "Password"
+msgstr ""
+
+#: src/components/windows/Register.jsx:114
+#: src/components/windows/Register.jsx:120
+msgid "Confirm Password"
+msgstr ""
+
+#: src/components/windows/Register.jsx:122
+msgid "Captcha"
 msgstr ""
 
 #: src/components/Captcha.jsx:50
@@ -846,28 +846,56 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/components/LogInArea.jsx:21
-msgid "Login to access more features and stats."
+#: src/components/ChangeMail.jsx:91
+#: src/components/ChangeName.jsx:68
+#: src/components/ChangePassword.jsx:110
+#: src/components/LanguageSelect.jsx:73
+msgid "Save"
 msgstr ""
 
-#: src/components/LogInArea.jsx:23
-msgid "Login with Name or Mail:"
+#: src/components/CanvasItem.jsx:30
+msgid "Online Users"
 msgstr ""
 
-#: src/components/LogInArea.jsx:30
-msgid "I forgot my Password."
+#: src/components/CanvasItem.jsx:35
+msgid "Cooldown"
 msgstr ""
 
-#: src/components/LogInArea.jsx:31
-msgid "or login with:"
+#: src/components/CanvasItem.jsx:41
+msgid "Stacking till"
 msgstr ""
 
-#: src/components/LogInArea.jsx:72
-msgid "or register here:"
+#: src/components/CanvasItem.jsx:43
+msgid "Ranked"
 msgstr ""
 
-#: src/components/LogInArea.jsx:79
-msgid "Register"
+#: src/components/CanvasItem.jsx:45
+msgid "Yes"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:45
+msgid "No"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:51
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:54
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:56
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:59
+msgid "Top 10 Daily Ranking"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:65
+msgid "Dimensions"
 msgstr ""
 
 #: src/components/UserAreaContent.jsx:63
@@ -1083,64 +1111,28 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
-#: src/components/ChangeMail.jsx:91
-#: src/components/ChangeName.jsx:68
-#: src/components/ChangePassword.jsx:110
-#: src/components/LanguageSelect.jsx:73
-msgid "Save"
+#: src/components/LogInArea.jsx:21
+msgid "Login to access more features and stats."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:30
-msgid "Online Users"
+#: src/components/LogInArea.jsx:23
+msgid "Login with Name or Mail:"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:35
-msgid "Cooldown"
+#: src/components/LogInArea.jsx:30
+msgid "I forgot my Password."
 msgstr ""
 
-#: src/components/CanvasItem.jsx:41
-msgid "Stacking till"
+#: src/components/LogInArea.jsx:31
+msgid "or login with:"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:43
-msgid "Ranked"
+#: src/components/LogInArea.jsx:72
+msgid "or register here:"
 msgstr ""
 
-#: src/components/CanvasItem.jsx:45
-msgid "Yes"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:45
-msgid "No"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:51
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:54
-msgid "User Account"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:56
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:59
-msgid "Top 10 Daily Ranking"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:65
-msgid "Dimensions"
-msgstr ""
-
-#: src/components/LogInForm.jsx:76
-msgid "Name or Email"
-msgstr ""
-
-#: src/components/LogInForm.jsx:87
-msgid "LogIn"
+#: src/components/LogInArea.jsx:79
+msgid "Register"
 msgstr ""
 
 #: src/components/UserMessages.jsx:28
@@ -1177,6 +1169,10 @@ msgstr ""
 msgid "Confirm New Password"
 msgstr ""
 
+#: src/components/ChangeName.jsx:64
+msgid "New Username"
+msgstr ""
+
 #: src/components/ChangeMail.jsx:59
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,             "
@@ -1185,14 +1181,6 @@ msgstr ""
 
 #: src/components/ChangeMail.jsx:87
 msgid "New Mail"
-msgstr ""
-
-#: src/components/ChangeName.jsx:64
-msgid "New Username"
-msgstr ""
-
-#: src/components/DeleteAccount.jsx:66
-msgid "Yes, Delete My Account!"
 msgstr ""
 
 #: src/components/SocialSettings.jsx:38
@@ -1205,6 +1193,18 @@ msgstr ""
 
 #: src/components/SocialSettings.jsx:80
 msgid "You have no users blocked"
+msgstr ""
+
+#: src/components/DeleteAccount.jsx:66
+msgid "Yes, Delete My Account!"
+msgstr ""
+
+#: src/components/LogInForm.jsx:76
+msgid "Name or Email"
+msgstr ""
+
+#: src/components/LogInForm.jsx:87
+msgid "LogIn"
 msgstr ""
 
 #: src/components/windows/Help.jsx:14

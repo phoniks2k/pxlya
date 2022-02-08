@@ -23,3 +23,18 @@ pre {
 .rt {
   color: red;
 }
+
+.vemb {
+  overflow: hidden;
+  position: relative;
+  height: 0;
+  padding-bottom: 66%;
+}
+
+.vembc {
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}

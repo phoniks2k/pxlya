@@ -1,6 +1,3 @@
-/*
- * @flow
- */
 import { t } from 'ttag';
 
 import Help from './Help';

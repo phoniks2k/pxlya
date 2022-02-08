@@ -307,18 +307,8 @@ export function setBrightness(hex, dark: boolean = false) {
  * @param string input string
  * @return escaped string
  */
-function escapeRegExp(string) {
+export function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-/*
- * create RegExp to search for ping in chat messages
- * @param name name
- * @return regular expression to search for name in message
- */
-export function createNameRegExp(name) {
-  if (!name) return null;
-  return new RegExp(`(^|\\s+)(@${escapeRegExp(name)})(\\s+|$)`, 'g');
 }
 
 /*
@@ -332,4 +322,55 @@ export function isWebGL2Available() {
   } catch {
     return false;
   }
+}
+
+/*
+ * gets a descriptive text of the domain of the link
+ * Example:
+ *  https://www.youtube.com/watch?v=G8APgeFfkAk returns 'youtube'
+ *  http://www.google.at returns 'google.at'
+ *  (www. and .com are split)
+ */
+export function getLinkDesc(link) {
+  let domainStart = link.indexOf('://') + 3;
+  if (domainStart < 3) {
+    domainStart = 0;
+  }
+  if (link.startsWith('www.', domainStart)) {
+    domainStart += 4;
+  }
+  let domainEnd = link.indexOf('/', domainStart);
+  if (domainEnd === -1) {
+    domainEnd = link.length;
+  }
+  if (link.endsWith('.com', domainEnd)) {
+    domainEnd -= 4;
+  }
+  if (domainEnd <= domainStart) {
+    return link;
+  }
+  return link.slice(domainStart, domainEnd);
+}
+
+/*
+ * try to get extension out of link
+ * @param link url
+ * @return extension or null if not available
+ */
+export function getExt(link) {
+  let paramStart = link.indexOf('&');
+  if (paramStart === -1) {
+    paramStart = link.length;
+  }
+  let posDot = paramStart - 1;
+  for (;posDot >= 0 && link[posDot] !== '.'; posDot -= 1) {
+    if (link[posDot] === '/') {
+      return null;
+    }
+  }
+  posDot += 1;
+  if (paramStart - posDot > 4) {
+    return null;
+  }
+  return link.slice(posDot, paramStart);
 }

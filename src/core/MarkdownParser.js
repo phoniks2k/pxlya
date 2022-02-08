@@ -5,8 +5,6 @@
  * stuff like pixelplanet coords and usernames and bare links.
  * This code is written in preparation for a possible imporementation in
  * WebAssambly, so it's all in a big loop
- *
- * @flow
  */
 
 import MString from './MString';
@@ -41,6 +39,19 @@ function parseMParagraph(text, opts, breakChar) {
       }
       pStart = text.iter + 1;
       text.moveForward();
+    } else if (chr === '#') {
+      /*
+       * ppfun coords #d,34,23,-10
+       */
+      const oldPos = text.iter;
+      const coords = text.checkIfCoords();
+      if (coords) {
+        if (pStart !== oldPos) {
+          pArray.push(text.slice(pStart, oldPos));
+        }
+        pArray.push(['l', null, `${window.location.origin}/${coords}`]);
+        pStart = text.iter;
+      }
     } else if (paraElems.includes(chr)) {
       /*
        * bold, cursive, underline, etc.
@@ -100,9 +111,13 @@ function parseMParagraph(text, opts, breakChar) {
        * defaults to ordinary link
        */
       let tag = 'l';
-      const zIsLink = true;
+      let zIsLink = true;
       if (x === '!') {
         tag = 'img';
+        oldPos -= 1;
+      } else if (x === '@') {
+        zIsLink = false;
+        tag = '@';
         oldPos -= 1;
       }
 
@@ -174,8 +189,8 @@ function parseQuote(text, opts) {
  *   or ident is smaller than given
  */
 function parseMSection(
-  text: string,
-  opts: Object,
+  text,
+  opts,
   headingLevel,
   indent,
 ) {
@@ -351,13 +366,13 @@ function parseOpts(inOpts) {
   return opts;
 }
 
-export function parseParagraph(text: string, inOpts) {
+export function parseParagraph(text, inOpts) {
   const opts = parseOpts(inOpts);
   const mText = new MString(text);
   return parseMParagraph(mText, opts);
 }
 
-export function parse(text: string, inOpts) {
+export function parse(text, inOpts) {
   const opts = parseOpts(inOpts);
   const mText = new MString(text);
   return parseMText(mText, opts, 0);

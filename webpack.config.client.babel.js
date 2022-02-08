@@ -7,8 +7,6 @@ import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
-import pkg from './package.json';
-
 /*
  * Emit a file with assets paths
  */
@@ -120,13 +118,6 @@ export function buildWebpackClientConfig(
             ))
           ],
           options: {
-            presets: [
-              ['@babel/preset-env', {
-                targets: {
-                  browsers: pkg.browserslist,
-                },
-              }],
-            ],
             plugins: babelPlugins,
           },
         },

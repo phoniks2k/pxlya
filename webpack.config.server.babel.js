@@ -75,14 +75,6 @@ export default ({
           ],
           options: {
             cacheDirectory: false,
-            presets: [
-              ['@babel/preset-env', {
-                targets: {
-                  node: pkg.engines.node.replace(/^\D+/g, ''),
-                },
-                modules: false,
-              }],
-            ],
             plugins: babelPlugins,
           },
         },

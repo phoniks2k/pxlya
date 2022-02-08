@@ -20,6 +20,14 @@ import {
   APISOCKET_USER_NAME,
 } from './constants';
 
+function getUserFromMd(mdUserLink) {
+  const mdUser = mdUserLink.trim();
+  if (mdUser[0] === '[' && mdUser[mdUser.length - 1] === ')') {
+    return mdUser.substring(1, mdUser.lastIndexOf(']')).trim();
+  }
+  return mdUser;
+}
+
 export class ChatProvider {
   constructor() {
     this.defaultChannels = {};
@@ -262,21 +270,30 @@ export class ChatProvider {
       case 'mute': {
         const timeMin = Number(args.slice(-1));
         if (Number.isNaN(timeMin)) {
-          return this.mute(args.join(' '), channelId);
+          return this.mute(
+            getUserFromMd(args.join(' ')),
+            channelId,
+          );
         }
         return this.mute(
-          args.slice(0, -1).join(' '),
+          getUserFromMd(args.slice(0, -1).join(' ')),
           channelId,
           timeMin,
         );
       }
 
       case 'unmute':
-        return this.unmute(args.join(' '), channelId);
+        return this.unmute(
+          getUserFromMd(args.join(' ')),
+          channelId,
+        );
 
       case 'mutec': {
         if (args[0]) {
           const cc = args[0].toLowerCase();
+          if (cc.length > 3) {
+            return 'No legit country defined';
+          }
           this.mutedCountries.push(cc);
           this.broadcastChatMessage(
             'info',
