@@ -90,7 +90,10 @@ class ChatMessageBuffer {
         'uid',
         'name',
         'flag',
-        'createdAt',
+        [
+          Sequelize.fn('UNIX_TIMESTAMP', Sequelize.col('createdAt')),
+          'ts',
+        ]
       ],
       where: { cid },
       limit,
@@ -106,14 +109,14 @@ class ChatMessageBuffer {
         uid,
         name,
         flag,
-        createdAt,
+        ts,
       } = messagesModel[i];
       messages.push([
         name,
         message,
         flag,
         uid,
-        createdAt,
+        ts,
       ]);
     }
     return messages;

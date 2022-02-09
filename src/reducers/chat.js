@@ -24,6 +24,9 @@ const initialState = {
   messages: {},
 };
 
+// used to give every message a unique incrementing key
+let msgId = 0;
+
 export default function chat(
   state = initialState,
   action,
@@ -140,11 +143,13 @@ export default function chat(
       if (!state.messages[channel] || !state.channels[channel]) {
         return state;
       }
+      const ts = Math.round(Date.now() / 1000);
+      msgId += 1;
       const messages = {
         ...state.messages,
         [channel]: [
           ...state.messages[channel],
-          [name, text, country, user],
+          [name, text, country, user, ts, msgId],
         ],
       };
       if (messages[channel].length > MAX_CHAT_MESSAGES) {
@@ -169,6 +174,10 @@ export default function chat(
 
     case 'RECEIVE_CHAT_HISTORY': {
       const { cid, history } = action;
+      for (let i = 0; i < history.length; i += 1) {
+        msgId += 1;
+        history[i].push(msgId);
+      }
       return {
         ...state,
         messages: {

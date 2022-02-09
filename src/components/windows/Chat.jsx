@@ -156,10 +156,12 @@ const Chat = ({
           channelMessages.map((message) => ((blockedIds.includes(message[3]))
             ? null : (
               <ChatMessage
-                uid={message[3]}
                 name={message[0]}
-                country={message[2]}
                 msg={message[1]}
+                country={message[2]}
+                uid={message[3]}
+                ts={message[4]}
+                key={message[5]}
                 windowId={windowId}
               />
             )))
