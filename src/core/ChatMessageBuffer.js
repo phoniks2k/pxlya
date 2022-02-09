@@ -79,6 +79,7 @@ class ChatMessageBuffer {
         message,
         flag,
         uid,
+        Math.round(Date.now() / 1000),
       ]);
     }
   }
