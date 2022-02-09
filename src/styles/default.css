@@ -661,13 +661,6 @@ tr:nth-child(even) {
   overflow-y: scroll;
 }
 
-.chatarea {
-  background-color: #393939;
-}
-.chatarea:nth-child(even) {
-  background-color: #4b4b4b;
-}
-
 .chatinput {
   height: 24px;
   white-space: nowrap;
@@ -686,12 +679,16 @@ tr:nth-child(even) {
   text-align: right;
 }
 .chatmsg {
+  background-color: #eaeaea;
   font-size: 13px;
   user-select: text;
-  margin: 5px 0 0 0;
+  padding: 5px 0 0 0;
+}
+.chatmsg:nth-child(even) {
+  background-color: #f2f2f2;
 }
 .chatmsg:hover {
-  background-color: #ececec;
+  background-color: #dadada;
 }
 .msg {
   color: #2d2d2d;
