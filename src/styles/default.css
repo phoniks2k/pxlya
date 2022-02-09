@@ -664,10 +664,12 @@ tr:nth-child(even) {
   height: 24px;
   white-space: nowrap;
 }
+.chathead {
+  display: flex;
+}
 .chatname {
   font-size: 13px;
   white-space: nowrap;
-  display: flex;
 }
 .chatts {
   color: #83839f;

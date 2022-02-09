@@ -49,50 +49,47 @@ function ChatMessage({
 
   return (
     <li className="chatmsg">
-      <div className="chatname">
-        {
-        (!isInfo && !isEvent)
+      {(!isInfo && !isEvent)
         && (
-          <>
-            <img
-              alt=""
-              title={country}
-              src={`${window.ssv.assetserver}/cf/${country}.gif`}
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = './cf/xx.gif';
-              }}
-            />
-            &nbsp;
-            <span
-              style={{
-                color: setBrightness(colorFromText(name), isDarkMode),
-                cursor: 'pointer',
-              }}
-              role="button"
-              tabIndex={-1}
-              onClick={(event) => {
-                const {
-                  clientX,
-                  clientY,
-                } = event;
-                dispatch(showContextMenu('USER', clientX, clientY, {
-                  windowId,
-                  uid,
-                  name,
-                }));
-              }}
-            >
-              {name}
+          <div className="chathead">
+            <span className="chatname">
+              <img
+                alt=""
+                title={country}
+                src={`${window.ssv.assetserver}/cf/${country}.gif`}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = './cf/xx.gif';
+                }}
+              />
+              &nbsp;
+              <span
+                style={{
+                  color: setBrightness(colorFromText(name), isDarkMode),
+                  cursor: 'pointer',
+                }}
+                role="button"
+                tabIndex={-1}
+                onClick={(event) => {
+                  const {
+                    clientX,
+                    clientY,
+                  } = event;
+                  dispatch(showContextMenu('USER', clientX, clientY, {
+                    windowId,
+                    uid,
+                    name,
+                  }));
+                }}
+              >
+                {name}
+              </span>:
             </span>
-            :&nbsp;
             <span className="chatts">
               {getDateTimeString(ts)}
             </span>
-          </>
-        )
-      }
-      </div>
+          </div>
+        )}
       <div className={className}>
         <MarkdownParagraph pArray={pArray} />
       </div>
