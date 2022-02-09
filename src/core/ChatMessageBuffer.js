@@ -90,6 +90,7 @@ class ChatMessageBuffer {
         'uid',
         'name',
         'flag',
+        'createdAt',
       ],
       where: { cid },
       limit,
@@ -101,16 +102,18 @@ class ChatMessageBuffer {
     while (i > 0) {
       i -= 1;
       const {
-        name,
         message,
-        flag,
         uid,
+        name,
+        flag,
+        createdAt,
       } = messagesModel[i];
       messages.push([
         name,
         message,
         flag,
         uid,
+        createdAt,
       ]);
     }
     return messages;

@@ -73,6 +73,7 @@ function init() {
     isRead = isRead || state.windows.modal.open
       && state.windows.args[0].chatChannel === channelId;
 
+    // TODO ping doesn't work since update
     const isPing = (nameRegExp && text.match(nameRegExp));
     store.dispatch(receiveChatMessage(
       name,
