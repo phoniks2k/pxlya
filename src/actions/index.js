@@ -848,16 +848,18 @@ export function hideAllWindowTypes(
 }
 
 export function openChatWindow() {
+  const width = 350;
+  const height = 350;
   return openWindow(
     'CHAT',
     '',
     false,
     true,
     { chatChannel: 1, inputMessage: '' },
-    window.innerWidth - 350 - 62,
-    window.innerHeight - 220 - 64,
-    350,
-    220,
+    window.innerWidth - width - 62,
+    window.innerHeight - height - 64,
+    width,
+    height,
   );
 }
 
