@@ -141,8 +141,14 @@ tr:nth-child(even) {
   background-color: rgba(187, 187, 187, 0.75);
 }
 
+.chatmsg {
+  background-color: #393939;
+}
+.chatmsg:nth-child(even) {
+  background-color: #414141;
+}
 .chatmsg:hover {
-  background-color: #474747;
+  background-color: #393939;
 }
 .msg {
   color: #f3f3f3;
