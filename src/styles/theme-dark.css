@@ -136,6 +136,9 @@ tr:nth-child(even) {
 .msg.greentext{
   color: #94ff94;
 }
+.ebex {
+  color: #fff4bd;
+}
 
 .chatlink {
   color: #f9edde;

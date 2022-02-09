@@ -75,12 +75,12 @@ const MdLink = ({ href, title }) => {
             {(showEmbed)
               ? (
                 <HiStop
-                  style={{ verticalAlign: 'middle', color: 'red' }}
+                  className="ebcl"
                 />
               )
               : (
                 <HiArrowsExpand
-                  style={{ verticalAlign: 'middle', color: '#4646ff' }}
+                  className="ebex"
                 />
               )}
           </span>

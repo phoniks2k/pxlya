@@ -700,6 +700,14 @@ tr:nth-child(even) {
 .msg.redtext{
   color: red;
 }
+.ebex {
+  vertical-align: middle;
+  color: #4646ff;
+}
+.ebcl {
+  vertical-align: middle;
+  color: red;
+}
 .ping {
   background-color: #ffff87;
   border-style: solid;
