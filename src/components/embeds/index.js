@@ -25,4 +25,6 @@ export default {
   'i.imgur': DirectLinkMedia,
   'litter.catbox.moe': DirectLinkMedia,
   'files.catbox.moe': DirectLinkMedia,
+  'i.redd.it': DirectLinkMedia,
+  'media.consumeproduct.win': DirectLinkMedia,
 };

@@ -93,7 +93,7 @@ class ChatMessageBuffer {
         [
           Sequelize.fn('UNIX_TIMESTAMP', Sequelize.col('createdAt')),
           'ts',
-        ]
+        ],
       ],
       where: { cid },
       limit,
