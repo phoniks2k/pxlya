@@ -119,8 +119,6 @@ export default class MString {
       const chr = this.txt[yEnd];
       if (yEnd >= this.txt.length
         || chr === '\n'
-        || chr === '['
-        || chr === '('
       ) {
         return null;
       }

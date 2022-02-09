@@ -680,7 +680,7 @@ tr:nth-child(even) {
 .chatmsg {
   font-size: 13px;
   user-select: text;
-  margin: 0;
+  margin: 5px 0 0 0;
 }
 .chatmsg:hover {
   background-color: #ececec;
