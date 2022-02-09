@@ -369,6 +369,7 @@ function parseOpts(inOpts) {
 export function parseParagraph(text, inOpts) {
   const opts = parseOpts(inOpts);
   const mText = new MString(text);
+  console.log('parse', text);
   return parseMParagraph(mText, opts);
 }
 

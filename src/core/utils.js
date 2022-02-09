@@ -374,3 +374,17 @@ export function getExt(link) {
   }
   return link.slice(posDot, paramStart);
 }
+
+/*
+ * convert timestamp to human readable date/time string
+ * @param timestamp Unix timestamp in seconds
+ * @return descriptive string of time
+ */
+export function getDateTimeString(timestamp) {
+  const curDate = new Date();
+  const date = new Date(timestamp * 1000);
+  if (date.getDate() !== curDate.getDate()) {
+    return date.toLocaleString();
+  }
+  return date.toLocaleTimeString();
+}

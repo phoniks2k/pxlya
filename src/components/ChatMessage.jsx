@@ -7,7 +7,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { showContextMenu } from '../actions';
 import { MarkdownParagraph } from './Markdown';
-import { colorFromText, setBrightness } from '../core/utils';
+import {
+  colorFromText,
+  setBrightness,
+  getDateTimeString,
+} from '../core/utils';
 import { parseParagraph } from '../core/MarkdownParser';
 
 
@@ -17,6 +21,7 @@ function ChatMessage({
   country,
   windowId,
   msg,
+  ts,
 }) {
   if (!name) {
     return null;
@@ -43,7 +48,7 @@ function ChatMessage({
   const pArray = parseParagraph(msg);
 
   return (
-    <div className="chatmsg">
+    <li className="chatmsg">
       <div className="chatname">
         {
         (!isInfo && !isEvent)
@@ -81,14 +86,17 @@ function ChatMessage({
               {name}
             </span>
             :&nbsp;
+            <span className="chatts">
+              {getDateTimeString(ts)}
+            </span>
           </>
         )
       }
       </div>
-      <span className={className}>
+      <div className={className}>
         <MarkdownParagraph pArray={pArray} />
-      </span>
-    </div>
+      </div>
+    </li>
   );
 }
 
