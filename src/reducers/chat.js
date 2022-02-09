@@ -153,7 +153,7 @@ export default function chat(
         ],
       };
       if (messages[channel].length > MAX_CHAT_MESSAGES) {
-        messages[channel].shift();
+        messages[channel].splice(0, 2);
       }
 
       /*

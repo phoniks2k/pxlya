@@ -660,6 +660,14 @@ tr:nth-child(even) {
   overflow-x: hidden;
   overflow-y: scroll;
 }
+
+.chatarea {
+  background-color: #393939;
+}
+.chatarea:nth-child(even) {
+  background-color: #4b4b4b;
+}
+
 .chatinput {
   height: 24px;
   white-space: nowrap;
