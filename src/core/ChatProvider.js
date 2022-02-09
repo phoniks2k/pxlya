@@ -21,7 +21,10 @@ import {
 } from './constants';
 
 function getUserFromMd(mdUserLink) {
-  const mdUser = mdUserLink.trim();
+  let mdUser = mdUserLink.trim();
+  if (mdUser[0] === '@') {
+    mdUser = mdUser.substring(1);
+  }
   if (mdUser[0] === '[' && mdUser[mdUser.length - 1] === ')') {
     return mdUser.substring(1, mdUser.lastIndexOf(']')).trim();
   }
