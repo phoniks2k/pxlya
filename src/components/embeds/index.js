@@ -5,6 +5,7 @@
 import TikTok from './TikTok';
 import YouTube from './YouTube';
 import Matrix from './Matrix';
+// import Odysee from './Odysee';
 import DirectLinkMedia from './DirectLinkMedia';
 
 /*
@@ -27,4 +28,5 @@ export default {
   'files.catbox.moe': DirectLinkMedia,
   'i.redd.it': DirectLinkMedia,
   'media.consumeproduct.win': DirectLinkMedia,
+  // 'odysee': Odysee,
 };

@@ -46,7 +46,7 @@ const TikTok = ({ url }) => {
       // eslint-disable-next-line max-len
       sandbox="allow-scripts allow-modals allow-forms allow-popups allow-same-origin allow-presentation"
       allowFullScreen
-      title="Embedded youtube"
+      title="Embedded tiktok"
     />
   );
 };
