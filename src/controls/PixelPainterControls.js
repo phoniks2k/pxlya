@@ -77,7 +77,7 @@ class PixelPlainterControls {
     viewport.addEventListener('mousedown', this.onMouseDown, false);
     viewport.addEventListener('mousemove', this.onMouseMove, false);
     viewport.addEventListener('mouseup', this.onMouseUp, false);
-    viewport.addEventListener('wheel', this.onWheel, false);
+    viewport.addEventListener('wheel', this.onWheel, { passive: true });
     viewport.addEventListener('touchstart', this.onTouchStart, false);
     viewport.addEventListener('touchend', this.onTouchEnd, false);
     viewport.addEventListener('touchmove', this.onTouchMove, false);
@@ -347,7 +347,7 @@ class PixelPlainterControls {
   }
 
   onWheel(event: MouseEvent) {
-    event.preventDefault();
+    //event.preventDefault();
     document.activeElement.blur();
 
     const { deltaY } = event;
