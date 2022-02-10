@@ -693,7 +693,7 @@ tr:nth-child(even) {
 .msg {
   color: #2d2d2d;
   padding-left: 15px;
-  color:
+  overflow-y: auto;
 }
 .msg.info {
   color: #cc0000;
