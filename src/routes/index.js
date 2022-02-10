@@ -52,7 +52,7 @@ router.use('/adminapi', adminapi);
 // (this should be served with nginx or other webserver)
 // -----------------------------------------------------------------------------
 router.use(express.static(path.join(__dirname, 'public'), {
-  maxAge: 3 * MONTH,
+  maxAge: 12 * MONTH,
   extensions: ['html'],
 }));
 

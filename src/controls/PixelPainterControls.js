@@ -48,6 +48,8 @@ class PixelPlainterControls {
     this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onTouchMove = this.onTouchMove.bind(this);
 
+    this.onViewFinishChangeTimeOut = null;
+
     this.clickTapStartView = [0, 0];
     this.clickTapStartTime = 0;
     this.clickTapStartCoords = [0, 0];
@@ -77,7 +79,9 @@ class PixelPlainterControls {
     viewport.addEventListener('mousedown', this.onMouseDown, false);
     viewport.addEventListener('mousemove', this.onMouseMove, false);
     viewport.addEventListener('mouseup', this.onMouseUp, false);
-    viewport.addEventListener('wheel', this.onWheel, { passive: true });
+    // TODO check if we can go passive here
+    //viewport.addEventListener('wheel', this.onWheel, { passive: true });
+    viewport.addEventListener('wheel', this.onWheel, false);
     viewport.addEventListener('touchstart', this.onTouchStart, false);
     viewport.addEventListener('touchend', this.onTouchEnd, false);
     viewport.addEventListener('touchmove', this.onTouchMove, false);
@@ -114,6 +118,15 @@ class PixelPlainterControls {
         }
       }, 300);
     }
+  }
+
+  scheduleOnViewFinishChange() {
+    if (this.onViewFinishChangeTimeOut) {
+      clearTimeout(this.onViewFinishChangeTimeOut);
+    }
+    this.onViewFinishChangeTimeOut = setTimeout(() => {
+      this.store.dispatch(onViewFinishChange());
+    }, 250);
   }
 
   onMouseUp(event: MouseEvent) {
@@ -347,7 +360,7 @@ class PixelPlainterControls {
   }
 
   onWheel(event: MouseEvent) {
-    //event.preventDefault();
+    event.preventDefault();
     document.activeElement.blur();
 
     const { deltaY } = event;
@@ -364,7 +377,7 @@ class PixelPlainterControls {
     if (deltaY > 0) {
       store.dispatch(zoomOut(zoompoint));
     }
-    store.dispatch(onViewFinishChange());
+    this.scheduleOnViewFinishChange();
   }
 
   onMouseMove(event: MouseEvent) {
