@@ -664,6 +664,7 @@ tr:nth-child(even) {
 .chatinput {
   height: 24px;
   white-space: nowrap;
+  display: flex;
 }
 .chathead {
   display: flex;

@@ -108,7 +108,7 @@ const ChannelDropDown = ({
     if (channels[chatChannel]) {
       setChatChannelName(channels[chatChannel][0]);
     }
-  }, [chatChannel]);
+  }, [chatChannel, channels]);
 
   return (
     <div

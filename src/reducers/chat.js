@@ -55,7 +55,7 @@ export default function chat(
       const keys = Object.keys(channels);
       for (let i = 0; i < keys.length; i += 1) {
         const cid = keys[i];
-        if (channels[cid][1] === 0) {
+        if (channels[cid][1] !== 0) {
           delete messages[cid];
           delete channels[cid];
         }

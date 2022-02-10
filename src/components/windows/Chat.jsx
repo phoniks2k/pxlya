@@ -167,14 +167,20 @@ const Chat = ({
             )))
         }
       </ul>
-      {(ownName) ? (
-        <div className="chatinput">
-          <form
-            onSubmit={(e) => handleSubmit(e)}
-            style={{ display: 'flex', flexDirection: 'row', height: '100%' }}
-          >
+      <form
+        className="chatinput"
+        onSubmit={(e) => handleSubmit(e)}
+        style={{
+          display: 'flex',
+        }}
+      >
+        {(ownName) ? (
+          <>
             <input
-              style={{ flexGrow: 1, minWidth: 40 }}
+              style={{
+                flexGrow: 1,
+                minWidth: 40,
+              }}
               id={`chtipt-${windowId}`}
               value={inputMessage}
               onChange={(e) => dispatch(
@@ -192,23 +198,27 @@ const Chat = ({
             >
               ‣
             </button>
-            <ChannelDropDown
-              setChatChannel={setChannel}
-              chatChannel={chatChannel}
-            />
-          </form>
-        </div>
-      ) : (
-        <div
-          className="modallink"
-          onClick={() => dispatch(showUserAreaModal())}
-          style={{ textAlign: 'center', fontSize: 13 }}
-          role="button"
-          tabIndex={0}
-        >
-          {t`You must be logged in to chat`}
-        </div>
-      )}
+          </>
+        ) : (
+          <div
+            className="modallink"
+            onClick={() => dispatch(showUserAreaModal())}
+            style={{
+              textAlign: 'center',
+              fontSize: 13,
+              flexGrow: 1,
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            {t`You must be logged in to chat`}
+          </div>
+        )}
+        <ChannelDropDown
+          setChatChannel={setChannel}
+          chatChannel={chatChannel}
+        />
+      </form>
     </div>
   );
 };
