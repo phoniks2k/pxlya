@@ -176,7 +176,7 @@ class SocketServer {
     });
 
     setInterval(this.onlineCounterBroadcast, 10 * 1000);
-    setInterval(this.ping, 45 * 1000);
+    setInterval(this.ping, 15 * 1000);
   }
 
 
@@ -291,6 +291,7 @@ class SocketServer {
   ping() {
     this.wss.clients.forEach((ws) => {
       if (!ws.isAlive) {
+        logger.info(`Killing dead websocket from ${ws.user.ip}`);
         ws.terminate();
       } else {
         ws.isAlive = false;
