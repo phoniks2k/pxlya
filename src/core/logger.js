@@ -53,7 +53,7 @@ export const modtoolsLogger = createLogger({
   transports: [
     new DailyRotateFile({
       level: 'info',
-      filename: './log/modtools-%DATE%.log',
+      filename: './log/moderation/modtools-%DATE%.log',
       maxSize: '20m',
       maxFiles: '14d',
       colorize: false,

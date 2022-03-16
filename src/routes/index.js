@@ -47,10 +47,10 @@ router.use('/tiles', tiles);
  */
 router.use('/adminapi', adminapi);
 
-//
-// public folder
-// (this should be served with nginx or other webserver)
-// -----------------------------------------------------------------------------
+/*
+ * public folder
+ * (this should be served with nginx or other webserver)
+ */
 router.use(express.static(path.join(__dirname, 'public'), {
   maxAge: 12 * MONTH,
   extensions: ['html'],
