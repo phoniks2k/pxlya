@@ -28,7 +28,7 @@ export function validateEMail(email) {
 
 export function validateName(name) {
   if (!name) return t`Name can't be empty.`;
-  if (name.length < 4) return t`Name must be at least 4 characters long`;
+  if (name.length < 2) return t`Name must be at least 2 characters long`;
   if (name.length > 26) return t`Name must be shorter than 26 characters`;
   if (name.indexOf('@') !== -1
       || name.indexOf('/') !== -1
@@ -60,4 +60,57 @@ export function validatePassword(password) {
     return t`Password must be shorter than 60 characters.`;
   }
   return false;
+}
+
+/*
+ * validate an area given by top-left and bottom-right corner coords
+ * @param ulcoor coords in x_y format, top-left corner
+ * @param brcoor coords in x_y format, bottom-right corner
+ * @param canvasSize dimension of canvas, integer
+ * @return [x, y, u, v] Corner coords if success, error string is failure
+ */
+export function validateCoorRange(ulcoor, brcoor, canvasSize) {
+  if (!ulcoor || !brcoor) {
+    return 'Not all coordinates defined';
+  }
+
+  let splitCoords = ulcoor.trim().split('_');
+  if (splitCoords.length !== 2) {
+    return 'Invalid Coordinate Format for top-left corner';
+  }
+  const [x, y] = splitCoords.map((z) => Math.floor(Number(z)));
+  splitCoords = brcoor.trim().split('_');
+  if (splitCoords.length !== 2) {
+    return 'Invalid Coordinate Format for bottom-right corner';
+  }
+  const [u, v] = splitCoords.map((z) => Math.floor(Number(z)));
+
+  let error = null;
+  if (Number.isNaN(x)) {
+    error = 'x of top-left corner is not a valid number';
+  } else if (Number.isNaN(y)) {
+    error = 'y of top-left corner is not a valid number';
+  } else if (Number.isNaN(u)) {
+    error = 'x of bottom-right corner is not a valid number';
+  } else if (Number.isNaN(v)) {
+    error = 'y of bottom-right corner is not a valid number';
+  } else if (u < x || v < y) {
+    error = 'Corner coordinates are alligned wrong';
+  }
+  if (error !== null) {
+    return error;
+  }
+
+  const canvasMaxXY = canvasSize / 2;
+  const canvasMinXY = -canvasMaxXY;
+  if (x < canvasMinXY || y < canvasMinXY
+      || x >= canvasMaxXY || y >= canvasMaxXY) {
+    return 'Coordinates of top-left corner are outside of canvas';
+  }
+  if (u < canvasMinXY || v < canvasMinXY
+      || u >= canvasMaxXY || v >= canvasMaxXY) {
+    return 'Coordinates of bottom-right corner are outside of canvas';
+  }
+
+  return [x, y, u, v];
 }
