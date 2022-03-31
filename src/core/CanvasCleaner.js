@@ -28,24 +28,24 @@ const METHODS = {
    *   of chunk area
    */
   spare: (xc, yc, clrIgnore, canvasCleaner) => {
+    let pxl = canvasCleaner.getPixelInChunkArea(xc, yc);
+    if (pxl === null || pxl < clrIgnore) {
+      return null;
+    }
     let rplPxl = null;
     for (let u = -1; u <= 1; u += 1) {
       for (let v = -1; v <= 1; v += 1) {
-        const pxl = canvasCleaner.getPixelInChunkArea(xc + u, yc + v);
-        if (pxl === null) {
+        pxl = canvasCleaner.getPixelInChunkArea(xc + u, yc + v);
+        if (pxl === null
+          || (u === 0 && v === 0)
+        ) {
           continue;
         }
-        if (u === 0 && v === 0) {
-          if (pxl < clrIgnore) {
-            return null;
-          }
-        } else {
-          if (pxl >= clrIgnore) {
-            return null;
-          }
-          if (rplPxl === null) {
-            rplPxl = pxl;
-          }
+        if (pxl >= clrIgnore) {
+          return null;
+        }
+        if (rplPxl === null) {
+          rplPxl = pxl;
         }
       }
     }
@@ -53,32 +53,33 @@ const METHODS = {
   },
 
   spareext: (xc, yc, clrIgnore, canvasCleaner) => {
+    let pxl = canvasCleaner.getPixelInChunkArea(xc, yc);
+    if (pxl === null || pxl < clrIgnore) {
+      return null;
+    }
     let rplPxl = null;
-    let origPxl = null;
+    const origPxl = pxl;
     for (let u = -1; u <= 1; u += 1) {
       for (let v = -1; v <= 1; v += 1) {
-        const pxl = canvasCleaner.getPixelInChunkArea(xc + u, yc + v);
-        if (pxl === null) {
+        pxl = canvasCleaner.getPixelInChunkArea(xc + u, yc + v);
+        if (pxl === null
+          || (u === 0 && v === 0)
+        ) {
           continue;
         }
-        if (u === 0 && v === 0) {
-          if (pxl < clrIgnore || pxl === rplPxl) {
-            return null;
-          }
-          origPxl = pxl;
-        } else {
-          if (rplPxl === null) {
-            rplPxl = pxl;
-          }
-          if (pxl >= clrIgnore) {
-            if (rplPxl < clrIgnore) {
-              rplPxl = pxl;
-              continue;
-            }
-            if (pxl !== rplPxl) {
-              return null;
-            }
-          }
+        if (rplPxl === null) {
+          rplPxl = pxl;
+          continue;
+        }
+        if (pxl < clrIgnore) {
+          continue;
+        }
+        if (rplPxl < clrIgnore) {
+          rplPxl = pxl;
+          continue;
+        }
+        if (pxl !== rplPxl) {
+          return null;
         }
       }
     }
