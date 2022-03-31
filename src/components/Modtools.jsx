@@ -10,11 +10,13 @@ import { t } from 'ttag';
 import { getToday, dateToString } from '../core/utils';
 
 const keptState = {
-  coords: null,
-  tlcoords: null,
-  brcoords: null,
-  tlrcoords: null,
-  brrcoords: null,
+  coords: '',
+  tlcoords: '',
+  brcoords: '',
+  tlrcoords: '',
+  brrcoords: '',
+  tlccoords: '',
+  brccoords: '',
 };
 
 async function submitImageAction(
@@ -80,6 +82,26 @@ async function submitRollback(
   callback(await resp.text());
 }
 
+async function submitCanvasCleaner(
+  action,
+  canvas,
+  tlcoords,
+  brcoords,
+  callback,
+) {
+  const data = new FormData();
+  data.append('cleaneraction', action);
+  data.append('canvasid', canvas);
+  data.append('ulcoor', tlcoords);
+  data.append('brcoor', brcoords);
+  const resp = await fetch('./api/modtools', {
+    credentials: 'include',
+    method: 'POST',
+    body: data,
+  });
+  callback(await resp.text());
+}
+
 async function submitIPAction(
   action,
   callback,
@@ -110,6 +132,41 @@ async function getModList(
     callback(await resp.json());
   } else {
     callback([]);
+  }
+}
+
+async function getCleanerStats(
+  callback,
+) {
+  const data = new FormData();
+  data.append('cleanerstat', true);
+  const resp = await fetch('./api/modtools', {
+    credentials: 'include',
+    method: 'POST',
+    body: data,
+  });
+  if (resp.ok) {
+    callback(await resp.json());
+  } else {
+    callback({
+    });
+  }
+}
+
+async function getCleanerCancel(
+  callback,
+) {
+  const data = new FormData();
+  data.append('cleanercancel', true);
+  const resp = await fetch('./api/modtools', {
+    credentials: 'include',
+    method: 'POST',
+    body: data,
+  });
+  if (resp.ok) {
+    callback(await resp.text());
+  } else {
+    callback('');
   }
 }
 
@@ -151,6 +208,7 @@ function Modtools() {
 
   const [selectedCanvas, selectCanvas] = useState(0);
   const [imageAction, selectImageAction] = useState('build');
+  const [cleanAction, selectCleanAction] = useState('spare');
   const [iPAction, selectIPAction] = useState('ban');
   const [protAction, selectProtAction] = useState('protect');
   const [date, selectDate] = useState(maxDate);
@@ -159,9 +217,12 @@ function Modtools() {
   const [brcoords, selectBRCoords] = useState(keptState.brcoords);
   const [tlrcoords, selectTLRCoords] = useState(keptState.tlrcoords);
   const [brrcoords, selectBRRCoords] = useState(keptState.brrcoords);
-  const [modName, selectModName] = useState(null);
+  const [tlccoords, selectTLCCoords] = useState(keptState.tlrcoords);
+  const [brccoords, selectBRCCoords] = useState(keptState.brrcoords);
+  const [modName, selectModName] = useState('');
   const [resp, setResp] = useState(null);
   const [modlist, setModList] = useState([]);
+  const [cleanerstats, setCleanerStats] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
   const [
@@ -193,11 +254,33 @@ function Modtools() {
       // nothing
   }
 
+  let descCleanAction;
+  switch (cleanAction) {
+    case 'spare':
+      // eslint-disable-next-line max-len
+      descCleanAction = t`Clean spare pixels that are surrounded by unset pixels`;
+      break;
+    case 'spareext':
+      // eslint-disable-next-line max-len
+      descCleanAction = t`Clean spare pixels that are surrounded by a single other color`;
+      break;
+    default:
+      // nothing
+  }
+
   useEffect(() => {
     if (userlvl === 1) {
       getModList((mods) => setModList(mods));
     }
+    if (userlvl > 0) {
+      getCleanerStats((stats) => setCleanerStats(stats));
+    }
   }, []);
+
+  const cleanerStatusString = (!cleanerstats.running)
+    ? t`Status: Not running`
+  // eslint-disable-next-line max-len
+    : `Status: ${cleanerstats.method} from ${cleanerstats.tl} to ${cleanerstats.br} on canvas ${canvases[cleanerstats.canvasId].ident} to ${cleanerstats.percent} done`;
 
   return (
     <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
@@ -227,6 +310,7 @@ function Modtools() {
       )}
       <p className="modalcotext">Choose Canvas:&nbsp;
         <select
+          value={selectedCanvas}
           onChange={(e) => {
             const sel = e.target;
             selectCanvas(sel.options[sel.selectedIndex].value);
@@ -237,7 +321,6 @@ function Modtools() {
             ? null
             : (
               <option
-                selected={canvas === selectedCanvas}
                 value={canvas}
               >
                 {
@@ -257,6 +340,7 @@ function Modtools() {
         <input type="file" name="image" id="imgfile" />
       </p>
       <select
+        value={imageAction}
         onChange={(e) => {
           const sel = e.target;
           selectImageAction(sel.options[sel.selectedIndex].value);
@@ -265,7 +349,6 @@ function Modtools() {
         {['build', 'protect', 'wipe'].map((opt) => (
           <option
             value={opt}
-            selected={imageAction === opt}
           >
             {opt}
           </option>
@@ -320,6 +403,7 @@ function Modtools() {
         use protect with image upload and alpha layers)`}
       </p>
       <select
+        value={protAction}
         onChange={(e) => {
           const sel = e.target;
           selectProtAction(sel.options[sel.selectedIndex].value);
@@ -328,14 +412,13 @@ function Modtools() {
         {['protect', 'unprotect'].map((opt) => (
           <option
             value={opt}
-            selected={protAction === opt}
           >
             {opt}
           </option>
         ))}
       </select>
       <p className="modalcotext">
-        Top-left corner (X_Y):&nbsp;
+        {t`Top-left corner`} (X_Y):&nbsp;
         <input
           value={tlcoords}
           style={{
@@ -353,7 +436,7 @@ function Modtools() {
         />
       </p>
       <p className="modalcotext">
-        Bottom-right corner (X_Y):&nbsp;
+        {t`Bottom-right corner`} (X_Y):&nbsp;
         <input
           value={brcoords}
           style={{
@@ -410,7 +493,7 @@ function Modtools() {
             }}
           />
           <p className="modalcotext">
-            Top-left corner (X_Y):&nbsp;
+            {t`Top-left corner`} (X_Y):&nbsp;
             <input
               value={tlrcoords}
               style={{
@@ -428,7 +511,7 @@ function Modtools() {
             />
           </p>
           <p className="modalcotext">
-            Bottom-right corner (X_Y):&nbsp;
+            {t`Bottom-right corner`} (X_Y):&nbsp;
             <input
               value={brrcoords}
               style={{
@@ -468,6 +551,107 @@ function Modtools() {
           </button>
         </div>
       )}
+      <br />
+      <div className="modaldivider" />
+      <h3 className="modaltitle">{t`Canvas Cleaner`}</h3>
+      <p className="modalcotext">
+        {t`Apply a filter to clean trash in large canvas areas.`}
+      </p>
+      <select
+        value={cleanAction}
+        onChange={(e) => {
+          const sel = e.target;
+          selectCleanAction(sel.options[sel.selectedIndex].value);
+        }}
+      >
+        {['spare', 'spareext'].map((opt) => (
+          <option
+            value={opt}
+          >
+            {opt}
+          </option>
+        ))}
+      </select>
+      <p className="modalcotext">{descCleanAction}</p>
+      <p className="modalcotext" style={{ fontWeight: 'bold' }}>
+        {cleanerStatusString}
+      </p>
+      <p className="modalcotext">
+        {t`Top-left corner`} (X_Y):&nbsp;
+        <input
+          value={tlccoords}
+          style={{
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: '15em',
+          }}
+          type="text"
+          placeholder="X_Y"
+          onChange={(evt) => {
+            const co = evt.target.value.trim();
+            selectTLCCoords(co);
+            keptState.tlccoords = co;
+          }}
+        />
+      </p>
+      <p className="modalcotext">
+        {t`Bottom-right corner`} (X_Y):&nbsp;
+        <input
+          value={brccoords}
+          style={{
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: '15em',
+          }}
+          type="text"
+          placeholder="X_Y"
+          onChange={(evt) => {
+            const co = evt.target.value.trim();
+            selectBRCCoords(co);
+            keptState.brccoords = co;
+          }}
+        />
+      </p>
+      <button
+        type="button"
+        onClick={() => {
+          if (submitting) {
+            return;
+          }
+          setSubmitting(true);
+          submitCanvasCleaner(
+            cleanAction,
+            selectedCanvas,
+            tlccoords,
+            brccoords,
+            (ret) => {
+              setSubmitting(false);
+              setResp(ret);
+            },
+          );
+        }}
+      >
+        {(submitting) ? '...' : t`Submit`}
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          if (submitting) {
+            return;
+          }
+          setSubmitting(true);
+          getCleanerCancel(
+            (ret) => {
+              setCleanerStats({});
+              setSubmitting(false);
+              setResp(ret);
+            },
+          );
+        }}
+      >
+        {(submitting) ? '...' : t`Stop Cleaner`}
+      </button>
+
       {(userlvl === 1) && (
         <div>
           <br />
@@ -477,6 +661,7 @@ function Modtools() {
             {t`Do stuff with IPs (one IP per line)`}
           </p>
           <select
+            value={iPAction}
             onChange={(e) => {
               const sel = e.target;
               selectIPAction(sel.options[sel.selectedIndex].value);
@@ -485,7 +670,6 @@ function Modtools() {
             {['ban', 'unban', 'whitelist', 'unwhitelist'].map((opt) => (
               <option
                 value={opt}
-                selected={iPAction === opt}
               >
                 {opt}
               </option>

@@ -80,7 +80,7 @@ class PixelPlainterControls {
     viewport.addEventListener('mousemove', this.onMouseMove, false);
     viewport.addEventListener('mouseup', this.onMouseUp, false);
     // TODO check if we can go passive here
-    //viewport.addEventListener('wheel', this.onWheel, { passive: true });
+    // viewport.addEventListener('wheel', this.onWheel, { passive: true });
     viewport.addEventListener('wheel', this.onWheel, false);
     viewport.addEventListener('touchstart', this.onTouchStart, false);
     viewport.addEventListener('touchend', this.onTouchEnd, false);

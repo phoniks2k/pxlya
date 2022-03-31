@@ -2,7 +2,6 @@
  *
  * data saving for hourly events
  *
- * @flow
  */
 
 // its ok if its slow
@@ -101,7 +100,7 @@ export async function clearOldEvent() {
  * @param minutes minutes till next event
  * @param i, j chunk coordinates of center of event
  */
-export async function setNextEvent(minutes: number, i: number, j: number) {
+export async function setNextEvent(minutes, i, j) {
   await clearOldEvent();
   for (let jc = j - 1; jc <= j + 1; jc += 1) {
     for (let ic = i - 1; ic <= i + 1; ic += 1) {

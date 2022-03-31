@@ -77,6 +77,19 @@ export function getChunkOfPixel(
   return [cx, cy];
 }
 
+// get coordinates of top-left corner of chunk
+export function getCornerOfChunk(
+  canvasSize,
+  i,
+  j,
+  is3d = false,
+) {
+  const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
+  const x = (i * tileSize) - (canvasSize / 2);
+  const y = (j * tileSize) - (canvasSize / 2);
+  return [x, y, 0];
+}
+
 export function getTileOfPixel(
   tileScale,
   pixel,
