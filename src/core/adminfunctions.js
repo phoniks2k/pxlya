@@ -1,7 +1,6 @@
 /*
  * functions for admintools
  *
- * @flow
  */
 
 /* eslint-disable no-await-in-loop */
@@ -10,8 +9,9 @@ import sharp from 'sharp';
 import Sequelize from 'sequelize';
 import redis from '../data/redis';
 
-import { modtoolsLogger } from './logger';
 import { getIPv6Subnet } from '../utils/ip';
+import { validateCoorRange } from '../utils/validation';
+import CanvasCleaner from './CanvasCleaner';
 import { Blacklist, Whitelist, RegUser } from '../data/models';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
@@ -27,7 +27,7 @@ import rollbackCanvasArea from './rollback';
  * @param ip already sanizized ip
  * @return true if successful
  */
-export async function executeIPAction(action: string, ips: string): string {
+export async function executeIPAction(action, ips, logger = null) {
   const ipArray = ips.split('\n');
   let out = '';
   const splitRegExp = /\s+/;
@@ -46,7 +46,7 @@ export async function executeIPAction(action: string, ips: string): string {
     const ipKey = getIPv6Subnet(ip);
     const key = `isprox:${ipKey}`;
 
-    modtoolsLogger.info(`ADMINTOOLS: ${action} ${ip}`);
+    if (logger) logger(`${action} ${ip}`);
     switch (action) {
       case 'ban':
         await Blacklist.findOrCreate({
@@ -89,10 +89,11 @@ export async function executeIPAction(action: string, ips: string): string {
  * @return [ret, msg] http status code and message
  */
 export async function executeImageAction(
-  action: string,
-  file: Object,
-  coords: string,
-  canvasid: string,
+  action,
+  file,
+  coords,
+  canvasid,
+  logger = null,
 ) {
   if (!coords) {
     return [403, 'Coordinates not defined'];
@@ -150,7 +151,7 @@ export async function executeImageAction(
     );
 
     // eslint-disable-next-line max-len
-    modtoolsLogger.info(`ADMINTOOLS: Loaded image wth ${pxlCount} pixels to ${x}/${y}`);
+    if (logger) logger(`Loaded image wth ${pxlCount} pixels to #${canvas.ident},${x},${y}`);
     return [
       200,
       `Successfully loaded image wth ${pxlCount} pixels to ${x}/${y}`,
@@ -158,6 +159,53 @@ export async function executeImageAction(
   } catch {
     return [400, 'Can not read image file'];
   }
+}
+
+/*
+ * Execute actions for cleaning/filtering canvas
+ * @param action what to do
+ * @param ulcoor coords of upper-left corner in X_Y format
+ * @param brcoor coords of bottom-right corner in X_Y format
+ * @param canvasid numerical canvas id as string
+ * @return [ret, msg] http status code and message
+ */
+export async function executeCleanerAction(
+  action,
+  ulcoor,
+  brcoor,
+  canvasid,
+  logger = null,
+) {
+  if (!canvasid) {
+    return [403, 'canvasid not defined'];
+  }
+  const canvas = canvases[canvasid];
+  let error = null;
+  if (!ulcoor || !brcoor) {
+    error = 'Not all coordinates defined';
+  } else if (!canvas) {
+    error = 'Invalid canvas selected';
+  } else if (!action) {
+    error = 'No cleanaction given';
+  }
+  if (error) {
+    return [403, error];
+  }
+
+  const parseCoords = validateCoorRange(ulcoor, brcoor, canvas.size);
+  if (typeof parseCoords === 'string') {
+    return [403, parseCoords];
+  }
+  const [x, y, u, v] = parseCoords;
+
+  error = CanvasCleaner.set(canvasid, x, y, u, v, action);
+  if (error) {
+    return [403, error];
+  }
+  // eslint-disable-next-line max-len
+  const report = `Set Canvas Cleaner to ${action} canvas ${canvas.ident} from ${ulcoor} to ${brcoor}`;
+  if (logger) logger(report);
+  return [200, report];
 }
 
 /*
@@ -169,46 +217,23 @@ export async function executeImageAction(
  * @return [ret, msg] http status code and message
  */
 export async function executeProtAction(
-  action: string,
-  ulcoor: string,
-  brcoor: string,
-  canvasid: number,
+  action,
+  ulcoor,
+  brcoor,
+  canvasid,
+  logger = null,
 ) {
-  if (!ulcoor || !brcoor) {
-    return [403, 'Not all coordinates defined'];
-  }
   if (!canvasid) {
     return [403, 'canvasid not defined'];
   }
-
-  let splitCoords = ulcoor.trim().split('_');
-  if (splitCoords.length !== 2) {
-    return [403, 'Invalid Coordinate Format for top-left corner'];
-  }
-  const [x, y] = splitCoords.map((z) => Math.floor(Number(z)));
-  splitCoords = brcoor.trim().split('_');
-  if (splitCoords.length !== 2) {
-    return [403, 'Invalid Coordinate Format for bottom-right corner'];
-  }
-  const [u, v] = splitCoords.map((z) => Math.floor(Number(z)));
-
   const canvas = canvases[canvasid];
-
   let error = null;
-  if (Number.isNaN(x)) {
-    error = 'x of top-left corner is not a valid number';
-  } else if (Number.isNaN(y)) {
-    error = 'y of top-left corner is not a valid number';
-  } else if (Number.isNaN(u)) {
-    error = 'x of bottom-right corner is not a valid number';
-  } else if (Number.isNaN(v)) {
-    error = 'y of bottom-right corner is not a valid number';
-  } else if (u < x || v < y) {
-    error = 'Corner coordinates are alligned wrong';
-  } else if (!action) {
-    error = 'No imageaction given';
+  if (!ulcoor || !brcoor) {
+    error = 'Not all coordinates defined';
   } else if (!canvas) {
     error = 'Invalid canvas selected';
+  } else if (!action) {
+    error = 'No imageaction given';
   } else if (action !== 'protect' && action !== 'unprotect') {
     error = 'Invalid action (must be protect or unprotect)';
   }
@@ -216,19 +241,17 @@ export async function executeProtAction(
     return [403, error];
   }
 
-  const canvasMaxXY = canvas.size / 2;
-  const canvasMinXY = -canvasMaxXY;
-  if (x < canvasMinXY || y < canvasMinXY
-      || x >= canvasMaxXY || y >= canvasMaxXY) {
-    return [403, 'Coordinates of top-left corner are outside of canvas'];
+  const parseCoords = validateCoorRange(ulcoor, brcoor, canvas.size);
+  if (typeof parseCoords === 'string') {
+    return [403, parseCoords];
   }
-  if (u < canvasMinXY || v < canvasMinXY
-      || u >= canvasMaxXY || v >= canvasMaxXY) {
-    return [403, 'Coordinates of bottom-right corner are outside of canvas'];
-  }
+  const [x, y, u, v] = parseCoords;
 
   const width = u - x + 1;
   const height = v - y + 1;
+  if (width * height > 10000000) {
+    return [403, 'Can not set protection to more than 10m pixels at onec'];
+  }
   const protect = action === 'protect';
   const pxlCount = await protectCanvasArea(
     canvasid,
@@ -238,10 +261,13 @@ export async function executeProtAction(
     height,
     protect,
   );
-  modtoolsLogger.info(
-    // eslint-disable-next-line max-len
-    `ADMINTOOLS: Set protect to ${protect} for ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
-  );
+  if (logger) {
+    logger(
+      (protect)
+        ? `Protect ${width}x${height} area at #${canvas.ident},${x},${y}`
+        : `Unprotect ${width}x${height} area at #${canvas.ident},${x},${y}`,
+    );
+  }
   return [
     200,
     (protect)
@@ -261,63 +287,36 @@ export async function executeProtAction(
  * @return [ret, msg] http status code and message
  */
 export async function executeRollback(
-  date: string,
-  ulcoor: string,
-  brcoor: string,
-  canvasid: number,
+  date,
+  ulcoor,
+  brcoor,
+  canvasid,
+  logger = null,
 ) {
-  if (!ulcoor || !brcoor) {
-    return [403, 'Not all coordinates defined'];
-  }
   if (!canvasid) {
     return [403, 'canvasid not defined'];
   }
-
-  let splitCoords = ulcoor.trim().split('_');
-  if (splitCoords.length !== 2) {
-    return [403, 'Invalid Coordinate Format for top-left corner'];
-  }
-  const [x, y] = splitCoords.map((z) => Math.floor(Number(z)));
-  splitCoords = brcoor.trim().split('_');
-  if (splitCoords.length !== 2) {
-    return [403, 'Invalid Coordinate Format for bottom-right corner'];
-  }
-  const [u, v] = splitCoords.map((z) => Math.floor(Number(z)));
-
   const canvas = canvases[canvasid];
-
   let error = null;
-  if (Number.isNaN(x)) {
-    error = 'x of top-left corner is not a valid number';
-  } else if (Number.isNaN(y)) {
-    error = 'y of top-left corner is not a valid number';
-  } else if (Number.isNaN(u)) {
-    error = 'x of bottom-right corner is not a valid number';
-  } else if (Number.isNaN(v)) {
-    error = 'y of bottom-right corner is not a valid number';
-  } else if (u < x || v < y) {
-    error = 'Corner coordinates are alligned wrong';
+  if (!ulcoor || !brcoor) {
+    error = 'Not all coordinates defined';
+  } else if (!canvas) {
+    error = 'Invalid canvas selected';
   } else if (!date) {
     error = 'No date given';
   } else if (Number.isNaN(Number(date)) || date.length !== 8) {
     error = 'Invalid date';
-  } else if (!canvas) {
-    error = 'Invalid canvas selected';
   }
   if (error !== null) {
     return [403, error];
   }
 
-  const canvasMaxXY = canvas.size / 2;
-  const canvasMinXY = -canvasMaxXY;
-  if (x < canvasMinXY || y < canvasMinXY
-      || x >= canvasMaxXY || y >= canvasMaxXY) {
-    return [403, 'Coordinates of top-left corner are outside of canvas'];
+
+  const parseCoords = validateCoorRange(ulcoor, brcoor, canvas.size);
+  if (typeof parseCoords === 'string') {
+    return [403, parseCoords];
   }
-  if (u < canvasMinXY || v < canvasMinXY
-      || u >= canvasMaxXY || v >= canvasMaxXY) {
-    return [403, 'Coordinates of bottom-right corner are outside of canvas'];
-  }
+  const [x, y, u, v] = parseCoords;
 
   const width = u - x + 1;
   const height = v - y + 1;
@@ -333,10 +332,12 @@ export async function executeRollback(
     height,
     date,
   );
-  modtoolsLogger.info(
+  if (logger) {
+    logger(
     // eslint-disable-next-line max-len
-    `ADMINTOOLS: Rollback to ${date} for ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
-  );
+      `Rollback to ${date} for ${pxlCount} pixels with dimension ${width}x${height} at #${canvas.ident},${x},${y}`,
+    );
+  }
   return [
     200,
     // eslint-disable-next-line max-len
@@ -381,6 +382,9 @@ export async function removeMod(userId) {
 }
 
 export async function makeMod(name) {
+  if (!name) {
+    throw new Error('No username given');
+  }
   let user = null;
   try {
     user = await RegUser.findOne({

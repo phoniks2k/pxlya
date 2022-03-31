@@ -10,13 +10,15 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import multer from 'multer';
 
+import CanvasCleaner from '../../core/CanvasCleaner';
 import { getIPFromRequest } from '../../utils/ip';
-import { modtoolsLogger } from '../../core/logger';
+import logger, { modtoolsLogger } from '../../core/logger';
 import {
   executeIPAction,
   executeImageAction,
   executeProtAction,
   executeRollback,
+  executeCleanerAction,
   getModList,
   removeMod,
   makeMod,
@@ -43,7 +45,7 @@ const upload = multer({
 router.use(async (req, res, next) => {
   const ip = getIPFromRequest(req);
   if (!req.user) {
-    modtoolsLogger.info(
+    logger.warn(
       `MODTOOLS: ${ip} tried to access modtools without login`,
     );
     const { t } = req.ttag;
@@ -55,16 +57,13 @@ router.use(async (req, res, next) => {
    * 2 = Mod
    */
   if (!req.user.userlvl) {
-    modtoolsLogger.info(
+    logger.warn(
       `MODTOOLS: ${ip} / ${req.user.id} tried to access modtools`,
     );
     const { t } = req.ttag;
     res.status(403).send(t`You are not allowed to access this page`);
     return;
   }
-  modtoolsLogger.info(
-    `MODTOOLS: ${req.user.id} / ${req.user.regUser.name} is using modtools`,
-  );
 
   next();
 });
@@ -74,7 +73,40 @@ router.use(async (req, res, next) => {
  * Post for mod + admin
  */
 router.post('/', upload.single('image'), async (req, res, next) => {
+  const aLogger = (text) => {
+    const timeString = new Date().toLocaleTimeString();
+    modtoolsLogger.info(
+      // eslint-disable-next-line max-len
+      `${timeString} | MODTOOLS> ${req.user.regUser.name}[${req.user.id}]> ${text}`,
+    );
+  };
+
   try {
+    if (req.body.cleanerstat) {
+      const ret = CanvasCleaner.reportStatus();
+      res.status(200);
+      res.json(ret);
+      return;
+    }
+    if (req.body.cleanercancel) {
+      const ret = CanvasCleaner.stop();
+      res.status(200).send(ret);
+      return;
+    }
+    if (req.body.cleaneraction) {
+      const {
+        cleaneraction, ulcoor, brcoor, canvasid,
+      } = req.body;
+      const [ret, msg] = await executeCleanerAction(
+        cleaneraction,
+        ulcoor,
+        brcoor,
+        canvasid,
+        aLogger,
+      );
+      res.status(ret).send(msg);
+      return;
+    }
     if (req.body.imageaction) {
       const { imageaction, coords, canvasid } = req.body;
       const [ret, msg] = await executeImageAction(
@@ -82,10 +114,12 @@ router.post('/', upload.single('image'), async (req, res, next) => {
         req.file,
         coords,
         canvasid,
+        aLogger,
       );
       res.status(ret).send(msg);
       return;
-    } if (req.body.protaction) {
+    }
+    if (req.body.protaction) {
       const {
         protaction, ulcoor, brcoor, canvasid,
       } = req.body;
@@ -94,10 +128,12 @@ router.post('/', upload.single('image'), async (req, res, next) => {
         ulcoor,
         brcoor,
         canvasid,
+        aLogger,
       );
       res.status(ret).send(msg);
       return;
-    } if (req.body.rollback) {
+    }
+    if (req.body.rollback) {
       // rollback is date as YYYYMMdd
       const {
         rollback, ulcoor, brcoor, canvasid,
@@ -107,6 +143,7 @@ router.post('/', upload.single('image'), async (req, res, next) => {
         ulcoor,
         brcoor,
         canvasid,
+        aLogger,
       );
       res.status(ret).send(msg);
       return;
@@ -135,9 +172,17 @@ router.use(async (req, res, next) => {
  * Post just for admin
  */
 router.post('/', async (req, res, next) => {
+  const aLogger = (text) => {
+    logger.info(`ADMIN> ${req.user.regUser.name}[${req.user.id}]> ${text}`);
+  };
+
   try {
     if (req.body.ipaction) {
-      const ret = await executeIPAction(req.body.ipaction, req.body.ip);
+      const ret = await executeIPAction(
+        req.body.ipaction,
+        req.body.ip,
+        aLogger,
+      );
       res.status(200).send(ret);
       return;
     }
