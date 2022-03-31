@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
+import useInterval from './hooks/useInterval';
 import { getToday, dateToString } from '../core/utils';
 
 const keptState = {
@@ -276,6 +277,12 @@ function Modtools() {
       getCleanerStats((stats) => setCleanerStats(stats));
     }
   }, []);
+
+  useInterval(() => {
+    if (userlvl > 0) {
+      getCleanerStats((stats) => setCleanerStats(stats));
+    }
+  }, 10000);
 
   const cleanerStatusString = (!cleanerstats.running)
     ? t`Status: Not running`
@@ -625,6 +632,14 @@ function Modtools() {
             tlccoords,
             brccoords,
             (ret) => {
+              setCleanerStats({
+                running: true,
+                percent: 'N/A',
+                method: cleanAction,
+                tl: tlccoords,
+                br: brccoords,
+                canvasId: selectedCanvas,
+              });
               setSubmitting(false);
               setResp(ret);
             },
