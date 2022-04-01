@@ -144,6 +144,7 @@ router.post('/', upload.single('image'), async (req, res, next) => {
         brcoor,
         canvasid,
         aLogger,
+        (req.user.userlvl === 1),
       );
       res.status(ret).send(msg);
       return;

@@ -292,6 +292,7 @@ export async function executeRollback(
   brcoor,
   canvasid,
   logger = null,
+  isAdmin = false,
 ) {
   if (!canvasid) {
     return [403, 'canvasid not defined'];
@@ -320,8 +321,8 @@ export async function executeRollback(
 
   const width = u - x + 1;
   const height = v - y + 1;
-  if (width * height > 1000000) {
-    return [403, 'Can not rollback more than 1m pixels at onec'];
+  if (!isAdmin && width * height > 1000000) {
+    return [403, 'Can not rollback more than 1m pixels at once'];
   }
 
   const pxlCount = await rollbackCanvasArea(
