@@ -58,6 +58,7 @@ const METHODS = {
       return null;
     }
     let rplPxl = null;
+    let fixPxl = null;
     const origPxl = pxl;
     for (let u = -1; u <= 1; u += 1) {
       for (let v = -1; v <= 1; v += 1) {
@@ -67,26 +68,26 @@ const METHODS = {
         ) {
           continue;
         }
-        if (rplPxl === null) {
-          rplPxl = pxl;
-          continue;
-        }
         if (pxl < clrIgnore) {
+          if (rplPxl === null) {
+            rplPxl = pxl;
+          }
           continue;
         }
-        if (rplPxl < clrIgnore) {
-          rplPxl = pxl;
+        if (fixPxl === null) {
+          fixPxl = pxl;
           continue;
         }
-        if (pxl !== rplPxl) {
+        if (pxl !== fixPxl) {
           return null;
         }
       }
     }
-    if (rplPxl === origPxl) {
+    const finPxl = (rplPxl !== null) ? rplPxl : fixPxl;
+    if (finPxl === origPxl) {
       return null;
     }
-    return rplPxl;
+    return finPxl;
   },
 };
 
