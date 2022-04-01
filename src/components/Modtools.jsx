@@ -263,7 +263,11 @@ function Modtools() {
       break;
     case 'spareext':
       // eslint-disable-next-line max-len
-      descCleanAction = t`Clean spare pixels that are surrounded by a single other color`;
+      descCleanAction = t`Clean spare pixels that are surrounded by unset pixels and up to 1 other set pixels`;
+      break;
+    case 'spareextu':
+      // eslint-disable-next-line max-len
+      descCleanAction = t`Clean spare pixels that are surrounded by a single other color or unset pixels (VERY AGGRESSIVE ON CANVASES THAT ALLOW UNSET PIXELS (where there are two cooldowns)!)`;
       break;
     default:
       // nothing
@@ -571,7 +575,7 @@ function Modtools() {
           selectCleanAction(sel.options[sel.selectedIndex].value);
         }}
       >
-        {['spare', 'spareext'].map((opt) => (
+        {['spare', 'spareext', 'spareextu'].map((opt) => (
           <option
             value={opt}
           >

@@ -57,6 +57,35 @@ const METHODS = {
     if (pxl === null || pxl < clrIgnore) {
       return null;
     }
+    let cntSet = 1;
+    let rplPxl = null;
+    for (let u = -1; u <= 1; u += 1) {
+      for (let v = -1; v <= 1; v += 1) {
+        pxl = canvasCleaner.getPixelInChunkArea(xc + u, yc + v);
+        if (pxl === null
+          || (u === 0 && v === 0)
+        ) {
+          continue;
+        }
+        if (pxl >= clrIgnore) {
+          if (cntSet >= 2) {
+            return null;
+          }
+          cntSet += 1;
+        }
+        if (rplPxl === null) {
+          rplPxl = pxl;
+        }
+      }
+    }
+    return rplPxl;
+  },
+
+  spareextu: (xc, yc, clrIgnore, canvasCleaner) => {
+    let pxl = canvasCleaner.getPixelInChunkArea(xc, yc);
+    if (pxl === null || pxl < clrIgnore) {
+      return null;
+    }
     let rplPxl = null;
     let fixPxl = null;
     const origPxl = pxl;
