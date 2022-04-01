@@ -57,6 +57,15 @@ export default (store) => (next) => (action) => {
       break;
     }
 
+    case 'TOGGLE_HIDDEN_CANVASES': {
+      const renderer = getRenderer();
+      const { is3D } = state.canvas;
+      if (is3D) {
+        initRenderer(store, !renderer.is3D);
+      }
+      break;
+    }
+
     case 'SET_HISTORICAL_TIME': {
       const {
         historicalDate,

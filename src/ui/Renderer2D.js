@@ -34,25 +34,25 @@ const SCALE_THREASHOLD = Math.min(
 
 
 class Renderer {
-  is3D: false;
+  is3D = false;
   //
-  canvasId: number = null;
-  chunkLoader: Object = null;
+  canvasId = null;
+  chunkLoader = null;
   //--
   centerChunk;
-  tiledScale: number;
-  tiledZoom: number;
-  hover: boolean;
+  tiledScale;
+  tiledZoom;
+  hover;
   //--
-  viewport: HTMLCanvasElement = null;
+  viewport = null;
   store;
   //--
-  forceNextRender: boolean;
-  forceNextSubrender: boolean;
-  canvas: HTMLCanvasElement;
-  lastFetch: number;
+  forceNextRender;
+  forceNextSubrender;
+  canvas;
+  lastFetch;
   //--
-  oldHistoricalTime: string;
+  oldHistoricalTime;
 
   constructor(store) {
     this.centerChunk = [null, null];
@@ -159,7 +159,7 @@ class Renderer {
     this.updateScale(this.store.getState());
   }
 
-  getColorIndexOfPixel(cx, cy, historical: boolean = false) {
+  getColorIndexOfPixel(cx, cy, historical = false) {
     if (historical) {
       const state = this.store.getState();
       const {
@@ -232,9 +232,9 @@ class Renderer {
 
 
   renderPixel(
-    i: number,
-    j: number,
-    offset: number,
+    i,
+    j,
+    offset,
     color,
     notify,
   ) {
@@ -273,9 +273,9 @@ class Renderer {
 
 
   isChunkInView(
-    cz: number,
-    cx: number,
-    cy: number,
+    cz,
+    cx,
+    cy,
   ) {
     if (cz !== this.tiledZoom) {
       return false;

@@ -1,7 +1,6 @@
 /*
  * 3D Renderer for VoxelCanvas
  *
- * @flow
  */
 
 import * as THREE from 'three';
@@ -31,27 +30,27 @@ class Renderer {
   //--
   store;
   //--
-  scene: Object;
-  camera: Object;
-  rollOverMesh: Object;
-  objects: Array<Object>;
-  loadedChunks: Array<Object>;
-  plane: Object;
-  oobGeometry: Object;
-  oobMaterial: Object;
+  scene;
+  camera;
+  rollOverMesh;
+  objects;
+  loadedChunks;
+  plane;
+  oobGeometry;
+  oobMaterial;
   //--
-  controls: Object;
-  threeRenderer: Object;
+  controls;
+  threeRenderer;
   // temp variables for mouse events
   mouse;
   mouseMoveStart;
   raycaster;
-  pressTime: number;
-  pressCdTime: number;
-  multitap: number;
+  pressTime;
+  pressCdTime;
+  multitap;
   //--
-  chunkLoader: ChunkLoader = null;
-  forceNextRender: boolean = false;
+  chunkLoader = null;
+  forceNextRender = false;
 
   constructor(store) {
     this.store = store;
@@ -274,10 +273,10 @@ class Renderer {
   }
 
   renderPixel(
-    i: number,
-    j: number,
-    offset: number,
-    color: number,
+    i,
+    j,
+    offset,
+    color,
   ) {
     const { chunkLoader } = this;
     if (chunkLoader) {
@@ -469,7 +468,7 @@ class Renderer {
     }
   }
 
-  placeVoxel(x: number, y: number, z: number, color: number = null) {
+  placeVoxel(x, y, z, color = null) {
     const {
       store,
     } = this;

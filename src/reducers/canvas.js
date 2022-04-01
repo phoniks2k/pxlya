@@ -272,9 +272,9 @@ export default function canvasReducer(
         size: canvasSize,
         sd: canvasStartDate,
         ident: canvasIdent,
-        v: is3D,
         colors,
       } = canvas;
+      const is3D = !!canvas.v;
       // get previous view, scale and viewscale if possible
       let viewscale = DEFAULT_SCALE;
       let scale = DEFAULT_SCALE;
@@ -336,7 +336,7 @@ export default function canvasReducer(
       }
       const canvas = canvases[canvasId];
       const clrIgnore = canvas.cli || 0;
-      const is3D = !!canvases.v;
+      const is3D = !!canvas.v;
       const {
         size: canvasSize,
         sd: canvasStartDate,
