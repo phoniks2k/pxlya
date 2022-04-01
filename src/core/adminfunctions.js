@@ -151,7 +151,7 @@ export async function executeImageAction(
     );
 
     // eslint-disable-next-line max-len
-    if (logger) logger(`Loaded image wth ${pxlCount} pixels to #${canvas.ident},${x},${y}`);
+    if (logger) logger(`Loaded image wth ${pxlCount} pixels to #${canvas.ident},${x},${y} (${x}_${y} - ${x + info.width - 1}_${y + info.height - 1}`);
     return [
       200,
       `Successfully loaded image wth ${pxlCount} pixels to ${x}/${y}`,
@@ -264,17 +264,19 @@ export async function executeProtAction(
   if (logger) {
     logger(
       (protect)
-        ? `Protect ${width}x${height} area at #${canvas.ident},${x},${y}`
-        : `Unprotect ${width}x${height} area at #${canvas.ident},${x},${y}`,
+      // eslint-disable-next-line max-len
+        ? `Protect ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
+      // eslint-disable-next-line max-len
+        : `Unprotect ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
     );
   }
   return [
     200,
     (protect)
     // eslint-disable-next-line max-len
-      ? `Successfully protected ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`
+      ? `Successfully protected ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
     // eslint-disable-next-line max-len
-      : `Soccessfully unprotected ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
+      : `Successfully unprotected ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
   ];
 }
 
@@ -336,13 +338,13 @@ export async function executeRollback(
   if (logger) {
     logger(
     // eslint-disable-next-line max-len
-      `Rollback to ${date} for ${pxlCount} pixels with dimension ${width}x${height} at #${canvas.ident},${x},${y}`,
+      `Rollback to ${date} for ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
     );
   }
   return [
     200,
     // eslint-disable-next-line max-len
-    `Successfully rolled back ${pxlCount} pixels at ${x} / ${y} with dimension ${width}x${height}`,
+    `Successfully rolled back to ${date} for ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
   ];
 }
 

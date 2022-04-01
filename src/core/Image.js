@@ -1,4 +1,4 @@
-/* @flow
+/*
  *
  * functions to deal with images
  *
@@ -27,14 +27,14 @@ import Palette from './Palette';
  * @param height height of image
  */
 export async function imageABGR2Canvas(
-  canvasId: number,
-  x: number,
-  y: number,
-  data: Buffer,
-  width: number,
-  height: number,
-  wipe?: boolean,
-  protect?: boolean,
+  canvasId,
+  x,
+  y,
+  data,
+  width,
+  height,
+  wipe,
+  protect,
 ) {
   logger.info(
     `Loading image with dim ${width}/${height} to ${x}/${y}/${canvasId}`,
@@ -108,12 +108,12 @@ export async function imageABGR2Canvas(
  *               it will be called with the pixelcolor as argument, its return value gets set
  */
 export async function imagemask2Canvas(
-  canvasId: number,
-  x: number,
-  y: number,
-  data: Buffer,
-  width: number,
-  height: number,
+  canvasId,
+  x,
+  y,
+  data,
+  width,
+  height,
   filter,
 ) {
   logger.info(
@@ -180,12 +180,12 @@ export async function imagemask2Canvas(
  * @param height height of image
  */
 export async function protectCanvasArea(
-  canvasId: number,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  protect: boolean = true,
+  canvasId,
+  x,
+  y,
+  width,
+  height,
+  protect = true,
 ) {
   logger.info(
     // eslint-disable-next-line max-len
