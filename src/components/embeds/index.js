@@ -1,10 +1,12 @@
 /*
  * Embeds for external content like youtube, etc.
+ * Usage for Markdown is in ../MdLink.js
  *
  */
 import TikTok from './TikTok';
 import YouTube from './YouTube';
 import Matrix from './Matrix';
+import Telegram from './Telegram';
 // import Odysee from './Odysee';
 import DirectLinkMedia from './DirectLinkMedia';
 
@@ -15,6 +17,8 @@ import DirectLinkMedia from './DirectLinkMedia';
  *    ReactElement: takes url as prop,
  *    isEmbedAvailable: function that takes url as argument and returns boolean
  *                      whether embed is available for this url of this domain
+ *    title: function that returns the title for a link, gets url as argument
+ *    icon: link to icon
  *  ]
  */
 export default {
@@ -28,5 +32,6 @@ export default {
   'files.catbox.moe': DirectLinkMedia,
   'i.redd.it': DirectLinkMedia,
   'media.consumeproduct.win': DirectLinkMedia,
+  't.me': Telegram,
   // 'odysee': Odysee,
 };

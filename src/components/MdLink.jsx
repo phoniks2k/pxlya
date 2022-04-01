@@ -15,6 +15,7 @@ const titleAllowed = [
   'matrix.pixelplanet.fun',
   'youtube',
   'youtu.be',
+  't.me',
 ];
 
 const MdLink = ({ href, title }) => {

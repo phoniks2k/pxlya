@@ -49,7 +49,7 @@ function useDrag(elRef, startHandler, diffHandler) {
   }, [startHandler]);
 
   useEffect(() => {
-    if (elRef && elRef.current) {
+    if (elRef.current) {
       elRef.current.addEventListener('mousedown', startDrag, {
         passive: false,
       });
@@ -58,7 +58,7 @@ function useDrag(elRef, startHandler, diffHandler) {
       });
     }
     return () => {
-      if (elRef && elRef.current) {
+      if (elRef.current) {
         elRef.current.removeEventListener('mousedown', startDrag);
         elRef.current.removeEventListener('touchstart', startDrag);
       }

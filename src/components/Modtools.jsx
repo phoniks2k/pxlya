@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
-import useInterval from './hooks/useInterval';
+import useInterval from './hooks/interval';
 import { getToday, dateToString } from '../core/utils';
 
 const keptState = {
