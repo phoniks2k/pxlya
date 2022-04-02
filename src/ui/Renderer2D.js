@@ -632,9 +632,11 @@ class Renderer {
           chunk = this.chunkLoader
             .getHistoricalChunk(cx, cy, fetch, historicalDate, historicalTime);
           if (chunk) {
-            context.drawImage(chunk, x, y);
-            if (fetch) {
-              chunk.timestamp = curTime;
+            if (!chunk.isEmpty) {
+              context.drawImage(chunk, x, y);
+              if (fetch) {
+                chunk.timestamp = curTime;
+              }
             }
           } else if (oldHistoricalTime) {
             chunk = this.chunkLoader
@@ -645,7 +647,7 @@ class Renderer {
                 historicalDate,
                 oldHistoricalTime,
               );
-            if (chunk) {
+            if (chunk && !chunk.isEmpty) {
               context.drawImage(chunk, x, y);
               if (fetch) {
                 chunk.timestamp = curTime;

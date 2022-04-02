@@ -2,12 +2,21 @@ import { TILE_SIZE } from '../core/constants';
 
 
 class ChunkRGB {
-  cell: Array;
-  image: HTMLCanvasElement;
-  ready: boolean;
-  timestamp: number;
+  // array of coords [zoom, cx, cy]
+  //  just an identifier, could be removed
+  cell;
+  // HTMLCanvasElement of chunk
+  image;
+  // boolean if chunk loeaded (request done)
+  ready;
+  // boolean if chunk is empty
+  isEmpty;
+  // number timestamp of last load for garbage collection
+  timestamp;
+  // palette of canvas
   palette;
-  isBasechunk: boolean;
+  // boolean if it is basechunk, rather than zoomtile
+  isBasechunk;
 
   constructor(palette, zoom = 0, cx = 0, cy = 0) {
     // isBasechunk gets set to true by RECEIVE_BIG_CHUNK
@@ -21,6 +30,7 @@ class ChunkRGB {
     this.image.height = TILE_SIZE;
     this.cell = [zoom, cx, cy];
     this.ready = false;
+    this.isEmpty = false;
     this.timestamp = Date.now();
   }
 
@@ -29,7 +39,8 @@ class ChunkRGB {
     return null;
   }
 
-  fromBuffer(chunkBuffer: Uint8Array) {
+  // from Uint8Array
+  fromBuffer(chunkBuffer) {
     const imageData = new ImageData(TILE_SIZE, TILE_SIZE);
     const imageView = new Uint32Array(imageData.data.buffer);
     const colors = this.palette.buffer2ABGR(chunkBuffer);
@@ -41,7 +52,7 @@ class ChunkRGB {
     this.ready = true;
   }
 
-  preLoad(img, zoomDiffAbs: number, sx: number, sy: number) {
+  preLoad(img, zoomDiffAbs, sx, sy) {
     if (this.ready) {
       return;
     }
@@ -57,14 +68,15 @@ class ChunkRGB {
     ctx.restore();
   }
 
-  fromImage(img: Image) {
+  fromImage(img) {
     this.ready = true;
     const ctx = this.image.getContext('2d');
     ctx.drawImage(img, 0, 0);
   }
 
-  empty(transparent: boolean = false) {
+  empty(transparent = false) {
     this.ready = true;
+    this.isEmpty = true;
     if (!transparent) {
       const { image, palette } = this;
       const ctx = image.getContext('2d');
@@ -74,19 +86,22 @@ class ChunkRGB {
     }
   }
 
-  static getIndexFromCell([x, y]): number {
+  static getIndexFromCell([x, y]) {
     return x + (TILE_SIZE * y);
   }
 
-  getColorIndex(cell) {
+  getColorIndex(cell, nearest = true) {
     const [x, y] = cell;
     const ctx = this.image.getContext('2d');
 
     const rgb = ctx.getImageData(x, y, 1, 1).data;
-    return this.palette.getClosestIndexOfColor(rgb[0], rgb[1], rgb[2]);
+    const ind = (nearest)
+      ? this.palette.getClosestIndexOfColor(rgb[0], rgb[1], rgb[2])
+      : this.palette.getIndexOfColor(rgb[0], rgb[1], rgb[2]);
+    return ind;
   }
 
-  hasColorIn(cell, color): boolean {
+  hasColorIn(cell, color) {
     const index = ChunkRGB.getIndexFromCell(cell);
 
     const ctx = this.image.getContext('2d');
@@ -96,7 +111,7 @@ class ChunkRGB {
     return (intView[index] === this.palette.abgr[color]);
   }
 
-  setColor(cell, color): boolean {
+  setColor(cell, color) {
     const [x, y] = cell;
     const ctx = this.image.getContext('2d');
     ctx.fillStyle = this.palette.colors[color];

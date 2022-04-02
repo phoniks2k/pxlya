@@ -110,7 +110,7 @@ class ChunkLoader {
       const incrementialChunkKey = `${historicalDate}${historicalTime}:${cx}:${cy}`;
       const incrementialChunk = this.chunks.get(incrementialChunkKey);
       if (incrementialChunk) {
-        const incrementialColor = incrementialChunk.getColorIndex(px);
+        const incrementialColor = incrementialChunk.getColorIndex(px, false);
         incrementialChunk.timestamp = curTime;
         if (incrementialColor !== null) {
           return incrementialColor;
