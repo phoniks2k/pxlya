@@ -7,6 +7,7 @@ import TikTok from './TikTok';
 import YouTube from './YouTube';
 import Matrix from './Matrix';
 import Telegram from './Telegram';
+import Twitter from './Twitter';
 // import Odysee from './Odysee';
 import DirectLinkMedia from './DirectLinkMedia';
 
@@ -33,5 +34,6 @@ export default {
   'i.redd.it': DirectLinkMedia,
   'media.consumeproduct.win': DirectLinkMedia,
   't.me': Telegram,
+  'twitter': Twitter,
   // 'odysee': Odysee,
 };
