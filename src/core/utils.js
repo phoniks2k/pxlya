@@ -389,6 +389,17 @@ export function getExt(link) {
 }
 
 /*
+ * Split query part from link
+ * @param link url
+ * @return link without query
+ */
+export function stripQuery(link) {
+  let posAnd = link.indexOf('?');
+  if (posAnd === -1) posAnd = link.indexOf('#');
+  return (posAnd === -1) ? link : link.substring(0, posAnd);
+}
+
+/*
  * convert timestamp to human readable date/time string
  * @param timestamp Unix timestamp in seconds
  * @return descriptive string of time

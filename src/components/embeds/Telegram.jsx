@@ -1,35 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
+import { stripQuery } from '../../core/utils';
 import usePostMessage from '../hooks/postMessage';
 
 const urlStr = 't.me/';
-
-function getUserPostFromUrl(url) {
-  let aPos = url.indexOf(urlStr);
-  if (aPos === -1) {
-    return url;
-  }
-  aPos += urlStr.length;
-  if (aPos >= url.length) {
-    return url;
-  }
-  let bPos = url.indexOf('/', aPos);
-  if (bPos === -1) {
-    bPos = url.length;
-    return url.substring(aPos);
-  }
-  const user = url.substring(aPos, bPos);
-  bPos += 1;
-  if (bPos >= url.length) {
-    return user;
-  }
-  aPos = url.indexOf('/', bPos);
-  if (aPos === -1) {
-    aPos = url.length;
-  }
-  const post = url.substring(bPos, aPos);
-  return `${user} | ${post}`;
-}
 
 const Telegram = ({ url }) => {
   const [frameHeight, setFrameHeight] = useState(200);
@@ -45,17 +19,19 @@ const Telegram = ({ url }) => {
           }
         }
       } catch {
+        // eslint-disable-next-line no-console
         console.error(`Could not read postMessage from frame: ${data}`);
       }
     },
   );
 
-  const userPost = url.substring(url.indexOf(urlStr) + urlStr.length)
-  const embedCode =
-    // eslint-disable-next-line max-len
-    `<script async src="https://telegram.org/js/telegram-widget.js?18" data-telegram-post="${userPost}" data-width="100%"></script>`;
+  let userPost = stripQuery(url);
+  userPost = userPost.substring(userPost.indexOf(urlStr) + urlStr.length);
+  const sslash = userPost.indexOf('/', userPost.indexOf('/') + 1);
+  if (sslash !== -1) {
+    userPost = userPost.substring(0, sslash);
+  }
 
-//      srcDoc={embedCode}
   return (
     <iframe
       ref={iFrameRef}
@@ -78,7 +54,22 @@ const Telegram = ({ url }) => {
 
 export default [
   React.memo(Telegram),
-  (url) => url.includes(urlStr),
-  (url) => getUserPostFromUrl(url),
+  (url) => {
+    // https://t.me/name/34
+    let statPos = url.indexOf(urlStr);
+    if (statPos === -1 || statPos + urlStr.length + 1 >= url.length) {
+      return false;
+    }
+    statPos = url.indexOf('/', statPos + urlStr.length + 1);
+    if (statPos === -1 || statPos + 2 >= url.length) {
+      return false;
+    }
+    return true;
+  },
+  (url) => {
+    let title = url.substring(url.indexOf(urlStr) + urlStr.length);
+    title = title.substring(0, title.indexOf('/'));
+    return title;
+  },
   `${window.ssv.assetserver}/embico/telegram.png`,
 ];
