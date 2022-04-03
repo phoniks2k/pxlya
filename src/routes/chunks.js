@@ -42,7 +42,13 @@ export default async (req: Request, res: Response, next) => {
     // divided in height, which is not used yet
     // - this is not used and probably won't ever be used
     try {
+      const stime = Date.now();
       chunk = await RedisCanvas.getChunk(c, x, y, z);
+      const dur = Date.now() - stime;
+      if (dur > 1000) {
+        // eslint-disable-next-line max-len
+        logger.warn(`Long redis response times of ${dur}ms for chunk ${c}:${x},${y},${z}`);
+      }
     } catch {
       res.status(503).end();
       return;
