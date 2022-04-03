@@ -23,7 +23,7 @@ import OnlineCounter from './packets/OnlineCounter';
 import socketEvents from './SocketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './verifyClient';
-import { drawSafeByOffsets } from '../core/draw';
+import { drawByOffsets } from '../core/draw';
 import { needCaptcha } from '../utils/captcha';
 import { cheapDetector } from '../core/isProxy';
 
@@ -429,7 +429,7 @@ class SocketServer {
             coolDown,
             pxlCnt,
             retCode,
-          } = await drawSafeByOffsets(
+          } = await drawByOffsets(
             ws.user,
             ws.canvasId,
             i, j,
