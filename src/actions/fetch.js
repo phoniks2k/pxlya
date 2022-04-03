@@ -194,7 +194,9 @@ export async function requestHistoricalTimes(day, canvasId) {
   try {
     const date = dateToString(day);
     const url = `history?day=${date}&id=${canvasId}`;
-    const response = await fetchWithTimeout(url);
+    const response = await fetchWithTimeout(url, {
+      timeout: 45000,
+    });
     if (response.status !== 200) {
       return [];
     }
