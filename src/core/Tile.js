@@ -131,6 +131,7 @@ export async function createZoomTileFromChunk(
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
   );
+  const startTime = Date.now();
 
   const xabs = x * TILE_ZOOM_LEVEL;
   const yabs = y * TILE_ZOOM_LEVEL;
@@ -171,7 +172,8 @@ export async function createZoomTileFromChunk(
       .png({ options: { compressionLevel: 6 } })
       .toFile(filename);
     logger.info(
-      `Tiling: Created Tile ${filename} with ${na.length} empty chunks`,
+      // eslint-disable-next-line max-len
+      `Tiling: Created Tile ${filename} with ${na.length} empty chunks in ${Date.now() - startTime}ms`,
     );
     return true;
   }
@@ -194,6 +196,7 @@ export async function createZoomedTile(
   );
   const [z, x, y] = cell;
 
+  const startTime = Date.now();
   const na = [];
   for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
     for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
@@ -226,7 +229,8 @@ export async function createZoomedTile(
       },
     ).resize(TILE_SIZE).toFile(filename);
     logger.info(
-      `Tiling: Created tile ${filename} with ${na.length} empty subtiles.`,
+      // eslint-disable-next-line max-len
+      `Tiling: Created tile ${filename} with ${na.length} empty subtiles in ${Date.now() - startTime}ms.`,
     );
     return true;
   }
@@ -289,7 +293,7 @@ export async function createTexture(
   const amount = targetSize / TILE_SIZE;
   const zoom = Math.log2(amount) / 2;
   const textureBuffer = new Uint8Array(targetSize * targetSize * 3);
-  const timeStart = Date.now();
+  const startTime = Date.now();
 
   const na = [];
   let chunk = null;
@@ -340,7 +344,7 @@ export async function createTexture(
     },
   ).toFile(filename);
   logger.info(
-    `Tiling: Created texture in ${(Date.now() - timeStart) / 1000}s.`,
+    `Tiling: Created texture in ${(Date.now() - startTime) / 1000}s.`,
   );
 }
 
