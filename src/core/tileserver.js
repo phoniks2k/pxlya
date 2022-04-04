@@ -9,7 +9,6 @@ import { Worker } from 'worker_threads';
 import logger from './logger';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
-import Palette from './Palette';
 import RedisCanvas from '../data/models/RedisCanvas';
 
 import { TILE_FOLDER } from './config';
@@ -29,7 +28,6 @@ const worker = new Worker('./workers/tilewriter.js');
 
 class CanvasUpdater {
   TileLoadingQueues;
-  palette;
   id;
   canvas;
   firstZoomtileWidth;
@@ -42,7 +40,6 @@ class CanvasUpdater {
     this.id = id;
     this.canvas = canvases[id];
     this.canvasTileFolder = `${TILE_FOLDER}/${id}`;
-    this.palette = new Palette(this.canvas.colors);
     this.firstZoomtileWidth = this.canvas.size / TILE_SIZE / TILE_ZOOM_LEVEL;
     this.maxTiledZoom = getMaxTiledZoom(this.canvas.size);
     this.startReloadingLoops();
@@ -65,10 +62,9 @@ class CanvasUpdater {
         worker.postMessage({
           task: 'createZoomTileFromChunk',
           args: [
-            this.canvas.size,
             this.id,
+            this.canvas,
             this.canvasTileFolder,
-            this.palette,
             [cx, cy],
           ],
         });
@@ -76,8 +72,8 @@ class CanvasUpdater {
         worker.postMessage({
           task: 'createZoomedTile',
           args: [
+            this.canvas,
             this.canvasTileFolder,
-            this.palette,
             [zoom, cx, cy],
           ],
         });
@@ -88,9 +84,8 @@ class CanvasUpdater {
           task: 'createTexture',
           args: [
             this.id,
-            this.canvas.size,
+            this.canvas,
             this.canvasTileFolder,
-            this.palette,
           ],
         });
       } else {
@@ -126,10 +121,9 @@ class CanvasUpdater {
       worker.postMessage({
         task: 'initializeTiles',
         args: [
-          this.canvas.size,
           this.id,
+          this.canvas,
           this.canvasTileFolder,
-          this.palette,
           false,
         ],
       });

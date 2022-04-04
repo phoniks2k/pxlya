@@ -12,6 +12,7 @@
 import sharp from 'sharp';
 import fs from 'fs';
 
+import Palette from './Palette';
 import { getMaxTiledZoom } from './utils';
 import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
 
@@ -113,22 +114,22 @@ function tileFileName(canvasTileFolder, cell) {
 }
 
 /*
- * @param canvasSize dimension of the canvas (pixels width/height)
  * @param redisClient redis instance
  * @param canvasId id of the canvas
+ * @param canvas canvas data
  * @param canvasTileFolder root folder where to save tiles
- * @param palette Palette to use
  * @param cell tile to create [x, y]
  * @return true if successfully created tile, false if tile empty
  */
 export async function createZoomTileFromChunk(
   redisClient,
-  canvasSize,
   canvasId,
+  canvas,
   canvasTileFolder,
-  palette,
   cell,
 ) {
+  const palette = new Palette(canvas.colors);
+  const canvasSize = canvas.size;
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
   const tileRGBBuffer = new Uint8Array(
@@ -166,16 +167,23 @@ export async function createZoomTileFromChunk(
     });
 
     const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
-    await sharp(Buffer.from(tileRGBBuffer.buffer), {
-      raw: {
-        width: TILE_SIZE * TILE_ZOOM_LEVEL,
-        height: TILE_SIZE * TILE_ZOOM_LEVEL,
-        channels: 3,
-      },
-    })
-      .resize(TILE_SIZE)
-      .png({ options: { compressionLevel: 6 } })
-      .toFile(filename);
+    try {
+      await sharp(Buffer.from(tileRGBBuffer.buffer), {
+        raw: {
+          width: TILE_SIZE * TILE_ZOOM_LEVEL,
+          height: TILE_SIZE * TILE_ZOOM_LEVEL,
+          channels: 3,
+        },
+      })
+        .resize(TILE_SIZE)
+        .png({ options: { compressionLevel: 6 } })
+        .toFile(filename);
+    } catch (error) {
+      console.error(
+        `Tiling: Error on createZoomTileFromChunk:\n${error.message}`,
+      );
+      return false;
+    }
     console.log(
       // eslint-disable-next-line max-len
       `Tiling: Created Tile ${filename} with ${na.length} empty chunks in ${Date.now() - startTime}ms`,
@@ -186,16 +194,17 @@ export async function createZoomTileFromChunk(
 }
 
 /*
+ * @param canvas canvas data
  * @param canvasTileFolder root folder where to save tiles
- * @param palette Palette to use
  * @param cell tile to create [z, x, y]
  * @return trie if successfully created tile, false if tile empty
  */
 export async function createZoomedTile(
+  canvas,
   canvasTileFolder,
-  palette,
   cell,
 ) {
+  const palette = new Palette(canvas.colors);
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
   );
@@ -211,8 +220,15 @@ export async function createZoomedTile(
         na.push([dx, dy]);
         continue;
       }
-      const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
-      addRGBSubtiletoTile(TILE_ZOOM_LEVEL, [dx, dy], chunk, tileRGBBuffer);
+      try {
+        const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
+        addRGBSubtiletoTile(TILE_ZOOM_LEVEL, [dx, dy], chunk, tileRGBBuffer);
+      } catch (error) {
+        console.error(
+          // eslint-disable-next-line max-len
+          `Tiling: Error on createZoomedTile on chunk ${chunkfile}:\n${error.message}`,
+        );
+      }
     }
   }
 
@@ -222,17 +238,24 @@ export async function createZoomedTile(
     });
 
     const filename = tileFileName(canvasTileFolder, [z, x, y]);
-    await sharp(
-      Buffer.from(
-        tileRGBBuffer.buffer,
-      ), {
-        raw: {
-          width: TILE_SIZE * TILE_ZOOM_LEVEL,
-          height: TILE_SIZE * TILE_ZOOM_LEVEL,
-          channels: 3,
+    try {
+      await sharp(
+        Buffer.from(
+          tileRGBBuffer.buffer,
+        ), {
+          raw: {
+            width: TILE_SIZE * TILE_ZOOM_LEVEL,
+            height: TILE_SIZE * TILE_ZOOM_LEVEL,
+            channels: 3,
+          },
         },
-      },
-    ).resize(TILE_SIZE).toFile(filename);
+      ).resize(TILE_SIZE).toFile(filename);
+    } catch (error) {
+      console.error(
+        `Tiling: Error on createZoomedTile:\n${error.message}`,
+      );
+      return false;
+    }
     console.log(
       // eslint-disable-next-line max-len
       `Tiling: Created tile ${filename} with ${na.length} empty subtiles in ${Date.now() - startTime}ms.`,
@@ -247,7 +270,7 @@ export async function createZoomedTile(
  * @param canvasTileFolder root folder where to save texture
  * @param palette Palette to use
  */
-export async function createEmptyTile(
+async function createEmptyTile(
   canvasTileFolder,
   palette,
 ) {
@@ -265,15 +288,22 @@ export async function createEmptyTile(
     tileRGBBuffer[i++] = palette.rgb[2];
   }
   const filename = `${canvasTileFolder}/emptytile.png`;
-  await sharp(Buffer.from(tileRGBBuffer.buffer), {
-    raw: {
-      width: TILE_SIZE,
-      height: TILE_SIZE,
-      channels: 3,
-    },
-  })
-    .png({ options: { compressionLevel: 6 } })
-    .toFile(filename);
+  try {
+    await sharp(Buffer.from(tileRGBBuffer.buffer), {
+      raw: {
+        width: TILE_SIZE,
+        height: TILE_SIZE,
+        channels: 3,
+      },
+    })
+      .png({ options: { compressionLevel: 6 } })
+      .toFile(filename);
+  } catch (error) {
+    console.error(
+      `Tiling: Error on createEmptyTile:\n${error.message}`,
+    );
+    return;
+  }
   console.log(`Tiling: Created empty tile at ${filename}`);
 }
 
@@ -281,18 +311,18 @@ export async function createEmptyTile(
  * created 4096x4096 texture of default canvas
  * @param redisClient redis instance
  * @param canvasId numberical Id of canvas
- * @param canvasSize size of canvas
+ * @param canvas canvas data
  * @param canvasTileFolder root folder where to save texture
- * @param palette Palette to use
  *
  */
 export async function createTexture(
   redisClient,
   canvasId,
-  canvasSize,
+  canvas,
   canvasTileFolder,
-  palette,
 ) {
+  const palette = new Palette(canvas.colors);
+  const canvasSize = canvas.size;
   // dont create textures larger than 4096
   const targetSize = Math.min(canvasSize, 4096);
   const amount = targetSize / TILE_SIZE;
@@ -310,8 +340,15 @@ export async function createTexture(
           na.push([dx, dy]);
           continue;
         }
-        chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
-        addRGBSubtiletoTile(amount, [dx, dy], chunk, textureBuffer);
+        try {
+          chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
+          addRGBSubtiletoTile(amount, [dx, dy], chunk, textureBuffer);
+        } catch (error) {
+          console.error(
+            // eslint-disable-next-line max-len
+            `Tiling: Error on createTexture in chunk ${chunkfile}:\n${error.message}`,
+          );
+        }
       }
     }
   } else {
@@ -339,15 +376,22 @@ export async function createTexture(
   });
 
   const filename = `${canvasTileFolder}/texture.png`;
-  await sharp(
-    Buffer.from(textureBuffer.buffer), {
-      raw: {
-        width: targetSize,
-        height: targetSize,
-        channels: 3,
+  try {
+    await sharp(
+      Buffer.from(textureBuffer.buffer), {
+        raw: {
+          width: targetSize,
+          height: targetSize,
+          channels: 3,
+        },
       },
-    },
-  ).toFile(filename);
+    ).toFile(filename);
+  } catch (error) {
+    console.error(
+      `Tiling: Error on createTexture:\n${error.message}`,
+    );
+    return;
+  }
   console.log(
     `Tiling: Created texture in ${(Date.now() - startTime) / 1000}s.`,
   );
@@ -356,24 +400,24 @@ export async function createTexture(
 /*
  * Create all tiles
  * @param redisClient redis instance
- * @param canvasSize dimension of the canvas (pixels width/height)
  * @param canvasId id of the canvas
- * @param canvasTileFolder root foler where to save tiles
- * @param palette Palette of canvas
+ * @param canvas canvas data
+ * @param canvasTileFolder folder for tiles
  * @param force overwrite existing tiles
  */
 export async function initializeTiles(
   redisClient,
-  canvasSize,
   canvasId,
+  canvas,
   canvasTileFolder,
-  palette,
   force = false,
 ) {
   console.log(
     `Tiling: Initializing tiles in ${canvasTileFolder}, forceint = ${force}`,
   );
   const startTime = Date.now();
+  const palette = new Palette(canvas.colors);
+  const canvasSize = canvas.size;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
   // empty tile
   await createEmptyTile(canvasTileFolder, palette);
@@ -440,9 +484,8 @@ export async function initializeTiles(
   await createTexture(
     redisClient,
     canvasId,
-    canvasSize,
+    canvas,
     canvasTileFolder,
-    palette,
   );
   //--
   console.log(

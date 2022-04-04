@@ -2,21 +2,14 @@
  * Palette
  */
 
-export type ColorIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-  8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
-  16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 |
-  24 | 25 | 26 | 27 | 28 | 29 | 30 | 31;
-export type Color = string;
-
-
 class Palette {
-  length: number;
-  rgb: Uint8Array;
-  colors: Array<Color>;
-  abgr: Uint32Array;
-  fl: Array<number>;
+  length;
+  rgb;
+  colors;
+  abgr;
+  fl;
 
-  constructor(colors: Array) {
+  constructor(colors) {
     this.length = colors.length;
     this.rgb = new Uint8Array(this.length * 3);
     this.colors = new Array(this.length);
@@ -42,7 +35,7 @@ class Palette {
   * @param color Index of color in palette
   * @return dark True if color is dark
   */
-  isDark(color: number) {
+  isDark(color) {
     color *= 3;
     const r = this.rgb[color++];
     const g = this.rgb[color++];
@@ -59,10 +52,10 @@ class Palette {
    * @return index of color
    */
   getIndexOfColor(
-    r: number,
-    g: number,
-    b: number,
-  ): ColorIndex {
+    r,
+    g,
+    b,
+  ) {
     const { rgb } = this;
     let i = rgb.length / 3;
     while (i > 0) {
@@ -86,10 +79,10 @@ class Palette {
    * @return index of color
    */
   getClosestIndexOfColor(
-    r: number,
-    g: number,
-    b: number,
-  ): ColorIndex {
+    r,
+    g,
+    b,
+  ) {
     const { rgb } = this;
     let i = rgb.length / 3;
     let closestIndex = 0;
@@ -113,10 +106,10 @@ class Palette {
    * @param chunkBuffer Buffer of indexed pixels
    * @return ABRG Buffer
    */
-  buffer2ABGR(chunkBuffer: Buffer): Uint32Array {
+  buffer2ABGR(chunkBuffer) {
     const { length } = chunkBuffer;
     const colors = new Uint32Array(length);
-    let value: number;
+    let value;
     const buffer = chunkBuffer;
 
     let pos = 0;
@@ -132,11 +125,11 @@ class Palette {
    * @param chunkBuffer Buffer of indexed pixels
    * @return RGB Buffer
    */
-  buffer2RGB(chunkBuffer: Buffer): Uint8Array {
+  buffer2RGB(chunkBuffer) {
     const { length } = chunkBuffer;
     const colors = new Uint8Array(length * 3);
-    let color: number;
-    let value: number;
+    let color;
+    let value;
     const buffer = chunkBuffer;
 
     let c = 0;
@@ -157,7 +150,7 @@ class Palette {
    * @param length Length of needed Buffer
    * @return RGB Buffer of wanted size with just one color
    */
-  oneColorBuffer(color: ColorIndex, length: number) {
+  oneColorBuffer(color, length) {
     const buffer = new Uint8Array(length * 3);
     const r = this.rgb[color * 3];
     const g = this.rgb[color * 3 + 1];
@@ -173,7 +166,7 @@ class Palette {
   }
 }
 
-export const COLORS_RGB: Uint8Array = new Uint8Array([
+export const COLORS_RGB = new Uint8Array([
   202, 227, 255, // first color is unset pixel in ocean
   255, 255, 255, // second color is unset pixel on land
   255, 255, 255, // white
@@ -209,9 +202,9 @@ export const COLORS_RGB: Uint8Array = new Uint8Array([
 ]);
 
 export const COLORS_AMOUNT = COLORS_RGB.length / 3;
-export const COLORS: Array<Color> = new Array(COLORS_AMOUNT);
-export const COLORS_ABGR: Uint32Array = new Uint32Array(COLORS_AMOUNT);
-export const TRANSPARENT: ColorIndex = 0;
+export const COLORS = new Array(COLORS_AMOUNT);
+export const COLORS_ABGR = new Uint32Array(COLORS_AMOUNT);
+export const TRANSPARENT = 0;
 
 
 export default Palette;
