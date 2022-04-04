@@ -4,6 +4,7 @@
  */
 
 import fs from 'fs';
+import { Worker } from 'worker_threads';
 
 import logger from './logger';
 // eslint-disable-next-line import/no-unresolved

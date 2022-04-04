@@ -5,8 +5,8 @@
 /* eslint-disable no-console */
 
 import { isMainThread, parentPort } from 'worker_threads';
-import RedisCanvas from '../data/models/RedisCanvas';
 
+import redisClient from '../data/redis';
 import {
   createZoomTileFromChunk,
   createZoomedTile,
@@ -24,16 +24,16 @@ parentPort.on('message', async (msg) => {
   const { task, args } = msg;
   switch (task) {
     case 'createZoomTileFromChunk':
-      createZoomTileFromChunk(RedisCanvas, ...args);
+      createZoomTileFromChunk(redisClient, ...args);
       break;
     case 'createZoomedTile':
       createZoomedTile(...args);
       break;
     case 'createTexture':
-      createTexture(RedisCanvas, ...args);
+      createTexture(redisClient, ...args);
       break;
     case 'initializeTiles':
-      await initializeTiles(RedisCanvas, ...args);
+      await initializeTiles(redisClient, ...args);
       parentPort.postMessage('Done!');
       break;
     default:

@@ -114,7 +114,7 @@ function tileFileName(canvasTileFolder, cell) {
 
 /*
  * @param canvasSize dimension of the canvas (pixels width/height)
- * @param redisCanvas Redis Canvas object
+ * @param redisClient redis instance
  * @param canvasId id of the canvas
  * @param canvasTileFolder root folder where to save tiles
  * @param palette Palette to use
@@ -122,13 +122,13 @@ function tileFileName(canvasTileFolder, cell) {
  * @return true if successfully created tile, false if tile empty
  */
 export async function createZoomTileFromChunk(
-  redisCanvas: Object,
+  redisClient,
   canvasSize,
   canvasId,
   canvasTileFolder,
   palette,
   cell,
-): boolean {
+) {
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
   const tileRGBBuffer = new Uint8Array(
@@ -142,7 +142,9 @@ export async function createZoomTileFromChunk(
   let chunk = null;
   for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
     for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
-      chunk = await redisCanvas.getChunk(canvasId, xabs + dx, yabs + dy);
+      chunk = await redisClient.getAsync(
+        `ch:${canvasId}:${xabs + dx}:${yabs + dy}`,
+      );
       if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
         na.push([dx, dy]);
         continue;
@@ -193,7 +195,7 @@ export async function createZoomedTile(
   canvasTileFolder,
   palette,
   cell,
-): boolean {
+) {
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
   );
@@ -277,7 +279,7 @@ export async function createEmptyTile(
 
 /*
  * created 4096x4096 texture of default canvas
- * @param redisCanvas Redis Canvas object
+ * @param redisClient redis instance
  * @param canvasId numberical Id of canvas
  * @param canvasSize size of canvas
  * @param canvasTileFolder root folder where to save texture
@@ -285,7 +287,7 @@ export async function createEmptyTile(
  *
  */
 export async function createTexture(
-  redisCanvas: Object,
+  redisClient,
   canvasId,
   canvasSize,
   canvasTileFolder,
@@ -315,7 +317,7 @@ export async function createTexture(
   } else {
     for (let dy = 0; dy < amount; dy += 1) {
       for (let dx = 0; dx < amount; dx += 1) {
-        chunk = await redisCanvas.getChunk(canvasId, dx, dy);
+        chunk = await redisClient.getAsync(`ch:${canvasId}:${dx}:${dy}`);
         if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
           na.push([dx, dy]);
           continue;
@@ -353,7 +355,7 @@ export async function createTexture(
 
 /*
  * Create all tiles
- * @param redisCanvas Redis Canvas object
+ * @param redisClient redis instance
  * @param canvasSize dimension of the canvas (pixels width/height)
  * @param canvasId id of the canvas
  * @param canvasTileFolder root foler where to save tiles
@@ -361,12 +363,12 @@ export async function createTexture(
  * @param force overwrite existing tiles
  */
 export async function initializeTiles(
-  redisCanvas: Object,
+  redisClient,
   canvasSize,
   canvasId,
   canvasTileFolder,
   palette,
-  force: boolean = false,
+  force = false,
 ) {
   console.log(
     `Tiling: Initializing tiles in ${canvasTileFolder}, forceint = ${force}`,
@@ -390,7 +392,7 @@ export async function initializeTiles(
       const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.png`;
       if (force || !fs.existsSync(filename)) {
         const ret = await createZoomTileFromChunk(
-          redisCanvas,
+          redisClient,
           canvasSize,
           canvasId,
           canvasTileFolder,
@@ -436,7 +438,7 @@ export async function initializeTiles(
   }
   // create snapshot texture
   await createTexture(
-    redisCanvas,
+    redisClient,
     canvasId,
     canvasSize,
     canvasTileFolder,
