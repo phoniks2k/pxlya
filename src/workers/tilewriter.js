@@ -22,21 +22,27 @@ if (isMainThread) {
 
 parentPort.on('message', async (msg) => {
   const { task, args } = msg;
-  switch (task) {
-    case 'createZoomTileFromChunk':
-      createZoomTileFromChunk(redisClient, ...args);
-      break;
-    case 'createZoomedTile':
-      createZoomedTile(...args);
-      break;
-    case 'createTexture':
-      createTexture(redisClient, ...args);
-      break;
-    case 'initializeTiles':
-      await initializeTiles(redisClient, ...args);
-      parentPort.postMessage('Done!');
-      break;
-    default:
-      console.warn(`Tiling: Main thread requested unknown task ${task}`);
+  try {
+    switch (task) {
+      case 'createZoomTileFromChunk':
+        createZoomTileFromChunk(redisClient, ...args);
+        break;
+      case 'createZoomedTile':
+        createZoomedTile(...args);
+        break;
+      case 'createTexture':
+        createTexture(redisClient, ...args);
+        break;
+      case 'initializeTiles':
+        await initializeTiles(redisClient, ...args);
+        parentPort.postMessage('Done!');
+        break;
+      default:
+        console.warn(`Tiling: Main thread requested unknown task ${task}`);
+    }
+  } catch (error) {
+    console.warn(
+      `Tiling: Error on executing task ${task} args ${args}:\n${error.message}`,
+    );
   }
 });
