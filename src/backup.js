@@ -12,12 +12,12 @@
 /* eslint-disable no-console */
 
 import fs from 'fs';
+import os from 'os';
+import { spawn } from 'child_process';
 import path from 'path';
 import redis from 'redis';
 import bluebird from 'bluebird';
 
-import process from 'process';
-import { spawn } from 'child_process';
 
 import {
   updateBackupRedis,
@@ -30,15 +30,13 @@ import canvases from './canvases.json';
 /*
  * use low cpu priority
  */
-const priority = 15;
-const proc = spawn('renice', [priority, process.pid]);
-proc.on('exit', (code) => {
-  if (code !== 0) {
-    console.log(`renice failed with code ${code}`);
-  }
-  console.log('Using low cpu priority');
-});
-// -------------------
+const PRIORITY = 15;
+console.log(`Setting priority for the current process to ${PRIORITY}`);
+try {
+  os.setPriority(PRIORITY);
+} catch (err) {
+  console.log(`: error occurred${err}`);
+}
 
 
 bluebird.promisifyAll(redis.RedisClient.prototype);
