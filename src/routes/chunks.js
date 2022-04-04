@@ -55,7 +55,7 @@ export default async (req: Request, res: Response, next) => {
     }
 
     res.set({
-      'Cache-Control': `public, s-maxage=${60}, max-age=${50}`, // seconds
+      'Cache-Control': `public, s-maxage=${60 * 2}, max-age=${50 * 2}`, // seconds
       'Content-Type': 'application/octet-stream',
     });
 
