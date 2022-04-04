@@ -3,53 +3,53 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/core/ChatProvider.js:350
+#: src/core/ChatProvider.js:370
 msgid "You can not send chat messages with proxy"
 msgstr ""
 
-#: src/core/ChatProvider.js:364
+#: src/core/ChatProvider.js:384
 #, javascript-format
 msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
 msgstr ""
 
-#: src/core/ChatProvider.js:368
+#: src/core/ChatProvider.js:388
 msgid "You don't have access to this channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:384
+#: src/core/ChatProvider.js:404
 msgid "Your mail has to be verified in order to chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:389
+#: src/core/ChatProvider.js:409
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr ""
 
-#: src/core/ChatProvider.js:394
+#: src/core/ChatProvider.js:414
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr ""
 
-#: src/core/ChatProvider.js:396
+#: src/core/ChatProvider.js:416
 msgid "You are muted for another ${ muted } seconds"
 msgstr ""
 
-#: src/core/ChatProvider.js:404
+#: src/core/ChatProvider.js:424
 msgid "Ow no! Spam protection decided to mute you"
 msgstr ""
 
-#: src/core/ChatProvider.js:415
+#: src/core/ChatProvider.js:435
 msgid "You can't send a message this long :("
 msgstr ""
 
-#: src/core/ChatProvider.js:419
+#: src/core/ChatProvider.js:439
 msgid "Please use int channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:423
+#: src/core/ChatProvider.js:443
 msgid "Your country is temporary muted from chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:431
+#: src/core/ChatProvider.js:451
 msgid "Stop flooding."
 msgstr ""
 
@@ -245,15 +245,15 @@ msgstr ""
 msgid "Server error occured"
 msgstr ""
 
-#: src/routes/api/modtools.js:50
+#: src/routes/api/modtools.js:52
 msgid "You are not logged in"
 msgstr ""
 
-#: src/routes/api/modtools.js:62
+#: src/routes/api/modtools.js:64
 msgid "You are not allowed to access this page"
 msgstr ""
 
-#: src/routes/api/modtools.js:128
+#: src/routes/api/modtools.js:166
 msgid "Just admins can do that"
 msgstr ""
 
@@ -282,7 +282,7 @@ msgid "Name can't be empty."
 msgstr ""
 
 #: src/utils/validation.js:31
-msgid "Name must be at least 4 characters long"
+msgid "Name must be at least 2 characters long"
 msgstr ""
 
 #: src/utils/validation.js:32

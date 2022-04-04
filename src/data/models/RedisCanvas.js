@@ -8,7 +8,6 @@ import {
 } from '../../core/constants';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
-import logger from '../../core/logger';
 
 import redis from '../redis';
 
@@ -48,7 +47,8 @@ class RedisCanvas {
   static async setChunk(i: number, j: number, chunk: Uint8Array,
     canvasId: number) {
     if (chunk.length !== TILE_SIZE * TILE_SIZE) {
-      logger.error(`Tried to set chunk with invalid length ${chunk.length}!`);
+      // eslint-disable-next-line no-console
+      console.error(`Tried to set chunk with invalid length ${chunk.length}!`);
       return false;
     }
     const key = `ch:${canvasId}:${i}:${j}`;

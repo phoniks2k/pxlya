@@ -1,5 +1,5 @@
 /*
- * creation of tiles
+ * creation of zoom tiles
  *
  */
 
@@ -16,17 +16,15 @@ import {
   TILE_SIZE,
   TILE_ZOOM_LEVEL,
 } from './constants';
-import {
-  createZoomTileFromChunk,
-  createZoomedTile,
-  createTexture,
-  initializeTiles,
-} from './Tile';
 import { mod, getMaxTiledZoom } from './utils';
 
 
-// Array that holds cells of all changed base zoomlevel tiles
 const CanvasUpdaters = {};
+
+/*
+ * worker thread
+ */
+const worker = new Worker('./workers/tilewriter.js');
 
 class CanvasUpdater {
   TileLoadingQueues;
@@ -63,30 +61,37 @@ class CanvasUpdater {
       const cy = Math.floor(tile / width);
 
       if (zoom === this.maxTiledZoom - 1) {
-        await createZoomTileFromChunk(
-          RedisCanvas,
-          this.canvas.size,
-          this.id,
-          this.canvasTileFolder,
-          this.palette,
-          [cx, cy],
-        );
+        worker.postMessage({
+          task: 'createZoomTileFromChunk',
+          args: [
+            this.canvas.size,
+            this.id,
+            this.canvasTileFolder,
+            this.palette,
+            [cx, cy],
+          ],
+        });
       } else if (zoom !== this.maxTiledZoom) {
-        await createZoomedTile(
-          this.canvasTileFolder,
-          this.palette,
-          [zoom, cx, cy],
-        );
+        worker.postMessage({
+          task: 'createZoomedTile',
+          args: [
+            this.canvasTileFolder,
+            this.palette,
+            [zoom, cx, cy],
+          ],
+        });
       }
 
       if (zoom === 0) {
-        createTexture(
-          RedisCanvas,
-          this.id,
-          this.canvas.size,
-          this.canvasTileFolder,
-          this.palette,
-        );
+        worker.postMessage({
+          task: 'createTexture',
+          args: [
+            this.id,
+            this.canvas.size,
+            this.canvasTileFolder,
+            this.palette,
+          ],
+        });
       } else {
         const [ucx, ucy] = [cx, cy].map((z) => Math.floor(z / 4));
         const upperTile = ucx + ucy * (TILE_ZOOM_LEVEL ** (zoom - 1));
@@ -115,6 +120,28 @@ class CanvasUpdater {
     );
   }
 
+  initializeTiles() {
+    return new Promise((resolve) => {
+      worker.postMessage({
+        task: 'initializeTiles',
+        args: [
+          this.canvas.size,
+          this.id,
+          this.canvasTileFolder,
+          this.palette,
+          false,
+        ],
+      });
+      worker.once('message', (msg) => {
+        logger.info(
+          // eslint-disable-next-line max-len
+          `Tiling: Worker thread finished initializing Tiles with message ${msg}`,
+        );
+        resolve();
+      });
+    });
+  }
+
   /*
    * initialize queues and start loops for updating tiles
    */
@@ -127,14 +154,7 @@ class CanvasUpdater {
       logger.warn(
         'Tiling: tiledir empty, will initialize it, this can take some time',
       );
-      await initializeTiles(
-        RedisCanvas,
-        this.canvas.size,
-        this.id,
-        this.canvasTileFolder,
-        this.palette,
-        false,
-      );
+      await this.initializeTiles();
     }
     for (let c = 0; c < this.maxTiledZoom; c += 1) {
       this.TileLoadingQueues.push([]);

@@ -51,6 +51,7 @@ export default ({
     entry: {
       server: [path.resolve(__dirname, 'src', 'server.js')],
       backup: [path.resolve(__dirname, 'src', 'backup.js')],
+      'workers/tilewriter': [path.resolve(__dirname, 'src', 'workers', 'tilewriter.js')],
       captchaserver: [path.resolve(__dirname, 'src', 'captchaserver.js')],
     },
 

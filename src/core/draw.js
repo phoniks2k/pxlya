@@ -1,9 +1,7 @@
 /*
  * draw pixel on canvas
  */
-import { using } from 'bluebird';
 
-import { redlock } from '../data/redis';
 import {
   getPixelFromChunkOffset,
 } from './utils';
@@ -374,77 +372,4 @@ export async function drawByCoords(
     waitSeconds: waitLeft / 1000,
     coolDownSeconds: coolDown / 1000,
   };
-}
-
-
-/**
- * This function is a wrapper for draw. It fixes race condition exploits
- * It permits just placing one pixel at a time per user.
- *
- * @param user
- * @param canvasId
- * @param color
- * @param x
- * @param y
- * @param z (optional for 3d canvas)
- */
-export function drawSafeByCoords(
-  user,
-  canvasId,
-  color,
-  x,
-  y,
-  z = null,
-) {
-  // can just check for one unique occurence,
-  // we use ip, because id for logged out users is
-  // always null
-  const userId = user.ip;
-
-  return new Promise((resolve) => {
-    using(
-      redlock.disposer(`locks:${userId}`, 5000, logger.error),
-      async () => {
-        const ret = await drawByCoords(user, canvasId, color, x, y, z);
-        resolve(ret);
-      },
-    ); // <-- unlock is automatically handled by bluebird
-  });
-}
-
-
-/**
- * This function is a wrapper for draw. It fixes race condition exploits
- * It permits just placing one pixel at a time per user.
- *
- * @param user
- * @param canvasId
- * @param i Chunk coordinates
- * @param j
- * @param pixels Array of indiviual pixels within the chunk, with:
- *           [[offset, color], [offset2, color2],...]
- *           Offset is the offset of the pixel within the chunk
- * @return Promise<Object>
- */
-export function drawSafeByOffsets(
-  user,
-  canvasId,
-  i,
-  j,
-  pixels,
-) {
-  // can just check for one unique occurence,
-  // we use ip, because id for logged out users is
-  // always null
-  const userId = user.ip;
-
-  return new Promise((resolve) => {
-    using(
-      redlock.disposer(`locks:${userId}`, 5000, logger.error),
-      async () => {
-        const ret = await drawByOffsets(user, canvasId, i, j, pixels);
-        resolve(ret);
-      },
-    ); // <-- unlock is automatically handled by bluebird
-  });
 }

@@ -1,6 +1,10 @@
 /*
- * * basic functions for creating zommed tiles
+ * basic functions for creating zommed tiles
+ * Used by tilewriter worker thread, so dont import too much.
+ *
  * */
+
+/* eslint-disable no-console */
 
 // Tile creation is allowed to be slow
 /* eslint-disable no-await-in-loop */
@@ -8,7 +12,6 @@
 import sharp from 'sharp';
 import fs from 'fs';
 
-import logger from './logger';
 import { getMaxTiledZoom } from './utils';
 import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
 
@@ -171,7 +174,7 @@ export async function createZoomTileFromChunk(
       .resize(TILE_SIZE)
       .png({ options: { compressionLevel: 6 } })
       .toFile(filename);
-    logger.info(
+    console.log(
       // eslint-disable-next-line max-len
       `Tiling: Created Tile ${filename} with ${na.length} empty chunks in ${Date.now() - startTime}ms`,
     );
@@ -228,7 +231,7 @@ export async function createZoomedTile(
         },
       },
     ).resize(TILE_SIZE).toFile(filename);
-    logger.info(
+    console.log(
       // eslint-disable-next-line max-len
       `Tiling: Created tile ${filename} with ${na.length} empty subtiles in ${Date.now() - startTime}ms.`,
     );
@@ -269,7 +272,7 @@ export async function createEmptyTile(
   })
     .png({ options: { compressionLevel: 6 } })
     .toFile(filename);
-  logger.info(`Tiling: Created empty tile at ${filename}`);
+  console.log(`Tiling: Created empty tile at ${filename}`);
 }
 
 /*
@@ -343,7 +346,7 @@ export async function createTexture(
       },
     },
   ).toFile(filename);
-  logger.info(
+  console.log(
     `Tiling: Created texture in ${(Date.now() - startTime) / 1000}s.`,
   );
 }
@@ -365,7 +368,7 @@ export async function initializeTiles(
   palette,
   force: boolean = false,
 ) {
-  logger.info(
+  console.log(
     `Tiling: Initializing tiles in ${canvasTileFolder}, forceint = ${force}`,
   );
   const startTime = Date.now();
@@ -375,7 +378,7 @@ export async function initializeTiles(
   // base zoomlevel
   let zoom = maxTiledZoom - 1;
   let zoomDir = `${canvasTileFolder}/${zoom}`;
-  logger.info(`Tiling: Checking zoomlevel ${zoomDir}`);
+  console.log(`Tiling: Checking zoomlevel ${zoomDir}`);
   if (!fs.existsSync(zoomDir)) fs.mkdirSync(zoomDir);
   let cnt = 0;
   let cnts = 0;
@@ -399,7 +402,7 @@ export async function initializeTiles(
       }
     }
   }
-  logger.info(
+  console.log(
     `Tiling: Created ${cnts} / ${cnt} tiles for basezoom of canvas${canvasId}`,
   );
   // zoomlevels that are created from other zoomlevels
@@ -407,7 +410,7 @@ export async function initializeTiles(
     cnt = 0;
     cnts = 0;
     zoomDir = `${canvasTileFolder}/${zoom}`;
-    logger.info(`Tiling: Checking zoomlevel ${zoomDir}`);
+    console.log(`Tiling: Checking zoomlevel ${zoomDir}`);
     if (!fs.existsSync(zoomDir)) fs.mkdirSync(zoomDir);
     const maxZ = TILE_ZOOM_LEVEL ** zoom;
     for (let cx = 0; cx < maxZ; cx += 1) {
@@ -426,7 +429,7 @@ export async function initializeTiles(
         }
       }
     }
-    logger.info(
+    console.log(
       // eslint-disable-next-line max-len
       `Tiling: Created ${cnts} / ${cnt} tiles for zoom ${zoom} for canvas${canvasId}`,
     );
@@ -440,7 +443,7 @@ export async function initializeTiles(
     palette,
   );
   //--
-  logger.info(
+  console.log(
     // eslint-disable-next-line max-len
     `Tiling: Elapsed Time: ${Math.round((Date.now() - startTime) / 1000)} for canvas${canvasId}`,
   );
