@@ -15,6 +15,13 @@ import {
 } from '../core/constants';
 import logger from '../core/logger';
 
+const chunkEtags = new Map();
+RedisCanvas.setChunkChangeCallback((canvasId, cell) => {
+  const [x, y] = cell;
+  const ret = chunkEtags.delete(`${canvasId}:${x}:${y}`);
+  logger.info(`etag delete ${ret}`);
+});
+
 /*
  * Send binary chunk to the client
  */
@@ -23,12 +30,10 @@ export default async (req: Request, res: Response, next) => {
     c: paramC,
     x: paramX,
     y: paramY,
-    z: paramZ,
   } = req.params;
   const c = parseInt(paramC, 10);
   const x = parseInt(paramX, 10);
   const y = parseInt(paramY, 10);
-  const z = (paramZ) ? parseInt(paramZ, 10) : null;
   try {
     // botters where using cachebreakers to update via chunk API
     // lets not allow that for now
@@ -37,17 +42,24 @@ export default async (req: Request, res: Response, next) => {
       return;
     }
 
+    const etagKey = `${c}:${x}:${y}`;
+    let curEtag = chunkEtags.get(etagKey);
+    const preEtag = req.headers['if-none-match'];
+
+    if (curEtag && preEtag === curEtag) {
+      logger.info(`etag ${curEtag} still the same`);
+      res.status(304).end();
+      return;
+    }
+
     let chunk;
-    // z is in preeration for 3d chunks that are also
-    // divided in height, which is not used yet
-    // - this is not used and probably won't ever be used
     try {
       const stime = Date.now();
-      chunk = await RedisCanvas.getChunk(c, x, y, z);
+      chunk = await RedisCanvas.getChunk(c, x, y);
       const dur = Date.now() - stime;
       if (dur > 1000) {
         // eslint-disable-next-line max-len
-        logger.warn(`Long redis response times of ${dur}ms for chunk ${c}:${x},${y},${z}`);
+        logger.warn(`Long redis response times of ${dur}ms for chunk ${c}:${x},${y}`);
       }
     } catch {
       res.status(503).end();
@@ -71,11 +83,11 @@ export default async (req: Request, res: Response, next) => {
       logger.error(`Chunk ${x},${y}/${c} has invalid length ${chunk.length}!`);
     }
 
-    const curEtag = etag(chunk, { weak: true });
+    curEtag = etag(chunk, { weak: true });
     res.set({
       ETag: curEtag,
     });
-    const preEtag = req.headers['if-none-match'];
+    chunkEtags.set(etagKey, curEtag);
     if (preEtag === curEtag) {
       res.status(304).end();
       return;

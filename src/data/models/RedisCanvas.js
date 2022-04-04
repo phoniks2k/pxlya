@@ -26,10 +26,16 @@ const chunks: Set<string> = new Set();
 
 
 class RedisCanvas {
-  // callback that gets informed about chunk changes
-  static registerChunkChange = () => undefined;
+  // array of callback functions that gets informed about chunk changes
+  static registerChunkChange = [];
   static setChunkChangeCallback(cb) {
-    RedisCanvas.registerChunkChange = cb;
+    RedisCanvas.registerChunkChange.push(cb);
+  }
+
+  static execChunkChangeCallback(canvasId, cell) {
+    for (let i = 0; i < RedisCanvas.registerChunkChange.length; i += 1) {
+      RedisCanvas.registerChunkChange[i](canvasId, cell);
+    }
   }
 
   static getChunk(
@@ -53,7 +59,7 @@ class RedisCanvas {
     }
     const key = `ch:${canvasId}:${i}:${j}`;
     await redis.setAsync(key, Buffer.from(chunk.buffer));
-    RedisCanvas.registerChunkChange(canvasId, [i, j]);
+    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
     return true;
   }
 
@@ -61,7 +67,7 @@ class RedisCanvas {
     const key = `ch:${canvasId}:${i}:${j}`;
     await redis.delAsync(key);
     chunks.delete(key);
-    RedisCanvas.registerChunkChange(canvasId, [i, j]);
+    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
     return true;
   }
 
@@ -98,7 +104,7 @@ class RedisCanvas {
 
     const args = [key, 'SET', UINT_SIZE, `#${offset}`, color];
     await redis.sendCommandAsync('bitfield', args);
-    RedisCanvas.registerChunkChange(canvasId, [i, j]);
+    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
   }
 
   static async getPixelIfExists(
