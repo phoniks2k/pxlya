@@ -19,7 +19,6 @@ const chunkEtags = new Map();
 RedisCanvas.setChunkChangeCallback((canvasId, cell) => {
   const [x, y] = cell;
   const ret = chunkEtags.delete(`${canvasId}:${x}:${y}`);
-  logger.info(`etag delete ${ret}`);
 });
 
 /*
@@ -47,7 +46,6 @@ export default async (req: Request, res: Response, next) => {
     const preEtag = req.headers['if-none-match'];
 
     if (curEtag && preEtag === curEtag) {
-      logger.info(`etag ${curEtag} still the same`);
       res.status(304).end();
       return;
     }
