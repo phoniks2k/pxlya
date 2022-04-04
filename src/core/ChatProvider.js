@@ -264,31 +264,41 @@ export class ChatProvider {
     return this.chatMessageBuffer.getMessages(cid, limit);
   }
 
-  adminCommands(message: string, channelId: number) {
+  adminCommands(message, channelId, user) {
     // admin commands
     const cmdArr = message.split(' ');
     const cmd = cmdArr[0].substring(1);
     const args = cmdArr.slice(1);
+    const initiator = `@[${user.getName()}](${user.id})`;
     switch (cmd) {
       case 'mute': {
         const timeMin = Number(args.slice(-1));
         if (Number.isNaN(timeMin)) {
           return this.mute(
             getUserFromMd(args.join(' ')),
-            channelId,
+            {
+              printChannel: channelId,
+              initiator,
+            },
           );
         }
         return this.mute(
           getUserFromMd(args.slice(0, -1).join(' ')),
-          channelId,
-          timeMin,
+          {
+            printChannel: channelId,
+            initiator,
+            duration: timeMin,
+          },
         );
       }
 
       case 'unmute':
         return this.unmute(
           getUserFromMd(args.join(' ')),
-          channelId,
+          {
+            printChannel: channelId,
+            initiator,
+          },
         );
 
       case 'mutec': {
@@ -300,7 +310,7 @@ export class ChatProvider {
           this.mutedCountries.push(cc);
           this.broadcastChatMessage(
             'info',
-            `Country ${cc} has been muted`,
+            `Country ${cc} has been muted by ${initiator}`,
             channelId,
             this.infoUserId,
           );
@@ -318,7 +328,7 @@ export class ChatProvider {
           this.mutedCountries = this.mutedCountries.filter((c) => c !== cc);
           this.broadcastChatMessage(
             'info',
-            `Country ${cc} has been unmuted`,
+            `Country ${cc} has been unmuted by ${initiator}`,
             channelId,
             this.infoUserId,
           );
@@ -327,7 +337,7 @@ export class ChatProvider {
         if (this.mutedCountries.length) {
           this.broadcastChatMessage(
             'info',
-            `Countries ${this.mutedCountries} have been unmuted`,
+            `Countries ${this.mutedCountries} unmuted by ${initiator}`,
             channelId,
             this.infoUserId,
           );
@@ -371,7 +381,7 @@ export class ChatProvider {
     }
 
     if (message.charAt(0) === '/' && user.userlvl) {
-      return this.adminCommands(message, channelId);
+      return this.adminCommands(message, channelId, user);
     }
 
     if (!user.rateLimiter) {
@@ -420,7 +430,7 @@ export class ChatProvider {
       const filter = this.filters[i];
       const count = (message.match(filter.regexp) || []).length;
       if (count >= filter.matches) {
-        this.mute(name, channelId, 30);
+        this.mute(name, { duration: 30, printChannel: channelId });
         return t`Ow no! Spam protection decided to mute you`;
       }
     }
@@ -446,7 +456,7 @@ export class ChatProvider {
     if (user.last_message && user.last_message === message) {
       user.message_repeat += 1;
       if (user.message_repeat >= 4) {
-        this.mute(name, channelId, 60);
+        this.mute(name, { duration: 60, printChannel: channelId });
         user.message_repeat = 0;
         return t`Stop flooding.`;
       }
@@ -502,55 +512,76 @@ export class ChatProvider {
     return ttl;
   }
 
-  async mute(plainName, channelId, timeMin = null) {
+  async mute(plainName, opts) {
+    const timeMin = opts.duration || null;
+    const initiator = opts.initiator || null;
+    const printChannel = opts.printChannel || null;
+
     const name = (plainName.startsWith('@'))
       ? plainName.substring(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
       return `Couldn't find user ${name}`;
     }
+    const userPing = `@[${name}](${id})`;
     const key = `mute:${id}`;
     if (timeMin) {
       const ttl = timeMin * 60;
       await redis.setAsync(key, '', 'EX', ttl);
-      this.broadcastChatMessage(
-        'info',
-        `${name} has been muted for ${timeMin}min`,
-        channelId,
-        this.infoUserId,
-      );
+      if (printChannel) {
+        this.broadcastChatMessage(
+          'info',
+          (initiator)
+            ? `${userPing} has been muted for ${timeMin}min by ${initiator}`
+            : `${userPing} has been muted for ${timeMin}min`,
+          printChannel,
+          this.infoUserId,
+        );
+      }
     } else {
       await redis.setAsync(key, '');
-      this.broadcastChatMessage(
-        'info',
-        `${name} has been muted forever`,
-        channelId,
-        this.infoUserId,
-      );
+      if (printChannel) {
+        this.broadcastChatMessage(
+          'info',
+          (initiator)
+            ? `${userPing} has been muted forever by ${initiator}`
+            : `${userPing} has been muted forever`,
+          printChannel,
+          this.infoUserId,
+        );
+      }
     }
-    logger.info(`Muted user ${id}`);
+    logger.info(`Muted user ${userPing}`);
     return null;
   }
 
-  async unmute(plainName, channelId) {
+  async unmute(plainName, opts) {
+    const initiator = opts.initiator || null;
+    const printChannel = opts.printChannel || null;
+
     const name = (plainName.startsWith('@'))
       ? plainName.substring(1) : plainName;
     const id = await User.name2Id(name);
     if (!id) {
       return `Couldn't find user ${name}`;
     }
+    const userPing = `@[${name}](${id})`;
     const key = `mute:${id}`;
     const delKeys = await redis.delAsync(key);
     if (delKeys !== 1) {
-      return `User ${name} is not muted`;
+      return `User ${userPing} is not muted`;
     }
-    this.broadcastChatMessage(
-      'info',
-      `${name} has been unmuted`,
-      channelId,
-      this.infoUserId,
-    );
-    logger.info(`Unmuted user ${id}`);
+    if (printChannel) {
+      this.broadcastChatMessage(
+        'info',
+        (initiator)
+          ? `${userPing} has been unmuted by ${initiator}`
+          : `${userPing} has been unmuted`,
+        printChannel,
+        this.infoUserId,
+      );
+    }
+    logger.info(`Unmuted user ${userPing}`);
     return null;
   }
 }
