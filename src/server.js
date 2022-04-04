@@ -31,7 +31,7 @@ app.disable('x-powered-by');
 
 
 // Call Garbage Collector every 30 seconds
-setInterval(forceGC, 15 * 60 * SECOND);
+setInterval(forceGC, 10 * 60 * SECOND);
 
 // create http server
 const server = http.createServer(app);

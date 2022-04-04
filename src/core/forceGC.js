@@ -3,7 +3,10 @@
  */
 function forceGC() {
   if (global.gc) {
+    const startTime = Date.now();
     global.gc();
+    // eslint-disable-next-line no-console
+    console.log(`GC took ${Date.now() - startTime}`);
   }
 }
 
