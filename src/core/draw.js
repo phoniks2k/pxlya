@@ -46,6 +46,8 @@ export async function drawByOffsets(
   let rankedPxlCnt = 0;
 
   try {
+    const startTime = Date.now();
+
     const canvas = canvases[canvasId];
     if (!canvas) {
       // canvas doesn't exist
@@ -171,6 +173,14 @@ export async function drawByOffsets(
       // eslint-disable-next-line eqeqeq
       if (canvas.ranked && (canvasId != 0 || y < 14450)) {
         rankedPxlCnt += 1;
+      }
+
+      const duration = Date.now() - startTime;
+      if (duration > 1000) {
+        logger.warn(
+          // eslint-disable-next-line max-len
+          `Long response time of ${duration}ms for placing ${pxlCnt} pixels for user ${user.id || user.ip}`,
+        );
       }
     }
   } catch (e) {
