@@ -55,7 +55,7 @@ export function requestFromQueue(store) {
       'error',
       t`OK`,
     ));
-  }, 5000);
+  }, 15000);
 
   lastRequestValues = pixelQueue.shift();
   const { i, j, pixels } = lastRequestValues;
