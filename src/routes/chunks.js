@@ -45,10 +45,13 @@ export default async (req: Request, res: Response, next) => {
     let curEtag = chunkEtags.get(etagKey);
     const preEtag = req.headers['if-none-match'];
 
+    res.set({
+      'Cache-Control': `public, s-maxage=${60}, max-age=${40}`, // seconds
+    });
+
     if (curEtag && preEtag && preEtag === curEtag) {
       res.set({
         ETag: curEtag,
-        'Cache-Control': `public, s-maxage=${60}, max-age=${40}`, // seconds
       });
       res.status(304).end();
       return;
@@ -67,10 +70,6 @@ export default async (req: Request, res: Response, next) => {
       res.status(503).end();
       return;
     }
-
-    res.set({
-      'Cache-Control': `public, s-maxage=${60}, max-age=${40}`, // seconds
-    });
 
     if (!chunk) {
       res.set({
