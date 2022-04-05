@@ -34,6 +34,7 @@ class Ranks {
   }
 
   async updateRanking() {
+    logger.info('Update pixel rankings');
     // recalculate ranking column
     await Model.query(
       // eslint-disable-next-line max-len

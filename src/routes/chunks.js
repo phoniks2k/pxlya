@@ -18,7 +18,7 @@ import logger from '../core/logger';
 const chunkEtags = new Map();
 RedisCanvas.setChunkChangeCallback((canvasId, cell) => {
   const [x, y] = cell;
-  const ret = chunkEtags.delete(`${canvasId}:${x}:${y}`);
+  chunkEtags.delete(`${canvasId}:${x}:${y}`);
 });
 
 /*
@@ -65,7 +65,7 @@ export default async (req: Request, res: Response, next) => {
     }
 
     res.set({
-      'Cache-Control': `public, s-maxage=${60 * 2}, max-age=${50 * 2}`, // seconds
+      'Cache-Control': `public, s-maxage=${60}, max-age=${40}`, // seconds
       'Content-Type': 'application/octet-stream',
     });
 
