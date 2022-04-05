@@ -46,6 +46,9 @@ export default async (req: Request, res: Response, next) => {
     const preEtag = req.headers['if-none-match'];
 
     if (curEtag && preEtag === curEtag) {
+      res.set({
+        ETag: curEtag,
+      });
       res.status(304).end();
       return;
     }
