@@ -3,15 +3,13 @@
  * the actual notification that a captcha is needed is sent
  * with the pixel return answer when sending apixel on websocket
  *
- * @flow
  */
-import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
 import { checkCaptchaSolution } from '../../utils/captcha';
 import { getIPFromRequest } from '../../utils/ip';
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const ip = getIPFromRequest(req);
   const { t } = req.ttag;
 

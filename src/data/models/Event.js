@@ -26,10 +26,10 @@ export const CANVAS_ID = '0';
  * 2 = lost
  */
 export function setSuccess(success) {
-  return redis.setAsync(EVENT_SUCCESS_KEY, success);
+  return redis.set(EVENT_SUCCESS_KEY, success);
 }
 export async function getSuccess() {
-  const success = await redis.getAsync(EVENT_SUCCESS_KEY);
+  const success = await redis.get(EVENT_SUCCESS_KEY);
   return (success) ? parseInt(success, 10) : 0;
 }
 
@@ -37,7 +37,7 @@ export async function getSuccess() {
  * @return time till next event in seconds
  */
 export async function nextEvent() {
-  const timestamp = await redis.getAsync(EVENT_TIMESTAMP_KEY);
+  const timestamp = await redis.get(EVENT_TIMESTAMP_KEY);
   if (timestamp) {
     return Number(timestamp.toString());
   }
@@ -48,7 +48,7 @@ export async function nextEvent() {
  * @return cell of chunk coordinates of event
  */
 export async function getEventArea() {
-  const pos = await redis.getAsync(EVENT_POSITION_KEY);
+  const pos = await redis.get(EVENT_POSITION_KEY);
   if (pos) {
     return pos.toString().split(':').map((z) => Number(z));
   }
@@ -67,7 +67,7 @@ export async function clearOldEvent() {
     for (let jc = j - 1; jc <= j + 1; jc += 1) {
       for (let ic = i - 1; ic <= i + 1; ic += 1) {
         const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
-        const chunk = await redis.getAsync(chunkKey);
+        const chunk = await redis.get(chunkKey);
         if (!chunk) {
           logger.warn(
             // eslint-disable-next-line max-len
@@ -88,10 +88,10 @@ export async function clearOldEvent() {
           const chunkArray = new Uint8Array(chunk);
           await RedisCanvas.setChunk(ic, jc, chunkArray, CANVAS_ID);
         }
-        await redis.delAsync(chunkKey);
+        await redis.del(chunkKey);
       }
     }
-    await redis.delAsync(EVENT_POSITION_KEY);
+    await redis.del(EVENT_POSITION_KEY);
   }
 }
 
@@ -113,10 +113,10 @@ export async function setNextEvent(minutes, i, j) {
         await RedisCanvas.setPixelInChunk(ic, jc, 0, 0, CANVAS_ID);
       }
       const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
-      await redis.setAsync(chunkKey, chunk);
+      await redis.set(chunkKey, chunk);
     }
   }
-  await redis.setAsync(EVENT_POSITION_KEY, `${i}:${j}`);
+  await redis.set(EVENT_POSITION_KEY, `${i}:${j}`);
   const timestamp = Date.now() + minutes * 60 * 1000;
-  await redis.setAsync(EVENT_TIMESTAMP_KEY, timestamp);
+  await redis.set(EVENT_TIMESTAMP_KEY, timestamp);
 }

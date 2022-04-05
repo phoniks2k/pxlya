@@ -6,7 +6,6 @@
 
 import redis from 'redis';
 import sharp from 'sharp';
-import bluebird from 'bluebird';
 
 import canvases from '../src/canvases.json';
 import Palette from '../src/core/Palette';
@@ -17,8 +16,6 @@ import {
   TILE_SIZE,
 } from '../src/core/constants';
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
 //ATTENTION Make suer to set the rdis URLs right!!!
 const redisurl = "redis://localhost:6379";
 const redisCanvas = redis.createClient(redisurl, { return_buffers: true });
@@ -74,7 +71,7 @@ async function imageABGR2Canvas(
       }
       if (pxlCnt) {
         const key = `ch:${canvasId}:${cx}:${cy}`;
-        await redisCanvas.setAsync(key, Buffer.from(chunk.buffer));
+        await redisCanvas.set(key, Buffer.from(chunk.buffer));
         console.log(`Loaded ${pxlCnt} pixels into chunk ${cx}, ${cy}.`);
         totalPxlCnt += pxlCnt;
       }

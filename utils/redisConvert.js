@@ -6,9 +6,6 @@
 import { TILE_SIZE, CANVAS_SIZE, CANVAS_MIN_XY, CANVAS_MAX_XY } from '../src/core/constants';
 
 import redis from 'redis';
-import bluebird from 'bluebird';
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
 //ATTENTION Make suer to set the rdis URLs right!!!
 const oldurl = "redis://localhost:6380";
 const oldredis = redis.createClient(oldurl, { return_buffers: true });
@@ -95,7 +92,7 @@ async function createBasechunkFromMultipleOldChunks(x: number, y: number): Uint8
   let na = 0;
   for (let dy = 0; dy < CHUNKS_IN_BASETILE; dy += 1) {
     for (let dx = 0; dx < CHUNKS_IN_BASETILE; dx += 1) {
-      const smallchunk = await oldredis.getAsync(`chunk:${xabs + dx}:${yabs + dy}`);
+      const smallchunk = await oldredis.get(`chunk:${xabs + dx}:${yabs + dy}`);
       if (!smallchunk) {
         na++;
         continue;
@@ -118,7 +115,7 @@ async function createBasechunkFromMultipleOldChunks(x: number, y: number): Uint8
   if (na != CHUNKS_IN_BASETILE * CHUNKS_IN_BASETILE) {
     const key = `chunk:${x}:${y}`;
     const setNXArgs = [key, Buffer.from(chunkBuffer.buffer).toString('binary')]
-    await newredis.sendCommandAsync('SETNX', setNXArgs);
+    await newredis.sendCommand('SETNX', setNXArgs);
     console.log("Created Chunk ", key, "with", na, "empty chunks");
   }
 }
@@ -132,7 +129,7 @@ async function createBasechunk(x: number, y: number): Uint8Array {
   const key = `chunk:${x}:${y}`;
   const newChunk = new Uint8Array(TILE_SIZE * TILE_SIZE);
 
-  const smallchunk = await oldredis.getAsync(key);
+  const smallchunk = await oldredis.get(key);
   if (!smallchunk) {
     return
   }
@@ -147,7 +144,7 @@ async function createBasechunk(x: number, y: number): Uint8Array {
   }
 
   const setNXArgs = [key, Buffer.from(newChunk.buffer).toString('binary')]
-  await newredis.sendCommandAsync('SETNX', setNXArgs);
+  await newredis.sendCommand('SETNX', setNXArgs);
   console.log("Created Chunk ", key);
 }
 

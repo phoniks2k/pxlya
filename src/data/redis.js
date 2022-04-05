@@ -1,12 +1,15 @@
 /* @flow */
 
-import bluebird from 'bluebird';
-import redis from 'redis';
+import { createClient } from 'redis';
 
 import { REDIS_URL } from '../core/config';
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-const client = redis.createClient(REDIS_URL, { return_buffers: true });
+const redis = createClient({
+  path: REDIS_URL,
+  // needed for connect-redis
+  legacyMode: true,
+});
 
-export default client;
+export const redisV3 = redis;
+
+export default redis.v4;

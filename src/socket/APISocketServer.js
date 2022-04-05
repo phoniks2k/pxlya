@@ -41,7 +41,7 @@ async function verifyClient(info, done) {
 class APISocketServer {
   wss: WebSocket.Server;
 
-  constructor() {
+  initialize() {
     logger.info('Starting API websocket server');
 
     const wss = new WebSocket.Server({

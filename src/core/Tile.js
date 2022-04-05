@@ -143,7 +143,7 @@ export async function createZoomTileFromChunk(
   let chunk = null;
   for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
     for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
-      chunk = await redisClient.getAsync(
+      chunk = await redisClient.get(
         `ch:${canvasId}:${xabs + dx}:${yabs + dy}`,
       );
       if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
@@ -354,7 +354,7 @@ export async function createTexture(
   } else {
     for (let dy = 0; dy < amount; dy += 1) {
       for (let dx = 0; dx < amount; dx += 1) {
-        chunk = await redisClient.getAsync(`ch:${canvasId}:${dx}:${dy}`);
+        chunk = await redisClient.get(`ch:${canvasId}:${dx}:${dy}`);
         if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
           na.push([dx, dy]);
           continue;

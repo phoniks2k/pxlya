@@ -2,9 +2,6 @@
 //this script just copies chunks from one redis to another
 
 import redis from 'redis';
-import bluebird from 'bluebird';
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
 
 import {
   TILE_SIZE,
@@ -26,10 +23,10 @@ async function copyChunks() {
     for (let y = 0; y < CHUNKS_XY; y++) {
       const oldkey = `ch:2:${x}:${y}`;
       const newkey = `ch:2:${x}:${y}`;
-      const chunk = await oldredis.getAsync(oldkey);
+      const chunk = await oldredis.get(oldkey);
       if (chunk) {
         const setNXArgs = [newkey, chunk];
-        await newredis.sendCommandAsync('SET', setNXArgs);
+        await newredis.sendCommand('SET', setNXArgs);
         console.log("Created Chunk ", newkey);
       }
     }
@@ -49,13 +46,13 @@ async function copyChunksByCoords(xMin, xMax, yMin, yMax) {
     for (let y = chunkYMin; y <= chunkYMax; y++) {
       const oldkey = `ch:2:${x}:${y}`;
       const newkey = `ch:2:${x}:${y}`;
-      const chunk = await oldredis.getAsync(oldkey);
+      const chunk = await oldredis.get(oldkey);
       if (chunk) {
         const setNXArgs = [newkey, chunk];
-        await newredis.sendCommandAsync('SET', setNXArgs);
+        await newredis.sendCommand('SET', setNXArgs);
         console.log("Created Chunk ", newkey);
       } else {
-        await newredis.delAsync(newkey);
+        await newredis.del(newkey);
         console.log("Deleted Chunk ", newkey);
       }
     }

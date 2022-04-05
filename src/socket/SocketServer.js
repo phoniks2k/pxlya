@@ -61,8 +61,7 @@ class SocketServer {
   wss: WebSocket.Server;
   CHUNK_CLIENTS: Map<number, Array>;
 
-  // constructor(server: http.Server) {
-  constructor() {
+  initialize() {
     this.CHUNK_CLIENTS = new Map();
     logger.info('Starting websocket server');
 

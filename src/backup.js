@@ -16,7 +16,6 @@ import os from 'os';
 import { spawn } from 'child_process';
 import path from 'path';
 import redis from 'redis';
-import bluebird from 'bluebird';
 
 
 import {
@@ -39,9 +38,6 @@ try {
 }
 
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-
 const [
   CANVAS_REDIS_URL,
   BACKUP_REDIS_URL,
@@ -58,9 +54,9 @@ if (!CANVAS_REDIS_URL || !BACKUP_REDIS_URL || !BACKUP_DIR) {
 }
 
 const canvasRedis = redis
-  .createClient(CANVAS_REDIS_URL, { return_buffers: true });
+  .createClient(CANVAS_REDIS_URL);
 const backupRedis = redis
-  .createClient(BACKUP_REDIS_URL, { return_buffers: true });
+  .createClient(BACKUP_REDIS_URL);
 canvasRedis.on('error', () => {
   console.error('Could not connect to canvas redis');
   process.exit(1);
@@ -119,7 +115,7 @@ async function dailyBackup() {
     fs.mkdirSync(backupDir, { recursive: true });
   }
 
-  await backupRedis.flushallAsync('ASYNC');
+  await backupRedis.flushall('ASYNC');
 
   try {
     await updateBackupRedis(canvasRedis, backupRedis, canvases);

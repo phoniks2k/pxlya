@@ -2,11 +2,6 @@
 // this script moves chunks of a canvas, i.e. to center it after changing size
 
 import redis from 'redis';
-import bluebird from 'bluebird';
-
-
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
 
 //ATTENTION Make suer to set the rdis URLs right!!!
 const url = "redis://localhost:6379";
@@ -22,12 +17,12 @@ async function move() {
   for (let x = CHUNKS_XY - 1; x >= 0; x--) {
     for (let y = CHUNKS_XY - 1; y >= 0; y--) {
       const key = `ch:1:${x}:${y}`;
-      const chunk = await redisc.getAsync(key);
+      const chunk = await redisc.get(key);
       if (chunk) {
         const buffer = new Uint8Array(chunk);
         const newKey = `ch:1:${x + offset}:${y + offset}`
-        await redisc.setAsync(newKey, Buffer.from(buffer.buffer));
-        await redisc.delAsync(key);
+        await redisc.set(newKey, Buffer.from(buffer.buffer));
+        await redisc.del(key);
         console.log('Moved Chunk ', key, ' to ', newKey);
       }
     }

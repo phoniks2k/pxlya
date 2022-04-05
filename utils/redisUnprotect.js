@@ -2,11 +2,6 @@
 //this script removes protection from all pixels on main canas
 
 import redis from 'redis';
-import bluebird from 'bluebird';
-
-
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
 
 
 //ATTENTION Make suer to set the rdis URLs right!!!
@@ -23,7 +18,7 @@ async function moveProtection() {
   for (let x = 0; x < CHUNKS_XY; x++) {
     for (let y = 0; y < CHUNKS_XY; y++) {
       const key = `ch:0:${x}:${y}`;
-      const chunk = await redisc.getAsync(key);
+      const chunk = await redisc.get(key);
       if (chunk) {
         const buffer = new Uint8Array(chunk);
         let changed = false;
@@ -35,7 +30,7 @@ async function moveProtection() {
           }
         }
         if (changed) {
-          await rediso.setAsync(key, Buffer.from(buffer.buffer));
+          await rediso.set(key, Buffer.from(buffer.buffer));
           console.log("Changed Chunk ", key);
         }
       }

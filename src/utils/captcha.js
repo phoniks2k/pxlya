@@ -82,7 +82,7 @@ export function setCaptchaSolution(
   if (captchaid) {
     key += `:${captchaid}`;
   }
-  return redis.setAsync(key, text, 'EX', CAPTCHA_TIMEOUT);
+  return redis.set(key, text, 'EX', CAPTCHA_TIMEOUT);
 }
 
 /*
@@ -107,12 +107,12 @@ export async function checkCaptchaSolution(
   if (captchaid) {
     key += `:${captchaid}`;
   }
-  const solution = await redis.getAsync(key);
+  const solution = await redis.get(key);
   if (solution) {
     if (evaluateResult(solution.toString('utf8'), text)) {
       if (!onetime) {
         const solvkey = `human:${ipn}`;
-        await redis.setAsync(solvkey, '', 'EX', TTL_CACHE);
+        await redis.set(solvkey, '', 'EX', TTL_CACHE);
       }
       logger.info(`CAPTCHA ${ip} successfully solved captcha`);
       return 0;
@@ -138,7 +138,7 @@ export async function needCaptcha(ip) {
   }
 
   const key = `human:${getIPv6Subnet(ip)}`;
-  const ttl = await redis.ttlAsync(key);
+  const ttl = await redis.ttl(key);
   if (ttl > 0) {
     return false;
   }

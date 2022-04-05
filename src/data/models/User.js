@@ -139,17 +139,17 @@ class User {
   async setWait(wait: number, canvasId: number): Promise<boolean> {
     if (!wait) return false;
     // PX is milliseconds expire
-    await redis.setAsync(`cd:${canvasId}:ip:${this.ipSub}`, '', 'PX', wait);
+    await redis.set(`cd:${canvasId}:ip:${this.ipSub}`, '', 'PX', wait);
     if (this.id != null) {
-      await redis.setAsync(`cd:${canvasId}:id:${this.id}`, '', 'PX', wait);
+      await redis.set(`cd:${canvasId}:id:${this.id}`, '', 'PX', wait);
     }
     return true;
   }
 
   async getWait(canvasId: number): Promise<?number> {
-    let ttl: number = await redis.pttlAsync(`cd:${canvasId}:ip:${this.ipSub}`);
+    let ttl: number = await redis.pTTL(`cd:${canvasId}:ip:${this.ipSub}`);
     if (this.id != null) {
-      const ttlid: number = await redis.pttlAsync(
+      const ttlid: number = await redis.pTTL(
         `cd:${canvasId}:id:${this.id}`,
       );
       ttl = Math.max(ttl, ttlid);

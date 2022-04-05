@@ -168,7 +168,7 @@ async function withCache(f, ip) {
   // get from cache, if there
   const ipKey = getIPv6Subnet(ip);
   const key = `isprox:${ipKey}`;
-  const cache = await redis.getAsync(key);
+  const cache = await redis.get(key);
   if (cache) {
     const str = cache.toString('utf8');
     logger.debug('PROXYCHECK fetch isproxy from cache %s %s %s %s %s',
@@ -190,7 +190,7 @@ async function withCache(f, ip) {
     withoutCache(f, ip)
       .then((result) => {
         const value = result ? 'y' : 'n';
-        redis.setAsync(key, value, 'EX', 3 * 24 * 3600); // cache for three days
+        redis.set(key, value, 'EX', 3 * 24 * 3600); // cache for three days
         const pos = checking.indexOf(ipKey);
         if (~pos) checking.splice(pos, 1);
         lock += 1;

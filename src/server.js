@@ -12,6 +12,7 @@ import forceGC from './core/forceGC';
 import logger from './core/logger';
 import rankings from './core/ranking';
 import models from './data/models';
+import { redisV3 } from './data/redis';
 import routes from './routes';
 import chatProvider from './core/ChatProvider';
 
@@ -23,8 +24,6 @@ import { PORT, HOST } from './core/config';
 import { SECOND } from './core/constants';
 
 import { startAllCanvasLoops } from './core/tileserver';
-
-startAllCanvasLoops();
 
 const app = express();
 app.disable('x-powered-by');
@@ -78,18 +77,19 @@ app.use(routes);
 //
 // ip config
 // -----------------------------------------------------------------------------
-// use this if models changed:
-const promise = models.sync({ alter: { drop: false } })
-// const promise = models.sync()
-  .catch((err) => logger.error(err.stack));
-promise.then(() => {
-  rankings.updateRanking();
-  chatProvider.initialize();
-  server.listen(PORT, HOST, () => {
-    const address = server.address();
-    logger.log(
-      'info',
-      `web is running at http://${address.host}:${address.port}/`,
-    );
+models.sync({ alter: { drop: false } })
+  .then(() => redisV3.connect())
+  .then(() => {
+    rankings.updateRanking();
+    chatProvider.initialize();
+    startAllCanvasLoops();
+    usersocket.initialize();
+    apisocket.initialize();
+    server.listen(PORT, HOST, () => {
+      const address = server.address();
+      logger.log(
+        'info',
+        `web is running at http://${address.host}:${address.port}/`,
+      );
+    });
   });
-});

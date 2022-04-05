@@ -40,11 +40,11 @@ export async function updateBackupRedis(canvasRedis, backupRedis, canvases) {
          * in exchange for higher execution time is wanted.
          */
         // eslint-disable-next-line no-await-in-loop
-        const chunk = await canvasRedis.getAsync(key);
+        const chunk = await canvasRedis.get(key);
         if (chunk) {
           const setNXArgs = [key, chunk];
           // eslint-disable-next-line no-await-in-loop
-          await backupRedis.sendCommandAsync('SET', setNXArgs);
+          await backupRedis.sendCommand('SET', setNXArgs);
           amount += 1;
         }
       }
@@ -108,12 +108,12 @@ export async function incrementialBackupRedis(
          * in exchange for higher execution time is wanted.
          */
         // eslint-disable-next-line no-await-in-loop
-        const curChunk = await canvasRedis.getAsync(key);
+        const curChunk = await canvasRedis.get(key);
         let tileBuffer = null;
         if (curChunk) {
           if (curChunk.length === TILE_SIZE * TILE_SIZE) {
             // eslint-disable-next-line no-await-in-loop
-            const oldChunk = await backupRedis.getAsync(key);
+            const oldChunk = await backupRedis.get(key);
             if (oldChunk && oldChunk.length === TILE_SIZE * TILE_SIZE) {
               let pxl = 0;
               while (pxl < curChunk.length) {
@@ -207,7 +207,7 @@ export async function createPngBackup(
            * in exchange for higher execution time is wanted.
            */
           // eslint-disable-next-line no-await-in-loop
-          const chunk = await redisClient.getAsync(key);
+          const chunk = await redisClient.get(key);
           if (chunk) {
             if (chunk.length === TILE_SIZE * TILE_SIZE) {
               const textureBuffer = palette.buffer2RGB(chunk);

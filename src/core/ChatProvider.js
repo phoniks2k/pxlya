@@ -508,7 +508,7 @@ export class ChatProvider {
 
   static async checkIfMuted(user) {
     const key = `mute:${user.id}`;
-    const ttl: number = await redis.ttlAsync(key);
+    const ttl: number = await redis.ttl(key);
     return ttl;
   }
 
@@ -527,7 +527,7 @@ export class ChatProvider {
     const key = `mute:${id}`;
     if (timeMin) {
       const ttl = timeMin * 60;
-      await redis.setAsync(key, '', 'EX', ttl);
+      await redis.set(key, '', 'EX', ttl);
       if (printChannel) {
         this.broadcastChatMessage(
           'info',
@@ -539,7 +539,7 @@ export class ChatProvider {
         );
       }
     } else {
-      await redis.setAsync(key, '');
+      await redis.set(key, '');
       if (printChannel) {
         this.broadcastChatMessage(
           'info',
@@ -567,7 +567,7 @@ export class ChatProvider {
     }
     const userPing = `@[${name}](${id})`;
     const key = `mute:${id}`;
-    const delKeys = await redis.delAsync(key);
+    const delKeys = await redis.del(key);
     if (delKeys !== 1) {
       return `User ${userPing} is not muted`;
     }

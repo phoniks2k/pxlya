@@ -47,7 +47,7 @@ class RedisCanvas {
     // core/tilesBackup.js
     // and ./EventData.js
     const key = `ch:${canvasId}:${i}:${j}`;
-    return redis.getAsync(key);
+    return redis.get(key);
   }
 
   static async setChunk(i: number, j: number, chunk: Uint8Array,
@@ -58,14 +58,14 @@ class RedisCanvas {
       return false;
     }
     const key = `ch:${canvasId}:${i}:${j}`;
-    await redis.setAsync(key, Buffer.from(chunk.buffer));
+    await redis.set(key, Buffer.from(chunk.buffer));
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
     return true;
   }
 
   static async delChunk(i: number, j: number, canvasId: number) {
     const key = `ch:${canvasId}:${i}:${j}`;
-    await redis.delAsync(key);
+    await redis.del(key);
     chunks.delete(key);
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
     return true;
@@ -95,15 +95,15 @@ class RedisCanvas {
 
     if (!chunks.has(key)) {
       if (canvases[canvasId].v) {
-        await redis.setAsync(key, THREE_EMPTY_CHUNK_BUFFER, 'NX');
+        await redis.set(key, THREE_EMPTY_CHUNK_BUFFER, 'NX');
       } else {
-        await redis.setAsync(key, EMPTY_CHUNK_BUFFER, 'NX');
+        await redis.set(key, EMPTY_CHUNK_BUFFER, 'NX');
       }
       chunks.add(key);
     }
 
     const args = [key, 'SET', UINT_SIZE, `#${offset}`, color];
-    await redis.sendCommandAsync('bitfield', args);
+    await redis.sendCommand('bitfield', args);
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
   }
 
@@ -122,7 +122,7 @@ class RedisCanvas {
       UINT_SIZE,
       `#${offset}`,
     ];
-    const result: ?number = await redis.sendCommandAsync('bitfield', args);
+    const result: ?number = await redis.sendCommand('bitfield', args);
     if (!result) return null;
     const color = result[0];
     return color;

@@ -2,10 +2,8 @@
  *
  * Outputs binary chunk directly from redis
  *
- * @flow
  */
 
-import type { Request, Response } from 'express';
 import etag from 'etag';
 import RedisCanvas from '../data/models/RedisCanvas';
 import {
@@ -24,7 +22,7 @@ RedisCanvas.setChunkChangeCallback((canvasId, cell) => {
 /*
  * Send binary chunk to the client
  */
-export default async (req: Request, res: Response, next) => {
+export default async (req, res, next) => {
   const {
     c: paramC,
     x: paramX,
