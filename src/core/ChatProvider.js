@@ -1,4 +1,6 @@
-/* @flow */
+/*
+ * class for chat communications
+ */
 import { Op } from 'sequelize';
 import logger from './logger';
 import redis from '../data/redis';
@@ -310,7 +312,7 @@ export class ChatProvider {
           this.mutedCountries.push(cc);
           this.broadcastChatMessage(
             'info',
-            `Country ${cc} has been muted by ${initiator}`,
+            `Country ${cc} has been muted from en by ${initiator}`,
             channelId,
             this.infoUserId,
           );
@@ -328,7 +330,7 @@ export class ChatProvider {
           this.mutedCountries = this.mutedCountries.filter((c) => c !== cc);
           this.broadcastChatMessage(
             'info',
-            `Country ${cc} has been unmuted by ${initiator}`,
+            `Country ${cc} has been unmuted from en by ${initiator}`,
             channelId,
             this.infoUserId,
           );
@@ -337,7 +339,7 @@ export class ChatProvider {
         if (this.mutedCountries.length) {
           this.broadcastChatMessage(
             'info',
-            `Countries ${this.mutedCountries} unmuted by ${initiator}`,
+            `Countries ${this.mutedCountries} unmuted from en by ${initiator}`,
             channelId,
             this.infoUserId,
           );
@@ -449,8 +451,10 @@ export class ChatProvider {
       return t`Please use int channel`;
     }
 
-    if (this.mutedCountries.includes(country)) {
-      return t`Your country is temporary muted from chat`;
+    if (channelId === this.enChannelId
+      && this.mutedCountries.includes(country)
+    ) {
+      return t`Your country is temporary muted from this chat channel`;
     }
 
     if (user.last_message && user.last_message === message) {
