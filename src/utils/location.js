@@ -1,5 +1,5 @@
 /*
- * @flow
+ * provide location and lang specific features
  */
 
 import ccCoords from '../data/countrycode-coords-array.json';
@@ -11,7 +11,7 @@ import ccCoords from '../data/countrycode-coords-array.json';
  * @param cc Two letter country code
  * @return coords X/Y coordinates of the country on the canvas
  */
-export function ccToCoords(cc: string) {
+export function ccToCoords(cc) {
   if (!cc) {
     return [0, 0];
   }
@@ -56,16 +56,12 @@ export function languageFromLocalisation(localisation) {
  */
 const lang2CC = {
   en: 'gb',
-  de: 'de',
   dz: 'bt',
   hy: 'am',
   uk: 'ua',
-  ru: 'ru',
-  fr: 'fr',
-  es: 'es',
   ca: 'ct',
 };
-export function langCodeToCC(lang: string) {
+export function langCodeToCC(lang) {
   return lang2CC[lang] || lang;
 }
 
