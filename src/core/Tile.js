@@ -11,6 +11,7 @@
 
 import sharp from 'sharp';
 import fs from 'fs';
+import { commandOptions } from 'redis';
 
 import Palette from './Palette';
 import { getMaxTiledZoom } from './utils';
@@ -144,6 +145,7 @@ export async function createZoomTileFromChunk(
   for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
     for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
       chunk = await redisClient.get(
+        commandOptions({ returnBuffers: true }),
         `ch:${canvasId}:${xabs + dx}:${yabs + dy}`,
       );
       if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
@@ -180,7 +182,7 @@ export async function createZoomTileFromChunk(
         .toFile(filename);
     } catch (error) {
       console.error(
-        `Tiling: Error on createZoomTileFromChunk:\n${error.message}`,
+        `Tiling: Error on createZoomTileFromChunk: ${error.message}`,
       );
       return false;
     }
@@ -226,7 +228,7 @@ export async function createZoomedTile(
       } catch (error) {
         console.error(
           // eslint-disable-next-line max-len
-          `Tiling: Error on createZoomedTile on chunk ${chunkfile}:\n${error.message}`,
+          `Tiling: Error on createZoomedTile on chunk ${chunkfile}: ${error.message}`,
         );
       }
     }
@@ -252,7 +254,7 @@ export async function createZoomedTile(
       ).resize(TILE_SIZE).toFile(filename);
     } catch (error) {
       console.error(
-        `Tiling: Error on createZoomedTile:\n${error.message}`,
+        `Tiling: Error on createZoomedTile: ${error.message}`,
       );
       return false;
     }
@@ -300,7 +302,7 @@ async function createEmptyTile(
       .toFile(filename);
   } catch (error) {
     console.error(
-      `Tiling: Error on createEmptyTile:\n${error.message}`,
+      `Tiling: Error on createEmptyTile: ${error.message}`,
     );
     return;
   }
@@ -346,7 +348,7 @@ export async function createTexture(
         } catch (error) {
           console.error(
             // eslint-disable-next-line max-len
-            `Tiling: Error on createTexture in chunk ${chunkfile}:\n${error.message}`,
+            `Tiling: Error on createTexture in chunk ${chunkfile}: ${error.message}`,
           );
         }
       }
@@ -354,7 +356,10 @@ export async function createTexture(
   } else {
     for (let dy = 0; dy < amount; dy += 1) {
       for (let dx = 0; dx < amount; dx += 1) {
-        chunk = await redisClient.get(`ch:${canvasId}:${dx}:${dy}`);
+        chunk = await redisClient.get(
+          commandOptions({ returnBuffers: true }),
+          `ch:${canvasId}:${dx}:${dy}`,
+        );
         if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
           na.push([dx, dy]);
           continue;
@@ -388,7 +393,7 @@ export async function createTexture(
     ).toFile(filename);
   } catch (error) {
     console.error(
-      `Tiling: Error on createTexture:\n${error.message}`,
+      `Tiling: Error on createTexture: ${error.message}`,
     );
     return;
   }

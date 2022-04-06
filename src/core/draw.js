@@ -12,12 +12,15 @@ import {
   setPixelByCoords,
 } from './setPixel';
 import rankings from './ranking';
-import rpgEvent from './event';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 
 import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
 
+let coolDownFactor = 1;
+export function setCoolDownFactor(fac) {
+  coolDownFactor = fac;
+}
 
 /**
  *
@@ -90,17 +93,6 @@ export async function drawByOffsets(
       }
       if (canvas.req === 'top' && !rankings.prevTop.includes(user.id)) {
         throw new Error(12);
-      }
-    }
-
-    let coolDownFactor = 1;
-    if (rpgEvent.success) {
-      if (rpgEvent.success === 1) {
-        // if hourly event got won
-        coolDownFactor = 0.5;
-      } else {
-        // if hourly event got lost
-        coolDownFactor = 2;
       }
     }
 
@@ -332,14 +324,8 @@ export async function drawByCoords(
     ? canvas.pcd : canvas.bcd;
   if (isAdmin) {
     coolDown = 0.0;
-  } else if (rpgEvent.success) {
-    if (rpgEvent.success === 1) {
-      // if HOURLY_EVENT got won
-      coolDown /= 2;
-    } else {
-      // if HOURLY_EVENT got lost
-      coolDown *= 2;
-    }
+  } else {
+    coolDown *= coolDownFactor;
   }
 
   const now = Date.now();

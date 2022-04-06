@@ -12,15 +12,17 @@ import forceGC from './core/forceGC';
 import logger from './core/logger';
 import rankings from './core/ranking';
 import models from './data/models';
-import { redisV3 } from './data/redis';
+import { connect as connectRedis } from './data/redis';
 import routes from './routes';
 import chatProvider from './core/ChatProvider';
+import RpgEvent from './core/RpgEvent';
+import canvasCleaner from './core/CanvasCleaner';
 
 import SocketServer from './socket/SocketServer';
 import APISocketServer from './socket/APISocketServer';
 
 
-import { PORT, HOST } from './core/config';
+import { PORT, HOST, HOURLY_EVENT } from './core/config';
 import { SECOND } from './core/constants';
 
 import { startAllCanvasLoops } from './core/tileserver';
@@ -74,22 +76,46 @@ app.use(compression({
 
 app.use(routes);
 
+/*
+/* Hourly Event
+ */
+const rpgEvent = new RpgEvent();
+
 //
 // ip config
 // -----------------------------------------------------------------------------
+// sync sql models
 models.sync({ alter: { drop: false } })
-  .then(() => redisV3.connect())
+  // connect to redis
+  .then(() => connectRedis())
   .then(() => {
-    rankings.updateRanking();
+    rankings.initialize();
     chatProvider.initialize();
     startAllCanvasLoops();
     usersocket.initialize();
     apisocket.initialize();
-    server.listen(PORT, HOST, () => {
-      const address = server.address();
-      logger.log(
-        'info',
-        `web is running at http://${address.host}:${address.port}/`,
+    if (HOURLY_EVENT) {
+      rpgEvent.initialize();
+    }
+    canvasCleaner.initialize();
+    // start http server
+    const startServer = () => {
+      server.listen(PORT, HOST, () => {
+        logger.log(
+          'info',
+          `HTTP Server listening on port ${PORT}`,
+        );
+      });
+    };
+    startServer();
+    // catch errors of server
+    server.on('error', (e) => {
+      logger.error(
+        `HTTP Server Error ${e.code} occured, trying again in 5s...`,
       );
+      setTimeout(() => {
+        server.close();
+        startServer();
+      }, 5000);
     });
   });

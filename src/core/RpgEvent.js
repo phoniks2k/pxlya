@@ -15,12 +15,12 @@ import {
   clearOldEvent,
   CANVAS_ID,
 } from '../data/models/Event';
+import { setCoolDownFactor } from './draw';
 import Void from './Void';
 import { protectCanvasArea } from './Image';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE, EVENT_USER_NAME } from './constants';
 import chatProvider from './ChatProvider';
-import { HOURLY_EVENT } from './config';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 
@@ -65,7 +65,7 @@ function drawCross(centerCell, clr, style, radius) {
 }
 
 
-class Event {
+class RpgEvent {
   eventState: number;
   eventTimestamp: number;
   eventCenter: Array;
@@ -79,19 +79,35 @@ class Event {
   chatTimeout: number;
 
   constructor() {
-    this.enabled = HOURLY_EVENT;
     this.eventState = -1;
     this.eventCenterC = null;
     this.void = null;
     this.chatTimeout = 0;
     this.runEventLoop = this.runEventLoop.bind(this);
-    if (HOURLY_EVENT) {
-      this.initEventLoop();
-    }
   }
 
-  async initEventLoop() {
-    this.success = await getSuccess();
+  setSuccess(success, save = true) {
+    this.success = success;
+    let fac = 1;
+    switch (success) {
+      case 1:
+        fac /= 2;
+        break;
+      case 2:
+        fac *= 2;
+        break;
+      default:
+        // nothing
+    }
+    if (save) {
+      setSuccess(success);
+    }
+    setCoolDownFactor(fac);
+  }
+
+  async initialize() {
+    const success = await getSuccess();
+    this.setSuccess(success, false);
     let eventTimestamp = await nextEvent();
     if (!eventTimestamp) {
       eventTimestamp = await Event.setNextEvent();
@@ -271,8 +287,7 @@ class Event {
           Event.broadcastChatMessage(
             'Threat couldn\'t be contained, abandon area',
           );
-          this.success = 2;
-          setSuccess(2);
+          this.setSuccess(2);
           this.void = null;
           const [x, y, w, h] = this.eventArea;
           await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
@@ -299,8 +314,7 @@ class Event {
             Event.broadcastChatMessage(
               'Threat successfully defeated. Good work!',
             );
-            this.success = 1;
-            setSuccess(1);
+            this.setSuccess(1);
           }
           this.void.cancel();
           this.void = null;
@@ -318,8 +332,7 @@ class Event {
           Event.broadcastChatMessage(
             'Void seems to leave again.',
           );
-          this.success = 0;
-          setSuccess(0);
+          this.setSuccess(0);
         }
         this.eventState = 13;
       }
@@ -335,8 +348,7 @@ class Event {
           Event.broadcastChatMessage(
             'Celebration time over, get back to work.',
           );
-          this.success = 0;
-          setSuccess(0);
+          this.setSuccess(0);
         }
         this.eventState = 14;
       }
@@ -356,6 +368,4 @@ class Event {
   }
 }
 
-const rpgEvent = new Event();
-
-export default rpgEvent;
+export default RpgEvent;

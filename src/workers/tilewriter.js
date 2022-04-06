@@ -6,7 +6,7 @@
 
 import { isMainThread, parentPort } from 'worker_threads';
 
-import redisClient from '../data/redis';
+import redis, { connect as connectRedis } from '../data/redis';
 import {
   createZoomTileFromChunk,
   createZoomedTile,
@@ -20,29 +20,33 @@ if (isMainThread) {
   );
 }
 
-parentPort.on('message', async (msg) => {
-  const { task, args } = msg;
-  try {
-    switch (task) {
-      case 'createZoomTileFromChunk':
-        createZoomTileFromChunk(redisClient, ...args);
-        break;
-      case 'createZoomedTile':
-        createZoomedTile(...args);
-        break;
-      case 'createTexture':
-        createTexture(redisClient, ...args);
-        break;
-      case 'initializeTiles':
-        await initializeTiles(redisClient, ...args);
-        parentPort.postMessage('Done!');
-        break;
-      default:
-        console.warn(`Tiling: Main thread requested unknown task ${task}`);
-    }
-  } catch (error) {
-    console.warn(
-      `Tiling: Error on executing task ${task} args ${args}:\n${error.message}`,
-    );
-  }
-});
+connectRedis()
+  .then(() => {
+    parentPort.on('message', async (msg) => {
+      const { task, args } = msg;
+      try {
+        switch (task) {
+          case 'createZoomTileFromChunk':
+            createZoomTileFromChunk(redis, ...args);
+            break;
+          case 'createZoomedTile':
+            createZoomedTile(...args);
+            break;
+          case 'createTexture':
+            createTexture(redis, ...args);
+            break;
+          case 'initializeTiles':
+            await initializeTiles(redis, ...args);
+            parentPort.postMessage('Done!');
+            break;
+          default:
+            console.warn(`Tiling: Main thread requested unknown task ${task}`);
+        }
+      } catch (error) {
+        console.warn(
+          // eslint-disable-next-line max-len
+          `Tiling: Error on executing task ${task} args ${args}: ${error.message}`,
+        );
+      }
+    });
+  });

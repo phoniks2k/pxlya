@@ -27,7 +27,7 @@ export function setPixelByOffset(
   j,
   offset,
 ) {
-  RedisCanvas.setPixelInChunk(i, j, offset, color, canvasId);
+  RedisCanvas.enqueuePixel(canvasId, color, i, j, offset);
   pixelCache.append(canvasId, color, i, j, offset);
 }
 

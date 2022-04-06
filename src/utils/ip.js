@@ -3,8 +3,6 @@
  * basic functions to get data fromheaders and parse IPs
  */
 
-import logger from '../core/logger';
-
 import { USE_XREALIP } from '../core/config';
 
 
@@ -35,7 +33,8 @@ export function getIPFromRequest(req) {
   conip = conip || '0.0.0.1';
 
   if (!USE_XREALIP) {
-    logger.warn(
+    // eslint-disable-next-line no-console
+    console.warn(
       `Connection not going through reverse proxy! IP: ${conip}`, req.headers,
     );
   }
@@ -47,7 +46,6 @@ export function getIPv6Subnet(ip) {
   if (ip.includes(':')) {
     // eslint-disable-next-line max-len
     const ipv6sub = `${ip.split(':').slice(0, 4).join(':')}:0000:0000:0000:0000`;
-    // logger.warn("IPv6 subnet: ", ipv6sub);
     return ipv6sub;
   }
   return ip;

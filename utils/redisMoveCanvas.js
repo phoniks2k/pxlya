@@ -1,11 +1,10 @@
-/* @flow */
 // this script moves chunks of a canvas, i.e. to center it after changing size
 
 import redis from 'redis';
 
 //ATTENTION Make suer to set the rdis URLs right!!!
 const url = "redis://localhost:6379";
-const redisc = redis.createClient(url, { return_buffers: true });
+const redisc = redis.createClient({ url, return_buffers: true });
 
 const CANVAS_SIZE = 4096;
 const TILE_SIZE = 256;
@@ -30,4 +29,5 @@ async function move() {
   console.log("done");
 }
 
-move();
+redisc.connect()
+  .then(() => move());

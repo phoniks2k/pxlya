@@ -85,6 +85,10 @@ class SocketServer {
       ws.canvasId = null;
       ws.startDate = Date.now();
       const user = await authenticateClient(req);
+      if (!user) {
+        ws.close();
+        return;
+      }
       ws.user = user;
       ws.name = user.getName();
       cheapDetector(user.ip);

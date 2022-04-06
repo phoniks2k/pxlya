@@ -15,7 +15,7 @@ import fs from 'fs';
 import os from 'os';
 import { spawn } from 'child_process';
 import path from 'path';
-import redis from 'redis';
+import { createClient } from 'redis';
 
 
 import {
@@ -53,10 +53,29 @@ if (!CANVAS_REDIS_URL || !BACKUP_REDIS_URL || !BACKUP_DIR) {
   process.exit(1);
 }
 
-const canvasRedis = redis
-  .createClient(CANVAS_REDIS_URL);
-const backupRedis = redis
-  .createClient(BACKUP_REDIS_URL);
+const canvasRedis = createClient(CANVAS_REDIS_URL
+  .startsWith('redis://')
+  ? {
+    url: CANVAS_REDIS_URL,
+  }
+  : {
+    socket: {
+      path: CANVAS_REDIS_URL,
+    },
+  },
+);
+const backupRedis = createClient(BACKUP_REDIS_URL
+  .startsWith('redis://')
+  ? {
+    url: BACKUP_REDIS_URL,
+  }
+  : {
+    socket: {
+      path: BACKUP_REDIS_URL,
+    },
+  },
+);
+//
 canvasRedis.on('error', () => {
   console.error('Could not connect to canvas redis');
   process.exit(1);
@@ -161,4 +180,6 @@ async function trigger() {
 }
 
 console.log('Starting backup...');
-trigger();
+canvasRedis.connect()
+  .then(() => backupRedis.connect())
+  .then(() => trigger());

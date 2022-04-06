@@ -531,7 +531,9 @@ export class ChatProvider {
     const key = `mute:${id}`;
     if (timeMin) {
       const ttl = timeMin * 60;
-      await redis.set(key, '', 'EX', ttl);
+      await redis.set(key, '', {
+        EX: ttl,
+      });
       if (printChannel) {
         this.broadcastChatMessage(
           'info',

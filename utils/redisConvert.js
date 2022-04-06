@@ -1,4 +1,3 @@
-/* @flow */
 // this scripts converts the old 64x64 chunks that were organiced relative to the center to 256x256 chunks with 0.0 being top-left corner
 // it also goes from 2 pixel per byte to 1 pixel per byte
 // old colors are converted to new order
@@ -8,9 +7,12 @@ import { TILE_SIZE, CANVAS_SIZE, CANVAS_MIN_XY, CANVAS_MAX_XY } from '../src/cor
 import redis from 'redis';
 //ATTENTION Make suer to set the rdis URLs right!!!
 const oldurl = "redis://localhost:6380";
-const oldredis = redis.createClient(oldurl, { return_buffers: true });
+const oldredis = redis.createClient({ url: oldurl, return_buffers: true });
 const newurl = "redis://localhost:6379";
-const newredis = redis.createClient(newurl, { return_buffers: true });
+const newredis = redis.createClient({ url: newurl, return_buffers: true });
+
+oldredis.connect();
+newredis.connect();
 
 const CHUNK_SIZE = 64; //old chunk size
 const CHUNKS_IN_BASETILE = TILE_SIZE / CHUNK_SIZE;
@@ -161,4 +163,6 @@ async function convert() {
   }
 }
 
-convert();
+oldredis.connect()
+  .then(() => newredis.connect())
+  .then(() => convert());

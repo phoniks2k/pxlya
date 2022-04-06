@@ -139,9 +139,13 @@ class User {
   async setWait(wait: number, canvasId: number): Promise<boolean> {
     if (!wait) return false;
     // PX is milliseconds expire
-    await redis.set(`cd:${canvasId}:ip:${this.ipSub}`, '', 'PX', wait);
+    await redis.set(`cd:${canvasId}:ip:${this.ipSub}`, '', {
+      PX: wait,
+    });
     if (this.id != null) {
-      await redis.set(`cd:${canvasId}:id:${this.id}`, '', 'PX', wait);
+      await redis.set(`cd:${canvasId}:id:${this.id}`, '', {
+        PX: wait,
+      });
     }
     return true;
   }

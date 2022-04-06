@@ -1,4 +1,7 @@
-/* @flow */
+/*
+ * canvas data on redis
+ */
+import { commandOptions } from 'redis';
 
 import { getChunkOfPixel, getOffsetOfPixel } from '../../core/utils';
 import {
@@ -9,7 +12,7 @@ import {
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 
-import redis from '../redis';
+import redis, { redisV3 } from '../redis';
 
 
 const UINT_SIZE = 'u8';
@@ -22,7 +25,7 @@ const THREE_EMPTY_CACA = new Uint8Array(
 const THREE_EMPTY_CHUNK_BUFFER = Buffer.from(THREE_EMPTY_CACA.buffer);
 
 // cache existence of chunks
-const chunks: Set<string> = new Set();
+const chunks = new Set();
 
 
 class RedisCanvas {
@@ -39,19 +42,21 @@ class RedisCanvas {
   }
 
   static getChunk(
-    canvasId: number,
-    i: number,
-    j: number,
-  ): Promise<Buffer> {
+    canvasId,
+    i,
+    j,
+  ) {
     // this key is also hardcoded into
     // core/tilesBackup.js
     // and ./EventData.js
     const key = `ch:${canvasId}:${i}:${j}`;
-    return redis.get(key);
+    return redis.get(
+      commandOptions({ returnBuffers: true }),
+      key,
+    );
   }
 
-  static async setChunk(i: number, j: number, chunk: Uint8Array,
-    canvasId: number) {
+  static async setChunk(i, j, chunk, canvasId) {
     if (chunk.length !== TILE_SIZE * TILE_SIZE) {
       // eslint-disable-next-line no-console
       console.error(`Tried to set chunk with invalid length ${chunk.length}!`);
@@ -63,7 +68,7 @@ class RedisCanvas {
     return true;
   }
 
-  static async delChunk(i: number, j: number, canvasId: number) {
+  static async delChunk(i, j, canvasId) {
     const key = `ch:${canvasId}:${i}:${j}`;
     await redis.del(key);
     chunks.delete(key);
@@ -72,11 +77,11 @@ class RedisCanvas {
   }
 
   static async setPixel(
-    canvasId: number,
-    color: number,
-    x: number,
-    y: number,
-    z: number = null,
+    canvasId,
+    color,
+    x,
+    y,
+    z = null,
   ) {
     const canvasSize = canvases[canvasId].size;
     const [i, j] = getChunkOfPixel(canvasSize, x, y, z);
@@ -84,66 +89,104 @@ class RedisCanvas {
     RedisCanvas.setPixelInChunk(i, j, offset, color, canvasId);
   }
 
+  multi = null;
+  static enqueuePixel(
+    canvasId,
+    color,
+    i,
+    j,
+    offset,
+  ) {
+    if (!RedisCanvas.multi) {
+      RedisCanvas.multi = redisV3.multi();
+    }
+    RedisCanvas.multi.v4.addCommand(
+      [
+        'BITFIELD',
+        `ch:${canvasId}:${i}:${j}`,
+        'SET',
+        UINT_SIZE,
+        `#${offset}`,
+        color,
+      ],
+    );
+    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
+  }
+
+  static flushPixels() {
+    if (RedisCanvas.multi) {
+      const { multi } = RedisCanvas;
+      RedisCanvas.multi = null;
+      return multi.execAsPipeline();
+    }
+    return null;
+  }
+
   static async setPixelInChunk(
-    i: number,
-    j: number,
-    offset: number,
-    color: number,
-    canvasId: number,
+    i,
+    j,
+    offset,
+    color,
+    canvasId,
   ) {
     const key = `ch:${canvasId}:${i}:${j}`;
 
     if (!chunks.has(key)) {
       if (canvases[canvasId].v) {
-        await redis.set(key, THREE_EMPTY_CHUNK_BUFFER, 'NX');
+        await redis.set(key, THREE_EMPTY_CHUNK_BUFFER, {
+          NX: true,
+        });
       } else {
-        await redis.set(key, EMPTY_CHUNK_BUFFER, 'NX');
+        await redis.set(key, EMPTY_CHUNK_BUFFER, {
+          NX: true,
+        });
       }
       chunks.add(key);
     }
 
-    const args = [key, 'SET', UINT_SIZE, `#${offset}`, color];
-    await redis.sendCommand('bitfield', args);
+    const args = ['BITFIELD', key, 'SET', UINT_SIZE, `#${offset}`, color];
+    await redis.sendCommand(args);
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
   }
 
   static async getPixelIfExists(
-    canvasId: number,
-    i: number,
-    j: number,
-    offset: number,
-  ): Promise<number> {
+    canvasId,
+    i,
+    j,
+    offset,
+  ) {
     // 1st bit -> protected or not
     // 2nd bit -> unused
     // rest (6 bits) -> index of color
     const args = [
+      'BITFIELD',
       `ch:${canvasId}:${i}:${j}`,
       'GET',
       UINT_SIZE,
       `#${offset}`,
     ];
-    const result: ?number = await redis.sendCommand('bitfield', args);
+    const result = await redis.sendCommand(args);
     if (!result) return null;
     const color = result[0];
     return color;
   }
 
   static async getPixelByOffset(
-    canvasId: number,
-    i: number,
-    j: number,
-    offset: number,
-  ): Promise<number> {
+    canvasId,
+    i,
+    j,
+    offset,
+  ) {
     const clr = RedisCanvas.getPixelIfExists(canvasId, i, j, offset);
     return (clr == null) ? 0 : clr;
   }
 
   static async getPixel(
-    canvasId: number,
-    x: number,
-    y: number,
-    z: number = null,
-  ): Promise<number> {
+    canvasId,
+    x,
+    y,
+    z = null,
+  ) {
     const canvasSize = canvases[canvasId].size;
     const [i, j] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
@@ -152,5 +195,7 @@ class RedisCanvas {
     return (clr == null) ? 0 : clr;
   }
 }
+
+setInterval(RedisCanvas.flushPixels, 100);
 
 export default RedisCanvas;

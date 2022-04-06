@@ -10,9 +10,12 @@ import {
 
 //ATTENTION Make suer to set the rdis URLs right!!!
 const oldurl = "redis://localhost:6380";
-const oldredis = redis.createClient(oldurl, { return_buffers: true });
+const oldredis = redis.createClient({ url: oldurl });
 const newurl = "redis://localhost:6379";
-const newredis = redis.createClient(newurl, { return_buffers: true });
+const newredis = redis.createClient({ url: newurl });
+
+oldredis.connect();
+newredis.connect();
 
 const CANVAS_SIZE = 1024;
 const OUR_TILE_SIZE = THREE_TILE_SIZE;
@@ -25,8 +28,7 @@ async function copyChunks() {
       const newkey = `ch:2:${x}:${y}`;
       const chunk = await oldredis.get(oldkey);
       if (chunk) {
-        const setNXArgs = [newkey, chunk];
-        await newredis.sendCommand('SET', setNXArgs);
+        await newredis.set(newkey, chunk);
         console.log("Created Chunk ", newkey);
       }
     }
@@ -48,8 +50,7 @@ async function copyChunksByCoords(xMin, xMax, yMin, yMax) {
       const newkey = `ch:2:${x}:${y}`;
       const chunk = await oldredis.get(oldkey);
       if (chunk) {
-        const setNXArgs = [newkey, chunk];
-        await newredis.sendCommand('SET', setNXArgs);
+        await newredis.set(newkey, chunk);
         console.log("Created Chunk ", newkey);
       } else {
         await newredis.del(newkey);

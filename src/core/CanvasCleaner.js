@@ -162,7 +162,6 @@ class CanvasCleaner {
     };
     this.cleanChunk = this.cleanChunk.bind(this);
     this.clearValues();
-    this.loadArgs();
   }
 
   clearValues() {
@@ -184,7 +183,7 @@ class CanvasCleaner {
     this.tick = null;
   }
 
-  async loadArgs() {
+  async initialize() {
     const [cIter, running] = await getStatus();
     if (running) {
       const [canvasId, x, y, u, v, methodName] = await getData();

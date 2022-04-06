@@ -1,5 +1,8 @@
 # Utils for map creation, conversion, 3d models and related stuff
+
 Note:
+
+- EVERY SCRIPT THAT USES REDIS IS JUST AS REFERENCE (node-redis and keys update and change over time and i am not keeping those up-to-date) 
 - we use blender 2.8
 - js script are executed with babel-node
 

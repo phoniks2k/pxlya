@@ -23,14 +23,12 @@ class Ranks {
       dailyRanking: [],
       ranking: [],
     };
-
-    this.loadPrevDayTop();
-    setInterval(this.updateRanking, 5 * MINUTE);
-    DailyCron.hook(this.resetDailyRanking);
   }
 
-  async loadPrevDayTop() {
+  async initialize() {
     this.prevTop = await loadDailyTop();
+    setInterval(this.updateRanking, 5 * MINUTE);
+    DailyCron.hook(this.resetDailyRanking);
   }
 
   async updateRanking() {

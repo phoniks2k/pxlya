@@ -7,12 +7,9 @@ import fetch from '../utils/proxiedFetch';
 import redis from '../data/redis';
 import { getIPv6Subnet } from '../utils/ip';
 import { Blacklist, Whitelist } from '../data/models';
-import { proxyLogger } from './logger';
+import { proxyLogger as logger } from './logger';
 
 import { USE_PROXYCHECK } from './config';
-
-const logger = proxyLogger;
-
 
 /*
  * check getipintel if IP is proxy
@@ -170,14 +167,11 @@ async function withCache(f, ip) {
   const key = `isprox:${ipKey}`;
   const cache = await redis.get(key);
   if (cache) {
-    const str = cache.toString('utf8');
-    logger.debug('PROXYCHECK fetch isproxy from cache %s %s %s %s %s',
+    logger.debug('PROXYCHECK fetch isproxy from cache %s %s %s',
       key,
       cache,
-      typeof cache,
-      str,
-      typeof str);
-    return str === 'y';
+      typeof cache);
+    return cache === 'y';
   }
   logger.debug('PROXYCHECK fetch isproxy not from cache %s', key);
 
@@ -190,7 +184,9 @@ async function withCache(f, ip) {
     withoutCache(f, ip)
       .then((result) => {
         const value = result ? 'y' : 'n';
-        redis.set(key, value, 'EX', 3 * 24 * 3600); // cache for three days
+        redis.set(key, value, {
+          EX: 3 * 24 * 3600,
+        }); // cache for three days
         const pos = checking.indexOf(ipKey);
         if (~pos) checking.splice(pos, 1);
         lock += 1;

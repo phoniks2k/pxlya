@@ -1,13 +1,12 @@
 /*
  * Caching pixels for a few ms before sending them
  * in bursts per chunk
- * @flow
  */
 
 import socketEvents from '../socket/SocketEvents';
 
 class PixelCache {
-  PXL_CACHE: Map<number, Buffer>;
+  PXL_CACHE;
 
   constructor() {
     this.PXL_CACHE = new Map();
@@ -22,12 +21,12 @@ class PixelCache {
    * @param offset Offset of pixel within chunk
    * @param color color index of pixel
    */
-  append(
-    canvasId: number,
-    color: number,
-    i: number,
-    j: number,
-    offset: number,
+  async append(
+    canvasId,
+    color,
+    i,
+    j,
+    offset,
   ) {
     const { PXL_CACHE } = this;
     const chunkCanvasId = (canvasId << 16) | (i << 8) | j;
@@ -49,7 +48,7 @@ class PixelCache {
     }
   }
 
-  flushCache() {
+  async flushCache() {
     const { PXL_CACHE: cache } = this;
     this.PXL_CACHE = new Map();
 
@@ -62,7 +61,7 @@ class PixelCache {
 }
 
 const pixelCache = new PixelCache();
-// send pixels from cache to websockets every 20ms
-setInterval(pixelCache.flushCache, 20);
+// send pixels from cache to websockets every 50ms
+setInterval(pixelCache.flushCache, 50);
 
 export default pixelCache;

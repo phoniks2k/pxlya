@@ -52,7 +52,9 @@ export async function executeIPAction(action, ips, logger = null) {
         await Blacklist.findOrCreate({
           where: { ip: ipKey },
         });
-        await redis.set(key, 'y', 'EX', 24 * 3600);
+        await redis.set(key, 'y', {
+          EX: 24 * 3600,
+        });
         break;
       case 'unban':
         await Blacklist.destroy({
@@ -64,7 +66,9 @@ export async function executeIPAction(action, ips, logger = null) {
         await Whitelist.findOrCreate({
           where: { ip: ipKey },
         });
-        await redis.set(key, 'n', 'EX', 24 * 3600);
+        await redis.set(key, 'n', {
+          EX: 24 * 3600,
+        });
         break;
       case 'unwhitelist':
         await Whitelist.destroy({

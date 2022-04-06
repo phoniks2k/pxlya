@@ -64,7 +64,8 @@ export default async (req, res, next) => {
         // eslint-disable-next-line max-len
         logger.warn(`Long redis response times of ${dur}ms for chunk ${c}:${x},${y}`);
       }
-    } catch {
+    } catch (error) {
+      logger.error(`Error on routes/chunks: ${error.message}`);
       res.status(503).end();
       return;
     }
