@@ -259,6 +259,7 @@ class SocketServer {
     while (!client.done) {
       const ws = client.value;
       if (ws.readyState === WebSocket.OPEN
+        && ws.user
         && ws.user.id === userId
       ) {
         return ws;
@@ -275,6 +276,7 @@ class SocketServer {
     while (!client.done) {
       const ws = client.value;
       if (ws.readyState === WebSocket.OPEN
+        && ws.user
         && ws.user.id === userId
       ) {
         clients.push(ws);
