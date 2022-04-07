@@ -1,6 +1,6 @@
-/* @flow */
-
-
+/*
+ * main websocket server
+ */
 import WebSocket from 'ws';
 
 import logger from '../core/logger';
@@ -28,11 +28,10 @@ import { needCaptcha } from '../utils/captcha';
 import { cheapDetector } from '../core/isProxy';
 
 
-const ipCounter: Counter<string> = new Counter();
-
-function heartbeat() {
-  this.isAlive = true;
-}
+const ipCounter = new Counter();
+// key: ip: string
+// value: [rlTimestamp, triggered]
+const rateLimit = new Map();
 
 async function verifyClient(info, done) {
   const { req } = info;
@@ -40,6 +39,17 @@ async function verifyClient(info, done) {
 
   // Limiting socket connections per ip
   const ip = getIPFromRequest(req);
+  // ratelimited
+  const now = Date.now();
+  const limiter = rateLimit.get(ip);
+  if (limiter && limiter[1]) {
+    if (limiter[0] > now) {
+      logger.info(`Rejected Socket-RateLimited Client ${ip}.`);
+      return done(false);
+    }
+    limiter[1] = false;
+    logger.info(`Allow Socket-RateLimited Client ${ip} again.`);
+  }
   // CORS
   const { origin } = headers;
   if (!origin || !origin.endsWith(getHostFromRequest(req, false))) {
@@ -56,13 +66,38 @@ async function verifyClient(info, done) {
   return done(true);
 }
 
+setInterval(() => {
+  // clean old ratelimiter data
+  const now = Date.now();
+  const ips = [...rateLimit.keys()];
+  for (let i = 0; i < ips.length; i += 1) {
+    const ip = ips[i];
+    const limiter = rateLimit.get(ip);
+    if (limiter && now > limiter[0]) {
+      rateLimit.delete(ip);
+      logger.info(`Reset Socket-RateLimit of client ${ip}`);
+    }
+  }
+}, 30 * 1000);
+
 
 class SocketServer {
-  wss: WebSocket.Server;
-  CHUNK_CLIENTS: Map<number, Array>;
+  // WebSocket.Server
+  wss;
+  // Map<number, Array>
+  CHUNK_CLIENTS;
+
+  constructor() {
+    this.CHUNK_CLIENTS = new Map();
+
+    this.broadcast = this.broadcast.bind(this);
+    this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
+    this.reloadUser = this.reloadUser.bind(this);
+    this.ping = this.ping.bind(this);
+    this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
+  }
 
   initialize() {
-    this.CHUNK_CLIENTS = new Map();
     logger.info('Starting websocket server');
 
     const wss = new WebSocket.Server({
@@ -91,7 +126,9 @@ class SocketServer {
       }
       ws.user = user;
       ws.name = user.getName();
-      cheapDetector(user.ip);
+
+      const { ip } = user;
+      cheapDetector(ip);
 
       ws.send(OnlineCounter.dehydrate(socketEvents.onlineCounter));
 
@@ -99,10 +136,12 @@ class SocketServer {
         logger.error(`WebSocket Client Error for ${ws.name}: ${e.message}`);
       });
 
-      ws.on('pong', heartbeat);
+      ws.on('pong', () => {
+        ws.isAlive = true;
+      });
 
       ws.on('close', () => {
-        ipCounter.delete(getIPFromRequest(req));
+        ipCounter.delete(ip);
         this.deleteAllChunks(ws);
       });
 
@@ -115,12 +154,6 @@ class SocketServer {
         }
       });
     });
-
-    this.broadcast = this.broadcast.bind(this);
-    this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
-    this.reloadUser = this.reloadUser.bind(this);
-    this.ping = this.ping.bind(this);
-    this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
 
     socketEvents.on('broadcast', this.broadcast);
     socketEvents.on('onlineCounter', this.broadcast);
@@ -181,7 +214,6 @@ class SocketServer {
     setInterval(this.onlineCounterBroadcast, 10 * 1000);
     setInterval(this.ping, 15 * 1000);
   }
-
 
   /**
    * https://github.com/websockets/ws/issues/617
@@ -416,17 +448,36 @@ class SocketServer {
             return;
           }
           const { ip } = user;
+
+          const limiter = rateLimit.get(ip);
+          if (limiter && limiter[0] > Date.now() + 60000) {
+            limiter[1] = true;
+            logger.warn(`Client ${ip} triggered Socket-RateLimit.`);
+            ws.terminate();
+            return;
+          }
+
+          let failureRet = null;
           // check if captcha needed
           if (await needCaptcha(ip)) {
             // need captcha
-            ws.send(PixelReturn.dehydrate(10, 0, 0));
-            break;
+            failureRet = PixelReturn.dehydrate(10, 0, 0);
           }
           // (re)check for Proxy
           if (await cheapDetector(ip)) {
-            ws.send(PixelReturn.dehydrate(11, 0, 0));
+            failureRet = PixelReturn.dehydrate(11, 0, 0);
+          }
+          if (failureRet !== null) {
+            const now = Date.now();
+            if (limiter && limiter[0] > now) {
+              limiter[0] += 1000;
+            } else {
+              rateLimit.set(ip, [now + 1000, false]);
+            }
+            ws.send(failureRet);
             break;
           }
+
           // receive pixels here
           const {
             i, j, pixels,

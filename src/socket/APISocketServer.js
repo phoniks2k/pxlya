@@ -18,9 +18,6 @@ import { setPixelByCoords } from '../core/setPixel';
 import logger from '../core/logger';
 import { APISOCKET_KEY } from '../core/config';
 
-function heartbeat() {
-  this.isAlive = true;
-}
 
 async function verifyClient(info, done) {
   const { req } = info;
@@ -64,7 +61,9 @@ class APISocketServer {
       ws.subChat = false;
       ws.subPxl = false;
       ws.subOnline = false;
-      ws.on('pong', heartbeat);
+      ws.on('pong', () => {
+        ws.isAlive = true;
+      });
 
       ws.on('message', (data, isBinary) => {
         if (!isBinary) {
