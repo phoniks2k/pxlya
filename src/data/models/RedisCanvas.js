@@ -59,7 +59,9 @@ class RedisCanvas {
   static async setChunk(i, j, chunk, canvasId) {
     if (chunk.length !== TILE_SIZE * TILE_SIZE) {
       // eslint-disable-next-line no-console
-      console.error(`Tried to set chunk with invalid length ${chunk.length}!`);
+      console.error(
+        new Error(`Tried to set chunk with invalid length ${chunk.length}!`),
+      );
       return false;
     }
     const key = `ch:${canvasId}:${i}:${j}`;

@@ -226,7 +226,9 @@ class SocketServer {
     let client = it.next();
     while (!client.done) {
       const ws = client.value;
-      if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
+      if (ws.readyState === WebSocket.OPEN
+        && ws.user.id === userId
+      ) {
         return ws;
       }
       client = it.next();
@@ -240,7 +242,9 @@ class SocketServer {
     let client = it.next();
     while (!client.done) {
       const ws = client.value;
-      if (ws.user.id === userId && ws.readyState === WebSocket.OPEN) {
+      if (ws.readyState === WebSocket.OPEN
+        && ws.user.id === userId
+      ) {
         clients.push(ws);
       }
       client = it.next();

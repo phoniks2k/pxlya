@@ -3,6 +3,7 @@
  * data saving for hourly events
  *
  */
+import { commandOptions } from 'redis';
 
 // its ok if its slow
 /* eslint-disable no-await-in-loop */
@@ -57,6 +58,7 @@ export async function getEventArea() {
 
 /*
  * restore area effected by last event
+ * TODO: notify RedisCanvas
  */
 export async function clearOldEvent() {
   const pos = await getEventArea();
@@ -67,7 +69,10 @@ export async function clearOldEvent() {
     for (let jc = j - 1; jc <= j + 1; jc += 1) {
       for (let ic = i - 1; ic <= i + 1; ic += 1) {
         const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
-        const chunk = await redis.get(chunkKey);
+        const chunk = await redis.get(
+          commandOptions({ returnBuffers: true }),
+          chunkKey,
+        );
         if (!chunk) {
           logger.warn(
             // eslint-disable-next-line max-len

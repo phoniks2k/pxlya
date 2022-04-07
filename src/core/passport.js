@@ -282,6 +282,7 @@ passport.use(new VkontakteStrategy({
         // eslint-disable-next-line max-len
         message: 'Sorry, you can not use vk login with an account that does not have a verified email set.',
       });
+      return;
     }
     const user = await oauthLogin(email, name);
     done(null, user);
