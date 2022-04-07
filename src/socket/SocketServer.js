@@ -22,7 +22,7 @@ import OnlineCounter from './packets/OnlineCounter';
 
 import socketEvents from './SocketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
-import authenticateClient from './verifyClient';
+import authenticateClient from './authenticateClient';
 import { drawByOffsets } from '../core/draw';
 import { needCaptcha } from '../utils/captcha';
 import { cheapDetector } from '../core/isProxy';
@@ -33,39 +33,6 @@ const ipCounter = new Counter();
 // value: [rlTimestamp, triggered]
 const rateLimit = new Map();
 
-async function verifyClient(info, done) {
-  const { req } = info;
-  const { headers } = req;
-
-  // Limiting socket connections per ip
-  const ip = getIPFromRequest(req);
-  // ratelimited
-  const now = Date.now();
-  const limiter = rateLimit.get(ip);
-  if (limiter && limiter[1]) {
-    if (limiter[0] > now) {
-      logger.info(`Rejected Socket-RateLimited Client ${ip}.`);
-      return done(false);
-    }
-    limiter[1] = false;
-    logger.info(`Allow Socket-RateLimited Client ${ip} again.`);
-  }
-  // CORS
-  const { origin } = headers;
-  if (!origin || !origin.endsWith(getHostFromRequest(req, false))) {
-    // eslint-disable-next-line max-len
-    logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(req, false)}`);
-    return done(false);
-  }
-  if (ipCounter.get(ip) > 50) {
-    logger.info(`Client ${ip} has more than 50 connections open.`);
-    return done(false);
-  }
-
-  ipCounter.add(ip);
-  return done(true);
-}
-
 setInterval(() => {
   // clean old ratelimiter data
   const now = Date.now();
@@ -75,7 +42,6 @@ setInterval(() => {
     const limiter = rateLimit.get(ip);
     if (limiter && now > limiter[0]) {
       rateLimit.delete(ip);
-      logger.info(`Reset Socket-RateLimit of client ${ip}`);
     }
   }
 }, 30 * 1000);
@@ -90,6 +56,7 @@ class SocketServer {
   constructor() {
     this.CHUNK_CLIENTS = new Map();
 
+    this.verifyClient = this.verifyClient.bind(this);
     this.broadcast = this.broadcast.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
@@ -107,7 +74,7 @@ class SocketServer {
       // path: "/ws",
       // server,
       noServer: true,
-      verifyClient,
+      verifyClient: this.verifyClient,
     });
     this.wss = wss;
 
@@ -215,6 +182,43 @@ class SocketServer {
     setInterval(this.ping, 15 * 1000);
   }
 
+  verifyClient(info, done) {
+    const { req } = info;
+    const { headers } = req;
+
+    // Limiting socket connections per ip
+    const ip = getIPFromRequest(req);
+    // ratelimited
+    const now = Date.now();
+    const limiter = rateLimit.get(ip);
+    if (limiter && limiter[1]) {
+      if (limiter[0] > now) {
+        // logger.info(`Rejected Socket-RateLimited Client ${ip}.`);
+        return done(false);
+      }
+      limiter[1] = false;
+      logger.info(`Allow Socket-RateLimited Client ${ip} again.`);
+    }
+    // CORS
+    const { origin } = headers;
+    if (!origin || !origin.endsWith(getHostFromRequest(req, false))) {
+      // eslint-disable-next-line max-len
+      logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(req, false)}`);
+      return done(false);
+    }
+    if (ipCounter.get(ip) > 50) {
+      rateLimit.set(ip, [now + 120000, true]);
+      const amount = this.killAllWsByUerIp(ip);
+      logger.info(
+        `Client ${ip} has more than 50 connections open, killed ${amount}.`,
+      );
+      return done(false);
+    }
+
+    ipCounter.add(ip);
+    return done(true);
+  }
+
   /**
    * https://github.com/websockets/ws/issues/617
    * @param data
@@ -284,6 +288,24 @@ class SocketServer {
       client = it.next();
     }
     return clients;
+  }
+
+  killAllWsByUerIp(ip) {
+    const it = this.wss.clients.keys();
+    let amount = 0;
+    let client = it.next();
+    while (!client.done) {
+      const ws = client.value;
+      if (ws.readyState === WebSocket.OPEN
+        && ws.user
+        && ws.user.ip === ip
+      ) {
+        ws.terminate();
+        amount += 1;
+      }
+      client = it.next();
+    }
+    return amount;
   }
 
   broadcastPixelBuffer(canvasId: number, chunkid, data: Buffer) {
@@ -452,11 +474,16 @@ class SocketServer {
           const { ip } = user;
 
           const limiter = rateLimit.get(ip);
-          if (limiter && limiter[0] > Date.now() + 60000) {
-            limiter[1] = true;
-            logger.warn(`Client ${ip} triggered Socket-RateLimit.`);
-            ws.terminate();
-            return;
+          if (limiter) {
+            if (limiter[0] > Date.now() + 60000) {
+              limiter[1] = true;
+              limiter[0] += 120000;
+              logger.warn(`Client ${ip} triggered Socket-RateLimit.`);
+            }
+            if (limiter[1]) {
+              ws.terminate();
+              return;
+            }
           }
 
           let failureRet = null;
