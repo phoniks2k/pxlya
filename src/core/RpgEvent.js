@@ -110,7 +110,7 @@ class RpgEvent {
     this.setSuccess(success, false);
     let eventTimestamp = await nextEvent();
     if (!eventTimestamp) {
-      eventTimestamp = await Event.setNextEvent();
+      eventTimestamp = await RpgEvent.setNextEvent();
       await this.calcEventCenter();
       const [x, y, w, h] = this.eventArea;
       await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
@@ -163,8 +163,8 @@ class RpgEvent {
     const timestamp = await nextEvent();
     const x = i * TILE_SIZE - canvasSize / 2;
     const y = j * TILE_SIZE - canvasSize / 2;
-    Event.broadcastChatMessage(
-      `Suspicious activity spotted in ${Event.getDirection(x, y)}`,
+    RpgEvent.broadcastChatMessage(
+      `Suspicious activity spotted in ${RpgEvent.getDirection(x, y)}`,
     );
     drawCross([i, j], 19, 0, 13);
     logger.info(`Set next Event in 60min at ${x},${y}`);
@@ -207,8 +207,8 @@ class RpgEvent {
       if (eventState !== 3 && eventState !== 4) {
         this.eventState = 3;
         const [x, y] = this.eventArea;
-        Event.broadcastChatMessage(
-          `Unstable area at ${Event.getDirection(x, y)} at concerning level`,
+        RpgEvent.broadcastChatMessage(
+          `Unstable area at ${RpgEvent.getDirection(x, y)} at concerning level`,
         );
       }
       if (eventState !== 3) {
@@ -240,7 +240,7 @@ class RpgEvent {
           const rand = Math.random() * 3000 - 500;
           return Math.floor(z + TILE_SIZE * 1.5 + rand);
         });
-        Event.broadcastChatMessage(
+        RpgEvent.broadcastChatMessage(
           `Alert! Threat is rising in 2min near #d,${xNear},${yNear},30`,
         );
       }
@@ -256,7 +256,7 @@ class RpgEvent {
       // 1min till Event: blinking solid cross red small fase
       if (eventState !== 9 && eventState !== 10) {
         this.eventState = 9;
-        Event.broadcastChatMessage(
+        RpgEvent.broadcastChatMessage(
           'Alert! Danger!',
         );
       }
@@ -274,7 +274,7 @@ class RpgEvent {
         const [x, y, w, h] = this.eventArea;
         await protectCanvasArea(CANVAS_ID, x, y, w, h, false);
         logger.info(`Starting Event at ${x},${y} now`);
-        Event.broadcastChatMessage(
+        RpgEvent.broadcastChatMessage(
           'Fight starting!',
         );
         this.void = new Void(this.eventCenterC);
@@ -284,7 +284,7 @@ class RpgEvent {
         if (percent === 100) {
           // event lost
           logger.info(`Event got lost after ${Math.abs(eventMinutes)} min`);
-          Event.broadcastChatMessage(
+          RpgEvent.broadcastChatMessage(
             'Threat couldn\'t be contained, abandon area',
           );
           this.setSuccess(2);
@@ -294,7 +294,7 @@ class RpgEvent {
         } else {
           const now = Date.now();
           if (now > this.chatTimeout) {
-            Event.broadcastChatMessage(
+            RpgEvent.broadcastChatMessage(
               `Clown Void reached ${percent}% of its max size`,
             );
             this.chatTimeout = now + 40000;
@@ -311,7 +311,7 @@ class RpgEvent {
           if (this.void.checkStatus() !== 100) {
             // event won
             logger.info('Event got won! Cooldown sitewide now half.');
-            Event.broadcastChatMessage(
+            RpgEvent.broadcastChatMessage(
               'Threat successfully defeated. Good work!',
             );
             this.setSuccess(1);
@@ -329,7 +329,7 @@ class RpgEvent {
         // 5min after last Event
         // end debuff if lost
         if (this.success === 2) {
-          Event.broadcastChatMessage(
+          RpgEvent.broadcastChatMessage(
             'Void seems to leave again.',
           );
           this.setSuccess(0);
@@ -345,7 +345,7 @@ class RpgEvent {
         logger.info('Restoring old event area');
         await clearOldEvent();
         if (this.success === 1) {
-          Event.broadcastChatMessage(
+          RpgEvent.broadcastChatMessage(
             'Celebration time over, get back to work.',
           );
           this.setSuccess(0);
@@ -358,7 +358,7 @@ class RpgEvent {
     } else {
       // 50min after last Event / 1h before next Event
       // define and protect it
-      this.eventTimestamp = await Event.setNextEvent();
+      this.eventTimestamp = await RpgEvent.setNextEvent();
       await this.calcEventCenter();
       const [x, y, w, h] = this.eventArea;
       await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
