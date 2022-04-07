@@ -207,7 +207,7 @@ class SocketServer {
       return done(false);
     }
     if (ipCounter.get(ip) > 50) {
-      rateLimit.set(ip, [now + 120000, true]);
+      rateLimit.set(ip, [now + 1000 * 60 * 15, true]);
       const amount = this.killAllWsByUerIp(ip);
       logger.info(
         `Client ${ip} has more than 50 connections open, killed ${amount}.`,
@@ -477,7 +477,7 @@ class SocketServer {
           if (limiter) {
             if (limiter[0] > Date.now() + 60000) {
               limiter[1] = true;
-              limiter[0] += 120000;
+              limiter[0] += 1000 * 60 * 15;
               logger.warn(`Client ${ip} triggered Socket-RateLimit.`);
             }
             if (limiter[1]) {
