@@ -354,7 +354,9 @@ class SocketServer {
   ping() {
     this.wss.clients.forEach((ws) => {
       if (!ws.isAlive) {
-        logger.info(`Killing dead websocket from ${ws.user.ip}`);
+        if (ws.user) {
+          logger.info(`Killing dead websocket from ${ws.user.ip}`);
+        }
         ws.terminate();
       } else {
         ws.isAlive = false;
