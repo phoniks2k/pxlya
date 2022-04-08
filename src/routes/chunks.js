@@ -70,10 +70,11 @@ export default async (req, res, next) => {
       return;
     }
 
+    res.set({
+      'Content-Type': 'application/octet-stream',
+    });
+
     if (!chunk) {
-      res.set({
-        'Content-Type': 'application/octet-stream',
-      });
       res.status(200).end();
       return;
     }
