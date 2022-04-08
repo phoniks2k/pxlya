@@ -140,7 +140,7 @@ export async function incrementialBackupRedis(
           } else {
             console.log(
               // eslint-disable-next-line max-len
-              `Chunk ${x},${y} of canvas ${id} has invalid length ${curChunk.length}`,
+              `Chunk ${key} in backup-redis has invalid length ${curChunk.length}`,
             );
           }
         }
