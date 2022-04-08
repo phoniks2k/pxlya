@@ -12,7 +12,7 @@ import {
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 
-import redis, { redisV3 } from '../redis';
+import redis from '../redis';
 
 
 const UINT_SIZE = 'u8';
@@ -92,6 +92,7 @@ class RedisCanvas {
   }
 
   multi = null;
+
   static enqueuePixel(
     canvasId,
     color,
@@ -100,9 +101,9 @@ class RedisCanvas {
     offset,
   ) {
     if (!RedisCanvas.multi) {
-      RedisCanvas.multi = redisV3.multi();
+      RedisCanvas.multi = redis.multi();
     }
-    RedisCanvas.multi.v4.addCommand(
+    RedisCanvas.multi.addCommand(
       [
         'BITFIELD',
         `ch:${canvasId}:${i}:${j}`,
@@ -119,7 +120,8 @@ class RedisCanvas {
     if (RedisCanvas.multi) {
       const { multi } = RedisCanvas;
       RedisCanvas.multi = null;
-      return multi.execAsPipeline();
+      // true for execAsPipeline
+      return multi.exec(true);
     }
     return null;
   }

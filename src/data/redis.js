@@ -27,4 +27,11 @@ export const connect = async () => {
   await redis.connect();
 };
 
+/*
+ * multi is not in .v4 in legacyMode,
+ * might be fixed in the future
+ * https://github.com/redis/node-redis/blob/329885b4ae3167d0092e856095b726e2adf89c97/packages/client/lib/client/multi-command.ts
+ */
+redis.v4.multi = () => redis.multi().v4;
+
 export default redis.v4;
