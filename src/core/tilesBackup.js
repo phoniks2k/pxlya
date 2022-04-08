@@ -237,7 +237,7 @@ export async function createPngBackup(
             } else {
               console.log(
                 // eslint-disable-next-line max-len
-                `Chunk ${x},${y} of canvas ${id} has invalid length ${chunk.length}`,
+                `Chunk ${key} has invalid length ${chunk.length}`,
               );
             }
           }
