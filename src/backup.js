@@ -134,7 +134,7 @@ async function dailyBackup() {
     fs.mkdirSync(backupDir, { recursive: true });
   }
 
-  await backupRedis.flushall('ASYNC');
+  await backupRedis.flushAll('ASYNC');
 
   try {
     await updateBackupRedis(canvasRedis, backupRedis, canvases);
