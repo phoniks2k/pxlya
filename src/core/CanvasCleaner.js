@@ -373,13 +373,27 @@ class CanvasCleaner {
         ) {
           chunk = chunks[jAbs - jo + 1][iAbs - io + 1];
         } else {
-          // eslint-disable-next-line no-await-in-loop
-          chunk = await RedisCanvas.getChunk(canvasId, iAbs, jAbs);
-          if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            chunk = await RedisCanvas.getChunk(
+              canvasId,
+              iAbs,
+              jAbs,
+              TILE_SIZE ** 2,
+            );
+          } catch (error) {
+            this.logger(
+              // eslint-disable-next-line max-len
+              `Couldn't load chunk ch:${canvasId}:${iAbs}:${jAbs}: ${error.message}}`,
+            );
+          }
+          if (!chunk || !chunk.length) {
             chunk = null;
             if (chunk) {
-              // eslint-disable-next-line max-len
-              this.logger(`Chunk ch:${canvasId}:${iAbs}:${jAbs} has invalid size ${chunk.length}.`);
+              this.logger(
+                // eslint-disable-next-line max-len
+                `Chunk ch:${canvasId}:${iAbs}:${jAbs} has invalid size ${chunk.length}.`,
+              );
             }
           }
         }

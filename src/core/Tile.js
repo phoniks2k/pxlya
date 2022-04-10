@@ -11,8 +11,8 @@
 
 import sharp from 'sharp';
 import fs from 'fs';
-import { commandOptions } from 'redis';
 
+import RedisCanvas from '../data/models/RedisCanvas';
 import Palette from './Palette';
 import { getMaxTiledZoom } from './utils';
 import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
@@ -29,7 +29,7 @@ function deleteSubtilefromTile(
   palette,
   subtilesInTile,
   cell,
-  buffer: Uint8Array,
+  buffer,
 ) {
   const [dx, dy] = cell;
   const offset = (dx + dy * TILE_SIZE * subtilesInTile) * TILE_SIZE;
@@ -56,8 +56,8 @@ function deleteSubtilefromTile(
 function addRGBSubtiletoTile(
   subtilesInTile,
   cell,
-  subtile: Buffer,
-  buffer: Uint8Array,
+  subtile,
+  buffer,
 ) {
   const [dx, dy] = cell;
   const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
@@ -84,21 +84,32 @@ function addIndexedSubtiletoTile(
   palette,
   subtilesInTile,
   cell,
-  subtile: Buffer,
-  buffer: Uint8Array,
+  subtile,
+  buffer,
 ) {
   const [dx, dy] = cell;
   const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
+
+  const emptyR = palette.rgb[0];
+  const emptyB = palette.rgb[1];
+  const emptyG = palette.rgb[1];
+
   let pos = 0;
   let clr;
   for (let row = 0; row < TILE_SIZE; row += 1) {
     let channelOffset = (chunkOffset + row * TILE_SIZE * subtilesInTile) * 3;
     const max = channelOffset + TILE_SIZE * 3;
     while (channelOffset < max) {
-      clr = (subtile[pos++] & 0x3F) * 3;
-      buffer[channelOffset++] = palette.rgb[clr++];
-      buffer[channelOffset++] = palette.rgb[clr++];
-      buffer[channelOffset++] = palette.rgb[clr];
+      if (pos < subtile.length) {
+        clr = (subtile[pos++] & 0x3F) * 3;
+        buffer[channelOffset++] = palette.rgb[clr++];
+        buffer[channelOffset++] = palette.rgb[clr++];
+        buffer[channelOffset++] = palette.rgb[clr];
+      } else {
+        buffer[channelOffset++] = emptyR;
+        buffer[channelOffset++] = emptyB;
+        buffer[channelOffset++] = emptyG;
+      }
     }
   }
 }
@@ -115,7 +126,6 @@ function tileFileName(canvasTileFolder, cell) {
 }
 
 /*
- * @param redisClient redis instance
  * @param canvasId id of the canvas
  * @param canvas canvas data
  * @param canvasTileFolder root folder where to save tiles
@@ -123,7 +133,6 @@ function tileFileName(canvasTileFolder, cell) {
  * @return true if successfully created tile, false if tile empty
  */
 export async function createZoomTileFromChunk(
-  redisClient,
   canvasId,
   canvas,
   canvasTileFolder,
@@ -141,14 +150,22 @@ export async function createZoomTileFromChunk(
   const xabs = x * TILE_ZOOM_LEVEL;
   const yabs = y * TILE_ZOOM_LEVEL;
   const na = [];
-  let chunk = null;
   for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
     for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
-      chunk = await redisClient.get(
-        commandOptions({ returnBuffers: true }),
-        `ch:${canvasId}:${xabs + dx}:${yabs + dy}`,
-      );
-      if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
+      let chunk = null;
+      try {
+        chunk = await RedisCanvas.getChunk(
+          canvasId,
+          xabs + dx,
+          yabs + dy,
+        );
+      } catch (error) {
+        console.error(
+          // eslint-disable-next-line max-len
+          `Tiling: Failed to get Chunk ch:${canvasId}:${xabs + dx}${yabs + dy} with error ${error.message}`,
+        );
+      }
+      if (!chunk || !chunk.length) {
         na.push([dx, dy]);
         continue;
       }
@@ -161,7 +178,6 @@ export async function createZoomTileFromChunk(
       );
     }
   }
-  chunk = null;
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
@@ -311,14 +327,12 @@ async function createEmptyTile(
 
 /*
  * created 4096x4096 texture of default canvas
- * @param redisClient redis instance
  * @param canvasId numberical Id of canvas
  * @param canvas canvas data
  * @param canvasTileFolder root folder where to save texture
  *
  */
 export async function createTexture(
-  redisClient,
   canvasId,
   canvas,
   canvasTileFolder,
@@ -333,10 +347,10 @@ export async function createTexture(
   const startTime = Date.now();
 
   const na = [];
-  let chunk = null;
   if (targetSize !== canvasSize) {
     for (let dy = 0; dy < amount; dy += 1) {
       for (let dx = 0; dx < amount; dx += 1) {
+        let chunk = null;
         const chunkfile = `${canvasTileFolder}/${zoom}/${dx}/${dy}.png`;
         if (!fs.existsSync(chunkfile)) {
           na.push([dx, dy]);
@@ -356,11 +370,20 @@ export async function createTexture(
   } else {
     for (let dy = 0; dy < amount; dy += 1) {
       for (let dx = 0; dx < amount; dx += 1) {
-        chunk = await redisClient.get(
-          commandOptions({ returnBuffers: true }),
-          `ch:${canvasId}:${dx}:${dy}`,
-        );
-        if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
+        let chunk = null;
+        try {
+          chunk = await RedisCanvas.getChunk(
+            canvasId,
+            dx,
+            dy,
+          );
+        } catch (error) {
+          console.error(
+            // eslint-disable-next-line max-len
+            `Tiling: Failed to get Chunk ch:${canvasId}:${dx}${dy} with error ${error.message}`,
+          );
+        }
+        if (!chunk || !chunk.length) {
           na.push([dx, dy]);
           continue;
         }
@@ -374,7 +397,6 @@ export async function createTexture(
       }
     }
   }
-  chunk = null;
 
   na.forEach((element) => {
     deleteSubtilefromTile(palette, amount, element, textureBuffer);
@@ -404,14 +426,12 @@ export async function createTexture(
 
 /*
  * Create all tiles
- * @param redisClient redis instance
  * @param canvasId id of the canvas
  * @param canvas canvas data
  * @param canvasTileFolder folder for tiles
  * @param force overwrite existing tiles
  */
 export async function initializeTiles(
-  redisClient,
   canvasId,
   canvas,
   canvasTileFolder,
@@ -441,7 +461,6 @@ export async function initializeTiles(
       const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.png`;
       if (force || !fs.existsSync(filename)) {
         const ret = await createZoomTileFromChunk(
-          redisClient,
           canvasSize,
           canvasId,
           canvasTileFolder,
@@ -487,7 +506,6 @@ export async function initializeTiles(
   }
   // create snapshot texture
   await createTexture(
-    redisClient,
     canvasId,
     canvas,
     canvasTileFolder,

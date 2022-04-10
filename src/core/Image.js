@@ -39,6 +39,7 @@ export async function imageABGR2Canvas(
   logger.info(
     `Loading image with dim ${width}/${height} to ${x}/${y}/${canvasId}`,
   );
+  const expectedLength = TILE_SIZE ** 2;
   const canvas = canvases[canvasId];
   const { colors, cli, size } = canvas;
   const palette = new Palette(colors);
@@ -50,11 +51,18 @@ export async function imageABGR2Canvas(
 
   let totalPxlCnt = 0;
   logger.info(`Loading to chunks from ${ucx} / ${ucy} to ${lcx} / ${lcy} ...`);
-  let chunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
-      chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      chunk = (chunk && chunk.length === TILE_SIZE * TILE_SIZE)
+      let chunk = null;
+      try {
+        chunk = await RedisCanvas.getChunk(canvasId, cx, cy, expectedLength);
+      } catch (error) {
+        logger.error(
+          // eslint-disable-next-line max-len
+          `Could not load chunk ch:${canvasId}:${cx}:${cy} for image-load: ${error.message}`,
+        );
+      }
+      chunk = (chunk && chunk.length)
         ? new Uint8Array(chunk)
         : new Uint8Array(TILE_SIZE * TILE_SIZE);
       // offset of chunk in image
@@ -119,6 +127,7 @@ export async function imagemask2Canvas(
   logger.info(
     `Loading mask with size ${width} / ${height} to ${x} / ${y} to the canvas`,
   );
+  const expectedLength = TILE_SIZE ** 2;
   const canvas = canvases[canvasId];
   const palette = new Palette(canvas.colors);
   const canvasMinXY = -(canvas.size / 2);
@@ -129,11 +138,18 @@ export async function imagemask2Canvas(
   const [lcx, lcy] = getChunkOfPixel(canvas.size, x + width, y + height);
 
   logger.info(`Loading to chunks from ${ucx} / ${ucy} to ${lcx} / ${lcy} ...`);
-  let chunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
-      chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      chunk = (chunk && chunk.length === TILE_SIZE * TILE_SIZE)
+      let chunk = null;
+      try {
+        chunk = await RedisCanvas.getChunk(canvasId, cx, cy, expectedLength);
+      } catch (error) {
+        logger.error(
+          // eslint-disable-next-line max-len
+          `Could not load chunk ch:${canvasId}:${cx}:${cy} for imagemask-load: ${error.message}`,
+        );
+      }
+      chunk = (chunk && chunk.length)
         ? new Uint8Array(chunk)
         : new Uint8Array(TILE_SIZE * TILE_SIZE);
       // offset of chunk in image
@@ -191,6 +207,7 @@ export async function protectCanvasArea(
     // eslint-disable-next-line max-len
     `Setting protection ${protect} with size ${width} / ${height} to ${x} / ${y}`,
   );
+  const expectedLength = TILE_SIZE ** 2;
   const canvas = canvases[canvasId];
   const canvasMinXY = -(canvas.size / 2);
 
@@ -201,11 +218,18 @@ export async function protectCanvasArea(
   );
 
   let totalPxlCnt = 0;
-  let chunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
-      chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      if (!chunk || chunk.length !== TILE_SIZE * TILE_SIZE) {
+      let chunk = null;
+      try {
+        chunk = await RedisCanvas.getChunk(canvasId, cx, cy, expectedLength);
+      } catch (error) {
+        logger.error(
+          // eslint-disable-next-line max-len
+          `Could not load chunk ch:${canvasId}:${cx}:${cy} for protection: ${error.message}`,
+        );
+      }
+      if (!chunk || !chunk.length) {
         continue;
       }
       chunk = new Uint8Array(chunk);

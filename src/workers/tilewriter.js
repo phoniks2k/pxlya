@@ -6,7 +6,7 @@
 
 import { isMainThread, parentPort } from 'worker_threads';
 
-import redis, { connect as connectRedis } from '../data/redis';
+import { connect as connectRedis } from '../data/redis';
 import {
   createZoomTileFromChunk,
   createZoomedTile,
@@ -27,16 +27,16 @@ connectRedis()
       try {
         switch (task) {
           case 'createZoomTileFromChunk':
-            createZoomTileFromChunk(redis, ...args);
+            createZoomTileFromChunk(...args);
             break;
           case 'createZoomedTile':
             createZoomedTile(...args);
             break;
           case 'createTexture':
-            createTexture(redis, ...args);
+            createTexture(...args);
             break;
           case 'initializeTiles':
-            await initializeTiles(redis, ...args);
+            await initializeTiles(...args);
             parentPort.postMessage('Done!');
             break;
           default:

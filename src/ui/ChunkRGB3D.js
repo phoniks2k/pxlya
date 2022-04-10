@@ -238,7 +238,15 @@ class Chunk {
     this.setVoxelByOffset(offset, clr);
   }
 
-  async fromBuffer(chunkBuffer: Uint8Array) {
+  async fromBuffer(chunkBufferInpt: Uint8Array) {
+    let chunkBuffer = chunkBufferInpt;
+    const neededLength = THREE_TILE_SIZE ** 2 * THREE_CANVAS_HEIGHT;
+    if (chunkBuffer.byteLength < neededLength) {
+      // eslint-disable-next-line
+      console.log(`Padding chunk ${this.key} with ${neededLength - chunkBuffer.byteLength} voxels to full length`);
+      chunkBuffer = new Uint8Array(neededLength);
+      chunkBuffer.set(chunkBufferInpt);
+    }
     this.buffer = chunkBuffer;
     const [faceCnt, lastPixel, heightMap] = Chunk.calculateMetaData(
       chunkBuffer,

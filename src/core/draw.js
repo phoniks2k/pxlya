@@ -315,7 +315,7 @@ export async function drawByCoords(
   }
 
   const isAdmin = (user.userlvl === 1);
-  const setColor = await RedisCanvas.getPixel(canvasId, x, y, z);
+  const setColor = await RedisCanvas.getPixel(canvasId, canvas.size, x, y, z);
 
   /*
    * bitwise operation to get rid of protection

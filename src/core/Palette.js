@@ -110,11 +110,10 @@ class Palette {
     const { length } = chunkBuffer;
     const colors = new Uint32Array(length);
     let value;
-    const buffer = chunkBuffer;
 
     let pos = 0;
     for (let i = 0; i < length; i++) {
-      value = (buffer[i] & 0x3F);
+      value = (chunkBuffer[i] & 0x3F);
       colors[pos++] = this.abgr[value];
     }
     return colors;

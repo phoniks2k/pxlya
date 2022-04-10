@@ -68,32 +68,38 @@ export async function clearOldEvent() {
     // 3x3 chunk area centered at i,j
     for (let jc = j - 1; jc <= j + 1; jc += 1) {
       for (let ic = i - 1; ic <= i + 1; ic += 1) {
-        const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
-        const chunk = await redis.get(
-          commandOptions({ returnBuffers: true }),
-          chunkKey,
-        );
-        if (!chunk) {
-          logger.warn(
+        try {
+          const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
+          const chunk = await redis.get(
+            commandOptions({ returnBuffers: true }),
+            chunkKey,
+          );
+          if (!chunk) {
+            logger.warn(
+              // eslint-disable-next-line max-len
+              `Couldn't get chunk event backup for ${ic}/${jc}, which is weird`,
+            );
+            continue;
+          }
+          if (chunk.length <= 1) {
+            logger.info(
+              // eslint-disable-next-line max-len
+              `Tiny chunk in event backup, not-generated chunk at ${ic}/${jc}`,
+            );
+            await RedisCanvas.delChunk(ic, jc, CANVAS_ID);
+          } else {
+            logger.info(
+              `Restoring chunk ${ic}/${jc} from event`,
+            );
+            await RedisCanvas.setChunk(ic, jc, chunk, CANVAS_ID);
+          }
+          await redis.del(chunkKey);
+        } catch (error) {
+          logger.error(
             // eslint-disable-next-line max-len
-            `Couldn't get chunk event backup for ${ic}/${jc}, which is weird`,
+            `Couldn't restore chunk from RpgEvent ${EVENT_BACKUP_PREFIX}:${ic}:${jc} : ${error.message}`,
           );
-          continue;
         }
-        if (chunk.length <= 256) {
-          logger.info(
-            // eslint-disable-next-line max-len
-            `Tiny chunk in event backup, not-generated chunk at ${ic}/${jc}`,
-          );
-          await RedisCanvas.delChunk(ic, jc, CANVAS_ID);
-        } else {
-          logger.info(
-            `Restoring chunk ${ic}/${jc} from event`,
-          );
-          const chunkArray = new Uint8Array(chunk);
-          await RedisCanvas.setChunk(ic, jc, chunkArray, CANVAS_ID);
-        }
-        await redis.del(chunkKey);
       }
     }
     await redis.del(EVENT_POSITION_KEY);
@@ -109,13 +115,18 @@ export async function setNextEvent(minutes, i, j) {
   await clearOldEvent();
   for (let jc = j - 1; jc <= j + 1; jc += 1) {
     for (let ic = i - 1; ic <= i + 1; ic += 1) {
-      let chunk = await RedisCanvas.getChunk(CANVAS_ID, ic, jc);
-      if (!chunk) {
-        // place a dummy Array inside to mark chunk as none-existent
-        const buff = new Uint8Array(3);
-        chunk = Buffer.from(buff);
-        // place dummy pixel to make RedisCanvas create chunk
-        await RedisCanvas.setPixelInChunk(ic, jc, 0, 0, CANVAS_ID);
+      let chunk = null;
+      try {
+        chunk = await RedisCanvas.getChunk(CANVAS_ID, ic, jc);
+      } catch (error) {
+        logger.error(
+          // eslint-disable-next-line max-len
+          `Could not load chunk ch:${CANVAS_ID}:${ic}:${jc} for RpgEvent backup: ${error.message}`,
+        );
+      }
+      if (!chunk || !chunk.length) {
+        // place a 1-length buffer inside to mark chunk as none-existent
+        chunk = Buffer.allocUnsafe(1);
       }
       const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
       await redis.set(chunkKey, chunk);

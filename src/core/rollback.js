@@ -51,19 +51,26 @@ export default async function rollbackToDate(
 
   let totalPxlCnt = 0;
   logger.info(`Loading to chunks from ${ucx} / ${ucy} to ${lcx} / ${lcy} ...`);
-  let chunk;
   let empty = false;
   let emptyBackup = false;
   let backupChunk;
   for (let cx = ucx; cx <= lcx; cx += 1) {
     for (let cy = ucy; cy <= lcy; cy += 1) {
-      chunk = await RedisCanvas.getChunk(canvasId, cx, cy);
-      if (chunk && chunk.length === TILE_SIZE * TILE_SIZE) {
-        chunk = new Uint8Array(chunk);
-        empty = false;
-      } else {
+      let chunk = null;
+      try {
+        chunk = await RedisCanvas.getChunk(canvasId, cx, cy, TILE_SIZE ** 2);
+      } catch (error) {
+        logger.error(
+          // eslint-disable-next-line max-len
+          `Chunk ch:${canvasId}:${cx}:${cy} could not be loaded from redis, assuming empty.`,
+        );
+      }
+      if (!chunk || !chunk.length) {
         chunk = new Uint8Array(TILE_SIZE * TILE_SIZE);
         empty = true;
+      } else {
+        chunk = new Uint8Array(chunk);
+        empty = false;
       }
       try {
         emptyBackup = false;
