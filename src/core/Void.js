@@ -14,8 +14,6 @@ import { CANVAS_ID } from '../data/models/Event';
 import canvases from './canvases.json';
 
 const TARGET_RADIUS = 62;
-const EVENT_DURATION_MIN = 10;
-// const EVENT_DURATION_MIN = 1;
 
 class Void {
   // chunk coords
@@ -37,7 +35,7 @@ class Void {
   // boolean if ended
   ended;
 
-  constructor(centerCell) {
+  constructor(centerCell, targetDuration) {
     // chunk coordinates
     const [i, j] = centerCell;
     this.i = i;
@@ -46,9 +44,9 @@ class Void {
     this.maxClr = canvases[CANVAS_ID].colors.length;
     const area = TARGET_RADIUS ** 2 * Math.PI;
     const online = socketEvents.onlineCounter.total || 0;
-    // require an average of 0.25 px / min / user
-    const requiredSpeed = Math.floor(online / 1.8);
-    const ppm = Math.ceil(area / EVENT_DURATION_MIN + requiredSpeed);
+    // adjusted from 1.8 to 2.0 on 2022.04.26
+    const requiredSpeed = Math.floor(online / 2.0);
+    const ppm = Math.ceil(area / targetDuration + requiredSpeed);
     this.msTimeout = 60 * 1000 / ppm;
     this.area = new Uint8Array(TILE_SIZE * 3 * TILE_SIZE * 3);
     this.userArea = new Uint8Array(TILE_SIZE * 3 * TILE_SIZE * 3);

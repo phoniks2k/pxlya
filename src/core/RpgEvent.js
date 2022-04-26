@@ -25,12 +25,12 @@ import chatProvider from './ChatProvider';
 import canvases from './canvases.json';
 
 // steps in minutes for event stages
-const STEPS = [30, 10, 2, 1, 0, -10, -15, -40, -60];
+// STEPS[5] is event duration, adjusted from 10 to 8 on 2022.04.26
+const STEPS = [30, 10, 2, 1, 0, -8, -15, -40, -60];
 // const STEPS = [4, 3, 2, 1, 0, -1, -2, -3, -4];
 // gap between events in min, starting 1h after last event
 // so 60 is a 2h gap, has to be higher than first and highest STEP numbers
 const EVENT_GAP_MIN = 60;
-// const EVENT_GAP_MIN = 5;
 
 /*
  * draw cross in center of chunk
@@ -277,7 +277,9 @@ class RpgEvent {
         RpgEvent.broadcastChatMessage(
           'Fight starting!',
         );
-        this.void = new Void(this.eventCenterC);
+        // run event for 8min
+        const targetDuration = STEPS[5] * -1;
+        this.void = new Void(this.eventCenterC, targetDuration);
         this.eventState = 11;
       } else if (this.void) {
         const percent = this.void.checkStatus();
@@ -301,11 +303,9 @@ class RpgEvent {
           }
         }
       }
-      // run event for 10min
       setTimeout(this.runEventLoop, 1000);
     } else if (eventMinutes > STEPS[6]) {
       if (eventState !== 12) {
-        // after 10min of event
         // check if won
         if (this.void) {
           if (this.void.checkStatus() !== 100) {
@@ -321,12 +321,10 @@ class RpgEvent {
         }
         this.eventState = 12;
       }
-      // for 30min after event
-      // do nothing
       setTimeout(this.runEventLoop, 60000);
     } else if (eventMinutes > STEPS[7]) {
       if (eventState !== 13) {
-        // 5min after last Event
+        // 7min after last Event
         // end debuff if lost
         if (this.success === 2) {
           RpgEvent.broadcastChatMessage(
@@ -339,7 +337,7 @@ class RpgEvent {
       setTimeout(this.runEventLoop, 60000);
     } else if (eventMinutes > STEPS[8]) {
       if (eventState !== 14) {
-        // 30min after last Event
+        // 32min after last Event
         // clear old event area
         // reset success state
         logger.info('Restoring old event area');
@@ -352,11 +350,11 @@ class RpgEvent {
         }
         this.eventState = 14;
       }
-      // 30min to 50min after last Event
+      // 32min to 52min after last Event
       // do nothing
       setTimeout(this.runEventLoop, 60000);
     } else {
-      // 50min after last Event / 1h before next Event
+      // 52min after last Event / 1h before next Event
       // define and protect it
       this.eventTimestamp = await RpgEvent.setNextEvent();
       await this.calcEventCenter();
