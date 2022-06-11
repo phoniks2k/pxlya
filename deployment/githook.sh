@@ -3,7 +3,6 @@
 # If it is the production branch, it will deploy it on the life system, and other branch will get deployed to the dev-canvas (a second canvas that is running on the server)
 #
 # To set up a server to use this, you have to go through the building steps manually first.
-# This hook just builds the canvas, it does not install new packages if needed. So this has to be done manually first
 #
 #folder for building the canvas (the git repository will get checkout there and the canvas will get buil thtere)
 BUILDDIR="/home/pixelpla/pixelplanet-build"
