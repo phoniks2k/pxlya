@@ -8,6 +8,7 @@ i18n/*.mo
 logs
 *.log
 npm-debug.log*
+*.tmp
 
 pids
 *.pid
