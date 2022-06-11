@@ -1,7 +1,7 @@
 # PixelPlanet.fun
 
 
-[![Guilded](https://img.shields.io/badge/Discord-Support-blue.svg)](https://pixelplanet.fun/guilded) ![](https://github.com/pixelplanetdev/pixelplanet/workflows/Node%20CI/badge.svg)
+[![Guilded](https://img.shields.io/badge/Discord-Support-blue.svg)](https://pixelplanet.fun/guilded)
 
 Official  repository of [pixelplanet.fun](http://www.pixelplanet.fun).
 
@@ -31,7 +31,7 @@ Click or tab: Place Pixel
 Checkout repository
 
 ```
-git clone https://github.com/pixelplanetdev/pixelplanet.git
+git clone https://git.pixelplanet.fun/ppfun/pixelplanet.git
 cd pixelplanet
 ```
 

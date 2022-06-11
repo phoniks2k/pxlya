@@ -10,7 +10,7 @@
  *
  * Changes for smooth key movement from
  *
- * @author hf / http://github.com/pixelplanetdev
+ * @author hf / http://git.pixelplanet.fun/hf
  */
 
 /* eslint-disable no-console */
