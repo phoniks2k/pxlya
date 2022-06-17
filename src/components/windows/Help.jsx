@@ -34,7 +34,7 @@ const Help = () => {
   const vinikLink = <a href="https://twitter.com/Vinikdev">Vinikdev</a>;
   const guildedLink = <a href="https://pixelplanet.fun/guilded">guilded</a>;
   const getIPLink = <a href="https://www.whatismyip.com/">{t`your IP`}</a>;
-  const mailLink = <a href="mailto:pixelplanetdev@gmail.com">pixelplanetdev@gmail.com</a>;
+  const mailLink = <a href="mailto:admin@pixelplanet.fun">admin@pixelplanet.fun</a>;
 
   return (
     <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
