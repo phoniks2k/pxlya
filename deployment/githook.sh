@@ -13,8 +13,9 @@ PFOLDER="/home/pixelpla/pixelplanet"
 
 should_reinstall () {
     local TMPFILE="${BUILDDIR}/package.json.${branch}.tmp"
+    local NODEDIR="${BUILDDIR}/node_modules"
     local ORFILE="${BUILDDIR}/package.json"
-    [ -f "${TMPFILE}" ] && diff -q  "${TMPFILE}" "${ORFILE}" && {
+    [ -f "${TMPFILE}" ] && [ -d "${NODEDIR}" ] && diff -q  "${TMPFILE}" "${ORFILE}" && {
         echo "package.json stil the same, no need to rerun npm install."
         return 1
     }
