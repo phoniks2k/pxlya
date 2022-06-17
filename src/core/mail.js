@@ -1,6 +1,5 @@
 /*
  * functions for mail verify
- * @flow
  */
 
 /* eslint-disable max-len */
@@ -33,15 +32,13 @@ const transporter = (GMAIL_USER && GMAIL_PW)
     newline: 'unix',
     path: '/usr/sbin/sendmail',
   });
-const from = (GMAIL_USER && GMAIL_PW)
+const address = (GMAIL_USER && GMAIL_PW)
   ? GMAIL_USER
   : 'donotreply@pixelplanet.fun';
 
 
 // TODO make code expire
 class MailProvider {
-  verifyCodes: Object;
-
   constructor() {
     this.clearCodes = this.clearCodes.bind(this);
 
@@ -69,9 +66,9 @@ class MailProvider {
     const code = this.setCode(to);
     const verifyUrl = `${host}/api/auth/verify?token=${code}`;
     transporter.sendMail({
-      from,
+      from: `PixelPlanet <${address}>`,
       to,
-      replyTo: 'donotreply@pixelplanet.fun',
+      replyTo: address,
       subject: t`Welcome ${name} to PixelPlanet, plese verify your mail`,
       // text: `Hello,\nwelcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that here:\n ${verifyUrl} \nHave fun and don't hesitate to contact us if you encouter any problems :)\nThanks`,
       html: `<em>${t`Hello ${name}`}</em>,<br />
@@ -119,9 +116,9 @@ class MailProvider {
     const code = this.setCode(to);
     const restoreUrl = `${host}/reset_password?token=${code}`;
     transporter.sendMail({
-      from,
+      from: `PixelPlanet <${address}>`,
       to,
-      replyTo: 'donotreply@pixelplanet.fun',
+      replyTo: address,
       subject: t`You forgot your password for PixelPlanet? Get a new one here`,
       // text: `Hello,\nYou requested to get a new password. You can change your password within the next 30min here:\n ${restoreUrl} \nHave fun and don't hesitate to contact us if you encouter any problems :)\nIf you did not request this mail, please just ignore it (the ip that requested this mail was ${ip}).\nThanks`,
       html: `<em>${t`Hello`}</em>,<br />
