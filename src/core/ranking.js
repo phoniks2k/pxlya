@@ -27,6 +27,7 @@ class Ranks {
 
   async initialize() {
     this.prevTop = await loadDailyTop();
+    await this.updateRanking();
     setInterval(this.updateRanking, 5 * MINUTE);
     DailyCron.hook(this.resetDailyRanking);
   }
