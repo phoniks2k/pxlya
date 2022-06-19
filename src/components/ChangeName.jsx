@@ -28,7 +28,8 @@ const ChangeName = ({ done }) => {
 
   const dispatch = useDispatch();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
     if (submitting) {
       return;
     }

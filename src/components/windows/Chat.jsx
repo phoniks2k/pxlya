@@ -82,8 +82,8 @@ const Chat = ({
     setBlockedIds(bl);
   }, [blocked.length]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(evt) {
+    evt.preventDefault();
     const inptMsg = inputMessage.trim();
     if (!inptMsg) return;
     // send message via websocket

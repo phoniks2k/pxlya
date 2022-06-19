@@ -32,7 +32,8 @@ const ForgotPassword = ({ windowId }) => {
   const dispatch = useDispatch();
   const back = () => dispatch(changeWindowType(windowId, 'USERAREA'));
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
     if (submitting) {
       return;
     }

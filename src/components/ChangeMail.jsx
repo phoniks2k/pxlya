@@ -29,7 +29,8 @@ const ChangeMail = ({ done }) => {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
     if (submitting) {
       return;
     }
