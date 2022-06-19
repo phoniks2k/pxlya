@@ -11,7 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 
-import RedisCanvas from '../data/models/RedisCanvas';
+import RedisCanvas from '../data/redis/RedisCanvas';
 import logger from './logger';
 import { getChunkOfPixel } from './utils';
 import Palette from './Palette';

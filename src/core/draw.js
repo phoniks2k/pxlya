@@ -6,7 +6,7 @@ import {
   getPixelFromChunkOffset,
 } from './utils';
 import logger, { pixelLogger } from './logger';
-import RedisCanvas from '../data/models/RedisCanvas';
+import RedisCanvas from '../data/redis/RedisCanvas';
 import {
   setPixelByOffset,
   setPixelByCoords,

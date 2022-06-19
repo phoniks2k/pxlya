@@ -7,12 +7,12 @@
 
 import sharp from 'sharp';
 import Sequelize from 'sequelize';
-import redis from '../data/redis';
+import redis from '../data/redis/client';
 
 import { getIPv6Subnet } from '../utils/ip';
 import { validateCoorRange } from '../utils/validation';
 import CanvasCleaner from './CanvasCleaner';
-import { Blacklist, Whitelist, RegUser } from '../data/models';
+import { Blacklist, Whitelist, RegUser } from '../data/sql';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import {

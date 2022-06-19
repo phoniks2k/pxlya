@@ -8,11 +8,11 @@
  * */
 
 import Sequelize from 'sequelize';
-import redis from './redis';
+import redis from './redis/client';
 import logger from '../core/logger';
 
-import Model from './sequelize';
-import { RegUser, Channel, UserBlock } from './models';
+import sequelize from './sql/sequelize';
+import { RegUser, Channel, UserBlock } from './sql';
 import { getIPv6Subnet } from '../utils/ip';
 import { ADMIN_IDS } from '../core/config';
 
@@ -95,13 +95,15 @@ class User {
 
   static async name2Id(name: string) {
     try {
-      const userq = await Model.query('SELECT id FROM Users WHERE name = $1',
+      const userq = await sequelize.query(
+        'SELECT id FROM Users WHERE name = $1',
         {
           bind: [name],
           type: Sequelize.QueryTypes.SELECT,
           raw: true,
           plain: true,
-        });
+        },
+      );
       return userq.id;
     } catch {
       return null;
@@ -202,9 +204,9 @@ class User {
   }
 
   async getWait(canvasId: number): Promise<?number> {
-    let ttl: number = await redis.pTTL(`cd:${canvasId}:ip:${this.ipSub}`);
+    let ttl = await redis.pTTL(`cd:${canvasId}:ip:${this.ipSub}`);
     if (this.id != null) {
-      const ttlid: number = await redis.pTTL(
+      const ttlid = await redis.pTTL(
         `cd:${canvasId}:id:${this.id}`,
       );
       ttl = Math.max(ttl, ttlid);
@@ -238,7 +240,7 @@ class User {
       return this.regUser.totalPixels;
     }
     try {
-      const userq = await Model.query(
+      const userq = await sequelize.query(
         'SELECT totalPixels FROM Users WHERE id = $1',
         {
           bind: [id],

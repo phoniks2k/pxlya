@@ -2,25 +2,23 @@
  *
  * Database layout for Chat Channels
  *
- * @flow
- *
  */
 
-import DataType from 'sequelize';
+import { DataTypes, Utils } from 'sequelize';
 
-import Model from '../sequelize';
+import sequelize from './sequelize';
 import RegUser from './RegUser';
 
-const Channel = Model.define('Channel', {
+const Channel = sequelize.define('Channel', {
   // Channel ID
   id: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
   },
 
   name: {
-    type: `${DataType.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
+    type: `${DataTypes.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
     allowNull: true,
   },
 
@@ -31,14 +29,14 @@ const Channel = Model.define('Channel', {
    * 3: faction (not implemented)
    */
   type: {
-    type: DataType.TINYINT,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
 
   lastMessage: {
-    type: DataType.DATE,
-    defaultValue: DataType.literal('CURRENT_TIMESTAMP'),
+    type: DataTypes.DATE,
+    defaultValue: new Utils.Literal('CURRENT_TIMESTAMP'),
     allowNull: false,
   },
 }, {

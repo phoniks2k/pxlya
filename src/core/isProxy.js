@@ -4,9 +4,9 @@
 
 import fetch from '../utils/proxiedFetch';
 
-import redis from '../data/redis';
+import redis from '../data/redis/client';
 import { getIPv6Subnet } from '../utils/ip';
-import { Blacklist, Whitelist } from '../data/models';
+import { Blacklist, Whitelist } from '../data/sql';
 import { proxyLogger as logger } from './logger';
 
 import { USE_PROXYCHECK } from './config';

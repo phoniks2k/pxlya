@@ -6,7 +6,7 @@
 
 import type { Request, Response } from 'express';
 
-import { RegUser } from '../../../data/models';
+import { RegUser } from '../../../data/sql';
 import { validatePassword } from '../../../utils/validation';
 import { compareToHash } from '../../../utils/hash';
 

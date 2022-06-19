@@ -2,7 +2,7 @@
  * Set pixels on canvas.
  * Pixels get collected in a cache for 5ms and sent to players at once.
  * */
-import RedisCanvas from '../data/models/RedisCanvas';
+import RedisCanvas from '../data/redis/RedisCanvas';
 import {
   getChunkOfPixel,
   getOffsetOfPixel,

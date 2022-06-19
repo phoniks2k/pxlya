@@ -3,12 +3,12 @@
  */
 import { Op } from 'sequelize';
 import logger from './logger';
-import redis from '../data/redis';
+import redis from '../data/redis/client';
 import User from '../data/User';
 import RateLimiter from '../utils/RateLimiter';
 import {
   Channel, RegUser, UserChannel, Message,
-} from '../data/models';
+} from '../data/sql';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import socketEvents from '../socket/SocketEvents';
 import { cheapDetector } from './isProxy';

@@ -5,9 +5,9 @@
 
 import { createClient } from 'redis';
 
-import { REDIS_URL } from '../core/config';
+import { REDIS_URL } from '../../core/config';
 
-const redis = createClient(REDIS_URL.startsWith('redis://')
+const client = createClient(REDIS_URL.startsWith('redis://')
   ? {
     url: REDIS_URL,
   }
@@ -21,7 +21,7 @@ const redis = createClient(REDIS_URL.startsWith('redis://')
 export const connect = async () => {
   // eslint-disable-next-line no-console
   console.log(`Connecting to redis server at ${REDIS_URL}`);
-  await redis.connect();
+  await client.connect();
 };
 
-export default redis;
+export default client;

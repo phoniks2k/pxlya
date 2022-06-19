@@ -14,7 +14,7 @@ import {
   getEventArea,
   clearOldEvent,
   CANVAS_ID,
-} from '../data/models/Event';
+} from '../data/redis/Event';
 import { setCoolDownFactor } from './draw';
 import Void from './Void';
 import { protectCanvasArea } from './Image';

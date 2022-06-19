@@ -12,7 +12,7 @@
 import sharp from 'sharp';
 import fs from 'fs';
 
-import RedisCanvas from '../data/models/RedisCanvas';
+import RedisCanvas from '../data/redis/RedisCanvas';
 import Palette from './Palette';
 import { getMaxTiledZoom } from './utils';
 import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';

@@ -9,7 +9,7 @@ import socketEvents from '../socket/SocketEvents';
 import PixelUpdate from '../socket/packets/PixelUpdateServer';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE } from './constants';
-import { CANVAS_ID } from '../data/models/Event';
+import { CANVAS_ID } from '../data/redis/Event';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 

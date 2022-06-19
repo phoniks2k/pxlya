@@ -11,8 +11,8 @@ import http from 'http';
 import forceGC from './core/forceGC';
 import logger from './core/logger';
 import rankings from './core/ranking';
-import models from './data/models';
-import { connect as connectRedis } from './data/redis';
+import sequelize from './data/sql/sequelize';
+import { connect as connectRedis } from './data/redis/client';
 import routes from './routes';
 import chatProvider from './core/ChatProvider';
 import RpgEvent from './core/RpgEvent';
@@ -85,9 +85,9 @@ const rpgEvent = new RpgEvent();
 // ip config
 // -----------------------------------------------------------------------------
 // sync sql models
-models.sync({ alter: { drop: false } })
+sequelize.sync({ alter: { drop: false } })
   // connect to redis
-  .then(() => connectRedis())
+  .then(connectRedis)
   .then(() => {
     rankings.initialize();
     chatProvider.initialize();

@@ -1,4 +1,3 @@
-import sequelize from '../sequelize';
 import Blacklist from './Blacklist';
 import Whitelist from './Whitelist';
 import RegUser from './RegUser';
@@ -36,11 +35,6 @@ RegUser.belongsToMany(RegUser, {
   foreignKey: 'buid',
 });
 
-function sync(...args) {
-  return sequelize.sync(...args);
-}
-
-export default { sync };
 export {
   Whitelist,
   Blacklist,

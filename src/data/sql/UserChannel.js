@@ -4,16 +4,14 @@
  * A channel can be anything,
  * Group, Public Chat, DM, etc.
  *
- * @flow
- *
  */
 
-import DataType from 'sequelize';
-import Model from '../sequelize';
+import { DataTypes } from 'sequelize';
+import sequelize from './sequelize';
 
-const UserChannel = Model.define('UserChannel', {
+const UserChannel = sequelize.define('UserChannel', {
   lastRead: {
-    type: DataType.DATE,
+    type: DataTypes.DATE,
     allowNull: true,
   },
 }, {

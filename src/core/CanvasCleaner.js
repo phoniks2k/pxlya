@@ -8,8 +8,8 @@ import {
   getData,
   setStatus,
   getStatus,
-} from '../data/models/CanvasCleaner';
-import RedisCanvas from '../data/models/RedisCanvas';
+} from '../data/redis/CanvasCleaner';
+import RedisCanvas from '../data/redis/RedisCanvas';
 import {
   getChunkOfPixel,
   getCornerOfChunk,

@@ -4,7 +4,7 @@
 import { commandOptions } from 'redis';
 
 import { getChunkOfPixel, getOffsetOfPixel } from '../../core/utils';
-import redis from '../redis';
+import client from './client';
 
 
 const UINT_SIZE = 'u8';
@@ -38,7 +38,7 @@ class RedisCanvas {
     // this key is also hardcoded into
     // core/tilesBackup.js
     const key = `ch:${canvasId}:${i}:${j}`;
-    let chunk = await redis.get(
+    let chunk = await client.get(
       commandOptions({ returnBuffers: true }),
       key,
     );
@@ -51,14 +51,14 @@ class RedisCanvas {
 
   static async setChunk(i, j, chunk, canvasId) {
     const key = `ch:${canvasId}:${i}:${j}`;
-    await redis.set(key, Buffer.from(chunk.buffer));
+    await client.set(key, Buffer.from(chunk.buffer));
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
     return true;
   }
 
   static async delChunk(i, j, canvasId) {
     const key = `ch:${canvasId}:${i}:${j}`;
-    await redis.del(key);
+    await client.del(key);
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
     return true;
   }
@@ -76,7 +76,7 @@ class RedisCanvas {
      * TODO what if chunk does not exist?
      */
     if (!RedisCanvas.multi) {
-      RedisCanvas.multi = redis.multi();
+      RedisCanvas.multi = client.multi();
       setTimeout(RedisCanvas.flushPixels, 100);
     }
     RedisCanvas.multi.addCommand(
@@ -124,7 +124,7 @@ class RedisCanvas {
       UINT_SIZE,
       `#${offset}`,
     ];
-    const result = await redis.sendCommand(args);
+    const result = await client.sendCommand(args);
     if (!result) return null;
     const color = result[0];
     return color;

@@ -12,7 +12,7 @@ import { DailyCron, HourlyCron } from '../utils/cron';
 import { getTTag } from './ttag';
 import { GMAIL_USER, GMAIL_PW } from './config';
 
-import RegUser from '../data/models/RegUser';
+import { RegUser } from '../data/sql';
 
 
 /*

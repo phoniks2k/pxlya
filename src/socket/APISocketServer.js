@@ -12,7 +12,7 @@ import WebSocket from 'ws';
 
 import socketEvents from './SocketEvents';
 import chatProvider from '../core/ChatProvider';
-import RegUser from '../data/models/RegUser';
+import { RegUser } from '../data/sql';
 import { getIPFromRequest } from '../utils/ip';
 import { setPixelByCoords } from '../core/setPixel';
 import logger from '../core/logger';

@@ -1,14 +1,13 @@
 /**
  *
- * @flow
  */
 
 import Sequelize from 'sequelize';
 
-import logger from '../core/logger';
+import logger from '../../core/logger';
 import {
   MYSQL_HOST, MYSQL_DATABASE, MYSQL_USER, MYSQL_PW, LOG_MYSQL,
-} from '../core/config';
+} from '../../core/config';
 
 const sequelize = new Sequelize(MYSQL_DATABASE, MYSQL_USER, MYSQL_PW, {
   host: MYSQL_HOST,

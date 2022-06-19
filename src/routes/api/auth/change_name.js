@@ -7,7 +7,7 @@
 import type { Request, Response } from 'express';
 
 import socketEvents from '../../../socket/SocketEvents';
-import { RegUser } from '../../../data/models';
+import { RegUser } from '../../../data/sql';
 import { validateName } from '../../../utils/validation';
 
 async function validate(oldname, name) {

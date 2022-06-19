@@ -8,7 +8,7 @@ import type { Request, Response } from 'express';
 import Sequelize from 'sequelize';
 
 import logger from '../../../core/logger';
-import { RegUser } from '../../../data/models';
+import { RegUser } from '../../../data/sql';
 import mailProvider from '../../../core/mail';
 import getMe from '../../../core/me';
 import { getIPFromRequest, getHostFromRequest } from '../../../utils/ip';

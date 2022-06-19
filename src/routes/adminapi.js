@@ -1,7 +1,7 @@
 import express from 'express';
 
 import logger from '../core/logger';
-import RegUser from '../data/models/RegUser';
+import { RegUser } from '../data/sql';
 import { getIPFromRequest } from '../utils/ip';
 import { compareToHash } from '../utils/hash';
 import { APISOCKET_KEY } from '../core/config';

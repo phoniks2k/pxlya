@@ -4,33 +4,33 @@
  *
  */
 
-import DataType from 'sequelize';
-import Model from '../sequelize';
+import { DataTypes } from 'sequelize';
+import sequelize from './sequelize';
 import Channel from './Channel';
 import RegUser from './RegUser';
 
-const Message = Model.define('Message', {
+const Message = sequelize.define('Message', {
   // Message ID
   id: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
   },
 
   name: {
-    type: `${DataType.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
+    type: `${DataTypes.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
     defaultValue: 'mx',
     allowNull: false,
   },
 
   flag: {
-    type: DataType.CHAR(2),
+    type: DataTypes.CHAR(2),
     defaultValue: 'xx',
     allowNull: false,
   },
 
   message: {
-    type: `${DataType.CHAR(200)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
+    type: `${DataTypes.CHAR(200)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
     allowNull: false,
   },
 }, {

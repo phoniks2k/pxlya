@@ -15,7 +15,7 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import logger from './logger';
 import { sanitizeName } from '../utils/validation';
 
-import { RegUser } from '../data/models';
+import { RegUser } from '../data/sql';
 import User, { regUserQueryInclude as include } from '../data/User';
 import { auth } from './config';
 import { compareToHash } from '../utils/hash';

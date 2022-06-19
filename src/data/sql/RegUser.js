@@ -3,107 +3,106 @@
  *
  * This is the database of the data for registered Users
  *
- * @flow
  */
 
-import DataType from 'sequelize';
-import Model from '../sequelize';
+import { DataTypes } from 'sequelize';
+import sequelize from './sequelize';
 
 import { generateHash } from '../../utils/hash';
 
 
-const RegUser = Model.define('User', {
+const RegUser = sequelize.define('User', {
   id: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
   },
 
   email: {
-    type: DataType.CHAR(40),
+    type: DataTypes.CHAR(40),
     allowNull: true,
   },
 
   name: {
-    type: `${DataType.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
+    type: `${DataTypes.CHAR(32)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
     allowNull: false,
   },
 
   // currently just moderator
   roles: {
-    type: DataType.TINYINT,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
 
   // null if external oauth authentification
   password: {
-    type: DataType.CHAR(60),
+    type: DataTypes.CHAR(60),
     allowNull: true,
   },
 
   totalPixels: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     defaultValue: 0,
   },
 
   dailyTotalPixels: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
     defaultValue: 0,
   },
 
   ranking: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: true,
   },
 
   dailyRanking: {
-    type: DataType.INTEGER.UNSIGNED,
+    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: true,
   },
 
   // mail and Minecraft verified
   verified: {
-    type: DataType.TINYINT,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: false,
   },
 
   // currently just blockDm
   blocks: {
-    type: DataType.TINYINT,
+    type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
 
   discordid: {
-    type: DataType.CHAR(18),
+    type: DataTypes.CHAR(18),
     allowNull: true,
   },
 
   redditid: {
-    type: DataType.CHAR(10),
+    type: DataTypes.CHAR(10),
     allowNull: true,
   },
 
   // when mail verification got requested,
   // used for purging unverified accounts
   verificationReqAt: {
-    type: DataType.DATE,
+    type: DataTypes.DATE,
     allowNull: true,
   },
 
   // flag == country code
   flag: {
-    type: DataType.CHAR(2),
+    type: DataTypes.CHAR(2),
     defaultValue: 'xx',
     allowNull: false,
   },
 
   lastLogIn: {
-    type: DataType.DATE,
+    type: DataTypes.DATE,
     allowNull: true,
   },
 }, {

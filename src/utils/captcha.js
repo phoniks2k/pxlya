@@ -4,7 +4,7 @@
  */
 
 import logger from '../core/logger';
-import redis from '../data/redis';
+import redis from '../data/redis/client';
 import { getIPv6Subnet } from './ip';
 import {
   CAPTCHA_URL,

@@ -3,13 +3,11 @@
  * Junction table for User -> Blocked User
  * Relations defined in ./index.js
  *
- * @flow
- *
  */
 
-import Model from '../sequelize';
+import sequelize from './sequelize';
 
-const UserBlock = Model.define('UserBlock', {
+const UserBlock = sequelize.define('UserBlock', {
 }, {
   timestamps: false,
 });

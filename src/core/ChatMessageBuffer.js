@@ -7,7 +7,7 @@
 import Sequelize from 'sequelize';
 import logger from './logger';
 
-import { Message, Channel } from '../data/models';
+import { Message, Channel } from '../data/sql';
 
 const MAX_BUFFER_TIME = 120000;
 

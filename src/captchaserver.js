@@ -11,7 +11,7 @@ import http from 'http';
 import url from 'url';
 import ppfunCaptcha from 'ppfun-captcha';
 
-import { connect as connectRedis } from './data/redis';
+import { connect as connectRedis } from './data/redis/client';
 import { getIPFromRequest } from './utils/ip';
 import { setCaptchaSolution } from './utils/captcha';
 import { getRandomString } from './core/utils';

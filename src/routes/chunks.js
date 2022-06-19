@@ -5,7 +5,7 @@
  */
 
 import etag from 'etag';
-import RedisCanvas from '../data/models/RedisCanvas';
+import RedisCanvas from '../data/redis/RedisCanvas';
 import logger from '../core/logger';
 
 const chunkEtags = new Map();

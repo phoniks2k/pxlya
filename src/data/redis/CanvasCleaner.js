@@ -2,7 +2,7 @@
  * storing Event data
  */
 
-import redis from '../redis';
+import client from './client';
 import logger from '../../core/logger';
 
 const DATA_KEY = 'clr:dat';
@@ -14,7 +14,7 @@ const STAT_KEY = 'clr:sta';
  *   (check core/CanvasCleaner for the meaning)
 */
 export async function getData() {
-  const data = await redis.get(DATA_KEY);
+  const data = await client.get(DATA_KEY);
   if (data) {
     const parsedData = data.toString().split(':');
     for (let i = 0; i < parsedData.length - 1; i += 1) {
@@ -56,7 +56,7 @@ export async function setData(canvasId, x, y, u, v, methodName) {
     );
     return null;
   }
-  return redis.set(DATA_KEY, dataStr);
+  return client.set(DATA_KEY, dataStr);
 }
 
 /*
@@ -66,7 +66,7 @@ export async function setData(canvasId, x, y, u, v, methodName) {
  *   running: boolean if filter is running
  */
 export async function getStatus() {
-  const stat = await redis.get(STAT_KEY);
+  const stat = await client.get(STAT_KEY);
   if (stat) {
     const parsedStat = stat.toString().split(':');
     if (parsedStat.length !== 2) {
@@ -103,5 +103,5 @@ export async function setStatus(cIter, running) {
     );
     return null;
   }
-  return redis.set(STAT_KEY, statString);
+  return client.set(STAT_KEY, statString);
 }

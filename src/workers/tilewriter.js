@@ -6,7 +6,7 @@
 
 import { isMainThread, parentPort } from 'worker_threads';
 
-import { connect as connectRedis } from '../data/redis';
+import { connect as connectRedis } from '../data/redis/client';
 import {
   createZoomTileFromChunk,
   createZoomedTile,

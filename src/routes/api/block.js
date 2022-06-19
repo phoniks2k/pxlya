@@ -9,7 +9,7 @@ import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
 import socketEvents from '../../socket/SocketEvents';
-import { RegUser, UserBlock, Channel } from '../../data/models';
+import { RegUser, UserBlock, Channel } from '../../data/sql';
 
 async function block(req: Request, res: Response) {
   let userId = parseInt(req.body.userId, 10);

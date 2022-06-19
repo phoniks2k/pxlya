@@ -12,7 +12,7 @@ import logger from '../core/logger';
 import getPasswordResetHtml from '../ssr-components/PasswordReset';
 
 import mailProvider from '../core/mail';
-import { RegUser } from '../data/models';
+import { RegUser } from '../data/sql';
 
 
 const router = express.Router();

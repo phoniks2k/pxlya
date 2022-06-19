@@ -4,9 +4,9 @@
  */
 
 import Sequelize from 'sequelize';
-import Model from '../data/sequelize';
-import RegUser from '../data/models/RegUser';
-import { saveDailyTop, loadDailyTop } from '../data/models/prevDayTop';
+import sequelize from '../data/sql/sequelize';
+import RegUser from '../data/sql/RegUser';
+import { saveDailyTop, loadDailyTop } from '../data/redis/PrevDayTop';
 import logger from './logger';
 
 import { MINUTE } from './constants';
@@ -34,11 +34,11 @@ class Ranks {
   async updateRanking() {
     logger.info('Update pixel rankings');
     // recalculate ranking column
-    await Model.query(
+    await sequelize.query(
       // eslint-disable-next-line max-len
       'SET @r=0; UPDATE Users SET ranking= @r:= (@r + 1) ORDER BY totalPixels DESC;',
     );
-    await Model.query(
+    await sequelize.query(
       // eslint-disable-next-line max-len
       'SET @r=0; UPDATE Users SET dailyRanking= @r:= (@r + 1) ORDER BY dailyTotalPixels DESC;',
     );

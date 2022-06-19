@@ -8,7 +8,7 @@ import { commandOptions } from 'redis';
 // its ok if its slow
 /* eslint-disable no-await-in-loop */
 
-import redis from '../redis';
+import client from './client';
 import logger from '../../core/logger';
 import RedisCanvas from './RedisCanvas';
 
@@ -27,10 +27,10 @@ export const CANVAS_ID = '0';
  * 2 = lost
  */
 export function setSuccess(success) {
-  return redis.set(EVENT_SUCCESS_KEY, success);
+  return client.set(EVENT_SUCCESS_KEY, success);
 }
 export async function getSuccess() {
-  const success = await redis.get(EVENT_SUCCESS_KEY);
+  const success = await client.get(EVENT_SUCCESS_KEY);
   return (success) ? parseInt(success, 10) : 0;
 }
 
@@ -38,7 +38,7 @@ export async function getSuccess() {
  * @return time till next event in seconds
  */
 export async function nextEvent() {
-  const timestamp = await redis.get(EVENT_TIMESTAMP_KEY);
+  const timestamp = await client.get(EVENT_TIMESTAMP_KEY);
   if (timestamp) {
     return Number(timestamp.toString());
   }
@@ -49,7 +49,7 @@ export async function nextEvent() {
  * @return cell of chunk coordinates of event
  */
 export async function getEventArea() {
-  const pos = await redis.get(EVENT_POSITION_KEY);
+  const pos = await client.get(EVENT_POSITION_KEY);
   if (pos) {
     return pos.toString().split(':').map((z) => Number(z));
   }
@@ -69,7 +69,7 @@ export async function clearOldEvent() {
       for (let ic = i - 1; ic <= i + 1; ic += 1) {
         try {
           const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
-          const chunk = await redis.get(
+          const chunk = await client.get(
             commandOptions({ returnBuffers: true }),
             chunkKey,
           );
@@ -92,7 +92,7 @@ export async function clearOldEvent() {
             );
             await RedisCanvas.setChunk(ic, jc, chunk, CANVAS_ID);
           }
-          await redis.del(chunkKey);
+          await client.del(chunkKey);
         } catch (error) {
           logger.error(
             // eslint-disable-next-line max-len
@@ -101,7 +101,7 @@ export async function clearOldEvent() {
         }
       }
     }
-    await redis.del(EVENT_POSITION_KEY);
+    await client.del(EVENT_POSITION_KEY);
   }
 }
 
@@ -128,10 +128,10 @@ export async function setNextEvent(minutes, i, j) {
         chunk = Buffer.allocUnsafe(1);
       }
       const chunkKey = `${EVENT_BACKUP_PREFIX}:${ic}:${jc}`;
-      await redis.set(chunkKey, chunk);
+      await client.set(chunkKey, chunk);
     }
   }
-  await redis.set(EVENT_POSITION_KEY, `${i}:${j}`);
+  await client.set(EVENT_POSITION_KEY, `${i}:${j}`);
   const timestamp = Date.now() + minutes * 60 * 1000;
-  await redis.set(EVENT_TIMESTAMP_KEY, timestamp);
+  await client.set(EVENT_TIMESTAMP_KEY, timestamp);
 }
