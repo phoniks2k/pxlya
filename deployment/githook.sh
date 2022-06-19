@@ -12,7 +12,7 @@ DEVFOLDER="/home/pixelpla/pixelplanet-dev"
 PFOLDER="/home/pixelpla/pixelplanet"
 
 should_reinstall () {
-    local TMPFILE="${BUILDDIR}/package.json.${branch}.tmp"
+    local TMPFILE="${BUILDDIR}/package.json.${1}.tmp"
     local NODEDIR="${BUILDDIR}/node_modules"
     local ORFILE="${BUILDDIR}/package.json"
     [ -f "${TMPFILE}" ] && [ -d "${NODEDIR}" ] && diff -q  "${TMPFILE}" "${ORFILE}" && {
@@ -32,16 +32,16 @@ npm_reinstall () {
 
 while read oldrev newrev refname
 do
+    GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
+    cd "$BUILDDIR"
     branch=$(git rev-parse --symbolic --abbrev-ref $refname)
     if [ "production" == "$branch" ]; then
         echo "---UPDATING REPO ON PRODUCTION SERVER---"
-        GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard origin/production
         COMMITS=`git log --pretty=format:'- %s%b' $newrev ^$oldrev`
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
         echo "---BUILDING pixelplanet---"
-        cd "$BUILDDIR"
-        should_reinstall
+        should_reinstall production
         DO_REINSTALL=$?
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         npm run build
@@ -64,17 +64,14 @@ do
         pm2 start ecosystem-backup.yml
        pm2 start ecosystem-captchas.yml
     else
-        branch="dev"
         echo "---UPDATING REPO ON DEV SERVER---"
         pm2 stop ppfun-server-dev
         pm2 stop ppfun-captchas-dev
-        GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard "origin/$branch"
         COMMITS=`git log --pretty=format:'- %s%b' $newrev ^$oldrev`
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
         echo "---BUILDING pixelplanet---"
-        cd "$BUILDDIR"
-        should_reinstall
+        should_reinstall dev
         DO_REINSTALL=$?
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         nice -n 19 npm run build:dev
