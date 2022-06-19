@@ -58,7 +58,6 @@ export async function getEventArea() {
 
 /*
  * restore area effected by last event
- * TODO: notify RedisCanvas
  */
 export async function clearOldEvent() {
   const pos = await getEventArea();

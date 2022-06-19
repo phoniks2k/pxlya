@@ -4,7 +4,7 @@ Note:
 
 - EVERY SCRIPT THAT USES REDIS IS JUST AS REFERENCE (node-redis and keys update and change over time and i am not keeping those up-to-date) 
 - we use blender 2.8
-- js script are executed with babel-node
+- js script are executed with `npm run babel-node utils/[scriptname].js`
 
 ## sphere-protection.blend
 This blend file includes the sphere we use to display the globe with two UV maps, one for protection like it's used on many globe textures of the earth like [here](http://blog.mastermaps.com/2013/09/creating-webgl-earth-with-threejs.html) and [here](http://www.shadedrelief.com/natural3/pages/textures.html) and one for our mercator projection that is the same as on OpenStreetMap, with additional changes for poles.
@@ -60,3 +60,6 @@ just a script that got run once to add the missing tiles in historical view when
 
 ## uploadImage.js
 nodejs script to upload a Image to the canvas without checks and without caring about what was previously there, don't use it for anything other than initially loading a very large image to the canvas.
+
+## testStore.js
+used to test our own [connect-redis](https://github.com/tj/connect-redis) fork in src/utils/connectRedis.js

@@ -2,15 +2,14 @@
  *
  */
 import expressSession from 'express-session';
-import connectRedis from 'connect-redis';
+import RedisStore from '../utils/connectRedis';
 
-import { redisV3 } from '../data/redis';
+import redis from '../data/redis';
 import { HOUR, COOKIE_SESSION_NAME } from './constants';
 import { SESSION_SECRET } from './config';
 
 
-const RedisStore = connectRedis(expressSession);
-export const store = new RedisStore({ client: redisV3 });
+export const store = new RedisStore({ client: redis });
 
 const session = expressSession({
   name: COOKIE_SESSION_NAME,

@@ -11,9 +11,6 @@ const oldredis = redis.createClient({ url: oldurl, return_buffers: true });
 const newurl = "redis://localhost:6379";
 const newredis = redis.createClient({ url: newurl, return_buffers: true });
 
-oldredis.connect();
-newredis.connect();
-
 const CHUNK_SIZE = 64; //old chunk size
 const CHUNKS_IN_BASETILE = TILE_SIZE / CHUNK_SIZE;
 const CHUNK_MIN_XY = Math.floor(CANVAS_MIN_XY / CHUNK_SIZE);
