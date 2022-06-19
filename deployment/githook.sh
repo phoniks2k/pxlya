@@ -2,7 +2,7 @@
 # This hook builds pixelplanet after a push, and deploys it, it should be ron post-receive
 # If it is the production branch, it will deploy it on the life system, and other branch will get deployed to the dev-canvas (a second canvas that is running on the server)
 #
-# To set up a server to use this, you have to go through the building steps manually first.
+# To set up a server to use this, you have to go through the building steps manually first and check out the branches you want to use.
 #
 #folder for building the canvas (the git repository will get checkout there and the canvas will get buil thtere)
 BUILDDIR="/home/pixelpla/pixelplanet-build"
