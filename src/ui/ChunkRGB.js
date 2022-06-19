@@ -40,7 +40,13 @@ class ChunkRGB {
   }
 
   // from Uint8Array
-  fromBuffer(chunkBuffer) {
+  fromBuffer(chunkBufferInpt) {
+    let chunkBuffer = chunkBufferInpt;
+    const neededLength = TILE_SIZE ** 2;
+    if (chunkBuffer.byteLength < neededLength) {
+      chunkBuffer = new Uint8Array(neededLength);
+      chunkBuffer.set(chunkBufferInpt);
+    }
     const imageData = new ImageData(TILE_SIZE, TILE_SIZE);
     const imageView = new Uint32Array(imageData.data.buffer);
     const colors = this.palette.buffer2ABGR(chunkBuffer);
