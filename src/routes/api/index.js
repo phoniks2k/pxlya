@@ -3,7 +3,7 @@ import express from 'express';
 import session from '../../core/session';
 import passport from '../../core/passport';
 import logger from '../../core/logger';
-import User from '../../data/models/User';
+import User from '../../data/User';
 import { getIPFromRequest } from '../../utils/ip';
 
 import me from './me';
@@ -65,9 +65,10 @@ router.use('/modtools', modtools);
  * create dummy user with just ip if not
  * logged in
  */
-router.use((req, res, next) => {
+router.use(async (req, res, next) => {
   if (!req.user) {
-    req.user = new User(null, getIPFromRequest(req));
+    req.user = new User();
+    await req.user.initialize(null, getIPFromRequest(req));
   }
   next();
 });

@@ -4,7 +4,7 @@
 import { Op } from 'sequelize';
 import logger from './logger';
 import redis from '../data/redis';
-import User from '../data/models/User';
+import User from '../data/User';
 import RateLimiter from '../utils/RateLimiter';
 import {
   Channel, RegUser, UserChannel, Message,
@@ -512,7 +512,7 @@ export class ChatProvider {
 
   static async checkIfMuted(user) {
     const key = `mute:${user.id}`;
-    const ttl: number = await redis.ttl(key);
+    const ttl = await redis.ttl(key);
     return ttl;
   }
 

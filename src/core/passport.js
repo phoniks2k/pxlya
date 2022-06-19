@@ -15,64 +15,23 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import logger from './logger';
 import { sanitizeName } from '../utils/validation';
 
-import {
-  User, RegUser, Channel, UserBlock,
-} from '../data/models';
+import { RegUser } from '../data/models';
+import User, { regUserQueryInclude as include } from '../data/User';
 import { auth } from './config';
 import { compareToHash } from '../utils/hash';
 import { getIPFromRequest } from '../utils/ip';
-
-const include = [{
-  model: Channel,
-  as: 'channel',
-  include: [{
-    model: RegUser,
-    as: 'dmu1',
-    foreignKey: 'dmu1id',
-    attributes: [
-      'id',
-      'name',
-    ],
-  }, {
-    model: RegUser,
-    as: 'dmu2',
-    foreignKey: 'dmu2id',
-    attributes: [
-      'id',
-      'name',
-    ],
-  }],
-}, {
-  model: RegUser,
-  through: UserBlock,
-  as: 'blocked',
-  foreignKey: 'uid',
-  attributes: [
-    'id',
-    'name',
-  ],
-}];
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
 passport.deserializeUser(async (req, id, done) => {
-  const user = new User(id, getIPFromRequest(req));
-  if (id) {
-    RegUser.findByPk(id, {
-      include,
-    }).then((reguser) => {
-      if (reguser) {
-        user.setRegUser(reguser);
-      } else {
-        user.id = null;
-      }
-
-      done(null, user);
-    });
-  } else {
+  const user = new User();
+  try {
+    await user.initialize(id, getIPFromRequest(req));
     done(null, user);
+  } catch (err) {
+    done(err, user);
   }
 });
 
@@ -82,7 +41,7 @@ passport.deserializeUser(async (req, id, done) => {
 passport.use(new JsonStrategy({
   usernameProp: 'nameoremail',
   passwordProp: 'password',
-}, (nameoremail, password, done) => {
+}, async (nameoremail, password, done) => {
   try {
     // Decide if email or name by the occurance of @
     // this is why we don't allow @ in usernames
@@ -92,21 +51,22 @@ passport.use(new JsonStrategy({
     const query = (nameoremail.indexOf('@') !== -1)
       ? { email: nameoremail }
       : { name: nameoremail };
-    RegUser.findOne({
+    const reguser = await RegUser.findOne({
       include,
       where: query,
-    }).then((reguser) => {
-      if (!reguser) {
-        return done(null, false, { message: 'Name or Email does not exist!' });
-      }
-      if (!compareToHash(password, reguser.password)) {
-        return done(null, false, { message: 'Incorrect password!' });
-      }
-      const user = new User(reguser.id);
-      user.setRegUser(reguser);
-      user.updateLogInTimestamp();
-      return done(null, user);
     });
+    if (!reguser) {
+      done(null, false, { message: 'Name or Email does not exist!' });
+      return;
+    }
+    if (!compareToHash(password, reguser.password)) {
+      done(null, false, { message: 'Incorrect password!' });
+      return;
+    }
+    const user = new User();
+    await user.initialize(reguser.id, null, reguser);
+    user.updateLogInTimestamp();
+    done(null, user);
   } catch (err) {
     done(err);
   }
@@ -150,8 +110,8 @@ async function oauthLogin(email, name, discordid = null) {
   if (!reguser.discordid && discordid) {
     reguser.update({ discordid });
   }
-  const user = new User(reguser.id);
-  user.setRegUser(reguser);
+  const user = new User();
+  await user.initialize(reguser.id, null, reguser);
   return user;
 }
 
@@ -255,8 +215,8 @@ passport.use(new RedditStrategy({
         redditid,
       });
     }
-    const user = new User(reguser.id);
-    user.setRegUser(reguser);
+    const user = new User();
+    await user.initialize(reguser.id, null, reguser);
     done(null, user);
   } catch (err) {
     done(err);

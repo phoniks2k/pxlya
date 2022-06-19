@@ -1,9 +1,6 @@
-/* @flow */
-
 import sequelize from '../sequelize';
 import Blacklist from './Blacklist';
 import Whitelist from './Whitelist';
-import User from './User';
 import RegUser from './RegUser';
 import Channel from './Channel';
 import UserChannel from './UserChannel';
@@ -47,7 +44,6 @@ export default { sync };
 export {
   Whitelist,
   Blacklist,
-  User,
   RegUser,
   Channel,
   UserChannel,

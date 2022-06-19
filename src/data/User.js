@@ -8,13 +8,45 @@
  * */
 
 import Sequelize from 'sequelize';
-import redis from '../redis';
-import logger from '../../core/logger';
+import redis from './redis';
+import logger from '../core/logger';
 
-import Model from '../sequelize';
-import { getIPv6Subnet } from '../../utils/ip';
-import { ADMIN_IDS } from '../../core/config';
+import Model from './sequelize';
+import { RegUser, Channel, UserBlock } from './models';
+import { getIPv6Subnet } from '../utils/ip';
+import { ADMIN_IDS } from '../core/config';
 
+
+export const regUserQueryInclude = [{
+  model: Channel,
+  as: 'channel',
+  include: [{
+    model: RegUser,
+    as: 'dmu1',
+    foreignKey: 'dmu1id',
+    attributes: [
+      'id',
+      'name',
+    ],
+  }, {
+    model: RegUser,
+    as: 'dmu2',
+    foreignKey: 'dmu2id',
+    attributes: [
+      'id',
+      'name',
+    ],
+  }],
+}, {
+  model: RegUser,
+  through: UserBlock,
+  as: 'blocked',
+  foreignKey: 'uid',
+  attributes: [
+    'id',
+    'name',
+  ],
+}];
 
 class User {
   id: string;
@@ -30,16 +62,35 @@ class User {
    */
   userlvl: number;
 
-  constructor(id: string = null, ip: string = '127.0.0.1') {
-    // id should stay null if unregistered
-    this.id = id;
-    this.ip = ip;
+  constructor() {
+    // if id = null -> unregistered
+    this.id = null;
+    this.regUser = null;
+    this.ip = '127.0.0.1';
+    this.ipSub = this.ip;
     this.channels = {};
     this.blocked = [];
     this.userlvl = 0;
-    this.ipSub = getIPv6Subnet(ip);
-    // following gets populated by passport
-    this.regUser = null;
+  }
+
+  async initialize(id, ip = null, regUser = null) {
+    if (ip) {
+      this.ip = ip;
+      this.ipSub = getIPv6Subnet(ip);
+    }
+    if (regUser) {
+      this.id = regUser.id;
+      this.setRegUser(regUser);
+    }
+    if (id && !regUser) {
+      const reguser = await RegUser.findByPk(id, {
+        include: regUserQueryInclude,
+      });
+      if (reguser) {
+        this.setRegUser(reguser);
+        this.id = id;
+      }
+    }
   }
 
   static async name2Id(name: string) {

@@ -6,7 +6,7 @@ import express from 'express';
 
 import session from '../core/session';
 import passport from '../core/passport';
-import User from '../data/models/User';
+import User from '../data/User';
 import { expressTTag } from '../core/ttag';
 import { getIPFromRequest } from '../utils/ip';
 
@@ -26,8 +26,13 @@ function authenticateClient(req) {
       router(req, {}, async () => {
         const country = req.headers['cf-ipcountry'] || 'xx';
         const countryCode = country.toLowerCase();
-        const user = (req.user) ? req.user
-          : new User(null, getIPFromRequest(req));
+        let user;
+        if (req.user) {
+          user = req.user;
+        } else {
+          user = new User();
+          await user.initialize(null, getIPFromRequest(req));
+        }
         user.setCountry(countryCode);
         user.ttag = req.ttag;
         user.lang = req.lang;
