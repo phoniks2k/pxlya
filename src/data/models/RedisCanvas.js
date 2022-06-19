@@ -92,7 +92,7 @@ class RedisCanvas {
         'SET',
         UINT_SIZE,
         `#${offset}`,
-        color,
+        String(color),
       ],
     );
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
