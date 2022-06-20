@@ -108,10 +108,7 @@ class RedisStore extends Store {
     const key = this.prefix + sid;
     this.client
       .del(key)
-      .then((amount) => {
-        if (amount === 0) {
-          throw new Error('No such session exists');
-        }
+      .then(() => {
         cb(null);
       })
       .catch((err) => {

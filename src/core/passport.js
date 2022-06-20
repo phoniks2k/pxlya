@@ -56,11 +56,11 @@ passport.use(new JsonStrategy({
       where: query,
     });
     if (!reguser) {
-      done(null, false, { message: 'Name or Email does not exist!' });
+      done(new Error('Name or Email does not exist!'));
       return;
     }
     if (!compareToHash(password, reguser.password)) {
-      done(null, false, { message: 'Incorrect password!' });
+      done(new Error('Incorrect password!'));
       return;
     }
     const user = new User();

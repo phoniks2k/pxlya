@@ -85,6 +85,6 @@ router.get('/chathistory', chatHistory);
 
 router.get('/me', me);
 
-router.use('/auth', auth(passport));
+router.use('/auth', auth);
 
 export default router;
