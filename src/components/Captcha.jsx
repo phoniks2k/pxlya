@@ -12,7 +12,7 @@ import { t } from 'ttag';
 import { IoReloadCircleSharp } from 'react-icons/io5';
 
 async function getUrlAndId() {
-  const url = window.ssv.captchaurl;
+  const url = './captcha.svg';
   const resp = await fetch(url, {
     cache: 'no-cache',
   });

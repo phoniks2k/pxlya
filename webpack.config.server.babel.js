@@ -1,6 +1,7 @@
 /*
  */
 
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import nodeExternals from 'webpack-node-externals';
@@ -34,12 +35,29 @@ const babelPlugins = [
 export default ({
   development, extract,
 }) => {
+  /*
+   * write template files for translations
+   */
   if (extract) {
     ttag.extract = {
       output: path.resolve(__dirname, 'i18n', 'template-ssr.pot'),
     };
     ttag.discover = ['t', 'jt'];
   }
+
+  /*
+   * worker threads need to be their own
+   * entry points
+   */
+  const workersDir = path.resolve(__dirname, 'src', 'workers');
+  const workerEntries = {};
+  fs.readdirSync(workersDir)
+    .filter((e) => e.endsWith('.js'))
+    .forEach((filename) => {
+      const name = `workers/${filename.slice(0, -3)}`;
+      const fullPath = path.resolve(workersDir, filename);
+      workerEntries[name] = fullPath;
+    });
 
   return {
     name: 'server',
@@ -51,8 +69,7 @@ export default ({
     entry: {
       server: [path.resolve(__dirname, 'src', 'server.js')],
       backup: [path.resolve(__dirname, 'src', 'backup.js')],
-      'workers/tilewriter': [path.resolve(__dirname, 'src', 'workers', 'tilewriter.js')],
-      captchaserver: [path.resolve(__dirname, 'src', 'captchaserver.js')],
+      ...workerEntries,
     },
 
     output: {
@@ -146,14 +163,6 @@ export default ({
           {
             from: path.resolve(__dirname, 'deployment', 'captchaFonts'),
             to: path.resolve(__dirname, 'dist', 'captchaFonts'),
-          },
-          {
-            from: path.resolve(
-              __dirname, 'deployment', 'example-ecosystem-captchas.yml'
-            ),
-            to: path.resolve(
-              __dirname, 'dist', 'ecosystem-captchas.yml'
-            ),
           },
         ],
       }),

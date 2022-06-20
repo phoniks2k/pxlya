@@ -1,8 +1,8 @@
 /**
  */
 
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';

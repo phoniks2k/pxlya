@@ -85,8 +85,8 @@ Configuration takes place in the environment variables that are defined in ecosy
 | USE_PROXYCHECK    | Check users for Proxies               | 0                       |
 | APISOCKET_KEY     | Key for API Socket for SpecialAccess™ | "SDfasife3"             |
 | ADMIN_IDS         | Ids of users with Admin rights        | "1,12,3"                |
-| CAPTCHA_URL       | URL where captcha is served           | "http://localhost:8080" |
 | CAPTCHA_TIME      | time in minutes between captchas      | 30                      |
+|                   |  0: always captcha -1: never captcha  |                         |
 | SESSION_SECRET    | random sting for express sessions     | "ayylmao"               |
 | LOG_MYSQL         | if sql queries should get logged      | 0                       |
 | USE_XREALIP       | see ngins / CDN  section              | 1                       |

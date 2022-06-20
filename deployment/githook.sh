@@ -58,15 +58,12 @@ do
         cd "$PFOLDER"
         pm2 stop ppfun-server
         pm2 stop ppfun-backups
-        pm2 stop ppfun-captchs
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         pm2 start ecosystem.yml
         pm2 start ecosystem-backup.yml
-       pm2 start ecosystem-captchas.yml
     else
         echo "---UPDATING REPO ON DEV SERVER---"
         pm2 stop ppfun-server-dev
-        pm2 stop ppfun-captchas-dev
         GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard "origin/$branch"
         COMMITS=`git log --pretty=format:'- %s%b' $newrev ^$oldrev`
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
@@ -88,6 +85,5 @@ do
         cd "$DEVFOLDER"
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         pm2 start ecosystem.yml
-        pm2 start ecosystem-captchas.yml
     fi
 done

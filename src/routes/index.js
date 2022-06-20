@@ -1,6 +1,5 @@
 /**
  *
- * @flow
  */
 
 import express from 'express';
@@ -11,9 +10,10 @@ import ranking from './ranking';
 import history from './history';
 import tiles from './tiles';
 import chunks from './chunks';
+import adminapi from './adminapi';
+import captcha from './captcha';
 import resetPassword from './reset_password';
 import api from './api';
-import adminapi from './adminapi';
 
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import { expressTTag } from '../core/ttag';
@@ -46,6 +46,11 @@ router.use('/tiles', tiles);
  * adminapi
  */
 router.use('/adminapi', adminapi);
+
+/*
+ * serve captcha
+ */
+router.get('/captcha.svg', captcha);
 
 /*
  * public folder

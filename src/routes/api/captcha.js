@@ -6,7 +6,7 @@
  */
 
 import logger from '../../core/logger';
-import { checkCaptchaSolution } from '../../utils/captcha';
+import { checkCaptchaSolution } from '../../data/redis/captcha';
 import { getIPFromRequest } from '../../utils/ip';
 
 export default async (req, res) => {

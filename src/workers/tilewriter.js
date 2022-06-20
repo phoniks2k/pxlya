@@ -36,8 +36,16 @@ connectRedis()
             createTexture(...args);
             break;
           case 'initializeTiles':
-            await initializeTiles(...args);
-            parentPort.postMessage('Done!');
+            try {
+              await initializeTiles(...args);
+              parentPort.postMessage('Done!');
+            } catch (err) {
+              console.warn(
+                // eslint-disable-next-line max-len
+                `Tiling: Error on initializeTiles args ${args}: ${err.message}`,
+              );
+              parentPort.postMessage('Failure!');
+            }
             break;
           default:
             console.warn(`Tiling: Main thread requested unknown task ${task}`);
@@ -47,7 +55,6 @@ connectRedis()
           // eslint-disable-next-line max-len
           `Tiling: Error on executing task ${task} args ${args}: ${error.message}`,
         );
-        parentPort.postMessage('Failure!');
       }
     });
   });

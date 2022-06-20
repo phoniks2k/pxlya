@@ -26,7 +26,6 @@ export default async (req, res, next) => {
     // https://stackoverflow.com/questions/49547/how-to-control-web-page-caching-across-all-browsers
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
-      Pragma: 'no-cache',
       Expires: '0',
     });
     res.json(userdata);

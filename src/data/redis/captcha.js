@@ -3,14 +3,13 @@
  * check for captcha requirement
  */
 
-import logger from '../core/logger';
-import redis from '../data/redis/client';
-import { getIPv6Subnet } from './ip';
+import logger from '../../core/logger';
+import redis from './client';
+import { getIPv6Subnet } from '../../utils/ip';
 import {
-  CAPTCHA_URL,
   CAPTCHA_TIME,
   CAPTCHA_TIMEOUT,
-} from '../core/config';
+} from '../../core/config';
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
 
@@ -142,10 +141,9 @@ export async function checkCaptchaSolution(
  * @return boolean true if needed
  */
 export async function needCaptcha(ip) {
-  if (!CAPTCHA_URL) {
+  if (CAPTCHA_TIME < 0) {
     return false;
   }
-
   const key = `human:${getIPv6Subnet(ip)}`;
   const ttl = await redis.ttl(key);
   if (ttl > 0) {

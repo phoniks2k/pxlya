@@ -19,7 +19,7 @@ import {
 } from '../../../utils/validation';
 import {
   checkCaptchaSolution,
-} from '../../../utils/captcha';
+} from '../../../data/redis/captcha';
 
 async function validate(email, name, password, captcha, captchaid, t, gettext) {
   const errors = [];

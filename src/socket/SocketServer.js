@@ -24,7 +24,7 @@ import socketEvents from './SocketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
 import { drawByOffsets } from '../core/draw';
-import { needCaptcha } from '../utils/captcha';
+import { needCaptcha } from '../data/redis/captcha';
 import { cheapDetector } from '../core/isProxy';
 
 

@@ -1,13 +1,9 @@
 /*
  * send global ranking
- * @flow
  */
-
-import type { Request, Response } from 'express';
 
 import rankings from '../core/ranking';
 
-
-export default async (req: Request, res: Response) => {
+export default (req, res) => {
   res.json(rankings.ranks);
 };
