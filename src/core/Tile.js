@@ -90,9 +90,10 @@ function addIndexedSubtiletoTile(
   const [dx, dy] = cell;
   const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
 
-  const emptyR = palette.rgb[0];
-  const emptyB = palette.rgb[1];
-  const emptyG = palette.rgb[1];
+  const { rgb } = palette;
+  const emptyR = rgb[0];
+  const emptyB = rgb[1];
+  const emptyG = rgb[1];
 
   let pos = 0;
   let clr;
@@ -102,9 +103,9 @@ function addIndexedSubtiletoTile(
     while (channelOffset < max) {
       if (pos < subtile.length) {
         clr = (subtile[pos++] & 0x3F) * 3;
-        buffer[channelOffset++] = palette.rgb[clr++];
-        buffer[channelOffset++] = palette.rgb[clr++];
-        buffer[channelOffset++] = palette.rgb[clr];
+        buffer[channelOffset++] = rgb[clr++];
+        buffer[channelOffset++] = rgb[clr++];
+        buffer[channelOffset++] = rgb[clr];
       } else {
         buffer[channelOffset++] = emptyR;
         buffer[channelOffset++] = emptyB;
@@ -137,8 +138,9 @@ export async function createZoomTileFromChunk(
   canvas,
   canvasTileFolder,
   cell,
+  gPalette = null,
 ) {
-  const palette = new Palette(canvas.colors);
+  const palette = gPalette || new Palette(canvas.colors);
   const canvasSize = canvas.size;
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
@@ -221,8 +223,9 @@ export async function createZoomedTile(
   canvas,
   canvasTileFolder,
   cell,
+  gPalette = null,
 ) {
-  const palette = new Palette(canvas.colors);
+  const palette = gPalette || new Palette(canvas.colors);
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
   );
@@ -461,11 +464,11 @@ export async function initializeTiles(
       const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.png`;
       if (force || !fs.existsSync(filename)) {
         const ret = await createZoomTileFromChunk(
-          canvasSize,
           canvasId,
+          canvas,
           canvasTileFolder,
-          palette,
           [cx, cy],
+          palette,
         );
         if (ret) cnts += 1;
         cnt += 1;
@@ -490,9 +493,10 @@ export async function initializeTiles(
         const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.png`;
         if (force || !fs.existsSync(filename)) {
           const ret = await createZoomedTile(
+            canvas,
             canvasTileFolder,
-            palette,
             [zoom, cx, cy],
+            palette,
           );
           if (ret) cnts += 1;
           cnt += 1;

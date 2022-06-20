@@ -42,7 +42,6 @@ class CanvasUpdater {
     this.canvasTileFolder = `${TILE_FOLDER}/${id}`;
     this.firstZoomtileWidth = this.canvas.size / TILE_SIZE / TILE_ZOOM_LEVEL;
     this.maxTiledZoom = getMaxTiledZoom(this.canvas.size);
-    this.startReloadingLoops();
   }
 
   /*
@@ -140,7 +139,7 @@ class CanvasUpdater {
   /*
    * initialize queues and start loops for updating tiles
    */
-  async startReloadingLoops() {
+  async initialize() {
     logger.info(`Tiling: Using folder ${this.canvasTileFolder}`);
     if (!fs.existsSync(`${this.canvasTileFolder}/0`)) {
       if (!fs.existsSync(this.canvasTileFolder)) {
@@ -177,7 +176,7 @@ RedisCanvas.setChunkChangeCallback(registerChunkChange);
 /*
  * starting update loops for canvases
  */
-export function startAllCanvasLoops() {
+export async function startAllCanvasLoops() {
   if (!fs.existsSync(`${TILE_FOLDER}`)) fs.mkdirSync(`${TILE_FOLDER}`);
   const ids = Object.keys(canvases);
   for (let i = 0; i < ids.length; i += 1) {
@@ -186,7 +185,9 @@ export function startAllCanvasLoops() {
     if (!canvas.v) {
       // just 2D canvases
       const updater = new CanvasUpdater(id);
-      CanvasUpdaters[ids[i]] = updater;
+      // eslint-disable-next-line no-await-in-loop
+      await updater.initialize();
+      CanvasUpdaters[id] = updater;
     }
   }
 }

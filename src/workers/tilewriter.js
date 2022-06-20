@@ -47,6 +47,7 @@ connectRedis()
           // eslint-disable-next-line max-len
           `Tiling: Error on executing task ${task} args ${args}: ${error.message}`,
         );
+        parentPort.postMessage('Failure!');
       }
     });
   });
