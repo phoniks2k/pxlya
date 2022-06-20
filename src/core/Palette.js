@@ -109,12 +109,13 @@ class Palette {
   buffer2ABGR(chunkBuffer) {
     const { length } = chunkBuffer;
     const colors = new Uint32Array(length);
+    const { abgr } = this;
     let value;
 
     let pos = 0;
     for (let i = 0; i < length; i++) {
       value = (chunkBuffer[i] & 0x3F);
-      colors[pos++] = this.abgr[value];
+      colors[pos++] = abgr[value];
     }
     return colors;
   }
@@ -129,16 +130,16 @@ class Palette {
     const colors = new Uint8Array(length * 3);
     let color;
     let value;
-    const buffer = chunkBuffer;
+    const { rgb } = this;
 
     let c = 0;
     for (let i = 0; i < length; i++) {
-      value = buffer[i];
+      value = chunkBuffer[i];
 
       color = (value & 0x3F) * 3;
-      colors[c++] = this.rgb[color++];
-      colors[c++] = this.rgb[color++];
-      colors[c++] = this.rgb[color];
+      colors[c++] = rgb[color++];
+      colors[c++] = rgb[color++];
+      colors[c++] = rgb[color];
     }
     return colors;
   }

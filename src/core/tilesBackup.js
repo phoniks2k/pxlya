@@ -14,22 +14,6 @@ import { TILE_SIZE } from './constants';
 
 
 /*
- * take chunk buffer and pad it to a specific length
- * Fill missing pixels with zeros
- * @param length target length
- */
-function padChunk(chunk, length) {
-  let retChunk = chunk;
-  if (!chunk || !chunk.length) {
-    retChunk = Buffer.alloc(length);
-  } else if (chunk.length < length) {
-    const padding = Buffer.alloc(length - chunk.length);
-    retChunk = Buffer.concat([chunk, padding]);
-  }
-  return retChunk;
-}
-
-/*
  * Copy canvases from one redis instance to another
  * @param canvasRedis redis from where to get the data
  * @param backupRedis redis where to write the data to
@@ -98,8 +82,8 @@ export async function incrementialBackupRedis(
   backupDir,
 ) {
   const ids = Object.keys(canvases);
-  for (let i = 0; i < ids.length; i += 1) {
-    const id = ids[i];
+  for (let ind = 0; ind < ids.length; ind += 1) {
+    const id = ids[ind];
 
     const canvas = canvases[id];
     if (canvas.v || canvas.hid) {
@@ -162,43 +146,48 @@ export async function incrementialBackupRedis(
           );
         }
 
-        // is gonna be an Uint32Array
         let tileBuffer = null;
 
         try {
           if (!oldChunk && !curChunk) {
             continue;
           }
-          if (oldChunk && !curChunk) {
-            // one does not exist
-            curChunk = Buffer.alloc(TILE_SIZE * TILE_SIZE);
-            tileBuffer = palette.buffer2ABGR(curChunk);
-          } else if (!oldChunk && curChunk) {
-            tileBuffer = new Uint32Array(TILE_SIZE * TILE_SIZE);
-            const pxl = 0;
-            while (pxl < curChunk.length) {
-              const clrIndex = curChunk[pxl] & 0x3F;
-              if (clrIndex > 0) {
-                const color = palette.abgr[clrIndex];
-                tileBuffer[pxl] = color;
+          if (!oldChunk) {
+            oldChunk = Buffer.allocUnsafe(0);
+          }
+          if (!curChunk) {
+            curChunk = Buffer.allocUnsafe(0);
+          }
+
+          const { abgr } = palette;
+          const compLength = Math.min(oldChunk.length, curChunk.length);
+          tileBuffer = Buffer.allocUnsafe(TILE_SIZE ** 2 * 4);
+          for (let i = 0; i < compLength; i += 1) {
+            const curPxl = curChunk[i];
+            if (oldChunk[i] !== curPxl) {
+              tileBuffer.writeUInt32BE(i * 4, abgr[curPxl & 0x3F]);
+            }
+          }
+
+          const oldChunkLength = oldChunk.length;
+          const curChunkLength = curChunk.length;
+
+          for (let i = oldChunkLength; i < curChunkLength; i += 1) {
+            tileBuffer.writeUInt32BE(i * 4, abgr[curChunk[i] & 0x3F]);
+          }
+
+          if (oldChunkLength > curChunkLength) {
+            const blank = abgr[0];
+            for (let i = curChunkLength; i < oldChunkLength; i += 1) {
+              if (oldChunk[i] !== 0) {
+                tileBuffer.writeUInt32BE(i * 4, blank);
               }
             }
-          } else {
-            if (curChunk.length < oldChunk.length) {
-              curChunk = padChunk(curChunk, oldChunk.length);
-            } else if (curChunk.length > oldChunk.length) {
-              oldChunk = padChunk(oldChunk, curChunk.length);
-            }
-            // both exist and are the same length
-            tileBuffer = new Uint32Array(TILE_SIZE * TILE_SIZE);
-            let pxl = 0;
-            while (pxl < curChunk.length) {
-              if (curChunk[pxl] !== oldChunk[pxl]) {
-                const color = palette.abgr[curChunk[pxl] & 0x3F];
-                tileBuffer[pxl] = color;
-              }
-              pxl += 1;
-            }
+          }
+
+          const curLength = Math.max(oldChunkLength, curChunkLength) * 4;
+          if (curLength < tileBuffer.length) {
+            tileBuffer.fill(0, curLength);
           }
         } catch (error) {
           console.error(
@@ -208,31 +197,29 @@ export async function incrementialBackupRedis(
           continue;
         }
 
-        if (tileBuffer) {
-          try {
-            if (!createdDir && !fs.existsSync(xBackupDir)) {
-              createdDir = true;
-              fs.mkdirSync(xBackupDir);
-            }
-            const filename = `${xBackupDir}/${y}.png`;
-            // eslint-disable-next-line no-await-in-loop
-            await sharp(
-              Buffer.from(tileBuffer.buffer), {
-                raw: {
-                  width: TILE_SIZE,
-                  height: TILE_SIZE,
-                  channels: 4,
-                },
-              },
-            ).toFile(filename);
-            amount += 1;
-          } catch (error) {
-            console.error(
-              // eslint-disable-next-line max-len
-              new Error(`Could not save incremential backup of chunk ${key}: ${error.message}`),
-            );
-            continue;
+        try {
+          if (!createdDir && !fs.existsSync(xBackupDir)) {
+            createdDir = true;
+            fs.mkdirSync(xBackupDir);
           }
+          const filename = `${xBackupDir}/${y}.png`;
+          // eslint-disable-next-line no-await-in-loop
+          await sharp(
+            tileBuffer, {
+              raw: {
+                width: TILE_SIZE,
+                height: TILE_SIZE,
+                channels: 4,
+              },
+            },
+          ).toFile(filename);
+          amount += 1;
+        } catch (error) {
+          console.error(
+            // eslint-disable-next-line max-len
+            new Error(`Could not save incremential backup of chunk ${key}: ${error.message}`),
+          );
+          continue;
         }
       }
     }
@@ -256,8 +243,8 @@ export async function createPngBackup(
   backupDir,
 ) {
   const ids = Object.keys(canvases);
-  for (let i = 0; i < ids.length; i += 1) {
-    const id = ids[i];
+  for (let ind = 0; ind < ids.length; ind += 1) {
+    const id = ids[ind];
 
     const canvasBackupDir = `${backupDir}/${id}`;
     if (!fs.existsSync(canvasBackupDir)) {
@@ -296,13 +283,27 @@ export async function createPngBackup(
           );
         }
         if (chunk && chunk.length) {
-          chunk = padChunk(chunk, TILE_SIZE * TILE_SIZE);
-          const textureBuffer = palette.buffer2RGB(chunk);
-          const filename = `${xBackupDir}/${y}.png`;
           try {
+            const tileBuffer = Buffer.allocUnsafe(TILE_SIZE ** 2 * 4);
+            const chunkLength = chunk.length;
+            const { abgr } = palette;
+            for (let i = 0; i < chunkLength; i += 1) {
+              tileBuffer.writeUInt32BE(
+                i * 4,
+                abgr[chunk[i] & 0x3F],
+              );
+            }
+
+            const curLength = chunkLength * 4;
+            if (curLength < tileBuffer.length) {
+              tileBuffer.fill(0, curLength);
+            }
+
+            const filename = `${xBackupDir}/${y}.png`;
+
             // eslint-disable-next-line no-await-in-loop
             await sharp(
-              Buffer.from(textureBuffer.buffer), {
+              tileBuffer, {
                 raw: {
                   width: TILE_SIZE,
                   height: TILE_SIZE,

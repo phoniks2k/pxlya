@@ -43,6 +43,10 @@ class RedisCanvas {
       key,
     );
     if (padding > 0 && chunk && chunk.length < padding) {
+      /*
+       * this padding is slow and should be avoided,
+       * better deal with non-full-size chunks yourself
+       */
       const pad = Buffer.alloc(padding - chunk.length);
       chunk = Buffer.concat([chunk, pad]);
     }
