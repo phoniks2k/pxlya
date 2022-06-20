@@ -11,7 +11,7 @@
 import WebSocket from 'ws';
 
 import socketEvents from './SocketEvents';
-import chatProvider from '../core/ChatProvider';
+import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import { RegUser } from '../data/sql';
 import { getIPFromRequest } from '../utils/ip';
 import { setPixelByCoords } from '../core/setPixel';
@@ -239,6 +239,13 @@ class APISocketServer {
       if (command === 'chat') {
         const [name, id, msg, country, channelId] = packet;
         const uid = id || chatProvider.apiSocketUserId;
+        /*
+         * don't send if muted
+         */
+        const mutedTtl = await ChatProvider.checkIfMuted(uid);
+        if (mutedTtl !== -2) {
+          return;
+        }
         /*
          * do not send message back up ws that sent it
          */

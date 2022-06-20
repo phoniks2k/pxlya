@@ -4,11 +4,11 @@
 import { Op } from 'sequelize';
 import logger from './logger';
 import redis from '../data/redis/client';
-import User from '../data/User';
 import RateLimiter from '../utils/RateLimiter';
 import {
   Channel, RegUser, UserChannel, Message,
 } from '../data/sql';
+import { findIdByNameOrId } from '../data/sql/RegUser';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import socketEvents from '../socket/SocketEvents';
 import { cheapDetector } from './isProxy';
@@ -26,9 +26,12 @@ function getUserFromMd(mdUserLink) {
   let mdUser = mdUserLink.trim();
   if (mdUser[0] === '@') {
     mdUser = mdUser.substring(1);
-  }
-  if (mdUser[0] === '[' && mdUser[mdUser.length - 1] === ')') {
-    return mdUser.substring(1, mdUser.lastIndexOf(']')).trim();
+    if (mdUser[0] === '[' && mdUser[mdUser.length - 1] === ')') {
+      // if mdUser ping, select Id
+      mdUser = mdUser.substring(
+        mdUser.lastIndexOf('(') + 1, mdUser.length - 1,
+      ).trim();
+    }
   }
   return mdUser;
 }
@@ -416,7 +419,7 @@ export class ChatProvider {
       return t`Your mail has to be verified in order to chat`;
     }
 
-    const muted = await ChatProvider.checkIfMuted(user);
+    const muted = await ChatProvider.checkIfMuted(user.id);
     if (muted === -1) {
       return t`You are permanently muted, join our guilded to apppeal the mute`;
     }
@@ -510,24 +513,24 @@ export class ChatProvider {
     );
   }
 
-  static async checkIfMuted(user) {
-    const key = `mute:${user.id}`;
+  static async checkIfMuted(uid) {
+    const key = `mute:${uid}`;
     const ttl = await redis.ttl(key);
     return ttl;
   }
 
-  async mute(plainName, opts) {
+  async mute(nameOrId, opts) {
     const timeMin = opts.duration || null;
     const initiator = opts.initiator || null;
     const printChannel = opts.printChannel || null;
 
-    const name = (plainName.startsWith('@'))
-      ? plainName.substring(1) : plainName;
-    const id = await User.name2Id(name);
-    if (!id) {
-      return `Couldn't find user ${name}`;
+    const searchResult = await findIdByNameOrId(nameOrId);
+    if (!searchResult) {
+      return `Couldn't find user ${nameOrId}`;
     }
+    const { name, id } = searchResult;
     const userPing = `@[${name}](${id})`;
+
     const key = `mute:${id}`;
     if (timeMin) {
       const ttl = timeMin * 60;
@@ -561,17 +564,17 @@ export class ChatProvider {
     return null;
   }
 
-  async unmute(plainName, opts) {
+  async unmute(nameOrId, opts) {
     const initiator = opts.initiator || null;
     const printChannel = opts.printChannel || null;
 
-    const name = (plainName.startsWith('@'))
-      ? plainName.substring(1) : plainName;
-    const id = await User.name2Id(name);
-    if (!id) {
-      return `Couldn't find user ${name}`;
+    const searchResult = await findIdByNameOrId(nameOrId);
+    if (!searchResult) {
+      return `Couldn't find user ${nameOrId}`;
     }
+    const { name, id } = searchResult;
     const userPing = `@[${name}](${id})`;
+
     const key = `mute:${id}`;
     const delKeys = await redis.del(key);
     if (delKeys !== 1) {

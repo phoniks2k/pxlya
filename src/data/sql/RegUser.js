@@ -5,7 +5,7 @@
  *
  */
 
-import { DataTypes } from 'sequelize';
+import { DataTypes, QueryTypes } from 'sequelize';
 import sequelize from './sequelize';
 
 import { generateHash } from '../../utils/hash';
@@ -145,5 +145,40 @@ const RegUser = sequelize.define('User', {
   },
 
 });
+
+export async function name2Id(name) {
+  try {
+    const userq = await sequelize.query(
+      'SELECT id FROM Users WHERE name = $1',
+      {
+        bind: [name],
+        type: QueryTypes.SELECT,
+        raw: true,
+        plain: true,
+      },
+    );
+    return userq.id;
+  } catch {
+    return null;
+  }
+}
+
+export async function findIdByNameOrId(searchString) {
+  let id = await name2Id(searchString);
+  if (id) {
+    return { name: searchString, id };
+  }
+  id = parseInt(searchString, 10);
+  if (!Number.isNaN(id)) {
+    const user = await RegUser.findByPk(id, {
+      attributes: ['name'],
+      raw: true,
+    });
+    if (user) {
+      return { name: user.name, id };
+    }
+  }
+  return null;
+}
 
 export default RegUser;

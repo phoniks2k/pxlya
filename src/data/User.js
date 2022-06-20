@@ -7,7 +7,7 @@
  * @flow
  * */
 
-import Sequelize from 'sequelize';
+import { QueryTypes, Utils } from 'sequelize';
 import redis from './redis/client';
 import logger from '../core/logger';
 
@@ -90,23 +90,6 @@ class User {
         this.setRegUser(reguser);
         this.id = id;
       }
-    }
-  }
-
-  static async name2Id(name: string) {
-    try {
-      const userq = await sequelize.query(
-        'SELECT id FROM Users WHERE name = $1',
-        {
-          bind: [name],
-          type: Sequelize.QueryTypes.SELECT,
-          raw: true,
-          plain: true,
-        },
-      );
-      return userq.id;
-    } catch {
-      return null;
     }
   }
 
@@ -244,7 +227,7 @@ class User {
         'SELECT totalPixels FROM Users WHERE id = $1',
         {
           bind: [id],
-          type: Sequelize.QueryTypes.SELECT,
+          type: QueryTypes.SELECT,
           raw: true,
           plain: true,
         },
@@ -267,7 +250,7 @@ class User {
     if (!this.regUser) return false;
     try {
       await this.regUser.update({
-        lastLogIn: Sequelize.literal('CURRENT_TIMESTAMP'),
+        lastLogIn: new Utils.Literal('CURRENT_TIMESTAMP'),
       });
     } catch (err) {
       return false;
