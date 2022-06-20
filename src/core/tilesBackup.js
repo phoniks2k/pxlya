@@ -165,7 +165,7 @@ export async function incrementialBackupRedis(
           for (let i = 0; i < compLength; i += 1) {
             const curPxl = curChunk[i];
             if (oldChunk[i] !== curPxl) {
-              tileBuffer.writeUInt32BE(i * 4, abgr[curPxl & 0x3F]);
+              tileBuffer.writeUInt32BE(abgr[curPxl & 0x3F], i * 4);
             }
           }
 
@@ -173,14 +173,14 @@ export async function incrementialBackupRedis(
           const curChunkLength = curChunk.length;
 
           for (let i = oldChunkLength; i < curChunkLength; i += 1) {
-            tileBuffer.writeUInt32BE(i * 4, abgr[curChunk[i] & 0x3F]);
+            tileBuffer.writeUInt32BE(abgr[curChunk[i] & 0x3F], i * 4);
           }
 
           if (oldChunkLength > curChunkLength) {
             const blank = abgr[0];
             for (let i = curChunkLength; i < oldChunkLength; i += 1) {
               if (oldChunk[i] !== 0) {
-                tileBuffer.writeUInt32BE(i * 4, blank);
+                tileBuffer.writeUInt32BE(blank, i * 4);
               }
             }
           }
@@ -289,8 +289,8 @@ export async function createPngBackup(
             const { abgr } = palette;
             for (let i = 0; i < chunkLength; i += 1) {
               tileBuffer.writeUInt32BE(
-                i * 4,
                 abgr[chunk[i] & 0x3F],
+                i * 4,
               );
             }
 
