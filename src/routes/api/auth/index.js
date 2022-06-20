@@ -148,6 +148,7 @@ export default (passport) => {
 
       req.logIn(user, async (e) => {
         if (e) {
+          logger.warn(`Login Error:${e.message}`);
           res.json({
             success: false,
             errors: ['Failed to establish session. Please try again later :('],

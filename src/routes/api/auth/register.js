@@ -101,6 +101,7 @@ export default async (req: Request, res: Response) => {
 
   await req.logIn(user, (err) => {
     if (err) {
+      logger.warn(`Login after register error: ${err.message}`);
       res.status(500);
       res.json({
         errors: [t`Failed to establish session after register :(`],
