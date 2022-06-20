@@ -161,11 +161,11 @@ export async function incrementialBackupRedis(
 
           const { abgr } = palette;
           const compLength = Math.min(oldChunk.length, curChunk.length);
-          tileBuffer = Buffer.allocUnsafe(TILE_SIZE ** 2 * 4);
+          tileBuffer = new Uint32Array(TILE_SIZE ** 2);
           for (let i = 0; i < compLength; i += 1) {
             const curPxl = curChunk[i];
             if (oldChunk[i] !== curPxl) {
-              tileBuffer.writeUInt32BE(abgr[curPxl & 0x3F], i * 4);
+              tileBuffer[i] = abgr[curPxl & 0x3F];
             }
           }
 
@@ -173,21 +173,16 @@ export async function incrementialBackupRedis(
           const curChunkLength = curChunk.length;
 
           for (let i = oldChunkLength; i < curChunkLength; i += 1) {
-            tileBuffer.writeUInt32BE(abgr[curChunk[i] & 0x3F], i * 4);
+            tileBuffer[i] = abgr[curChunk[i] & 0x3F];
           }
 
           if (oldChunkLength > curChunkLength) {
             const blank = abgr[0];
             for (let i = curChunkLength; i < oldChunkLength; i += 1) {
               if (oldChunk[i] !== 0) {
-                tileBuffer.writeUInt32BE(blank, i * 4);
+                tileBuffer[i] = blank;
               }
             }
-          }
-
-          const curLength = Math.max(oldChunkLength, curChunkLength) * 4;
-          if (curLength < tileBuffer.length) {
-            tileBuffer.fill(0, curLength);
           }
         } catch (error) {
           console.error(
@@ -205,7 +200,7 @@ export async function incrementialBackupRedis(
           const filename = `${xBackupDir}/${y}.png`;
           // eslint-disable-next-line no-await-in-loop
           await sharp(
-            tileBuffer, {
+            Buffer.from(tileBuffer.buffer), {
               raw: {
                 width: TILE_SIZE,
                 height: TILE_SIZE,
@@ -284,26 +279,18 @@ export async function createPngBackup(
         }
         if (chunk && chunk.length) {
           try {
-            const tileBuffer = Buffer.allocUnsafe(TILE_SIZE ** 2 * 4);
+            const tileBuffer = new Uint32Array(TILE_SIZE ** 2);
             const chunkLength = chunk.length;
             const { abgr } = palette;
             for (let i = 0; i < chunkLength; i += 1) {
-              tileBuffer.writeUInt32BE(
-                abgr[chunk[i] & 0x3F],
-                i * 4,
-              );
-            }
-
-            const curLength = chunkLength * 4;
-            if (curLength < tileBuffer.length) {
-              tileBuffer.fill(0, curLength);
+              tileBuffer[i] = abgr[chunk[i] & 0x3F];
             }
 
             const filename = `${xBackupDir}/${y}.png`;
 
             // eslint-disable-next-line no-await-in-loop
             await sharp(
-              tileBuffer, {
+              Buffer.from(tileBuffer.buffer), {
                 raw: {
                   width: TILE_SIZE,
                   height: TILE_SIZE,
