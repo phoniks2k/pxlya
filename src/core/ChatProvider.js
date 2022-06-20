@@ -278,7 +278,7 @@ export class ChatProvider {
     switch (cmd) {
       case 'mute': {
         const timeMin = Number(args.slice(-1));
-        if (Number.isNaN(timeMin)) {
+        if (args.length < 2 || Number.isNaN(timeMin)) {
           return this.mute(
             getUserFromMd(args.join(' ')),
             {
