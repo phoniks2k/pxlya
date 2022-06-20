@@ -15,9 +15,17 @@ export default async (req: Request, res: Response) => {
     return;
   }
 
-  req.logout();
-  res.status(200);
-  res.json({
-    success: true,
+  req.logout((err) => {
+    if (err) {
+      res.status(500);
+      res.json({
+        errors: [t`Server error when logging out.`],
+      });
+      return;
+    }
+    res.status(200);
+    res.json({
+      success: true,
+    });
   });
 };
