@@ -1,10 +1,6 @@
 /*
  * request password change
- * @flow
  */
-
-
-import type { Request, Response } from 'express';
 
 import { RegUser } from '../../../data/sql';
 import { validatePassword } from '../../../utils/validation';
@@ -19,7 +15,7 @@ function validate(password, gettext) {
   return errors;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { password } = req.body;
   const { t, gettext } = req.ttag;
   const errors = await validate(password, gettext);
@@ -50,10 +46,21 @@ export default async (req: Request, res: Response) => {
     return;
   }
 
-  req.logout();
-  RegUser.destroy({ where: { id } });
 
-  res.json({
-    success: true,
+  req.logout((err) => {
+    if (err) {
+      res.status(500);
+      res.json({
+        errors: [t`Server error when logging out.`],
+      });
+      return;
+    }
+
+    RegUser.destroy({ where: { id } });
+
+    res.status(200);
+    res.json({
+      success: true,
+    });
   });
 };
