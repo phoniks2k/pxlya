@@ -3,53 +3,53 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/core/ChatProvider.js:370
+#: src/core/ChatProvider.js:385
 msgid "You can not send chat messages with proxy"
 msgstr ""
 
-#: src/core/ChatProvider.js:384
+#: src/core/ChatProvider.js:399
 #, javascript-format
 msgid "You are sending messages too fast, you have to wait ${ waitTime }s :("
 msgstr ""
 
-#: src/core/ChatProvider.js:388
+#: src/core/ChatProvider.js:403
 msgid "You don't have access to this channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:404
+#: src/core/ChatProvider.js:419
 msgid "Your mail has to be verified in order to chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:409
+#: src/core/ChatProvider.js:424
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr ""
 
-#: src/core/ChatProvider.js:414
+#: src/core/ChatProvider.js:429
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr ""
 
-#: src/core/ChatProvider.js:416
+#: src/core/ChatProvider.js:431
 msgid "You are muted for another ${ muted } seconds"
 msgstr ""
 
-#: src/core/ChatProvider.js:424
+#: src/core/ChatProvider.js:439
 msgid "Ow no! Spam protection decided to mute you"
 msgstr ""
 
-#: src/core/ChatProvider.js:435
+#: src/core/ChatProvider.js:450
 msgid "You can't send a message this long :("
 msgstr ""
 
-#: src/core/ChatProvider.js:439
+#: src/core/ChatProvider.js:454
 msgid "Please use int channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:443
-msgid "Your country is temporary muted from chat"
+#: src/core/ChatProvider.js:460
+msgid "Your country is temporary muted from this chat channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:451
+#: src/core/ChatProvider.js:468
 msgid "Stop flooding."
 msgstr ""
 
@@ -107,77 +107,77 @@ msgstr ""
 msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
-#: src/core/mail.js:65
+#: src/core/mail.js:62
 #, javascript-format
 msgid ""
 "We already sent you a verification mail, you can request another one in ${ "
 "minLeft } minutes."
 msgstr ""
 
-#: src/core/mail.js:75
+#: src/core/mail.js:72
 msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
 msgstr ""
 
-#: src/core/mail.js:77
+#: src/core/mail.js:74
 #, javascript-format
 msgid "Hello ${ name }"
 msgstr ""
 
-#: src/core/mail.js:78
+#: src/core/mail.js:75
 msgid ""
 "welcome to our little community of pixelplacers, to use your account, you "
 "have to verify your mail. You can do that here: "
 msgstr ""
 
-#: src/core/mail.js:78
+#: src/core/mail.js:75
 msgid "Click to Verify"
 msgstr ""
 
-#: src/core/mail.js:78
-#: src/core/mail.js:128
+#: src/core/mail.js:75
+#: src/core/mail.js:125
 msgid "Or by copying following url:"
 msgstr ""
 
-#: src/core/mail.js:79
+#: src/core/mail.js:76
 msgid "Have fun and don't hesitate to contact us if you encouter any problems :)"
 msgstr ""
 
-#: src/core/mail.js:80
-#: src/core/mail.js:130
+#: src/core/mail.js:77
+#: src/core/mail.js:127
 msgid "Thanks"
 msgstr ""
 
-#: src/core/mail.js:98
+#: src/core/mail.js:95
 msgid ""
 "We already sent you a mail with instructions. Please wait before requesting "
 "another mail."
 msgstr ""
 
-#: src/core/mail.js:106
+#: src/core/mail.js:103
 msgid "Couldn't find this mail in our database"
 msgstr ""
 
-#: src/core/mail.js:125
+#: src/core/mail.js:122
 msgid "You forgot your password for PixelPlanet? Get a new one here"
 msgstr ""
 
-#: src/core/mail.js:127
+#: src/core/mail.js:124
 msgid "Hello"
 msgstr ""
 
-#: src/core/mail.js:128
+#: src/core/mail.js:125
 msgid ""
 "You requested to get a new password. You can change your password within "
 "the next 30min here: "
 msgstr ""
 
-#: src/core/mail.js:128
+#: src/core/mail.js:125
 #: src/ssr-components/PasswordReset.jsx:19
 #: src/ssr-components/PasswordReset.jsx:28
 msgid "Reset Password"
 msgstr ""
 
-#: src/core/mail.js:129
+#: src/core/mail.js:126
 #, javascript-format
 msgid ""
 "If you did not request this mail, please just ignore it (the ip that "
@@ -216,45 +216,6 @@ msgstr ""
 
 #: src/ssr-components/PasswordReset.jsx:53
 msgid "Reset your password here"
-msgstr ""
-
-#: src/routes/api/captcha.js:22
-msgid "No captcha text given"
-msgstr ""
-
-#: src/routes/api/captcha.js:27
-msgid "No captcha id given"
-msgstr ""
-
-#: src/routes/api/auth/register.js:61
-#: src/routes/api/captcha.js:41
-msgid "You took too long, try again."
-msgstr ""
-
-#: src/routes/api/auth/register.js:64
-#: src/routes/api/captcha.js:47
-msgid "You failed your captcha"
-msgstr ""
-
-#: src/routes/api/auth/register.js:67
-#: src/routes/api/captcha.js:53
-msgid "Unknown Captcha Error"
-msgstr ""
-
-#: src/routes/api/captcha.js:60
-msgid "Server error occured"
-msgstr ""
-
-#: src/routes/api/modtools.js:52
-msgid "You are not logged in"
-msgstr ""
-
-#: src/routes/api/modtools.js:64
-msgid "You are not allowed to access this page"
-msgstr ""
-
-#: src/routes/api/modtools.js:166
-msgid "Just admins can do that"
 msgstr ""
 
 #: src/utils/validation.js:18
@@ -305,6 +266,60 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
+#: src/routes/api/captcha.js:20
+msgid "No captcha text given"
+msgstr ""
+
+#: src/routes/api/captcha.js:25
+msgid "No captcha id given"
+msgstr ""
+
+#: src/routes/api/auth/register.js:61
+#: src/routes/api/captcha.js:39
+msgid "You took too long, try again."
+msgstr ""
+
+#: src/routes/api/auth/register.js:64
+#: src/routes/api/captcha.js:45
+msgid "You failed your captcha"
+msgstr ""
+
+#: src/routes/api/auth/register.js:67
+#: src/routes/api/captcha.js:51
+msgid "Unknown Captcha Error"
+msgstr ""
+
+#: src/routes/api/captcha.js:58
+msgid "Server error occured"
+msgstr ""
+
+#: src/routes/api/modtools.js:52
+msgid "You are not logged in"
+msgstr ""
+
+#: src/routes/api/modtools.js:64
+msgid "You are not allowed to access this page"
+msgstr ""
+
+#: src/routes/api/modtools.js:166
+msgid "Just admins can do that"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:25
+#: src/routes/api/auth/verify.js:32
+msgid "Mail verification"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:26
+msgid "You are now verified :)"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:32
+msgid ""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
+msgstr ""
+
 #: src/routes/api/auth/register.js:33
 msgid "No Captcha given"
 msgstr ""
@@ -339,21 +354,6 @@ msgstr ""
 #: src/routes/api/auth/change_passwd.js:46
 #: src/routes/api/auth/delete_account.js:48
 msgid "Incorrect password!"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:25
-#: src/routes/api/auth/verify.js:32
-msgid "Mail verification"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:26
-msgid "You are now verified :)"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:32
-msgid ""
-"Your mail verification code is invalid or already expired :(, please "
-"request a new one."
 msgstr ""
 
 #: src/ssr-components/RedirectionPage.jsx:20

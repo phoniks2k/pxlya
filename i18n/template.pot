@@ -227,6 +227,11 @@ msgstr ""
 msgid "Server answered with gibberish :("
 msgstr ""
 
+#: src/components/buttons/CanvasSwitchButton.jsx:22
+#: src/components/windows/index.js:19
+msgid "Canvas Selection"
+msgstr ""
+
 #: src/components/buttons/ChatButton.jsx:92
 msgid "Close Chat"
 msgstr ""
@@ -241,11 +246,6 @@ msgstr ""
 
 #: src/components/buttons/ExpandMenuButton.jsx:23
 msgid "Open Menu"
-msgstr ""
-
-#: src/components/buttons/CanvasSwitchButton.jsx:22
-#: src/components/windows/index.js:19
-msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/HistorySelect.jsx:144
@@ -291,16 +291,16 @@ msgstr ""
 msgid "Make Screenshot"
 msgstr ""
 
-#: src/components/buttons/GlobeButton.jsx:35
-msgid "Globe View"
-msgstr ""
-
 #: src/components/buttons/PalselButton.jsx:31
 msgid "Close Palette"
 msgstr ""
 
 #: src/components/buttons/PalselButton.jsx:31
 msgid "Open Palette"
+msgstr ""
+
+#: src/components/buttons/GlobeButton.jsx:35
+msgid "Globe View"
 msgstr ""
 
 #: src/components/contextmenus/UserContextMenu.jsx:55
@@ -336,23 +336,23 @@ msgid "Canvas Archive"
 msgstr ""
 
 #: src/components/Captcha.jsx:77
-#: src/components/ChangeMail.jsx:72
-#: src/components/ChangeName.jsx:58
+#: src/components/ChangeMail.jsx:73
+#: src/components/ChangeName.jsx:59
 #: src/components/ChangePassword.jsx:80
-#: src/components/DeleteAccount.jsx:55
+#: src/components/DeleteAccount.jsx:56
 #: src/components/GlobalCaptcha.jsx:38
-#: src/components/LogInForm.jsx:69
-#: src/components/windows/ForgotPassword.jsx:75
+#: src/components/LogInForm.jsx:71
+#: src/components/windows/ForgotPassword.jsx:76
 #: src/components/windows/Register.jsx:87
 msgid "Error"
 msgstr ""
 
-#: src/components/ChangeMail.jsx:93
-#: src/components/ChangeName.jsx:70
+#: src/components/ChangeMail.jsx:94
+#: src/components/ChangeName.jsx:71
 #: src/components/ChangePassword.jsx:116
-#: src/components/DeleteAccount.jsx:68
+#: src/components/DeleteAccount.jsx:69
 #: src/components/GlobalCaptcha.jsx:48
-#: src/components/windows/ForgotPassword.jsx:88
+#: src/components/windows/ForgotPassword.jsx:89
 #: src/components/windows/Register.jsx:131
 msgid "Cancel"
 msgstr ""
@@ -655,6 +655,17 @@ msgstr ""
 msgid "Consider joining us on Guilded:"
 msgstr ""
 
+#: src/components/windows/CanvasSelect.jsx:33
+msgid ""
+"Select the canvas you want to use.  Every canvas is unique and has "
+"different palettes, cooldown and requirements.  Archive of closed canvases "
+"can be accessed here:"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:41
+msgid "Archive"
+msgstr ""
+
 #: src/components/windows/Register.jsx:85
 msgid "Register new account here"
 msgstr ""
@@ -664,15 +675,15 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: src/components/windows/ForgotPassword.jsx:82
+#: src/components/windows/ForgotPassword.jsx:83
 #: src/components/windows/Register.jsx:98
 #: src/components/windows/Register.jsx:104
 msgid "Email"
 msgstr ""
 
-#: src/components/ChangeMail.jsx:80
-#: src/components/DeleteAccount.jsx:62
-#: src/components/LogInForm.jsx:83
+#: src/components/ChangeMail.jsx:81
+#: src/components/DeleteAccount.jsx:63
+#: src/components/LogInForm.jsx:85
 #: src/components/windows/Register.jsx:106
 #: src/components/windows/Register.jsx:112
 msgid "Password"
@@ -693,20 +704,9 @@ msgstr ""
 #: src/components/Modtools.jsx:653
 #: src/components/Modtools.jsx:715
 #: src/components/Modtools.jsx:798
-#: src/components/windows/ForgotPassword.jsx:86
+#: src/components/windows/ForgotPassword.jsx:87
 #: src/components/windows/Register.jsx:125
 msgid "Submit"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:33
-msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has "
-"different palettes, cooldown and requirements.  Archive of closed canvases "
-"can be accessed here:"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:41
-msgid "Archive"
 msgstr ""
 
 #: src/components/windows/Archive.jsx:20
@@ -758,11 +758,11 @@ msgstr ""
 msgid "You must be logged in to chat"
 msgstr ""
 
-#: src/components/windows/ForgotPassword.jsx:60
+#: src/components/windows/ForgotPassword.jsx:61
 msgid "Sent you a mail with instructions to reset your password."
 msgstr ""
 
-#: src/components/windows/ForgotPassword.jsx:71
+#: src/components/windows/ForgotPassword.jsx:72
 msgid "Enter your mail address and we will send you a new password:"
 msgstr ""
 
@@ -847,37 +847,6 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/components/ChangeMail.jsx:91
-#: src/components/ChangeName.jsx:68
-#: src/components/ChangePassword.jsx:110
-#: src/components/LanguageSelect.jsx:73
-msgid "Save"
-msgstr ""
-
-#: src/components/LogInArea.jsx:21
-msgid "Login to access more features and stats."
-msgstr ""
-
-#: src/components/LogInArea.jsx:23
-msgid "Login with Name or Mail:"
-msgstr ""
-
-#: src/components/LogInArea.jsx:30
-msgid "I forgot my Password."
-msgstr ""
-
-#: src/components/LogInArea.jsx:31
-msgid "or login with:"
-msgstr ""
-
-#: src/components/LogInArea.jsx:72
-msgid "or register here:"
-msgstr ""
-
-#: src/components/LogInArea.jsx:79
-msgid "Register"
-msgstr ""
-
 #: src/components/UserAreaContent.jsx:63
 msgid "Todays Placed Pixels"
 msgstr ""
@@ -933,6 +902,37 @@ msgstr ""
 
 #: src/components/Rankings.jsx:40
 msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
+msgstr ""
+
+#: src/components/LogInArea.jsx:21
+msgid "Login to access more features and stats."
+msgstr ""
+
+#: src/components/LogInArea.jsx:23
+msgid "Login with Name or Mail:"
+msgstr ""
+
+#: src/components/LogInArea.jsx:30
+msgid "I forgot my Password."
+msgstr ""
+
+#: src/components/LogInArea.jsx:31
+msgid "or login with:"
+msgstr ""
+
+#: src/components/LogInArea.jsx:72
+msgid "or register here:"
+msgstr ""
+
+#: src/components/LogInArea.jsx:79
+msgid "Register"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:92
+#: src/components/ChangeName.jsx:69
+#: src/components/ChangePassword.jsx:110
+#: src/components/LanguageSelect.jsx:73
+msgid "Save"
 msgstr ""
 
 #: src/components/Modtools.jsx:246
@@ -1181,28 +1181,6 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: src/components/LogInForm.jsx:76
-msgid "Name or Email"
-msgstr ""
-
-#: src/components/LogInForm.jsx:87
-msgid "LogIn"
-msgstr ""
-
-#: src/components/UserMessages.jsx:28
-msgid ""
-"Please verify your mail address&nbsp;\n"
-"or your account could get deleted after a few days."
-msgstr ""
-
-#: src/components/UserMessages.jsx:49
-msgid "A new verification mail is getting sent to you."
-msgstr ""
-
-#: src/components/UserMessages.jsx:53
-msgid "Click here to request a new verification mail."
-msgstr ""
-
 #: src/components/ChangePassword.jsx:22
 msgid "Passwords do not match."
 msgstr ""
@@ -1223,21 +1201,35 @@ msgstr ""
 msgid "Confirm New Password"
 msgstr ""
 
-#: src/components/DeleteAccount.jsx:66
-msgid "Yes, Delete My Account!"
+#: src/components/UserMessages.jsx:28
+msgid ""
+"Please verify your mail address&nbsp;\n"
+"or your account could get deleted after a few days."
 msgstr ""
 
-#: src/components/ChangeName.jsx:64
+#: src/components/UserMessages.jsx:49
+msgid "A new verification mail is getting sent to you."
+msgstr ""
+
+#: src/components/UserMessages.jsx:53
+msgid "Click here to request a new verification mail."
+msgstr ""
+
+#: src/components/ChangeName.jsx:65
 msgid "New Username"
 msgstr ""
 
-#: src/components/ChangeMail.jsx:59
+#: src/components/DeleteAccount.jsx:67
+msgid "Yes, Delete My Account!"
+msgstr ""
+
+#: src/components/ChangeMail.jsx:60
 msgid ""
 "Changed Mail successfully. We sent you a verification mail,             "
 "please verify your new mail address."
 msgstr ""
 
-#: src/components/ChangeMail.jsx:87
+#: src/components/ChangeMail.jsx:88
 msgid "New Mail"
 msgstr ""
 
@@ -1251,6 +1243,14 @@ msgstr ""
 
 #: src/components/SocialSettings.jsx:80
 msgid "You have no users blocked"
+msgstr ""
+
+#: src/components/LogInForm.jsx:78
+msgid "Name or Email"
+msgstr ""
+
+#: src/components/LogInForm.jsx:89
+msgid "LogIn"
 msgstr ""
 
 #: src/components/windows/Help.jsx:14

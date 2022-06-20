@@ -70,7 +70,7 @@ const faceCorners = [
 ];
 
 const material = new THREE.MeshLambertMaterial({
-  vertexColors: THREE.VertexColors,
+  vertexColors: true,
 });
 
 
