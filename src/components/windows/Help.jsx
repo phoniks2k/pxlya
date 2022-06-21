@@ -48,7 +48,7 @@ pixels and 7s on already set pixels.`}<br />
         {t`Have fun!`}
       </p>
       <p>Guilded ({t`recommended`}): <a href="./guilded" target="_blank" rel="noopener noreferrer">pixelplanet.fun/guilded</a></p>
-      <p>{t`Source on `}<a href="https://git.pixelplanet.fun" target="_blank" rel="noopener noreferrer">github</a></p>
+      <p>{t`Source on `}<a href="https://git.pixelplanet.fun" target="_blank" rel="noopener noreferrer">git.pixelplanet.fun</a></p>
       <p className="modaltitle">{t`Map Data`}</p>
       <p className="modaltext">{t`The bare map data that we use, together with converted OpenStreetMap tiles for orientation, \
 can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLlZmKv3kEBE0HDhakTgAZZycD3ELjduajJxPGaXo">pixelplanetmap.zip</a> (422MB)</p>
