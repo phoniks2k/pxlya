@@ -123,23 +123,40 @@ class Palette {
   /*
    * Take a buffer of indexed pixels and output it as RGB Array
    * @param chunkBuffer Buffer of indexed pixels
+   * @param targetLength Optional integer of length of chunk
+   *   (will be padded or cut to its size)
    * @return RGB Buffer
    */
-  buffer2RGB(chunkBuffer) {
-    const { length } = chunkBuffer;
+  buffer2RGB(chunkBuffer, targetLength = null) {
+    let minLength = chunkBuffer.length;
+    let length = minLength;
+    if (targetLength) {
+      minLength = Math.min(targetLength, minLength);
+      length = targetLength;
+    }
     const colors = new Uint8Array(length * 3);
     let color;
     let value;
     const { rgb } = this;
-
     let c = 0;
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < minLength; i++) {
       value = chunkBuffer[i];
 
       color = (value & 0x3F) * 3;
       colors[c++] = rgb[color++];
       colors[c++] = rgb[color++];
       colors[c++] = rgb[color];
+    }
+
+    if (minLength < length) {
+      const blankR = rgb[0];
+      const blankG = rgb[1];
+      const blankB = rgb[2];
+      for (let i = minLength; i < length; i += 1) {
+        colors[c++] = blankR;
+        colors[c++] = blankG;
+        colors[c++] = blankB;
+      }
     }
     return colors;
   }

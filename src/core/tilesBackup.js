@@ -279,13 +279,7 @@ export async function createPngBackup(
         }
         if (chunk && chunk.length) {
           try {
-            const tileBuffer = new Uint32Array(TILE_SIZE ** 2);
-            const chunkLength = chunk.length;
-            const { abgr } = palette;
-            for (let i = 0; i < chunkLength; i += 1) {
-              tileBuffer[i] = abgr[chunk[i] & 0x3F];
-            }
-
+            const tileBuffer = palette.buffer2RGB(chunk, TILE_SIZE ** 2);
             const filename = `${xBackupDir}/${y}.png`;
 
             // eslint-disable-next-line no-await-in-loop
