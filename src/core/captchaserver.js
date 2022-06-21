@@ -6,7 +6,7 @@ import { Worker } from 'worker_threads';
 
 import logger from './logger';
 
-const MAX_WAIT = 20 * 1000;
+const MAX_WAIT = 30 * 1000;
 
 /*
  * worker thread
@@ -17,7 +17,7 @@ const worker = new Worker('./workers/captchaloader.js');
  * queue of captcha-generation tasks
  * [[ timestamp, callbackFunction ],...]
  */
-let captchaQueue = [];
+const captchaQueue = [];
 
 /*
  * generate a captcha in the worker thread
@@ -36,30 +36,33 @@ function requestCaptcha(cb) {
  * answer of worker thread
  */
 worker.on('message', (msg) => {
-  const task = captchaQueue.shift();
-  task[1](...msg);
+  while (captchaQueue.length) {
+    const task = captchaQueue.shift();
+    try {
+      task[1](...msg);
+      return;
+    } catch {
+      // continue
+    }
+  }
 });
 
 /*
- * checks queue of captcha requests for stale
- * unanswered requests
+ * clear requests if queue can't keep up
  */
 function clearOldQueue() {
   const now = Date.now();
-  captchaQueue = captchaQueue.filter((task) => {
-    if (now - task[0] > MAX_WAIT) {
-      logger.warn(
-        'Captchas: Thread took longer than 30s to generate captcha',
-      );
+  if (captchaQueue.length
+    && now - captchaQueue[0][0] > MAX_WAIT) {
+    logger.warn('Captchas: Queue can not keep up!');
+    captchaQueue.forEach((task) => {
       try {
         task[1]('TIMEOUT');
       } catch {
         // nothing
       }
-      return false;
-    }
-    return true;
-  });
+    });
+  }
 }
 
 setInterval(clearOldQueue, MAX_WAIT);

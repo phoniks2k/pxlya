@@ -13,7 +13,7 @@ export default (req, res) => {
 
   requestCaptcha((err, text, data, id) => {
     if (res.writableEnded) {
-      return;
+      throw new Error('ENOR');
     }
 
     if (err) {
