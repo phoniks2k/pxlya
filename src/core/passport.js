@@ -42,34 +42,30 @@ passport.use(new JsonStrategy({
   usernameProp: 'nameoremail',
   passwordProp: 'password',
 }, async (nameoremail, password, done) => {
-  try {
-    // Decide if email or name by the occurance of @
-    // this is why we don't allow @ in usernames
-    // NOTE: could allow @ in the future by making an OR query,
-    // but i guess nobody really cares.
-    //  https://sequelize.org/master/manual/querying.html
-    const query = (nameoremail.indexOf('@') !== -1)
-      ? { email: nameoremail }
-      : { name: nameoremail };
-    const reguser = await RegUser.findOne({
-      include,
-      where: query,
-    });
-    if (!reguser) {
-      done(new Error('Name or Email does not exist!'));
-      return;
-    }
-    if (!compareToHash(password, reguser.password)) {
-      done(new Error('Incorrect password!'));
-      return;
-    }
-    const user = new User();
-    await user.initialize(reguser.id, null, reguser);
-    user.updateLogInTimestamp();
-    done(null, user);
-  } catch (err) {
-    done(err);
+  // Decide if email or name by the occurance of @
+  // this is why we don't allow @ in usernames
+  // NOTE: could allow @ in the future by making an OR query,
+  // but i guess nobody really cares.
+  //  https://sequelize.org/master/manual/querying.html
+  const query = (nameoremail.indexOf('@') !== -1)
+    ? { email: nameoremail }
+    : { name: nameoremail };
+  const reguser = await RegUser.findOne({
+    include,
+    where: query,
+  });
+  if (!reguser) {
+    done(new Error('Name or Email does not exist!'));
+    return;
   }
+  if (!compareToHash(password, reguser.password)) {
+    done(new Error('Incorrect password!'));
+    return;
+  }
+  const user = new User();
+  await user.initialize(reguser.id, null, reguser);
+  user.updateLogInTimestamp();
+  done(null, user);
 }));
 
 /*
@@ -124,14 +120,10 @@ passport.use(new FacebookStrategy({
   proxy: true,
   profileFields: ['displayName', 'email'],
 }, async (req, accessToken, refreshToken, profile, done) => {
-  try {
-    const { displayName: name, emails } = profile;
-    const email = emails[0].value;
-    const user = await oauthLogin(email, name);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
+  const { displayName: name, emails } = profile;
+  const email = emails[0].value;
+  const user = await oauthLogin(email, name);
+  done(null, user);
 }));
 
 /**
@@ -142,20 +134,16 @@ passport.use(new DiscordStrategy({
   callbackURL: '/api/auth/discord/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  try {
-    logger.info({ profile, refreshToken, accessToken });
-    const { id, email, username: name } = profile;
-    if (!email) {
-      done(null, false, {
-        // eslint-disable-next-line max-len
-        message: 'Sorry, you can not use discord login with an discord account that does not have email set.',
-      });
-    }
-    const user = await oauthLogin(email, name, id);
-    done(null, user);
-  } catch (err) {
-    done(err);
+  logger.info({ profile, refreshToken, accessToken });
+  const { id, email, username: name } = profile;
+  if (!email) {
+    throw new Error(
+      // eslint-disable-next-line max-len
+      'Sorry, you can not use discord login with an discord account that does not have email set.',
+    );
   }
+  const user = await oauthLogin(email, name, id);
+  done(null, user);
 }));
 
 /**
@@ -166,14 +154,10 @@ passport.use(new GoogleStrategy({
   callbackURL: '/api/auth/google/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  try {
-    const { displayName: name, emails } = profile;
-    const email = emails[0].value;
-    const user = await oauthLogin(email, name);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
+  const { displayName: name, emails } = profile;
+  const email = emails[0].value;
+  const user = await oauthLogin(email, name);
+  done(null, user);
 }));
 
 /*
@@ -184,43 +168,39 @@ passport.use(new RedditStrategy({
   callbackURL: '/api/auth/reddit/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  try {
-    logger.info({ profile, refreshToken, accessToken });
-    const redditid = profile.id;
-    let name = sanitizeName(profile.name);
-    // reddit needs an own login strategy based on its id,
-    // because we can not access it's mail
-    let reguser = await RegUser.findOne({
+  logger.info({ profile, refreshToken, accessToken });
+  const redditid = profile.id;
+  let name = sanitizeName(profile.name);
+  // reddit needs an own login strategy based on its id,
+  // because we can not access it's mail
+  let reguser = await RegUser.findOne({
+    include,
+    where: { redditid },
+  });
+  if (!reguser) {
+    reguser = await RegUser.findOne({
       include,
-      where: { redditid },
+      where: { name },
     });
-    if (!reguser) {
+    while (reguser) {
+      // name is taken by someone else
+      // eslint-disable-next-line max-len
+      name = `${name.substring(0, 15)}-${Math.random().toString(36).substring(2, 10)}`;
+      // eslint-disable-next-line no-await-in-loop
       reguser = await RegUser.findOne({
         include,
         where: { name },
       });
-      while (reguser) {
-        // name is taken by someone else
-        // eslint-disable-next-line max-len
-        name = `${name.substring(0, 15)}-${Math.random().toString(36).substring(2, 10)}`;
-        // eslint-disable-next-line no-await-in-loop
-        reguser = await RegUser.findOne({
-          include,
-          where: { name },
-        });
-      }
-      reguser = await RegUser.create({
-        name,
-        verified: 1,
-        redditid,
-      });
     }
-    const user = new User();
-    await user.initialize(reguser.id, null, reguser);
-    done(null, user);
-  } catch (err) {
-    done(err);
+    reguser = await RegUser.create({
+      name,
+      verified: 1,
+      redditid,
+    });
   }
+  const user = new User();
+  await user.initialize(reguser.id, null, reguser);
+  done(null, user);
 }));
 
 /**
@@ -233,22 +213,17 @@ passport.use(new VkontakteStrategy({
   scope: ['email'],
   profileFields: ['displayName', 'email'],
 }, async (accessToken, refreshToken, params, profile, done) => {
-  try {
-    logger.info(profile);
-    const { displayName: name } = profile;
-    const { email } = params;
-    if (!email) {
-      done(null, false, {
-        // eslint-disable-next-line max-len
-        message: 'Sorry, you can not use vk login with an account that does not have a verified email set.',
-      });
-      return;
-    }
-    const user = await oauthLogin(email, name);
-    done(null, user);
-  } catch (err) {
-    done(err);
+  logger.info(profile);
+  const { displayName: name } = profile;
+  const { email } = params;
+  if (!email) {
+    throw new Error(
+      // eslint-disable-next-line max-len
+      'Sorry, you can not use vk login with an account that does not have a verified email set.',
+    );
   }
+  const user = await oauthLogin(email, name);
+  done(null, user);
 }));
 
 
