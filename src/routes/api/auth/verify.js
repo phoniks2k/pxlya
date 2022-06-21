@@ -1,16 +1,13 @@
 /*
  * verify mail address
- * @flow
  */
-
-import type { Request, Response } from 'express';
 
 import socketEvents from '../../../socket/SocketEvents';
 import getHtml from '../../../ssr-components/RedirectionPage';
 import { getHostFromRequest } from '../../../utils/ip';
 import mailProvider from '../../../core/mail';
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { token } = req.query;
   const { lang } = req;
   const { t } = req.ttag;

@@ -37,78 +37,38 @@ const router = express.Router();
 
 router.get('/facebook', passport.authenticate('facebook',
   { scope: ['email'] }));
-router.get('/facebook/return', (req: Request, res: Response, next) => {
-  passport.authenticate('facebook', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return next(new Error(info.message));
-    req.logIn(user, (error) => {
-      if (error) return next(error);
-      return res.redirect('/');
-    });
-    return null;
-  })(req, res, next);
-});
+router.get('/facebook/return', passport.authenticate('facebook', {
+  successRedirect: '/',
+}));
 
 router.get('/discord', passport.authenticate('discord',
   { scope: ['identify', 'email'] }));
-router.get('/discord/return', (req: Request, res: Response, next) => {
-  passport.authenticate('discord', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return next(new Error(info.message));
-    req.logIn(user, (error) => {
-      if (error) return next(error);
-      return res.redirect('/');
-    });
-    return null;
-  })(req, res, next);
-});
+router.get('/discord/return', passport.authenticate('discord', {
+  successRedirect: '/',
+}));
 
 router.get('/google', passport.authenticate('google',
   { scope: ['email', 'profile'] }));
-router.get('/google/return', (req: Request, res: Response, next) => {
-  passport.authenticate('google', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return next(new Error(info.message));
-    req.logIn(user, (error) => {
-      if (error) return next(error);
-      return res.redirect('/');
-    });
-    return null;
-  })(req, res, next);
-});
+router.get('/google/return', passport.authenticate('google', {
+  successRedirect: '/',
+}));
 
 router.get('/vk', passport.authenticate('vkontakte',
   { scope: ['email'] }));
-router.get('/vk/return', (req: Request, res: Response, next) => {
-  passport.authenticate('vkontakte', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return next(new Error(info.message));
-    req.logIn(user, (error) => {
-      if (error) return next(error);
-      return res.redirect('/');
-    });
-    return null;
-  })(req, res, next);
-});
+router.get('/vk/return', passport.authenticate('vkontakte', {
+  successRedirect: '/',
+}));
 
 router.get('/reddit', passport.authenticate('reddit',
   { duration: 'temporary', state: 'foo' }));
-router.get('/reddit/return', (req: Request, res: Response, next) => {
-  passport.authenticate('reddit', (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return next(new Error(info.message));
-    req.logIn(user, (error) => {
-      if (error) return next(error);
-      return res.redirect('/');
-    });
-    return null;
-  })(req, res, next);
-});
+router.get('/reddit/return', passport.authenticate('reddit', {
+  successRedirect: '/',
+}));
 
 // eslint-disable-next-line no-unused-vars
 router.use((err, req, res, next) => {
   const host = getHostFromRequest(req);
-  logger.info(`Authentification error ${err}`);
+  logger.info(`Authentification error: ${err.message}`);
   const index = getHtml(
     'OAuth Authentification',
     err.message, host, req.lang,
@@ -116,11 +76,11 @@ router.use((err, req, res, next) => {
   res.status(400).send(index);
 });
 
+router.get('/verify', verify);
+
 /*
  * JSON APIs
  */
-
-router.get('/verify', verify);
 
 router.get('/logout', logout);
 
@@ -136,6 +96,8 @@ router.post('/delete_account', delete_account);
 
 router.post('/restore_password', restore_password);
 
+router.post('/register', register);
+
 router.post('/local', passport.authenticate('json'), async (req, res) => {
   const { user } = req;
   const me = await getMe(user, req.lang);
@@ -145,44 +107,9 @@ router.post('/local', passport.authenticate('json'), async (req, res) => {
     me,
   });
 });
-/*
-router.post('/local', async (req: Request, res: Response, next) => {
-  passport.authenticate('json', async (err, user, info) => {
-    if (!user) {
-      res.status(400);
-      res.json({
-        errors: [info.message],
-      });
-      return;
-    }
-    logger.info(`User ${user.id} logged in with mail/password.`);
-
-    req.logIn(user, async (e) => {
-      if (e) {
-        logger.warn(`Login Error:${e.message}`);
-        res.json({
-          success: false,
-          errors: ['Failed to establish session. Please try again later :('],
-        });
-        return;
-      }
-
-      user.ip = req.user.ip;
-      const me = await getMe(user, req.lang);
-      res.json({
-        success: true,
-        me,
-      });
-    });
-  })(req, res, next);
-});
-*/
-
-router.post('/register', register);
 
 // eslint-disable-next-line no-unused-vars
 router.use((err, req, res, next) => {
-  console.warn(`ERROR HANDLER CALLED ${err.message}`);
   res.status(400);
   res.json({
     errors: [err.message],
