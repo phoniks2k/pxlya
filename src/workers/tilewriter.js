@@ -27,34 +27,27 @@ connectRedis()
       try {
         switch (task) {
           case 'createZoomTileFromChunk':
-            createZoomTileFromChunk(...args);
+            await createZoomTileFromChunk(...args);
             break;
           case 'createZoomedTile':
-            createZoomedTile(...args);
+            await createZoomedTile(...args);
             break;
           case 'createTexture':
-            createTexture(...args);
+            await createTexture(...args);
             break;
           case 'initializeTiles':
-            try {
-              await initializeTiles(...args);
-              parentPort.postMessage('Done!');
-            } catch (err) {
-              console.warn(
-                // eslint-disable-next-line max-len
-                `Tiling: Error on initializeTiles args ${args}: ${err.message}`,
-              );
-              parentPort.postMessage('Failure!');
-            }
+            await initializeTiles(...args);
             break;
           default:
             console.warn(`Tiling: Main thread requested unknown task ${task}`);
         }
+        parentPort.postMessage('Done!');
       } catch (error) {
         console.warn(
           // eslint-disable-next-line max-len
           `Tiling: Error on executing task ${task} args ${args}: ${error.message}`,
         );
+        parentPort.postMessage('Failure!');
       }
     });
   });

@@ -26,6 +26,28 @@ const CanvasUpdaters = {};
  */
 const worker = new Worker('./workers/tilewriter.js');
 
+/*
+ * queue of tasks that is worked on in FIFO
+ */
+const taskQueue = [];
+
+function enqueueTask(task) {
+  if (!taskQueue.length) {
+    worker.postMessage(task);
+  }
+  taskQueue.push(task);
+}
+
+worker.on('message', () => {
+  taskQueue.shift();
+  if (taskQueue.length) {
+    worker.postMessage(taskQueue[0]);
+  }
+});
+
+/*
+ * every canvas gets an instance of this class
+ */
 class CanvasUpdater {
   TileLoadingQueues;
   id;
@@ -58,7 +80,7 @@ class CanvasUpdater {
       const cy = Math.floor(tile / width);
 
       if (zoom === this.maxTiledZoom - 1) {
-        worker.postMessage({
+        enqueueTask({
           task: 'createZoomTileFromChunk',
           args: [
             this.id,
@@ -68,7 +90,7 @@ class CanvasUpdater {
           ],
         });
       } else if (zoom !== this.maxTiledZoom) {
-        worker.postMessage({
+        enqueueTask({
           task: 'createZoomedTile',
           args: [
             this.canvas,
@@ -79,7 +101,7 @@ class CanvasUpdater {
       }
 
       if (zoom === 0) {
-        worker.postMessage({
+        enqueueTask({
           task: 'createTexture',
           args: [
             this.id,
@@ -115,31 +137,10 @@ class CanvasUpdater {
     );
   }
 
-  initializeTiles() {
-    return new Promise((resolve) => {
-      worker.postMessage({
-        task: 'initializeTiles',
-        args: [
-          this.id,
-          this.canvas,
-          this.canvasTileFolder,
-          false,
-        ],
-      });
-      worker.once('message', (msg) => {
-        logger.info(
-          // eslint-disable-next-line max-len
-          `Tiling: Worker thread finished initializing Tiles with message ${msg}`,
-        );
-        resolve();
-      });
-    });
-  }
-
   /*
    * initialize queues and start loops for updating tiles
    */
-  async initialize() {
+  initialize() {
     logger.info(`Tiling: Using folder ${this.canvasTileFolder}`);
     if (!fs.existsSync(`${this.canvasTileFolder}/0`)) {
       if (!fs.existsSync(this.canvasTileFolder)) {
@@ -148,7 +149,15 @@ class CanvasUpdater {
       logger.warn(
         'Tiling: tiledir empty, will initialize it, this can take some time',
       );
-      await this.initializeTiles();
+      enqueueTask({
+        task: 'initializeTiles',
+        args: [
+          this.id,
+          this.canvas,
+          this.canvasTileFolder,
+          false,
+        ],
+      });
     }
     for (let c = 0; c < this.maxTiledZoom; c += 1) {
       this.TileLoadingQueues.push([]);
@@ -185,8 +194,7 @@ export async function startAllCanvasLoops() {
     if (!canvas.v) {
       // just 2D canvases
       const updater = new CanvasUpdater(id);
-      // eslint-disable-next-line no-await-in-loop
-      await updater.initialize();
+      updater.initialize();
       CanvasUpdaters[id] = updater;
     }
   }
