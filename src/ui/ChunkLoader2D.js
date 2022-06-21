@@ -1,7 +1,5 @@
 /*
  * Fetching and storing of 2D chunks
- *
- * @flow
  */
 
 import ChunkRGB from './ChunkRGB';
@@ -25,12 +23,12 @@ import {
 
 class ChunkLoader {
   store = null;
-  canvasId: number;
-  canvasMaxTiledZoom: number;
-  historicalMaxTiledZooms: Array;
+  canvasId;
+  canvasMaxTiledZoom;
+  historicalMaxTiledZooms;
   palette;
-  canvasSize: number;
-  chunks: Map<string, ChunkRGB>;
+  canvasSize;
+  chunks;
 
   constructor(store, canvasId, palette, canvasSize, historicalSizes) {
     this.store = store;
@@ -56,10 +54,10 @@ class ChunkLoader {
   }
 
   getPixelUpdate(
-    cx: number,
-    cy: number,
-    offset: number,
-    color: number,
+    cx,
+    cy,
+    offset,
+    color,
   ) {
     const chunk = this.chunks.get(`${this.canvasMaxTiledZoom}:${cx}:${cy}`);
     if (chunk) {
@@ -70,8 +68,8 @@ class ChunkLoader {
   }
 
   getColorIndexOfPixel(
-    x: number,
-    y: number,
+    x,
+    y,
   ) {
     const { canvasSize } = this;
     const [cx, cy] = getChunkOfPixel(canvasSize, x, y);
@@ -92,11 +90,11 @@ class ChunkLoader {
    * @return ColorIndex or null if chunks not loaded or historical view not set
    */
   getHistoricalIndexOfPixel(
-    x: number,
-    y: number,
-    historicalDate: string,
-    historicalTime: string,
-    historicalCanvasSize: number,
+    x,
+    y,
+    historicalDate,
+    historicalTime,
+    historicalCanvasSize,
   ) {
     if (!historicalDate) {
       return null;
@@ -132,9 +130,9 @@ class ChunkLoader {
    * available lower zoomlevel chunks
    */
   preLoadChunk(
-    zoom: number,
-    cx: number,
-    cy: number,
+    zoom,
+    cx,
+    cy,
     chunkRGB,
   ) {
     if (zoom <= 0) return null;
@@ -174,12 +172,12 @@ class ChunkLoader {
 
 
   getChunk(
-    zoom: number,
-    cx: number,
-    cy: number,
-    fetch: boolean,
-    showLoadingTile: boolean = true,
-    chunkPreLoading: boolean = true,
+    zoom,
+    cx,
+    cy,
+    fetch = true,
+    showLoadingTile = true,
+    chunkPreLoading = true,
   ) {
     const chunkKey = `${zoom}:${cx}:${cy}`;
     let chunkRGB = this.chunks.get(chunkKey);
@@ -244,10 +242,10 @@ class ChunkLoader {
   }
 
   async fetchHistoricalChunk(
-    cx: number,
-    cy: number,
-    historicalDate: string,
-    historicalTime: string,
+    cx,
+    cy,
+    historicalDate,
+    historicalTime,
     historicalCanvasMaxTiledZoom,
     chunkRGB,
   ) {
@@ -278,7 +276,7 @@ class ChunkLoader {
     }
   }
 
-  async fetchBaseChunk(zoom, cx: number, cy: number, chunkRGB) {
+  async fetchBaseChunk(zoom, cx, cy, chunkRGB) {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
     chunkRGB.isBasechunk = true;
@@ -303,7 +301,7 @@ class ChunkLoader {
     }
   }
 
-  async fetchTile(zoom, cx: number, cy: number, chunkRGB) {
+  async fetchTile(zoom, cx, cy, chunkRGB) {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
     try {

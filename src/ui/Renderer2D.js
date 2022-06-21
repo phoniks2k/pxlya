@@ -341,13 +341,12 @@ class Renderer {
     context.save();
     context.fillStyle = '#C4C4C4';
     context.scale(relScale, relScale);
-    // decide if we will fetch missing chunks
-    // and update the timestamps of accessed chunks
+    // decide if we update the timestamps of accessed chunks
     const curTime = Date.now();
-    let fetch = false;
+    let touch = false;
     if (curTime > this.lastFetch + 150) {
       this.lastFetch = curTime;
-      fetch = true;
+      touch = true;
     }
 
     const xOffset = CANVAS_WIDTH / 2 / relScale - TILE_SIZE / 2;
@@ -380,10 +379,10 @@ class Renderer {
           // if out of bounds
           context.fillRect(x, y, TILE_SIZE, TILE_SIZE);
         } else {
-          chunk = this.chunkLoader.getChunk(tiledZoom, cx, cy, fetch);
+          chunk = this.chunkLoader.getChunk(tiledZoom, cx, cy);
           if (chunk) {
             context.drawImage(chunk, x, y);
-            if (fetch) {
+            if (touch) {
               chunk.timestamp = curTime;
             }
           } else {
@@ -580,13 +579,12 @@ class Renderer {
     }
     // scale
     context.scale(scale, scale);
-    // decide if we will fetch missing chunks
-    // and update the timestamps of accessed chunks
+    // decide if we update the timestamps of accessed chunks
     const curTime = Date.now();
-    let fetch = false;
+    let touch = false;
     if (curTime > this.lastFetch + 150) {
       this.lastFetch = curTime;
-      fetch = true;
+      touch = true;
     }
 
     const xOffset = CANVAS_WIDTH / 2 / scale - TILE_SIZE / 2;
@@ -618,10 +616,10 @@ class Renderer {
         } else {
           // full chunks
           chunk = this.chunkLoader
-            .getHistoricalChunk(cx, cy, fetch, historicalDate);
+            .getHistoricalChunk(cx, cy, true, historicalDate);
           if (chunk) {
             context.drawImage(chunk, x, y);
-            if (fetch) {
+            if (touch) {
               chunk.timestamp = curTime;
             }
           } else {
@@ -630,11 +628,11 @@ class Renderer {
           // incremential chunks
           if (historicalTime === '0000') continue;
           chunk = this.chunkLoader
-            .getHistoricalChunk(cx, cy, fetch, historicalDate, historicalTime);
+            .getHistoricalChunk(cx, cy, true, historicalDate, historicalTime);
           if (chunk) {
             if (!chunk.isEmpty) {
               context.drawImage(chunk, x, y);
-              if (fetch) {
+              if (touch) {
                 chunk.timestamp = curTime;
               }
             }
@@ -649,7 +647,7 @@ class Renderer {
               );
             if (chunk && !chunk.isEmpty) {
               context.drawImage(chunk, x, y);
-              if (fetch) {
+              if (touch) {
                 chunk.timestamp = curTime;
               }
             }
