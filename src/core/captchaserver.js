@@ -62,6 +62,7 @@ function clearOldQueue() {
         // nothing
       }
     });
+    captchaQueue.length = 0;
   }
 }
 
