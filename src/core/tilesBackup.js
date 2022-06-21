@@ -225,6 +225,39 @@ export async function incrementialBackupRedis(
   }
 }
 
+/*
+ * Take a buffer of indexed pixels and output it as RGB Array
+ * of full chunk size
+ * @param chunkBuffer Buffer of indexed pixels
+ * @param palette
+ * @return RGB Buffer
+ */
+function buffer2RGB(palette, chunkBuffer) {
+  const length = TILE_SIZE ** 2;
+  const minLength = Math.min(chunkBuffer.length, length);
+  const colors = new Uint8Array(length * 3);
+  const { rgb } = palette;
+  let color;
+  let c = 0;
+  for (let i = 0; i < minLength; i++) {
+    color = (chunkBuffer[i] & 0x3F) * 3;
+    colors[c++] = rgb[color++];
+    colors[c++] = rgb[color++];
+    colors[c++] = rgb[color];
+  }
+
+  if (minLength < length) {
+    const blankR = rgb[0];
+    const blankG = rgb[1];
+    const blankB = rgb[2];
+    for (let i = minLength; i < length; i += 1) {
+      colors[c++] = blankR;
+      colors[c++] = blankG;
+      colors[c++] = blankB;
+    }
+  }
+  return colors;
+}
 
 /*
  * Backup all tiles as PNG files into folder
@@ -279,7 +312,7 @@ export async function createPngBackup(
         }
         if (chunk && chunk.length) {
           try {
-            const tileBuffer = palette.buffer2RGB(chunk, TILE_SIZE ** 2);
+            const tileBuffer = buffer2RGB(palette, chunk);
             const filename = `${xBackupDir}/${y}.png`;
 
             // eslint-disable-next-line no-await-in-loop

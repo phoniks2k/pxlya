@@ -43,16 +43,16 @@ class ChunkRGB {
   fromBuffer(chunkBuffer) {
     const imageData = new ImageData(TILE_SIZE, TILE_SIZE);
     const imageView = new Uint32Array(imageData.data.buffer);
-    const colors = this.palette.buffer2ABGR(chunkBuffer);
-    colors.forEach((color, index) => {
-      imageView[index] = color;
-    });
+    const { abgr } = this.palette;
+    let bufferLength = chunkBuffer.byteLength;
+    for (let i = 0; i < bufferLength; i += 1) {
+      imageView[i] = abgr[chunkBuffer[i] & 0x3F];
+    }
     const neededLength = TILE_SIZE ** 2;
-    let padding = chunkBuffer.byteLength;
     const background = this.palette.abgr[0];
-    while (padding < neededLength) {
-      imageView[padding] = background;
-      padding += 1;
+    while (bufferLength < neededLength) {
+      imageView[bufferLength] = background;
+      bufferLength += 1;
     }
     const ctx = this.image.getContext('2d');
     ctx.putImageData(imageData, 0, 0);
