@@ -49,7 +49,7 @@ function deleteSubtilefromTile(
 
 /*
  * @param subtilesInTile how many subtiles are in a tile (per dimension)
- * @param cell subtile to delete [dx, dy]
+ * @param cell where to add the tile [dx, dy]
  * @param subtile RGB buffer of subtile
  * @param buffer Uint8Array for RGB values of tile
  */
