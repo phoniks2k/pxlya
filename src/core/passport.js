@@ -10,9 +10,8 @@ import { Strategy as DiscordStrategy } from 'passport-discord';
 import { Strategy as RedditStrategy } from 'passport-reddit';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as VkontakteStrategy } from 'passport-vkontakte';
-import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
-import logger from './logger';
 import { sanitizeName } from '../utils/validation';
 
 import { RegUser } from '../data/sql';
@@ -120,10 +119,14 @@ passport.use(new FacebookStrategy({
   proxy: true,
   profileFields: ['displayName', 'email'],
 }, async (req, accessToken, refreshToken, profile, done) => {
-  const { displayName: name, emails } = profile;
-  const email = emails[0].value;
-  const user = await oauthLogin(email, name);
-  done(null, user);
+  try {
+    const { displayName: name, emails } = profile;
+    const email = emails[0].value;
+    const user = await oauthLogin(email, name);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 }));
 
 /**
@@ -134,16 +137,19 @@ passport.use(new DiscordStrategy({
   callbackURL: '/api/auth/discord/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  logger.info({ profile, refreshToken, accessToken });
-  const { id, email, username: name } = profile;
-  if (!email) {
-    throw new Error(
-      // eslint-disable-next-line max-len
-      'Sorry, you can not use discord login with an discord account that does not have email set.',
-    );
+  try {
+    const { id, email, username: name } = profile;
+    if (!email) {
+      throw new Error(
+        // eslint-disable-next-line max-len
+        'Sorry, you can not use discord login with an discord account that does not have email set.',
+      );
+    }
+    const user = await oauthLogin(email, name, id);
+    done(null, user);
+  } catch (err) {
+    done(err);
   }
-  const user = await oauthLogin(email, name, id);
-  done(null, user);
 }));
 
 /**
@@ -154,10 +160,14 @@ passport.use(new GoogleStrategy({
   callbackURL: '/api/auth/google/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  const { displayName: name, emails } = profile;
-  const email = emails[0].value;
-  const user = await oauthLogin(email, name);
-  done(null, user);
+  try {
+    const { displayName: name, emails } = profile;
+    const email = emails[0].value;
+    const user = await oauthLogin(email, name);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 }));
 
 /*
@@ -168,39 +178,42 @@ passport.use(new RedditStrategy({
   callbackURL: '/api/auth/reddit/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  logger.info({ profile, refreshToken, accessToken });
-  const redditid = profile.id;
-  let name = sanitizeName(profile.name);
-  // reddit needs an own login strategy based on its id,
-  // because we can not access it's mail
-  let reguser = await RegUser.findOne({
-    include,
-    where: { redditid },
-  });
-  if (!reguser) {
-    reguser = await RegUser.findOne({
+  try {
+    const redditid = profile.id;
+    let name = sanitizeName(profile.name);
+    // reddit needs an own login strategy based on its id,
+    // because we can not access it's mail
+    let reguser = await RegUser.findOne({
       include,
-      where: { name },
+      where: { redditid },
     });
-    while (reguser) {
-      // name is taken by someone else
-      // eslint-disable-next-line max-len
-      name = `${name.substring(0, 15)}-${Math.random().toString(36).substring(2, 10)}`;
-      // eslint-disable-next-line no-await-in-loop
+    if (!reguser) {
       reguser = await RegUser.findOne({
         include,
         where: { name },
       });
+      while (reguser) {
+        // name is taken by someone else
+        // eslint-disable-next-line max-len
+        name = `${name.substring(0, 15)}-${Math.random().toString(36).substring(2, 10)}`;
+        // eslint-disable-next-line no-await-in-loop
+        reguser = await RegUser.findOne({
+          include,
+          where: { name },
+        });
+      }
+      reguser = await RegUser.create({
+        name,
+        verified: 1,
+        redditid,
+      });
     }
-    reguser = await RegUser.create({
-      name,
-      verified: 1,
-      redditid,
-    });
+    const user = new User();
+    await user.initialize(reguser.id, null, reguser);
+    done(null, user);
+  } catch (err) {
+    done(err);
   }
-  const user = new User();
-  await user.initialize(reguser.id, null, reguser);
-  done(null, user);
 }));
 
 /**
@@ -213,17 +226,20 @@ passport.use(new VkontakteStrategy({
   scope: ['email'],
   profileFields: ['displayName', 'email'],
 }, async (accessToken, refreshToken, params, profile, done) => {
-  logger.info(profile);
-  const { displayName: name } = profile;
-  const { email } = params;
-  if (!email) {
-    throw new Error(
-      // eslint-disable-next-line max-len
-      'Sorry, you can not use vk login with an account that does not have a verified email set.',
-    );
+  try {
+    const { displayName: name } = profile;
+    const { email } = params;
+    if (!email) {
+      throw new Error(
+        // eslint-disable-next-line max-len
+        'Sorry, you can not use vk login with an account that does not have a verified email set.',
+      );
+    }
+    const user = await oauthLogin(email, name);
+    done(null, user);
+  } catch (err) {
+    done(err);
   }
-  const user = await oauthLogin(email, name);
-  done(null, user);
 }));
 
 
