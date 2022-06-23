@@ -237,7 +237,6 @@ export async function createZoomedTile(
     for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
       // eslint-disable-next-line max-len
       const chunkfile = `${canvasTileFolder}/${z + 1}/${x * TILE_ZOOM_LEVEL + dx}/${y * TILE_ZOOM_LEVEL + dy}.png`;
-      console.log(chunkfile);
       if (!fs.existsSync(chunkfile)) {
         na.push([dx, dy]);
         continue;
