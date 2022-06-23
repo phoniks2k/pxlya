@@ -26,16 +26,17 @@ import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
  * @param buffer Uint8Array for RGB values of tile
  */
 function deleteSubtilefromTile(
+  tileSize,
   palette,
   subtilesInTile,
   cell,
   buffer,
 ) {
   const [dx, dy] = cell;
-  const offset = (dx + dy * TILE_SIZE * subtilesInTile) * TILE_SIZE;
-  for (let row = 0; row < TILE_SIZE; row += 1) {
-    let channelOffset = (offset + row * TILE_SIZE * subtilesInTile) * 3;
-    const max = channelOffset + TILE_SIZE * 3;
+  const offset = (dx + dy * tileSize * subtilesInTile) * tileSize;
+  for (let row = 0; row < tileSize; row += 1) {
+    let channelOffset = (offset + row * tileSize * subtilesInTile) * 3;
+    const max = channelOffset + tileSize * 3;
     while (channelOffset < max) {
       // eslint-disable-next-line prefer-destructuring
       buffer[channelOffset++] = palette.rgb[0];
@@ -43,6 +44,39 @@ function deleteSubtilefromTile(
       buffer[channelOffset++] = palette.rgb[1];
       // eslint-disable-next-line prefer-destructuring
       buffer[channelOffset++] = palette.rgb[2];
+    }
+  }
+}
+
+function addShrunkenSubtileToTile(
+  subtilesInTile,
+  cell,
+  subtile,
+  buffer,
+) {
+  const tileSize = TILE_SIZE;
+  const [dx, dy] = cell;
+  const chunkOffset = (dx + dy * subtilesInTile * tileSize / 4) * tileSize / 4;
+  const target = tileSize / 4;
+  let tr;
+  let tg;
+  let tb;
+  let pos;
+  let tmp;
+  const linePad = (tileSize * 3 - 1) * 3;
+  for (let row = 0; row < target; row += 1) {
+    let channelOffset = (chunkOffset + row * target * subtilesInTile) * 3;
+    const max = channelOffset + target * 3;
+    pos = row * tileSize * 12;
+    while (channelOffset < max) {
+      tr = subtile[pos++];
+      tg = subtile[pos++];
+      tb = subtile[pos++];
+      pos += 9;
+      tmp = pos + linePad;
+      buffer[channelOffset++] = (subtile[tmp++] + tr) / 2;
+      buffer[channelOffset++] = (subtile[tmp++] + tg) / 2;
+      buffer[channelOffset++] = (subtile[tmp++] + tb) / 2;
     }
   }
 }
@@ -59,12 +93,13 @@ function addRGBSubtiletoTile(
   subtile,
   buffer,
 ) {
+  const tileSize = TILE_SIZE;
   const [dx, dy] = cell;
-  const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
+  const chunkOffset = (dx + dy * subtilesInTile * tileSize) * tileSize;
   let pos = 0;
-  for (let row = 0; row < TILE_SIZE; row += 1) {
-    let channelOffset = (chunkOffset + row * TILE_SIZE * subtilesInTile) * 3;
-    const max = channelOffset + TILE_SIZE * 3;
+  for (let row = 0; row < tileSize; row += 1) {
+    let channelOffset = (chunkOffset + row * tileSize * subtilesInTile) * 3;
+    const max = channelOffset + tileSize * 3;
     while (channelOffset < max) {
       buffer[channelOffset++] = subtile[pos++];
       buffer[channelOffset++] = subtile[pos++];
@@ -87,8 +122,9 @@ function addIndexedSubtiletoTile(
   subtile,
   buffer,
 ) {
+  const tileSize = TILE_SIZE;
   const [dx, dy] = cell;
-  const chunkOffset = (dx + dy * subtilesInTile * TILE_SIZE) * TILE_SIZE;
+  const chunkOffset = (dx + dy * subtilesInTile * tileSize) * tileSize;
 
   const { rgb } = palette;
   const emptyR = rgb[0];
@@ -97,9 +133,9 @@ function addIndexedSubtiletoTile(
 
   let pos = 0;
   let clr;
-  for (let row = 0; row < TILE_SIZE; row += 1) {
-    let channelOffset = (chunkOffset + row * TILE_SIZE * subtilesInTile) * 3;
-    const max = channelOffset + TILE_SIZE * 3;
+  for (let row = 0; row < tileSize; row += 1) {
+    let channelOffset = (chunkOffset + row * tileSize * subtilesInTile) * 3;
+    const max = channelOffset + tileSize * 3;
     while (channelOffset < max) {
       if (pos < subtile.length) {
         clr = (subtile[pos++] & 0x3F) * 3;
@@ -183,7 +219,7 @@ export async function createZoomTileFromChunk(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(TILE_SIZE, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
     });
 
     const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
@@ -227,7 +263,7 @@ export async function createZoomedTile(
 ) {
   const palette = gPalette || new Palette(canvas.colors);
   const tileRGBBuffer = new Uint8Array(
-    TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
+    TILE_SIZE * TILE_SIZE * 3,
   );
   const [z, x, y] = cell;
 
@@ -243,7 +279,7 @@ export async function createZoomedTile(
       }
       try {
         const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
-        addRGBSubtiletoTile(TILE_ZOOM_LEVEL, [dx, dy], chunk, tileRGBBuffer);
+        addShrunkenSubtileToTile(TILE_ZOOM_LEVEL, [dx, dy], chunk, tileRGBBuffer);
       } catch (error) {
         console.error(
           // eslint-disable-next-line max-len
@@ -255,7 +291,7 @@ export async function createZoomedTile(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(TILE_SIZE / 4, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
     });
 
     const filename = tileFileName(canvasTileFolder, [z, x, y]);
@@ -265,12 +301,12 @@ export async function createZoomedTile(
           tileRGBBuffer.buffer,
         ), {
           raw: {
-            width: TILE_SIZE * TILE_ZOOM_LEVEL,
-            height: TILE_SIZE * TILE_ZOOM_LEVEL,
+            width: TILE_SIZE,
+            height: TILE_SIZE,
             channels: 3,
           },
         },
-      ).resize(TILE_SIZE).toFile(filename);
+      ).toFile(filename);
     } catch (error) {
       console.error(
         `Tiling: Error on createZoomedTile: ${error.message}`,
@@ -402,7 +438,7 @@ export async function createTexture(
   }
 
   na.forEach((element) => {
-    deleteSubtilefromTile(palette, amount, element, textureBuffer);
+    deleteSubtilefromTile(TILE_SIZE, palette, amount, element, textureBuffer);
   });
 
   const filename = `${canvasTileFolder}/texture.png`;
