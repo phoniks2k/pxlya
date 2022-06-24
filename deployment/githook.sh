@@ -1,8 +1,8 @@
 #!/bin/bash
 # This hook builds pixelplanet after a push, and deploys it, it should be ron post-receive
-# If it is the production branch, it will deploy it on the life system, and other branch will get deployed to the dev-canvas (a second canvas that is running on the server)
+# If it is the master branch, it will deploy it on the life system, and other branch will get deployed to the dev-canvas (a second canvas that is running on the server)
 #
-# To set up a server to use this, you have to go through the building steps manually first and check out the branches you want to use.
+# To set up a server to use this, you have to go through the building steps manually first.
 #
 #folder for building the canvas (the git repository will get checkout there and the canvas will get buil thtere)
 BUILDDIR="/home/pixelpla/pixelplanet-build"
@@ -35,13 +35,13 @@ do
     GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
     cd "$BUILDDIR"
     branch=$(git rev-parse --symbolic --abbrev-ref $refname)
-    if [ "production" == "$branch" ]; then
+    if [ "master" == "$branch" ]; then
         echo "---UPDATING REPO ON PRODUCTION SERVER---"
-        GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard origin/production
+        GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git reset --hard "origin/$branch"
         COMMITS=`git log --pretty=format:'- %s%b' $newrev ^$oldrev`
         COMMITS=`echo "$COMMITS" | sed ':a;N;$!ba;s/\n/\\\n/g'`
         echo "---BUILDING pixelplanet---"
-        should_reinstall production
+        should_reinstall master
         DO_REINSTALL=$?
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         npm run build
