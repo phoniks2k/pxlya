@@ -20,6 +20,7 @@ import { TILE_SIZE, TILE_ZOOM_LEVEL } from './constants';
 /*
  * Deletes a subtile from a tile (paints it in color 0),
  * if we wouldn't do it, it would be black
+ * @param tileSize size of the tile within the chunk
  * @param palette Palette to use
  * @param subtilesInTile how many subtiles are in a tile (per dimension)
  * @param cell subtile to delete [dx, dy]
@@ -34,16 +35,14 @@ function deleteSubtilefromTile(
 ) {
   const [dx, dy] = cell;
   const offset = (dx + dy * tileSize * subtilesInTile) * tileSize;
+  const [blankR, blankG, blankB] = palette.rgb;
   for (let row = 0; row < tileSize; row += 1) {
     let channelOffset = (offset + row * tileSize * subtilesInTile) * 3;
     const max = channelOffset + tileSize * 3;
     while (channelOffset < max) {
-      // eslint-disable-next-line prefer-destructuring
-      buffer[channelOffset++] = palette.rgb[0];
-      // eslint-disable-next-line prefer-destructuring
-      buffer[channelOffset++] = palette.rgb[1];
-      // eslint-disable-next-line prefer-destructuring
-      buffer[channelOffset++] = palette.rgb[2];
+      buffer[channelOffset++] = blankR;
+      buffer[channelOffset++] = blankG;
+      buffer[channelOffset++] = blankB;
     }
   }
 }
@@ -56,7 +55,7 @@ function addShrunkenSubtileToTile(
 ) {
   const tileSize = TILE_SIZE;
   const [dx, dy] = cell;
-  const chunkOffset = (dx + dy * subtilesInTile * tileSize / 4) * tileSize / 4;
+  const offset = (dx + dy * subtilesInTile * tileSize / 4) * tileSize / 4;
   const target = tileSize / 4;
   let tr;
   let tg;
@@ -65,7 +64,7 @@ function addShrunkenSubtileToTile(
   let tmp;
   const linePad = (tileSize * 3 - 1) * 3;
   for (let row = 0; row < target; row += 1) {
-    let channelOffset = (chunkOffset + row * target * subtilesInTile) * 3;
+    let channelOffset = (offset + row * target * subtilesInTile) * 3;
     const max = channelOffset + target * 3;
     pos = row * tileSize * 12;
     while (channelOffset < max) {
@@ -77,6 +76,85 @@ function addShrunkenSubtileToTile(
       buffer[channelOffset++] = (subtile[tmp++] + tr) / 2;
       buffer[channelOffset++] = (subtile[tmp++] + tg) / 2;
       buffer[channelOffset++] = (subtile[tmp++] + tb) / 2;
+    }
+  }
+}
+
+function addShrunkenIndexedSubtilesToTile(
+  palette,
+  tileSize,
+  subtilesInTile,
+  cell,
+  inpTile,
+  buffer,
+) {
+  const [dx, dy] = cell;
+  const subtileSize = tileSize / subtilesInTile;
+  const inpTileLength = inpTile.length;
+  const offset = (dx + dy * tileSize) * subtileSize;
+  const { rgb } = palette;
+  let tr;
+  let tg;
+  let tb;
+  let channelOffset;
+  let posA;
+  let posB;
+  let clr;
+  const linePad = (tileSize + 1) * (subtilesInTile - 1);
+  let amountFullRows = Math.floor(inpTileLength / subtilesInTile);
+  /*
+   * use available data
+   */
+  for (let row = 0; row < amountFullRows; row += 1) {
+    channelOffset = (offset + row * tileSize) * 3;
+    const max = channelOffset + subtileSize * 3;
+    posA = row * tileSize * subtilesInTile;
+    posB = posA + linePad;
+    while (channelOffset < max) {
+      clr = (inpTile[posA] & 0x3F) * 3;
+      tr = rgb[clr++];
+      tg = rgb[clr++];
+      tb = rgb[clr];
+      posA += subtilesInTile;
+      clr = (inpTile[posB] & 0x3F) * 3;
+      buffer[channelOffset++] = (rgb[clr++] + tr) / 2;
+      buffer[channelOffset++] = (rgb[clr++] + tg) / 2;
+      buffer[channelOffset++] = (rgb[clr] + tb) / 2;
+      posB += subtilesInTile;
+    }
+  }
+  /*
+   * padding the rest
+   */
+  [tr, tg, tb] = rgb;
+  if (inpTileLength % subtilesInTile) {
+    channelOffset = (offset + amountFullRows * tileSize) * 3;
+    const max = channelOffset + subtileSize * 3;
+    posA = amountFullRows * tileSize * subtilesInTile;
+    while (channelOffset < max) {
+      if (posA < inpTileLength) {
+        clr = (inpTile[posA] & 0x3F) * 3;
+        buffer[channelOffset++] = (rgb[clr++] + tr) / 2;
+        buffer[channelOffset++] = (rgb[clr++] + tg) / 2;
+        buffer[channelOffset++] = (rgb[clr] + tb) / 2;
+        posA += subtilesInTile;
+      } else {
+        buffer[channelOffset++] = tr;
+        buffer[channelOffset++] = tg;
+        buffer[channelOffset++] = tb;
+      }
+    }
+    amountFullRows += 1;
+  }
+  if (amountFullRows < subtileSize) {
+    for (let row = amountFullRows; row < subtileSize; row += 1) {
+      channelOffset = (offset + row * tileSize) * 3;
+      const max = channelOffset + subtileSize * 3;
+      while (channelOffset < max) {
+        buffer[channelOffset++] = tr;
+        buffer[channelOffset++] = tg;
+        buffer[channelOffset++] = tb;
+      }
     }
   }
 }
@@ -181,7 +259,7 @@ export async function createZoomTileFromChunk(
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
   const tileRGBBuffer = new Uint8Array(
-    TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
+    TILE_SIZE * TILE_SIZE * 3,
   );
   const startTime = Date.now();
 
@@ -207,8 +285,9 @@ export async function createZoomTileFromChunk(
         na.push([dx, dy]);
         continue;
       }
-      addIndexedSubtiletoTile(
+      addShrunkenIndexedSubtilesToTile(
         palette,
+        TILE_SIZE,
         TILE_ZOOM_LEVEL,
         [dx, dy],
         chunk,
@@ -219,19 +298,18 @@ export async function createZoomTileFromChunk(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(TILE_SIZE, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(TILE_SIZE / TILE_ZOOM_LEVEL, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
     });
 
     const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
     try {
       await sharp(Buffer.from(tileRGBBuffer.buffer), {
         raw: {
-          width: TILE_SIZE * TILE_ZOOM_LEVEL,
-          height: TILE_SIZE * TILE_ZOOM_LEVEL,
+          width: TILE_SIZE,
+          height: TILE_SIZE,
           channels: 3,
         },
       })
-        .resize(TILE_SIZE)
         .png({ options: { compressionLevel: 6 } })
         .toFile(filename);
     } catch (error) {
@@ -291,7 +369,7 @@ export async function createZoomedTile(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(TILE_SIZE / 4, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(TILE_SIZE / TILE_ZOOM_LEVEL, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
     });
 
     const filename = tileFileName(canvasTileFolder, [z, x, y]);
