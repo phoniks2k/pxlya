@@ -259,7 +259,7 @@ export async function createZoomTileFromChunk(
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
   const tileRGBBuffer = new Uint8Array(
-    TILE_SIZE * TILE_SIZE * 3,
+    TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
   );
   const startTime = Date.now();
 
@@ -285,9 +285,8 @@ export async function createZoomTileFromChunk(
         na.push([dx, dy]);
         continue;
       }
-      addShrunkenIndexedSubtilesToTile(
+      addIndexedSubtiletoTile(
         palette,
-        TILE_SIZE,
         TILE_ZOOM_LEVEL,
         [dx, dy],
         chunk,
@@ -298,18 +297,19 @@ export async function createZoomTileFromChunk(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(TILE_SIZE / TILE_ZOOM_LEVEL, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(TILE_SIZE, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
     });
 
     const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
     try {
       await sharp(Buffer.from(tileRGBBuffer.buffer), {
         raw: {
-          width: TILE_SIZE,
-          height: TILE_SIZE,
+          width: TILE_SIZE * TILE_ZOOM_LEVEL,
+          height: TILE_SIZE * TILE_ZOOM_LEVEL,
           channels: 3,
         },
       })
+        .resize(TILE_SIZE)
         .png({ options: { compressionLevel: 6 } })
         .toFile(filename);
     } catch (error) {
