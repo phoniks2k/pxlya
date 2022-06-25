@@ -269,18 +269,18 @@ export async function executeProtAction(
     logger(
       (protect)
       // eslint-disable-next-line max-len
-        ? `protected ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
+        ? `protected ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
       // eslint-disable-next-line max-len
-        : `unprotect ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
+        : `unprotect ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
     );
   }
   return [
     200,
     (protect)
     // eslint-disable-next-line max-len
-      ? `Successfully protected ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
+      ? `Successfully protected ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
     // eslint-disable-next-line max-len
-      : `Successfully unprotected ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
+      : `Successfully unprotected ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
   ];
 }
 
