@@ -130,7 +130,7 @@ class Void {
           // it does skip some pixel, but thats ok
           this.curRadius += 1;
           if (this.curRadius > TARGET_RADIUS) {
-            this.ended = true;
+            this.cancel();
             return;
           }
           this.curAngleDelta = 2 * Math.PI / (2 * this.curRadius * Math.PI);
@@ -161,13 +161,12 @@ class Void {
   }
 
   cancel() {
-    socketEvents.removeListener('pixelUpdate', this.broadcastPixelBuffer);
     this.ended = true;
+    socketEvents.removeListener('pixelUpdate', this.broadcastPixelBuffer);
   }
 
   checkStatus() {
     if (this.ended) {
-      socketEvents.removeListener('pixelUpdate', this.broadcastPixelBuffer);
       return 100;
     }
     return Math.floor(this.curRadius * 100 / TARGET_RADIUS);

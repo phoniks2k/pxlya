@@ -2,12 +2,9 @@
  * basic mod api
  * is used by ../components/Modtools
  *
- * @flow
- *
  */
 
 import express from 'express';
-import type { Request, Response } from 'express';
 import multer from 'multer';
 
 import CanvasCleaner from '../../core/CanvasCleaner';
@@ -76,7 +73,7 @@ router.use(async (req, res, next) => {
 router.post('/', upload.single('image'), async (req, res, next) => {
   const aLogger = (text) => {
     const timeString = new Date().toLocaleTimeString();
-    const logText = `@${req.user.regUser.name}[${req.user.id}] ${text}`;
+    const logText = `@[${req.user.regUser.name}](${req.user.id}) ${text}`;
     modtoolsLogger.info(
       // eslint-disable-next-line max-len
       `${timeString} | MODTOOLS> ${logText}`,
@@ -227,7 +224,7 @@ router.post('/', async (req, res, next) => {
 });
 
 
-router.use(async (req: Request, res: Response) => {
+router.use(async (req, res) => {
   res.status(400).send('Invalid request');
 });
 

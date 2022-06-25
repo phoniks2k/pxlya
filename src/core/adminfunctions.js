@@ -207,7 +207,7 @@ export async function executeCleanerAction(
     return [403, error];
   }
   // eslint-disable-next-line max-len
-  const report = `set Canvas Cleaner to ${action} from #${canvasid},${x},${y} to #${canvasid},${u},${v}`;
+  const report = `set Canvas Cleaner to ${action} from #${canvas.ident},${x},${y} to #${canvas.ident},${u},${v}`;
   if (logger) logger(report);
   return [200, report];
 }
