@@ -250,8 +250,8 @@ class SocketClient extends EventEmitter {
       console.log('Restarting WebSocket');
       this.ws.onclose = null;
       this.ws.onmessage = null;
-      this.ws = null;
       this.ws.close();
+      this.ws = null;
       this.connect();
     }
   }
