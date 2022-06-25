@@ -1,5 +1,3 @@
-/* @flow
- */
 
 // allow the websocket to be noisy on the console
 /* eslint-disable no-console */
@@ -15,36 +13,36 @@ import RegisterChunk from './packets/RegisterChunk';
 import RegisterMultipleChunks from './packets/RegisterMultipleChunks';
 import DeRegisterChunk from './packets/DeRegisterChunk';
 import ChangedMe from './packets/ChangedMe';
+import Ping from './packets/Ping';
 
 const chunks = [];
 
 class SocketClient extends EventEmitter {
-  url: string;
-  ws: WebSocket;
-  canvasId: number;
-  channelId: number;
-  timeConnected: number;
-  isConnected: number;
-  isConnecting: boolean;
-  msgQueue: Array;
-
   constructor() {
     super();
     console.log('Creating WebSocketClient');
-    this.isConnecting = false;
-    this.isConnected = false;
     this.ws = null;
     this.canvasId = '0';
     this.channelId = 0;
+    /*
+     * properties set in connect and open:
+     * this.timeLastConnecting
+     * this.timeLastPing
+     * this.timeLastSent
+     */
+    this.readyState = WebSocket.CLOSED;
     this.msgQueue = [];
+
+    this.checkHealth = this.checkHealth.bind(this);
+    setInterval(this.checkHealth, 2000);
   }
 
   async connect() {
-    this.isConnecting = true;
+    this.readyState = WebSocket.CONNECTING;
     if (this.ws) {
       console.log('WebSocket already open, not starting');
     }
-    this.timeConnected = Date.now();
+    this.timeLastConnecting = Date.now();
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const url = `${protocol}//${window.location.hostname}${
       window.location.port ? `:${window.location.port}` : ''
@@ -54,18 +52,34 @@ class SocketClient extends EventEmitter {
     this.ws.onopen = this.onOpen.bind(this);
     this.ws.onmessage = this.onMessage.bind(this);
     this.ws.onclose = this.onClose.bind(this);
-    this.ws.onerror = this.onError.bind(this);
+    this.ws.onerror = (err) => {
+      console.error('Socket encountered error, closing socket', err);
+    };
+  }
+
+  checkHealth() {
+    if (this.readyState === WebSocket.OPEN) {
+      const now = Date.now();
+      if (now - 14000 > this.timeLastPing) {
+        // server didn't send anything, probably dead
+        console.log('Server is silent, killing websocket');
+        this.readyState = WebSocket.CLOSING;
+        this.ws.close();
+      }
+      if (now - 10000 > this.timeLastSent) {
+        // make sure we send something at least all 12s
+        this.sendWhenReady(Ping.dehydrate());
+      }
+    }
   }
 
   sendWhenReady(msg) {
-    if (this.isConnected) {
+    this.timeLastSent = Date.now();
+    if (this.readyState === WebSocket.OPEN) {
       this.ws.send(msg);
     } else {
       console.log('Tried sending message when websocket was closed!');
       this.msgQueue.push(msg);
-      if (!this.isConnecting) {
-        this.connect();
-      }
     }
   }
 
@@ -76,8 +90,11 @@ class SocketClient extends EventEmitter {
   }
 
   onOpen() {
-    this.isConnecting = false;
-    this.isConnected = true;
+    const now = Date.now();
+    this.timeLastPing = now;
+    this.timeLastSent = now;
+    this.readyState = WebSocket.OPEN;
+
     this.emit('open', {});
     if (this.canvasId !== null) {
       this.ws.send(RegisterCanvas.dehydrate(this.canvasId));
@@ -85,11 +102,6 @@ class SocketClient extends EventEmitter {
     this.processMsgQueue();
     console.log(`Register ${chunks.length} chunks`);
     this.ws.send(RegisterMultipleChunks.dehydrate(chunks));
-  }
-
-  onError(err) {
-    console.error('Socket encountered error, closing socket', err);
-    this.ws.close();
   }
 
   setCanvas(canvasId) {
@@ -111,14 +123,18 @@ class SocketClient extends EventEmitter {
     const chunkid = (i << 8) | j;
     chunks.push(chunkid);
     const buffer = RegisterChunk.dehydrate(chunkid);
-    if (this.isConnected) this.ws.send(buffer);
+    if (this.readyState === WebSocket.OPEN) {
+      this.ws.send(buffer);
+    }
   }
 
   deRegisterChunk(cell) {
     const [i, j] = cell;
     const chunkid = (i << 8) | j;
     const buffer = DeRegisterChunk.dehydrate(chunkid);
-    if (this.isConnected) this.ws.send(buffer);
+    if (this.readyState === WebSocket.OPEN) {
+      this.ws.send(buffer);
+    }
     const pos = chunks.indexOf(chunkid);
     if (~pos) chunks.splice(pos, 1);
   }
@@ -129,17 +145,15 @@ class SocketClient extends EventEmitter {
    * @param pixel Array of [[offset, color],...]  pixels within chunk
    */
   requestPlacePixels(
-    i: number, j: number,
-    pixels: Array,
+    i, j,
+    pixels,
   ) {
     const buffer = PixelUpdate.dehydrate(i, j, pixels);
     this.sendWhenReady(buffer);
   }
 
   sendChatMessage(message, channelId) {
-    if (this.isConnected) {
-      this.ws.send(JSON.stringify([message, channelId]));
-    }
+    this.sendWhenReady(JSON.stringify([message, channelId]));
   }
 
   onMessage({ data: message }) {
@@ -196,6 +210,10 @@ class SocketClient extends EventEmitter {
         this.emit('pixelReturn', PixelReturn.hydrate(data));
         break;
       case OnlineCounter.OP_CODE:
+        /*
+         * using online counter as sign-of-life ping
+         */
+        this.timeLastPing = Date.now();
         this.emit('onlineCounter', OnlineCounter.hydrate(data));
         break;
       case CoolDownPacket.OP_CODE:
@@ -215,9 +233,9 @@ class SocketClient extends EventEmitter {
   onClose(e) {
     this.emit('close');
     this.ws = null;
-    this.isConnected = false;
+    this.readyState = WebSocket.CONNECTING;
     // reconnect in 1s if last connect was longer than 7s ago, else 5s
-    const timeout = this.timeConnected < Date.now() - 7000 ? 1000 : 5000;
+    const timeout = this.timeLastConnecting < Date.now() - 7000 ? 1000 : 5000;
     console.warn(
       `Socket is closed. Reconnect will be attempted in ${timeout} ms.`,
       e.reason,
@@ -226,18 +244,14 @@ class SocketClient extends EventEmitter {
     setTimeout(() => this.connect(), 5000);
   }
 
-  close() {
-    this.ws.close();
-  }
-
   reconnect() {
-    if (this.isConnected) {
-      this.isConnected = false;
+    if (this.readyState === WebSocket.OPEN) {
+      this.readyState = WebSocket.CLOSING;
       console.log('Restarting WebSocket');
       this.ws.onclose = null;
       this.ws.onmessage = null;
-      this.ws.close();
       this.ws = null;
+      this.ws.close();
       this.connect();
     }
   }

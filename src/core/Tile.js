@@ -80,6 +80,9 @@ function addShrunkenSubtileToTile(
   }
 }
 
+/*
+ * this was a failed try, it ended up being slow
+ * and low quality
 function addShrunkenIndexedSubtilesToTile(
   palette,
   tileSize,
@@ -102,9 +105,7 @@ function addShrunkenIndexedSubtilesToTile(
   let clr;
   const linePad = (tileSize + 1) * (subtilesInTile - 1);
   let amountFullRows = Math.floor(inpTileLength / subtilesInTile);
-  /*
-   * use available data
-   */
+  // use available data
   for (let row = 0; row < amountFullRows; row += 1) {
     channelOffset = (offset + row * tileSize) * 3;
     const max = channelOffset + subtileSize * 3;
@@ -123,9 +124,7 @@ function addShrunkenIndexedSubtilesToTile(
       posB += subtilesInTile;
     }
   }
-  /*
-   * padding the rest
-   */
+  // padding the rest
   [tr, tg, tb] = rgb;
   if (inpTileLength % subtilesInTile) {
     channelOffset = (offset + amountFullRows * tileSize) * 3;
@@ -158,6 +157,7 @@ function addShrunkenIndexedSubtilesToTile(
     }
   }
 }
+*/
 
 /*
  * @param subtilesInTile how many subtiles are in a tile (per dimension)
@@ -297,7 +297,13 @@ export async function createZoomTileFromChunk(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(TILE_SIZE, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(
+        TILE_SIZE,
+        palette,
+        TILE_ZOOM_LEVEL,
+        element,
+        tileRGBBuffer,
+      );
     });
 
     const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
@@ -357,7 +363,12 @@ export async function createZoomedTile(
       }
       try {
         const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
-        addShrunkenSubtileToTile(TILE_ZOOM_LEVEL, [dx, dy], chunk, tileRGBBuffer);
+        addShrunkenSubtileToTile(
+          TILE_ZOOM_LEVEL,
+          [dx, dy],
+          chunk,
+          tileRGBBuffer,
+        );
       } catch (error) {
         console.error(
           // eslint-disable-next-line max-len
@@ -369,7 +380,13 @@ export async function createZoomedTile(
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
-      deleteSubtilefromTile(TILE_SIZE / TILE_ZOOM_LEVEL, palette, TILE_ZOOM_LEVEL, element, tileRGBBuffer);
+      deleteSubtilefromTile(
+        TILE_SIZE / TILE_ZOOM_LEVEL,
+        palette,
+        TILE_ZOOM_LEVEL,
+        element,
+        tileRGBBuffer,
+      );
     });
 
     const filename = tileFileName(canvasTileFolder, [z, x, y]);

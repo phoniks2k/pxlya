@@ -60,8 +60,8 @@ class SocketServer {
     this.broadcast = this.broadcast.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
-    this.ping = this.ping.bind(this);
     this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
+    this.checkHealth = this.checkHealth.bind(this);
   }
 
   initialize() {
@@ -83,9 +83,8 @@ class SocketServer {
     });
 
     wss.on('connection', async (ws, req) => {
-      ws.isAlive = true;
+      ws.timeLastMsg = Date.now();
       ws.canvasId = null;
-      ws.startDate = Date.now();
       const user = await authenticateClient(req);
       if (!user) {
         ws.close();
@@ -103,16 +102,13 @@ class SocketServer {
         logger.error(`WebSocket Client Error for ${ws.name}: ${e.message}`);
       });
 
-      ws.on('pong', () => {
-        ws.isAlive = true;
-      });
-
       ws.on('close', () => {
         ipCounter.delete(ip);
         this.deleteAllChunks(ws);
       });
 
       ws.on('message', (data, isBinary) => {
+        ws.timeLastMsg = Date.now();
         if (isBinary) {
           this.onBinaryMessage(data, ws);
         } else {
@@ -179,7 +175,7 @@ class SocketServer {
     });
 
     setInterval(this.onlineCounterBroadcast, 10 * 1000);
-    setInterval(this.ping, 15 * 1000);
+    setInterval(this.checkHealth, 15 * 1000);
   }
 
   verifyClient(info, done) {
@@ -351,16 +347,15 @@ class SocketServer {
     });
   }
 
-  ping() {
+  checkHealth() {
+    const ts = Date.now() - 15000;
     this.wss.clients.forEach((ws) => {
-      if (!ws.isAlive) {
-        if (ws.user) {
-          logger.info(`Killing dead websocket from ${ws.user.ip}`);
-        }
+      if (
+        ws.readyState === WebSocket.OPEN
+        && ts > ws.timeLastMsg
+      ) {
+        logger.info(`Killing dead websocket from ${ws.user.ip}`);
         ws.terminate();
-      } else {
-        ws.isAlive = false;
-        ws.ping(() => {});
       }
     });
   }
