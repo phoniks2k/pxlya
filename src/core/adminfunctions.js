@@ -155,10 +155,10 @@ export async function executeImageAction(
     );
 
     // eslint-disable-next-line max-len
-    if (logger) logger(`loaded image wth ${pxlCount} pixels to #${canvas.ident},${x},${y} (${x}_${y} - ${x + info.width - 1}_${y + info.height - 1})`);
+    if (logger) logger(`loaded image wth *${pxlCount}*pxls to #${canvas.ident},${x},${y} (+*${x}*+\\_+*${y}*+ - +*${x + info.width - 1}*+\\_+*${y + info.height - 1}*+)`);
     return [
       200,
-      `Successfully loaded image wth ${pxlCount} pixels to ${x}/${y}`,
+      `Successfully loaded image wth ${pxlCount}pxls to ${x}/${y}`,
     ];
   } catch {
     return [400, 'Can not read image file'];
@@ -207,7 +207,7 @@ export async function executeCleanerAction(
     return [403, error];
   }
   // eslint-disable-next-line max-len
-  const report = `set Canvas Cleaner to ${action} from #${canvas.ident},${x},${y} to #${canvas.ident},${u},${v}`;
+  const report = `set Canvas Cleaner to *"${action}"* from #${canvas.ident},${x},${y} to #${canvas.ident},${u},${v}`;
   if (logger) logger(report);
   return [200, report];
 }
@@ -269,9 +269,9 @@ export async function executeProtAction(
     logger(
       (protect)
       // eslint-disable-next-line max-len
-        ? `protected ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
+        ? `protected *${width}*x*${height}* area at #${canvas.ident},${x},${y} with *${pxlCount}*pxls (+*${x}*+\\_+*${y}*+ - +*${u}*+\\_+*${v}*+)`
       // eslint-disable-next-line max-len
-        : `unprotect ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
+        : `unprotect *${width}*x*${height}* area at #${canvas.ident},${x},${y} with *${pxlCount}*pxls (+*${x}*+\\_+*${y}*+ - +*${u}*+\\_+*${v}*+)`,
     );
   }
   return [
@@ -342,7 +342,7 @@ export async function executeRollback(
   if (logger) {
     logger(
     // eslint-disable-next-line max-len
-      `rolled back to ${date} for ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
+      `rolled back to *${date}* for *${width}*x*${height}* area at #${canvas.ident},${x},${y} with *${pxlCount}*pxls (+*${x}*+\\_+*${y}*+ - +*${u}*+\\_+*${v}*+)`,
     );
   }
   return [
