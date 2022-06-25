@@ -181,7 +181,6 @@ class ChunkLoader {
   ) {
     const chunkKey = `${zoom}:${cx}:${cy}`;
     let chunkRGB = this.chunks.get(chunkKey);
-    const { canvasId } = this;
     if (chunkRGB) {
       if (chunkRGB.ready) {
         return chunkRGB.image;
@@ -200,7 +199,7 @@ class ChunkLoader {
       const preLoad = this.preLoadChunk(zoom, cx, cy, chunkRGB);
       if (preLoad) return preLoad;
     }
-    return (showLoadingTile) ? loadingTiles.getTile(canvasId) : null;
+    return (showLoadingTile) ? loadingTiles.getTile(this.canvasId) : null;
   }
 
   getHistoricalChunk(cx, cy, fetch, historicalDate, historicalTime = null) {

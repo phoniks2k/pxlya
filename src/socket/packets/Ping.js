@@ -1,10 +1,10 @@
-const OP_CODE = 0xA6;
+const OP_CODE = 0xB0;
 
 export default {
   OP_CODE,
 
   dehydrate() {
-    // Server (sender)
+    // Client (sender)
     return new Uint8Array([OP_CODE]).buffer;
   },
 };
