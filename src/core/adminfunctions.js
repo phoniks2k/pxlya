@@ -155,7 +155,7 @@ export async function executeImageAction(
     );
 
     // eslint-disable-next-line max-len
-    if (logger) logger(`Loaded image wth ${pxlCount} pixels to #${canvas.ident},${x},${y} (${x}_${y} - ${x + info.width - 1}_${y + info.height - 1}`);
+    if (logger) logger(`loaded image wth ${pxlCount} pixels to #${canvas.ident},${x},${y} (${x}_${y} - ${x + info.width - 1}_${y + info.height - 1})`);
     return [
       200,
       `Successfully loaded image wth ${pxlCount} pixels to ${x}/${y}`,
@@ -207,7 +207,7 @@ export async function executeCleanerAction(
     return [403, error];
   }
   // eslint-disable-next-line max-len
-  const report = `Set Canvas Cleaner to ${action} canvas ${canvas.ident} from ${ulcoor} to ${brcoor}`;
+  const report = `set Canvas Cleaner to ${action} from #${canvasid},${x},${y} to #${canvasid},${u},${v}`;
   if (logger) logger(report);
   return [200, report];
 }
@@ -269,9 +269,9 @@ export async function executeProtAction(
     logger(
       (protect)
       // eslint-disable-next-line max-len
-        ? `Protect ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
+        ? `protected ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`
       // eslint-disable-next-line max-len
-        : `Unprotect ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
+        : `unprotect ${width}x${height} area at #${canvasid},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
     );
   }
   return [
@@ -342,7 +342,7 @@ export async function executeRollback(
   if (logger) {
     logger(
     // eslint-disable-next-line max-len
-      `Rollback to ${date} for ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
+      `rolled back to ${date} for ${width}x${height} area at #${canvas.ident},${x},${y} with ${pxlCount}pxls (${ulcoor} - ${brcoor})`,
     );
   }
   return [
