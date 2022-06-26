@@ -60,14 +60,14 @@ class SocketClient extends EventEmitter {
   checkHealth() {
     if (this.readyState === WebSocket.OPEN) {
       const now = Date.now();
-      if (now - 14000 > this.timeLastPing) {
+      if (now - 20000 > this.timeLastPing) {
         // server didn't send anything, probably dead
         console.log('Server is silent, killing websocket');
         this.readyState = WebSocket.CLOSING;
         this.ws.close();
       }
-      if (now - 10000 > this.timeLastSent) {
-        // make sure we send something at least all 12s
+      if (now - 43000 > this.timeLastSent) {
+        // make sure we send something at least all 45s
         this.sendWhenReady(Ping.dehydrate());
       }
     }
