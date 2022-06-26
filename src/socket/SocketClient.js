@@ -66,8 +66,8 @@ class SocketClient extends EventEmitter {
         this.readyState = WebSocket.CLOSING;
         this.ws.close();
       }
-      if (now - 43000 > this.timeLastSent) {
-        // make sure we send something at least all 45s
+      if (now - 23000 > this.timeLastSent) {
+        // make sure we send something at least all 25s
         this.sendWhenReady(Ping.dehydrate());
       }
     }
