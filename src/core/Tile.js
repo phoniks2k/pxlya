@@ -610,7 +610,9 @@ export async function initializeTiles(
   const maxBase = TILE_ZOOM_LEVEL ** zoom;
   for (let cx = 0; cx < maxBase; cx += 1) {
     const tileDir = `${canvasTileFolder}/${zoom}/${cx}`;
-    if (!fs.existsSync(tileDir)) fs.mkdirSync(tileDir);
+    if (!fs.existsSync(tileDir)) {
+      fs.mkdirSync(tileDir);
+    }
     for (let cy = 0; cy < maxBase; cy += 1) {
       const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.webp`;
       if (force || !fs.existsSync(filename)) {
@@ -639,7 +641,9 @@ export async function initializeTiles(
     const maxZ = TILE_ZOOM_LEVEL ** zoom;
     for (let cx = 0; cx < maxZ; cx += 1) {
       const tileDir = `${canvasTileFolder}/${zoom}/${cx}`;
-      if (!fs.existsSync(tileDir)) fs.mkdirSync(tileDir);
+      if (!fs.existsSync(tileDir)) {
+        fs.mkdirSync(tileDir);
+      }
       for (let cy = 0; cy < maxZ; cy += 1) {
         const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.webp`;
         if (force || !fs.existsSync(filename)) {
