@@ -69,7 +69,7 @@ export const THREE_TILE_SIZE = 32;
 // 2D tile size
 export const TILE_SIZE = 256;
 // how much to scale for a new tiled zoomlevel
-export const TILE_ZOOM_LEVEL = 4;
+export const TILE_ZOOM_LEVEL = 2;
 
 export const COOKIE_SESSION_NAME = 'pixelplanet.session';
 

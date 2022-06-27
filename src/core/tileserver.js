@@ -161,7 +161,7 @@ class CanvasUpdater {
     }
     for (let c = 0; c < this.maxTiledZoom; c += 1) {
       this.TileLoadingQueues.push([]);
-      const timeout = (8 ** (this.maxTiledZoom - c - 1)) * 5 * 1000;
+      const timeout = (7 ** (this.maxTiledZoom - c - 1)) * 5 * 1000;
       logger.info(
         `Tiling: Set interval for zoomlevel ${c} update to ${timeout / 1000}`,
       );
