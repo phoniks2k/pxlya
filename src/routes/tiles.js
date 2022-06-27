@@ -23,12 +23,12 @@ router.use('/', express.static(TILE_FOLDER, {
 /*
  * catch File Not Found: Send empty tile
  */
-router.use('/:c([0-9]+)/:z([0-9]+)/:x([0-9]+)/:y([0-9]+).png',
+router.use('/:c([0-9]+)/:z([0-9]+)/:x([0-9]+)/:y([0-9]+).webp',
   async (req, res) => {
     const { c: paramC } = req.params;
     const c = parseInt(paramC, 10);
 
-    const filename = `${TILE_FOLDER}/${c}/emptytile.png`;
+    const filename = `${TILE_FOLDER}/${c}/emptytile.webp`;
     if (!fs.existsSync(filename)) {
       res.set({
         'Cache-Control': `public, s-maxage=${24 * 3600}, max-age=${24 * 3600}`,
@@ -39,7 +39,7 @@ router.use('/:c([0-9]+)/:z([0-9]+)/:x([0-9]+)/:y([0-9]+).png',
 
     res.set({
       'Cache-Control': `public, s-maxage=${2 * 3600}, max-age=${1 * 3600}`,
-      'Content-Type': 'image/png',
+      'Content-Type': 'image/webp',
     });
     res.status(200);
     res.sendFile(filename);

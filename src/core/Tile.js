@@ -241,7 +241,7 @@ function addIndexedSubtiletoTile(
  */
 function tileFileName(canvasTileFolder, cell) {
   const [z, x, y] = cell;
-  const filename = `${canvasTileFolder}/${z}/${x}/${y}.png`;
+  const filename = `${canvasTileFolder}/${z}/${x}/${y}.webp`;
   return filename;
 }
 
@@ -271,24 +271,17 @@ export async function createZoomTileFromChunk(
   const xabs = x * TILE_ZOOM_LEVEL;
   const yabs = y * TILE_ZOOM_LEVEL;
   const na = [];
-  for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
-    for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
-      let chunk = null;
-      try {
-        chunk = await RedisCanvas.getChunk(
-          canvasId,
-          xabs + dx,
-          yabs + dy,
-        );
-      } catch (error) {
-        console.error(
-          // eslint-disable-next-line max-len
-          `Tiling: Failed to get Chunk ch:${canvasId}:${xabs + dx}${yabs + dy} with error ${error.message}`,
-        );
-      }
+
+  const prom = async (dx, dy) => {
+    try {
+      const chunk = await RedisCanvas.getChunk(
+        canvasId,
+        xabs + dx,
+        yabs + dy,
+      );
       if (!chunk || !chunk.length) {
         na.push([dx, dy]);
-        continue;
+        return;
       }
       addIndexedSubtiletoTile(
         palette,
@@ -297,8 +290,22 @@ export async function createZoomTileFromChunk(
         chunk,
         tileRGBBuffer,
       );
+    } catch (error) {
+      na.push([dx, dy]);
+      console.error(
+        // eslint-disable-next-line max-len
+        `Tiling: Failed to get Chunk ch:${canvasId}:${xabs + dx}${yabs + dy} with error ${error.message}`,
+      );
+    }
+  };
+
+  const promises = [];
+  for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
+    for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
+      promises.push(prom(dx, dy));
     }
   }
+  await Promise.all(promises);
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
@@ -313,7 +320,7 @@ export async function createZoomTileFromChunk(
 
     const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
     try {
-      await sharp(Buffer.from(tileRGBBuffer.buffer), {
+      await sharp(tileRGBBuffer, {
         raw: {
           width: TILE_SIZE * TILE_ZOOM_LEVEL,
           height: TILE_SIZE * TILE_ZOOM_LEVEL,
@@ -321,7 +328,7 @@ export async function createZoomTileFromChunk(
         },
       })
         .resize(TILE_SIZE)
-        .png({ options: { compressionLevel: 6 } })
+        .webp({ quality: 100, smartSubsample: true })
         .toFile(filename);
     } catch (error) {
       console.error(
@@ -361,7 +368,7 @@ export async function createZoomedTile(
 
   const prom = async (dx, dy) => {
     // eslint-disable-next-line max-len
-    const chunkfile = `${canvasTileFolder}/${z + 1}/${x * TILE_ZOOM_LEVEL + dx}/${y * TILE_ZOOM_LEVEL + dy}.png`;
+    const chunkfile = `${canvasTileFolder}/${z + 1}/${x * TILE_ZOOM_LEVEL + dx}/${y * TILE_ZOOM_LEVEL + dy}.webp`;
     try {
       if (!fs.existsSync(chunkfile)) {
         na.push([dx, dy]);
@@ -404,17 +411,15 @@ export async function createZoomedTile(
 
     const filename = tileFileName(canvasTileFolder, [z, x, y]);
     try {
-      await sharp(
-        Buffer.from(
-          tileRGBBuffer.buffer,
-        ), {
-          raw: {
-            width: TILE_SIZE,
-            height: TILE_SIZE,
-            channels: 3,
-          },
+      await sharp(tileRGBBuffer, {
+        raw: {
+          width: TILE_SIZE,
+          height: TILE_SIZE,
+          channels: 3,
         },
-      ).toFile(filename);
+      })
+        .webp({ quality: 100, smartSubsample: true })
+        .toFile(filename);
     } catch (error) {
       console.error(
         `Tiling: Error on createZoomedTile: ${error.message}`,
@@ -452,16 +457,16 @@ async function createEmptyTile(
     // eslint-disable-next-line prefer-destructuring
     tileRGBBuffer[i++] = palette.rgb[2];
   }
-  const filename = `${canvasTileFolder}/emptytile.png`;
+  const filename = `${canvasTileFolder}/emptytile.webp`;
   try {
-    await sharp(Buffer.from(tileRGBBuffer.buffer), {
+    await sharp(tileRGBBuffer, {
       raw: {
         width: TILE_SIZE,
         height: TILE_SIZE,
         channels: 3,
       },
     })
-      .png({ options: { compressionLevel: 6 } })
+      .webp({ quality: 100, smartSubsample: true })
       .toFile(filename);
   } catch (error) {
     console.error(
@@ -494,45 +499,36 @@ export async function createTexture(
   const startTime = Date.now();
 
   const na = [];
-  if (targetSize !== canvasSize) {
-    for (let dy = 0; dy < amount; dy += 1) {
-      for (let dx = 0; dx < amount; dx += 1) {
-        let chunk = null;
-        const chunkfile = `${canvasTileFolder}/${zoom}/${dx}/${dy}.png`;
+
+  const prom = (targetSize !== canvasSize)
+    ? async (dx, dy) => {
+      const chunkfile = `${canvasTileFolder}/${zoom}/${dx}/${dy}.webp`;
+      try {
         if (!fs.existsSync(chunkfile)) {
           na.push([dx, dy]);
-          continue;
+          return;
         }
-        try {
-          chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
-          addRGBSubtiletoTile(amount, [dx, dy], chunk, textureBuffer);
-        } catch (error) {
-          console.error(
-            // eslint-disable-next-line max-len
-            `Tiling: Error on createTexture in chunk ${chunkfile}: ${error.message}`,
-          );
-        }
+        const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
+        addRGBSubtiletoTile(amount, [dx, dy], chunk, textureBuffer);
+      } catch (error) {
+        na.push([dx, dy]);
+        console.error(
+          // eslint-disable-next-line max-len
+          `Tiling: Error on createTexture in chunk ${chunkfile}: ${error.message}`,
+        );
       }
     }
-  } else {
-    for (let dy = 0; dy < amount; dy += 1) {
-      for (let dx = 0; dx < amount; dx += 1) {
+    : async (dx, dy) => {
+      try {
         let chunk = null;
-        try {
-          chunk = await RedisCanvas.getChunk(
-            canvasId,
-            dx,
-            dy,
-          );
-        } catch (error) {
-          console.error(
-            // eslint-disable-next-line max-len
-            `Tiling: Failed to get Chunk ch:${canvasId}:${dx}${dy} with error ${error.message}`,
-          );
-        }
+        chunk = await RedisCanvas.getChunk(
+          canvasId,
+          dx,
+          dy,
+        );
         if (!chunk || !chunk.length) {
           na.push([dx, dy]);
-          continue;
+          return;
         }
         addIndexedSubtiletoTile(
           palette,
@@ -541,25 +537,36 @@ export async function createTexture(
           chunk,
           textureBuffer,
         );
+      } catch (error) {
+        na.push([dx, dy]);
+        console.error(
+          // eslint-disable-next-line max-len
+          `Tiling: Failed to get Chunk ch:${canvasId}:${dx}${dy} with error ${error.message}`,
+        );
       }
+    };
+
+  const promises = [];
+  for (let dy = 0; dy < amount; dy += 1) {
+    for (let dx = 0; dx < amount; dx += 1) {
+      promises.push(prom(dx, dy));
     }
   }
+  await Promise.all(promises);
 
   na.forEach((element) => {
     deleteSubtilefromTile(TILE_SIZE, palette, amount, element, textureBuffer);
   });
 
-  const filename = `${canvasTileFolder}/texture.png`;
+  const filename = `${canvasTileFolder}/texture.webp`;
   try {
-    await sharp(
-      Buffer.from(textureBuffer.buffer), {
-        raw: {
-          width: targetSize,
-          height: targetSize,
-          channels: 3,
-        },
+    await sharp(textureBuffer, {
+      raw: {
+        width: targetSize,
+        height: targetSize,
+        channels: 3,
       },
-    ).toFile(filename);
+    }).toFile(filename);
   } catch (error) {
     console.error(
       `Tiling: Error on createTexture: ${error.message}`,
@@ -605,7 +612,7 @@ export async function initializeTiles(
     const tileDir = `${canvasTileFolder}/${zoom}/${cx}`;
     if (!fs.existsSync(tileDir)) fs.mkdirSync(tileDir);
     for (let cy = 0; cy < maxBase; cy += 1) {
-      const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.png`;
+      const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.webp`;
       if (force || !fs.existsSync(filename)) {
         const ret = await createZoomTileFromChunk(
           canvasId,
@@ -634,7 +641,7 @@ export async function initializeTiles(
       const tileDir = `${canvasTileFolder}/${zoom}/${cx}`;
       if (!fs.existsSync(tileDir)) fs.mkdirSync(tileDir);
       for (let cy = 0; cy < maxZ; cy += 1) {
-        const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.png`;
+        const filename = `${canvasTileFolder}/${zoom}/${cx}/${cy}.webp`;
         if (force || !fs.existsSync(filename)) {
           const ret = await createZoomedTile(
             canvas,

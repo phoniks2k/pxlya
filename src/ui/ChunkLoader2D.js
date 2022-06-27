@@ -304,7 +304,7 @@ class ChunkLoader {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
     try {
-      const url = `tiles/${this.canvasId}/${zoom}/${cx}/${cy}.png`;
+      const url = `tiles/${this.canvasId}/${zoom}/${cx}/${cy}.webp`;
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
       this.store.dispatch(receiveBigChunk(center, chunkRGB));

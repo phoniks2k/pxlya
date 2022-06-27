@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const [canvasIdent, canvasId, canvasSize, x, y] = parseHashCoords();
 
   const canvasTexture = new THREE.MeshPhongMaterial({
-    map: new THREE.TextureLoader().load(`./tiles/${canvasId}/texture.png`),
+    map: new THREE.TextureLoader().load(`./tiles/${canvasId}/texture.webp`),
     bumpMap: new THREE.TextureLoader().load(`./assets3d/normal${canvasId}.jpg`),
     bumpScale: 0.02,
     specularMap: new THREE.TextureLoader()
