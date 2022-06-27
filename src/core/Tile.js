@@ -358,30 +358,38 @@ export async function createZoomedTile(
 
   const startTime = Date.now();
   const na = [];
-  for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
-    for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
-      // eslint-disable-next-line max-len
-      const chunkfile = `${canvasTileFolder}/${z + 1}/${x * TILE_ZOOM_LEVEL + dx}/${y * TILE_ZOOM_LEVEL + dy}.png`;
+
+  const prom = async (dx, dy) => {
+    // eslint-disable-next-line max-len
+    const chunkfile = `${canvasTileFolder}/${z + 1}/${x * TILE_ZOOM_LEVEL + dx}/${y * TILE_ZOOM_LEVEL + dy}.png`;
+    try {
       if (!fs.existsSync(chunkfile)) {
         na.push([dx, dy]);
-        continue;
+        return;
       }
-      try {
-        const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
-        addShrunkenSubtileToTile(
-          TILE_ZOOM_LEVEL,
-          [dx, dy],
-          chunk,
-          tileRGBBuffer,
-        );
-      } catch (error) {
-        console.error(
-          // eslint-disable-next-line max-len
-          `Tiling: Error on createZoomedTile on chunk ${chunkfile}: ${error.message}`,
-        );
-      }
+      const chunk = await sharp(chunkfile).removeAlpha().raw().toBuffer();
+      addShrunkenSubtileToTile(
+        TILE_ZOOM_LEVEL,
+        [dx, dy],
+        chunk,
+        tileRGBBuffer,
+      );
+    } catch (error) {
+      na.push([dx, dy]);
+      console.error(
+        // eslint-disable-next-line max-len
+        `Tiling: Error on createZoomedTile on chunk ${chunkfile}: ${error.message}`,
+      );
+    }
+  };
+
+  const promises = [];
+  for (let dy = 0; dy < TILE_ZOOM_LEVEL; dy += 1) {
+    for (let dx = 0; dx < TILE_ZOOM_LEVEL; dx += 1) {
+      promises.push(prom(dx, dy));
     }
   }
+  await Promise.all(promises);
 
   if (na.length !== TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL) {
     na.forEach((element) => {
