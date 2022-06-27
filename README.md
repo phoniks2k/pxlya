@@ -131,7 +131,7 @@ Meaning of some values:
 | Key    | Description                                                     |
 |--------|:----------------------------------------------------------------|
 | ident  | Unique character used in the url                                |
-| size   | canvas size, power of 4 and between 256 and 65536               |
+| size   | canvas size, power of 2 and between 256 and 65536               |
 | bcd    | Base cooldown for unset pixels                                  |
 | pcd    | Cooldown for placing on set pixels (defaults to same as bcd)    |
 | cds    | Stack time of Cooldown                                          |

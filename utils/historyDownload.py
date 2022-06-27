@@ -54,6 +54,15 @@ canvases = [
             "canvas_id": 7,
             "bkg": (0, 0, 0),
         },
+        {
+            "canvas_name": "top10",
+            "canvas_size": 2048,
+            "canvas_id": 8,
+            "bkg": (197, 204, 184),
+            "historical_sizes" : [
+                    ["20220626", 1024],
+                ]
+        },
     ]
 
 async def fetch(session, url, offx, offy, image, bkg, needed = False):
