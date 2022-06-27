@@ -165,12 +165,17 @@ class CanvasUpdater {
       logger.info(
         `Tiling: Set interval for zoomlevel ${c} update to ${timeout / 1000}`,
       );
-      setInterval(this.updateZoomlevelTiles, timeout, c);
+      setTimeout(() => {
+        setInterval(this.updateZoomlevelTiles, timeout, c);
+      }, Math.floor(Math.random() * timeout));
     }
     if (this.maxTiledZoom === 0) {
       // in the case of canvasSize == 256
       this.TileLoadingQueues.push([]);
-      setInterval(this.updateZoomlevelTiles, 5 * 60 * 1000, 0);
+      const timeout = 5 * 60 * 1000;
+      setTimeout(() => {
+        setInterval(this.updateZoomlevelTiles, timeout, 0);
+      }, Math.floor(Math.random() * timeout));
     }
   }
 }
