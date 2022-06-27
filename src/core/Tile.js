@@ -47,36 +47,41 @@ function deleteSubtilefromTile(
   }
 }
 
+/*
+ * adds an RGB tile as a shrunken tile to another
+ * @param subtilesInTile width of a subtile compared to the tile (power of 2)
+ * @param cell subtile coordinates [dx, dy]
+ * @param inpTile input tile
+ * @param tile output tile
+ */
 function addShrunkenSubtileToTile(
   subtilesInTile,
   cell,
-  subtile,
-  buffer,
+  inpTile,
+  tile,
 ) {
   const tileSize = TILE_SIZE;
   const [dx, dy] = cell;
-  const offset = (dx + dy * subtilesInTile * tileSize / 4) * tileSize / 4;
-  const target = tileSize / 4;
-  let tr;
-  let tg;
-  let tb;
-  let pos;
-  let tmp;
-  const linePad = (tileSize * 3 - 1) * 3;
+  const target = tileSize / subtilesInTile;
+  const offset = (dx + dy * tileSize) * target;
+  let posA = 0;
+  let posB;
+  const pxlPad = (subtilesInTile - 1) * 3;
+  const linePad = (tileSize * (subtilesInTile - 1) - 1) * 3;
   for (let row = 0; row < target; row += 1) {
-    let channelOffset = (offset + row * target * subtilesInTile) * 3;
+    let channelOffset = (offset + row * tileSize) * 3;
     const max = channelOffset + target * 3;
-    pos = row * tileSize * 12;
     while (channelOffset < max) {
-      tr = subtile[pos++];
-      tg = subtile[pos++];
-      tb = subtile[pos++];
-      pos += 9;
-      tmp = pos + linePad;
-      buffer[channelOffset++] = (subtile[tmp++] + tr) / 2;
-      buffer[channelOffset++] = (subtile[tmp++] + tg) / 2;
-      buffer[channelOffset++] = (subtile[tmp++] + tb) / 2;
+      const tr = inpTile[posA++];
+      const tg = inpTile[posA++];
+      const tb = inpTile[posA++];
+      posA += pxlPad;
+      posB = posA + linePad;
+      tile[channelOffset++] = (inpTile[posB++] + tr) >>> 1;
+      tile[channelOffset++] = (inpTile[posB++] + tg) >>> 1;
+      tile[channelOffset++] = (inpTile[posB] + tb) >>> 1;
     }
+    posA = posB + 1;
   }
 }
 
@@ -476,7 +481,7 @@ export async function createTexture(
   // dont create textures larger than 4096
   const targetSize = Math.min(canvasSize, 4096);
   const amount = targetSize / TILE_SIZE;
-  const zoom = Math.log2(amount) / 2;
+  const zoom = Math.log2(amount) * 2 / TILE_ZOOM_LEVEL;
   const textureBuffer = new Uint8Array(targetSize * targetSize * 3);
   const startTime = Date.now();
 
