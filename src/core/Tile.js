@@ -211,8 +211,8 @@ function addIndexedSubtiletoTile(
 
   const { rgb } = palette;
   const emptyR = rgb[0];
-  const emptyB = rgb[1];
   const emptyG = rgb[1];
+  const emptyB = rgb[2];
 
   let pos = 0;
   let clr;
@@ -227,8 +227,8 @@ function addIndexedSubtiletoTile(
         buffer[channelOffset++] = rgb[clr];
       } else {
         buffer[channelOffset++] = emptyR;
-        buffer[channelOffset++] = emptyB;
         buffer[channelOffset++] = emptyG;
+        buffer[channelOffset++] = emptyB;
       }
     }
   }
