@@ -18,9 +18,8 @@ async function move() {
       const key = `ch:8:${x}:${y}`;
       const chunk = await redisc.get(key, { returnBuffers: true });
       if (chunk) {
-        const buffer = new Uint8Array(chunk);
         const newKey = `ch:8:${x + offset}:${y + offset}`
-        await redisc.set(newKey, Buffer.from(buffer.buffer));
+        await redisc.set(newKey, chunk);
         await redisc.del(key);
         console.log('Moved Chunk ', key, ' to ', newKey);
       }
