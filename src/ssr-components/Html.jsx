@@ -29,6 +29,8 @@ const Html = ({
     <head>
       <meta charSet="utf-8" />
       <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+      <meta name="google" content="nopagereadaloud" />
+      <meta name="theme-color" content="#cae3ff" />
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="icon" href="/favicon.ico" type="image/x-icon" />

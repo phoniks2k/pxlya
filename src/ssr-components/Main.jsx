@@ -73,7 +73,6 @@ function generateMainPage(lang: string): string {
       css={css}
       // eslint-disable-next-line max-len
       code={`window.ssv=JSON.parse('${JSON.stringify(ssvR)}');`}
-      useCaptcha
     />,
   );
 
