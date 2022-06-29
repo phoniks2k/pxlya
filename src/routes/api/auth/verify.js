@@ -3,7 +3,7 @@
  */
 
 import socketEvents from '../../../socket/SocketEvents';
-import getHtml from '../../../ssr-components/RedirectionPage';
+import getHtml from '../../../ssr/RedirectionPage';
 import { getHostFromRequest } from '../../../utils/ip';
 import mailProvider from '../../../core/mail';
 

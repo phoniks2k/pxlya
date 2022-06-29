@@ -9,7 +9,7 @@ import express from 'express';
 import type { Request, Response } from 'express';
 
 import logger from '../core/logger';
-import getPasswordResetHtml from '../ssr-components/PasswordReset';
+import getPasswordResetHtml from '../ssr/PasswordReset';
 
 import mailProvider from '../core/mail';
 import { RegUser } from '../data/sql';

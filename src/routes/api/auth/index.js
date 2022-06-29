@@ -25,7 +25,7 @@ import change_mail from './change_mail';
 // eslint-disable-next-line camelcase
 import restore_password from './restore_password';
 
-import getHtml from '../../../ssr-components/RedirectionPage';
+import getHtml from '../../../ssr/RedirectionPage';
 
 import getMe from '../../../core/me';
 

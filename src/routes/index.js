@@ -17,8 +17,8 @@ import api from './api';
 
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import { expressTTag } from '../core/ttag';
-import generateGlobePage from '../ssr-components/Globe';
-import generateMainPage from '../ssr-components/Main';
+import generateGlobePage from '../ssr/Globe';
+import generateMainPage from '../ssr/Main';
 
 import { MONTH } from '../core/constants';
 import { GUILDED_INVITE } from '../core/config';
