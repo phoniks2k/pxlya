@@ -22,7 +22,6 @@ const UserMessages = () => {
   return (
     <div style={{ paddingLeft: '5%', paddingRight: '5%' }}>
       {messages.includes('not_verified')
-        && messages.splice(messages.indexOf('not_verified'), 1)
         && (
           <p className="usermessages">
             {t`Please verify your mail address&nbsp;

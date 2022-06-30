@@ -132,7 +132,7 @@ msgstr ""
 #: src/core/mail.js:75
 msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
 msgstr ""
-"Willkommen ${ name } auf PixelPlnet, bitte verifiziere deine Mail Adresse"
+"Willkommen ${ name } auf PixelPlanet, bitte verifiziere deine Mail Adresse"
 
 #: src/core/mail.js:77
 #, javascript-format
@@ -160,7 +160,7 @@ msgstr "Oder kopiere den folgenden Link:"
 msgid ""
 "Have fun and don't hesitate to contact us if you encouter any problems :)"
 msgstr ""
-"Viel Spaß und scheue dich nicht uns zu kontaktieren wenn du Probleme hast :)"
+"Viel Spaß und scheue dich nicht uns zu kontaktieren, falls du Probleme hast :)"
 
 #: src/core/mail.js:80 src/core/mail.js:130
 msgid "Thanks"
