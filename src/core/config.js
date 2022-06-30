@@ -12,8 +12,9 @@ if (process.env.BROWSER) {
 export const PORT = process.env.PORT || 8080;
 export const HOST = process.env.HOST || 'localhost';
 
-export const GMAIL_USER = process.env.GMAIL_USER || null;
-export const GMAIL_PW = process.env.GMAIL_PW || null;
+export const USE_MAILER = parseInt(process.env.USE_MAILER, 10) || false;
+export const MAIL_ADDRESS = process.env.MAIL_ADDRESS
+  || 'donotreply@pixelplanet.fun';
 
 const TILE_FOLDER_REL = process.env.TILE_FOLDER || 'tiles';
 export const TILE_FOLDER = path.join(__dirname, `./${TILE_FOLDER_REL}`);
@@ -50,13 +51,6 @@ export const APISOCKET_KEY = process.env.APISOCKET_KEY || null;
 // Comma seperated list of user ids of Admins
 export const ADMIN_IDS = (process.env.ADMIN_IDS)
   ? process.env.ADMIN_IDS.split(',').map((z) => parseInt(z, 10)) : [];
-
-export const analytics = {
-  // https://analytics.google.com/
-  google: {
-    trackingId: process.env.GOOGLE_TRACKING_ID, // UA-XXXXX-X
-  },
-};
 
 export const auth = {
   // https://developers.facebook.com/

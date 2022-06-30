@@ -10,44 +10,52 @@ import logger from './logger';
 import { HOUR, MINUTE } from './constants';
 import { DailyCron, HourlyCron } from '../utils/cron';
 import { getTTag } from './ttag';
-import { GMAIL_USER, GMAIL_PW } from './config';
+import { USE_MAILER, MAIL_ADDRESS } from './config';
 
 import { RegUser } from '../data/sql';
-
-
-/*
- * define mail transport
- * using unix command sendmail
- */
-const transporter = (GMAIL_USER && GMAIL_PW)
-  ? nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: GMAIL_USER,
-      pass: GMAIL_PW,
-    },
-  })
-  : nodemailer.createTransport({
-    sendmail: true,
-    newline: 'unix',
-    path: '/usr/sbin/sendmail',
-  });
-const address = (GMAIL_USER && GMAIL_PW)
-  ? GMAIL_USER
-  : 'donotreply@pixelplanet.fun';
 
 
 // TODO make code expire
 class MailProvider {
   constructor() {
-    this.clearCodes = this.clearCodes.bind(this);
+    this.enabled = !!USE_MAILER;
+    if (this.enabled) {
+      this.transporter = nodemailer.createTransport({
+        sendmail: true,
+        newline: 'unix',
+        path: '/usr/sbin/sendmail',
+      });
 
-    this.verifyCodes = {};
-    HourlyCron.hook(this.clearCodes);
-    DailyCron.hook(MailProvider.cleanUsers);
+      this.clearCodes = this.clearCodes.bind(this);
+
+      this.verifyCodes = {};
+      HourlyCron.hook(this.clearCodes);
+      DailyCron.hook(MailProvider.cleanUsers);
+    }
+  }
+
+  sendMail(to, subject, html) {
+    if (!this.enabled) {
+      return;
+    }
+    this.transporter.sendMail({
+      from: `PixelPlanet <${MAIL_ADDRESS}>`,
+      to,
+      replyTo: MAIL_ADDRESS,
+      subject,
+      html,
+    }, (err) => {
+      if (err) {
+        logger.error(err);
+      }
+    });
   }
 
   sendVerifyMail(to, name, host, lang) {
+    if (!this.enabled) {
+      return null;
+    }
+
     const { t } = getTTag(lang);
 
     const pastMail = this.verifyCodes[to];
@@ -62,30 +70,27 @@ class MailProvider {
         return t`We already sent you a verification mail, you can request another one in ${minLeft} minutes.`;
       }
     }
+
     logger.info(`Sending verification mail to ${to} / ${name}`);
     const code = this.setCode(to);
     const verifyUrl = `${host}/api/auth/verify?token=${code}`;
-    transporter.sendMail({
-      from: `PixelPlanet <${address}>`,
-      to,
-      replyTo: address,
-      subject: t`Welcome ${name} to PixelPlanet, plese verify your mail`,
-      // text: `Hello,\nwelcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that here:\n ${verifyUrl} \nHave fun and don't hesitate to contact us if you encouter any problems :)\nThanks`,
-      html: `<em>${t`Hello ${name}`}</em>,<br />
+    const subject = t`Welcome ${name} to PixelPlanet, plese verify your mail`;
+    const html = `<em>${t`Hello ${name}`}</em>,<br />
       ${t`welcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that here: `} <a href="${verifyUrl}">${t`Click to Verify`}</a>. ${t`Or by copying following url:`}<br />${verifyUrl}\n<br />
       ${t`Have fun and don't hesitate to contact us if you encouter any problems :)`}<br />
       ${t`Thanks`}<br /><br />
-      <img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`,
-    }, (err) => {
-      if (err) {
-        logger.error(err);
-      }
-    });
+      <img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`;
+    this.sendMail(to, subject, html);
     return null;
   }
 
   async sendPasswdResetMail(to, ip, host, lang) {
     const { t } = getTTag(lang);
+
+    if (!this.enabled) {
+      return t`Mail is not configured on the server`;
+    }
+
     const pastMail = this.verifyCodes[to];
     if (pastMail) {
       if (Date.now() < pastMail.timestamp + 15 * MINUTE) {
@@ -102,6 +107,7 @@ class MailProvider {
       );
       return t`Couldn't find this mail in our database`;
     }
+
     /*
      * not sure if this is needed yet
      * does it matter if spaming password reset mails or verifications mails?
@@ -115,21 +121,12 @@ class MailProvider {
     logger.info(`Sending Password reset mail to ${to}`);
     const code = this.setCode(to);
     const restoreUrl = `${host}/reset_password?token=${code}`;
-    transporter.sendMail({
-      from: `PixelPlanet <${address}>`,
-      to,
-      replyTo: address,
-      subject: t`You forgot your password for PixelPlanet? Get a new one here`,
-      // text: `Hello,\nYou requested to get a new password. You can change your password within the next 30min here:\n ${restoreUrl} \nHave fun and don't hesitate to contact us if you encouter any problems :)\nIf you did not request this mail, please just ignore it (the ip that requested this mail was ${ip}).\nThanks`,
-      html: `<em>${t`Hello`}</em>,<br />
+    const subject = t`You forgot your password for PixelPlanet? Get a new one here`;
+    const html = `<em>${t`Hello`}</em>,<br />
       ${t`You requested to get a new password. You can change your password within the next 30min here: `} <a href="${restoreUrl}">${t`Reset Password`}</a>. ${t`Or by copying following url:`}<br />${restoreUrl}\n<br />
       ${t`If you did not request this mail, please just ignore it (the ip that requested this mail was ${ip}).`}<br />
-      ${t`Thanks`}<br /><br />\n<img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`,
-    }, (err) => {
-      if (err) {
-        logger.error(err & err.stack);
-      }
-    });
+      ${t`Thanks`}<br /><br />\n<img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`;
+    this.sendMail(to, subject, html);
     return null;
   }
 
@@ -212,7 +209,6 @@ class MailProvider {
           [Sequelize.Op.lt]:
             Sequelize.literal('CURRENT_TIMESTAMP - INTERVAL 4 DAY'),
         },
-        // NOTE: this means that minecraft verified accounts do not get deleted
         verified: 0,
       },
     });

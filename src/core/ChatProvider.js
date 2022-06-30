@@ -15,6 +15,7 @@ import { cheapDetector } from './isProxy';
 import { DailyCron } from '../utils/cron';
 import ttags from './ttag';
 
+import { USE_MAILER } from './config';
 import {
   CHAT_CHANNELS,
   EVENT_USER_NAME,
@@ -415,7 +416,7 @@ export class ChatProvider {
       displayCountry = 'bt';
     }
 
-    if (!user.regUser.verified) {
+    if (USE_MAILER && !user.regUser.verified) {
       return t`Your mail has to be verified in order to chat`;
     }
 

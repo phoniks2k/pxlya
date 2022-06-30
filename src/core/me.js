@@ -7,6 +7,7 @@
  */
 // eslint-disable-next-line import/no-unresolved
 import { getLocalicedCanvases } from '../canvasesDesc';
+import { USE_MAILER } from './config';
 import chatProvider from './ChatProvider';
 
 
@@ -18,7 +19,7 @@ export default async function getMe(user, lang = 'default') {
   } = userdata;
   if (!name) userdata.name = null;
   const messages = [];
-  if (name && !mailVerified) {
+  if (USE_MAILER && name && !mailVerified) {
     messages.push('not_verified');
   }
   if (messages.length > 0) {
