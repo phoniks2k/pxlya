@@ -110,7 +110,7 @@ class CanvasUpdater {
           ],
         });
       } else {
-        const [ucx, ucy] = [cx, cy].map((z) => Math.floor(z / 4));
+        const [ucx, ucy] = [cx, cy].map((z) => Math.floor(z / TILE_ZOOM_LEVEL));
         const upperTile = ucx + ucy * (TILE_ZOOM_LEVEL ** (zoom - 1));
         const upperQueue = this.TileLoadingQueues[zoom - 1];
         if (~upperQueue.indexOf(upperTile)) return;
