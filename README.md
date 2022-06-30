@@ -43,7 +43,7 @@ npm run build
 ```
 
 
-All needed files to run it got created in `./dist`
+All needed files to run it got created in `./dist`. You can copy it to wherever you want to run pixelplanet.
 
 Notes:
 
@@ -120,7 +120,6 @@ Notes:
 - You can find out the id of a user by looking into the logs (i.e. `info: {ip} / {id} wants to place 2 in (1701, -8315)`) when he places a pixel or by checking the MySql Users database
 - pixelplanet uses the unix command sendmail for sending verification and password reset mails. If you don't want to set up your own mail server, look into [ssmtp](https://wiki.archlinux.org/title/SSMTP), which provides a sendmail interface that forwards to other providers like gmail.
 - default configuartion values can be seen in `src/core/config.js`
-Notes:
 - The HTML for SocialMedia logins is in src/componets/UserAreaModal.js , delete stuff from there if you don't need it. The HTML for the Help Screen is in src/components/HelpModal.js
 
 Canvas specific configuartion like colors and cooldown is in `canvases.json` for all canvases. The titles and descriptions of the canvases are in `src/canvasesDesc.js` for translation reasons. Changing them requires a rebuild.
@@ -157,6 +156,14 @@ Notes:
 #### Styles
 
 To add more css styles, create a new css file in `src/styles` based on `src/styles/default.css` with a filename beginning with "theme-" and rebuild`
+
+### Preperation
+
+Install required packages
+
+```
+npm install
+```
 
 ### Running
 
