@@ -128,7 +128,7 @@ class CanvasUpdater {
     const queue = this.TileLoadingQueues[Math.max(this.maxTiledZoom - 1, 0)];
     if (typeof queue === 'undefined') return;
 
-    const [cx, cy] = chunk.map((z) => Math.floor(z / 4));
+    const [cx, cy] = chunk.map((z) => Math.floor(z / TILE_ZOOM_LEVEL));
     const chunkOffset = cx + cy * this.firstZoomtileWidth;
     if (~queue.indexOf(chunkOffset)) return;
     queue.push(chunkOffset);
