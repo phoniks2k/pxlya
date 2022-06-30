@@ -7,6 +7,7 @@ import etag from 'etag';
 import path from 'path';
 
 import ranking from './ranking';
+import voidl from './void';
 import history from './history';
 import tiles from './tiles';
 import chunks from './chunks';
@@ -24,6 +25,11 @@ import { MONTH } from '../core/constants';
 import { GUILDED_INVITE } from '../core/config';
 
 const router = express.Router();
+
+/*
+ * void info
+ */
+router.get('/void', voidl);
 
 /*
  * ranking of pixels placed

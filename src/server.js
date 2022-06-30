@@ -15,7 +15,7 @@ import sequelize from './data/sql/sequelize';
 import { connect as connectRedis } from './data/redis/client';
 import routes from './routes';
 import chatProvider from './core/ChatProvider';
-import RpgEvent from './core/RpgEvent';
+import rpgEvent from './core/RpgEvent';
 import canvasCleaner from './core/CanvasCleaner';
 
 import SocketServer from './socket/SocketServer';
@@ -75,11 +75,6 @@ app.use(compression({
 }));
 
 app.use(routes);
-
-/*
-/* Hourly Event
- */
-const rpgEvent = new RpgEvent();
 
 //
 // ip config

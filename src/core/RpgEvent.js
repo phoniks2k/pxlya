@@ -366,4 +366,6 @@ class RpgEvent {
   }
 }
 
-export default RpgEvent;
+const rpgEvent = new RpgEvent();
+
+export default rpgEvent;
