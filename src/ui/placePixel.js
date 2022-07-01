@@ -246,6 +246,11 @@ export function receivePixelReturn(
       errorTitle = t`Not allowed`;
       msg = t`Just the Top10 of yesterday can place here`;
       break;
+    case 13:
+      errorTitle = t`You are weird`;
+      // eslint-disable-next-line max-len
+      msg = t`Server got confused by your pixels. Are you playing on multiple devices?`;
+      break;
     default:
       errorTitle = t`Weird`;
       msg = t`Couldn't set Pixel`;

@@ -22,6 +22,28 @@ export function setCoolDownFactor(fac) {
   coolDownFactor = fac;
 }
 
+/*
+ * IPs who are currently requesting pixels
+ * (have to log in order to avoid race conditions)
+ */
+const curReqIPs = new Map();
+setInterval(() => {
+  // clean up old data
+  const ts = Date.now() - 20 * 1000;
+  const ips = [...curReqIPs.keys()];
+  for (let i = 0; i < ips.length; i += 1) {
+    const ip = ips[i];
+    const limiter = curReqIPs.get(ip);
+    if (limiter && ts > limiter) {
+      curReqIPs.delete(ip);
+      logger.warn(
+        `Pixel requests from ${ip} got stuck`,
+      );
+    }
+  }
+}, 20 * 1000);
+
+
 /**
  *
  * By Offset is prefered on server side
@@ -47,9 +69,19 @@ export async function drawByOffsets(
   let retCode = 0;
   let pxlCnt = 0;
   let rankedPxlCnt = 0;
+  const { ip } = user;
 
   try {
     const startTime = Date.now();
+
+    if (curReqIPs.has(ip)) {
+      // already setting a pixel somewhere
+      logger.warn(
+        `Got simultanious requests from ${user.ip}`,
+      );
+      throw new Error(13);
+    }
+    curReqIPs.set(ip, startTime);
 
     const canvas = canvases[canvasId];
     if (!canvas) {
@@ -180,6 +212,10 @@ export async function drawByOffsets(
     if (Number.isNaN(retCode)) {
       throw e;
     }
+  }
+
+  if (retCode !== 13) {
+    curReqIPs.delete(ip);
   }
 
   if (pxlCnt) {

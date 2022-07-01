@@ -99,9 +99,9 @@ class SocketClient extends EventEmitter {
     if (this.canvasId !== null) {
       this.ws.send(RegisterCanvas.dehydrate(this.canvasId));
     }
-    this.processMsgQueue();
     console.log(`Register ${chunks.length} chunks`);
     this.ws.send(RegisterMultipleChunks.dehydrate(chunks));
+    this.processMsgQueue();
   }
 
   setCanvas(canvasId) {
