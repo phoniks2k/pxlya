@@ -68,18 +68,29 @@ class SocketClient extends EventEmitter {
       }
       if (now - 23000 > this.timeLastSent) {
         // make sure we send something at least all 25s
-        this.sendWhenReady(Ping.dehydrate());
+        this.send(Ping.dehydrate());
       }
     }
   }
 
   sendWhenReady(msg) {
+    /*
+     * if websocket is closed, store messages and send
+     * them later, once connection is established again.
+     * Do NOT use this method for things that wouldn't be useful after reconnect
+     */
     this.timeLastSent = Date.now();
     if (this.readyState === WebSocket.OPEN) {
       this.ws.send(msg);
     } else {
       console.log('Tried sending message when websocket was closed!');
       this.msgQueue.push(msg);
+    }
+  }
+
+  send(msg) {
+    if (this.readyState === WebSocket.OPEN) {
+      this.ws.send(msg);
     }
   }
 
@@ -97,11 +108,11 @@ class SocketClient extends EventEmitter {
 
     this.emit('open', {});
     if (this.canvasId !== null) {
-      this.ws.send(RegisterCanvas.dehydrate(this.canvasId));
+      this.send(RegisterCanvas.dehydrate(this.canvasId));
     }
-    this.processMsgQueue();
     console.log(`Register ${chunks.length} chunks`);
-    this.ws.send(RegisterMultipleChunks.dehydrate(chunks));
+    this.send(RegisterMultipleChunks.dehydrate(chunks));
+    this.processMsgQueue();
   }
 
   setCanvas(canvasId) {
@@ -115,7 +126,7 @@ class SocketClient extends EventEmitter {
     console.log('Notify websocket server that we changed canvas');
     this.canvasId = canvasId;
     chunks.length = 0;
-    this.sendWhenReady(RegisterCanvas.dehydrate(this.canvasId));
+    this.send(RegisterCanvas.dehydrate(this.canvasId));
   }
 
   registerChunk(cell) {
@@ -124,7 +135,7 @@ class SocketClient extends EventEmitter {
     chunks.push(chunkid);
     const buffer = RegisterChunk.dehydrate(chunkid);
     if (this.readyState === WebSocket.OPEN) {
-      this.ws.send(buffer);
+      this.send(buffer);
     }
   }
 
@@ -133,7 +144,7 @@ class SocketClient extends EventEmitter {
     const chunkid = (i << 8) | j;
     const buffer = DeRegisterChunk.dehydrate(chunkid);
     if (this.readyState === WebSocket.OPEN) {
-      this.ws.send(buffer);
+      this.send(buffer);
     }
     const pos = chunks.indexOf(chunkid);
     if (~pos) chunks.splice(pos, 1);
