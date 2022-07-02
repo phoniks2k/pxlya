@@ -361,36 +361,40 @@ class SocketServer {
   }
 
   onlineCounterBroadcast() {
-    const online = {};
-    online.total = ipCounter.amount() || 0;
-    const ipsPerCanvas = {};
-    const it = this.wss.clients.keys();
-    let client = it.next();
-    while (!client.done) {
-      const ws = client.value;
-      if (ws.readyState === WebSocket.OPEN
-        && ws.user
-      ) {
-        const canvasId = ws.canvasId || 0;
-        const { ip } = ws.user;
-        // only count unique IPs per canvas
-        if (!ipsPerCanvas[canvasId]) {
-          ipsPerCanvas[canvasId] = [ip];
-        } else if (ipsPerCanvas[canvasId].includes(ip)) {
-          client = it.next();
-          continue;
-        } else {
-          ipsPerCanvas[canvasId].push(ip);
+    try {
+      const online = {};
+      online.total = ipCounter.amount() || 0;
+      const ipsPerCanvas = {};
+      const it = this.wss.clients.keys();
+      let client = it.next();
+      while (!client.done) {
+        const ws = client.value;
+        if (ws.readyState === WebSocket.OPEN
+          && ws.user
+        ) {
+          const canvasId = ws.canvasId || 0;
+          const { ip } = ws.user;
+          // only count unique IPs per canvas
+          if (!ipsPerCanvas[canvasId]) {
+            ipsPerCanvas[canvasId] = [ip];
+          } else if (ipsPerCanvas[canvasId].includes(ip)) {
+            client = it.next();
+            continue;
+          } else {
+            ipsPerCanvas[canvasId].push(ip);
+          }
+          //--
+          if (!online[canvasId]) {
+            online[canvasId] = 0;
+          }
+          online[canvasId] += 1;
         }
-        //--
-        if (!online[canvasId]) {
-          online[canvasId] = 0;
-        }
-        online[canvasId] += 1;
+        client = it.next();
       }
-      client = it.next();
+      socketEvents.broadcastOnlineCounter(online);
+    } catch (err) {
+      logger.error(`WebSocket online broadcast error: ${err.message}`);
     }
-    socketEvents.broadcastOnlineCounter(online);
   }
 
   async onTextMessage(text, ws) {

@@ -207,11 +207,15 @@ class SocketClient extends EventEmitter {
         this.emit('pixelUpdate', PixelUpdate.hydrate(data));
         break;
       case PixelReturn.OP_CODE:
+        /*
+         * using online counter and pxlReturn as sign-of-life ping
+         */
+        this.timeLastPing = Date.now();
         this.emit('pixelReturn', PixelReturn.hydrate(data));
         break;
       case OnlineCounter.OP_CODE:
         /*
-         * using online counter as sign-of-life ping
+         * using online counter and pxlReturn as sign-of-life ping
          */
         this.timeLastPing = Date.now();
         this.emit('onlineCounter', OnlineCounter.hydrate(data));
