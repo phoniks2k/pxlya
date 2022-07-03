@@ -69,6 +69,7 @@ class SocketClient extends EventEmitter {
       if (now - 23000 > this.timeLastSent) {
         // make sure we send something at least all 25s
         this.send(Ping.dehydrate());
+        this.timeLastSent = now;
       }
     }
   }

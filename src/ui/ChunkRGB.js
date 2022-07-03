@@ -41,6 +41,7 @@ class ChunkRGB {
 
   // from Uint8Array
   fromBuffer(chunkBuffer) {
+    this.isBasechunk = true;
     const imageData = new ImageData(TILE_SIZE, TILE_SIZE);
     const imageView = new Uint32Array(imageData.data.buffer);
     const { abgr } = this.palette;

@@ -145,13 +145,13 @@ class SocketServer {
       country,
     ) => {
       const text = JSON.stringify([name, message, country, channelId, id]);
+      const clientArray = [];
       this.wss.clients.forEach((ws) => {
-        if (ws.readyState === WebSocket.OPEN && ws.user) {
-          if (chatProvider.userHasChannelAccess(ws.user, channelId)) {
-            ws.send(text);
-          }
+        if (ws.user && chatProvider.userHasChannelAccess(ws.user, channelId)) {
+          clientArray.push(ws);
         }
       });
+      SocketServer.broadcastSelected(clientArray, text);
     });
 
     socketEvents.on('addChatChannel', (userId, channelId, channelArray) => {
@@ -219,34 +219,46 @@ class SocketServer {
    * https://github.com/websockets/ws/issues/617
    * @param data
    */
-  broadcast(data) {
+  static broadcastSelected(clients, data) {
+    let frames;
+
     if (typeof data === 'string') {
-      this.wss.clients.forEach((ws) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(data);
-        }
+      frames = WebSocket.Sender.frame(Buffer.from(data), {
+        readOnly: false,
+        mask: false,
+        rsv1: false,
+        opcode: 1,
+        fin: true,
       });
     } else {
-      const frame = WebSocket.Sender.frame(data, {
-        readOnly: true,
+      frames = WebSocket.Sender.frame(data, {
+        readOnly: false,
         mask: false,
         rsv1: false,
         opcode: 2,
         fin: true,
       });
-      this.wss.clients.forEach((ws) => {
-        if (ws.readyState === WebSocket.OPEN) {
-          frame.forEach((buffer) => {
-            try {
-              // eslint-disable-next-line no-underscore-dangle
-              ws._socket.write(buffer);
-            } catch (error) {
-              logger.error(`WebSocket broadcast error: ${error.message}`);
-            }
-          });
-        }
-      });
     }
+
+    return clients.map((ws) => new Promise((resolve) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        // eslint-disable-next-line no-underscore-dangle
+        ws._sender.sendFrame(frames, (err) => {
+          if (err) {
+            logger.error(`WebSocket broadcast error: ${err.message}`);
+          }
+        });
+      }
+      resolve();
+    }));
+  }
+
+  broadcast(data) {
+    const clientArray = [];
+    this.wss.clients.forEach((ws) => {
+      clientArray.push(ws);
+    });
+    SocketServer.broadcastSelected(clientArray, data);
   }
 
   /*
@@ -305,34 +317,11 @@ class SocketServer {
   }
 
   broadcastPixelBuffer(canvasId: number, chunkid, data: Buffer) {
-    const frame = WebSocket.Sender.frame(data, {
-      readOnly: true,
-      mask: false,
-      rsv1: false,
-      opcode: 2,
-      fin: true,
-    });
     if (this.CHUNK_CLIENTS.has(chunkid)) {
-      const clients = this.CHUNK_CLIENTS.get(chunkid);
-      clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN
-          // canvasId can be number or string, caused by
-          // js disctionaries not being able to have numbers as keys
-          // eslint-disable-next-line eqeqeq
-          && client.canvasId == canvasId
-        ) {
-          frame.forEach((buffer) => {
-            try {
-              // eslint-disable-next-line no-underscore-dangle
-              client._socket.write(buffer);
-            } catch (error) {
-              logger.error(
-                `WebSocket broadcast pixelbuffer error: ${error.message}`,
-              );
-            }
-          });
-        }
-      });
+      const clients = this.CHUNK_CLIENTS.get(chunkid)
+        // eslint-disable-next-line eqeqeq
+        .filter((ws) => ws.canvasId == canvasId);
+      SocketServer.broadcastSelected(clients, data);
     }
   }
 

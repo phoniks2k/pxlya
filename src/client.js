@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
       let cnt = 0;
       chunks.forEach((value, key) => {
         if (curTime > value.timestamp + 300000) {
-          cnt++;
           const [zc, xc, yc] = value.cell;
           if (!renderer.isChunkInView(zc, xc, yc)) {
+            cnt++;
             if (value.isBasechunk) {
               SocketClient.deRegisterChunk([xc, yc]);
             }

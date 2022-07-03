@@ -278,7 +278,6 @@ class ChunkLoader {
   async fetchBaseChunk(zoom, cx, cy, chunkRGB) {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
-    chunkRGB.isBasechunk = true;
     try {
       const url = `chunks/${this.canvasId}/${cx}/${cy}.bmp`;
       const response = await fetch(url);
