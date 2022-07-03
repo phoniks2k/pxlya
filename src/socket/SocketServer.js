@@ -348,7 +348,7 @@ class SocketServer {
   }
 
   checkHealth() {
-    const ts = Date.now() - 120 * 1000;
+    const ts = Date.now() - 60 * 1000;
     this.wss.clients.forEach((ws) => {
       if (
         ws.readyState === WebSocket.OPEN

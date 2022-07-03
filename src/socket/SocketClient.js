@@ -60,7 +60,7 @@ class SocketClient extends EventEmitter {
   checkHealth() {
     if (this.readyState === WebSocket.OPEN) {
       const now = Date.now();
-      if (now - 20000 > this.timeLastPing) {
+      if (now - 25000 > this.timeLastPing) {
         // server didn't send anything, probably dead
         console.log('Server is silent, killing websocket');
         this.readyState = WebSocket.CLOSING;
@@ -213,22 +213,16 @@ class SocketClient extends EventEmitter {
     const data = new DataView(buffer);
     const opcode = data.getUint8(0);
 
+    this.timeLastPing = Date.now();
+
     switch (opcode) {
       case PixelUpdate.OP_CODE:
         this.emit('pixelUpdate', PixelUpdate.hydrate(data));
         break;
       case PixelReturn.OP_CODE:
-        /*
-         * using online counter and pxlReturn as sign-of-life ping
-         */
-        this.timeLastPing = Date.now();
         this.emit('pixelReturn', PixelReturn.hydrate(data));
         break;
       case OnlineCounter.OP_CODE:
-        /*
-         * using online counter and pxlReturn as sign-of-life ping
-         */
-        this.timeLastPing = Date.now();
         this.emit('onlineCounter', OnlineCounter.hydrate(data));
         break;
       case CoolDownPacket.OP_CODE:
