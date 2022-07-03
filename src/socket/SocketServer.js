@@ -337,7 +337,7 @@ class SocketServer {
   }
 
   checkHealth() {
-    const ts = Date.now() - 60 * 1000;
+    const ts = Date.now() - 120 * 1000;
     const promises = [];
     this.wss.clients.forEach((ws) => {
       promises.push(new Promise((resolve) => {
