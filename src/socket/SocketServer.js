@@ -338,15 +338,21 @@ class SocketServer {
 
   checkHealth() {
     const ts = Date.now() - 60 * 1000;
+    const promises = [];
     this.wss.clients.forEach((ws) => {
-      if (
-        ws.readyState === WebSocket.OPEN
-        && ts > ws.timeLastMsg
-      ) {
-        logger.info(`Killing dead websocket from ${ws.user.ip}`);
-        ws.terminate();
-      }
+      promises.push(new Promise((resolve) => {
+        if (
+          ws.readyState === WebSocket.OPEN
+          && ts > ws.timeLastMsg
+        ) {
+          logger.info(`Killing dead websocket from ${ws.user.ip}`);
+          ws.terminate();
+          resolve();
+        }
+      }),
+      );
     });
+    return promises;
   }
 
   onlineCounterBroadcast() {
