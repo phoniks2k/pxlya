@@ -23,6 +23,17 @@ class SocketEvents extends EventEmitter {
   }
 
   /*
+   * async event
+   */
+  onAsync(evtString, cb) {
+    this.on(evtString, (...args) => {
+      setImmediate(() => {
+        cb(...args);
+      });
+    });
+  }
+
+  /*
    * broadcast message via websocket
    * @param message Buffer Message to send
    */

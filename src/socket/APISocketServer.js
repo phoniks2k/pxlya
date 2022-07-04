@@ -79,10 +79,10 @@ class APISocketServer {
     this.ping = this.ping.bind(this);
     this.broadcastChatMessage = this.broadcastChatMessage.bind(this);
 
-    socketEvents.on('broadcast', this.broadcast);
-    socketEvents.on('onlineCounter', this.broadcastOnlineCounter);
-    socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
-    socketEvents.on('chatMessage', this.broadcastChatMessage);
+    socketEvents.onAsync('broadcast', this.broadcast);
+    socketEvents.onAsync('onlineCounter', this.broadcastOnlineCounter);
+    socketEvents.onAsync('pixelUpdate', this.broadcastPixelBuffer);
+    socketEvents.onAsync('chatMessage', this.broadcastChatMessage);
 
     setInterval(this.ping, 45 * 1000);
   }
