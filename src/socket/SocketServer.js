@@ -91,6 +91,7 @@ class SocketServer {
         return;
       }
       ws.user = user;
+      ws.chunkCnt = 0;
       ws.name = user.getName();
 
       const { ip } = user;
@@ -569,6 +570,12 @@ class SocketServer {
   }
 
   pushChunk(chunkid, ws) {
+    ws.chunkCnt += 1;
+    if (ws.chunkCnt === 25000) {
+      logger.info(
+        `Client ${ws.user.ip} subscribed to 25k chunks`,
+      );
+    }
     if (!this.CHUNK_CLIENTS.has(chunkid)) {
       this.CHUNK_CLIENTS.set(chunkid, []);
     }
@@ -579,6 +586,7 @@ class SocketServer {
   }
 
   deleteChunk(chunkid, ws) {
+    ws.chunkCnt -= 1;
     if (!this.CHUNK_CLIENTS.has(chunkid)) return;
     const clients = this.CHUNK_CLIENTS.get(chunkid);
     const pos = clients.indexOf(ws);
