@@ -187,6 +187,7 @@ class PixelPlainterControls {
   static placePixel(store, renderer, cell, colorIndex = null) {
     const state = store.getState();
     const { autoZoomIn } = state.gui;
+    const { clrIgnore } = state.canvas;
     const {
       scale,
       isHistoricalView,
@@ -210,6 +211,20 @@ class PixelPlainterControls {
     if (selectedColor === curColor) {
       return;
     }
+
+    // placing unset pixel
+    if (selectedColor < clrIgnore) {
+      const { palette } = state.canvas;
+      const { rgb } = palette;
+      let clrOffset = selectedColor * 3;
+      const r = rgb[clrOffset++];
+      const g = rgb[clrOffset++];
+      const b = rgb[clrOffset];
+      if (palette.getIndexOfColor(r, g, b) === curColor) {
+        return;
+      }
+    }
+
     const { canvasSize } = state.canvas;
     const [x, y] = cell;
     const maxCoords = canvasSize / 2;
