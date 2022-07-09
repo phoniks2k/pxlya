@@ -156,7 +156,7 @@ export async function drawByOffsets(
         throw new Error(4);
       }
       if (color >= canvas.colors.length
-        || (color < clrIgnore && !(canvas.v && color === 0))
+        || (color < clrIgnore && !isAdmin && !(canvas.v && color === 0))
       ) {
         // color out of bounds
         throw new Error(5);

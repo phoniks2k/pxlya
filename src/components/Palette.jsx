@@ -18,14 +18,14 @@ function getStylesByWindowSize(
   paletteOpen,
   windowSize,
   colors,
-  clrIgnore,
+  clrHide,
   compactPalette,
 ) {
   const {
     width: windowWidth,
     height: windowHeight,
   } = windowSize;
-  const numCal = colors.length - clrIgnore;
+  const numCal = colors.length - clrHide;
 
   let flexDirection;
   let spanSize;
@@ -97,12 +97,14 @@ const Palette = () => {
     colors,
     clrIgnore,
     selectedColor,
+    userlvl,
   ] = useSelector((state) => [
     state.gui.paletteOpen,
     state.gui.compactPalette,
     state.canvas.palette.colors,
     state.canvas.clrIgnore,
     state.canvas.selectedColor,
+    state.user.userlvl,
   ], shallowEqual);
   const dispatch = useDispatch();
 
@@ -116,11 +118,13 @@ const Palette = () => {
     if (!paletteOpen) setRender(false);
   };
 
+  const clrHide = (userlvl === 1) ? 0 : clrIgnore;
+
   const [paletteStyle, spanStyle] = getStylesByWindowSize(
     (render && paletteOpen),
     useWindowSize(),
     colors,
-    clrIgnore,
+    clrHide,
     compactPalette,
   );
 
@@ -131,7 +135,7 @@ const Palette = () => {
         style={paletteStyle}
         onTransitionEnd={onTransitionEnd}
       >
-        {colors.slice(clrIgnore).map((color, index) => (
+        {colors.slice(clrHide).map((color, index) => (
           <span
             style={{
               backgroundColor: color,
@@ -139,13 +143,13 @@ const Palette = () => {
             }}
             role="button"
             tabIndex={0}
-            aria-label={`color ${index + 2}`}
+            aria-label={`color ${index + clrHide}`}
             key={color}
-            className={selectedColor === (index + clrIgnore)
+            className={selectedColor === (index + clrHide)
               ? 'selected'
               : 'unselected'}
             color={color}
-            onClick={() => dispatch(selectColor(index + clrIgnore))}
+            onClick={() => dispatch(selectColor(index + clrHide))}
           />
         ))}
       </div>
