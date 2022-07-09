@@ -1,5 +1,6 @@
 
 const initialState = {
+  lastFetch: 0,
   totalPixels: 0,
   dailyTotalPixels: 0,
   ranking: 1488,
@@ -14,8 +15,8 @@ const initialState = {
   online: {
     total: 0,
   },
-  totalRanking: {},
-  totalDailyRanking: {},
+  totalRanking: [],
+  totalDailyRanking: [],
 };
 
 export default function ranks(
@@ -62,8 +63,10 @@ export default function ranks(
 
     case 'RECEIVE_STATS': {
       const { totalRanking, totalDailyRanking } = action;
+      const lastFetch = Date.now();
       return {
         ...state,
+        lastFetch,
         totalRanking,
         totalDailyRanking,
       };

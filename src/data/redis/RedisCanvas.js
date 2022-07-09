@@ -76,13 +76,11 @@ class RedisCanvas {
     j,
     offset,
   ) {
-    /*
-     * TODO what if chunk does not exist?
-     */
     if (!RedisCanvas.multi) {
       RedisCanvas.multi = client.multi();
       setTimeout(RedisCanvas.flushPixels, 100);
     }
+
     RedisCanvas.multi.addCommand(
       /*
        * NOTE:
@@ -99,6 +97,7 @@ class RedisCanvas {
         String(color),
       ],
     );
+
     RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
   }
 

@@ -19,7 +19,6 @@ const config = {
   storage: localForage,
   blacklist: [
     'user',
-    'ranks',
     'canvas',
     'alert',
     'chat',

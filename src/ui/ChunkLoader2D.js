@@ -103,7 +103,7 @@ class ChunkLoader {
     const px = getCellInsideChunk(historicalCanvasSize, [x, y]);
     const curTime = Date.now();
 
-    if (!historicalTime || historicalTime !== '0000') {
+    if (historicalTime && historicalTime !== '0000') {
       // eslint-disable-next-line max-len
       const incrementialChunkKey = `${historicalDate}${historicalTime}:${cx}:${cy}`;
       const incrementialChunk = this.chunks.get(incrementialChunkKey);

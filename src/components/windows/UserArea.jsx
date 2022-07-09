@@ -4,9 +4,11 @@
  */
 
 import React, { Suspense } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
+import { fetchStats } from '../../actions';
+import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';
 import UserAreaContent from '../UserAreaContent';
@@ -20,6 +22,14 @@ const Modtools = React.lazy(() => import(/* webpackChunkName: "modtools" */ '../
 const UserArea = ({ windowId }) => {
   const name = useSelector((state) => state.user.name);
   const userlvl = useSelector((state) => state.user.userlvl);
+  const lastStatsFetch = useSelector((state) => state.ranks.lastFetch);
+  const dispatch = useDispatch();
+
+  useInterval(() => {
+    if (Date.now() - 300000 > lastStatsFetch) {
+      dispatch(fetchStats());
+    }
+  }, 300000);
 
   return (
     <div style={{ textAlign: 'center' }}>

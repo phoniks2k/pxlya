@@ -246,7 +246,10 @@ class SocketServer {
         // eslint-disable-next-line no-underscore-dangle
         ws._sender.sendFrame(frames, (err) => {
           if (err) {
-            logger.error(`WebSocket broadcast error: ${err.message}`);
+            logger.error(
+              // eslint-disable-next-line max-len
+              `WebSocket broadcast error on ${ws.user && ws.user.ip} : ${err.message}`,
+            );
           }
         });
       }

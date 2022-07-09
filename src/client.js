@@ -8,7 +8,6 @@ import fetch from 'isomorphic-fetch'; // TODO put in the beggining with webpack!
 import onKeyPress from './controls/keypress';
 import {
   fetchMe,
-  fetchStats,
   initTimer,
   urlChange,
   receiveOnline,
@@ -118,11 +117,6 @@ function init() {
 
   store.dispatch(fetchMe());
   SocketClient.connect();
-
-  store.dispatch(fetchStats());
-  // TODO: We don't have to do this this often
-  // the client might not even look at it
-  setInterval(() => { store.dispatch(fetchStats()); }, 300000);
 }
 init();
 
