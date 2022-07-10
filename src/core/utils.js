@@ -316,6 +316,27 @@ export function setBrightness(hex, dark: boolean = false) {
 }
 
 /*
+ * escape string for use in markdown
+ */
+export function escapeMd(string) {
+  const toEscape = ['\\', '[', ']', '(', ')', '*', '~', '+', '_', '\n'];
+  let result = '';
+  let ss = 0;
+  for (let c = 0; c < string.length; c += 1) {
+    const chr = string[c];
+    if (toEscape.includes(chr)) {
+      result += `${string.slice(ss, c)}\\`;
+      ss = c;
+    }
+  }
+  if (ss === 0) {
+    return string;
+  }
+  result += string.slice(ss);
+  return result;
+}
+
+/*
  * escape string for use in regexp
  * @param string input string
  * @return escaped string

@@ -13,6 +13,7 @@ import ChatMessageBuffer from './ChatMessageBuffer';
 import socketEvents from '../socket/SocketEvents';
 import { cheapDetector } from './isProxy';
 import { DailyCron } from '../utils/cron';
+import { escapeMd } from './utils';
 import ttags from './ttag';
 
 import { USE_MAILER } from './config';
@@ -275,7 +276,7 @@ export class ChatProvider {
     const cmdArr = message.split(' ');
     const cmd = cmdArr[0].substring(1);
     const args = cmdArr.slice(1);
-    const initiator = `@[${user.getName()}](${user.id})`;
+    const initiator = `@[${escapeMd(user.getName())}](${user.id})`;
     switch (cmd) {
       case 'mute': {
         const timeMin = Number(args.slice(-1));
@@ -530,7 +531,7 @@ export class ChatProvider {
       return `Couldn't find user ${nameOrId}`;
     }
     const { name, id } = searchResult;
-    const userPing = `@[${name}](${id})`;
+    const userPing = `@[${escapeMd(name)}](${id})`;
 
     const key = `mute:${id}`;
     if (timeMin) {
@@ -574,7 +575,7 @@ export class ChatProvider {
       return `Couldn't find user ${nameOrId}`;
     }
     const { name, id } = searchResult;
-    const userPing = `@[${name}](${id})`;
+    const userPing = `@[${escapeMd(name)}](${id})`;
 
     const key = `mute:${id}`;
     const delKeys = await redis.del(key);

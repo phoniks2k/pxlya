@@ -117,6 +117,11 @@ export default class MString {
     let yEnd = yStart;
     while (this.txt[yEnd] !== ']') {
       const chr = this.txt[yEnd];
+      if (chr === '\\') {
+        // escape character
+        yEnd += 2;
+        continue;
+      }
       if (yEnd >= this.txt.length
         || chr === '\n'
       ) {

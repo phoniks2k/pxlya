@@ -10,6 +10,7 @@ import multer from 'multer';
 import CanvasCleaner from '../../core/CanvasCleaner';
 import chatProvider from '../../core/ChatProvider';
 import { getIPFromRequest } from '../../utils/ip';
+import { escapeMd } from '../../core/utils';
 import logger, { modtoolsLogger } from '../../core/logger';
 import {
   executeIPAction,
@@ -73,9 +74,9 @@ router.use(async (req, res, next) => {
 router.post('/', upload.single('image'), async (req, res, next) => {
   const aLogger = (text) => {
     const timeString = new Date().toLocaleTimeString();
-    const logText = `@[${req.user.regUser.name}](${req.user.id}) ${text}`;
+    // eslint-disable-next-line max-len
+    const logText = `@[${escapeMd(req.user.regUser.name)}](${req.user.id}) ${text}`;
     modtoolsLogger.info(
-      // eslint-disable-next-line max-len
       `${timeString} | MODTOOLS> ${logText}`,
     );
     chatProvider.broadcastChatMessage(

@@ -17,6 +17,7 @@ import {
   setUserBlock,
   setChatChannel,
 } from '../../actions';
+import { escapeMd } from '../../core/utils';
 
 const UserContextMenu = () => {
   const wrapperRef = useRef(null);
@@ -45,8 +46,9 @@ const UserContextMenu = () => {
         role="button"
         tabIndex={0}
         onClick={() => {
+          const ping = `@[${escapeMd(name)}](${uid})`;
           dispatch(
-            addToChatInputMessageAndFocus(windowId, `@[${name}](${uid}) `),
+            addToChatInputMessageAndFocus(windowId, ping),
           );
           close();
         }}
