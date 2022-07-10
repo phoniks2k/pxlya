@@ -112,13 +112,15 @@ export default class MString {
    * moves iter to last closing braked if it is enclosure
    */
   checkIfEnclosure(zIsLink) {
-    const yStart = this.iter + 1;
+    let yStart = this.iter + 1;
 
     let yEnd = yStart;
+    const escapePositions = [];
     while (this.txt[yEnd] !== ']') {
       const chr = this.txt[yEnd];
       if (chr === '\\') {
         // escape character
+        escapePositions.push(yEnd);
         yEnd += 2;
         continue;
       }
@@ -168,7 +170,17 @@ export default class MString {
     if (!zIsLink) {
       z = this.txt.slice(zStart, zEnd);
     }
-    const y = this.txt.slice(yStart, yEnd);
+
+    let y = '';
+    // remove escape characters
+    for (let iter = 0; iter < escapePositions.length; iter += 1) {
+      const escapePosition = escapePositions[iter];
+      y += this.txt.slice(yStart, escapePosition);
+      yStart = escapePosition + 1;
+    }
+    if (yStart < yEnd) {
+      y += this.txt.slice(yStart, yEnd);
+    }
 
     this.iter = zEnd;
     return [y, z];
