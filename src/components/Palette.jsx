@@ -118,7 +118,7 @@ const Palette = () => {
     if (!paletteOpen) setRender(false);
   };
 
-  const clrHide = (userlvl === 1) ? 0 : clrIgnore;
+  const clrHide = (userlvl === 0) ? clrIgnore : 0;
 
   const [paletteStyle, spanStyle] = getStylesByWindowSize(
     (render && paletteOpen),

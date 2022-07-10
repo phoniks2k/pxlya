@@ -172,8 +172,7 @@ class User {
     return (this.regUser) ? this.regUser.name : null;
   }
 
-  async setWait(wait: number, canvasId: number): Promise<boolean> {
-    if (!wait) return false;
+  async setWait(wait, canvasId) {
     // PX is milliseconds expire
     await redis.set(`cd:${canvasId}:ip:${this.ipSub}`, '', {
       PX: wait,
@@ -203,7 +202,6 @@ class User {
   async incrementPixelcount(amount: number = 1): Promise<boolean> {
     const { id } = this;
     if (!id) return false;
-    if (this.userlvl === 1) return false;
     try {
       await this.regUser.increment(
         ['totalPixels', 'dailyTotalPixels'],

@@ -109,6 +109,12 @@ export async function drawByOffsets(
       throw new Error(3);
     }
 
+    /*
+     * userlvl:
+     *   0: nothing
+     *   1: admin
+     *   2: mod
+     */
     const isAdmin = (user.userlvl === 1);
 
     if (canvas.req !== undefined && !isAdmin) {
@@ -155,8 +161,13 @@ export async function drawByOffsets(
         // z out of bounds or weird stuff
         throw new Error(4);
       }
+      /*
+       * admins and mods can place unset pixels
+       */
       if (color >= canvas.colors.length
-        || (color < clrIgnore && !isAdmin && !(canvas.v && color === 0))
+        || (color < clrIgnore
+          && user.userlvl === 0
+          && !(canvas.v && color === 0))
       ) {
         // color out of bounds
         throw new Error(5);
@@ -175,11 +186,17 @@ export async function drawByOffsets(
 
       coolDown = ((setColor & 0x3F) >= clrIgnore && canvas.pcd)
         ? canvas.pcd : canvas.bcd;
-      if (isAdmin) {
+      /*
+       * admins have no cooldown
+       * mods have no cooldown when placing unset pixels
+       */
+      if (isAdmin || (user.userlvl > 0 && color < clrIgnore)) {
         coolDown = 0.0;
       } else {
+        /*
+         * cooldown changes like from event
+         */
         coolDown *= coolDownFactor;
-        // temporary lowered cooldown
       }
 
       wait += coolDown;
@@ -193,9 +210,12 @@ export async function drawByOffsets(
       setPixelByOffset(canvasId, color, i, j, offset);
 
       pxlCnt += 1;
-      /* hardcode to not count pixels in antarctica */
+      /*
+       * hardcode to not count pixels in antarctica
+       * do not count 0cd pixels
+       */
       // eslint-disable-next-line eqeqeq
-      if (canvas.ranked && (canvasId != 0 || y < 14450)) {
+      if (canvas.ranked && (canvasId != 0 || y < 14450) && coolDown) {
         rankedPxlCnt += 1;
       }
 
@@ -214,15 +234,15 @@ export async function drawByOffsets(
     }
   }
 
-  if (retCode !== 13) {
-    curReqIPs.delete(ip);
+  if (pxlCnt && wait) {
+    await user.setWait(wait, canvasId);
+    if (rankedPxlCnt) {
+      await user.incrementPixelcount(rankedPxlCnt);
+    }
   }
 
-  if (pxlCnt) {
-    user.setWait(wait, canvasId);
-    if (rankedPxlCnt) {
-      user.incrementPixelcount(rankedPxlCnt);
-    }
+  if (retCode !== 13) {
+    curReqIPs.delete(ip);
   }
 
   return {
