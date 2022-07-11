@@ -116,6 +116,7 @@ const ChannelDropDown = ({
     >
       <div
         ref={buttonRef}
+        key="expbtn"
         role="button"
         tabIndex={-1}
         onClick={() => setShow(true)}
@@ -130,6 +131,7 @@ const ChannelDropDown = ({
         && (
         <div
           ref={wrapperRef}
+          key="dropdown"
           style={{
             position: 'absolute',
             bottom: offset,

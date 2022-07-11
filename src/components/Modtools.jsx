@@ -496,7 +496,7 @@ function Modtools() {
           <input
             type="date"
             value={date}
-            requiredPattern="\d{4}-\d{2}-\d{2}"
+            pattern="\d{4}-\d{2}-\d{2}"
             min={canvases[selectedCanvas].sd}
             max={maxDate}
             onChange={(evt) => {

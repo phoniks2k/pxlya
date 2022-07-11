@@ -52,9 +52,11 @@ const Chat = ({
   });
 
   const channelMessages = messages[chatChannel] || [];
-  if (channels[chatChannel] && !messages[chatChannel] && !fetching) {
-    dispatch(fetchChatMessages(chatChannel));
-  }
+  useEffect(() => {
+    if (channels[chatChannel] && !messages[chatChannel] && !fetching) {
+      dispatch(fetchChatMessages(chatChannel));
+    }
+  }, [channels, messages, chatChannel]);
 
   useEffect(() => {
     if (channels[chatChannel]) {
@@ -175,7 +177,7 @@ const Chat = ({
         }}
       >
         {(ownName) ? (
-          <>
+          <React.Fragment key={`chtipt-${windowId}`}>
             <input
               style={{
                 flexGrow: 1,
@@ -198,7 +200,7 @@ const Chat = ({
             >
               ‣
             </button>
-          </>
+          </React.Fragment>
         ) : (
           <div
             className="modallink"

@@ -110,9 +110,11 @@ const Window = ({ id }) => {
     >
       <div
         className="win-topbar"
+        key="topbar"
       >
         <span
           className="win-topbtn"
+          key="clonebtn"
           onClick={clone}
           title={t`Clone`}
         >
@@ -120,6 +122,7 @@ const Window = ({ id }) => {
         </span>
         <span
           className="win-title"
+          key={`title-${name}-${title}`}
           ref={titleBarRef}
           title={t`Move`}
         >
@@ -127,6 +130,7 @@ const Window = ({ id }) => {
         </span>
         <span
           className="win-topbtn"
+          key="maxbtn"
           onClick={maximize}
           title={t`Maximize`}
         >
@@ -134,6 +138,7 @@ const Window = ({ id }) => {
         </span>
         <span
           className="win-topbtn close"
+          key="closebtn"
           onClick={close}
           title={t`Close`}
         >
@@ -144,10 +149,14 @@ const Window = ({ id }) => {
         className="win-resize"
         title={t`Resize`}
         ref={resizeRef}
+        key="winres"
       >
         ▨
       </div>
-      <div className="win-content">
+      <div 
+        className="win-content"
+        key="content"
+      >
         <Content windowId={id} />
       </div>
     </div>

@@ -26,17 +26,17 @@ const CanvasItem = ({
     <p className="modalcvtext">
       <span className="modaltitle">{canvas.title}</span><br />
       {(online) && (
-        <>
+        <React.Fragment key="online">
           {t`Online Users`}:&nbsp;
           <span className="modalinfo">{online}</span><br />
-        </>
+        </React.Fragment>
       )}
       <span className="modalinfo">{canvas.desc}</span><br />
       {t`Cooldown`}:&nbsp;
       <span className="modalinfo">
         {(canvas.pcd && canvas.bcd !== canvas.pcd)
-          ? <span> {canvas.bcd / 1000}s / {canvas.pcd / 1000}s</span>
-          : <span> {canvas.bcd / 1000}s</span>}
+          ? <span key="cdf"> {canvas.bcd / 1000}s / {canvas.pcd / 1000}s</span>
+          : <span key="cd"> {canvas.bcd / 1000}s</span>}
       </span><br />
       {t`Stacking till`}:&nbsp;
       <span className="modalinfo"> {canvas.cds / 1000}s</span><br />
@@ -46,7 +46,7 @@ const CanvasItem = ({
       }
       </span><br />
       {(canvas.req !== undefined) && (
-        <>
+        <React.Fragment key="req">
           <span>
             {t`Requirements`}:<br />
             <span className="modalinfo">
@@ -60,13 +60,13 @@ const CanvasItem = ({
             </span>
           </span>
           <br />
-        </>
+        </React.Fragment>
       )}
       {t`Dimensions`}:&nbsp;
       <span className="modalinfo"> {canvas.size} x {canvas.size}
         {(canvas.v)
-          ? <span> x {THREE_CANVAS_HEIGHT} Voxels</span>
-          : <span> Pixels</span>}
+          ? <span key="voxsize"> x {THREE_CANVAS_HEIGHT} Voxels</span>
+          : <span key="pxlsize"> Pixels</span>}
       </span>
     </p>
   </div>
