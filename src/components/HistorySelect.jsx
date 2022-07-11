@@ -9,8 +9,8 @@ import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import { dateToString, getToday } from '../core/utils';
-import { selectHistoricalTime } from '../actions';
-import { requestHistoricalTimes } from '../actions/fetch';
+import { selectHistoricalTime } from '../store/actions';
+import { requestHistoricalTimes } from '../store/actions/fetch';
 
 
 function stringToDate(dateString) {

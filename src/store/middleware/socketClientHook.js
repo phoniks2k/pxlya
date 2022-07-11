@@ -1,10 +1,9 @@
 /*
  * Hooks for websocket client to store changes
  *
- * @flow
  */
 
-import SocketClient from '../socket/SocketClient';
+import SocketClient from '../../socket/SocketClient';
 
 export default (store) => (next) => (action) => {
   switch (action.type) {

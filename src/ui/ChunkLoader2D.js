@@ -13,7 +13,7 @@ import {
   receiveBigChunk,
   receiveBigChunkFailure,
   // preLoadedBigChunk,
-} from '../actions';
+} from '../store/actions';
 import {
   getMaxTiledZoom,
   getCellInsideChunk,

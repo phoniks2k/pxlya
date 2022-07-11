@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { showUserAreaModal } from '../../actions';
+import { showUserAreaModal } from '../../store/actions';
 
 
 const LogInButton = () => {

@@ -17,7 +17,7 @@ import {
   removeChatChannel,
   setMobile,
   windowResize,
-} from './actions';
+} from './store/actions';
 import {
   receivePixelUpdate,
   receivePixelReturn,

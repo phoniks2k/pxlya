@@ -14,7 +14,7 @@ import {
   closeWindow,
   restoreWindow,
   removeWindow,
-} from '../actions';
+} from '../store/actions';
 import COMPONENTS from './windows';
 
 const ModalRoot = () => {

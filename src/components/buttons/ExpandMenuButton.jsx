@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { toggleOpenMenu } from '../../actions';
+import { toggleOpenMenu } from '../../store/actions';
 
 const ExpandMenuButton = () => {
   const menuOpen = useSelector((state) => state.gui.menuOpen);

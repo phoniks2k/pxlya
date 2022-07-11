@@ -9,7 +9,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { MdPalette } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { toggleOpenPalette } from '../../actions';
+import { toggleOpenPalette } from '../../store/actions';
 
 const PalselButton = () => {
   const paletteOpen = useSelector((state) => state.gui.paletteOpen);

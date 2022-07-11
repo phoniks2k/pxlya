@@ -1,4 +1,4 @@
-import { MAX_CHAT_MESSAGES } from '../core/constants';
+import { MAX_CHAT_MESSAGES } from '../../core/constants';
 
 const initialState = {
   /*

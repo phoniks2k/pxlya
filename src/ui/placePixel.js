@@ -16,7 +16,7 @@ import {
   placedPixels,
   pixelWait,
   updatePixel,
-} from '../actions';
+} from '../store/actions';
 import SocketClient from '../socket/SocketClient';
 
 let pixelTimeout = null;

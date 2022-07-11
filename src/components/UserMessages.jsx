@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { t } from 'ttag';
 
-import { requestResendVerify } from '../actions/fetch';
+import { requestResendVerify } from '../store/actions/fetch';
 
 
 const UserMessages = () => {

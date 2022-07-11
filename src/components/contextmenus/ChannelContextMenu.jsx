@@ -15,7 +15,7 @@ import {
   setLeaveChannel,
   muteChatChannel,
   unmuteChatChannel,
-} from '../../actions';
+} from '../../store/actions';
 
 const ChannelContextMenu = () => {
   const wrapperRef = useRef(null);

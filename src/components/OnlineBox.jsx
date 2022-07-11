@@ -8,7 +8,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { FaUser, FaPaintBrush, FaFlipboard } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { toggleOnlineCanvas } from '../actions';
+import { toggleOnlineCanvas } from '../store/actions';
 import { numberToString } from '../core/utils';
 
 

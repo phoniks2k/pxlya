@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { t } from 'ttag';
 
 import Captcha from './Captcha';
-import { requestSolveCaptcha } from '../actions/fetch';
+import { requestSolveCaptcha } from '../store/actions/fetch';
 
 const GlobalCaptcha = ({ close }) => {
   const [errors, setErrors] = useState([]);

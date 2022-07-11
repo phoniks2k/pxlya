@@ -1,20 +1,18 @@
-/* @flow */
-
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
 
-import audio from './audio';
-import socketClientHook from './socketClientHook';
-import rendererHook from './rendererHook';
+import audio from './middleware/audio';
+import socketClientHook from './middleware/socketClientHook';
+import rendererHook from './middleware/rendererHook';
 // import ads from './ads';
-import array from './array';
-import promise from './promise';
-import notifications from './notifications';
-import title from './title';
-import placePixelControl from './placePixelControl';
-import extensions from './extensions';
-import reducers from '../reducers';
+import array from './middleware/array';
+import promise from './middleware/promise';
+import notifications from './middleware/notifications';
+import title from './middleware/title';
+import placePixelControl from './middleware/placePixelControl';
+import extensions from './middleware/extensions';
+import reducers from './reducers';
 
 
 const store = createStore(
@@ -37,9 +35,11 @@ const store = createStore(
 );
 
 
-export default function configureStore(onComplete: ?() => void) {
+export default function configureStore(onComplete) {
   persistStore(store, null, () => {
-    onComplete(store);
+    if (onComplete) {
+      onComplete(store);
+    }
   });
   return store;
 }

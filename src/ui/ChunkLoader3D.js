@@ -8,7 +8,7 @@ import {
   requestBigChunk,
   receiveBigChunk,
   receiveBigChunkFailure,
-} from '../actions';
+} from '../store/actions';
 import {
   getChunkOfPixel,
   getOffsetOfPixel,

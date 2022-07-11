@@ -8,8 +8,8 @@ import { t } from 'ttag';
 import { useDispatch } from 'react-redux';
 
 import { validateName } from '../utils/validation';
-import { requestNameChange } from '../actions/fetch';
-import { setName } from '../actions';
+import { requestNameChange } from '../store/actions/fetch';
+import { setName } from '../store/actions';
 
 
 function validate(name) {

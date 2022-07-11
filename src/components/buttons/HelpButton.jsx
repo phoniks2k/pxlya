@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { FaQuestion } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showHelpModal } from '../../actions';
+import { showHelpModal } from '../../store/actions';
 
 
 const HelpButton = () => {

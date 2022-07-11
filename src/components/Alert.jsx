@@ -7,7 +7,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import GlobalCaptcha from './GlobalCaptcha';
-import { closeAlert } from '../actions';
+import { closeAlert } from '../store/actions';
 
 const Alert = () => {
   const [render, setRender] = useState(false);

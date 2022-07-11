@@ -1,6 +1,5 @@
 /*
  * keypress actions
- * @flow
  */
 import { t } from 'ttag';
 import store from '../ui/store';
@@ -13,11 +12,11 @@ import {
   toggleMute,
   notify,
   selectCanvas,
-} from '../actions';
+} from '../store/actions';
 
 const usedKeys = ['g', 'h', 'x', 'm', 'r', 'p'];
 
-function onKeyPress(event: KeyboardEvent) {
+function onKeyPress(event) {
   // ignore key presses if modal is open or chat is used
   if (event.target.nodeName === 'INPUT'
     || event.target.nodeName === 'TEXTAREA'

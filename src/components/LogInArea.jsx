@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import LogInForm from './LogInForm';
-import { changeWindowType } from '../actions';
+import { changeWindowType } from '../store/actions';
 
 const logoStyle = {
   marginRight: 5,

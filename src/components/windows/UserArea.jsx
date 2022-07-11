@@ -7,7 +7,7 @@ import React, { Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { fetchStats } from '../../actions';
+import { fetchStats } from '../../store/actions';
 import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';

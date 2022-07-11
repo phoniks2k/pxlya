@@ -13,7 +13,7 @@ import { t } from 'ttag';
 import {
   hideAllWindowTypes,
   openChatWindow,
-} from '../../actions';
+} from '../../store/actions';
 
 /*
  * return [ showWindows, chatOpen, chatHiden ]

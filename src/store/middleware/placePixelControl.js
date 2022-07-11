@@ -1,10 +1,9 @@
 /*
  * Hooks for placePixel
  *
- * @flow
  */
 
-import { requestFromQueue } from '../ui/placePixel';
+import { requestFromQueue } from '../../ui/placePixel';
 
 export default (store) => (next) => (action) => {
   switch (action.type) {

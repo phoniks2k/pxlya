@@ -9,7 +9,7 @@
 import { t } from 'ttag';
 
 import Renderer2D from './Renderer2D';
-import { sweetAlert } from '../actions';
+import { sweetAlert } from '../store/actions';
 import { isWebGL2Available } from '../core/utils';
 
 const dummyRenderer = {

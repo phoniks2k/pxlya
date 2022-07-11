@@ -6,9 +6,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { changeWindowType } from '../../actions';
+import { changeWindowType } from '../../store/actions';
 import { validateEMail } from '../../utils/validation';
-import { requestNewPassword } from '../../actions/fetch';
+import { requestNewPassword } from '../../store/actions/fetch';
 
 function validate(email) {
   const errors = [];

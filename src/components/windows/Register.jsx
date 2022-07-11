@@ -10,9 +10,9 @@ import Captcha from '../Captcha';
 import {
   validateEMail, validateName, validatePassword,
 } from '../../utils/validation';
-import { requestRegistration } from '../../actions/fetch';
+import { requestRegistration } from '../../store/actions/fetch';
 
-import { changeWindowType, loginUser } from '../../actions';
+import { changeWindowType, loginUser } from '../../store/actions';
 
 
 function validate(name, email, password, confirmPassword) {

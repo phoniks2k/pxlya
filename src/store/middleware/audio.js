@@ -1,8 +1,6 @@
-/* @flow
- *
- * play sounds using the HTML5 AudoContext
- *
- * */
+/*
+  * play sounds using the HTML5 AudoContext
+  */
 
 
 // iPhone needs this

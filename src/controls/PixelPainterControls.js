@@ -20,7 +20,7 @@ import {
   moveSouth,
   moveEast,
   onViewFinishChange,
-} from '../actions';
+} from '../store/actions';
 import {
   tryPlacePixel,
 } from '../ui/placePixel';

@@ -4,24 +4,12 @@
  */
 
 /*
- * set theme-color meta tag that sets the color
- * of address bars on phones
- */
-/*
  * hooks for rendering
  */
 import {
   getRenderer,
   initRenderer,
-} from '../ui/renderer';
-
-
-function setThemeColorMeta(r, g, b) {
-  const metaThemeColor = document.querySelector('meta[name=theme-color]');
-  if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', `rgb(${r}, ${g}, ${b})`);
-  }
-}
+} from '../../ui/renderer';
 
 export default (store) => (next) => (action) => {
   const { type } = action;
@@ -63,10 +51,7 @@ export default (store) => (next) => (action) => {
     case 'SELECT_CANVAS':
     case 'RECEIVE_ME': {
       const renderer = getRenderer();
-      const { is3D, palette } = state.canvas;
-
-      const [r, g, b] = palette.rgb;
-      setThemeColorMeta(r, g, b);
+      const { is3D } = state.canvas;
 
       if (is3D === renderer.is3D) {
         renderer.updateCanvasData(state);

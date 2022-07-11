@@ -1,12 +1,21 @@
 /**
- *
- * @flow
+ * set URL in adress bar, theme-color and title
  */
 
 import {
   durationToString,
-} from '../core/utils';
+} from '../../core/utils';
 
+/*
+ * set theme-color meta tag that sets the color
+ * of address bars on phones
+ */
+function setThemeColorMeta(r, g, b) {
+  const metaThemeColor = document.querySelector('meta[name=theme-color]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', `rgb(${r}, ${g}, ${b})`);
+  }
+}
 
 const TITLE = 'PixelPlanet.fun';
 
@@ -35,12 +44,20 @@ export default (store) => (next) => (action) => {
     case 'RECEIVE_ME':
     case 'RELOAD_URL':
     case 'ON_VIEW_FINISH_CHANGE': {
+      const state = store.getState();
+
       const {
         view,
         viewscale,
         canvasIdent,
         is3D,
-      } = store.getState().canvas;
+      } = state.canvas;
+
+      if (action.type !== 'ON_VIEW_FINISH_CHANGE') {
+        const [r, g, b] = state.canvas.palette.rgb;
+        setThemeColorMeta(r, g, b);
+      }
+
       const coords = view.map((u) => Math.round(u)).join(',');
       let newhash = `#${canvasIdent},${coords}`;
       if (!is3D) {

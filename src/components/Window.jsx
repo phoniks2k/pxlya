@@ -17,7 +17,7 @@ import {
   maximizeWindow,
   cloneWindow,
   focusWindow,
-} from '../actions';
+} from '../store/actions';
 import useDrag from './hooks/drag';
 import COMPONENTS from './windows';
 
@@ -153,7 +153,7 @@ const Window = ({ id }) => {
       >
         ▨
       </div>
-      <div 
+      <div
         className="win-content"
         key="content"
       >

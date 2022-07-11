@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import { validatePassword } from '../utils/validation';
-import { requestDeleteAccount } from '../actions/fetch';
-import { logoutUser } from '../actions';
+import { requestDeleteAccount } from '../store/actions/fetch';
+import { logoutUser } from '../store/actions';
 
 function validate(password) {
   const errors = [];

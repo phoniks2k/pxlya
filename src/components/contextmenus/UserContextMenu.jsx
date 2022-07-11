@@ -16,7 +16,7 @@ import {
   startDm,
   setUserBlock,
   setChatChannel,
-} from '../../actions';
+} from '../../store/actions';
 import { escapeMd } from '../../core/utils';
 
 const UserContextMenu = () => {

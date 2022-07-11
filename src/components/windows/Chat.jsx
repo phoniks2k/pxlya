@@ -20,7 +20,7 @@ import {
   fetchChatMessages,
   showContextMenu,
   setWindowTitle,
-} from '../../actions';
+} from '../../store/actions';
 import SocketClient from '../../socket/SocketClient';
 
 

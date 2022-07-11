@@ -27,7 +27,7 @@ import {
 import {
   onViewFinishChange,
   setViewCoordinates,
-} from '../actions';
+} from '../store/actions';
 import {
   THREE_CANVAS_HEIGHT,
 } from '../core/constants';

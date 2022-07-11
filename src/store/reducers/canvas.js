@@ -1,10 +1,10 @@
-import Palette from '../core/Palette';
+import Palette from '../../core/Palette';
 import {
   clamp,
   getIdFromObject,
   getHistoricalCanvasSize,
   getMaxTiledZoom,
-} from '../core/utils';
+} from '../../core/utils';
 
 
 import {
@@ -13,7 +13,7 @@ import {
   DEFAULT_CANVAS_ID,
   DEFAULT_CANVASES,
   TILE_SIZE,
-} from '../core/constants';
+} from '../../core/constants';
 
 export type CanvasState = {
   canvasId: number,

@@ -19,7 +19,7 @@ import {
 import {
   setHover,
   selectColor,
-} from '../actions';
+} from '../store/actions';
 import { tryPlacePixel } from './placePixel';
 
 

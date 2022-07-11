@@ -6,7 +6,7 @@
 
 import { t } from 'ttag';
 
-import { dateToString } from '../core/utils';
+import { dateToString } from '../../core/utils';
 
 /*
  * Adds customizeable timeout to fetch

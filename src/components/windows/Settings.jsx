@@ -20,7 +20,7 @@ import {
   toggleLightGrid,
   toggleHistoricalView,
   selectStyle,
-} from '../../actions';
+} from '../../store/actions';
 
 
 const flexy = {

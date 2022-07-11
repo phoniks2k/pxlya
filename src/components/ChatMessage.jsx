@@ -5,7 +5,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { showContextMenu } from '../actions';
+import { showContextMenu } from '../store/actions';
 import { MarkdownParagraph } from './Markdown';
 import {
   colorFromText,

@@ -9,7 +9,7 @@ import { t } from 'ttag';
 import {
   validateEMail, validatePassword,
 } from '../utils/validation';
-import { requestMailChange } from '../actions/fetch';
+import { requestMailChange } from '../store/actions/fetch';
 
 function validate(email, password) {
   const errors = [];

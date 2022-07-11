@@ -2,7 +2,6 @@
  * sends events via window.pixelPlanetEvents to potential
  * Extensions and Userscripts
  *
- * @flow
  */
 
 import EventEmitter from 'events';

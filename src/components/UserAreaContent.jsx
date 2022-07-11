@@ -13,8 +13,8 @@ import ChangeName from './ChangeName';
 import ChangeMail from './ChangeMail';
 import DeleteAccount from './DeleteAccount';
 import SocialSettings from './SocialSettings';
-import { logoutUser } from '../actions';
-import { requestLogOut } from '../actions/fetch';
+import { logoutUser } from '../store/actions';
+import { requestLogOut } from '../store/actions/fetch';
 
 import { numberToString } from '../core/utils';
 

@@ -2,7 +2,7 @@
  * state for open windows and modal and its content
  */
 
-import { clamp } from '../core/utils';
+import { clamp } from '../../core/utils';
 
 const SCREEN_MARGIN_S = 30;
 const SCREEN_MARGIN_EW = 70;
