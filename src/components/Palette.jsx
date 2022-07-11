@@ -144,7 +144,7 @@ const Palette = () => {
             role="button"
             tabIndex={0}
             aria-label={`color ${index + clrHide}`}
-            key={color}
+            key={`${color}-${index + clrHide}`}
             className={selectedColor === (index + clrHide)
               ? 'selected'
               : 'unselected'}
