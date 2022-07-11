@@ -44,6 +44,7 @@ const titleStyles = {
 
 const rowStyles = {
   ...flexy,
+  alignItems: 'center',
   flexDirection: 'row',
 };
 

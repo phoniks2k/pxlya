@@ -7,7 +7,6 @@ import compression from 'compression';
 import express from 'express';
 import http from 'http';
 
-// import baseCss from './components/base.tcss';
 import forceGC from './core/forceGC';
 import logger from './core/logger';
 import rankings from './core/ranking';

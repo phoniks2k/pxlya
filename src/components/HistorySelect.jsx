@@ -14,14 +14,14 @@ import { requestHistoricalTimes } from '../store/actions/fetch';
 
 
 function stringToDate(dateString) {
-  if (!dateString) return null;
+  if (!dateString) return '';
   // YYYYMMDD
   // eslint-disable-next-line max-len
   return `${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6)}`;
 }
 
 function stringToTime(timeString) {
-  if (!timeString) return null;
+  if (!timeString) return '';
   return `${timeString.substring(0, 2)}:${timeString.substring(2)}`;
 }
 
@@ -105,17 +105,18 @@ const HistorySelect = () => {
     <div id="historyselect">
       <input
         type="date"
-        requiredPattern="\d{4}-\d{2}-\d{2}"
+        pattern="\d{4}-\d{2}-\d{2}"
+        key="dateinput"
         value={selectedDate}
         min={canvasStartDate}
         max={max}
         ref={dateSelect}
         onChange={handleDateChange}
       />
-      <div>
+      <div key="timeselcon">
         { (!!times.length && historicalTime && !submitting)
           && (
-            <div>
+            <div key="timesel">
               <button
                 type="button"
                 className="hsar"
@@ -128,7 +129,6 @@ const HistorySelect = () => {
                 {times.map((value) => (
                   <option
                     value={value}
-                    selected={value === selectedTime}
                   >
                     {value}
                   </option>
