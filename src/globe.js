@@ -151,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', onWindowResize, false);
 
 
+  /*
+   * update coords
+   */
   const raycaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   const coorbox = document.getElementById('coorbox');
@@ -184,6 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setInterval(onDocumentMouseMove, 1000);
 
+  /*
+   * double click to teleport to canvas
+   */
   function onDocumentDblClick(event) {
     if (!object) {
       return;
@@ -202,6 +208,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  /*
+   * detect double-touch on touchscreen
+   */
+  let lastClick = 0;
+  const lastCoords = [0, 0];
+  function onTouch(event) {
+    if (event.touches.length > 1) {
+      lastClick = 0;
+      return;
+    }
+    const now = Date.now();
+    const { pageX: mx, pageY: my } = event.touches[0];
+    if (lastClick > now - 500
+      && (lastCoords[0] - mx) ** 2 + (lastCoords[1] - my) ** 2 < 400
+    ) {
+      event.clientX = mx;
+      event.clientY = my;
+      onDocumentDblClick(event);
+      return;
+    }
+    lastClick = now;
+    lastCoords[0] = mx;
+    lastCoords[1] = my;
+  }
+
   document.addEventListener('mousemove', onDocumentMouseMove, false);
+  // document.addEventListener('dblclick', onDocumentDblClick, false);
+  document.addEventListener('touchstart', onTouch, false);
   document.addEventListener('dblclick', onDocumentDblClick, false);
 });

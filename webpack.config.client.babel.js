@@ -77,7 +77,15 @@ export function buildWebpackClientConfig(
 
     resolve: {
       alias: {
+        /*
+         * have to mock it, because we don't ship ttag itself with the client,
+         * we have a script for every language
+        */
         ttag: 'ttag/dist/mock',
+        /*
+         * if we don't do that,we might load different versions of three
+         */
+        three: path.resolve(__dirname, './node_modules/three'),
       },
       extensions: ['.js', '.jsx'],
     },
