@@ -16,16 +16,19 @@ function getUserFromUrl(url) {
 const TikTok = ({ url }) => {
   const [embedCode, setEmbedCode] = useState(null);
 
-  useEffect(async () => {
-    const prot = window.location.protocol.startsWith('http')
-      ? window.location.protocol : 'https';
-    // eslint-disable-next-line max-len
-    const tkurl = `${prot}//www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
-    const resp = await fetch(tkurl);
-    const embedData = await resp.json();
-    if (embedData.html) {
-      setEmbedCode(embedData.html);
+  useEffect(() => {
+    async function fetchData() {
+      const prot = window.location.protocol.startsWith('http')
+        ? window.location.protocol : 'https';
+      // eslint-disable-next-line max-len
+      const tkurl = `${prot}//www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
+      const resp = await fetch(tkurl);
+      const embedData = await resp.json();
+      if (embedData.html) {
+        setEmbedCode(embedData.html);
+      }
     }
+    fetchData();
   }, []);
 
   if (!embedCode) {

@@ -54,7 +54,7 @@ const Captcha = ({ autoload, width }) => {
     setCaptchaData({ url: svgUrl, id: captchaid });
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     if (autoload) {
       reloadCaptcha();
     }
