@@ -1,8 +1,27 @@
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
-import { persistStore } from 'redux-persist';
+import { persistStore, persistCombineReducers } from 'redux-persist';
+import localForage from 'localforage';
 
-import audio from './middleware/audio';
+/*
+ * reducers
+ */
+import audio from './reducers/audio';
+import canvas from './reducers/canvas';
+import gui from './reducers/gui';
+import windows from './reducers/windows';
+import user from './reducers/user';
+import ranks from './reducers/ranks';
+import alert from './reducers/alert';
+import chat from './reducers/chat';
+import contextMenu from './reducers/contextMenu';
+import chatRead from './reducers/chatRead';
+import fetching from './reducers/fetching';
+
+/*
+ * middleware
+ */
+import audiom from './middleware/audio';
 import socketClientHook from './middleware/socketClientHook';
 import rendererHook from './middleware/rendererHook';
 // import ads from './ads';
@@ -12,8 +31,31 @@ import notifications from './middleware/notifications';
 import title from './middleware/title';
 import placePixelControl from './middleware/placePixelControl';
 import extensions from './middleware/extensions';
-import reducers from './reducers';
 
+const reducers = persistCombineReducers({
+  key: 'primary',
+  storage: localForage,
+  blacklist: [
+    'user',
+    'canvas',
+    'alert',
+    'chat',
+    'contextMenu',
+    'fetching',
+  ],
+}, {
+  audio,
+  canvas,
+  gui,
+  windows,
+  user,
+  ranks,
+  alert,
+  chat,
+  contextMenu,
+  chatRead,
+  fetching,
+});
 
 const store = createStore(
   reducers,
@@ -23,7 +65,7 @@ const store = createStore(
       thunk,
       promise,
       array,
-      audio,
+      audiom,
       notifications,
       title,
       socketClientHook,
@@ -35,11 +77,6 @@ const store = createStore(
 );
 
 
-export default function configureStore(onComplete) {
-  persistStore(store, null, () => {
-    if (onComplete) {
-      onComplete(store);
-    }
-  });
-  return store;
-}
+persistStore(store);
+
+export default store;

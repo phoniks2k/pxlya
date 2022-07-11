@@ -1,14 +1,11 @@
 /**
- *
- * @flow
+ * Main App
  */
 
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { IconContext } from 'react-icons';
-
-import store from '../ui/store';
 
 import Style from './Style';
 import CoordinatesBox from './CoordinatesBox';
@@ -41,7 +38,7 @@ const App = () => (
   </div>
 );
 
-function renderApp(domParent) {
+function renderApp(domParent, store) {
   ReactDOM.render(
     <Provider store={store}>
       <App />

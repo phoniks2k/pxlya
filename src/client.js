@@ -5,7 +5,7 @@
 // eslint-disable-next-line no-unused-vars
 import fetch from 'isomorphic-fetch'; // TODO put in the beggining with webpack!
 
-import onKeyPress from './controls/keypress';
+import createKeyPressHandler from './controls/keypress';
 import {
   fetchMe,
   initTimer,
@@ -22,7 +22,7 @@ import {
   receivePixelUpdate,
   receivePixelReturn,
 } from './ui/placePixel';
-import store from './ui/store';
+import store from './store/configureStore';
 
 
 import renderApp from './components/App';
@@ -121,8 +121,9 @@ function init() {
 init();
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderApp(document.getElementById('app'));
+  renderApp(document.getElementById('app'), store);
 
+  const onKeyPress = createKeyPressHandler(store);
   document.addEventListener('keydown', onKeyPress, false);
 
   // garbage collection
