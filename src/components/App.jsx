@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { IconContext } from 'react-icons';
 
 import Style from './Style';
@@ -39,11 +39,11 @@ const App = () => (
 );
 
 function renderApp(domParent, store) {
-  ReactDOM.render(
+  const root = createRoot(domParent);
+  root.render(
     <Provider store={store}>
       <App />
     </Provider>,
-    domParent,
   );
 }
 
