@@ -236,6 +236,14 @@ class PixelPlainterControls {
         return;
       }
     }
+    // Gazprom redirection
+    if (x > 2083 && y > -11408 && x < 2282 && y < -11210) {
+      // eslint-disable-next-line eqeqeq
+      if (state.canvas.canvasId == 0) {
+        window.location.href = 'https://files.catbox.moe/h2fekp.mp4';
+        return;
+      }
+    }
 
     const maxCoords = canvasSize / 2;
     if (x < -maxCoords || x >= maxCoords || y < -maxCoords || y >= maxCoords) {
