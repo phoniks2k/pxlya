@@ -25,16 +25,18 @@ class Cron {
     this.functions = [];
 
     const ct = new Date();
-    const msToNextFullHour = 3600000
+    const msToNextFullHour = HOUR
       - (ct.getUTCMinutes() * 60 + ct.getUTCSeconds()) * 1000;
     this.timeout = setTimeout(this.checkForExecution, msToNextFullHour);
   }
 
   checkForExecution() {
-    const curTime = Date.now();
+    const curDate = new Date();
+    const curTime = curDate.getTime();
     this.timeout = setTimeout(this.checkForExecution, HOUR);
-    if (curTime + 10000 > this.lastRun + this.interval * HOUR) {
-      logger.info(`Run cron events for interval: ${this.interval}h`);
+    if (curTime + 120000 > this.lastRun + this.interval * HOUR) {
+      // eslint-disable-next-line max-len
+      logger.info(`${curDate.toUTCString()}> Run cron events for interval: ${this.interval}h`);
       this.lastRun = curTime;
       this.functions.forEach(async (item) => {
         try {
@@ -57,7 +59,7 @@ function initializeDailyCron() {
   // make it first run at midnight
   const lastRun = now.getTime()
     - now.getUTCHours() * HOUR
-    - (now.getUTCMinutes() * 60 - now.getUTCSeconds()) * 1000;
+    - (now.getUTCMinutes() * 60 + now.getUTCSeconds()) * 1000;
   const cron = new Cron(24, lastRun);
   return cron;
 }
