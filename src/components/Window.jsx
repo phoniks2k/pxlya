@@ -122,7 +122,7 @@ const Window = ({ id }) => {
         </span>
         <span
           className="win-title"
-          key={`title-${name}-${title}`}
+          key="title"
           ref={titleBarRef}
           title={t`Move`}
         >
