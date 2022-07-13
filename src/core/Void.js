@@ -183,7 +183,7 @@ class Void {
     if (pi >= i - 1 && pi <= i + 1 && pj >= j - 1 && pj <= j + 1) {
       pixels.forEach((pxl) => {
         const [off, color] = pxl;
-        if (color <= 2 || color === 25) {
+        if (color === 2 || color === 25) {
           const uOff = (pi - i + 1) * TILE_SIZE;
           const vOff = (pj - j + 1) * TILE_SIZE;
           const x = uOff + off % TILE_SIZE;
