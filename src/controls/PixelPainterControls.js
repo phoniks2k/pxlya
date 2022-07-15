@@ -228,14 +228,6 @@ class PixelPlainterControls {
     const { canvasSize } = state.canvas;
     const [x, y] = cell;
 
-    // Luhansk redirection
-    if (x > 6937 && y > -10736 && x < 7193 && y < -10463) {
-      // eslint-disable-next-line eqeqeq
-      if (state.canvas.canvasId == 0) {
-        window.location.href = 'https://www.youtube.com/watch?v=--SwH0GCXU8';
-        return;
-      }
-    }
     // Gazprom redirection
     if (x > 2083 && y > -11408 && x < 2282 && y < -11210) {
       // eslint-disable-next-line eqeqeq
