@@ -4,6 +4,7 @@
 
 /* eslint-disable max-len */
 
+import { randomUUID } from 'crypto';
 import nodemailer from 'nodemailer';
 
 import logger from './logger';
@@ -198,6 +199,10 @@ class MailProvider {
     const part2 = Math.random().toString(36).substring(2, 15)
       + Math.random().toString(36).substring(2, 15);
     return `${part1}-${part2}`;
+  }
+
+  static createCode() {
+    return randomUUID();
   }
 
   static cleanUsers() {

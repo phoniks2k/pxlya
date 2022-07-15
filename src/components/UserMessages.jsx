@@ -24,8 +24,10 @@ const UserMessages = () => {
       {messages.includes('not_verified')
         && (
           <p className="usermessages">
-            {t`Please verify your mail address&nbsp;
-            or your account could get deleted after a few days.`}
+            {
+              // eslint-disable-next-line max-len
+              t`Please verify your mail address or your account could get deleted after a few days.`
+            }
             {(verifyAnswer)
               ? (
                 <span
