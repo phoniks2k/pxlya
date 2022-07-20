@@ -213,13 +213,17 @@ Wants=network-online.target
 After=network.target mysql.service redis.service
 ```
 
+## Hourly Event
+
+Hourly event is an MMORPG style event that launches once in two hours where users have to fight against a growing void that starts at a random position at the main canvas. If they complete it successfully, the whole canvas will have half cooldown for a few minutes.
+
 ## Backups and Historical View
 
 PixelPlanet includes a backup script that creates full canvas backups daily in the form of PNG tile files and incremential backups all 15min (or whatever you define) that saves PNG tiles with just the differences since the last full daily backup.
 
 It requires a [second running redis instance](https://www.digitalocean.com/community/questions/multiple-redis-instances-on-ubuntu-16-04).
 
-The backup script gets built when building pixelplanet and also gets copied to dist/ directory. You can run it with:
+The backup script gets built when building pixelplanet and also gets copied to `dist/` directory. You can run it with:
 
 ```
 node backup.js REDIS_URL_CANVAS REDIS_URL_BACKUP BACKUP_DIRECTORY [INTERVAL] [COMMAND]
@@ -227,7 +231,7 @@ node backup.js REDIS_URL_CANVAS REDIS_URL_BACKUP BACKUP_DIRECTORY [INTERVAL] [CO
 
 Make sure to get the order right, because the backup redis instance will be overwritten every day.
 Interval is the time in minutes between incremential backups. If interval is undefined, it will just make one backup and then exit.
-If command is defined, it will be executed after every backup (just one command, with no arguments, like "dosomething.sh"), this is useful for synchronisation with a storage server i.e.. Look into utils/backupServer for some scripts and info on how to run it.
+If command is defined, it will be executed after every backup (just one command, with no arguments, like "dosomething.sh"), this is useful for synchronisation with a storage server i.e.. Look into `utils/backupServer` for some scripts and info on how to run it.
 
 You can run it with pm2, just like pixelplanet. An example ecosystem-backup.example.yml file will be located in the dist directory.
 
@@ -235,16 +239,10 @@ Note:
 
 - You do not have to run backups or historical view, it's optional.
 
-## Hourly Event
-
-Hourly event is an MMORPG style event that launches once in two hours where users have to fight against a growing void that starts at a random position at the main canvas. If they complete it successfully, the whole canvas will have half cooldown for a few minutes.
-
-## Historical view
-
 ![historicalview](promotion/historicalview.gif)
 
 Pixelplanet is able to let the user browse through the past with those backups. For this you need to define `BACKUP_URL` and `BACKUP_DIR` in your ecosystem.yml for pixelplanet.
-`BACKUP_URL` is the URL where the backup folder is available. It's best to let another server serve those files or at least use nginx.
+`BACKUP_URL` is the URL where the backup folder is available. You have to let another server serve those files or use nginx.
 `BACKUP_DIR` is the full path of the local directory where the backup is located (whats set as `BACKUP_DIRECTORY` in the command of the backup.js).
 
 ## 3D canvas
