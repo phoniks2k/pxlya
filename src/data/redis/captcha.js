@@ -130,7 +130,9 @@ export async function checkCaptchaSolution(
     logger.info(
       `CAPTCHA ${ip} got captcha wrong (${text} instead of ${solution})`,
     );
-    wrongCallback(text, solution);
+    if (wrongCallback) {
+      wrongCallback(text, solution);
+    }
     return 2;
   }
   logger.info(`CAPTCHA ${ip}:${captchaid} timed out`);
