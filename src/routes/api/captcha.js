@@ -8,6 +8,7 @@
 import logger from '../../core/logger';
 import { checkCaptchaSolution } from '../../data/redis/captcha';
 import { getIPFromRequest } from '../../utils/ip';
+import chatProvider from '../../core/ChatProvider';
 
 export default async (req, res) => {
   const ip = getIPFromRequest(req);
@@ -26,7 +27,21 @@ export default async (req, res) => {
       return;
     }
 
-    const ret = await checkCaptchaSolution(text, ip, false, id);
+    const ret = await checkCaptchaSolution(
+      text,
+      ip,
+      false,
+      id,
+      (inpt, solution) => {
+        chatProvider.broadcastChatMessage(
+          'info',
+          // eslint-disable-next-line max-len
+          `Someone got his captcha wrong and entered ${inpt} instead of ${solution}`,
+          chatProvider.enChannelId,
+          chatProvider.infoUserId,
+        );
+      },
+    );
 
     switch (ret) {
       case 0:

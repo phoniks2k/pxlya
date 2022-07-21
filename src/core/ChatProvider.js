@@ -380,7 +380,7 @@ export class ChatProvider {
       return null;
     }
 
-    if (!user.userlvl && await cheapDetector(user.ip)) {
+    if (await cheapDetector(user.ip)) {
       logger.info(
         `${name} / ${user.ip} tried to send chat message with proxy`,
       );

@@ -194,14 +194,6 @@ class MailProvider {
   }
 
   static createCode() {
-    const part1 = Math.random().toString(36).substring(2, 15)
-      + Math.random().toString(36).substring(2, 15);
-    const part2 = Math.random().toString(36).substring(2, 15)
-      + Math.random().toString(36).substring(2, 15);
-    return `${part1}-${part2}`;
-  }
-
-  static createCode() {
     return randomUUID();
   }
 

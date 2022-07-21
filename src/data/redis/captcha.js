@@ -59,9 +59,6 @@ function evaluateResult(captchaText, userText) {
       return false;
     }
   }
-  if (Math.random() < 0.1) {
-    return false;
-  }
   return true;
 }
 
@@ -97,6 +94,7 @@ export async function setCaptchaSolution(
  * @param text Solution of captcha
  * @param ip
  * @param onetime If the captcha is just one time or should be remembered
+ * @param wrongCallback function that gets called when captcha got solved wrong
  *   for this ip
  * @return 0 if solution right
  *         1 if timed out
@@ -107,6 +105,7 @@ export async function checkCaptchaSolution(
   ip,
   onetime = false,
   captchaid = null,
+  wrongCallback = null,
 ) {
   const ipn = getIPv6Subnet(ip);
   let key = `capt:${ip}`;
@@ -116,6 +115,9 @@ export async function checkCaptchaSolution(
   const solution = await redis.get(key);
   if (solution) {
     if (evaluateResult(solution, text)) {
+      if (Math.random() < 0.1) {
+        return 2;
+      }
       if (!onetime) {
         const solvkey = `human:${ipn}`;
         await redis.set(solvkey, '', {
@@ -128,6 +130,7 @@ export async function checkCaptchaSolution(
     logger.info(
       `CAPTCHA ${ip} got captcha wrong (${text} instead of ${solution})`,
     );
+    wrongCallback(text, solution);
     return 2;
   }
   logger.info(`CAPTCHA ${ip}:${captchaid} timed out`);
