@@ -14,6 +14,7 @@ async function history(req: Request, res: Response) {
       || day.includes('/') || day.includes('\\') || day.length !== 8
   ) {
     res.status(404).end();
+    return;
   }
   const yyyy = day.slice(0, 4);
   const mm = day.slice(4, 6);
@@ -23,6 +24,7 @@ async function history(req: Request, res: Response) {
   try {
     if (!fs.existsSync(path)) {
       res.status(404).end();
+      return;
     }
 
     const dirs = fs.readdirSync(path);
