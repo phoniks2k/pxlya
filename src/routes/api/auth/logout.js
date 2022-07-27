@@ -7,7 +7,7 @@ import type { Request, Response } from 'express';
 export default async (req: Request, res: Response) => {
   const { user } = req;
   const { t } = req.ttag;
-  if (!user) {
+  if (!user || !user.regUser) {
     res.status(401);
     res.json({
       errors: [t`You are not even logged in.`],

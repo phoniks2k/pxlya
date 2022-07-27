@@ -31,7 +31,7 @@ export default async (req: Request, res: Response) => {
   }
 
   const { user } = req;
-  if (!user) {
+  if (!user || !user.regUser) {
     res.status(401);
     res.json({
       errors: [t`You are not authenticated.`],
