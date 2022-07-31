@@ -148,7 +148,8 @@ export async function drawByOffsets(
       );
 
       pixelLogger.info(
-        `${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${setColor}`,
+        // eslint-disable-next-line max-len
+        `${startTime} ${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${setColor}`,
       );
 
       const clrIgnore = canvas.cli || 0;

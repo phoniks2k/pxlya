@@ -23,9 +23,7 @@ export const pixelLogger = createLogger({
   format: format.printf(({ message }) => message),
   transports: [
     new DailyRotateFile({
-      level: 'info',
       filename: './log/pixels-%DATE%.log',
-      maxSize: '20m',
       maxFiles: '14d',
       colorize: false,
     }),
