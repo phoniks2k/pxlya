@@ -64,7 +64,7 @@ class User {
 
   constructor() {
     // if id = null -> unregistered
-    this.id = null;
+    this.id = 0;
     this.regUser = null;
     this.ip = '127.0.0.1';
     this.ipSub = this.ip;

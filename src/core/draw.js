@@ -139,15 +139,16 @@ export async function drawByOffsets(
 
 
       const [x, y, z] = getPixelFromChunkOffset(i, j, offset, canvasSize, is3d);
-      pixelLogger.info(
-        `${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${retCode}`,
-      );
 
       // eslint-disable-next-line no-await-in-loop
       const setColor = await RedisCanvas.getPixelByOffset(
         canvasId,
         i, j,
         offset,
+      );
+
+      pixelLogger.info(
+        `${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${setColor}`,
       );
 
       const clrIgnore = canvas.cli || 0;
