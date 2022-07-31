@@ -25,6 +25,7 @@ export const pixelLogger = createLogger({
     new DailyRotateFile({
       filename: './log/pixels-%DATE%.log',
       maxFiles: '14d',
+      utc: true,
       colorize: false,
     }),
   ],
@@ -41,6 +42,7 @@ export const proxyLogger = createLogger({
       filename: './log/proxycheck-%DATE%.log',
       maxsize: '10m',
       maxFiles: '14d',
+      utc: true,
       colorize: false,
     }),
   ],
@@ -54,6 +56,7 @@ export const modtoolsLogger = createLogger({
       filename: './log/moderation/modtools-%DATE%.log',
       maxSize: '20m',
       maxFiles: '14d',
+      utc: true,
       colorize: false,
     }),
   ],
