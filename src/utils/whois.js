@@ -15,7 +15,10 @@ import { isIPv6, ip4InRangeToCIDR } from './ip';
  */
 function cIDRofWhois(ip, whoisData) {
   if (isIPv6(ip)) {
-    return whoisData.inet6num || whoisData.range || 'N/A';
+    return whoisData.inet6num
+      || (whoisData.range && !whoisData.range.includes('-') && whoisData.range)
+      || whoisData.route
+      || 'N/A';
   }
   const { range } = whoisData;
   if (range.includes('/') && !range.includes('-')) {
