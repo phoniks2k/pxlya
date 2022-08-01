@@ -80,6 +80,10 @@ const IPInfo = sequelize.define('IPInfo', {
     pcheck(value) {
       this.setDataValue('pcheck', value.slice(0, 60));
     },
+
+    country(value) {
+      this.setDataValue('country', value.slice(0, 2).toLowerCase());
+    },
   },
 });
 

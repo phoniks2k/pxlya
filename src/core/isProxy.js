@@ -20,7 +20,7 @@ async function getIPIntel(ip) {
   const email = `${Math.random().toString(36).substring(8)}-${Math.random().toString(36).substring(4)}@gmail.com`;
   // eslint-disable-next-line max-len
   const url = `http://check.getipintel.net/check.php?ip=${ip}&contact=${email}&flags=m`;
-  logger.info(`PROXYCHECK fetching getipintel ${url}`);
+  logger.info(`fetching getipintel ${url}`);
   const response = await fetch(url, {
     headers: {
       Accept: '*/*',
@@ -32,10 +32,10 @@ async function getIPIntel(ip) {
   });
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`PROXYCHECK getipintel not ok ${response.status}/${text}`);
+    throw new Error(`getipintel not ok ${response.status}/${text}`);
   }
   const body = await response.text();
-  logger.info('PROXYCHECK fetch getipintel is proxy? %s : %s', ip, body);
+  logger.info('PROXYCHECK %s : %s', ip, body);
   // returns tru iff we found 1 in the response and was ok (http code = 200)
   const value = parseFloat(body);
   return [
@@ -52,7 +52,7 @@ async function getIPIntel(ip) {
  */
 async function getProxyCheck(ip) {
   const url = `http://proxycheck.io/v2/${ip}?risk=1&vpn=1&asn=1`;
-  logger.info('PROXYCHECK fetching proxycheck %s', url);
+  logger.info('fetching proxycheck %s', url);
   const response = await fetch(url, {
     headers: {
       // eslint-disable-next-line max-len
@@ -64,7 +64,7 @@ async function getProxyCheck(ip) {
     throw new Error(`proxycheck not ok ${response.status}/${text}`);
   }
   const data = await response.json();
-  logger.info('PROXYCHECK proxycheck is proxy?', data);
+  logger.info('PROXYCHECK', data);
   if (!data.status) {
     return [
       false,
@@ -178,7 +178,7 @@ async function withCache(f, ip) {
       const pos = checking.indexOf(ipKey);
       if (~pos) checking.splice(pos, 1);
     } catch (error) {
-      logger.error('PROXYCHECK withCache %s', error.message || error);
+      logger.error('Error %s', error.message || error);
       const pos = checking.indexOf(ipKey);
       if (~pos) checking.splice(pos, 1);
     } finally {
