@@ -116,12 +116,16 @@ async function dummy() {
 }
 
 async function saveIPInfo(ip, isProxy, info) {
-  const whoisData = await whois(ip);
-  IPInfo.upsert({
-    ...whoisData,
-    isProxy,
-    pcheck: info,
-  });
+  try {
+    const whoisData = await whois(ip);
+    IPInfo.upsert({
+      ...whoisData,
+      isProxy,
+      pcheck: info,
+    });
+  } catch (error) {
+    logger.error(`Error whois for ${ip}: ${error.message}`);
+  }
 }
 
 /*
