@@ -2,7 +2,8 @@ import fetch from '../utils/proxiedFetch';
 
 import redis from '../data/redis/client';
 import { getIPv6Subnet } from '../utils/ip';
-import { Blacklist, Whitelist } from '../data/sql';
+import whois from '../utils/whois';
+import { Blacklist, Whitelist, IPInfo } from '../data/sql';
 import { proxyLogger as logger } from './logger';
 
 import { USE_PROXYCHECK } from './config';
@@ -37,14 +38,17 @@ async function getIPIntel(ip) {
   logger.info('PROXYCHECK fetch getipintel is proxy? %s : %s', ip, body);
   // returns tru iff we found 1 in the response and was ok (http code = 200)
   const value = parseFloat(body);
-  return value > 0.995;
+  return [
+    value > 0.995,
+    `score:${value}`,
+  ];
 }
 
 /*
  * check proxycheck.io if IP is proxy
  * Use proxiedFetch with random proxies
  * @param ip IP to check
- * @return true if proxy, false if not
+ * @return [ isProxy, info] true if proxy and extra info
  */
 async function getProxyCheck(ip) {
   const url = `http://proxycheck.io/v2/${ip}?risk=1&vpn=1&asn=1`;
@@ -61,7 +65,17 @@ async function getProxyCheck(ip) {
   }
   const data = await response.json();
   logger.info('PROXYCHECK proxycheck is proxy?', data);
-  return data.status === 'ok' && data[ip].proxy === 'yes';
+  if (!data.status) {
+    return [
+      false,
+      'status not ok',
+    ];
+  }
+  const ipData = data[ip];
+  return [
+    ipData.proxy === 'yes',
+    `${ipData.type},${ipData.city}`,
+  ];
 }
 
 /*
@@ -98,7 +112,16 @@ async function isWhitelisted(ip) {
  * dummy function to include if you don't want any proxycheck
  */
 async function dummy() {
-  return false;
+  return [false, 'dummy'];
+}
+
+async function saveIPInfo(ip, isProxy, info) {
+  const whoisData = await whois(ip);
+  IPInfo.upsert({
+    ...whoisData,
+    isProxy,
+    pcheck: info,
+  });
 }
 
 /*
@@ -116,7 +139,8 @@ async function withoutCache(f, ip) {
   if (await isBlacklisted(ipKey)) {
     return true;
   }
-  const result = f(ip);
+  const [result, info] = await f(ip);
+  saveIPInfo(ip, result, info);
   return result;
 }
 
@@ -145,33 +169,30 @@ async function withCache(f, ip) {
   if (checking.indexOf(ipKey) === -1 && lock > 0) {
     lock -= 1;
     checking.push(ipKey);
-    withoutCache(f, ip)
-      .then((result) => {
-        const value = result ? 'y' : 'n';
-        redis.set(key, value, {
-          EX: 3 * 24 * 3600,
-        }); // cache for three days
-        const pos = checking.indexOf(ipKey);
-        if (~pos) checking.splice(pos, 1);
-        lock += 1;
-      })
-      .catch((error) => {
-        logger.error('PROXYCHECK withCache %s', error.message || error);
-        const pos = checking.indexOf(ipKey);
-        if (~pos) checking.splice(pos, 1);
-        lock += 1;
-      });
+    try {
+      const result = await withoutCache(f, ip);
+      const value = result ? 'y' : 'n';
+      redis.set(key, value, {
+        EX: 3 * 24 * 3600,
+      }); // cache for three days
+      const pos = checking.indexOf(ipKey);
+      if (~pos) checking.splice(pos, 1);
+    } catch (error) {
+      logger.error('PROXYCHECK withCache %s', error.message || error);
+      const pos = checking.indexOf(ipKey);
+      if (~pos) checking.splice(pos, 1);
+    } finally {
+      lock += 1;
+    }
   }
   return false;
 }
 
-export function cheapDetector(ip) {
+function cheapDetector(ip) {
   if (USE_PROXYCHECK) {
     return withCache(getProxyCheck, ip);
   }
   return withCache(dummy, ip);
 }
 
-export function blacklistDetector(ip) {
-  return withCache(dummy, ip);
-}
+export default cheapDetector;

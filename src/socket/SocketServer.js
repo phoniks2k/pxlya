@@ -25,7 +25,7 @@ import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
 import { drawByOffsets } from '../core/draw';
 import { needCaptcha } from '../data/redis/captcha';
-import { cheapDetector } from '../core/isProxy';
+import cheapDetector from '../core/isProxy';
 
 
 const ipCounter = new Counter();

@@ -11,7 +11,7 @@ import {
 import { findIdByNameOrId } from '../data/sql/RegUser';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import socketEvents from '../socket/SocketEvents';
-import { cheapDetector } from './isProxy';
+import cheapDetector from './isProxy';
 import { DailyCron } from '../utils/cron';
 import { escapeMd } from './utils';
 import ttags from './ttag';

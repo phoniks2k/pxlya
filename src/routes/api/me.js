@@ -7,7 +7,7 @@ import getMe from '../../core/me';
 import {
   USE_PROXYCHECK,
 } from '../../core/config';
-import { cheapDetector } from '../../core/isProxy';
+import cheapDetector from '../../core/isProxy';
 
 
 export default async (req, res, next) => {

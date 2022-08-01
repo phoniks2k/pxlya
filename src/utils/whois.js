@@ -42,7 +42,7 @@ function orgFromWhois(whoisData) {
 function parseWhois(ip, whoisData) {
   return {
     ip,
-    country: whoisData.country || 'N/A',
+    country: whoisData.country || 'xx',
     cidr: cIDRofWhois(ip, whoisData),
     org: orgFromWhois(whoisData),
     descr: whoisData.descr || 'N/A',
