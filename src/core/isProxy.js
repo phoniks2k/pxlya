@@ -140,7 +140,7 @@ async function withoutCache(f, ip) {
     return true;
   }
   const [result, info] = await f(ip);
-  saveIPInfo(ip, result, info);
+  saveIPInfo(ipKey, result, info);
   return result;
 }
 
