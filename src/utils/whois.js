@@ -15,9 +15,13 @@ import { isIPv6, ip4InRangeToCIDR } from './ip';
  */
 function cIDRofWhois(ip, whoisData) {
   if (isIPv6(ip)) {
-    return whoisData.inet6num || 'N/A';
+    return whoisData.inet6num || whoisData.range || 'N/A';
   }
-  return ip4InRangeToCIDR(ip, whoisData.range) || 'N/A';
+  const { range } = whoisData;
+  if (range.includes('/') && !range.includes('-')) {
+    return range;
+  }
+  return ip4InRangeToCIDR(ip, range) || 'N/A';
 }
 
 /*
@@ -31,6 +35,7 @@ function orgFromWhois(whoisData) {
     || (whoisData['Contact Master']
       && whoisData['Contact Master'].address.split('\n')[0])
     || whoisData.netname
+    || whoisData.owner
     || 'N/A';
 }
 
