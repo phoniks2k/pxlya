@@ -27,11 +27,11 @@ const IPInfo = sequelize.define('IPInfo', {
   },
 
   org: {
-    type: DataTypes.CHAR(60),
+    type: `${DataTypes.CHAR(60)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
   },
 
   descr: {
-    type: DataTypes.CHAR(60),
+    type: `${DataTypes.CHAR(60)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
   },
 
   asn: {
@@ -49,7 +49,7 @@ const IPInfo = sequelize.define('IPInfo', {
    * proxycheck
    */
   pcheck: {
-    type: DataTypes.CHAR(60),
+    type: `${DataTypes.CHAR(60)} CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci`,
   },
 }, {
   getterMethods: {
@@ -62,6 +62,11 @@ const IPInfo = sequelize.define('IPInfo', {
     isProxy(proxy) {
       const num = (proxy) ? 1 : 0;
       this.setDataValue('proxy', num);
+    },
+
+    asn(value) {
+      const asn = value.split(',')[0];
+      this.setDataValue('asn', asn);
     },
 
     org(value) {
