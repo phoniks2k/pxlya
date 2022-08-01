@@ -1,6 +1,5 @@
 /*
  * timers and cron for account related actions
- * @flow
  */
 
 import Sequelize from 'sequelize';
@@ -13,7 +12,7 @@ import { MINUTE } from './constants';
 import { DailyCron } from '../utils/cron';
 
 class Ranks {
-  ranks: Array;
+  ranks; // Array
 
   constructor() {
     this.updateRanking = this.updateRanking.bind(this);

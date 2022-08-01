@@ -1,10 +1,8 @@
 /*
  * logout
- * @flow
  */
-import type { Request, Response } from 'express';
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { user } = req;
   const { t } = req.ttag;
   if (!user || !user.regUser) {

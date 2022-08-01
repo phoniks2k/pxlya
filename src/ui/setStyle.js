@@ -1,7 +1,3 @@
-/*
- * @flow
- */
-
 export default function setStyle(style) {
   const cssUri = window.ssv.availableStyles[style];
   const domStyle = document.getElementById('globcss');

@@ -2,8 +2,6 @@ const pkg = require('./package.json');
 
 module.exports = function (api) {
   const plugins = [
-    '@babel/plugin-transform-flow-strip-types',
-    '@babel/plugin-proposal-throw-expressions',
     // react-optimize
     '@babel/transform-react-constant-elements',
     '@babel/transform-react-inline-elements',

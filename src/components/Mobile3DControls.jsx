@@ -1,6 +1,5 @@
 /*
  *
- * @flow
  * Menu for WASD keys for mobile users
  */
 

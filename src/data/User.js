@@ -4,7 +4,6 @@
  * loged in or not.
  * If user is not logged in, id = null
  *
- * @flow
  * */
 
 import { QueryTypes, Utils } from 'sequelize';
@@ -49,21 +48,21 @@ export const regUserQueryInclude = [{
 }];
 
 class User {
-  id: string;
-  ip: string;
-  wait: ?number;
-  regUser: Object;
-  channels: Object;
-  blocked: Array;
+  id; // string
+  ip; // string
+  wait; // ?number
+  regUser; // Object
+  channels; // Object
+  blocked; // Array
   /*
    * 0: nothing
    * 1: Admin
    * 2: Mod
    */
-  userlvl: number;
+  userlvl; // number
 
   constructor() {
-    // if id = null -> unregistered
+    // if id = 0 -> unregistered
     this.id = 0;
     this.regUser = null;
     this.ip = '127.0.0.1';
@@ -185,7 +184,7 @@ class User {
     return true;
   }
 
-  async getWait(canvasId: number): Promise<?number> {
+  async getWait(canvasId) {
     let ttl = await redis.pTTL(`cd:${canvasId}:ip:${this.ipSub}`);
     if (this.id) {
       const ttlid = await redis.pTTL(
@@ -199,7 +198,7 @@ class User {
     return wait;
   }
 
-  async incrementPixelcount(amount: number = 1): Promise<boolean> {
+  async incrementPixelcount(amount = 1) {
     const { id } = this;
     if (!id) return false;
     try {
@@ -213,7 +212,7 @@ class User {
     return true;
   }
 
-  async getTotalPixels(): Promise<number> {
+  async getTotalPixels() {
     const { id } = this;
     if (!id) return 0;
     if (this.userlvl === 1) return 100000;
@@ -244,7 +243,7 @@ class User {
     }
   }
 
-  async updateLogInTimestamp(): Promise<boolean> {
+  async updateLogInTimestamp() {
     if (!this.regUser) return false;
     try {
       await this.regUser.update({
@@ -256,7 +255,7 @@ class User {
     return true;
   }
 
-  getUserData(): Object {
+  getUserData() {
     const {
       id,
       userlvl,

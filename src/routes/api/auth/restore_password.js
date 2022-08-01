@@ -1,10 +1,7 @@
 /*
  * request passowrd reset mail
- * @flow
  */
 
-
-import type { Request, Response } from 'express';
 
 import mailProvider from '../../../core/mail';
 import { validateEMail } from '../../../utils/validation';
@@ -18,7 +15,7 @@ async function validate(email, gettext) {
   return errors;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const ip = req.trueIp;
   const { email } = req.body;
   const { gettext } = req.ttag;

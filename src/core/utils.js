@@ -173,7 +173,7 @@ export function getPixelFromChunkOffset(
   j,
   offset,
   canvasSize,
-  is3d: boolean = false,
+  is3d = false,
 ) {
   const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
   const cx = offset % tileSize;
@@ -225,7 +225,7 @@ export function worldToScreen(
 
 export function durationToString(
   ms,
-  smallest: boolean = false,
+  smallest = false,
 ) {
   const seconds = Math.ceil(ms / 1000);
   let timestring;
@@ -297,7 +297,7 @@ export function colorFromText(str) {
 /*
  * sets a color into bright or dark mode
  */
-export function setBrightness(hex, dark: boolean = false) {
+export function setBrightness(hex, dark = false) {
   hex = hex.replace(/^\s*#|\s*$/g, '');
 
   if (hex.length === 3) {

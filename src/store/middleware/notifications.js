@@ -1,7 +1,6 @@
 /**
  * Notifications
  *
- * @flow
  */
 
 

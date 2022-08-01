@@ -1,10 +1,3 @@
-/**
- *
- * @flow
- */
-
-
-import type { Request, Response } from 'express';
 import Sequelize from 'sequelize';
 
 import logger from '../../../core/logger';
@@ -40,7 +33,7 @@ async function validate(email, name, password, captcha, captchaid, t, gettext) {
   return errors;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const {
     email, name, password, captcha, captchaid,
   } = req.body;

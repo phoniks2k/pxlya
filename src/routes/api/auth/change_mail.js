@@ -1,10 +1,7 @@
 /*
  * request password change
- * @flow
  */
 
-
-import type { Request, Response } from 'express';
 import mailProvider from '../../../core/mail';
 
 import { validatePassword, validateEMail } from '../../../utils/validation';
@@ -22,7 +19,7 @@ function validate(email, password, gettext) {
   return errors;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { email, password } = req.body;
   const { t, gettext } = req.ttag;
   const errors = validate(email, password, gettext);

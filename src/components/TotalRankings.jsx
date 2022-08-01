@@ -1,6 +1,5 @@
 /*
  * Rankings Tabs
- * @flow
  */
 
 import React from 'react';

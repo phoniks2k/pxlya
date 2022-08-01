@@ -1,7 +1,3 @@
-/*
- * @flow
- */
-
 export function saveSelection() {
   if (window.getSelection) {
     const sel = window.getSelection();

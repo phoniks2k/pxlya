@@ -1,6 +1,5 @@
 /**
  *
- * @flow
  */
 
 import React, { Suspense } from 'react';

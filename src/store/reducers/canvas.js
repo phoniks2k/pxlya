@@ -15,6 +15,7 @@ import {
   TILE_SIZE,
 } from '../../core/constants';
 
+/*
 export type CanvasState = {
   canvasId: number,
   canvasIdent: string,
@@ -40,13 +41,14 @@ export type CanvasState = {
   prevCanvasCoords: Object,
   showHiddenCanvases: boolean,
 };
+*/
 
 /*
  * parse url hash and sets view to coordinates
  * @param canvases Object with all canvas informations
  * @return view, viewscale and scale for state
  */
-function getViewFromURL(canvases: Object) {
+function getViewFromURL(canvases) {
   const { hash } = window.location;
   try {
     const almost = hash.substring(1)
@@ -143,7 +145,7 @@ const initialState = {
 export default function canvasReducer(
   state = initialState,
   action,
-): CanvasState {
+) {
   switch (action.type) {
     case 'SET_SCALE': {
       let {

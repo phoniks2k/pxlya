@@ -2,14 +2,10 @@
  *
  * returns chat messages of given channel
  *
- * @flow
  */
-
-import type { Request, Response } from 'express';
-
 import chatProvider from '../../core/ChatProvider';
 
-async function chatHistory(req: Request, res: Response) {
+async function chatHistory(req, res) {
   let { cid, limit } = req.query;
   res.set({
     'Cache-Control': 'no-cache, no-store, must-revalidate',

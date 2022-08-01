@@ -6,7 +6,6 @@
  * which could be a bit questionable, but it is preferable to write this file
  * two times imho.
  *
- * @flow
  */
 
 import { t } from 'ttag';

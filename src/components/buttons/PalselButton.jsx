@@ -1,7 +1,6 @@
 /**
  *
  * Button to open/close palette
- * @flow
  */
 
 import React from 'react';

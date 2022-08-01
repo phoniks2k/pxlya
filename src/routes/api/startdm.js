@@ -2,17 +2,13 @@
  *
  * starts a DM session
  *
- * @flow
  */
-
-import type { Request, Response } from 'express';
-
 import logger from '../../core/logger';
 import { ChatProvider } from '../../core/ChatProvider';
 import { Channel, RegUser } from '../../data/sql';
 import { isUserBlockedBy } from '../../data/sql/UserBlock';
 
-async function startDm(req: Request, res: Response) {
+async function startDm(req, res) {
   let userId = parseInt(req.body.userId, 10);
   let { userName } = req.body;
   const { user } = req;

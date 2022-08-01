@@ -1,5 +1,3 @@
-/* @flow */
-
 /*
  * check if cross-origin request
  * see:
@@ -33,21 +31,21 @@ export function loadImage(url) {
  * loading tiles that get temporarily shown till real tile is loaded
  */
 class LoadingTiles {
-  tiles: Object;
+  tiles; // Object
 
   constructor() {
     this.tiles = {};
     this.loadLoadingTile(0);
   }
 
-  getTile(canvasId: number) {
+  getTile(canvasId) {
     if (typeof this.tiles[canvasId] === 'undefined') {
       this.loadLoadingTile(canvasId);
     }
     return this.tiles[canvasId] || this.tiles[0] || null;
   }
 
-  async loadLoadingTile(canvasId: number) {
+  async loadLoadingTile(canvasId) {
     if (this.tiles[canvasId] === null) {
       return;
     }

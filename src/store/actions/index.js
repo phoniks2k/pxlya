@@ -115,7 +115,7 @@ export function toggleOpenMenu() {
   };
 }
 
-export function setRequestingPixel(requestingPixel: boolean) {
+export function setRequestingPixel(requestingPixel) {
   return {
     type: 'SET_REQUESTING_PIXEL',
     requestingPixel,
@@ -148,14 +148,14 @@ export function unsetHover() {
   };
 }
 
-export function setWait(wait: ?number) {
+export function setWait(wait) {
   return {
     type: 'SET_WAIT',
     wait,
   };
 }
 
-export function setMobile(mobile: boolean) {
+export function setMobile(mobile) {
   return {
     type: 'SET_MOBILE',
     mobile,
@@ -214,8 +214,8 @@ export function receiveChatMessage(
   country,
   channel,
   user,
-  isPing: boolean,
-  isRead: boolean,
+  isPing,
+  isRead,
 ) {
   return {
     type: 'RECEIVE_CHAT_MESSAGE',
@@ -334,7 +334,7 @@ export function preLoadedBigChunk(
 
 export function receiveBigChunk(
   center,
-  chunk: Uint8Array,
+  chunk,
 ) {
   return {
     type: 'RECEIVE_BIG_CHUNK',
@@ -343,7 +343,7 @@ export function receiveBigChunk(
   };
 }
 
-export function receiveBigChunkFailure(center, error: Error) {
+export function receiveBigChunkFailure(center, error) {
   return {
     type: 'RECEIVE_BIG_CHUNK_FAILURE',
     center,
@@ -429,7 +429,7 @@ export function setName(
 }
 
 export function setMailreg(
-  mailreg: boolean,
+  mailreg,
 ) {
   return {
     type: 'SET_MAILREG',
@@ -475,14 +475,14 @@ function receiveChatHistory(
   };
 }
 
-function setChatFetching(fetching: boolean) {
+function setChatFetching(fetching) {
   return {
     type: 'SET_CHAT_FETCHING',
     fetching,
   };
 }
 
-function setApiFetching(fetching: boolean) {
+function setApiFetching(fetching) {
   return {
     type: 'SET_API_FETCHING',
     fetching,
@@ -559,8 +559,8 @@ export function initTimer() {
 export function openWindow(
   windowType,
   title,
-  fullscreen: boolean,
-  cloneable: boolean,
+  fullscreen,
+  cloneable,
   args,
   xPos = null,
   yPos = null,
@@ -708,7 +708,7 @@ export function unblockUser(userId, userName) {
   };
 }
 
-export function blockingDm(blockDm: boolean) {
+export function blockingDm(blockDm) {
   return {
     type: 'SET_BLOCKING_DM',
     blockDm,
@@ -838,7 +838,7 @@ export function closeAllWindowTypes(windowType) {
 
 export function hideAllWindowTypes(
   windowType,
-  hide: boolean,
+  hide,
 ) {
   return {
     type: 'HIDE_ALL_WINDOW_TYPE',
@@ -896,7 +896,7 @@ export function gotCoolDownDelta(delta) {
 export function setUserBlock(
   userId,
   userName,
-  block: boolean,
+  block,
 ) {
   return async (dispatch) => {
     dispatch(setApiFetching(true));
@@ -918,7 +918,7 @@ export function setUserBlock(
 }
 
 export function setBlockingDm(
-  block: boolean,
+  block,
 ) {
   return async (dispatch) => {
     dispatch(setApiFetching(true));

@@ -1,7 +1,6 @@
 /*
  * Rolls back an area of the canvas to a specific date
  *
- * @flow
  */
 
 // Tile creation is allowed to be slow
@@ -21,12 +20,12 @@ import { BACKUP_DIR } from './config';
 import canvases from './canvases.json';
 
 export default async function rollbackToDate(
-  canvasId: number,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  date: string,
+  canvasId, // number
+  x, // number
+  y, // number
+  width, // number
+  height, // number
+  date, // string
 ) {
   if (!BACKUP_DIR) {
     return 0;

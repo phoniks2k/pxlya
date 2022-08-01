@@ -1,12 +1,10 @@
-/* @flow */
+# Actions
 
-import type { ColorIndex } from '../core/Palette';
-import type { State } from '../reducers';
+List of redux actions for reference:
 
-
+```js
 export type Action =
     { type: 'LOGGED_OUT' }
-  // my actions
   | { type: 'ALERT',
     title: string,
     text: string,
@@ -149,5 +147,5 @@ export type Action =
   | { type: 'RELOAD_URL' }
   | { type: 'SET_HISTORICAL_TIME', date: string, time: string }
   | { type: 'ON_VIEW_FINISH_CHANGE' };
-export type PromiseAction = Promise<Action>;
-export type GetState = () => State;
+
+```

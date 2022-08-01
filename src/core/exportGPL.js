@@ -1,6 +1,5 @@
 /*
  *
- * @flow
  */
 
 function appendNumberText(number) {

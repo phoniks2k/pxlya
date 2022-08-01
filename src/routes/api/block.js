@@ -2,16 +2,13 @@
  *
  * blocks and unblocks a user
  *
- * @flow
  */
-
-import type { Request, Response } from 'express';
 
 import logger from '../../core/logger';
 import socketEvents from '../../socket/SocketEvents';
 import { RegUser, UserBlock, Channel } from '../../data/sql';
 
-async function block(req: Request, res: Response) {
+async function block(req, res) {
   let userId = parseInt(req.body.userId, 10);
   let { userName } = req.body;
   const { block: blocking } = req.body;

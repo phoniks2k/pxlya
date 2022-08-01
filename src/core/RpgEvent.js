@@ -2,7 +2,6 @@
  * This is an even that happens all 2h,
  * if the users complete, they will get rewarded by half the cooldown sitewide
  *
- * @flow
  */
 
 import logger from './logger';
@@ -66,17 +65,17 @@ function drawCross(centerCell, clr, style, radius) {
 
 
 class RpgEvent {
-  eventState: number;
-  eventTimestamp: number;
-  eventCenter: Array;
-  eventCenterC: Array;
-  eventArea: Array;
+  eventState; // number
+  eventTimestamp; // number
+  eventCenter; // Array
+  eventCenterC; // Array
+  eventArea; // Array
   // 0 if waiting
   // 1 if won
   // 2 if lost
-  success: boolean;
-  void: Object;
-  chatTimeout: number;
+  success; // boolean
+  void; // Object
+  chatTimeout; // number
 
   constructor() {
     this.eventState = -1;

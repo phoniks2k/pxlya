@@ -3,7 +3,6 @@
  * A renderer will create it's own viewport and append it
  * to document.body.
  *
- * @flow
  */
 
 import { t } from 'ttag';
@@ -28,7 +27,7 @@ function animationLoop() {
 }
 animationLoop();
 
-export async function initRenderer(store, is3D: boolean) {
+export async function initRenderer(store, is3D) {
   renderer.destructor();
   if (is3D) {
     if (!isWebGL2Available()) {

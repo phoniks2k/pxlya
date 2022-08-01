@@ -1,7 +1,6 @@
 /*
  * Loading 3D chunks
  *
- * @flow
  */
 
 import {
@@ -19,9 +18,9 @@ import Chunk from './ChunkRGB3D';
 
 class ChunkLoader {
   store = null;
-  canvasId: number;
+  canvasId;
   palette;
-  chunks: Map<string, Chunk>;
+  chunks; // Map<string, Chunk>
 
   constructor(store, canvasId, palette, canvasSize) {
     this.store = store;
@@ -38,7 +37,7 @@ class ChunkLoader {
     this.chunks = new Map();
   }
 
-  getVoxel(x: number, y: number, z: number) {
+  getVoxel(x, y, z) {
     const { canvasSize } = this;
     const [xc, zc] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
@@ -56,10 +55,10 @@ class ChunkLoader {
   }
 
   getVoxelUpdate(
-    xc: number,
-    zc: number,
-    offset: number,
-    color: number,
+    xc,
+    zc,
+    offset,
+    color,
   ) {
     const key = `${xc}:${zc}`;
     const chunk = this.chunks.get(key);
@@ -68,7 +67,7 @@ class ChunkLoader {
     }
   }
 
-  getChunk(xc, zc, fetch: boolean) {
+  getChunk(xc, zc, fetch) {
     const chunkKey = `${xc}:${zc}`;
     // console.log(`Get chunk ${chunkKey}`);
     let chunk = this.chunks.get(chunkKey);
@@ -88,7 +87,7 @@ class ChunkLoader {
     return null;
   }
 
-  async fetchChunk(cx: number, cz: number, chunk) {
+  async fetchChunk(cx, cz, chunk) {
     const center = [0, cx, cz];
     this.store.dispatch(requestBigChunk(center));
     try {
@@ -114,7 +113,7 @@ class ChunkLoader {
 
   /*
   // sine environment creation for load tests
-  async fetchChunk(xc: number, zc: number, chunk) {
+  async fetchChunk(xc, zc, chunk) {
     const { key } = chunk;
     console.log(`Fetch chunk ${key}`);
     await chunk.generateSin();

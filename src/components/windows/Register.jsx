@@ -1,6 +1,5 @@
 /*
  * SignUp Form to register new user by mail
- * @flow
  */
 
 import React, { useState } from 'react';

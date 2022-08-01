@@ -3,7 +3,6 @@
  * Userdata that gets sent to the client on
  * various api endpoints.
  *
- * @flow
  */
 // eslint-disable-next-line import/no-unresolved
 import { getLocalicedCanvases } from '../canvasesDesc';

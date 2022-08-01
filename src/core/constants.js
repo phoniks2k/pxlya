@@ -1,5 +1,4 @@
 /**
- * @flow
  */
 
 // canvas size (width and height) MUST be 256 * 4^n to be able to stick

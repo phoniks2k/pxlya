@@ -2,15 +2,11 @@
  *
  * block all private messages
  *
- * @flow
  */
-
-import type { Request, Response } from 'express';
-
 import logger from '../../core/logger';
 import socketEvents from '../../socket/SocketEvents';
 
-async function blockdm(req: Request, res: Response) {
+async function blockdm(req, res) {
   const { block } = req.body;
   const { user } = req;
 

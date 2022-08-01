@@ -1,6 +1,5 @@
 /**
  *
- * @flow
  */
 
 import React, {
@@ -104,7 +103,7 @@ const ChatButton = () => {
         >⦿</div>
       )}
       <MdForum />
-    </div>: null
+    </div>
   );
 };
 

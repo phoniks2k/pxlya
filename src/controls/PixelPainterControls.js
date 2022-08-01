@@ -4,7 +4,6 @@
  * keycodes:
  * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
  *
- * @flow
  */
 
 import {
@@ -31,7 +30,7 @@ import {
 } from '../core/utils';
 
 class PixelPlainterControls {
-  constructor(renderer, viewport: HTMLCanvasElement, curStore) {
+  constructor(renderer, viewport, curStore) {
     this.store = curStore;
     this.renderer = renderer;
     this.viewport = viewport;
@@ -101,7 +100,7 @@ class PixelPlainterControls {
     }, delta * 1000);
   }
 
-  onMouseDown(event: MouseEvent) {
+  onMouseDown(event) {
     event.preventDefault();
     document.activeElement.blur();
 
@@ -129,7 +128,7 @@ class PixelPlainterControls {
     }, 250);
   }
 
-  onMouseUp(event: MouseEvent) {
+  onMouseUp(event) {
     event.preventDefault();
 
     const { store } = this;
@@ -161,7 +160,7 @@ class PixelPlainterControls {
     store.dispatch(onViewFinishChange());
   }
 
-  static getTouchCenter(event: TouchEvent) {
+  static getTouchCenter(event) {
     switch (event.touches.length) {
       case 1: {
         const { pageX, pageY } = event.touches[0];
@@ -251,7 +250,7 @@ class PixelPlainterControls {
     );
   }
 
-  static getMultiTouchDistance(event: TouchEvent) {
+  static getMultiTouchDistance(event) {
     if (event.touches.length < 2) {
       return 1;
     }
@@ -262,7 +261,7 @@ class PixelPlainterControls {
     );
   }
 
-  onTouchStart(event: TouchEvent) {
+  onTouchStart(event) {
     event.preventDefault();
     event.stopPropagation();
     document.activeElement.blur();
@@ -292,7 +291,7 @@ class PixelPlainterControls {
     }
   }
 
-  onTouchEnd(event: TouchEvent) {
+  onTouchEnd(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -328,7 +327,7 @@ class PixelPlainterControls {
     this.clearTabTimeout();
   }
 
-  onTouchMove(event: TouchEvent) {
+  onTouchMove(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -384,7 +383,7 @@ class PixelPlainterControls {
     }
   }
 
-  onWheel(event: MouseEvent) {
+  onWheel(event) {
     event.preventDefault();
     document.activeElement.blur();
 
@@ -405,7 +404,7 @@ class PixelPlainterControls {
     this.scheduleOnViewFinishChange();
   }
 
-  onMouseMove(event: MouseEvent) {
+  onMouseMove(event) {
     event.preventDefault();
 
     const { clientX, clientY } = event;
@@ -503,7 +502,7 @@ class PixelPlainterControls {
     }
   }
 
-  onAuxClick(event: MouseEvent) {
+  onAuxClick(event) {
     const { which, clientX, clientY } = event;
     // middle mouse button
     if (which !== 2) {
@@ -519,7 +518,7 @@ class PixelPlainterControls {
     );
   }
 
-  onKeyUp(event: KeyboardEvent) {
+  onKeyUp(event) {
     switch (event.key) {
       case 'Shift':
       case 'CapsLock':
@@ -529,7 +528,7 @@ class PixelPlainterControls {
     }
   }
 
-  onKeyDown(event: KeyboardEvent) {
+  onKeyDown(event) {
     // ignore key presses if modal is open or chat is used
     if (event.target.nodeName === 'INPUT'
       || event.target.nodeName === 'TEXTAREA'

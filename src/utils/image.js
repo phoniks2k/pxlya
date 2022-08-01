@@ -1,7 +1,5 @@
 /**
  * Basic image manipulation and quantization
- *
- * @flow
  */
 
 import { utils, distance, image } from 'image-q';

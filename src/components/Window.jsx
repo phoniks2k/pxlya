@@ -1,6 +1,5 @@
 /*
  * draw window
- * @flow
  */
 
 import React, {

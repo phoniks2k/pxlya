@@ -320,7 +320,7 @@ class SocketServer {
     return amount;
   }
 
-  broadcastPixelBuffer(canvasId: number, chunkid, data: Buffer) {
+  broadcastPixelBuffer(canvasId, chunkid, data) {
     if (this.CHUNK_CLIENTS.has(chunkid)) {
       const clients = this.CHUNK_CLIENTS.get(chunkid)
         // eslint-disable-next-line eqeqeq

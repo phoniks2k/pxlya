@@ -1,6 +1,5 @@
 /*
  * Change Password Form
- * @flow
  */
 
 import React, { useState } from 'react';

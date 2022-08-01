@@ -11,7 +11,6 @@
  * Reference:
  * https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
  *
- * @flow
  */
 
 /*

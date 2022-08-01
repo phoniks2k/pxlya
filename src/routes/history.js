@@ -1,14 +1,8 @@
-/**
- *
- * @flow
- */
-
 import fs from 'fs';
-import type { Request, Response } from 'express';
 
 import { BACKUP_DIR } from '../core/config';
 
-async function history(req: Request, res: Response) {
+async function history(req, res) {
   const { day, id } = req.query;
   if (!BACKUP_DIR || !day || !id
       || day.includes('/') || day.includes('\\') || day.length !== 8

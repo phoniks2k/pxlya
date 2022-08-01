@@ -1,6 +1,5 @@
 /*
  * LogIn Form
- * @flow
  */
 import React, {
   useState, useCallback, useRef,

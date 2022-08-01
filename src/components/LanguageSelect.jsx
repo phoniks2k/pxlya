@@ -5,7 +5,6 @@
  * Available languages under window.langSel
  *           [['hz', 'am'], ['de', 'de'], ...]
  *           [languageCode, countryCode (for flag)]
- * @flow
  */
 import React, { useState, useEffect } from 'react';
 import { t } from 'ttag';

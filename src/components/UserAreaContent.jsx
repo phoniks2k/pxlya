@@ -1,6 +1,5 @@
 /*
  * Menu to change user credentials
- * @flow
  */
 
 import React, { useState, useCallback } from 'react';

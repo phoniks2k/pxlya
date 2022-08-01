@@ -6,7 +6,6 @@
  * also:
  * echo never > /sys/kernel/mm/transparent_hugepage/enabled
  *
- * @flow
  */
 
 /* eslint-disable no-console */
@@ -86,7 +85,7 @@ backupRedis.on('error', () => {
 });
 
 
-function runCmd(cmd: string) {
+function runCmd(cmd) {
   const startTime = Date.now();
   console.log(`Executing ${cmd}`);
   const cmdproc = spawn(cmd);

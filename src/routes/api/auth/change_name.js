@@ -1,10 +1,7 @@
 /*
  * request password change
- * @flow
  */
 
-
-import type { Request, Response } from 'express';
 
 import socketEvents from '../../../socket/SocketEvents';
 import { RegUser } from '../../../data/sql';
@@ -22,7 +19,7 @@ async function validate(oldname, name) {
   return null;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { name } = req.body;
   const { user } = req;
 

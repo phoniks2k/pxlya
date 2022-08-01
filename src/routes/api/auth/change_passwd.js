@@ -1,10 +1,7 @@
 /*
  * request password change
- * @flow
  */
 
-
-import type { Request, Response } from 'express';
 
 import { validatePassword } from '../../../utils/validation';
 import { compareToHash } from '../../../utils/hash';
@@ -18,7 +15,7 @@ function validate(newPassword, gettext) {
   return errors;
 }
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { newPassword, password } = req.body;
   const { t, gettext } = req.ttag;
   const errors = validate(newPassword, gettext);

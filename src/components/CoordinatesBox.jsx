@@ -1,6 +1,5 @@
 /**
  *
- * @flow
  */
 
 import React from 'react';
@@ -11,7 +10,7 @@ import copy from '../utils/clipboard';
 import { notify } from '../store/actions';
 
 
-function renderCoordinates(cell): string {
+function renderCoordinates(cell) {
   return `(${cell.join(', ')})`;
 }
 

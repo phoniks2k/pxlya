@@ -5,8 +5,7 @@
  * The minecraft server can set pixels and report user logins
  * and more.
  *
- * @flow */
-
+ */
 
 import WebSocket from 'ws';
 
@@ -36,7 +35,7 @@ async function verifyClient(info, done) {
 
 
 class APISocketServer {
-  wss: WebSocket.Server;
+  wss; // WebSocket.Server
 
   initialize() {
     logger.info('Starting API websocket server');

@@ -1,12 +1,9 @@
 /**
  * basic admin api
  *
- * @flow
  */
 
 import express from 'express';
-
-import type { Request, Response } from 'express';
 
 import logger from '../core/logger';
 import getPasswordResetHtml from '../ssr/PasswordReset';
@@ -27,7 +24,7 @@ router.use(express.urlencoded({ extended: true }));
  * Check for POST parameters,
  * if invalid password is given, ignore it and go to next
  */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', async (req, res) => {
   const { pass, passconf, code } = req.body;
   const { lang } = req;
   const { t } = req.ttag;
@@ -96,7 +93,7 @@ router.post('/', async (req: Request, res: Response) => {
 /*
  * Check GET parameters for action to execute
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (req, res) => {
   const { token } = req.query;
   const { lang } = req;
   const { t } = req.ttag;

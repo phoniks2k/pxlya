@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": ">=10.16.0",
-    "npm": ">=6.13.4"
+    "node": ">=14"
   },
   "description": "Unlimited planet canvas for placing pixels",
   "main": "server.js",
@@ -66,6 +65,7 @@
     "three-trackballcontrols": "^0.9.0",
     "ttag": "^1.7.24",
     "url-search-params-polyfill": "^8.1.1",
+    "whoiser": "^1.13.1",
     "winston": "^3.8.1",
     "winston-daily-rotate-file": "^4.5.5",
     "ws": "^8.4.0"
@@ -75,8 +75,6 @@
     "@babel/core": "^7.18.6",
     "@babel/eslint-parser": "^7.16.5",
     "@babel/node": "^7.18.6",
-    "@babel/plugin-proposal-throw-expressions": "^7.18.6",
-    "@babel/plugin-transform-flow-strip-types": "^7.18.6",
     "@babel/plugin-transform-react-constant-elements": "^7.18.6",
     "@babel/plugin-transform-react-inline-elements": "^7.18.6",
     "@babel/preset-env": "^7.18.6",

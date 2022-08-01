@@ -492,8 +492,8 @@ export class ChatProvider {
     message,
     channelId,
     id,
-    country: string = 'xx',
-    sendapi: boolean = true,
+    country = 'xx',
+    sendapi = true,
   ) {
     if (message.length > 250) {
       return;

@@ -1,6 +1,5 @@
 /*
  *
- * @flow
  */
 
 import React, { useRef, useCallback } from 'react';

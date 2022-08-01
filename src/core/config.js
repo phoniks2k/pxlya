@@ -1,4 +1,3 @@
-/* @flow */
 // general config that is also available from client code can be found in
 // src/core/constants.js
 import path from 'path';

@@ -1,6 +1,5 @@
 /*
  * Form for requesting password-reset mail
- * @flow
  */
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';

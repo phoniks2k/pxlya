@@ -3,7 +3,6 @@
  * Always just one pixelrequest, queue additional requests to send later
  * Pixels get predicted on the client and reset if server refused
  *
- * @flow
  * */
 import { t } from 'ttag';
 import {

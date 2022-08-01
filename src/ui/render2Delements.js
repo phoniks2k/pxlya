@@ -1,19 +1,17 @@
 /*
  * placeholder that shows underneach cursor
  *
- * @flow
  */
 
-import type { State } from '../reducers';
 import { screenToWorld, worldToScreen } from '../core/utils';
 
 const PLACEHOLDER_SIZE = 1.2;
 const PLACEHOLDER_BORDER = 1;
 
 export function renderPlaceholder(
-  state: State,
-  $viewport: HTMLCanvasElement,
-  scale: number,
+  state,
+  $viewport,
+  scale,
 ) {
   const viewportCtx = $viewport.getContext('2d');
 
@@ -45,9 +43,9 @@ export function renderPlaceholder(
 
 
 export function renderPotatoPlaceholder(
-  state: State,
-  $viewport: HTMLCanvasElement,
-  scale: number,
+  state,
+  $viewport,
+  scale,
 ) {
   const viewportCtx = $viewport.getContext('2d');
 
@@ -72,10 +70,10 @@ export function renderPotatoPlaceholder(
 
 
 export function renderGrid(
-  state: State,
-  $viewport: HTMLCanvasElement,
-  scale: number,
-  isLightGrid: boolean,
+  state,
+  $viewport,
+  scale,
+  isLightGrid,
 ) {
   const { width, height } = $viewport;
 

@@ -1,7 +1,6 @@
 /**
  * https://scotch.io/tutorials/easy-node-authentication-linking-all-accounts-together#toc-linking-accounts-together
  *
- * @flow
  */
 
 import passport from 'passport';

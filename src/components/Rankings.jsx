@@ -1,6 +1,5 @@
 /*
  * Rankings Tabs
- * @flow
  */
 
 /* eslint-disable max-len */

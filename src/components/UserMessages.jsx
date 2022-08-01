@@ -1,6 +1,5 @@
 /*
  * Messages on top of UserArea
- * @flow
  */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';

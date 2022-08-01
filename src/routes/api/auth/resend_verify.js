@@ -1,15 +1,11 @@
 /*
  * request resend of verification mail
- * @flow
  */
-
-
-import type { Request, Response } from 'express';
 
 import mailProvider from '../../../core/mail';
 import { getHostFromRequest } from '../../../utils/ip';
 
-export default async (req: Request, res: Response) => {
+export default async (req, res) => {
   const { user, lang } = req;
   if (!user || !user.regUser) {
     res.status(401);

@@ -2,7 +2,6 @@
  * Buffer for chatMessages for the server
  * it just buffers the msot recent 200 messages for each channel
  *
- * @flow
  */
 import Sequelize from 'sequelize';
 import logger from './logger';

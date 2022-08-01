@@ -110,36 +110,36 @@ const RegUser = sequelize.define('User', {
   updatedAt: false,
 
   getterMethods: {
-    mailVerified(): boolean {
+    mailVerified() {
       return this.verified & 0x01;
     },
 
-    blockDm(): boolean {
+    blockDm() {
       return this.blocks & 0x01;
     },
 
-    isMod(): boolean {
+    isMod() {
       return this.roles & 0x01;
     },
   },
 
   setterMethods: {
-    mailVerified(num: boolean) {
+    mailVerified(num) {
       const val = (num) ? (this.verified | 0x01) : (this.verified & ~0x01);
       this.setDataValue('verified', val);
     },
 
-    blockDm(num: boolean) {
+    blockDm(num) {
       const val = (num) ? (this.blocks | 0x01) : (this.blocks & ~0x01);
       this.setDataValue('blocks', val);
     },
 
-    isMod(num: boolean) {
+    isMod(num) {
       const val = (num) ? (this.roles | 0x01) : (this.roles & ~0x01);
       this.setDataValue('roles', val);
     },
 
-    password(value: string) {
+    password(value) {
       if (value) this.setDataValue('password', generateHash(value));
     },
   },

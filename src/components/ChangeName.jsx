@@ -1,6 +1,5 @@
 /*
  * Change Name Form
- * @flow
  */
 
 import React, { useState } from 'react';

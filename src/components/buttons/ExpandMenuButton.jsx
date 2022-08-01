@@ -1,7 +1,6 @@
 /*
  * espand menu / show other menu buttons
  *
- * @flow
  */
 
 import React from 'react';

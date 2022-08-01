@@ -1,7 +1,6 @@
 /*
  * Menu with Buttons on the top left
  *
- * @flow
  */
 
 import React, { useState, useEffect } from 'react';

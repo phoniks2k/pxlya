@@ -1,7 +1,6 @@
 /*
  * 3D Chunk
  *
- * @flow
  */
 
 /* We have to look for performance here not for good looking code */
@@ -75,16 +74,16 @@ const material = new THREE.MeshLambertMaterial({
 
 
 class Chunk {
-  cell: Array;
-  key: string;
-  ready: boolean = false;
-  palette: Object;
-  buffer: Uint8Array;
-  mesh: THREE.Mesh = null;
-  faceCnt: number;
-  lastPixel: number;
-  heightMap: Array;
-  timestamp: number;
+  cell; // Array
+  key; // string
+  ready = false;
+  palette; // Object
+  buffer; // Uint8Array
+  mesh = null; // THREE.Mesh
+  faceCnt; // number
+  lastPixel; //  number
+  heightMap; // Array
+  timestamp; // number
 
   constructor(palette, key, xc, zc) {
     this.cell = [0, xc, zc];
@@ -99,7 +98,7 @@ class Chunk {
     }
   }
 
-  getVoxel(x: number, y: number, z: number) {
+  getVoxel(x, y, z) {
     const { buffer } = this;
     if (!buffer) return 0;
     if (x < 0 || x >= THREE_TILE_SIZE || y >= THREE_CANVAS_HEIGHT
@@ -111,7 +110,7 @@ class Chunk {
     return this.buffer[offset];
   }
 
-  getVoxelByOffset(offset: number) {
+  getVoxelByOffset(offset) {
     const { buffer } = this;
     if (!buffer) return 0;
     return buffer[offset];
@@ -149,7 +148,7 @@ class Chunk {
   }
   */
 
-  static calculateMetaData(buffer: Uint8Array) {
+  static calculateMetaData(buffer) {
     const rowVolume = THREE_TILE_SIZE ** 2;
     const heightMap = new Uint8Array(rowVolume);
 
@@ -204,7 +203,7 @@ class Chunk {
     return [faceCnt, lastPixel, heightMap];
   }
 
-  static getOffsetOfVoxel(x: number, y: number, z: number) {
+  static getOffsetOfVoxel(x, y, z) {
     return x + z * THREE_TILE_SIZE + y * THREE_TILE_SIZE * THREE_TILE_SIZE;
   }
 
@@ -216,7 +215,7 @@ class Chunk {
     return [x, y, z];
   }
 
-  setVoxelByOffset(offset: number, clr: number) {
+  setVoxelByOffset(offset, clr) {
     if (offset > this.lastPixel) {
       this.lastPixel = offset;
     }
@@ -233,12 +232,12 @@ class Chunk {
     this.renderChunk();
   }
 
-  setVoxel(x: number, y: number, z: number, clr: number) {
+  setVoxel(x, y, z, clr) {
     const offset = Chunk.getOffsetOfVoxel(x, y, z);
     this.setVoxelByOffset(offset, clr);
   }
 
-  async fromBuffer(chunkBufferInpt: Uint8Array) {
+  async fromBuffer(chunkBufferInpt) {
     let chunkBuffer = chunkBufferInpt;
     const neededLength = THREE_TILE_SIZE ** 2 * THREE_CANVAS_HEIGHT;
     if (chunkBuffer.byteLength < neededLength) {

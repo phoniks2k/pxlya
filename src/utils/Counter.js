@@ -1,25 +1,25 @@
-export default class Counter<T> {
-  map: Map<T, number>;
+export default class Counter {
+  map; // Map<T, number>
 
   constructor() {
     this.map = new Map();
   }
 
-  amount(): number {
+  amount() {
     return this.map.size;
   }
 
-  get(item: T): number {
+  get(item) {
     const count = this.map.get(item) || 0;
     return count;
   }
 
-  add(item: T): void {
+  add(item) {
     const count = this.get(item);
     this.map.set(item, count + 1);
   }
 
-  delete(item: T): void {
+  delete(item) {
     const count = this.get(item) - 1;
     if (count === 0) {
       this.map.delete(item);

@@ -1,7 +1,6 @@
 /*
  * Drop Down menu for Chat Channel selection
  *
- * @flow
  */
 
 import React, {

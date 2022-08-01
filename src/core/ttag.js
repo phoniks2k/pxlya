@@ -1,6 +1,5 @@
 /*
  * Provide translation serverside
- * @flow
  */
 import { TTag } from 'ttag';
 import cookie from 'cookie';

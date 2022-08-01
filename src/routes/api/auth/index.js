@@ -1,8 +1,3 @@
-/**
- * @flow
- */
-
-
 import express from 'express';
 
 import logger from '../../../core/logger';

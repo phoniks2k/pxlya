@@ -3,10 +3,7 @@
  * Notification when someone places a pixel nearby
  * Red increasing circle.
  *
- * @flow
  */
-
-import type { State } from '../reducers';
 
 import { clamp, worldToScreen } from '../core/utils';
 
@@ -14,10 +11,10 @@ import { clamp, worldToScreen } from '../core/utils';
 class PixelNotify {
   static NOTIFICATION_TIME = 1100;
 
-  scale: number;
-  notifcircle: HTMLCanvasElement;
-  notificationRadius: number;
-  pixelList: Array;
+  scale; // number
+  notifcircle; // HTMLCanvasElement
+  notificationRadius; // number
+  pixelList; // Array
 
   constructor() {
     // initialise notification circle image
@@ -39,7 +36,7 @@ class PixelNotify {
   }
 
 
-  addPixel(x: number, y: number) {
+  addPixel(x, y) {
     if (this.pixelList.length < 300) {
       this.pixelList.unshift([Date.now(), x, y]);
     }
@@ -51,15 +48,15 @@ class PixelNotify {
   }
 
 
-  updateScale(scale: number) {
+  updateScale(scale) {
     this.scale = scale;
     this.notificationRadius = clamp(this.scale * 10, 20, 400);
   }
 
 
   render(
-    state: State,
-    $viewport: HTMLCanvasElement,
+    state,
+    $viewport,
   ) {
     const viewportCtx = $viewport.getContext('2d');
     if (!viewportCtx) return;

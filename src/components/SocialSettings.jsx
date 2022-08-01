@@ -1,6 +1,5 @@
 /*
  * Change Mail Form
- * @flow
  */
 
 import React from 'react';
