@@ -27,10 +27,22 @@ function cIDRofWhois(ip, whoisData) {
  */
 function orgFromWhois(whoisData) {
   return (whoisData.organisation && whoisData.organisation['org-name'])
+    || (whoisData.organisation && whoisData.organisation.OrgName)
     || (whoisData['Contact Master']
       && whoisData['Contact Master'].address.split('\n')[0])
     || whoisData.netname
     || 'N/A';
+}
+
+/*
+ * get counry from whois return
+ * @param whois whois return
+ * @return organisation string
+ */
+function countryFromWhois(whoisData) {
+  return whoisData.country
+    || (whoisData.organisation && whoisData.organisation.Country)
+    || 'xx';
 }
 
 /*
@@ -42,7 +54,7 @@ function orgFromWhois(whoisData) {
 function parseWhois(ip, whoisData) {
   return {
     ip,
-    country: whoisData.country || 'xx',
+    country: countryFromWhois(whoisData),
     cidr: cIDRofWhois(ip, whoisData),
     org: orgFromWhois(whoisData),
     descr: whoisData.descr || 'N/A',
