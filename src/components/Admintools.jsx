@@ -88,6 +88,7 @@ function Admintools() {
         <div style={{
           borderStyle: 'solid',
           borderColor: '#D4D4D4',
+          userSelect: 'text',
           borderWidth: 2,
           padding: 5,
           display: 'inline-block',
@@ -121,13 +122,14 @@ function Admintools() {
             selectIPAction(sel.options[sel.selectedIndex].value);
           }}
         >
-          {['ban', 'unban', 'whitelist', 'unwhitelist'].map((opt) => (
-            <option
-              value={opt}
-            >
-              {opt}
-            </option>
-          ))}
+          {['ban', 'unban', 'whitelist', 'unwhitelist', 'iidtoip']
+            .map((opt) => (
+              <option
+                value={opt}
+              >
+                {opt}
+              </option>
+            ))}
         </select>
         <br />
         <textarea rows="10" cols="17" id="iparea" /><br />

@@ -182,20 +182,24 @@ export async function findIdByNameOrId(searchString) {
 }
 
 export async function getNamesToIds(ids) {
-  const idToNameMap = {};
-  if (!ids.length) {
+  const idToNameMap = new Map();
+  if (!ids.length || ids.length > 100) {
     return idToNameMap;
   }
-  const result = await RegUser.findAll({
-    attributes: ['id', 'name'],
-    where: {
-      id: ids,
-    },
-    raw: true,
-  });
-  result.forEach((obj) => {
-    idToNameMap[obj.id] = obj.name;
-  });
+  try {
+    const result = await RegUser.findAll({
+      attributes: ['id', 'name'],
+      where: {
+        id: ids,
+      },
+      raw: true,
+    });
+    result.forEach((obj) => {
+      idToNameMap.set(obj.id, obj.name);
+    });
+  } catch {
+    // nothing
+  }
   return idToNameMap;
 }
 

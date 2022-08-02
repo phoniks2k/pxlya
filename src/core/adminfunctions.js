@@ -13,6 +13,7 @@ import { getIPv6Subnet } from '../utils/ip';
 import { validateCoorRange } from '../utils/validation';
 import CanvasCleaner from './CanvasCleaner';
 import { Blacklist, Whitelist, RegUser } from '../data/sql';
+import { getIPofIID } from '../data/sql/IPInfo';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import {
@@ -34,15 +35,20 @@ import rollbackCanvasArea from './rollback';
 export async function executeIPAction(action, ips, logger = null) {
   const ipArray = ips.split('\n');
   let out = '';
-  const splitRegExp = /\s+/;
   for (let i = 0; i < ipArray.length; i += 1) {
-    let ip = ipArray[i].trim();
-    const ipLine = ip.split(splitRegExp);
-    if (ipLine.length === 7) {
-      // logger output
-      // eslint-disable-next-line prefer-destructuring
-      ip = ipLine[2];
+    const ip = ipArray[i].trim();
+
+    if (action === 'iidtoip') {
+      const resIp = await getIPofIID(ip);
+      const idPart = ip.slice(0, ip.indexOf('-'));
+      if (resIp) {
+        out += `${idPart}:     ${resIp}\n`;
+      } else {
+        out += `${idPart}:     N/A\n`;
+      }
+      continue;
     }
+
     if (!ip || ip.length < 8 || ip.indexOf(' ') !== -1) {
       out += `Couln't parse ${action} ${ip}\n`;
       continue;
@@ -210,8 +216,11 @@ export async function executeWatchAction(
   }
   const [x, y, u, v] = parseCoords;
 
-  if (u - x > 1000 || v - y > 1000) {
-    return { info: 'Cann not watch larger than 1000x1000 area' };
+  if ((u - x > 1000 || v - y > 1000)
+    && Date.now() - ts > 5 * 60 * 1000
+    && !iid
+  ) {
+    return { info: 'Cann not watch so many pixels' };
   }
 
   if (action === 'summary') {
@@ -224,11 +233,7 @@ export async function executeWatchAction(
     if (typeof ret === 'string') {
       return { info: ret };
     }
-    return {
-      info: null,
-      columns: ['#pxls', 'IID', 'User', 'last', 'clr', 'ts'],
-      rows: (ret.length > 300) ? ret.slice(-300) : ret,
-    };
+    return ret;
   }
 
   if (action === 'all') {
@@ -241,11 +246,7 @@ export async function executeWatchAction(
     if (typeof ret === 'string') {
       return { info: ret };
     }
-    return {
-      info: null,
-      columns: ['IID', 'User', 'last', 'clr', 'ts'],
-      rows: ret,
-    };
+    return ret;
   }
 
   return { info: 'Invalid action given' };

@@ -3,7 +3,11 @@ import readline from 'readline';
 
 import { PIXELLOGGER_PREFIX } from './logger';
 import { getNamesToIds } from '../data/sql/RegUser';
-import { getIdsToIps, getIPofIID } from '../data/sql/IPInfo';
+import {
+  getIdsToIps,
+  getInfoToIps,
+  getIPofIID,
+} from '../data/sql/IPInfo';
 import { getIPv6Subnet } from '../utils/ip';
 
 
@@ -64,10 +68,11 @@ export async function getSummaryFromArea(
   }
   try {
     await parseFile((parts) => {
-      const [ts, ipFull, uid, cid, x, y,, clr] = parts;
-      // eslint-disable-next-line eqeqeq
-      if (canvasId == cid
-        && ts >= time
+      const [tsStr, ipFull, uidStr, cid, x, y,, clrStr] = parts;
+      const ts = parseInt(tsStr, 10);
+      if (ts >= time
+        // eslint-disable-next-line eqeqeq
+        && canvasId == cid
         && x >= xUL
         && x <= xBR
         && y >= yUL
@@ -77,6 +82,8 @@ export async function getSummaryFromArea(
         if (filterIP && ip !== filterIP) {
           return;
         }
+        const clr = parseInt(clrStr, 10);
+        const uid = parseInt(uidStr, 10);
         let curVals = ips[ip];
         if (!curVals) {
           curVals = [0, ip, uid, 0, 0, 0, 0];
@@ -97,24 +104,63 @@ export async function getSummaryFromArea(
   const uid2Name = await getNamesToIds(uids);
 
   const ipKeys = Object.keys(ips);
-  const ip2Id = await getIdsToIps(ipKeys);
+  const ip2Info = await getInfoToIps(ipKeys);
+
+  let printIIDs = false;
+  let printUsers = false;
+  const columns = ['rid', '#'];
+  const types = ['number', 'number'];
+  if (ip2Info.size > 0) {
+    printIIDs = true;
+    columns.push('IID', 'ct', 'cidr', 'org', 'pc');
+    types.push('uuid', 'flag', 'string', 'string', 'string');
+  }
+  if (uid2Name.size > 0) {
+    printUsers = true;
+    columns.push('User');
+    types.push('user');
+  }
+  columns.push('last', 'clr', 'time');
+  types.push('coord', 'clr', 'ts');
 
   const rows = [];
   for (let i = 0; i < ipKeys.length; i += 1) {
     const [pxls, ip, uid, x, y, clr, ts] = ips[ipKeys[i]];
-    const userMd = (uid && uid2Name[uid])
-      ? `@[${uid2Name[uid]}](${uid})` : 'N/A';
-    rows.push([
-      pxls,
-      ip2Id[ip] || 'N/A',
-      userMd,
-      `#d,${x},${y}`,
-      clr,
-      ts,
-    ]);
+    const row = [i, pxls];
+    if (printIIDs) {
+      const ipInfo = ip2Info.get(ip);
+      if (!ipInfo) {
+        row.push('N/A', 'xx', 'N/A', 'N/A', 'N/A');
+      }
+      let { pcheck } = ipInfo;
+      if (pcheck) {
+        const seperator = pcheck.indexOf(',');
+        if (seperator !== -1) {
+          pcheck = pcheck.slice(0, seperator);
+        }
+      }
+      row.push(
+        ipInfo.uuid || 'N/A',
+        ipInfo.country || 'xx',
+        ipInfo.cidr || 'N/A',
+        ipInfo.org || 'N/A',
+        pcheck || 'N/A',
+      );
+    }
+    if (printUsers) {
+      const userMd = (uid && uid2Name.has(uid))
+        ? `${uid2Name.get(uid)},${uid}` : 'N/A';
+      row.push(userMd);
+    }
+    row.push(`${x},${y}`, clr, ts);
+    rows.push(row);
   }
 
-  return rows;
+  return {
+    columns,
+    types,
+    rows,
+  };
 }
 
 
@@ -140,10 +186,11 @@ export async function getPixelsFromArea(
   }
   try {
     await parseFile((parts) => {
-      const [ts, ipFull, uid, cid, x, y,, clr] = parts;
-      // eslint-disable-next-line eqeqeq
-      if (canvasId == cid
-        && ts >= time
+      const [tsStr, ipFull, uidStr, cid, x, y,, clrStr] = parts;
+      const ts = parseInt(tsStr, 10);
+      if (ts >= time
+        // eslint-disable-next-line eqeqeq
+        && canvasId == cid
         && x >= xUL
         && x <= xBR
         && y >= yUL
@@ -153,6 +200,8 @@ export async function getPixelsFromArea(
         if (filterIP && ip !== filterIP) {
           return;
         }
+        const clr = parseInt(clrStr, 10);
+        const uid = parseInt(uidStr, 10);
         pixels.push([ip, uid, x, y, clr, ts]);
         if (!ips.includes(ip)) {
           ips.push(ip);
@@ -169,20 +218,42 @@ export async function getPixelsFromArea(
 
   const pixelF = (pixels.length > 300) ? pixels.slice(maxRows * -1) : pixels;
 
+  let printIIDs = false;
+  let printUsers = false;
+  const columns = ['#'];
+  const types = ['number'];
+  if (!filterIP && ip2Id.size > 0) {
+    printIIDs = true;
+    columns.push('IID');
+    types.push('uuid');
+  }
+  if (!filterIP && uid2Name.size > 0) {
+    printUsers = true;
+    columns.push('User');
+    types.push('user');
+  }
+  columns.push('coord', 'clr', 'time');
+  types.push('coord', 'clr', 'ts');
+
   const rows = [];
   for (let i = 0; i < pixelF.length; i += 1) {
     const [ip, uid, x, y, clr, ts] = pixelF[i];
-    const userMd = (uid && uid2Name[uid])
-      ? `@[${uid2Name[uid]}](${uid})` : 'N/A';
-    const id = ip2Id[ip] || 'N/A';
-    rows.push([
-      id,
-      userMd,
-      `#d,${x},${y}`,
-      clr,
-      ts,
-    ]);
+    const row = [i];
+    if (printIIDs) {
+      row.push(ip2Id.get(ip) || 'N/A');
+    }
+    if (printUsers) {
+      const userMd = (uid && uid2Name.has(uid))
+        ? `${uid2Name.get(uid)},${uid}` : 'N/A';
+      row.push(userMd);
+    }
+    row.push(`${x},${y}`, clr, ts);
+    rows.push(row);
   }
 
-  return rows;
+  return {
+    columns,
+    types,
+    rows,
+  };
 }

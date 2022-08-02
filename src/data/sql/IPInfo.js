@@ -90,34 +90,57 @@ const IPInfo = sequelize.define('IPInfo', {
 export async function getIPofIID(uuid) {
   let result = null;
   try {
-    result = IPInfo.findOne({
+    result = await IPInfo.findOne({
       attributes: ['ip'],
       where: { uuid },
+      raw: true,
     });
   } catch {
     return null;
   }
   if (result) {
-    return result.id;
+    return result.ip;
   }
   return null;
 }
 
 export async function getIdsToIps(ips) {
-  const ipToIdMap = {};
-  if (!ips.length) {
+  const ipToIdMap = new Map();
+  if (!ips.length || ips.length > 100) {
     return ipToIdMap;
   }
-  const result = await IPInfo.findAll({
-    attributes: ['ip', 'uuid'],
-    where: {
-      ip: ips,
-    },
-    raw: true,
-  });
-  result.forEach((obj) => {
-    ipToIdMap[obj.ip] = obj.uuid;
-  });
+  try {
+    const result = await IPInfo.findAll({
+      attributes: ['ip', 'uuid'],
+      where: { ip: ips },
+      raw: true,
+    });
+    result.forEach((obj) => {
+      ipToIdMap.set(obj.ip, obj.uuid);
+    });
+  } catch {
+    // nothing
+  }
+  return ipToIdMap;
+}
+
+export async function getInfoToIps(ips) {
+  const ipToIdMap = new Map();
+  if (!ips.length || ips.length > 100) {
+    return ipToIdMap;
+  }
+  try {
+    const result = await IPInfo.findAll({
+      attributes: ['ip', 'uuid', 'country', 'cidr', 'org', 'pcheck'],
+      where: { ip: ips },
+      raw: true,
+    });
+    result.forEach((obj) => {
+      ipToIdMap.set(obj.ip, obj);
+    });
+  } catch {
+    // nothing
+  }
   return ipToIdMap;
 }
 

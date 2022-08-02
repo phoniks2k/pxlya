@@ -71,9 +71,11 @@ async function submitWatchAction(
 
 function ModWatchtools() {
   const [selectedCanvas, selectCanvas] = useState(0);
+  const [colors, setColors] = useState([]);
   const [tlcoords, selectTLCoords] = useState(keepState.tlcoords);
   const [brcoords, selectBRCoords] = useState(keepState.brcoords);
   const [interval, selectInterval] = useState(keepState.interval);
+  const [table, setTable] = useState(null);
   const [iid, selectIid] = useState(keepState.iid);
   const [resp, setResp] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -89,6 +91,25 @@ function ModWatchtools() {
   useEffect(() => {
     selectCanvas(canvasId);
   }, [canvasId]);
+
+  useEffect(() => {
+    const colorsRGB = canvases[selectedCanvas].colors;
+    const newColors = [];
+    for (let i = 0; i < colorsRGB.length; i += 1) {
+      const [r, g, b] = colorsRGB[i];
+      newColors.push(`rgb(${r},${g},${b})`);
+    }
+    setColors(newColors);
+  }, [selectedCanvas]);
+
+  let columns;
+  let types;
+  let rows;
+  if (table) {
+    columns = table.columns;
+    types = table.types;
+    rows = table.rows;
+  }
 
   return (
     <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
@@ -225,6 +246,13 @@ function ModWatchtools() {
             (ret) => {
               setSubmitting(false);
               setResp(ret.info);
+              if (ret.rows) {
+                setTable({
+                  columns: ret.columns,
+                  types: ret.types,
+                  rows: ret.rows,
+                });
+              }
             },
           );
         }}
@@ -248,14 +276,104 @@ function ModWatchtools() {
             (ret) => {
               setSubmitting(false);
               setResp(ret.info);
+              if (ret.rows) {
+                setTable({
+                  columns: ret.columns,
+                  types: ret.types,
+                  rows: ret.rows,
+                });
+              }
             },
           );
         }}
       >
         {(submitting) ? '...' : t`Get Users`}
       </button>
+      <br />
+      {(table) && (
+        <React.Fragment key="pxltable">
+          <div className="modaldivider" />
+          <table
+            style={{
+              userSelect: 'text',
+              fontSize: 11,
+            }}
+          >
+            <thead>
+              <tr>
+                {columns.slice(1).map((col) => (
+                  <th>{col}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row[0]}>
+                  {row.slice(1).map((val, ind) => {
+                    const type = types[ind + 1];
+                    switch (type) {
+                      case 'ts': {
+                        const date = new Date(val);
+                        return (
+                          <td title={date.toLocaleDateString()}>
+                            {`${date.getHours()}:${date.getMinutes()}`}
+                          </td>
+                        );
+                      }
+                      case 'clr': {
+                        const color = colors[val];
+                        const style = (color) ? { backgroundColor: color } : {};
+                        return (<td style={style}>{val}</td>);
+                      }
+                      case 'coord': {
+                        const { ident } = canvases[selectedCanvas];
+                        const coords = `./#${ident},${val},47`;
+                        return (
+                          <td>
+                            <a href={coords}>{val}</a>
+                          </td>
+                        );
+                      }
+                      case 'flag': {
+                        const flag = val.toLowerCase();
+                        return (
+                          <td title={val}><img
+                            style={{
+                              height: '1em',
+                              imageRendering: 'crisp-edges',
+                            }}
+                            alt={val}
+                            src={`${window.ssv.assetserver}/cf/${flag}.gif`}
+                          /></td>
+                        );
+                      }
+                      case 'user': {
+                        const seperator = val.lastIndexOf(',');
+                        if (seperator === -1) {
+                          return (<td>{val}</td>);
+                        }
+                        return (
+                          <td title={val.slice(seperator + 1)}>
+                            {val.slice(0, seperator)}
+                          </td>
+                        );
+                      }
+                      default: {
+                        return (<td>{val}</td>);
+                      }
+                    }
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </React.Fragment>
+      )}
     </div>
   );
 }
+
+// possible types:
+// 'coord', 'clr', 'ts', 'user', 'uuid', 'string', 'number', 'flag'
 
 export default React.memo(ModWatchtools);
