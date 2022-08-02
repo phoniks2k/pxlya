@@ -5,13 +5,15 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import ModCanvastools from './ModCanvastools';
+import Canvastools from './ModCanvastools';
 import Admintools from './Admintools';
+import Watchtools from './ModWatchtools';
 
 
 const CONTENT = {
-  Canvas: ModCanvastools,
+  Canvas: Canvastools,
   Admin: Admintools,
+  Watch: Watchtools,
 };
 
 function Modtools() {
