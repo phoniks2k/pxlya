@@ -14,6 +14,9 @@ const keepState = {
   iid: '',
 };
 
+/*
+ * parse interval in s/m/h to timestamp
+ */
 function parseInterval(interval) {
   if (!interval) {
     return null;
@@ -31,6 +34,20 @@ function parseInterval(interval) {
     factor *= 3600;
   }
   return Date.now() - (num * factor);
+}
+
+/*
+ * sorting function for array sort
+ */
+function compare(a, b) {
+  if (typeof a === 'string' && typeof b === 'string') {
+    return a.localeCompare(b);
+  }
+  if (a === 'N/A') a = 0;
+  if (b === 'N/A') b = 0;
+  if (a < b) return -1;
+  if (a > b) return 1;
+  return 0;
 }
 
 async function submitWatchAction(
@@ -75,6 +92,7 @@ function ModWatchtools() {
   const [tlcoords, selectTLCoords] = useState(keepState.tlcoords);
   const [brcoords, selectBRCoords] = useState(keepState.brcoords);
   const [interval, selectInterval] = useState(keepState.interval);
+  const [sortBy, setSortBy] = useState(0);
   const [table, setTable] = useState(null);
   const [iid, selectIid] = useState(keepState.iid);
   const [resp, setResp] = useState(null);
@@ -247,6 +265,7 @@ function ModWatchtools() {
               setSubmitting(false);
               setResp(ret.info);
               if (ret.rows) {
+                setSortBy(0);
                 setTable({
                   columns: ret.columns,
                   types: ret.types,
@@ -277,6 +296,7 @@ function ModWatchtools() {
               setSubmitting(false);
               setResp(ret.info);
               if (ret.rows) {
+                setSortBy(0);
                 setTable({
                   columns: ret.columns,
                   types: ret.types,
@@ -301,28 +321,39 @@ function ModWatchtools() {
           >
             <thead>
               <tr>
-                {columns.slice(1).map((col) => (
-                  <th>{col}</th>
+                {columns.slice(1).map((col, ind) => (
+                  <th
+                    style={
+                      (sortBy - 1 === ind)
+                        ? { fontWeight: 'normal' }
+                        : { cursor: 'pointer' }
+                    }
+                    onClick={() => setSortBy(ind + 1)}
+                  >{col}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {rows.map((row) => (
+              {rows.sort((a, b) => compare(a[sortBy], b[sortBy])).map((row) => (
                 <tr key={row[0]}>
                   {row.slice(1).map((val, ind) => {
                     const type = types[ind + 1];
                     switch (type) {
                       case 'ts': {
                         const date = new Date(val);
+                        let minutes = date.getMinutes();
+                        if (minutes < 10) minutes = `0${minutes}`;
                         return (
                           <td title={date.toLocaleDateString()}>
-                            {`${date.getHours()}:${date.getMinutes()}`}
+                            {`${date.getHours()}:${minutes}`}
                           </td>
                         );
                       }
                       case 'clr': {
                         const color = colors[val];
-                        const style = (color) ? { backgroundColor: color } : {};
+                        const style = (color)
+                          ? { backgroundColor: color }
+                          : undefined;
                         return (<td style={style}>{val}</td>);
                       }
                       case 'coord': {
