@@ -15,30 +15,33 @@ const CONTENT = {
 };
 
 function Modtools() {
-  const [selectedPart, selectPart] = useState('canvas');
+  const [selectedPart, selectPart] = useState('Canvas');
 
   const userlvl = useSelector((state) => state.user.userlvl);
 
   const Content = CONTENT[selectedPart];
 
+  const parts = Object.keys(CONTENT)
+    .filter((part) => part !== 'Admin' || userlvl === 1);
+
   return (
     <>
       <div style={{ textAlign: 'center' }}>
-        {Object.keys(CONTENT)
-          .filter((part) => part !== 'Admin' || userlvl === 1)
-          .map((part) => (
+        {parts.map((part, ind) => (
+          <React.Fragment key={part}>
             <span
               role="button"
               tabIndex={-1}
-              key={part}
               className="modallink"
-              style={(selectedPart === part) && {
+              style={(selectedPart === part) ? {
                 fontWeight: 'bold',
-              }}
+              } : {}}
               onClick={() => selectPart(part)}
             >{part}</span>
-          ),
-          )}
+            {(ind !== parts.length - 1)
+              && <span className="hdivider" />}
+          </React.Fragment>
+        ))}
       </div>
       <div className="modaldivider" />
       {Content && <Content />}

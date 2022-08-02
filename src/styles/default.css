@@ -564,6 +564,13 @@ tr:nth-child(even) {
   background-color: hsla(216, 4%, 74%, .3);
 }
 
+.hdivider{
+  margin-left: 5px;
+  margin-right: 5px;
+  border-left: 1px solid #000;
+  height: 100%;
+}
+
 .modalinfo {
   color: #4f545c;
   font-size: 15px;

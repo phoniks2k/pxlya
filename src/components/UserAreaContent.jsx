@@ -83,30 +83,34 @@ const UserAreaContent = () => {
           tabIndex={-1}
           className="modallink"
           onClick={logout}
-        > {t`Log out`}</span> |
+        > {t`Log out`}</span>
+        <span className="hdivider" />
         <span
           role="button"
           tabIndex={-1}
           className="modallink"
           onClick={() => setArea('CHANGE_NAME')}
-        > {t`Change Username`}</span> |
+        > {t`Change Username`}</span>
+        <span className="hdivider" />
         {(mailreg)
           && (
-          <span>
+          <React.Fragment key="mc">
             <span
               role="button"
               tabIndex={-1}
               className="modallink"
               onClick={() => setArea('CHANGE_MAIL')}
-            > {t`Change Mail`}</span> |
-          </span>
+            > {t`Change Mail`}</span>
+            <span className="hdivider" />
+          </React.Fragment>
           )}
         <span
           role="button"
           tabIndex={-1}
           className="modallink"
           onClick={() => setArea('CHANGE_PASSWORD')}
-        > {t`Change Password`}</span> |
+        > {t`Change Password`}</span>
+        <span className="hdivider" />
         <span
           role="button"
           tabIndex={-1}

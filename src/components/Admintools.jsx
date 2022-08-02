@@ -110,7 +110,6 @@ function Admintools() {
       )}
       <div>
         <br />
-        <div className="modaldivider" />
         <h3 className="modaltitle">{t`IP Actions`}</h3>
         <p className="modalcotext">
           {t`Do stuff with IPs (one IP per line)`}

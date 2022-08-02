@@ -263,7 +263,6 @@ function ModCanvastools() {
         }
         </select>
       </p>
-      <br />
       <div className="modaldivider" />
       <h3 className="modaltitle">{t`Image Upload`}</h3>
       <p className="modalcotext">{t`Upload images to canvas`}</p>
