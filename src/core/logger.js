@@ -7,6 +7,8 @@
 import { createLogger, format, transports } from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 
+export const PIXELLOGGER_PREFIX = './log/pixels-';
+
 const logger = createLogger({
   level: 'info',
   format: format.combine(
@@ -22,7 +24,7 @@ export const pixelLogger = createLogger({
   format: format.printf(({ message }) => message),
   transports: [
     new DailyRotateFile({
-      filename: './log/pixels-%DATE%.log',
+      filename: `${PIXELLOGGER_PREFIX}%DATE%.log`,
       maxFiles: '14d',
       utc: true,
       colorize: false,

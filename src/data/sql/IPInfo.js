@@ -87,4 +87,19 @@ const IPInfo = sequelize.define('IPInfo', {
   },
 });
 
+export async function getIdsToIps(ips) {
+  const result = IPInfo.findAll({
+    attributes: ['ip', 'uuid'],
+    where: {
+      ip: ips,
+    },
+    raw: true,
+  });
+  const ipToIdMap = {};
+  result.forEach((obj) => {
+    ipToIdMap[obj.ip] = obj.uuid;
+  });
+  return ipToIdMap;
+}
+
 export default IPInfo;

@@ -181,4 +181,19 @@ export async function findIdByNameOrId(searchString) {
   return null;
 }
 
+export async function getNamesToIds(ids) {
+  const result = RegUser.findAll({
+    attributes: ['id', 'name'],
+    where: {
+      id: ids,
+    },
+    raw: true,
+  });
+  const idToNameMap = {};
+  result.forEach((obj) => {
+    idToNameMap[obj.id] = obj.name;
+  });
+  return idToNameMap;
+}
+
 export default RegUser;
