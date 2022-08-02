@@ -137,13 +137,17 @@ async function saveIPInfo(ip, isProxy, info) {
 async function withoutCache(f, ip) {
   if (!ip) return true;
   const ipKey = getIPv6Subnet(ip);
+  let result;
+  let info;
   if (await isWhitelisted(ipKey)) {
-    return false;
+    result = false;
+    info = 'wl';
+  } else if (await isBlacklisted(ipKey)) {
+    result = true;
+    info = 'bl';
+  } else {
+    [result, info] = await f(ip);
   }
-  if (await isBlacklisted(ipKey)) {
-    return true;
-  }
-  const [result, info] = await f(ip);
   saveIPInfo(ipKey, result, info);
   return result;
 }
