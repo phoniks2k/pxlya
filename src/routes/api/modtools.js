@@ -18,6 +18,7 @@ import {
   executeProtAction,
   executeRollback,
   executeCleanerAction,
+  executeWatchAction,
   getModList,
   removeMod,
   makeMod,
@@ -97,6 +98,21 @@ router.post('/', upload.single('image'), async (req, res, next) => {
     if (req.body.cleanercancel) {
       const ret = CanvasCleaner.stop();
       res.status(200).send(ret);
+      return;
+    }
+    if (req.body.watchaction) {
+      const {
+        watchaction, ulcoor, brcoor, time, iid, canvasid,
+      } = req.body;
+      const ret = await executeWatchAction(
+        watchaction,
+        ulcoor,
+        brcoor,
+        time,
+        iid,
+        canvasid,
+      );
+      res.status(200).json(ret);
       return;
     }
     if (req.body.cleaneraction) {

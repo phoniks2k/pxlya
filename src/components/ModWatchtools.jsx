@@ -49,6 +49,7 @@ async function submitWatchAction(
   }
   const data = new FormData();
   data.append('watchaction', action);
+  data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
   data.append('time', time);

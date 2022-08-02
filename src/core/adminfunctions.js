@@ -19,6 +19,10 @@ import {
   imageABGR2Canvas,
   protectCanvasArea,
 } from './Image';
+import {
+  getSummaryFromArea,
+  getPixelsFromArea,
+} from './parsePixelLog';
 import rollbackCanvasArea from './rollback';
 
 /*
@@ -163,6 +167,88 @@ export async function executeImageAction(
   } catch {
     return [400, 'Can not read image file'];
   }
+}
+
+/*
+ * Check who placed on a canvas area
+ * @param action if every pixel or summary should be returned
+ * @param ulcoor coords of upper-left corner in X_Y format
+ * @param brcoor coords of bottom-right corner in X_Y format
+ * @param canvasid numerical canvas id as string
+ * @return Object with {info, cols, rows}
+ */
+export async function executeWatchAction(
+  action,
+  ulcoor,
+  brcoor,
+  time,
+  iid,
+  canvasid,
+) {
+  if (!canvasid) {
+    return { info: 'canvasid not defined' };
+  }
+  const ts = parseInt(time, 10);
+  const canvas = canvases[canvasid];
+  let error = null;
+  if (!ulcoor || !brcoor) {
+    error = 'Not all coordinates defined';
+  } else if (!canvas) {
+    error = 'Invalid canvas selected';
+  } else if (!action) {
+    error = 'No cleanaction given';
+  } else if (Number.isNaN(ts)) {
+    error = 'Invalid time given';
+  }
+  if (error) {
+    return { info: error };
+  }
+
+  const parseCoords = validateCoorRange(ulcoor, brcoor, canvas.size);
+  if (typeof parseCoords === 'string') {
+    return { info: parseCoords };
+  }
+  const [x, y, u, v] = parseCoords;
+
+  if (u - x > 1000 || v - y > 1000) {
+    return { info: 'Cann not watch larger than 1000x1000 area' };
+  }
+
+  if (action === 'summary') {
+    const ret = await getSummaryFromArea(
+      canvasid,
+      x, y, u, v,
+      time,
+      iid,
+    );
+    if (typeof ret === 'string') {
+      return { info: ret };
+    }
+    return {
+      info: null,
+      columns: ['#pxls', 'IID', 'User', 'last', 'clr', 'ts'],
+      rows: (ret.length > 300) ? ret.slice(-300) : ret,
+    };
+  }
+
+  if (action === 'all') {
+    const ret = await getPixelsFromArea(
+      canvasid,
+      x, y, u, v,
+      time,
+      iid,
+    );
+    if (typeof ret === 'string') {
+      return { info: ret };
+    }
+    return {
+      info: null,
+      columns: ['IID', 'User', 'last', 'clr', 'ts'],
+      rows: ret,
+    };
+  }
+
+  return { info: 'Invalid action given' };
 }
 
 /*

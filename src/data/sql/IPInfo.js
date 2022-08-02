@@ -87,15 +87,34 @@ const IPInfo = sequelize.define('IPInfo', {
   },
 });
 
+export async function getIPofIID(uuid) {
+  let result = null;
+  try {
+    result = IPInfo.findOne({
+      attributes: ['ip'],
+      where: { uuid },
+    });
+  } catch {
+    return null;
+  }
+  if (result) {
+    return result.id;
+  }
+  return null;
+}
+
 export async function getIdsToIps(ips) {
-  const result = IPInfo.findAll({
+  const ipToIdMap = {};
+  if (!ips.length) {
+    return ipToIdMap;
+  }
+  const result = await IPInfo.findAll({
     attributes: ['ip', 'uuid'],
     where: {
       ip: ips,
     },
     raw: true,
   });
-  const ipToIdMap = {};
   result.forEach((obj) => {
     ipToIdMap[obj.ip] = obj.uuid;
   });
