@@ -131,21 +131,22 @@ export async function getSummaryFromArea(
       const ipInfo = ip2Info.get(ip);
       if (!ipInfo) {
         row.push('N/A', 'xx', 'N/A', 'N/A', 'N/A');
-      }
-      let { pcheck } = ipInfo;
-      if (pcheck) {
-        const seperator = pcheck.indexOf(',');
-        if (seperator !== -1) {
-          pcheck = pcheck.slice(0, seperator);
+      } else {
+        let { pcheck } = ipInfo;
+        if (pcheck) {
+          const seperator = pcheck.indexOf(',');
+          if (seperator !== -1) {
+            pcheck = pcheck.slice(0, seperator);
+          }
         }
+        row.push(
+          ipInfo.uuid || 'N/A',
+          ipInfo.country || 'xx',
+          ipInfo.cidr || 'N/A',
+          ipInfo.org || 'N/A',
+          pcheck || 'N/A',
+        );
       }
-      row.push(
-        ipInfo.uuid || 'N/A',
-        ipInfo.country || 'xx',
-        ipInfo.cidr || 'N/A',
-        ipInfo.org || 'N/A',
-        pcheck || 'N/A',
-      );
     }
     if (printUsers) {
       const userMd = (uid && uid2Name.has(uid))
