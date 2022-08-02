@@ -4,7 +4,7 @@ output.webm
 utils/ocean-tiles/ocean
 utils/osm-tiles/osm
 i18n/*.mo
-test.js
+test*.js
 
 logs
 *.log
