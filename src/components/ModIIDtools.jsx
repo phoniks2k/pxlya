@@ -22,9 +22,9 @@ async function submitIIDAction(
 }
 
 function ModIIDtools() {
-  const [iIDAction, selectIIDAction] = useState('ban');
+  const [iIDAction, selectIIDAction] = useState('givecaptcha');
   const [iid, selectIid] = useState('');
-  const [resp, setResp] = useState(null);
+  const [resp, setResp] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   return (
@@ -62,29 +62,31 @@ function ModIIDtools() {
             selectIid(newIid);
           }}
         />
+        <button
+          type="button"
+          onClick={() => {
+            if (submitting) {
+              return;
+            }
+            setSubmitting(true);
+            submitIIDAction(
+              iIDAction,
+              iid,
+              (ret) => {
+                setSubmitting(false);
+                setResp(ret);
+              },
+            );
+          }}
+        >
+          {(submitting) ? '...' : t`Submit`}
+        </button>
       </p>
-      <button
-        type="button"
-        onClick={() => {
-          if (submitting) {
-            return;
-          }
-          setSubmitting(true);
-          submitIIDAction(
-            iIDAction,
-            iid,
-            (ret) => {
-              setSubmitting(false);
-              setResp(ret);
-            },
-          );
-        }}
-      >
-        {(submitting) ? '...' : t`Submit`}
-      </button>
       <textarea
-        rows="10"
-        cols="20"
+        style={{
+          width: '100%',
+        }}
+        rows={(resp) ? resp.split('\n').length : 10}
         id="iparea"
         value={resp}
         readOnly

@@ -141,7 +141,6 @@ export async function checkCaptchaSolution(
 
 /*
  * check if captcha is needed
- *
  * @param ip
  * @return boolean true if needed
  */
@@ -156,4 +155,19 @@ export async function needCaptcha(ip) {
   }
   logger.info(`CAPTCHA ${ip} got captcha`);
   return true;
+}
+
+/*
+ * force ip to get captcha
+ * @param ip
+ * @return true if we triggered captcha
+ *         false if user would have gotton one anyway
+ */
+export async function forceCaptcha(ip) {
+  if (CAPTCHA_TIME < 0) {
+    return null;
+  }
+  const key = `human:${getIPv6Subnet(ip)}`;
+  const ret = await redis.del(key);
+  return (ret > 0);
 }

@@ -88,6 +88,9 @@ const IPInfo = sequelize.define('IPInfo', {
 });
 
 export async function getIPofIID(uuid) {
+  if (!uuid) {
+    return null;
+  }
   let result = null;
   try {
     result = await IPInfo.findOne({

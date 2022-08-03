@@ -14,6 +14,7 @@ import { validateCoorRange } from '../utils/validation';
 import CanvasCleaner from './CanvasCleaner';
 import { Blacklist, Whitelist, RegUser } from '../data/sql';
 import { getIPofIID } from '../data/sql/IPInfo';
+import { forceCaptcha } from '../data/redis/captcha';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import {
@@ -21,6 +22,8 @@ import {
   protectCanvasArea,
 } from './Image';
 import {
+  getIIDSummary,
+  getIIDPixels,
   getSummaryFromArea,
   getPixelsFromArea,
 } from './parsePixelLog';
@@ -30,7 +33,7 @@ import rollbackCanvasArea from './rollback';
  * Execute IP based actions (banning, whitelist, etc.)
  * @param action what to do with the ip
  * @param ip already sanizized ip
- * @return true if successful
+ * @return text of success
  */
 export async function executeIPAction(action, ips, logger = null) {
   const ipArray = ips.split('\n');
@@ -40,11 +43,11 @@ export async function executeIPAction(action, ips, logger = null) {
 
     if (action === 'iidtoip') {
       const resIp = await getIPofIID(ip);
-      const idPart = ip.slice(0, ip.indexOf('-'));
+      const iidPart = ip.slice(0, ip.indexOf('-'));
       if (resIp) {
-        out += `${idPart}:     ${resIp}\n`;
+        out += `${iidPart}:     ${resIp}\n`;
       } else {
-        out += `${idPart}:     N/A\n`;
+        out += `${iidPart}:     N/A\n`;
       }
       continue;
     }
@@ -93,6 +96,36 @@ export async function executeIPAction(action, ips, logger = null) {
   }
   return out;
 }
+
+/*
+ * Execute IID based actions
+ * @param action what to do with the iid
+ * @param iid already sanizized iid
+ * @return text of success
+ */
+export async function executeIIDAction(action, iid, logger = null) {
+  const ip = await getIPofIID(iid);
+  if (!ip) {
+    return `Could not resolve ${iid}`;
+  }
+  const iidPart = iid.slice(0, iid.indexOf('-'));
+
+  switch (action) {
+    case 'givecaptcha': {
+      const succ = await forceCaptcha(ip);
+      if (succ === null) {
+        return 'Captchas are deactivated on this server.';
+      }
+      if (succ) {
+        return `Forced captcha on ${iidPart}`;
+      }
+      return `${iidPart} would have gotten captcha anyway`;
+    }
+    default:
+      return `Failed to ${action} ${iid}`;
+  }
+}
+
 
 /*
  * Execute Image based actions (upload, protect, etc.)
@@ -197,9 +230,7 @@ export async function executeWatchAction(
   const ts = parseInt(time, 10);
   const canvas = canvases[canvasid];
   let error = null;
-  if (!ulcoor || !brcoor) {
-    error = 'Not all coordinates defined';
-  } else if (!canvas) {
+  if (!canvas) {
     error = 'Invalid canvas selected';
   } else if (!action) {
     error = 'No cleanaction given';
@@ -208,6 +239,28 @@ export async function executeWatchAction(
   }
   if (error) {
     return { info: error };
+  }
+
+  let ret;
+  if (!ulcoor && !brcoor && iid) {
+    if (action === 'summary') {
+      ret = await getIIDSummary(
+        iid,
+        time,
+      );
+    }
+    if (action === 'all') {
+      ret = await getIIDPixels(
+        iid,
+        time,
+      );
+    }
+    if (typeof ret === 'string') {
+      return { info: ret };
+    }
+    if (typeof ret !== 'undefined') {
+      return ret;
+    }
   }
 
   const parseCoords = validateCoorRange(ulcoor, brcoor, canvas.size);
@@ -224,31 +277,27 @@ export async function executeWatchAction(
   }
 
   if (action === 'summary') {
-    const ret = await getSummaryFromArea(
+    ret = await getSummaryFromArea(
       canvasid,
       x, y, u, v,
       time,
       iid,
     );
-    if (typeof ret === 'string') {
-      return { info: ret };
-    }
-    return ret;
   }
-
   if (action === 'all') {
-    const ret = await getPixelsFromArea(
+    ret = await getPixelsFromArea(
       canvasid,
       x, y, u, v,
       time,
       iid,
     );
-    if (typeof ret === 'string') {
-      return { info: ret };
-    }
+  }
+  if (typeof ret === 'string') {
+    return { info: ret };
+  }
+  if (typeof ret !== 'undefined') {
     return ret;
   }
-
   return { info: 'Invalid action given' };
 }
 
@@ -272,9 +321,7 @@ export async function executeCleanerAction(
   }
   const canvas = canvases[canvasid];
   let error = null;
-  if (!ulcoor || !brcoor) {
-    error = 'Not all coordinates defined';
-  } else if (!canvas) {
+  if (!canvas) {
     error = 'Invalid canvas selected';
   } else if (!action) {
     error = 'No cleanaction given';
@@ -319,9 +366,7 @@ export async function executeProtAction(
   }
   const canvas = canvases[canvasid];
   let error = null;
-  if (!ulcoor || !brcoor) {
-    error = 'Not all coordinates defined';
-  } else if (!canvas) {
+  if (!canvas) {
     error = 'Invalid canvas selected';
   } else if (!action) {
     error = 'No imageaction given';
@@ -392,9 +437,7 @@ export async function executeRollback(
   }
   const canvas = canvases[canvasid];
   let error = null;
-  if (!ulcoor || !brcoor) {
-    error = 'Not all coordinates defined';
-  } else if (!canvas) {
+  if (!canvas) {
     error = 'Invalid canvas selected';
   } else if (!date) {
     error = 'No date given';

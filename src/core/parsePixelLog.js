@@ -40,6 +40,137 @@ function parseFile(cb) {
 }
 
 /*
+ * Get summary of pixels per canvas placed by iid
+ * @param iid Limit on one user (optional)
+ * @param time timestamp of when to start
+ * @return array of parsed pixel log lines
+ *         string if error
+ */
+export async function getIIDSummary(
+  iid,
+  time,
+) {
+  const filterIP = await getIPofIID(iid);
+  if (!filterIP) {
+    return 'Could not resolve IID to IP';
+  }
+  const cids = {};
+
+  try {
+    await parseFile((parts) => {
+      const [tsStr, ipFull,, cid, x, y,, clrStr] = parts;
+      const ts = parseInt(tsStr, 10);
+      if (ts >= time) {
+        const ip = getIPv6Subnet(ipFull);
+        if (ip === filterIP) {
+          const clr = parseInt(clrStr, 10);
+          let curVals = cids[cid];
+          if (!curVals) {
+            curVals = [0, 0, 0, 0, 0];
+            cids[cid] = curVals;
+          }
+          curVals[0] += 1;
+          curVals[1] = x;
+          curVals[2] = y;
+          curVals[3] = clr;
+          curVals[4] = ts;
+        }
+      }
+    });
+  } catch (err) {
+    return `Could not parse logfile: ${err.message}`;
+  }
+
+  const columns = ['rid', '#', 'canvas', 'last', 'clr', 'time'];
+  const types = ['number', 'number', 'cid', 'coord', 'clr', 'ts'];
+  const rows = [];
+  const cidKeys = Object.keys(cids);
+  for (let i = 0; i < cidKeys.length; i += 1) {
+    const cid = cidKeys[i];
+    const [pxls, x, y, clr, ts] = cids[cid];
+    rows.push([
+      i,
+      pxls,
+      cid,
+      `${x},${y}`,
+      clr,
+      ts,
+    ]);
+  }
+
+  return {
+    columns,
+    types,
+    rows,
+  };
+}
+
+/*
+ * Get pixels by iid
+ * @param iid Limit on one user (optional)
+ * @param time timestamp of when to start
+ * @return array of parsed pixel log lines
+ *         string if error
+ */
+export async function getIIDPixels(
+  iid,
+  time,
+  maxRows = 300,
+) {
+  const filterIP = await getIPofIID(iid);
+  if (!filterIP) {
+    return 'Could not resolve IID to IP';
+  }
+  const pixels = [];
+
+  try {
+    await parseFile((parts) => {
+      const [tsStr, ipFull,, cid, x, y,, clrStr] = parts;
+      const ts = parseInt(tsStr, 10);
+      if (ts >= time) {
+        const ip = getIPv6Subnet(ipFull);
+        if (ip === filterIP) {
+          const clr = parseInt(clrStr, 10);
+          pixels.push([
+            cid,
+            x,
+            y,
+            clr,
+            ts,
+          ]);
+        }
+      }
+    });
+  } catch (err) {
+    return `Could not parse logfile: ${err.message}`;
+  }
+
+  const pixelF = (pixels.length > maxRows)
+    ? pixels.slice(maxRows * -1)
+    : pixels;
+
+  const columns = ['rid', 'canvas', 'coord', 'clr', 'time'];
+  const types = ['number', 'cid', 'coord', 'clr', 'ts'];
+  const rows = [];
+  for (let i = 0; i < pixelF.length; i += 1) {
+    const [cid, x, y, clr, ts] = pixelF[i];
+    rows.push([
+      i,
+      cid,
+      `${x},${y}`,
+      clr,
+      ts,
+    ]);
+  }
+
+  return {
+    columns,
+    types,
+    rows,
+  };
+}
+
+/*
  * Get summary of users placing in area of current day
  * @param canvasId id of canvas
  * @param xUL, yUL, xBR, yBR area of canvs
@@ -86,15 +217,15 @@ export async function getSummaryFromArea(
         const uid = parseInt(uidStr, 10);
         let curVals = ips[ip];
         if (!curVals) {
-          curVals = [0, ip, uid, 0, 0, 0, 0];
+          curVals = [0, uid, 0, 0, 0, 0];
           ips[ip] = curVals;
           uids.push(uid);
         }
         curVals[0] += 1;
-        curVals[3] = x;
-        curVals[4] = y;
-        curVals[5] = clr;
-        curVals[6] = ts;
+        curVals[2] = x;
+        curVals[3] = y;
+        curVals[4] = clr;
+        curVals[5] = ts;
       }
     });
   } catch (err) {
@@ -125,7 +256,8 @@ export async function getSummaryFromArea(
 
   const rows = [];
   for (let i = 0; i < ipKeys.length; i += 1) {
-    const [pxls, ip, uid, x, y, clr, ts] = ips[ipKeys[i]];
+    const ip = ipKeys[i];
+    const [pxls, uid, x, y, clr, ts] = ips[ip];
     const row = [i, pxls];
     if (printIIDs) {
       const ipInfo = ip2Info.get(ip);
@@ -217,7 +349,9 @@ export async function getPixelsFromArea(
   const uid2Name = await getNamesToIds(uids);
   const ip2Id = await getIdsToIps(ips);
 
-  const pixelF = (pixels.length > 300) ? pixels.slice(maxRows * -1) : pixels;
+  const pixelF = (pixels.length > maxRows)
+    ? pixels.slice(maxRows * -1)
+    : pixels;
 
   let printIIDs = false;
   let printUsers = false;

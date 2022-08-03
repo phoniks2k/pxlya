@@ -14,6 +14,7 @@ import { escapeMd } from '../../core/utils';
 import logger, { modtoolsLogger } from '../../core/logger';
 import {
   executeIPAction,
+  executeIIDAction,
   executeImageAction,
   executeProtAction,
   executeRollback,
@@ -113,6 +114,17 @@ router.post('/', upload.single('image'), async (req, res, next) => {
         canvasid,
       );
       res.status(200).json(ret);
+      return;
+    }
+    if (req.body.iidaction) {
+      const {
+        iidaction, iid,
+      } = req.body;
+      const ret = await executeIIDAction(
+        iidaction,
+        iid,
+      );
+      res.status(200).send(ret);
       return;
     }
     if (req.body.cleaneraction) {

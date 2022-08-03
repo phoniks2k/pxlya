@@ -88,12 +88,11 @@ async function submitWatchAction(
 
 function ModWatchtools() {
   const [selectedCanvas, selectCanvas] = useState(0);
-  const [colors, setColors] = useState([]);
   const [tlcoords, selectTLCoords] = useState(keepState.tlcoords);
   const [brcoords, selectBRCoords] = useState(keepState.brcoords);
   const [interval, selectInterval] = useState(keepState.interval);
   const [sortBy, setSortBy] = useState(0);
-  const [table, setTable] = useState(null);
+  const [table, setTable] = useState({});
   const [iid, selectIid] = useState(keepState.iid);
   const [resp, setResp] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -110,24 +109,8 @@ function ModWatchtools() {
     selectCanvas(canvasId);
   }, [canvasId]);
 
-  useEffect(() => {
-    const colorsRGB = canvases[selectedCanvas].colors;
-    const newColors = [];
-    for (let i = 0; i < colorsRGB.length; i += 1) {
-      const [r, g, b] = colorsRGB[i];
-      newColors.push(`rgb(${r},${g},${b})`);
-    }
-    setColors(newColors);
-  }, [selectedCanvas]);
-
-  let columns;
-  let types;
-  let rows;
-  if (table) {
-    columns = table.columns;
-    types = table.types;
-    rows = table.rows;
-  }
+  const { columns, types, rows } = table;
+  const cidColumn = (types) ? (types.indexOf('cid')) : -1;
 
   return (
     <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
@@ -310,7 +293,7 @@ function ModWatchtools() {
         {(submitting) ? '...' : t`Get Users`}
       </button>
       <br />
-      {(table) && (
+      {(rows && columns && types) && (
         <React.Fragment key="pxltable">
           <div className="modaldivider" />
           <table
@@ -350,14 +333,23 @@ function ModWatchtools() {
                         );
                       }
                       case 'clr': {
-                        const color = colors[val];
-                        const style = (color)
-                          ? { backgroundColor: color }
-                          : undefined;
-                        return (<td style={style}>{val}</td>);
+                        const cid = (cidColumn > 0)
+                          ? row[cidColumn] : selectedCanvas;
+                        const rgb = canvases[cid]
+                          && canvases[cid].colors
+                          && canvases[cid].colors[val];
+                        if (!rgb) {
+                          return (<td>{val}</td>);
+                        }
+                        const color = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+                        return (
+                          <td style={{ backgroundColor: color }}>{val}</td>
+                        );
                       }
                       case 'coord': {
-                        const { ident } = canvases[selectedCanvas];
+                        const cid = (cidColumn > 0)
+                          ? row[cidColumn] : selectedCanvas;
+                        const ident = canvases[cid] && canvases[cid].ident;
                         const coords = `./#${ident},${val},47`;
                         return (
                           <td>
@@ -377,6 +369,12 @@ function ModWatchtools() {
                             src={`${window.ssv.assetserver}/cf/${flag}.gif`}
                           /></td>
                         );
+                      }
+                      case 'cid': {
+                        const cid = (cidColumn > 0)
+                          ? row[cidColumn] : selectedCanvas;
+                        const ident = canvases[cid] && canvases[cid].ident;
+                        return (<td>{ident}</td>);
                       }
                       case 'user': {
                         const seperator = val.lastIndexOf(',');
@@ -405,6 +403,6 @@ function ModWatchtools() {
 }
 
 // possible types:
-// 'coord', 'clr', 'ts', 'user', 'uuid', 'string', 'number', 'flag'
+// 'coord', 'clr', 'ts', 'user', 'uuid', 'string', 'number', 'flag', 'cid'
 
 export default React.memo(ModWatchtools);
