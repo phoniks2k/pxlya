@@ -8,12 +8,14 @@ import { useSelector } from 'react-redux';
 import Canvastools from './ModCanvastools';
 import Admintools from './Admintools';
 import Watchtools from './ModWatchtools';
+import IIDTools from './ModIIDtools';
 
 
 const CONTENT = {
   Canvas: Canvastools,
   Admin: Admintools,
   Watch: Watchtools,
+  IID: IIDTools,
 };
 
 function Modtools() {
