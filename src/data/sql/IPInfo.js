@@ -106,7 +106,7 @@ export async function getIPofIID(uuid) {
 
 export async function getIdsToIps(ips) {
   const ipToIdMap = new Map();
-  if (!ips.length || ips.length > 100) {
+  if (!ips.length || ips.length > 300) {
     return ipToIdMap;
   }
   try {
@@ -126,7 +126,7 @@ export async function getIdsToIps(ips) {
 
 export async function getInfoToIps(ips) {
   const ipToIdMap = new Map();
-  if (!ips.length || ips.length > 100) {
+  if (!ips.length || ips.length > 300) {
     return ipToIdMap;
   }
   try {
