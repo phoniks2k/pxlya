@@ -71,7 +71,21 @@ function parseWhois(ip, whoisData) {
 }
 
 async function whois(ip) {
-  const whoisData = await whoiser.ip(ip);
+  let whoisData = await whoiser.ip(ip);
+  if (whoisData.ReferralServer) {
+    let referral = whoisData.ReferralServer;
+    const prot = referral.indexOf('://');
+    if (prot !== -1) {
+      referral = referral.slice(prot + 3);
+    }
+    try {
+      whoisData = await whoiser.ip(ip, {
+        host: referral,
+      });
+    } catch {
+      // nothing
+    }
+  }
   return parseWhois(ip, whoisData);
 }
 
