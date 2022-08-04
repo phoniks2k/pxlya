@@ -160,23 +160,34 @@ export async function incrementialBackupRedis(
           }
 
           const { abgr } = palette;
-          const compLength = Math.min(oldChunk.length, curChunk.length);
-          tileBuffer = new Uint32Array(TILE_SIZE ** 2);
+          const oldChunkLength = oldChunk.length;
+          const curChunkLength = curChunk.length;
+          if (oldChunkLength !== curChunkLength) {
+            tileBuffer = new Uint32Array(TILE_SIZE ** 2);
+          }
+
+          const compLength = Math.min(oldChunkLength, curChunkLength);
           for (let i = 0; i < compLength; i += 1) {
             const curPxl = curChunk[i];
             if (oldChunk[i] !== curPxl) {
+              if (!tileBuffer) {
+                tileBuffer = new Uint32Array(TILE_SIZE ** 2);
+              }
               tileBuffer[i] = abgr[curPxl & 0x3F];
             }
           }
 
-          const oldChunkLength = oldChunk.length;
-          const curChunkLength = curChunk.length;
+          if (!tileBuffer) {
+            continue;
+          }
 
           for (let i = oldChunkLength; i < curChunkLength; i += 1) {
+            // current chunk longer than old chunk
             tileBuffer[i] = abgr[curChunk[i] & 0x3F];
           }
 
           if (oldChunkLength > curChunkLength) {
+            // old chunk longer than current chunk
             const blank = abgr[0];
             for (let i = curChunkLength; i < oldChunkLength; i += 1) {
               if (oldChunk[i] !== 0) {
