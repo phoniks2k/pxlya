@@ -154,32 +154,3 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(runGC, 300000);
 });
 
-
-// on captcha received
-window.onCaptcha = async function onCaptcha(token) {
-  const body = JSON.stringify({
-    token,
-  });
-  await fetch('/api/captcha', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body,
-    credentials: 'include',
-  });
-
-  const {
-    i, j, pixels,
-  } = window.pixel;
-  SocketClient.requestPlacePixels(i, j, pixels);
-
-  if (typeof window.hcaptcha !== 'undefined') {
-    window.hcaptcha.reset();
-    const domBody = document.getElementsByTagName('BODY')[0];
-    domBody.style.overflowY = null;
-    domBody.style.overflow = 'hidden';
-  } else {
-    window.grecaptcha.reset();
-  }
-};
