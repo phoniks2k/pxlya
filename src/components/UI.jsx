@@ -13,15 +13,7 @@ import Palette from './Palette';
 import Alert from './Alert';
 import HistorySelect from './HistorySelect';
 import Mobile3DControls from './Mobile3DControls';
-import UserContextMenu from './contextmenus/UserContextMenu';
-import ChannelContextMenu from './contextmenus/ChannelContextMenu';
-
-
-const CONTEXT_MENUS = {
-  USER: UserContextMenu,
-  CHANNEL: ChannelContextMenu,
-  /* other context menus */
-};
+import ContextMenues from './contextmenus';
 
 const UI = () => {
   const [
@@ -38,7 +30,7 @@ const UI = () => {
     state.contextMenu.menuType,
   ], shallowEqual);
 
-  const ContextMenu = menuOpen && menuType && CONTEXT_MENUS[menuType];
+  const ContextMenu = menuOpen && menuType && ContextMenues[menuType];
 
   return (
     <>

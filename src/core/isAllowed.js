@@ -94,10 +94,12 @@ async function dummy() {
   return [false, 'dummy'];
 }
 
-async function saveIPInfo(ip, isProxy, info) {
+async function saveIPInfo(ip, whoisRet, isProxy, info) {
+  const whoisData = whoisRet || {};
+
   try {
-    const whoisData = await whois(ip);
     IPInfo.upsert({
+      ip,
       ...whoisData,
       isProxy,
       pcheck: info,
@@ -113,24 +115,32 @@ async function saveIPInfo(ip, isProxy, info) {
  * @param ip IP to check
  * @return true if proxy or blacklisted, false if not or whitelisted
  */
-async function withoutCache(f, ip) {
+export async function withoutCache(f, ip) {
   const ipKey = getIPv6Subnet(ip);
-  let allowed;
-  let status;
-  let pcInfo;
-  if (await isWhitelisted(ipKey)) {
-    allowed = false;
-    pcInfo = 'wl';
-    status = -1;
-  } else if (await isIPBanned(ipKey)) {
-    allowed = true;
-    pcInfo = 'bl';
-    status = 2;
-  } else {
-    [allowed, pcInfo] = await f(ip);
-    status = (allowed) ? 1 : 0;
+  let allowed = true;
+  let status = -2;
+  let pcInfo = null;
+  let whoisRet = null;
+
+  try {
+    if (await isWhitelisted(ipKey)) {
+      allowed = true;
+      pcInfo = 'wl';
+      status = -1;
+    } else if (await isIPBanned(ipKey)) {
+      allowed = false;
+      pcInfo = 'bl';
+      status = 2;
+    } else {
+      [allowed, pcInfo] = await f(ip);
+      allowed = !allowed;
+      status = (allowed) ? 0 : 1;
+    }
+    whoisRet = await whois(ip);
+  } finally {
+    await saveIPInfo(ipKey, whoisRet, allowed, pcInfo);
   }
-  saveIPInfo(ipKey, allowed, pcInfo);
+
   return {
     allowed,
     status,

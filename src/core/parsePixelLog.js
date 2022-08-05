@@ -272,9 +272,9 @@ export async function getSummaryFromArea(
           }
         }
         row.push(
-          ipInfo.uuid || 'N/A',
-          ipInfo.country || 'xx',
-          ipInfo.cidr || 'N/A',
+          ipInfo.uuid,
+          ipInfo.country,
+          ipInfo.cidr,
           ipInfo.org || 'N/A',
           pcheck || 'N/A',
         );

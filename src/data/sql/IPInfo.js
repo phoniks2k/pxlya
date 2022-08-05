@@ -23,6 +23,7 @@ const IPInfo = sequelize.define('IPInfo', {
 
   cidr: {
     type: DataTypes.CHAR(43),
+    defaultValue: 'N/A',
     allowNull: false,
   },
 

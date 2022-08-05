@@ -50,7 +50,7 @@ function ModIIDtools() {
           selectIIDAction(sel.options[sel.selectedIndex].value);
         }}
       >
-        {['givecaptcha', 'ban', 'unban', 'whitelist', 'unwhitelist']
+        {['status', 'givecaptcha', 'ban', 'unban', 'whitelist', 'unwhitelist']
           .map((opt) => (
             <option
               key={opt}
