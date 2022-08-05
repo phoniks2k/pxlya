@@ -107,6 +107,10 @@ export async function executeIIDAction(action, iid, logger = null) {
       }
       return `${iidPart} would have gotten captcha anyway`;
     }
+    case 'ban':
+    case 'unban':
+    case 'Whitelist':
+    case 'unwhitelist':
     default:
       return `Failed to ${action} ${iid}`;
   }

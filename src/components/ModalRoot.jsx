@@ -46,8 +46,8 @@ const ModalRoot = () => {
   const [Content, name] = COMPONENTS[windowType];
 
   return (
-    (render || open)
-      && [
+    (render || open) && (
+      <>
         <div
           className={(open && render)
             ? 'OverlayModal show'
@@ -55,7 +55,7 @@ const ModalRoot = () => {
           onTransitionEnd={onTransitionEnd}
           tabIndex={-1}
           onClick={() => dispatch(closeWindow(0))}
-        />,
+        />
         <div
           className={(open && render) ? 'Modal show' : 'Modal'}
         >
@@ -82,7 +82,8 @@ const ModalRoot = () => {
             <Content windowId={0} />
           </div>
         </div>,
-      ]
+      </>
+    )
   );
 };
 

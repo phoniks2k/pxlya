@@ -27,3 +27,8 @@ export async function getCacheAllowed(ip) {
     status: cache,
   };
 }
+
+export function cleanCacheForIP(ip) {
+  const key = `${PREFIX}:${ip}`;
+  return client.del(key);
+}

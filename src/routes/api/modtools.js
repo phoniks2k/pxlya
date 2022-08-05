@@ -118,11 +118,13 @@ router.post('/', upload.single('image'), async (req, res, next) => {
     }
     if (req.body.iidaction) {
       const {
-        iidaction, iid,
+        iidaction, iid, reason, time,
       } = req.body;
       const ret = await executeIIDAction(
         iidaction,
         iid,
+        reason,
+        time,
       );
       res.status(200).send(ret);
       return;

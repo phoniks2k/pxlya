@@ -6,8 +6,9 @@ import fetch from '../utils/proxiedFetch';
 
 import { getIPv6Subnet } from '../utils/ip';
 import whois from '../utils/whois';
-import { Whitelist, IPInfo } from '../data/sql';
+import { IPInfo } from '../data/sql';
 import { isIPBanned } from '../data/sql/Ban';
+import { isWhitelisted } from '../data/sql/Whitelist';
 import {
   cacheAllowed,
   getCacheAllowed,
@@ -84,21 +85,6 @@ async function getProxyCheck(ip) {
     ipData.proxy === 'yes',
     `${ipData.type},${ipData.city}`,
   ];
-}
-
-/*
- * check MYSQL Whitelist table
- * @param ip IP to check
- * @return true if whitelisted
- */
-async function isWhitelisted(ip) {
-  const count = await Whitelist
-    .count({
-      where: {
-        ip,
-      },
-    });
-  return count !== 0;
 }
 
 /*
