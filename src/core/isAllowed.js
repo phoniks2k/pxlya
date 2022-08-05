@@ -1,9 +1,17 @@
+/*
+ * decide if IP is allowed
+ * does proxycheck and check bans and whitelists
+ */
 import fetch from '../utils/proxiedFetch';
 
-import redis from '../data/redis/client';
 import { getIPv6Subnet } from '../utils/ip';
 import whois from '../utils/whois';
-import { Blacklist, Whitelist, IPInfo } from '../data/sql';
+import { Whitelist, IPInfo } from '../data/sql';
+import { isIPBanned } from '../data/sql/Ban';
+import {
+  cacheAllowed,
+  getCacheAllowed,
+} from '../data/redis/isAllowedCache';
 import { proxyLogger as logger } from './logger';
 
 import { USE_PROXYCHECK } from './config';
@@ -79,21 +87,6 @@ async function getProxyCheck(ip) {
 }
 
 /*
- * check MYSQL Blacklist table
- * @param ip IP to check
- * @return true if blacklisted
- */
-async function isBlacklisted(ip) {
-  const count = await Blacklist
-    .count({
-      where: {
-        ip,
-      },
-    });
-  return count !== 0;
-}
-
-/*
  * check MYSQL Whitelist table
  * @param ip IP to check
  * @return true if whitelisted
@@ -135,21 +128,27 @@ async function saveIPInfo(ip, isProxy, info) {
  * @return true if proxy or blacklisted, false if not or whitelisted
  */
 async function withoutCache(f, ip) {
-  if (!ip) return true;
   const ipKey = getIPv6Subnet(ip);
-  let result;
-  let info;
+  let allowed;
+  let status;
+  let pcInfo;
   if (await isWhitelisted(ipKey)) {
-    result = false;
-    info = 'wl';
-  } else if (await isBlacklisted(ipKey)) {
-    result = true;
-    info = 'bl';
+    allowed = false;
+    pcInfo = 'wl';
+    status = -1;
+  } else if (await isIPBanned(ipKey)) {
+    allowed = true;
+    pcInfo = 'bl';
+    status = 2;
   } else {
-    [result, info] = await f(ip);
+    [allowed, pcInfo] = await f(ip);
+    status = (allowed) ? 1 : 0;
   }
-  saveIPInfo(ipKey, result, info);
-  return result;
+  saveIPInfo(ipKey, allowed, pcInfo);
+  return {
+    allowed,
+    status,
+  };
 }
 
 /*
@@ -162,13 +161,17 @@ async function withoutCache(f, ip) {
 let lock = 4;
 const checking = [];
 async function withCache(f, ip) {
-  if (!ip || ip === '0.0.0.1') return true;
+  if (!ip || ip === '0.0.0.1') {
+    return {
+      allowed: false,
+      status: 4,
+    };
+  }
   // get from cache, if there
   const ipKey = getIPv6Subnet(ip);
-  const key = `isprox:${ipKey}`;
-  const cache = await redis.get(key);
+  const cache = await getCacheAllowed(ipKey);
   if (cache) {
-    return cache === 'y';
+    return cache;
   }
 
   // else make asynchronous ipcheck and assume no proxy in the meantime
@@ -179,28 +182,42 @@ async function withCache(f, ip) {
     checking.push(ipKey);
     try {
       const result = await withoutCache(f, ip);
-      const value = result ? 'y' : 'n';
-      redis.set(key, value, {
-        EX: 3 * 24 * 3600,
-      }); // cache for three days
-      const pos = checking.indexOf(ipKey);
-      if (~pos) checking.splice(pos, 1);
+      cacheAllowed(ip, result);
     } catch (error) {
       logger.error('Error %s', error.message || error);
+    } finally {
       const pos = checking.indexOf(ipKey);
       if (~pos) checking.splice(pos, 1);
-    } finally {
       lock += 1;
     }
   }
-  return false;
+  return {
+    allowed: true,
+    status: -2,
+  };
 }
 
-function cheapDetector(ip) {
-  if (USE_PROXYCHECK) {
-    return withCache(getProxyCheck, ip);
+/*
+ * check if ip is allowed
+ * @param ip IP
+ * @param disableCache if we fetch result from cache
+ * @return {
+ *     allowed: boolean if allowed to use site
+ * ,   status:  -2: not yet checked
+ *              -1: whitelisted
+ *              0: allowed, no proxy
+ *              1  is proxy
+ *              2: is banned
+ *              3: is rangebanned
+ *              4: invalid ip
+ *   }
+ */
+function checkIfAllowed(ip, disableCache = false) {
+  const checker = (USE_PROXYCHECK) ? getProxyCheck : dummy;
+  if (disableCache) {
+    return withoutCache(checker, ip);
   }
-  return withCache(dummy, ip);
+  return withCache(checker, ip);
 }
 
-export default cheapDetector;
+export default checkIfAllowed;

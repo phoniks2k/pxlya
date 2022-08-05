@@ -8,7 +8,7 @@
 import { t } from 'ttag';
 
 import Renderer2D from './Renderer2D';
-import { sweetAlert } from '../store/actions';
+import { pAlert } from '../store/actions';
 import { isWebGL2Available } from '../core/utils';
 
 const dummyRenderer = {
@@ -31,7 +31,7 @@ export async function initRenderer(store, is3D) {
   renderer.destructor();
   if (is3D) {
     if (!isWebGL2Available()) {
-      store.dispatch(sweetAlert(
+      store.dispatch(pAlert(
         t`Canvas Error`,
         t`Can't render 3D canvas, do you have WebGL2 disabled?`,
         'error',

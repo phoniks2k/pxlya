@@ -130,6 +130,7 @@ export async function drawByOffsets(
         }
       }
       if (canvas.req === 'top' && !rankings.prevTop.includes(user.id)) {
+        // not in top ten
         throw new Error(12);
       }
     }

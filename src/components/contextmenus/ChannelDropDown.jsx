@@ -186,6 +186,7 @@ const ChannelDropDown = ({
                 const [cid, unreadCh, name] = ch;
                 return (
                   <div
+                    key={cid}
                     onClick={() => setChatChannel(cid)}
                     className={
                       `chn${

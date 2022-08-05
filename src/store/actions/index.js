@@ -9,18 +9,18 @@ import {
   requestMe,
 } from './fetch';
 
-export function sweetAlert(
+export function pAlert(
   title,
-  text,
-  icon,
-  confirmButtonText,
+  message,
+  alertType,
+  btn = t`OK`,
 ) {
   return {
     type: 'ALERT',
     title,
-    text,
-    icon,
-    confirmButtonText,
+    message,
+    alertType,
+    btn,
   };
 }
 
@@ -871,7 +871,7 @@ export function startDm(windowId, query) {
     dispatch(setApiFetching(true));
     const res = await requestStartDm(query);
     if (typeof res === 'string') {
-      dispatch(sweetAlert(
+      dispatch(pAlert(
         'Direct Message Error',
         res,
         'error',
@@ -902,7 +902,7 @@ export function setUserBlock(
     dispatch(setApiFetching(true));
     const res = await requestBlock(userId, block);
     if (res) {
-      dispatch(sweetAlert(
+      dispatch(pAlert(
         'User Block Error',
         res,
         'error',
@@ -924,7 +924,7 @@ export function setBlockingDm(
     dispatch(setApiFetching(true));
     const res = await requestBlockDm(block);
     if (res) {
-      dispatch(sweetAlert(
+      dispatch(pAlert(
         'Blocking DMs Error',
         res,
         'error',
@@ -944,7 +944,7 @@ export function setLeaveChannel(
     dispatch(setApiFetching(true));
     const res = await requestLeaveChan(cid);
     if (res) {
-      dispatch(sweetAlert(
+      dispatch(pAlert(
         'Leaving Channel Error',
         res,
         'error',

@@ -13,6 +13,7 @@
   },
   "plugins": [
       "react",
+      "react-hooks",
       "jsx-a11y",
       "import"
   ],
@@ -32,7 +33,9 @@
     "no-mixed-operators":"off",
     "react/prop-types": "off",
     "react/jsx-one-expression-per-line": "off",
-    "react/jsx-closing-tag-location":"off",
+    "react/jsx-closing-tag-location": "off",
+    "react/jsx-key": "warn",
+    "react-hooks/rules-of-hooks": "error",
     "jsx-a11y/click-events-have-key-events":"off",
     "jsx-a11y/no-static-element-interactions":"off",
     "no-continue": "off",

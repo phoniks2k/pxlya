@@ -4,7 +4,7 @@
  */
 
 import logger from '../../core/logger';
-import redis from './client';
+import client from './client';
 import { getIPv6Subnet } from '../../utils/ip';
 import {
   CAPTCHA_TIME,
@@ -79,7 +79,7 @@ export async function setCaptchaSolution(
     key += `:${captchaid}`;
   }
   try {
-    await redis.set(key, text, {
+    await client.set(key, text, {
       EX: CAPTCHA_TIMEOUT,
     });
   } catch (error) {
@@ -112,7 +112,7 @@ export async function checkCaptchaSolution(
   if (captchaid) {
     key += `:${captchaid}`;
   }
-  const solution = await redis.get(key);
+  const solution = await client.get(key);
   if (solution) {
     if (evaluateResult(solution, text)) {
       if (Math.random() < 0.1) {
@@ -120,7 +120,7 @@ export async function checkCaptchaSolution(
       }
       if (!onetime) {
         const solvkey = `human:${ipn}`;
-        await redis.set(solvkey, '', {
+        await client.set(solvkey, '', {
           EX: TTL_CACHE,
         });
       }
@@ -149,7 +149,7 @@ export async function needCaptcha(ip) {
     return false;
   }
   const key = `human:${getIPv6Subnet(ip)}`;
-  const ttl = await redis.ttl(key);
+  const ttl = await client.ttl(key);
   if (ttl > 0) {
     return false;
   }
@@ -168,6 +168,6 @@ export async function forceCaptcha(ip) {
     return null;
   }
   const key = `human:${getIPv6Subnet(ip)}`;
-  const ret = await redis.del(key);
+  const ret = await client.del(key);
   return (ret > 0);
 }

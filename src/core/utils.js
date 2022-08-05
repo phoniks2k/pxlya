@@ -223,6 +223,10 @@ export function worldToScreen(
   ];
 }
 
+/*
+ * parses duration to string
+ * in xx:xx format with min:sec
+ */
 export function durationToString(
   ms,
   smallest = false,
@@ -236,6 +240,38 @@ export function durationToString(
     timestring = `${Math.floor(seconds / 60)}:${(`0${seconds % 60}`).slice(-2)}`;
   }
   return timestring;
+}
+
+/*
+ * parses a large duration to
+ * [x]h [y]min [z]sec format
+ */
+export function largeDurationToString(
+  ts,
+) {
+  let restA = Math.round(ts / 1000);
+  let restB = restA % (3600 * 24);
+  const days = restA - restB;
+  restA = restB % 3600;
+  const hours = restB - restA;
+  restB = restA % 60;
+  const minutes = restA - restB;
+  restA = restB % 60;
+  const seconds = restB - restA;
+  let out = '';
+  if (days) {
+    out += ` ${days}d`;
+  }
+  if (hours) {
+    out += ` ${hours}h`;
+  }
+  if (minutes) {
+    out += ` ${minutes}min`;
+  }
+  if (seconds) {
+    out += ` ${seconds}s`;
+  }
+  return out;
 }
 
 const postfix = ['k', 'M', 'B'];
@@ -433,3 +469,31 @@ export function getDateTimeString(timestamp) {
   }
   return date.toLocaleTimeString();
 }
+
+/*
+ * parse interval in s/m/h form to timestamp
+ * @param interval string like "2d"
+ * @return timestamp of now - interval
+ */
+export function parseInterval(interval) {
+  if (!interval) {
+    return 0;
+  }
+  const lastChar = interval.slice(-1).toLowerCase();
+  const num = parseInt(interval.slice(0, -1), 10);
+  if (Number.isNaN(num) || num <= 0 || num > 600
+    || !['s', 'm', 'h', 'd'].includes(lastChar)) {
+    return 0;
+  }
+  let factor = 1000;
+  if (lastChar === 'm') {
+    factor *= 60;
+  } else if (lastChar === 'h') {
+    factor *= 3600;
+  } else if (lastChar === 'd') {
+    factor *= 3600 * 24;
+  }
+  return (num * factor);
+}
+
+

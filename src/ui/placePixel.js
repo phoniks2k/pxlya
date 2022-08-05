@@ -8,7 +8,7 @@ import { t } from 'ttag';
 import {
   notify,
   setRequestingPixel,
-  sweetAlert,
+  pAlert,
   gotCoolDownDelta,
   pixelFailure,
   setWait,
@@ -48,11 +48,10 @@ export function requestFromQueue(store) {
     pixelQueue = [];
     pixelTimeout = null;
     store.dispatch(setRequestingPixel(true));
-    store.dispatch(sweetAlert(
+    store.dispatch(pAlert(
       t`Error :(`,
       t`Didn't get an answer from pixelplanet. Maybe try to refresh?`,
       'error',
-      t`OK`,
     ));
   }, 15000);
 
@@ -229,11 +228,10 @@ export function receivePixelReturn(
       store.dispatch(pixelWait());
       break;
     case 10:
-      store.dispatch(sweetAlert(
+      store.dispatch(pAlert(
         'Captcha',
         t`Please prove that you are human`,
         'captcha',
-        t`OK`,
       ));
       store.dispatch(setRequestingPixel(true));
       return;
@@ -250,6 +248,18 @@ export function receivePixelReturn(
       // eslint-disable-next-line max-len
       msg = t`Server got confused by your pixels. Are you playing on multiple devices?`;
       break;
+    case 14:
+      store.dispatch(pAlert(
+        'Banned',
+        t`You are banned.`,
+        'ban',
+      ));
+      store.dispatch(setRequestingPixel(true));
+      return;
+    case 15:
+      errorTitle = t`Range Banned`;
+      msg = t`Your Internet Provider is banned from playing this game`;
+      break;
     default:
       errorTitle = t`Weird`;
       msg = t`Couldn't set Pixel`;
@@ -257,11 +267,10 @@ export function receivePixelReturn(
 
   if (msg) {
     store.dispatch(pixelFailure());
-    store.dispatch(sweetAlert(
+    store.dispatch(pAlert(
       (errorTitle || t`Error ${retCode}`),
       msg,
       'error',
-      t`OK`,
     ));
   }
 

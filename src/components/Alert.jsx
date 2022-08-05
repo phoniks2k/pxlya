@@ -6,17 +6,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import GlobalCaptcha from './GlobalCaptcha';
+import BanInfo from './BanInfo';
 import { closeAlert } from '../store/actions';
 
 const Alert = () => {
   const [render, setRender] = useState(false);
 
   const {
-    alertOpen,
+    open,
     alertType,
-    alertTitle,
-    alertMessage,
-    alertBtn,
+    title,
+    message,
+    btn,
   } = useSelector((state) => state.alert);
 
   const dispatch = useDispatch();
@@ -25,20 +26,32 @@ const Alert = () => {
   }, [dispatch]);
 
   const onTransitionEnd = () => {
-    if (!alertOpen) setRender(false);
+    if (!open) setRender(false);
   };
 
   useEffect(() => {
     window.setTimeout(() => {
-      if (alertOpen) setRender(true);
+      if (open) setRender(true);
     }, 10);
-  }, [alertOpen]);
+  }, [open]);
+
+  let Content = null;
+  switch (alertType) {
+    case 'captcha':
+      Content = GlobalCaptcha;
+      break;
+    case 'ban':
+      Content = BanInfo;
+      break;
+    default:
+      // nothing
+  }
 
   return (
-    (render || alertOpen) && (
+    (render || open) && (
       <div>
         <div
-          className={(alertOpen && render)
+          className={(open && render)
             ? 'OverlayAlert show'
             : 'OverlayAlert'}
           onTransitionEnd={onTransitionEnd}
@@ -46,23 +59,21 @@ const Alert = () => {
           onClick={close}
         />
         <div
-          className={(alertOpen && render) ? 'Alert show' : 'Alert'}
+          className={(open && render) ? 'Alert show' : 'Alert'}
         >
-          <h2>{alertTitle}</h2>
+          <h2>{title}</h2>
           <p className="modaltext">
-            {alertMessage}
+            {message}
           </p>
           <div>
-            {(alertType === 'captcha')
-              ? <GlobalCaptcha close={close} />
-              : (
-                <button
-                  type="button"
-                  onClick={close}
-                >
-                  {alertBtn}
-                </button>
-              )}
+            {(Content) ? (
+              <Content close={close} />
+            ) : (
+              <button
+                type="button"
+                onClick={close}
+              >{btn}</button>
+            )}
           </div>
         </div>
       </div>

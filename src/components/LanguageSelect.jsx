@@ -11,10 +11,6 @@ import { t } from 'ttag';
 import { MONTH } from '../core/constants';
 
 function LanguageSelect() {
-  if (!navigator.cookieEnabled) {
-    return null;
-  }
-
   const { lang, langs } = window.ssv;
 
   const [langSel, setLangSel] = useState(lang);
@@ -29,6 +25,10 @@ function LanguageSelect() {
       }
     }
   }, [langSel]);
+
+  if (!navigator.cookieEnabled) {
+    return null;
+  }
 
   return (
     <div style={{ textAlign: 'right' }}>

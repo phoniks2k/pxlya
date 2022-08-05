@@ -25,7 +25,7 @@ import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
 import { drawByOffsets } from '../core/draw';
 import { needCaptcha } from '../data/redis/captcha';
-import cheapDetector from '../core/isProxy';
+import isIPAllowed from '../core/isAllowed';
 
 
 const ipCounter = new Counter();
@@ -95,7 +95,7 @@ class SocketServer {
       ws.name = user.getName();
 
       const { ip } = user;
-      cheapDetector(ip);
+      isIPAllowed(ip);
 
       ws.send(OnlineCounter.dehydrate(socketEvents.onlineCounter));
 
@@ -493,8 +493,18 @@ class SocketServer {
             failureRet = PixelReturn.dehydrate(10, 0, 0);
           }
           // (re)check for Proxy
-          if (await cheapDetector(ip)) {
-            failureRet = PixelReturn.dehydrate(11, 0, 0);
+          const allowed = await isIPAllowed(ip);
+          if (!allowed.allowed) {
+            // proxy
+            let failureStatus = 11;
+            if (allowed.status === 2) {
+              // banned
+              failureStatus = 14;
+            } else if (allowed.status === 3) {
+              // range banned
+              failureStatus = 15;
+            }
+            failureRet = PixelReturn.dehydrate(failureStatus, 0, 0);
           }
           if (failureRet !== null) {
             const now = Date.now();

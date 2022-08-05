@@ -19,10 +19,6 @@ function ChatMessage({
   msg,
   ts,
 }) {
-  if (!name) {
-    return null;
-  }
-
   const dispatch = useDispatch();
   const isDarkMode = useSelector(
     (state) => state.gui.style.indexOf('dark') !== -1,

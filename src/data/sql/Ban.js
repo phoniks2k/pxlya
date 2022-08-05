@@ -33,4 +33,12 @@ const Ban = sequelize.define('Blacklist', {
   updatedAt: false,
 });
 
+export async function isIPBanned(ip) {
+  const count = await Ban
+    .count({
+      where: { ip },
+    });
+  return count !== 0;
+}
+
 export default Ban;

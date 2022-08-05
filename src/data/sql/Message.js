@@ -35,6 +35,12 @@ const Message = sequelize.define('Message', {
   },
 }, {
   updatedAt: false,
+
+  setterMethods: {
+    message(value) {
+      this.setDataValue('message', value.slice(0, 200));
+    },
+  },
 });
 
 Message.belongsTo(Channel, {

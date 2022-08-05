@@ -64,6 +64,7 @@ const SettingsItemSelect = ({
         {
           values.map((value) => (
             <option
+              key={value}
               value={value}
             >
               {value}

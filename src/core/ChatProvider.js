@@ -11,7 +11,7 @@ import {
 import { findIdByNameOrId } from '../data/sql/RegUser';
 import ChatMessageBuffer from './ChatMessageBuffer';
 import socketEvents from '../socket/SocketEvents';
-import cheapDetector from './isProxy';
+import checkIPAllowed from './isAllowed';
 import { DailyCron } from '../utils/cron';
 import { escapeMd } from './utils';
 import ttags from './ttag';
@@ -380,11 +380,21 @@ export class ChatProvider {
       return null;
     }
 
-    if (await cheapDetector(user.ip)) {
+    const allowed = await checkIPAllowed(user.ip);
+    if (!allowed.allowed) {
       logger.info(
-        `${name} / ${user.ip} tried to send chat message with proxy`,
+        `${name} / ${user.ip} tried to send chat message but is not allowed`,
       );
-      return t`You can not send chat messages with proxy`;
+      switch (allowed.status) {
+        case 1:
+          return t`You can not send chat messages with proxy`;
+        case 2:
+          return t`You are banned`;
+        case 3:
+          return t`Your Internet Provider is banned`;
+        default:
+          return t`You are not allowed to use chat`;
+      }
     }
 
     if (message.charAt(0) === '/' && user.userlvl) {

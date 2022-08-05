@@ -7,34 +7,14 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
+import { parseInterval } from '../core/utils';
+
 const keepState = {
   tlcoords: '',
   brcoords: '',
   interval: '15m',
   iid: '',
 };
-
-/*
- * parse interval in s/m/h to timestamp
- */
-function parseInterval(interval) {
-  if (!interval) {
-    return null;
-  }
-  const lastChar = interval.slice(-1).toLowerCase();
-  const num = parseInt(interval.slice(0, -1), 10);
-  if (Number.isNaN(num) || num <= 0 || num > 600
-    || !['s', 'm', 'h'].includes(lastChar)) {
-    return null;
-  }
-  let factor = 1000;
-  if (lastChar === 'm') {
-    factor *= 60;
-  } else if (lastChar === 'h') {
-    factor *= 3600;
-  }
-  return Date.now() - (num * factor);
-}
 
 /*
  * sorting function for array sort
@@ -59,11 +39,12 @@ async function submitWatchAction(
   iid,
   callback,
 ) {
-  const time = parseInterval(interval);
+  let time = parseInterval(interval);
   if (!time) {
     callback({ info: t`Interval is invalid` });
     return;
   }
+  time = Date.now() - time;
   const data = new FormData();
   data.append('watchaction', action);
   data.append('canvasid', canvas);
@@ -147,19 +128,14 @@ function ModWatchtools() {
             selectCanvas(sel.options[sel.selectedIndex].value);
           }}
         >
-          {
-          Object.keys(canvases).map((canvas) => ((canvases[canvas].v)
-            ? null
-            : (
-              <option
-                value={canvas}
-              >
-                {
-              canvases[canvas].title
-            }
-              </option>
-            )))
-        }
+          {Object.keys(canvases).filter((c) => !canvases[c].v).map((canvas) => (
+            <option
+              key={canvas}
+              value={canvas}
+            >
+              {canvases[canvas].title}
+            </option>
+          ))}
         </select>
         {` ${t`Interval`}: `}
         <input
@@ -306,6 +282,7 @@ function ModWatchtools() {
               <tr>
                 {columns.slice(1).map((col, ind) => (
                   <th
+                    key={col}
                     style={
                       (sortBy - 1 === ind)
                         ? { fontWeight: 'normal' }

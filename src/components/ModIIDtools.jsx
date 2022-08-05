@@ -5,13 +5,20 @@
 import React, { useState } from 'react';
 import { t } from 'ttag';
 
+import { parseInterval } from '../core/utils';
+
 async function submitIIDAction(
   action,
   iid,
+  reason,
+  duration,
   callback,
 ) {
+  const time = Date.now() + parseInterval(duration);
   const data = new FormData();
   data.append('iidaction', action);
+  data.append('reason', reason);
+  data.append('time', time);
   data.append('iid', iid);
   const resp = await fetch('./api/modtools', {
     credentials: 'include',
@@ -24,6 +31,8 @@ async function submitIIDAction(
 function ModIIDtools() {
   const [iIDAction, selectIIDAction] = useState('givecaptcha');
   const [iid, selectIid] = useState('');
+  const [reason, setReason] = useState('');
+  const [duration, setDuration] = useState('1d');
   const [resp, setResp] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -37,15 +46,47 @@ function ModIIDtools() {
           selectIIDAction(sel.options[sel.selectedIndex].value);
         }}
       >
-        {['givecaptcha']
+        {['givecaptcha', 'ban', 'unban', 'whitelist', 'unwhitelist']
           .map((opt) => (
             <option
+              key={opt}
               value={opt}
             >
               {opt}
             </option>
           ))}
       </select>
+      {(iIDAction === 'ban') && (
+        <>
+          <p>{t`Reason`}</p>
+          <input
+            style={{
+              width: '100%',
+            }}
+            value={reason}
+            placeholder={t`Enter Reason`}
+            onChange={(evt) => {
+              setReason(evt.target.value.trim());
+            }}
+          />
+          <p>
+            {`${t`Duration`}: `}
+            <input
+              style={{
+                display: 'inline-block',
+                width: '100%',
+                maxWidth: '7em',
+              }}
+              value={duration}
+              placeholder="1d"
+              onChange={(evt) => {
+                setDuration(evt.target.value.trim());
+              }}
+            />
+            {t`(0 = infinite)`}
+          </p>
+        </>
+      )}
       <p className="modalcotext">
         {' IID: '}
         <input
@@ -58,8 +99,7 @@ function ModIIDtools() {
           type="text"
           placeholder="xxxx-xxxxx-xxxx"
           onChange={(evt) => {
-            const newIid = evt.target.value.trim();
-            selectIid(newIid);
+            selectIid(evt.target.value.trim());
           }}
         />
         <button
@@ -72,6 +112,8 @@ function ModIIDtools() {
             submitIIDAction(
               iIDAction,
               iid,
+              reason,
+              duration,
               (ret) => {
                 setSubmitting(false);
                 setResp(ret);
@@ -87,7 +129,6 @@ function ModIIDtools() {
           width: '100%',
         }}
         rows={(resp) ? resp.split('\n').length : 10}
-        id="iparea"
         value={resp}
         readOnly
       />

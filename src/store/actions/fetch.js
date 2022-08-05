@@ -282,6 +282,12 @@ export function requestRankings() {
   );
 }
 
+export function requestBanInfo() {
+  return makeAPIGETRequest(
+    'api/baninfo',
+  );
+}
+
 export function requestMe() {
   return makeAPIGETRequest(
     'api/me',

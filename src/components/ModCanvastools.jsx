@@ -240,7 +240,7 @@ function ModCanvastools() {
           </span>
         </div>
       )}
-      <p className="modalcotext">Choose Canvas:&nbsp;
+      <p className="modalcotext">{t`Choose Canvas`}:&nbsp;
         <select
           value={selectedCanvas}
           onChange={(e) => {
@@ -248,19 +248,14 @@ function ModCanvastools() {
             selectCanvas(sel.options[sel.selectedIndex].value);
           }}
         >
-          {
-          Object.keys(canvases).map((canvas) => ((canvases[canvas].v)
-            ? null
-            : (
-              <option
-                value={canvas}
-              >
-                {
-              canvases[canvas].title
-            }
-              </option>
-            )))
-        }
+          {Object.keys(canvases).filter((c) => !canvases[c].v).map((canvas) => (
+            <option
+              key={canvas}
+              value={canvas}
+            >
+              {canvases[canvas].title}
+            </option>
+          ))}
         </select>
       </p>
       <div className="modaldivider" />

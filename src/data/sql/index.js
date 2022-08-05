@@ -1,4 +1,3 @@
-import Blacklist from './Blacklist';
 import Whitelist from './Whitelist';
 import RegUser from './RegUser';
 import Channel from './Channel';
@@ -38,7 +37,6 @@ RegUser.belongsToMany(RegUser, {
 
 export {
   Whitelist,
-  Blacklist,
   RegUser,
   Channel,
   UserChannel,

@@ -18,8 +18,8 @@ import ChannelContextMenu from './contextmenus/ChannelContextMenu';
 
 
 const CONTEXT_MENUS = {
-  USER: <UserContextMenu />,
-  CHANNEL: <ChannelContextMenu />,
+  USER: UserContextMenu,
+  CHANNEL: ChannelContextMenu,
   /* other context menus */
 };
 
@@ -38,24 +38,26 @@ const UI = () => {
     state.contextMenu.menuType,
   ], shallowEqual);
 
-  const contextMenu = (menuOpen && menuType) ? CONTEXT_MENUS[menuType] : null;
+  const ContextMenu = menuOpen && menuType && CONTEXT_MENUS[menuType];
 
-  if (isHistoricalView) {
-    return [
-      <HistorySelect />,
-      contextMenu,
-    ];
-  }
-  return [
-    <Alert />,
-    <PalselButton />,
-    <Palette />,
-    (!is3D) && <GlobeButton />,
-    (is3D && isOnMobile) && <Mobile3DControls />,
-    <CoolDownBox />,
-    <NotifyBox />,
-    contextMenu,
-  ];
+  return (
+    <>
+      <Alert />
+      {(isHistoricalView) ? (
+        <HistorySelect />
+      ) : (
+        <>
+          <PalselButton />
+          <Palette />
+          {(!is3D) && <GlobeButton />}
+          {(is3D && isOnMobile) && <Mobile3DControls />}
+          <CoolDownBox />
+        </>
+      )}
+      <NotifyBox />
+      {ContextMenu && <ContextMenu />}
+    </>
+  );
 };
 
 export default React.memo(UI);

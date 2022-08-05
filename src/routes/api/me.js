@@ -7,7 +7,7 @@ import getMe from '../../core/me';
 import {
   USE_PROXYCHECK,
 } from '../../core/config';
-import cheapDetector from '../../core/isProxy';
+import checkIPAllowed from '../../core/isAllowed';
 
 
 export default async (req, res, next) => {
@@ -17,10 +17,10 @@ export default async (req, res, next) => {
     user.updateLogInTimestamp();
 
     const { trueIp: ip } = req;
-    if (USE_PROXYCHECK && ip !== '0.0.0.1') {
-      // pre-fire cheap Detector to give it time to get a real result
+    if (USE_PROXYCHECK) {
+      // pre-fire ip check to give it time to get a real result
       // once api_pixel needs it
-      cheapDetector(ip);
+      checkIPAllowed(ip);
     }
 
     // https://stackoverflow.com/questions/49547/how-to-control-web-page-caching-across-all-browsers

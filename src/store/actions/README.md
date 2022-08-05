@@ -7,9 +7,9 @@ export type Action =
     { type: 'LOGGED_OUT' }
   | { type: 'ALERT',
     title: string,
-    text: string,
-    icon: string,
-    confirmButtonText: string,
+    message: string,
+    alertType: string,
+    btn: string,
   }
   | { type: 'CLOSE_ALERT' }
   | { type: 'TOGGLE_GRID' }

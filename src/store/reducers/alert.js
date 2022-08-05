@@ -1,9 +1,9 @@
 const initialState = {
-  alertOpen: false,
+  open: false,
   alertType: null,
-  alertTitle: null,
-  alertMessage: null,
-  alertBtn: null,
+  title: null,
+  message: null,
+  btn: null,
 };
 
 export default function alert(
@@ -13,23 +13,23 @@ export default function alert(
   switch (action.type) {
     case 'ALERT': {
       const {
-        title, text, icon, confirmButtonText,
+        title, message, alertType, btn,
       } = action;
 
       return {
         ...state,
-        alertOpen: true,
-        alertTitle: title,
-        alertMessage: text,
-        alertType: icon,
-        alertBtn: confirmButtonText,
+        open: true,
+        title,
+        message,
+        alertType,
+        btn,
       };
     }
 
     case 'CLOSE_ALERT': {
       return {
         ...state,
-        alertOpen: false,
+        open: false,
       };
     }
 

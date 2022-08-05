@@ -12,7 +12,7 @@ import redis from '../data/redis/client';
 import { getIPv6Subnet } from '../utils/ip';
 import { validateCoorRange } from '../utils/validation';
 import CanvasCleaner from './CanvasCleaner';
-import { Blacklist, Whitelist, RegUser } from '../data/sql';
+import { Whitelist, RegUser } from '../data/sql';
 import { getIPofIID } from '../data/sql/IPInfo';
 import { forceCaptcha } from '../data/redis/captcha';
 // eslint-disable-next-line import/no-unresolved
@@ -61,20 +61,6 @@ export async function executeIPAction(action, ips, logger = null) {
 
     if (logger) logger(`${action} ${ip}`);
     switch (action) {
-      case 'ban':
-        await Blacklist.findOrCreate({
-          where: { ip: ipKey },
-        });
-        await redis.set(key, 'y', {
-          EX: 24 * 3600,
-        });
-        break;
-      case 'unban':
-        await Blacklist.destroy({
-          where: { ip: ipKey },
-        });
-        await redis.del(key);
-        break;
       case 'whitelist':
         await Whitelist.findOrCreate({
           where: { ip: ipKey },
