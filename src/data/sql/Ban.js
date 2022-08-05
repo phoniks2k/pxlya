@@ -33,6 +33,12 @@ const Ban = sequelize.define('Blacklist', {
 }, {
   timestamps: true,
   updatedAt: false,
+
+  setterMethods: {
+    reason(value) {
+      this.setDataValue('reason', value.slice(0, 200));
+    },
+  },
 });
 
 

@@ -959,6 +959,15 @@ tr:nth-child(even) {
   position: absolute;
 }
 
+.respbox {
+  border-style: solid;
+  border-color: #D4D4D4;
+  user-select: text;
+  border-width: 2px;
+  padding: 5px;
+  display: inline-block;
+}
+
 /*-----------*/
 /* react-toggle css */
 

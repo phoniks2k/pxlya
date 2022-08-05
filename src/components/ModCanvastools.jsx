@@ -217,16 +217,9 @@ function ModCanvastools() {
   return (
     <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
       {resp && (
-        <div style={{
-          borderStyle: 'solid',
-          borderColor: '#D4D4D4',
-          borderWidth: 2,
-          padding: 5,
-          display: 'inline-block',
-        }}
-        >
+        <div className="respbox">
           {resp.split('\n').map((line) => (
-            <p className="modaltext">
+            <p key={line.slice(0, 3)} className="modaltext">
               {line}
             </p>
           ))}

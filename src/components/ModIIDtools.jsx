@@ -14,6 +14,10 @@ async function submitIIDAction(
   duration,
   callback,
 ) {
+  if (!iid) {
+    callback(t`You must enter an IID`);
+    return;
+  }
   const time = Date.now() + parseInterval(duration);
   const data = new FormData();
   data.append('iidaction', action);
@@ -60,14 +64,13 @@ function ModIIDtools() {
         <>
           <p>{t`Reason`}</p>
           <input
+            maxLength="200"
             style={{
               width: '100%',
             }}
             value={reason}
             placeholder={t`Enter Reason`}
-            onChange={(evt) => {
-              setReason(evt.target.value.trim());
-            }}
+            onChange={(evt) => setReason(evt.target.value)}
           />
           <p>
             {`${t`Duration`}: `}
