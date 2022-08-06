@@ -2,10 +2,9 @@
  * decide if IP is allowed
  * does proxycheck and check bans and whitelists
  */
-import fetch from '../utils/proxiedFetch';
-
 import { getIPv6Subnet } from '../utils/ip';
 import whois from '../utils/whois';
+import getProxyCheck from '../utils/proxycheck';
 import { IPInfo } from '../data/sql';
 import { isIPBanned } from '../data/sql/Ban';
 import { isWhitelisted } from '../data/sql/Whitelist';
@@ -18,82 +17,15 @@ import { proxyLogger as logger } from './logger';
 import { USE_PROXYCHECK } from './config';
 
 /*
- * check getipintel if IP is proxy
- * Use proxiedFetch with random proxies and random mail for it, to not get blacklisted
- * @param ip IP to check
- * @return true if proxy, false if not
- */
-// eslint-disable-next-line no-unused-vars
-async function getIPIntel(ip) {
-  // eslint-disable-next-line max-len
-  const email = `${Math.random().toString(36).substring(8)}-${Math.random().toString(36).substring(4)}@gmail.com`;
-  // eslint-disable-next-line max-len
-  const url = `http://check.getipintel.net/check.php?ip=${ip}&contact=${email}&flags=m`;
-  logger.info(`fetching getipintel ${url}`);
-  const response = await fetch(url, {
-    headers: {
-      Accept: '*/*',
-      'Accept-Language': 'de,en-US;q=0.7,en;q=0.3',
-      Referer: 'http://check.getipintel.net/',
-      // eslint-disable-next-line max-len
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-    },
-  });
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`getipintel not ok ${response.status}/${text}`);
-  }
-  const body = await response.text();
-  logger.info('PROXYCHECK %s : %s', ip, body);
-  // returns tru iff we found 1 in the response and was ok (http code = 200)
-  const value = parseFloat(body);
-  return [
-    value > 0.995,
-    `score:${value}`,
-  ];
-}
-
-/*
- * check proxycheck.io if IP is proxy
- * Use proxiedFetch with random proxies
- * @param ip IP to check
- * @return [ isProxy, info] true if proxy and extra info
- */
-async function getProxyCheck(ip) {
-  const url = `http://proxycheck.io/v2/${ip}?risk=1&vpn=1&asn=1`;
-  logger.info('fetching proxycheck %s', url);
-  const response = await fetch(url, {
-    headers: {
-      // eslint-disable-next-line max-len
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
-    },
-  });
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`proxycheck not ok ${response.status}/${text}`);
-  }
-  const data = await response.json();
-  logger.info('PROXYCHECK', data);
-  if (!data.status) {
-    return [
-      false,
-      'status not ok',
-    ];
-  }
-  const ipData = data[ip];
-  return [
-    ipData.proxy === 'yes',
-    `${ipData.type},${ipData.city}`,
-  ];
-}
-
-/*
  * dummy function to include if you don't want any proxycheck
  */
 async function dummy() {
   return [false, 'dummy'];
 }
 
+/*
+ * save information of ip into database
+ */
 async function saveIPInfo(ip, whoisRet, allowed, info) {
   try {
     await IPInfo.upsert({
@@ -117,26 +49,30 @@ async function withoutCache(f, ip) {
   const ipKey = getIPv6Subnet(ip);
   let allowed = true;
   let status = -2;
-  let pcInfo = null;
+  let pcheck = null;
   let whoisRet = null;
 
   try {
     if (await isWhitelisted(ipKey)) {
       allowed = true;
-      pcInfo = 'wl';
+      pcheck = 'wl';
       status = -1;
     } else if (await isIPBanned(ipKey)) {
       allowed = false;
-      pcInfo = 'bl';
+      pcheck = 'bl';
       status = 2;
     } else {
-      [allowed, pcInfo] = await f(ip);
-      allowed = !allowed;
-      status = (allowed) ? 0 : 1;
+      const res = await f(ip);
+      status = res.status;
+      allowed = res.allowed;
+      pcheck = res.pcheck;
+      if (status === -2) {
+        throw new Error('Proxycheck request did not return yet');
+      }
     }
-    whoisRet = await whois(ip) || {};
+    whoisRet = await whois(ip);
   } finally {
-    await saveIPInfo(ipKey, whoisRet, status, pcInfo);
+    await saveIPInfo(ipKey, whoisRet || {}, status, pcheck);
   }
 
   return {
@@ -152,7 +88,6 @@ async function withoutCache(f, ip) {
  * @param ip IP to check
  * @return true if proxy or blacklisted, false if not or whitelisted
  */
-let lock = 4;
 const checking = [];
 async function withCache(f, ip) {
   if (!ip || ip === '0.0.0.1') {
@@ -169,10 +104,8 @@ async function withCache(f, ip) {
   }
 
   // else make asynchronous ipcheck and assume no proxy in the meantime
-  // use lock to just check three at a time
   // do not check ip that currently gets checked
-  if (checking.indexOf(ipKey) === -1 && lock > 0) {
-    lock -= 1;
+  if (checking.indexOf(ipKey) === -1) {
     checking.push(ipKey);
     withoutCache(f, ip)
       .then((result) => {
@@ -184,7 +117,6 @@ async function withCache(f, ip) {
       .finally(() => {
         const pos = checking.indexOf(ipKey);
         if (~pos) checking.splice(pos, 1);
-        lock += 1;
       });
   }
   return {

@@ -95,9 +95,6 @@ export default (store) => (next) => (action) => {
       }
 
       case 'ALERT': {
-        if (action.alertType !== 'error') {
-          break;
-        }
         const oscillatorNode = context.createOscillator();
         const gainNode = context.createGain();
 

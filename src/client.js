@@ -2,9 +2,6 @@
  * Entrypoint for main client script
  */
 
-// eslint-disable-next-line no-unused-vars
-import fetch from 'isomorphic-fetch'; // TODO put in the beggining with webpack!
-
 import createKeyPressHandler from './controls/keypress';
 import {
   fetchMe,

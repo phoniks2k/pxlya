@@ -118,7 +118,6 @@ export default ({
     },
 
     externals: [
-      /\/proxies\.json$/,
       /\/canvases\.json$/,
       /\/styleassets\.json$/,
       /\/assets\.json$/,
@@ -143,7 +142,6 @@ export default ({
             to: path.resolve(__dirname, 'dist', 'public'),
           },
           path.resolve(__dirname, 'src', 'canvases.json'),
-          path.resolve(__dirname, 'src', 'proxies.json'),
           {
             from: path.resolve(
               __dirname, 'deployment', 'example-ecosystem.yml'

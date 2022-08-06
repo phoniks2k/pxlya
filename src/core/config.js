@@ -1,5 +1,7 @@
-// general config that is also available from client code can be found in
-// src/core/constants.js
+/*
+ * general config that is also available from client code can be found in
+ * src/core/constants.js
+ */
 import path from 'path';
 
 if (process.env.BROWSER) {
@@ -27,6 +29,7 @@ export const BACKUP_DIR = process.env.BACKUP_DIR || null;
 
 // Proxycheck
 export const USE_PROXYCHECK = parseInt(process.env.USE_PROXYCHECK, 10) || false;
+export const { PROXYCHECK_KEY } = process.env;
 
 export const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 // Database
