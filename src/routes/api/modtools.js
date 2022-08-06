@@ -89,107 +89,103 @@ router.post('/', upload.single('image'), async (req, res, next) => {
     );
   };
 
-  try {
-    if (req.body.cleanerstat) {
-      const ret = CanvasCleaner.reportStatus();
-      res.status(200);
-      res.json(ret);
-      return;
-    }
-    if (req.body.cleanercancel) {
-      const ret = CanvasCleaner.stop();
-      res.status(200).send(ret);
-      return;
-    }
-    if (req.body.watchaction) {
-      const {
-        watchaction, ulcoor, brcoor, time, iid, canvasid,
-      } = req.body;
-      const ret = await executeWatchAction(
-        watchaction,
-        ulcoor,
-        brcoor,
-        time,
-        iid,
-        canvasid,
-      );
-      res.status(200).json(ret);
-      return;
-    }
-    if (req.body.iidaction) {
-      const {
-        iidaction, iid, reason, time,
-      } = req.body;
-      const ret = await executeIIDAction(
-        iidaction,
-        iid,
-        reason,
-        time,
-      );
-      res.status(200).send(ret);
-      return;
-    }
-    if (req.body.cleaneraction) {
-      const {
-        cleaneraction, ulcoor, brcoor, canvasid,
-      } = req.body;
-      const [ret, msg] = await executeCleanerAction(
-        cleaneraction,
-        ulcoor,
-        brcoor,
-        canvasid,
-        aLogger,
-      );
-      res.status(ret).send(msg);
-      return;
-    }
-    if (req.body.imageaction) {
-      const { imageaction, coords, canvasid } = req.body;
-      const [ret, msg] = await executeImageAction(
-        imageaction,
-        req.file,
-        coords,
-        canvasid,
-        aLogger,
-      );
-      res.status(ret).send(msg);
-      return;
-    }
-    if (req.body.protaction) {
-      const {
-        protaction, ulcoor, brcoor, canvasid,
-      } = req.body;
-      const [ret, msg] = await executeProtAction(
-        protaction,
-        ulcoor,
-        brcoor,
-        canvasid,
-        aLogger,
-      );
-      res.status(ret).send(msg);
-      return;
-    }
-    if (req.body.rollback) {
-      // rollback is date as YYYYMMdd
-      const {
-        rollback, ulcoor, brcoor, canvasid,
-      } = req.body;
-      const [ret, msg] = await executeRollback(
-        rollback,
-        ulcoor,
-        brcoor,
-        canvasid,
-        aLogger,
-        (req.user.userlvl === 1),
-      );
-      res.status(ret).send(msg);
-      return;
-    }
-
-    next();
-  } catch (error) {
-    next(error);
+  if (req.body.cleanerstat) {
+    const ret = CanvasCleaner.reportStatus();
+    res.status(200);
+    res.json(ret);
+    return;
   }
+  if (req.body.cleanercancel) {
+    const ret = CanvasCleaner.stop();
+    res.status(200).send(ret);
+    return;
+  }
+  if (req.body.watchaction) {
+    const {
+      watchaction, ulcoor, brcoor, time, iid, canvasid,
+    } = req.body;
+    const ret = await executeWatchAction(
+      watchaction,
+      ulcoor,
+      brcoor,
+      time,
+      iid,
+      canvasid,
+    );
+    res.status(200).json(ret);
+    return;
+  }
+  if (req.body.iidaction) {
+    const {
+      iidaction, iid, reason, time,
+    } = req.body;
+    const ret = await executeIIDAction(
+      iidaction,
+      iid,
+      reason,
+      time,
+      req.user.id,
+    );
+    res.status(200).send(ret);
+    return;
+  }
+  if (req.body.cleaneraction) {
+    const {
+      cleaneraction, ulcoor, brcoor, canvasid,
+    } = req.body;
+    const [ret, msg] = await executeCleanerAction(
+      cleaneraction,
+      ulcoor,
+      brcoor,
+      canvasid,
+      aLogger,
+    );
+    res.status(ret).send(msg);
+    return;
+  }
+  if (req.body.imageaction) {
+    const { imageaction, coords, canvasid } = req.body;
+    const [ret, msg] = await executeImageAction(
+      imageaction,
+      req.file,
+      coords,
+      canvasid,
+      aLogger,
+    );
+    res.status(ret).send(msg);
+    return;
+  }
+  if (req.body.protaction) {
+    const {
+      protaction, ulcoor, brcoor, canvasid,
+    } = req.body;
+    const [ret, msg] = await executeProtAction(
+      protaction,
+      ulcoor,
+      brcoor,
+      canvasid,
+      aLogger,
+    );
+    res.status(ret).send(msg);
+    return;
+  }
+  if (req.body.rollback) {
+    // rollback is date as YYYYMMdd
+    const {
+      rollback, ulcoor, brcoor, canvasid,
+    } = req.body;
+    const [ret, msg] = await executeRollback(
+      rollback,
+      ulcoor,
+      brcoor,
+      canvasid,
+      aLogger,
+      (req.user.userlvl === 1),
+    );
+    res.status(ret).send(msg);
+    return;
+  }
+  next();
 });
 
 
@@ -213,51 +209,42 @@ router.post('/', async (req, res, next) => {
     logger.info(`ADMIN> ${req.user.regUser.name}[${req.user.id}]> ${text}`);
   };
 
-  try {
-    if (req.body.ipaction) {
-      const ret = await executeIPAction(
-        req.body.ipaction,
-        req.body.ip,
-        aLogger,
-      );
-      res.status(200).send(ret);
-      return;
-    }
-    if (req.body.modlist) {
-      const ret = await getModList();
-      res.status(200);
-      res.json(ret);
-      return;
-    }
-    if (req.body.remmod) {
-      try {
-        const ret = await removeMod(req.body.remmod);
-        res.status(200).send(ret);
-      } catch (e) {
-        res.status(400).send(e.message);
-      }
-      return;
-    }
-    if (req.body.makemod) {
-      try {
-        const ret = await makeMod(req.body.makemod);
-        res.status(200);
-        res.json(ret);
-      } catch (e) {
-        res.status(400).send(e.message);
-      }
-      return;
-    }
-    next();
-  } catch (error) {
-    next(error);
+  if (req.body.ipaction) {
+    const ret = await executeIPAction(
+      req.body.ipaction,
+      req.body.ip,
+      aLogger,
+    );
+    res.status(200).send(ret);
+    return;
   }
+  if (req.body.modlist) {
+    const ret = await getModList();
+    res.status(200);
+    res.json(ret);
+    return;
+  }
+  if (req.body.remmod) {
+    const ret = await removeMod(req.body.remmod);
+    res.status(200).send(ret);
+    return;
+  }
+  if (req.body.makemod) {
+    const ret = await makeMod(req.body.makemod);
+    res.status(200);
+    res.json(ret);
+    return;
+  }
+  next();
 });
-
 
 router.use(async (req, res) => {
   res.status(400).send('Invalid request');
 });
 
+// eslint-disable-next-line no-unused-vars
+router.use((err, req, res, next) => {
+  res.status(400).send(err.message);
+});
 
 export default router;

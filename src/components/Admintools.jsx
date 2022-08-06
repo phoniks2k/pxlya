@@ -114,7 +114,7 @@ function Admintools() {
             selectIPAction(sel.options[sel.selectedIndex].value);
           }}
         >
-          {['ban', 'unban', 'whitelist', 'unwhitelist', 'iidtoip']
+          {['iidtoip']
             .map((opt) => (
               <option
                 value={opt}

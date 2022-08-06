@@ -7,14 +7,26 @@
 
 import sharp from 'sharp';
 import Sequelize from 'sequelize';
-import redis from '../data/redis/client';
 
-import { getIPv6Subnet } from '../utils/ip';
+import isIPAllowed from './isAllowed';
 import { validateCoorRange } from '../utils/validation';
 import CanvasCleaner from './CanvasCleaner';
-import { Whitelist, RegUser } from '../data/sql';
-import { getIPofIID } from '../data/sql/IPInfo';
+import { RegUser } from '../data/sql';
+import {
+  cleanCacheForIP,
+} from '../data/redis/isAllowedCache';
 import { forceCaptcha } from '../data/redis/captcha';
+import {
+  isWhitelisted,
+  whitelistIP,
+  unwhitelistIP,
+} from '../data/sql/Whitelist';
+import {
+  getBanInfo,
+  banIP,
+  unbanIP,
+} from '../data/sql/Ban';
+import { getInfoToIp, getIPofIID } from '../data/sql/IPInfo';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import {
@@ -56,29 +68,12 @@ export async function executeIPAction(action, ips, logger = null) {
       out += `Couln't parse ${action} ${ip}\n`;
       continue;
     }
-    const ipKey = getIPv6Subnet(ip);
-    const key = `isprox:${ipKey}`;
 
     if (logger) logger(`${action} ${ip}`);
     switch (action) {
-      case 'whitelist':
-        await Whitelist.findOrCreate({
-          where: { ip: ipKey },
-        });
-        await redis.set(key, 'n', {
-          EX: 24 * 3600,
-        });
-        break;
-      case 'unwhitelist':
-        await Whitelist.destroy({
-          where: { ip: ipKey },
-        });
-        await redis.del(key);
-        break;
       default:
-        out += `Failed to ${action} ${ip}\n`;
+        return `Failed to ${action} ${ip}\n`;
     }
-    out += `Succseefully did ${action} ${ip}\n`;
   }
   return out;
 }
@@ -89,7 +84,14 @@ export async function executeIPAction(action, ips, logger = null) {
  * @param iid already sanizized iid
  * @return text of success
  */
-export async function executeIIDAction(action, iid, logger = null) {
+export async function executeIIDAction(
+  action,
+  iid,
+  reason,
+  expire,
+  muid,
+  logger = null,
+) {
   const ip = await getIPofIID(iid);
   if (!ip) {
     return `Could not resolve ${iid}`;
@@ -97,6 +99,36 @@ export async function executeIIDAction(action, iid, logger = null) {
   const iidPart = iid.slice(0, iid.indexOf('-'));
 
   switch (action) {
+    case 'status': {
+      const allowed = await isIPAllowed(ip, true);
+      let out = `Allowed to place: ${allowed.allowed}`;
+      const info = await getInfoToIp(ip);
+      out += `Country: ${info.country}\n`
+        + `CIDR: ${info.cidr}\n`
+        + `org: ${info.org || 'N/A'}\n`
+        + `desc: ${info.descr || 'N/A'}\n`
+        + `asn: ${info.asn}\n`
+        + `proxy: ${info.isProxy}\n`;
+      if (info.pcheck) {
+        const { pcheck } = info;
+        out += `pc: ${pcheck.slice(0, pcheck.indexOf(','))}\n`;
+      }
+      const whitelisted = await isWhitelisted(ip);
+      out += `whitelisted: ${whitelisted}\n`;
+      const ban = await getBanInfo(ip);
+      if (!ban) {
+        out += 'banned: false\n';
+      } else {
+        out += `reason: ${ban.reason}\n`;
+        if (ban.expires) {
+          out += `expires: ${ban.expires.toLocaleString()}\n`;
+        }
+        if (ban.mod) {
+          out += `by: @[${ban.mod.name}](${ban.mod.id})\n`;
+        }
+      }
+      return out;
+    }
     case 'givecaptcha': {
       const succ = await forceCaptcha(ip);
       if (succ === null) {
@@ -107,10 +139,44 @@ export async function executeIIDAction(action, iid, logger = null) {
       }
       return `${iidPart} would have gotten captcha anyway`;
     }
-    case 'ban':
-    case 'unban':
-    case 'Whitelist':
-    case 'unwhitelist':
+    case 'ban': {
+      if (expire && expire < Date.now()) {
+        return 'No valid expiration time';
+      }
+      if (!reason) {
+        return 'No reason specified';
+      }
+      const ret = await banIP(ip, reason, expire || null, muid);
+      if (ret) {
+        await cleanCacheForIP(ip);
+        return 'Successfully banned user';
+      }
+      return 'User is already banned';
+    }
+    case 'unban': {
+      const ret = await unbanIP(ip);
+      if (ret) {
+        await cleanCacheForIP(ip);
+        return 'Successfully unbanned user';
+      }
+      return 'User is not banned';
+    }
+    case 'Whitelist': {
+      const ret = await whitelistIP(ip);
+      if (ret) {
+        await cleanCacheForIP(ip);
+        return 'Successfully whitelisted user';
+      }
+      return 'User is already whitelisted';
+    }
+    case 'unwhitelist': {
+      const ret = await unwhitelistIP(ip);
+      if (ret) {
+        await cleanCacheForIP(ip);
+        return 'Successfully removed user from whitelist';
+      }
+      return 'User is not on whitelist';
+    }
     default:
       return `Failed to ${action} ${iid}`;
   }

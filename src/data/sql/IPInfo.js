@@ -37,6 +37,7 @@ const IPInfo = sequelize.define('IPInfo', {
 
   asn: {
     type: DataTypes.CHAR(12),
+    defaultValue: 'N/A',
     allowNull: false,
   },
 
@@ -55,7 +56,7 @@ const IPInfo = sequelize.define('IPInfo', {
 }, {
   getterMethods: {
     isProxy() {
-      return !!this.proxy;
+      return (this.proxy === 1);
     },
   },
 
@@ -126,6 +127,10 @@ export async function getIdsToIps(ips) {
     // nothing
   }
   return ipToIdMap;
+}
+
+export async function getInfoToIp(ip) {
+  return IPInfo.findByPk(ip);
 }
 
 export async function getInfoToIps(ips) {

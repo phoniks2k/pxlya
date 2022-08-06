@@ -115,7 +115,7 @@ async function saveIPInfo(ip, whoisRet, isProxy, info) {
  * @param ip IP to check
  * @return true if proxy or blacklisted, false if not or whitelisted
  */
-export async function withoutCache(f, ip) {
+async function withoutCache(f, ip) {
   const ipKey = getIPv6Subnet(ip);
   let allowed = true;
   let status = -2;
