@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
+import copyTextToClipboard from '../utils/clipboard';
 import { parseInterval } from '../core/utils';
 
 const keepState = {
@@ -341,10 +342,21 @@ function ModWatchtools() {
                         );
                       }
                       case 'cid': {
-                        const cid = (cidColumn > 0)
-                          ? row[cidColumn] : selectedCanvas;
-                        const ident = canvases[cid] && canvases[cid].ident;
+                        const ident = canvases[val] && canvases[val].ident;
                         return (<td>{ident}</td>);
+                      }
+                      case 'uuid': {
+                        return (
+                          <td>
+                            <span
+                              role="button"
+                              tabIndex={-1}
+                              style={{ cursor: 'pointer' }}
+                              title={t`Copy to Clipboard`}
+                              onClick={() => copyTextToClipboard(val)}
+                            >{val}</span>
+                          </td>
+                        );
                       }
                       case 'user': {
                         const seperator = val.lastIndexOf(',');

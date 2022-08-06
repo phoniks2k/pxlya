@@ -31,9 +31,9 @@ class Cron {
   }
 
   checkForExecution() {
+    this.timeout = setTimeout(this.checkForExecution, HOUR);
     const curDate = new Date();
     const curTime = curDate.getTime();
-    this.timeout = setTimeout(this.checkForExecution, HOUR);
     if (curTime + 120000 > this.lastRun + this.interval * HOUR) {
       // eslint-disable-next-line max-len
       logger.info(`${curDate.toUTCString()}> Run cron events for interval: ${this.interval}h`);
@@ -65,7 +65,7 @@ function initializeDailyCron() {
 }
 
 function initializeHourlyCron() {
-  const cron = new Cron(1, Date.now());
+  const cron = new Cron(1);
   return cron;
 }
 

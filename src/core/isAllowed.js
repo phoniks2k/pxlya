@@ -94,14 +94,12 @@ async function dummy() {
   return [false, 'dummy'];
 }
 
-async function saveIPInfo(ip, whoisRet, isProxy, info) {
-  const whoisData = whoisRet || {};
-
+async function saveIPInfo(ip, whoisRet, allowed, info) {
   try {
-    IPInfo.upsert({
+    await IPInfo.upsert({
+      ...whoisRet,
       ip,
-      ...whoisData,
-      isProxy,
+      proxy: allowed,
       pcheck: info,
     });
   } catch (error) {
@@ -136,9 +134,9 @@ async function withoutCache(f, ip) {
       allowed = !allowed;
       status = (allowed) ? 0 : 1;
     }
-    whoisRet = await whois(ip);
+    whoisRet = await whois(ip) || {};
   } finally {
-    await saveIPInfo(ipKey, whoisRet, allowed, pcInfo);
+    await saveIPInfo(ipKey, whoisRet, status, pcInfo);
   }
 
   return {
@@ -176,16 +174,18 @@ async function withCache(f, ip) {
   if (checking.indexOf(ipKey) === -1 && lock > 0) {
     lock -= 1;
     checking.push(ipKey);
-    try {
-      const result = await withoutCache(f, ip);
-      cacheAllowed(ip, result);
-    } catch (error) {
-      logger.error('Error %s', error.message || error);
-    } finally {
-      const pos = checking.indexOf(ipKey);
-      if (~pos) checking.splice(pos, 1);
-      lock += 1;
-    }
+    withoutCache(f, ip)
+      .then((result) => {
+        cacheAllowed(ipKey, result);
+      })
+      .catch((error) => {
+        logger.error('Error %s', error.message || error);
+      })
+      .finally(() => {
+        const pos = checking.indexOf(ipKey);
+        if (~pos) checking.splice(pos, 1);
+        lock += 1;
+      });
   }
   return {
     allowed: true,

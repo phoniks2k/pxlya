@@ -115,6 +115,10 @@ export function toggleOpenMenu() {
   };
 }
 
+/*
+ * requestingPixel is inveted, it has the meaning of
+ * "can i request a pixel"
+ */
 export function setRequestingPixel(requestingPixel) {
   return {
     type: 'SET_REQUESTING_PIXEL',
@@ -192,12 +196,6 @@ export function placedPixels(amount) {
 export function pixelWait() {
   return {
     type: 'PIXEL_WAIT',
-  };
-}
-
-export function pixelFailure() {
-  return {
-    type: 'PIXEL_FAILURE',
   };
 }
 

@@ -7,12 +7,12 @@ import { t } from 'ttag';
 
 async function submitIPAction(
   action,
+  vallist,
   callback,
 ) {
   const data = new FormData();
-  const iplist = document.getElementById('iparea').value;
-  data.append('ip', iplist);
   data.append('ipaction', action);
+  data.append('ip', vallist);
   const resp = await fetch('./api/modtools', {
     credentials: 'include',
     method: 'POST',
@@ -72,8 +72,9 @@ async function submitMakeMod(
 
 
 function Admintools() {
-  const [iPAction, selectIPAction] = useState('ban');
+  const [iPAction, selectIPAction] = useState('iidtoip');
   const [modName, selectModName] = useState('');
+  const [txtval, setTxtval] = useState('');
   const [resp, setResp] = useState(null);
   const [modlist, setModList] = useState([]);
   const [submitting, setSubmitting] = useState(false);
@@ -114,9 +115,10 @@ function Admintools() {
             selectIPAction(sel.options[sel.selectedIndex].value);
           }}
         >
-          {['iidtoip']
+          {['iidtoip', 'iptoiid']
             .map((opt) => (
               <option
+                key={opt}
                 value={opt}
               >
                 {opt}
@@ -124,7 +126,12 @@ function Admintools() {
             ))}
         </select>
         <br />
-        <textarea rows="10" cols="17" id="iparea" /><br />
+        <textarea
+          rows="10"
+          cols="17"
+          value={txtval}
+          onChange={(e) => setTxtval(e.target.value)}
+        /><br />
         <button
           type="button"
           onClick={() => {
@@ -134,9 +141,10 @@ function Admintools() {
             setSubmitting(true);
             submitIPAction(
               iPAction,
+              txtval,
               (ret) => {
                 setSubmitting(false);
-                setResp(ret);
+                setTxtval(ret);
               },
             );
           }}
@@ -157,6 +165,7 @@ function Admintools() {
               <div
                 role="button"
                 tabIndex={0}
+                key={mod[0]}
                 onClick={() => {
                   if (submitting) {
                     return;

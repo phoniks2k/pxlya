@@ -10,7 +10,6 @@ import {
   setRequestingPixel,
   pAlert,
   gotCoolDownDelta,
-  pixelFailure,
   setWait,
   placedPixels,
   pixelWait,
@@ -187,6 +186,7 @@ export function receivePixelReturn(
 
   let errorTitle = null;
   let msg = null;
+  let type = 'error';
   switch (retCode) {
     case 0:
       store.dispatch(placedPixels(pxlCnt));
@@ -228,13 +228,10 @@ export function receivePixelReturn(
       store.dispatch(pixelWait());
       break;
     case 10:
-      store.dispatch(pAlert(
-        'Captcha',
-        t`Please prove that you are human`,
-        'captcha',
-      ));
-      store.dispatch(setRequestingPixel(true));
-      return;
+      errorTitle = 'Captcha';
+      msg = t`Please prove that you are human`;
+      type = 'captcha';
+      break;
     case 11:
       errorTitle = t`No Proxies Allowed :(`;
       msg = t`You are using a Proxy.`;
@@ -249,13 +246,9 @@ export function receivePixelReturn(
       msg = t`Server got confused by your pixels. Are you playing on multiple devices?`;
       break;
     case 14:
-      store.dispatch(pAlert(
-        'Banned',
-        t`You are banned.`,
-        'ban',
-      ));
-      store.dispatch(setRequestingPixel(true));
-      return;
+      errorTitle = t`Banned`;
+      type = t`ban`;
+      break;
     case 15:
       errorTitle = t`Range Banned`;
       msg = t`Your Internet Provider is banned from playing this game`;
@@ -265,17 +258,19 @@ export function receivePixelReturn(
       msg = t`Couldn't set Pixel`;
   }
 
-  if (msg) {
-    store.dispatch(pixelFailure());
+  if (msg || errorTitle) {
     store.dispatch(pAlert(
       (errorTitle || t`Error ${retCode}`),
       msg,
-      'error',
+      type,
     ));
   }
 
   store.dispatch(setRequestingPixel(true));
-  /* start next request if queue isn't empty */
-  requestFromQueue(store);
+
+  if (!msg) {
+    /* start next request if queue isn't empty */
+    requestFromQueue(store);
+  }
 }
 

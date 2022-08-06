@@ -80,7 +80,9 @@ const IPInfo = sequelize.define('IPInfo', {
     },
 
     pcheck(value) {
-      this.setDataValue('pcheck', value.slice(0, 60));
+      if (value) {
+        this.setDataValue('pcheck', value.slice(0, 60));
+      }
     },
 
     country(value) {
@@ -101,12 +103,25 @@ export async function getIPofIID(uuid) {
       raw: true,
     });
   } catch {
+    // nothing
+  }
+  return result && result.ip;
+}
+
+export async function getIIDofIP(ip) {
+  if (!ip) {
     return null;
   }
-  if (result) {
-    return result.ip;
+  let result = null;
+  try {
+    result = await IPInfo.findByPk(ip, {
+      attributes: ['uuid'],
+      raw: true,
+    });
+  } catch {
+    // nothing
   }
-  return null;
+  return result && result.uuid;
 }
 
 export async function getIdsToIps(ips) {

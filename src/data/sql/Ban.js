@@ -1,9 +1,11 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Op } from 'sequelize';
 import sequelize from './sequelize';
 
 import RegUser from './RegUser';
+import { HourlyCron } from '../../utils/cron';
+import { cleanCacheForIP } from '../redis/isAllowedCache';
 
-const Ban = sequelize.define('Blacklist', {
+const Ban = sequelize.define('Ban', {
   ip: {
     type: DataTypes.CHAR(39),
     allowNull: false,
@@ -41,7 +43,38 @@ const Ban = sequelize.define('Blacklist', {
   },
 });
 
+Ban.belongsTo(RegUser, {
+  as: 'mod',
+  foreignKey: 'muid',
+});
 
+async function cleanBans() {
+  const expiredIPs = await Ban.findAll({
+    attributes: [
+      'ip',
+    ],
+    where: {
+      expires: {
+        [Op.lte]: new Date(),
+      },
+    },
+    raw: true,
+  });
+  const ips = [];
+  for (let i = 0; i < expiredIPs.length; i += 1) {
+    ips.push(expiredIPs[i].ip);
+  }
+  await Ban.destroy({
+    where: {
+      ip: ips,
+    },
+  });
+  for (let i = 0; i < ips.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await cleanCacheForIP(ips[i]);
+  }
+}
+HourlyCron.hook(cleanBans);
 
 /*
  * check if ip is whitelisted
@@ -61,16 +94,20 @@ export async function isIPBanned(ip) {
  * @param ip
  * @return
  */
-export async function getBanInfo(ip) {
-  const ban = await Ban.findByPk(ip, {
-    include: [{
+export function getBanInfo(ip) {
+  return Ban.findByPk(ip, {
+    attributes: ['reason', 'expires'],
+    include: {
       model: RegUser,
       as: 'mod',
-      foreignKey: 'muid',
-      attributes: ['id', 'name'],
-    }],
+      attributes: [
+        'id',
+        'name',
+      ],
+    },
+    raw: true,
+    nest: true,
   });
-  return ban;
 }
 
 /*
@@ -85,15 +122,14 @@ export async function banIP(
   expiresTs,
   muid,
 ) {
-  const expires = (expiresTs) ? new Date(expiresTs) : null;
-  const [, created] = await Ban.findOrCreate({
-    where: { ip },
-    defaults: {
-      reason,
-      expires,
-      muid,
-    },
+  const expires = (expiresTs) ? new Date(expiresTs).toISOString() : null;
+  const [, created] = await Ban.upsert({
+    ip,
+    reason,
+    expires,
+    muid,
   });
+  await cleanCacheForIP(ip);
   return created;
 }
 
@@ -107,6 +143,7 @@ export async function unbanIP(ip) {
   const count = await Ban.destroy({
     where: { ip },
   });
+  await cleanCacheForIP(ip);
   return !!count;
 }
 

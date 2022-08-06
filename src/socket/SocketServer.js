@@ -491,20 +491,21 @@ class SocketServer {
           if (await needCaptcha(ip)) {
             // need captcha
             failureRet = PixelReturn.dehydrate(10, 0, 0);
-          }
-          // (re)check for Proxy
-          const allowed = await isIPAllowed(ip);
-          if (!allowed.allowed) {
-            // proxy
-            let failureStatus = 11;
-            if (allowed.status === 2) {
-              // banned
-              failureStatus = 14;
-            } else if (allowed.status === 3) {
-              // range banned
-              failureStatus = 15;
+          } else {
+            // (re)check for Proxy
+            const allowed = await isIPAllowed(ip);
+            if (!allowed.allowed) {
+              // proxy
+              let failureStatus = 11;
+              if (allowed.status === 2) {
+                // banned
+                failureStatus = 14;
+              } else if (allowed.status === 3) {
+                // range banned
+                failureStatus = 15;
+              }
+              failureRet = PixelReturn.dehydrate(failureStatus, 0, 0);
             }
-            failureRet = PixelReturn.dehydrate(failureStatus, 0, 0);
           }
           if (failureRet !== null) {
             const now = Date.now();

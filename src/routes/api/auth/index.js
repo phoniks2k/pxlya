@@ -103,12 +103,4 @@ router.post('/local', passport.authenticate('json'), async (req, res) => {
   });
 });
 
-// eslint-disable-next-line no-unused-vars
-router.use((err, req, res, next) => {
-  res.status(400);
-  res.json({
-    errors: [err.message],
-  });
-});
-
 export default router;

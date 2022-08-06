@@ -62,19 +62,19 @@ const Alert = () => {
           className={(open && render) ? 'Alert show' : 'Alert'}
         >
           <h2>{title}</h2>
-          <p className="modaltext">
-            {message}
-          </p>
-          <div>
-            {(Content) ? (
-              <Content close={close} />
-            ) : (
-              <button
-                type="button"
-                onClick={close}
-              >{btn}</button>
-            )}
-          </div>
+          {(message) && (
+            <p className="modaltext">
+              {message}
+            </p>
+          )}
+          {(Content) ? (
+            <Content close={close} />
+          ) : (
+            <button
+              type="button"
+              onClick={close}
+            >{btn}</button>
+          )}
         </div>
       </div>
     )

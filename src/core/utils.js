@@ -249,15 +249,13 @@ export function durationToString(
 export function largeDurationToString(
   ts,
 ) {
-  let restA = Math.round(ts / 1000);
-  let restB = restA % (3600 * 24);
-  const days = restA - restB;
-  restA = restB % 3600;
-  const hours = restB - restA;
-  restB = restA % 60;
-  const minutes = restA - restB;
-  restA = restB % 60;
-  const seconds = restB - restA;
+  const seconds = ts % 60;
+  let durs = (ts - seconds) / 60;
+  const minutes = durs % 60;
+  durs = (durs - minutes) / 60;
+  const hours = durs % 24;
+  durs = (durs - hours) / 24;
+  const days = durs;
   let out = '';
   if (days) {
     out += ` ${days}d`;

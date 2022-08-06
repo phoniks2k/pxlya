@@ -43,6 +43,7 @@ function LanguageSelect() {
           {
             langs.map(([l]) => (
               <option
+                key={l}
                 value={l}
               >
                 {l.toUpperCase()}

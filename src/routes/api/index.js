@@ -15,24 +15,26 @@ import leaveChan from './leavechan';
 import block from './block';
 import blockdm from './blockdm';
 import modtools from './modtools';
+import baninfo from './baninfo';
+import getiid from './getiid';
 
 
 const router = express.Router();
 
 router.use(express.json());
 
+// eslint-disable-next-line no-unused-vars
 router.use((err, req, res, next) => {
-  if (err) {
-    logger.warn(`Got invalid json from ${req.trueIp} on ${req.originalUrl}`);
-    res.status(400);
-    res.status(400).json({ errors: [{ msg: 'Invalid Request' }] });
-  } else {
-    next();
-  }
+  logger.warn(`Got invalid json from ${req.trueIp} on ${req.originalUrl}`);
+  res.status(400).json({
+    errors: [{ msg: 'Invalid Request' }],
+  });
 });
 
-// captcah doesn't need a user
+// routes that don't need a user
 router.post('/captcha', captcha);
+router.get('/baninfo', baninfo);
+router.get('/getiid', getiid);
 
 /*
  * get user session
@@ -86,5 +88,12 @@ router.get('/chathistory', chatHistory);
 router.get('/me', me);
 
 router.use('/auth', auth);
+
+// eslint-disable-next-line no-unused-vars
+router.use((err, req, res, next) => {
+  res.status(400).json({
+    errors: [err.message],
+  });
+});
 
 export default router;

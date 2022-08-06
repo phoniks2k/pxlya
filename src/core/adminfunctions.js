@@ -26,7 +26,11 @@ import {
   banIP,
   unbanIP,
 } from '../data/sql/Ban';
-import { getInfoToIp, getIPofIID } from '../data/sql/IPInfo';
+import {
+  getInfoToIp,
+  getIPofIID,
+  getIIDofIP,
+} from '../data/sql/IPInfo';
 // eslint-disable-next-line import/no-unresolved
 import canvases from './canvases.json';
 import {
@@ -48,31 +52,25 @@ import rollbackCanvasArea from './rollback';
  * @return text of success
  */
 export async function executeIPAction(action, ips, logger = null) {
-  const ipArray = ips.split('\n');
+  const valueArray = ips.split('\n');
   let out = '';
-  for (let i = 0; i < ipArray.length; i += 1) {
-    const ip = ipArray[i].trim();
+  for (let i = 0; i < valueArray.length; i += 1) {
+    const value = valueArray[i].trim();
+    if (!value) {
+      continue;
+    }
+
+    if (logger) logger(`${action} ${value}`);
 
     if (action === 'iidtoip') {
-      const resIp = await getIPofIID(ip);
-      const iidPart = ip.slice(0, ip.indexOf('-'));
-      if (resIp) {
-        out += `${iidPart}:     ${resIp}\n`;
-      } else {
-        out += `${iidPart}:     N/A\n`;
-      }
+      const ip = await getIPofIID(value);
+      out += (ip) ? `${ip}\n` : `${value}\n`;
       continue;
     }
 
-    if (!ip || ip.length < 8 || ip.indexOf(' ') !== -1) {
-      out += `Couln't parse ${action} ${ip}\n`;
-      continue;
-    }
-
-    if (logger) logger(`${action} ${ip}`);
-    switch (action) {
-      default:
-        return `Failed to ${action} ${ip}\n`;
+    if (action === 'iptoiid') {
+      const iid = await getIIDofIP(value);
+      out += (iid) ? `${iid}\n` : `${value}\n`;
     }
   }
   return out;
@@ -98,10 +96,12 @@ export async function executeIIDAction(
   }
   const iidPart = iid.slice(0, iid.indexOf('-'));
 
+  if (logger) logger(`${action} ${iid} ${ip}`);
+
   switch (action) {
     case 'status': {
       const allowed = await isIPAllowed(ip, true);
-      let out = `Allowed to place: ${allowed.allowed}`;
+      let out = `Allowed to place: ${allowed.allowed}\n`;
       const info = await getInfoToIp(ip);
       out += `Country: ${info.country}\n`
         + `CIDR: ${info.cidr}\n`
@@ -119,7 +119,8 @@ export async function executeIIDAction(
       if (!ban) {
         out += 'banned: false\n';
       } else {
-        out += `reason: ${ban.reason}\n`;
+        out += 'banned: true\n'
+          + `reason: ${ban.reason}\n`;
         if (ban.expires) {
           out += `expires: ${ban.expires.toLocaleString()}\n`;
         }
@@ -140,28 +141,27 @@ export async function executeIIDAction(
       return `${iidPart} would have gotten captcha anyway`;
     }
     case 'ban': {
-      if (expire && expire < Date.now()) {
+      const expireTs = parseInt(expire, 10);
+      if (Number.isNaN(expireTs) || (expireTs && expireTs < Date.now())) {
         return 'No valid expiration time';
       }
-      if (!reason) {
+      if (!reason || !reason.trim()) {
         return 'No reason specified';
       }
-      const ret = await banIP(ip, reason, expire || null, muid);
+      const ret = await banIP(ip, reason, expireTs || null, muid);
       if (ret) {
-        await cleanCacheForIP(ip);
         return 'Successfully banned user';
       }
-      return 'User is already banned';
+      return 'Updated existing ban of user';
     }
     case 'unban': {
       const ret = await unbanIP(ip);
       if (ret) {
-        await cleanCacheForIP(ip);
         return 'Successfully unbanned user';
       }
       return 'User is not banned';
     }
-    case 'Whitelist': {
+    case 'whitelist': {
       const ret = await whitelistIP(ip);
       if (ret) {
         await cleanCacheForIP(ip);

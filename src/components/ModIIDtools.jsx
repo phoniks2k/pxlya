@@ -14,11 +14,18 @@ async function submitIIDAction(
   duration,
   callback,
 ) {
+  let time = parseInterval(duration);
+  if (time === 0 && duration !== '0') {
+    callback(t`You must enter an IID`);
+    return;
+  }
   if (!iid) {
     callback(t`You must enter an IID`);
     return;
   }
-  const time = Date.now() + parseInterval(duration);
+  if (time > 0) {
+    time += Date.now();
+  }
   const data = new FormData();
   data.append('iidaction', action);
   data.append('reason', reason);
@@ -61,7 +68,7 @@ function ModIIDtools() {
           ))}
       </select>
       {(iIDAction === 'ban') && (
-        <>
+        <React.Fragment key="ban">
           <p>{t`Reason`}</p>
           <input
             maxLength="200"
@@ -88,7 +95,7 @@ function ModIIDtools() {
             />
             {t`(0 = infinite)`}
           </p>
-        </>
+        </React.Fragment>
       )}
       <p className="modalcotext">
         {' IID: '}

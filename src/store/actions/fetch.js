@@ -293,3 +293,9 @@ export function requestMe() {
     'api/me',
   );
 }
+
+export function requestIID() {
+  return makeAPIGETRequest(
+    'api/getiid',
+  );
+}

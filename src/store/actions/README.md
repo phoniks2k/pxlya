@@ -41,7 +41,6 @@ export type Action =
   | { type: 'SELECT_CANVAS', canvasId: number }
   | { type: 'PLACED_PIXELS', amount: number }
   | { type: 'PIXEL_WAIT' }
-  | { type: 'PIXEL_FAILURE' }
   | { type: 'SET_VIEW_COORDINATES', view: Array }
   | { type: 'SET_SCALE', scale: number, zoompoint: Array }
   | { type: 'REQUEST_BIG_CHUNK', center: Array }

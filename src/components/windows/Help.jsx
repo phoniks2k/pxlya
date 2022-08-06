@@ -7,8 +7,9 @@ import { c, t, jt } from 'ttag';
 import { GiMouse } from 'react-icons/gi';
 import { MdTouchApp } from 'react-icons/md';
 
-/* eslint-disable max-len */
+import GetIID from '../GetIID';
 
+/* eslint-disable max-len */
 
 const Help = () => {
   const bindG = <kbd>{c('keybinds').t`G`}</kbd>;
@@ -33,7 +34,6 @@ const Help = () => {
   const starhouseLink = <a href="https://twitter.com/starhousedev">starhouse </a>;
   const vinikLink = <a href="https://twitter.com/Vinikdev">Vinikdev</a>;
   const guildedLink = <a href="https://pixelplanet.fun/guilded">guilded</a>;
-  const getIPLink = <a href="https://www.whatismyip.com/">{t`your IP`}</a>;
   const mailLink = <a href="mailto:admin@pixelplanet.fun">admin@pixelplanet.fun</a>;
 
   return (
@@ -52,9 +52,10 @@ pixels and 7s on already set pixels.`}<br />
       <p className="modaltitle">{t`Map Data`}</p>
       <p className="modaltext">{t`The bare map data that we use, together with converted OpenStreetMap tiles for orientation, \
 can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLlZmKv3kEBE0HDhakTgAZZycD3ELjduajJxPGaXo">pixelplanetmap.zip</a> (422MB)</p>
-      <p className="modaltitle">{t`Detected as Proxy?`}</p>
+      <p className="modaltitle">{t`Banned? Detected as Proxy?`}</p>
       <div className="modaltext">
-        <p>{jt`If you got detected as proxy, but you are none, please go to our ${guildedLink} or send us an e-mail with ${getIPLink} to ${mailLink}. Do not post your IP anywhere else. We are sorry for the inconvenience.`}</p>
+        <p>{jt`If you got detected as proxy, but you are none, or think that you got wrongfully banned, please go to our ${guildedLink} or send us an e-mail to ${mailLink} and include the following IID:`}</p>
+        <GetIID />
       </div>
       <h3 className="modaltitle">2D {t`Controls`}</h3>
       <div className="modaltext" style={{ lineHeight: 1.8 }}>
