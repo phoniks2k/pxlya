@@ -70,6 +70,7 @@ async function withoutCache(f, ip) {
         throw new Error('Proxycheck request did not return yet');
       }
     }
+    cacheAllowed(ipKey, status);
     whoisRet = await whois(ip);
   } finally {
     await saveIPInfo(ipKey, whoisRet || {}, status, pcheck);
@@ -108,11 +109,8 @@ async function withCache(f, ip) {
   if (checking.indexOf(ipKey) === -1) {
     checking.push(ipKey);
     withoutCache(f, ip)
-      .then((result) => {
-        cacheAllowed(ipKey, result);
-      })
       .catch((error) => {
-        logger.error('Error %s', error.message || error);
+        logger.error('Error %s', error.message);
       })
       .finally(() => {
         const pos = checking.indexOf(ipKey);
