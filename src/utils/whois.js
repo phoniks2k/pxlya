@@ -18,13 +18,13 @@ function cIDRofWhois(ip, whoisData) {
     return whoisData.inet6num
       || (whoisData.range && !whoisData.range.includes('-') && whoisData.range)
       || whoisData.route
-      || 'N/A';
+      || null;
   }
   const { range } = whoisData;
-  if (range.includes('/') && !range.includes('-')) {
+  if (range && range.includes('/') && !range.includes('-')) {
     return range;
   }
-  return ip4InRangeToCIDR(ip, range) || 'N/A';
+  return ip4InRangeToCIDR(ip, range) || null;
 }
 
 /*
@@ -63,7 +63,7 @@ function parseWhois(ip, whoisData) {
   return {
     ip,
     country: countryFromWhois(whoisData),
-    cidr: cIDRofWhois(ip, whoisData),
+    cidr: cIDRofWhois(ip, whoisData) || 'N/A',
     org: orgFromWhois(whoisData),
     descr: whoisData.descr || 'N/A',
     asn: whoisData.asn || 'N/A',
@@ -71,7 +71,7 @@ function parseWhois(ip, whoisData) {
 }
 
 async function whois(ip) {
-  let whoisData = await whoiser.ip(ip);
+  const whoisData = await whoiser.ip(ip);
   if (whoisData.ReferralServer) {
     let referral = whoisData.ReferralServer;
     const prot = referral.indexOf('://');
@@ -79,9 +79,17 @@ async function whois(ip) {
       referral = referral.slice(prot + 3);
     }
     try {
-      whoisData = await whoiser.ip(ip, {
+      /*
+       * if referral whois server produces any error
+       * fallback to initial one
+       */
+      const refWhoisData = await whoiser.ip(ip, {
         host: referral,
       });
+      const refParsedData = parseWhois(ip, refWhoisData);
+      if (refParsedData.cidr !== 'N/A') {
+        return refParsedData;
+      }
     } catch {
       // nothing
     }

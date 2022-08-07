@@ -208,7 +208,7 @@ export default class MString {
     cIter += 3;
     for (; cIter < this.txt.length
       && !MString.isWhiteSpace(this.txt[cIter])
-      && (!enclosure  || this.txt[cIter] !== ')'); cIter += 1
+      && (!enclosure || this.txt[cIter] !== ')'); cIter += 1
     );
     if (cIter < this.iter + 4) {
       return null;

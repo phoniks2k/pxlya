@@ -119,6 +119,9 @@ export function getIPv6Subnet(ip) {
  * @return [start, end] with numerical IPs (32bit integer)
  */
 function ip4RangeStrToRangeNum(range) {
+  if (!range) {
+    return null;
+  }
   const [start, end] = range.split('-')
     .map(ip4ToNum);
   if (!start || !end || start > end) {
