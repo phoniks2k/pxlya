@@ -153,7 +153,7 @@ export default class MString {
         // set this.iter temporarily to be able to use thischeckIfLink
         const oldIter = this.iter;
         this.iter = zEnd;
-        z = this.checkIfLink();
+        z = this.checkIfLink(true);
         zEnd = this.iter;
         this.iter = oldIter;
         if (z === null) {
@@ -193,7 +193,7 @@ export default class MString {
    * returns the link or false if there is none
    * moves iter forward to after the link, if there's one
    */
-  checkIfLink() {
+  checkIfLink(enclosure = false) {
     let cIter = this.iter;
     if (!this.txt.startsWith('://', cIter) || cIter < 3) {
       return null;
@@ -208,7 +208,7 @@ export default class MString {
     cIter += 3;
     for (; cIter < this.txt.length
       && !MString.isWhiteSpace(this.txt[cIter])
-      && this.txt[cIter] !== ')'; cIter += 1
+      && (!enclosure  || this.txt[cIter] !== ')'); cIter += 1
     );
     if (cIter < this.iter + 4) {
       return null;

@@ -16,7 +16,7 @@ async function submitIIDAction(
 ) {
   let time = parseInterval(duration);
   if (time === 0 && duration !== '0') {
-    callback(t`You must enter an IID`);
+    callback(t`You must enter a duration`);
     return;
   }
   if (!iid) {
