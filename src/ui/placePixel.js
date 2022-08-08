@@ -247,7 +247,7 @@ export function receivePixelReturn(
       break;
     case 14:
       errorTitle = t`Banned`;
-      type = t`ban`;
+      type = 'ban';
       break;
     case 15:
       errorTitle = t`Range Banned`;

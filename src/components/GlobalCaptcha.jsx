@@ -43,14 +43,12 @@ const GlobalCaptcha = ({ close }) => {
         <button
           type="button"
           onClick={close}
-          style={{ fontSize: 16 }}
         >
           {t`Cancel`}
         </button>
        &nbsp;
         <button
           type="submit"
-          style={{ fontSize: 16 }}
         >
           {t`Send`}
         </button>

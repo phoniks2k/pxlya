@@ -119,7 +119,9 @@ const BanInfo = ({ close }) => {
           <React.Fragment key="btnr">
             <button
               type="button"
-              style={{ fontSize: 16 }}
+              style={{
+                animation: 'glowing 1300ms infinite',
+              }}
               onClick={handleSubmit}
             >
               {(submitting) ? '...' : t`Why?`}
@@ -129,7 +131,6 @@ const BanInfo = ({ close }) => {
         )}
         <button
           type="submit"
-          style={{ fontSize: 16 }}
           onClick={close}
         >
           {t`OK`}
