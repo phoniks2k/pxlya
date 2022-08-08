@@ -519,6 +519,10 @@ tr:nth-child(even) {
   z-index: 7;
 }
 
+.Alert button {
+  font-size: 16px;
+}
+
 .modaltext, .modalcotext {
   color: hsla(0, 0%, 0%, 0.6);
   font-size: 14px;
@@ -969,9 +973,9 @@ tr:nth-child(even) {
 }
 
 @keyframes glowing {
-  0% { background-color: #2ba805; box-shadow: 0 0 5px #2ba805; }
-  50% { background-color: #49e819; box-shadow: 0 0 20px #49e819; }
-  100% { background-color: #2ba805; box-shadow: 0 0 5px #2ba805; }
+  0% { box-shadow: 0 0 5px #888888; }
+  50% { box-shadow: 0 0 20px #949494; }
+  100% { box-shadow: 0 0 5px #242424; }
 }
 
 

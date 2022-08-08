@@ -120,6 +120,7 @@ const BanInfo = ({ close }) => {
             <button
               type="button"
               style={{
+                fontWeight: 'bold',
                 animation: 'glowing 1300ms infinite',
               }}
               onClick={handleSubmit}
