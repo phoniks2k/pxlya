@@ -36,10 +36,9 @@ function Modtools() {
             <span
               role="button"
               tabIndex={-1}
-              className="modallink"
-              style={(selectedPart === part) ? {
-                fontWeight: 'bold',
-              } : undefined}
+              className={
+                (selectedPart === part) ? 'modallink selected' : 'modallink'
+              }
               onClick={() => selectPart(part)}
             >{part}</span>
             {(ind !== parts.length - 1)

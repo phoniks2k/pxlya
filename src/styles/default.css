@@ -117,6 +117,10 @@ a:hover {
   color: #226baa;
 }
 
+.modallink.selected {
+  font-weight: bold;
+}
+
 .inarea {
   border-style: solid;
   border-color: #d5d5d5;

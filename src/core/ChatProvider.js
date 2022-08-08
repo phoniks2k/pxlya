@@ -416,7 +416,7 @@ export class ChatProvider {
     }
 
     const country = user.regUser.flag || 'xx';
-    let displayCountry = countr;
+    let displayCountry = country;
     if (name.endsWith('berg') || name.endsWith('stein')) {
       displayCountry = 'il';
     } else if (user.userlvl !== 0) {
