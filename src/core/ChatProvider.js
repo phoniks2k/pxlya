@@ -416,14 +416,16 @@ export class ChatProvider {
     }
 
     const country = user.regUser.flag || 'xx';
-    let displayCountry = (name.endsWith('berg') || name.endsWith('stein'))
-      ? 'il'
-      : country;
-    /*
-     * hard coded flag for Manchukuo_1940
-     * TODO make it possible to modify user flags
-     */
-    if (user.id === 2927) {
+    let displayCountry = countr;
+    if (name.endsWith('berg') || name.endsWith('stein')) {
+      displayCountry = 'il';
+    } else if (user.userlvl !== 0) {
+      displayCountry = 'fa';
+    } else if (user.id === 2927) {
+      /*
+       * hard coded flag for Manchukuo_1940
+       * TODO make it possible to modify user flags
+       */
       displayCountry = 'bt';
     }
 
