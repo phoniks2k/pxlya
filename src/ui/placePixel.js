@@ -156,6 +156,7 @@ export function receivePixelReturn(
   wait,
   coolDownSeconds,
   pxlCnt,
+  rankedPxlCnt,
 ) {
   clearTimeout(pixelTimeout);
 
@@ -189,7 +190,7 @@ export function receivePixelReturn(
   let type = 'error';
   switch (retCode) {
     case 0:
-      store.dispatch(placedPixels(pxlCnt));
+      store.dispatch(placedPixels(rankedPxlCnt));
       break;
     case 1:
       errorTitle = t`Invalid Canvas`;

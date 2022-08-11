@@ -127,6 +127,7 @@ const HistorySelect = () => {
               >
                 {times.map((value) => (
                   <option
+                    key={value}
                     value={value}
                   >
                     {value}

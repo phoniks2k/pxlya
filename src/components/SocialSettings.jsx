@@ -61,6 +61,7 @@ const SocialSettings = ({ done }) => {
             {
             blocked.map((bl) => (
               <div
+                key={bl[0]}
                 role="button"
                 tabIndex={0}
                 onClick={() => {

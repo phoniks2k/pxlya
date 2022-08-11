@@ -252,6 +252,7 @@ export async function drawByOffsets(
     wait,
     coolDown,
     pxlCnt,
+    rankedPxlCnt,
     retCode,
   };
 }

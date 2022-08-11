@@ -39,11 +39,9 @@ function init() {
       receivePixelUpdate(store, i, j, offset, color & 0x7F);
     });
   });
-  SocketClient.on('pixelReturn', ({
-    retCode, wait, coolDownSeconds, pxlCnt,
-  }) => {
-    receivePixelReturn(store, retCode, wait, coolDownSeconds, pxlCnt);
-  });
+  SocketClient.on('pixelReturn',
+    (args) => receivePixelReturn(store, ...args),
+  );
   SocketClient.on('cooldownPacket', (coolDown) => {
     store.dispatch(receiveCoolDown(coolDown));
   });

@@ -490,7 +490,7 @@ class SocketServer {
           // check if captcha needed
           if (await needCaptcha(ip)) {
             // need captcha
-            failureRet = PixelReturn.dehydrate(10, 0, 0);
+            failureRet = PixelReturn.dehydrate(10);
           } else {
             // (re)check for Proxy
             const allowed = await isIPAllowed(ip);
@@ -504,7 +504,7 @@ class SocketServer {
                 // range banned
                 failureStatus = 15;
               }
-              failureRet = PixelReturn.dehydrate(failureStatus, 0, 0);
+              failureRet = PixelReturn.dehydrate(failureStatus);
             }
           }
           if (failureRet !== null) {
@@ -526,6 +526,7 @@ class SocketServer {
             wait,
             coolDown,
             pxlCnt,
+            rankedPxlCnt,
             retCode,
           } = await drawByOffsets(
             ws.user,
@@ -533,7 +534,13 @@ class SocketServer {
             i, j,
             pixels,
           );
-          ws.send(PixelReturn.dehydrate(retCode, wait, coolDown, pxlCnt));
+          ws.send(PixelReturn.dehydrate(
+            retCode,
+            wait,
+            coolDown,
+            pxlCnt,
+            rankedPxlCnt,
+          ));
           break;
         }
         case RegisterCanvas.OP_CODE: {
