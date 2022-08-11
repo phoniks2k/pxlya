@@ -2,7 +2,7 @@
 
 Two translation files for each language are needed, `ssr-[locale].po` and `[locale].pb` (i.e. `ssr-de.po` and `de.po`).
 
-Translation files can be created out of the templates [template.pot](https://github.com/pixelplanetdev/pixelplanet/raw/master/i18n/template.pot) and [template-ssr.pot](https://github.com/pixelplanetdev/pixelplanet/raw/master/i18n/template-ssr.pot). They are standard GNU gettext files and can be edited in any ordinary texteditor or po-Editor.
+Translation files can be created out of the templates [template.pot](https://git.pixelplanet.fun/ppfun/pixelplanet/raw/branch/master/i18n/template.pot) and [template-ssr.pot](https://git.pixelplanet.fun/ppfun/pixelplanet/raw/branch/master/i18n/template-ssr.pot). They are standard GNU gettext files and can be edited in any ordinary texteditor or po-Editor.
 
 All translated languages get an own chat channel that just people who use this language can access.
 
@@ -10,7 +10,7 @@ All translated languages get an own chat channel that just people who use this l
 
 ### Create new translation
 
-1. Download poedit [here](https://poedit.net/) and [template.pot](https://github.com/pixelplanetdev/pixelplanet/raw/master/i18n/template.pot)
+1. Download poedit [here](https://poedit.net/) and [template.pot](https://git.pixelplanet.fun/ppfun/pixelplanet/raw/branch/master/i18n/template.pot)
 2. Open it and **Create new Translation** and open the `template.pot`
 ![start](../promotion/poedit/start.png)
 3. Select the language you want to translate into
@@ -18,7 +18,7 @@ All translated languages get an own chat channel that just people who use this l
 4. Translate all the entries
 ![translate](../promotion/poedit/translate.png)
 5. Save the translation as `[locale].po` (i.e. `es.po` for spanish)
-6. Do the same again, but with [template-ssr.pot](https://github.com/pixelplanetdev/pixelplanet/raw/master/i18n/template-ssr.pot) and save it as `ssr-[locale].po`
+6. Do the same again, but with [template-ssr.pot](https://git.pixelplanet.fun/ppfun/pixelplanet/raw/branch/master/i18n/template-ssr.pot) and save it as `ssr-[locale].po`
 7. Send us the two files on [guilded](https://pixelplanet.fun) or make a pull request
 
 ### Update old translation if change is needed
