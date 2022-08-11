@@ -470,6 +470,7 @@ export class ChatProvider {
 
     if (channelId === this.enChannelId
       && this.mutedCountries.includes(country)
+      && user.userlvl === 0
     ) {
       return t`Your country is temporary muted from this chat channel`;
     }
