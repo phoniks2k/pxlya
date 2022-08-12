@@ -55,7 +55,7 @@ const Chat = ({
   const {
     chatChannel = 1,
     inputMessage = '',
-  } = useSelector((state) => state.windows.args[windowId]);
+  } = useSelector((state) => state.windows.args[windowId] || {});
 
   const { stayScrolled } = useStayScrolled(listRef, {
     initialScroll: Infinity,
@@ -101,7 +101,7 @@ const Chat = ({
     if (!inptMsg) return;
     // send message via websocket
     SocketClient.sendChatMessage(inptMsg, chatChannel);
-    dispatch(setChatInputMessage(''));
+    setChatInputMessage('');
   }
 
   /*
@@ -196,9 +196,7 @@ const Chat = ({
               }}
               id={`chtipt-${windowId}`}
               value={inputMessage}
-              onChange={(e) => dispatch(
-                setChatInputMessage(e.target.value),
-              )}
+              onChange={(e) => setChatInputMessage(e.target.value)}
               autoComplete="off"
               maxLength="200"
               type="text"

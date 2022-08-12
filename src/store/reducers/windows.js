@@ -210,7 +210,9 @@ export default function windows(
         windows: newWindows,
         args: {
           ...state.args,
-          [windowId]: args,
+          [windowId]: {
+            ...args,
+          },
         },
       });
     }

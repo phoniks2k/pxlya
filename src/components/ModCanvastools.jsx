@@ -267,6 +267,7 @@ function ModCanvastools() {
       >
         {['build', 'protect', 'wipe'].map((opt) => (
           <option
+            key={opt}
             value={opt}
           >
             {opt}
@@ -330,6 +331,7 @@ function ModCanvastools() {
       >
         {['protect', 'unprotect'].map((opt) => (
           <option
+            key={opt}
             value={opt}
           >
             {opt}
@@ -485,6 +487,7 @@ function ModCanvastools() {
       >
         {['spare', 'spareext', 'spareextu'].map((opt) => (
           <option
+            key={opt}
             value={opt}
           >
             {opt}

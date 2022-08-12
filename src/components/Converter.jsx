@@ -264,6 +264,7 @@ function Converter() {
           {
             ImageQuantizerKernels.map((strat) => (
               <option
+                key={strat}
                 value={strat}
               >{strat}</option>
             ))
@@ -334,6 +335,7 @@ function Converter() {
           {
             ColorDistanceCalculators.map((strat) => (
               <option
+                key={strat}
                 value={strat}
               >{strat}</option>
             ))

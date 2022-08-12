@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Tab = ({ onClick, activeTab, label }) => {
+const Tab = ({ onClick, active, label }) => {
   let className = 'tab-list-item';
-  if (activeTab === label) {
+  if (active) {
     className += ' tab-list-active';
   }
 

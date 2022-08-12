@@ -2,11 +2,14 @@
  *
  */
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { fetchStats } from '../../store/actions';
+import {
+  fetchStats,
+  setWindowArgs,
+} from '../../store/actions';
 import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';
@@ -22,7 +25,16 @@ const UserArea = ({ windowId }) => {
   const name = useSelector((state) => state.user.name);
   const userlvl = useSelector((state) => state.user.userlvl);
   const lastStatsFetch = useSelector((state) => state.ranks.lastFetch);
+  const {
+    activeTab = t`Profile`,
+  } = useSelector((state) => state.windows.args[windowId] || {});
   const dispatch = useDispatch();
+
+  const setActiveTab = useCallback((label) => {
+    dispatch(setWindowArgs(windowId, {
+      activeTab: label,
+    }));
+  }, [dispatch]);
 
   useInterval(() => {
     if (Date.now() - 300000 > lastStatsFetch) {
@@ -32,7 +44,7 @@ const UserArea = ({ windowId }) => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Tabs>
+      <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
         <div label={t`Profile`}>
           {(name) ? <UserAreaContent /> : <LogInArea windowId={windowId} />}
         </div>

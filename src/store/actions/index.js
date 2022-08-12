@@ -606,6 +606,7 @@ export function setWindowArgs(
 ) {
   return {
     type: 'SET_WINDOW_ARGS',
+    windowId,
     args,
   };
 }
