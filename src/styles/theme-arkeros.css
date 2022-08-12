@@ -11,7 +11,7 @@ tr:nth-child(odd) {
   border-radius: 10px;
 }
 
-.OverlayModal, .OverlayAlert {
+.overlay {
   background: linear-gradient(175deg, #61dceaab , #ffb1e1, #ecffec, #ffb1e1, #61dceaab);
 }
 
@@ -51,7 +51,7 @@ tr:nth-child(odd) {
   background: linear-gradient(135deg, orange , yellow, green, aqua, blue, violet);
 }
 
-.Modal {
+.modal {
   background: #f4edf0 none repeat scroll 0 0;
   background-image: url("../jew.png");
   background-repeat: no-repeat;

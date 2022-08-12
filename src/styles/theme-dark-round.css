@@ -86,12 +86,12 @@ tr:nth-child(even) {
   background-color: #15374fd1;
 }
 
-.Modal, .Alert {
+.modal, .Alert {
   background: #444242 none repeat scroll 0 0;;
   color: #f4f4f4;
 }
 
-.Modal {
+.modal {
   border-radius: 21px;
 }
 
@@ -132,7 +132,7 @@ tr:nth-child(even) {
   background-color: #6f6f75;
 }
 
-.OverlayModal, .OverlayAlert {
+.overlay {
   background-color: rgba(187, 187, 187, 0.75);
 }
 

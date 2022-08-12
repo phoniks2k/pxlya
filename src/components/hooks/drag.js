@@ -46,9 +46,11 @@ function useDrag(elRef, startHandler, diffHandler) {
     document.addEventListener('mouseup', stopDrag);
     document.addEventListener('touchcancel', stopDrag);
     document.addEventListener('touchend', stopDrag);
-  }, [startHandler]);
+  }, [startHandler, diffHandler]);
 
   useEffect(() => {
+    let prevCurrent = null;
+
     if (elRef.current) {
       elRef.current.addEventListener('mousedown', startDrag, {
         passive: false,
@@ -56,14 +58,16 @@ function useDrag(elRef, startHandler, diffHandler) {
       elRef.current.addEventListener('touchstart', startDrag, {
         passive: false,
       });
+      prevCurrent = elRef.current;
     }
+
     return () => {
-      if (elRef.current) {
-        elRef.current.removeEventListener('mousedown', startDrag);
-        elRef.current.removeEventListener('touchstart', startDrag);
+      if (prevCurrent) {
+        prevCurrent.removeEventListener('mousedown', startDrag);
+        prevCurrent.removeEventListener('touchstart', startDrag);
       }
     };
-  }, [elRef, diffHandler]);
+  }, [elRef, startDrag]);
 }
 
 export default useDrag;

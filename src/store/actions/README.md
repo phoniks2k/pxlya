@@ -86,8 +86,8 @@ export type Action =
   | { type: 'CLOSE_ALL_WINDOW_TYPE', windowType: string}
   | { type: 'FOCUS_WINDOW', windowId: number }
   | { type: 'CLONE_WINDOW', windowId: number }
-  | { type: 'MAXIMIZE_WINDOW', windowId: number }
-  | { type: 'RESTORE_WINDOW' }
+  | { type: 'TOGGLE_MAXIMIZE_WINDOW', windowId: number }
+  | { type: 'CLOSE_FULLSCREEN_WINDOWS' }
   | { type: 'MOVE_WINDOW', windowId: number, xDiff: number, yDiff: number }
   | { type: 'RESIZE_WINDOW', windowId: number, xDiff: number, yDiff: number }
   | { type: 'CHANGE_WINDOW_TYPE',

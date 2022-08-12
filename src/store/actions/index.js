@@ -611,7 +611,7 @@ export function setWindowArgs(
   };
 }
 
-export function showModal(modalType, title) {
+function showFullscreenWindow(modalType, title) {
   return openWindow(
     modalType,
     title,
@@ -620,15 +620,21 @@ export function showModal(modalType, title) {
   );
 }
 
+export function closeFullscreenWindows() {
+  return {
+    type: 'CLOSE_FULLSCREEN_WINDOWS',
+  };
+}
+
 export function showSettingsModal() {
-  return showModal(
+  return showFullscreenWindow(
     'SETTINGS',
     '',
   );
 }
 
 export function showUserAreaModal() {
-  return showModal(
+  return showFullscreenWindow(
     'USERAREA',
     '',
   );
@@ -658,34 +664,34 @@ export function setWindowTitle(windowId, title) {
 }
 
 export function showRegisterModal() {
-  return showModal(
+  return showFullscreenWindow(
     'REGISTER',
     t`Register New Account`,
   );
 }
 
 export function showForgotPasswordModal() {
-  return showModal(
+  return showFullscreenWindow(
     'FORGOT_PASSWORD',
     t`Restore my Password`,
   );
 }
 
 export function showHelpModal() {
-  return showModal(
+  return showFullscreenWindow(
     'HELP',
     t`Welcome to PixelPlanet.fun`,
   );
 }
 export function showArchiveModal() {
-  return showModal(
+  return showFullscreenWindow(
     'ARCHIVE',
     t`Look at past Canvases`,
   );
 }
 
 export function showCanvasSelectionModal() {
-  return showModal(
+  return showFullscreenWindow(
     'CANVAS_SELECTION',
     '',
   );
@@ -823,16 +829,10 @@ export function cloneWindow(windowId) {
   };
 }
 
-export function maximizeWindow(windowId) {
+export function toggleMaximizeWindow(windowId) {
   return {
-    type: 'MAXIMIZE_WINDOW',
+    type: 'TOGGLE_MAXIMIZE_WINDOW',
     windowId,
-  };
-}
-
-export function restoreWindow() {
-  return {
-    type: 'RESTORE_WINDOW',
   };
 }
 

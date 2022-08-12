@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import GlobalCaptcha from './GlobalCaptcha';
 import BanInfo from './BanInfo';
+import Overlay from './Overlay';
 import { closeAlert } from '../store/actions';
 
 const Alert = () => {
@@ -25,14 +26,12 @@ const Alert = () => {
     dispatch(closeAlert());
   }, [dispatch]);
 
-  const onTransitionEnd = () => {
-    if (!open) setRender(false);
-  };
-
   useEffect(() => {
-    window.setTimeout(() => {
-      if (open) setRender(true);
-    }, 10);
+    if (open) {
+      window.setTimeout(() => {
+        setRender(true);
+      }, 10);
+    }
   }, [open]);
 
   let Content = null;
@@ -47,37 +46,43 @@ const Alert = () => {
       // nothing
   }
 
+  if (!render && !open) {
+    return null;
+  }
+
+  const show = open && render;
+
   return (
-    (render || open) && (
-      <div>
-        <div
-          className={(open && render)
-            ? 'OverlayAlert show'
-            : 'OverlayAlert'}
-          onTransitionEnd={onTransitionEnd}
-          tabIndex={-1}
-          onClick={close}
-        />
-        <div
-          className={(open && render) ? 'Alert show' : 'Alert'}
-        >
-          <h2>{title}</h2>
-          {(message) && (
-            <p className="modaltext">
-              {message}
-            </p>
-          )}
-          {(Content) ? (
-            <Content close={close} />
-          ) : (
-            <button
-              type="button"
-              onClick={close}
-            >{btn}</button>
-          )}
-        </div>
+    <>
+      <Overlay
+        z={6}
+        show={show}
+        onClick={close}
+      />
+      (render || open) && (
+      <div
+        className={(show) ? 'Alert show' : 'Alert'}
+        onTransitionEnd={() => {
+          if (!open) setRender(false);
+        }}
+      >
+        <h2>{title}</h2>
+        {(message) && (
+        <p className="modaltext">
+          {message}
+        </p>
+        )}
+        {(Content) ? (
+          <Content close={close} />
+        ) : (
+          <button
+            type="button"
+            onClick={close}
+          >{btn}</button>
+        )}
       </div>
-    )
+      )
+    </>
   );
 };
 

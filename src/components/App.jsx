@@ -15,7 +15,6 @@ import ChatButton from './buttons/ChatButton';
 import Menu from './Menu';
 import UI from './UI';
 import ExpandMenuButton from './buttons/ExpandMenuButton';
-import ModalRoot from './ModalRoot';
 import WindowManager from './WindowManager';
 
 const iconContextValue = { style: { verticalAlign: 'middle' } };
@@ -32,7 +31,6 @@ const App = () => (
       <CoordinatesBox />
       <ExpandMenuButton />
       <UI />
-      <ModalRoot />
       <WindowManager />
     </IconContext.Provider>
   </div>

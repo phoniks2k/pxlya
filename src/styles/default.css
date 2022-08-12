@@ -185,17 +185,6 @@ tr:nth-child(even) {
   z-index: 3;
 }
 
-.window {
-  position: fixed;
-  background-color: rgba(252, 252, 252, 0.95);
-  border: solid black;
-  border-width: thin;
-  overflow: hidden;
-  padding: 3px;
-  transition: opacity 200ms ease-in-out;
-  opacity: 0;
-}
-
 .win-topbar {
   display: flex;
   height: 24px;
@@ -485,7 +474,7 @@ tr:nth-child(even) {
   padding: 0;
 }
 
-.Modal, .Alert {
+.modal, .Alert {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -501,14 +490,25 @@ tr:nth-child(even) {
   opacity: 0;
 }
 
-.Modal {
+.modal {
   height: 80%;
   width: 70%;
   max-height: 900px;
   z-index: 5;
 }
 
-.Modal-content {
+.window {
+  position: fixed;
+  background-color: rgba(252, 252, 252, 0.95);
+  border: solid black;
+  border-width: thin;
+  overflow: hidden;
+  padding: 3px;
+  transition: opacity 200ms ease-in-out;
+  opacity: 0;
+}
+
+.modal-content {
   position: relative;
   width: calc(100% - 3px);
   height: calc(100% - 50px);
@@ -632,7 +632,7 @@ tr:nth-child(even) {
 }
 
 @media (max-width: 604px) {
-  .Modal, .Alert {
+  .modal, .Alert {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -647,7 +647,7 @@ tr:nth-child(even) {
   }
 }
 
-.OverlayModal, .OverlayAlert {
+.overlay {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -656,14 +656,6 @@ tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.75);
   opacity: 0;
   transition: opacity 200ms ease-in-out;
-}
-
-.OverlayModal {
-  z-index: 4;
-}
-
-.OverlayAlert {
-  z-index: 6;
 }
 
 .chatbox div .chatarea  {
@@ -948,7 +940,7 @@ tr:nth-child(even) {
   visibility: hidden;
 }
 
-.Modal.show, .Alert.show, .OverlayAlert.show, .OverlayModal.show, .window.show {
+.modal.show, .Alert.show, .overlay.show, .window.show {
     opacity: 1;
 }
 

@@ -41,7 +41,7 @@ function ChatMessage({
   const pArray = parseParagraph(msg);
 
   return (
-    <li className="chatmsg">
+    <li className="chatmsg" ref={refEmbed}>
       {(!isInfo && !isEvent)
         && (
           <div className="chathead" key="ch">
@@ -86,7 +86,6 @@ function ChatMessage({
       <div className={className} key="cm">
         <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
       </div>
-      <div className="chatembed" ref={refEmbed} key="ce" />
     </li>
   );
 }

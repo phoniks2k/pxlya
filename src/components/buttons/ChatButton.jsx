@@ -23,8 +23,7 @@ import {
 const selectChatWindowStatus = (state) => [
   state.windows.showWindows,
   state.windows.windows.find((win) => win.windowType === 'CHAT'
-    && win.hidden === false)
-  || (state.windows.modal.open && state.windows.modal.windowType === 'CHAT'),
+    && win.hidden === false),
   state.windows.windows.find((win) => win.windowType === 'CHAT'
     && win.hidden === true),
 ];

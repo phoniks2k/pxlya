@@ -20,14 +20,14 @@ const keepState = {
 /*
  * sorting function for array sort
  */
-function compare(a, b) {
+function compare(a, b, asc) {
   if (typeof a === 'string' && typeof b === 'string') {
     return a.localeCompare(b);
   }
   if (a === 'N/A') a = 0;
   if (b === 'N/A') b = 0;
-  if (a < b) return -1;
-  if (a > b) return 1;
+  if (a < b) return (asc) ? -1 : 1;
+  if (a > b) return (asc) ? 1 : -1;
   return 0;
 }
 
@@ -73,6 +73,7 @@ function ModWatchtools() {
   const [tlcoords, selectTLCoords] = useState(keepState.tlcoords);
   const [brcoords, selectBRCoords] = useState(keepState.brcoords);
   const [interval, selectInterval] = useState(keepState.interval);
+  const [sortAsc, setSortAsc] = useState(true);
   const [sortBy, setSortBy] = useState(0);
   const [table, setTable] = useState({});
   const [iid, selectIid] = useState(keepState.iid);
@@ -266,116 +267,121 @@ function ModWatchtools() {
       {(rows && columns && types) && (
         <React.Fragment key="pxltable">
           <div className="modaldivider" />
-          <table
-            style={{
-              userSelect: 'text',
-              fontSize: 11,
-            }}
-          >
+          <table style={{ fontSize: 11 }} >
             <thead>
               <tr>
                 {columns.slice(1).map((col, ind) => (
                   <th
                     key={col}
                     style={
-                      (sortBy - 1 === ind)
-                        ? { fontWeight: 'normal' }
-                        : { cursor: 'pointer' }
+                      (sortBy - 1 === ind) ? {
+                        cursor: 'pointer',
+                        fontWeight: 'normal',
+                      } : {
+                        cursor: 'pointer',
+                      }
                     }
-                    onClick={() => setSortBy(ind + 1)}
+                    onClick={() => {
+                      if (sortBy - 1 === ind) {
+                        setSortAsc(!sortAsc);
+                      } else {
+                        setSortBy(ind + 1);
+                      }
+                    }}
                   >{col}</th>
                 ))}
               </tr>
             </thead>
-            <tbody>
-              {rows.sort((a, b) => compare(a[sortBy], b[sortBy])).map((row) => (
-                <tr key={row[0]}>
-                  {row.slice(1).map((val, ind) => {
-                    const type = types[ind + 1];
-                    switch (type) {
-                      case 'ts': {
-                        const date = new Date(val);
-                        let minutes = date.getMinutes();
-                        if (minutes < 10) minutes = `0${minutes}`;
-                        return (
-                          <td title={date.toLocaleDateString()}>
-                            {`${date.getHours()}:${minutes}`}
-                          </td>
-                        );
-                      }
-                      case 'clr': {
-                        const cid = (cidColumn > 0)
-                          ? row[cidColumn] : selectedCanvas;
-                        const rgb = canvases[cid]
+            <tbody style={{ userSelect: 'text' }}>
+              {rows.sort((a, b) => compare(a[sortBy], b[sortBy], sortAsc))
+                .map((row) => (
+                  <tr key={row[0]}>
+                    {row.slice(1).map((val, ind) => {
+                      const type = types[ind + 1];
+                      switch (type) {
+                        case 'ts': {
+                          const date = new Date(val);
+                          let minutes = date.getMinutes();
+                          if (minutes < 10) minutes = `0${minutes}`;
+                          return (
+                            <td title={date.toLocaleDateString()}>
+                              {`${date.getHours()}:${minutes}`}
+                            </td>
+                          );
+                        }
+                        case 'clr': {
+                          const cid = (cidColumn > 0)
+                            ? row[cidColumn] : selectedCanvas;
+                          const rgb = canvases[cid]
                           && canvases[cid].colors
                           && canvases[cid].colors[val];
-                        if (!rgb) {
+                          if (!rgb) {
+                            return (<td>{val}</td>);
+                          }
+                          const color = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+                          return (
+                            <td style={{ backgroundColor: color }}>{val}</td>
+                          );
+                        }
+                        case 'coord': {
+                          const cid = (cidColumn > 0)
+                            ? row[cidColumn] : selectedCanvas;
+                          const ident = canvases[cid] && canvases[cid].ident;
+                          const coords = `./#${ident},${val},47`;
+                          return (
+                            <td>
+                              <a href={coords}>{val}</a>
+                            </td>
+                          );
+                        }
+                        case 'flag': {
+                          const flag = val.toLowerCase();
+                          return (
+                            <td title={val}><img
+                              style={{
+                                height: '1em',
+                                imageRendering: 'crisp-edges',
+                              }}
+                              alt={val}
+                              src={`${window.ssv.assetserver}/cf/${flag}.gif`}
+                            /></td>
+                          );
+                        }
+                        case 'cid': {
+                          const ident = canvases[val] && canvases[val].ident;
+                          return (<td>{ident}</td>);
+                        }
+                        case 'uuid': {
+                          return (
+                            <td>
+                              <span
+                                role="button"
+                                tabIndex={-1}
+                                style={{ cursor: 'pointer' }}
+                                title={t`Copy to Clipboard`}
+                                onClick={() => copyTextToClipboard(val)}
+                              >{val}</span>
+                            </td>
+                          );
+                        }
+                        case 'user': {
+                          const seperator = val.lastIndexOf(',');
+                          if (seperator === -1) {
+                            return (<td>{val}</td>);
+                          }
+                          return (
+                            <td title={val.slice(seperator + 1)}>
+                              {val.slice(0, seperator)}
+                            </td>
+                          );
+                        }
+                        default: {
                           return (<td>{val}</td>);
                         }
-                        const color = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-                        return (
-                          <td style={{ backgroundColor: color }}>{val}</td>
-                        );
                       }
-                      case 'coord': {
-                        const cid = (cidColumn > 0)
-                          ? row[cidColumn] : selectedCanvas;
-                        const ident = canvases[cid] && canvases[cid].ident;
-                        const coords = `./#${ident},${val},47`;
-                        return (
-                          <td>
-                            <a href={coords}>{val}</a>
-                          </td>
-                        );
-                      }
-                      case 'flag': {
-                        const flag = val.toLowerCase();
-                        return (
-                          <td title={val}><img
-                            style={{
-                              height: '1em',
-                              imageRendering: 'crisp-edges',
-                            }}
-                            alt={val}
-                            src={`${window.ssv.assetserver}/cf/${flag}.gif`}
-                          /></td>
-                        );
-                      }
-                      case 'cid': {
-                        const ident = canvases[val] && canvases[val].ident;
-                        return (<td>{ident}</td>);
-                      }
-                      case 'uuid': {
-                        return (
-                          <td>
-                            <span
-                              role="button"
-                              tabIndex={-1}
-                              style={{ cursor: 'pointer' }}
-                              title={t`Copy to Clipboard`}
-                              onClick={() => copyTextToClipboard(val)}
-                            >{val}</span>
-                          </td>
-                        );
-                      }
-                      case 'user': {
-                        const seperator = val.lastIndexOf(',');
-                        if (seperator === -1) {
-                          return (<td>{val}</td>);
-                        }
-                        return (
-                          <td title={val.slice(seperator + 1)}>
-                            {val.slice(0, seperator)}
-                          </td>
-                        );
-                      }
-                      default: {
-                        return (<td>{val}</td>);
-                      }
-                    }
-                  })}
-                </tr>
-              ))}
+                    })}
+                  </tr>
+                ))}
             </tbody>
           </table>
         </React.Fragment>

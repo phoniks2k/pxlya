@@ -3,24 +3,35 @@
  */
 
 import React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 
 import Window from './Window';
+import Overlay from './Overlay';
+import {
+  closeFullscreenWindows,
+} from '../store/actions';
 
 // eslint-disable-next-line max-len
 const selectWindowIds = (state) => state.windows.windows.map((win) => win.windowId);
+// eslint-disable-next-line max-len
+const selectMeta = (state) => [state.windows.showWindows, state.windows.someFullscreen];
 
 const WindowManager = () => {
   const windowIds = useSelector(selectWindowIds, shallowEqual);
-  const showWindows = useSelector((state) => state.windows.showWindows);
+  const [showWindows, someFullscreen] = useSelector(selectMeta, shallowEqual);
+  const dispatch = useDispatch();
 
-  if (!showWindows) return null;
+  if ((!showWindows && !someFullscreen) || !windowIds.length) {
+    return null;
+  }
 
   return (
     <div id="wm">
-      {
-      windowIds.map((id) => (<Window key={id} id={id} />))
-    }
+      <Overlay
+        show={someFullscreen}
+        onClick={() => dispatch(closeFullscreenWindows())}
+      />
+      {windowIds.map((id) => <Window key={id} id={id} />)}
     </div>
   );
 };
