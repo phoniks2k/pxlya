@@ -71,9 +71,7 @@ export type Action =
   | { type: 'REMOVE_CHAT_CHANNEL', cid: number }
   | { type: 'MUTE_CHAT_CHANNEL', cid: number }
   | { type: 'UNMUTE_CHAT_CHANNEL', cid: number }
-  | { type: 'SET_CHAT_CHANNEL', windowId: number, cid: number }
-  | { type: 'SET_CHAT_INPUT_MSG', windowId: number, msg: string }
-  | { type: 'ADD_CHAT_INPUT_MSG', windowId: number, msg: string }
+  | { type: 'MARK_CHANNEL_AS_READ', cid: number }
   | { type: 'SET_CHAT_FETCHING', fetching: boolean }
   | { type: 'OPEN_WINDOW',
     windowType: string,

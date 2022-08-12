@@ -113,6 +113,7 @@ const initialState = {
   //     z: number,
   //     windowType: string,
   //     title: string,
+  //       title that is additionally shown to the window-type-title
   //     width: number,
   //     height: number,
   //     xPos: percentage,
@@ -126,6 +127,10 @@ const initialState = {
   //    ...
   //   }
   // }
+  // args is a object with values defining a state of the window
+  // and can be set by the window itself,
+  // in order to remember stuff on cloning, maximizing, etc.
+  // Mostly it is empty or null
   args: {},
 };
 
@@ -153,6 +158,7 @@ export default function windows(
       const [width, height] = clampSize(prefWidth, prefHeight, true);
       const [xPos, yPos] = clampPos(prefXPos, prefYPos, width, height);
 
+      // fullscreen means to open as Modal
       const fullscreen = !state.showWindows || action.fullscreen;
       if (fullscreen) {
         return {
@@ -350,6 +356,7 @@ export default function windows(
       const {
         windowId,
         windowType,
+        title,
       } = action;
       const args = {
         ...state.args,
@@ -364,7 +371,7 @@ export default function windows(
           modal: {
             ...state.modal,
             windowType,
-            title: '',
+            title,
           },
         };
       }
@@ -373,7 +380,7 @@ export default function windows(
         return {
           ...win,
           windowType,
-          title: '',
+          title,
         };
       });
       return {
@@ -637,34 +644,10 @@ export default function windows(
       };
     }
 
-    /*
-     * args specific actions
-     */
-    case 'ADD_CHAT_INPUT_MSG': {
+    case 'SET_WINDOW_ARGS': {
       const {
         windowId,
-        msg,
-      } = action;
-      let { inputMessage } = state.args[windowId];
-      const lastChar = inputMessage.slice(-1);
-      const pad = (lastChar && lastChar !== ' ') ? ' ' : '';
-      inputMessage += pad + msg;
-      return {
-        ...state,
-        args: {
-          ...state.args,
-          [windowId]: {
-            ...state.args[windowId],
-            inputMessage,
-          },
-        },
-      };
-    }
-
-    case 'SET_CHAT_CHANNEL': {
-      const {
-        windowId,
-        cid,
+        args,
       } = action;
       return {
         ...state,
@@ -672,24 +655,7 @@ export default function windows(
           ...state.args,
           [windowId]: {
             ...state.args[windowId],
-            chatChannel: cid,
-          },
-        },
-      };
-    }
-
-    case 'SET_CHAT_INPUT_MSG': {
-      const {
-        windowId,
-        msg,
-      } = action;
-      return {
-        ...state,
-        args: {
-          ...state.args,
-          [windowId]: {
-            ...state.args[windowId],
-            inputMessage: msg,
+            ...args,
           },
         },
       };

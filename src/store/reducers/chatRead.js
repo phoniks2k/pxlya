@@ -98,10 +98,11 @@ export default function chatRead(
     }
 
     case 'OPEN_WINDOW': {
-      const cid = action.args.chatChannel;
-      if (!cid) {
+      const { windowType } = action;
+      if (windowType !== 'CHAT') {
         return state;
       }
+      const cid = (action.args && action.args.chatChannel) || 1;
       return {
         ...state,
         readTs: {
@@ -115,7 +116,7 @@ export default function chatRead(
       };
     }
 
-    case 'SET_CHAT_CHANNEL': {
+    case 'MARK_CHANNEL_AS_READ': {
       const { cid } = action;
       return {
         ...state,

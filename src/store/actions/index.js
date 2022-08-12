@@ -473,6 +473,15 @@ function receiveChatHistory(
   };
 }
 
+export function markChannelAsRead(
+  cid,
+) {
+  return {
+    type: 'MARK_CHANNEL_AS_READ',
+    cid,
+  };
+}
+
 function setChatFetching(fetching) {
   return {
     type: 'SET_CHAT_FETCHING',
@@ -553,25 +562,37 @@ export function initTimer() {
 
 /*
  * fullscreen means to open as modal
+ * Look into store/reducers/windows.js to know what it means
  */
 export function openWindow(
   windowType,
-  title,
-  fullscreen,
-  cloneable,
-  args,
+  title = '',
+  args = null,
+  fullscreen = false,
+  cloneable = true,
   xPos = null,
   yPos = null,
   width = null,
   height = null,
 ) {
+  /*
+   * default window size
+   */
+  if (!fullscreen
+    && (!xPos || !width || !yPos || !height)) {
+    width = 340;
+    height = 400;
+    xPos = window.innerWidth - width - 62;
+    yPos = window.innerHeight - height - 64;
+  }
+
   return {
     type: 'OPEN_WINDOW',
     windowType,
     title,
+    args,
     fullscreen,
     cloneable,
-    args,
     xPos,
     yPos,
     width,
@@ -579,13 +600,22 @@ export function openWindow(
   };
 }
 
+export function setWindowArgs(
+  windowId,
+  args,
+) {
+  return {
+    type: 'SET_WINDOW_ARGS',
+    args,
+  };
+}
+
 export function showModal(modalType, title) {
   return openWindow(
     modalType,
     title,
+    null,
     true,
-    false,
-    {},
   );
 }
 
@@ -603,11 +633,17 @@ export function showUserAreaModal() {
   );
 }
 
-export function changeWindowType(windowId, windowType, args = null) {
+export function changeWindowType(
+  windowId,
+  windowType,
+  title = '',
+  args = null,
+) {
   return {
     type: 'CHANGE_WINDOW_TYPE',
     windowId,
     windowType,
+    title,
     args,
   };
 }
@@ -734,36 +770,26 @@ export function unmuteChatChannel(cid) {
   };
 }
 
-export function setChatChannel(windowId, cid) {
-  return {
-    type: 'SET_CHAT_CHANNEL',
-    windowId,
-    cid: Number(cid),
-  };
-}
+export function addToChatInputMessage(windowId, msg, focus = true) {
+  return (dispatch, getState) => {
+    const args = getState().windows.args[windowId];
+    let inputMessage = args && args.inputMessage;
+    if (!inputMessage) {
+      inputMessage = '';
+    } else if (inputMessage.slice(-1) !== ' ') {
+      inputMessage += ' ';
+    }
+    inputMessage += msg;
 
-export function setChatInputMessage(windowId, msg) {
-  return {
-    type: 'SET_CHAT_INPUT_MSG',
-    windowId,
-    msg,
-  };
-}
+    dispatch(setWindowArgs(windowId, {
+      inputMessage: msg,
+    }));
 
-export function addToChatInputMessage(windowId, msg) {
-  return {
-    type: 'ADD_CHAT_INPUT_MSG',
-    windowId,
-    msg,
-  };
-}
-
-export function addToChatInputMessageAndFocus(windowId, msg) {
-  return (dispatch) => {
-    dispatch(addToChatInputMessage(windowId, msg));
-    const inputElem = document.getElementById(`chtipt-${windowId}`);
-    if (inputElem) {
-      inputElem.focus();
+    if (focus) {
+      const inputElem = document.getElementById(`chtipt-${windowId}`);
+      if (inputElem) {
+        inputElem.focus();
+      }
     }
   };
 }
@@ -846,18 +872,9 @@ export function hideAllWindowTypes(
 }
 
 export function openChatWindow() {
-  const width = 350;
-  const height = 350;
   return openWindow(
     'CHAT',
     '',
-    false,
-    true,
-    { chatChannel: 1, inputMessage: '' },
-    window.innerWidth - width - 62,
-    window.innerHeight - height - 64,
-    width,
-    height,
   );
 }
 
@@ -876,9 +893,11 @@ export function startDm(windowId, query) {
         'OK',
       ));
     } else {
-      const cid = Object.keys(res)[0];
+      const cid = Number(Object.keys(res)[0]);
       dispatch(addChatChannel(res));
-      dispatch(setChatChannel(windowId, cid));
+      dispatch(setWindowArgs(windowId, {
+        chatChannel: cid,
+      }));
     }
     dispatch(setApiFetching(false));
   };

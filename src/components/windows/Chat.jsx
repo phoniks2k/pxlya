@@ -14,11 +14,11 @@ import ChannelDropDown from '../contextmenus/ChannelDropDown';
 
 import {
   showUserAreaModal,
-  setChatChannel,
-  setChatInputMessage,
   fetchChatMessages,
   showContextMenu,
   setWindowTitle,
+  setWindowArgs,
+  markChannelAsRead,
 } from '../../store/actions';
 import SocketClient from '../../socket/SocketClient';
 
@@ -35,15 +35,27 @@ const Chat = ({
   const dispatch = useDispatch();
 
   const setChannel = useCallback((cid) => {
-    dispatch(setChatChannel(windowId, cid));
+    dispatch(markChannelAsRead(cid));
+    dispatch(setWindowArgs(windowId, {
+      chatChannel: Number(cid),
+    }));
+  }, [dispatch]);
+
+  const setChatInputMessage = useCallback((msg) => {
+    dispatch(setWindowArgs(windowId, {
+      inputMessage: msg,
+    }));
   }, [dispatch]);
 
   const ownName = useSelector((state) => state.user.name);
   // eslint-disable-next-line max-len
   const fetching = useSelector((state) => state.fetching.fetchingChat);
   const { channels, messages, blocked } = useSelector((state) => state.chat);
-  // eslint-disable-next-line max-len
-  const { chatChannel, inputMessage } = useSelector((state) => state.windows.args[windowId]);
+
+  const {
+    chatChannel = 1,
+    inputMessage = '',
+  } = useSelector((state) => state.windows.args[windowId]);
 
   const { stayScrolled } = useStayScrolled(listRef, {
     initialScroll: Infinity,
@@ -89,7 +101,7 @@ const Chat = ({
     if (!inptMsg) return;
     // send message via websocket
     SocketClient.sendChatMessage(inptMsg, chatChannel);
-    dispatch(setChatInputMessage(windowId, ''));
+    dispatch(setChatInputMessage(''));
   }
 
   /*
@@ -185,7 +197,7 @@ const Chat = ({
               id={`chtipt-${windowId}`}
               value={inputMessage}
               onChange={(e) => dispatch(
-                setChatInputMessage(windowId, e.target.value),
+                setChatInputMessage(e.target.value),
               )}
               autoComplete="off"
               maxLength="200"

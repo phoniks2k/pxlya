@@ -11,10 +11,10 @@ import {
 } from '../hooks/clickOutside';
 import {
   hideContextMenu,
-  addToChatInputMessageAndFocus,
+  addToChatInputMessage,
   startDm,
   setUserBlock,
-  setChatChannel,
+  setWindowArgs,
 } from '../../store/actions';
 import { escapeMd } from '../../core/utils';
 
@@ -47,7 +47,7 @@ const UserContextMenu = () => {
         onClick={() => {
           const ping = `@[${escapeMd(name)}](${uid})`;
           dispatch(
-            addToChatInputMessageAndFocus(windowId, ping),
+            addToChatInputMessage(windowId, ping),
           );
           close();
         }}
@@ -67,7 +67,9 @@ const UserContextMenu = () => {
           for (let i = 0; i < cids.length; i += 1) {
             const cid = cids[i];
             if (channels[cid].length === 4 && channels[cid][3] === uid) {
-              dispatch(setChatChannel(windowId, cid));
+              dispatch(setWindowArgs(windowId, {
+                chatChannel: cid,
+              }));
               close();
               return;
             }
