@@ -22,7 +22,7 @@ class SocketClient extends EventEmitter {
     super();
     console.log('Creating WebSocketClient');
     this.ws = null;
-    this.canvasId = '0';
+    this.canvasId = 0;
     this.channelId = 0;
     /*
      * properties set in connect and open:
@@ -105,12 +105,10 @@ class SocketClient extends EventEmitter {
     const now = Date.now();
     this.timeLastPing = now;
     this.timeLastSent = now;
-    this.readyState = WebSocket.OPEN;
 
     this.emit('open', {});
-    if (this.canvasId !== null) {
-      this.send(RegisterCanvas.dehydrate(this.canvasId));
-    }
+    this.readyState = WebSocket.OPEN;
+    this.send(RegisterCanvas.dehydrate(this.canvasId));
     console.log(`Register ${chunks.length} chunks`);
     this.send(RegisterMultipleChunks.dehydrate(chunks));
     this.processMsgQueue();

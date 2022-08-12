@@ -468,9 +468,6 @@ class SocketServer {
       switch (opcode) {
         case PixelUpdate.OP_CODE: {
           const { canvasId, user } = ws;
-          if (canvasId === null) {
-            return;
-          }
           const { ip } = user;
 
           const limiter = rateLimit.get(ip);
@@ -484,6 +481,12 @@ class SocketServer {
               ws.terminate();
               return;
             }
+          }
+
+          if (canvasId === null) {
+            logger.info(`Closing websocket without canvas from ${ip}`);
+            ws.close();
+            return;
           }
 
           let failureRet = null;
