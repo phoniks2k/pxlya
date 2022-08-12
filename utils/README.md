@@ -23,20 +23,8 @@ Used to generate tiles based on a uv texture that can then be drawn on the canva
 ## country-locations
 Generates a json list of country codes and their coordinates on the canvas based on lat and lon
 
-## redis-convert.js
-Script to convert redis canvas database to different color / different layout
-
-## redis-copy.js
-Script to copy a canvas from one redis to another, with different keys if neccessary
-
-## sql-commandtest.js
-Script that connects to the mysql database and does some stuff, just for testing
-
-## proxyConvert.sh
-Converts a proxy list in specific txt format to a better readable list
-
-## imageClean.py
-python3 script that takes an input image and cleares spare pixels and bot remains
+## redisMoveCanvas.js
+Script to move canvas chunks, i.e. for resizing canvas
 
 ## areaDownload.py
 downloads an area of the canvas into a png file.
@@ -48,18 +36,11 @@ downloads the history from an canvas area between two dates.
 Useage: `historyDownload.py canvasId startX_startY endX_endY start_date end_date
 This is used for creating timelapses, see the cmd help to know how
 
-## liveLog.sh
-shell script that watches the pixel.log file and outputs the stats of the current IPs placing there
-Usage: `./liveLog.sh LOGFILE CANVASID STARTX_STARTY ENDX_ENDY`
-
 ## pp-center\*.png
 center logo of pixelplanet
 
 ## change-canvasbackup
 just a script that got run once to add the missing tiles in historical view when  increasing the size of the moon canvas.
-
-## uploadImage.js
-nodejs script to upload a Image to the canvas without checks and without caring about what was previously there, don't use it for anything other than initially loading a very large image to the canvas.
 
 ## testStore.js
 used to test our own [connect-redis](https://github.com/tj/connect-redis) fork in src/utils/connectRedis.js
