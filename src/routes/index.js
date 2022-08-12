@@ -19,6 +19,7 @@ import api from './api';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import { expressTTag } from '../core/ttag';
 import generateGlobePage from '../ssr/Globe';
+import generateWinPage from '../ssr/Win';
 import generateMainPage from '../ssr/Main';
 
 import { MONTH } from '../core/constants';
@@ -105,7 +106,7 @@ const globeEtag = etag(
   assets.globe.js.join('_'),
   { weak: true },
 );
-router.get('/globe', async (req, res) => {
+router.get('/globe', (req, res) => {
   res.set({
     'Cache-Control': `private, max-age=${15 * 60}`, // seconds
     'Content-Type': 'text/html; charset=utf-8',
@@ -121,6 +122,28 @@ router.get('/globe', async (req, res) => {
 });
 
 //
+// Windows (like chat pop-up etc.)
+// -----------------------------------------------------------------------------
+const winEtag = etag(
+  assets.win.js,
+  { weak: true },
+);
+router.get('/win', async (req, res) => {
+  res.set({
+    'Cache-Control': `private, max-age=${15 * 60}`, // seconds
+    'Content-Type': 'text/html; charset=utf-8',
+    ETag: globeEtag,
+  });
+
+  if (req.headers['if-none-match'] === winEtag) {
+    res.status(304).end();
+    return;
+  }
+
+  res.status(200).send(generateWinPage(req.lang));
+});
+
+//
 // Main Page (react generated)
 // -----------------------------------------------------------------------------
 const indexEtag = etag(
@@ -128,7 +151,7 @@ const indexEtag = etag(
   { weak: true },
 );
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   res.set({
     'Cache-Control': `private, max-age=${15 * 60}`, // seconds
     'Content-Type': 'text/html; charset=utf-8',

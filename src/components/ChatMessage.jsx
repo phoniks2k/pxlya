@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { showContextMenu } from '../store/actions';
@@ -23,6 +23,7 @@ function ChatMessage({
   const isDarkMode = useSelector(
     (state) => state.gui.style.indexOf('dark') !== -1,
   );
+  const refEmbed = useRef(null);
 
   const isInfo = (name === 'info');
   const isEvent = (name === 'event');
@@ -43,7 +44,7 @@ function ChatMessage({
     <li className="chatmsg">
       {(!isInfo && !isEvent)
         && (
-          <div className="chathead">
+          <div className="chathead" key="ch">
             <span className="chatname">
               <img
                 alt=""
@@ -82,9 +83,10 @@ function ChatMessage({
             </span>
           </div>
         )}
-      <div className={className}>
-        <MarkdownParagraph pArray={pArray} />
+      <div className={className} key="cm">
+        <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
       </div>
+      <div className="chatembed" ref={refEmbed} key="ce" />
     </li>
   );
 }

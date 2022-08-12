@@ -4,6 +4,7 @@
  * Links are assumed to start with protocol (http:// etc.)
  */
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
 import { HiArrowsExpand, HiStop } from 'react-icons/hi';
 
 import { getLinkDesc } from '../core/utils';
@@ -18,7 +19,7 @@ const titleAllowed = [
   't.me',
 ];
 
-const MdLink = ({ href, title }) => {
+const MdLink = ({ href, title, refEmbed }) => {
   const [showEmbed, setShowEmbed] = useState(false);
 
   const desc = getLinkDesc(href);
@@ -87,7 +88,15 @@ const MdLink = ({ href, title }) => {
           </span>
         </>
       )}
-      {(showEmbed && embedAvailable) && <Embed url={href} />}
+      {showEmbed && embedAvailable && (
+        (refEmbed)
+          ? ReactDOM.createPortal(
+            <Embed url={href} />,
+            refEmbed.current,
+          ) : (
+            <Embed url={href} />
+          )
+      )}
     </>
   );
 };

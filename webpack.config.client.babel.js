@@ -64,6 +64,8 @@ export function buildWebpackClientConfig(
         [path.resolve(__dirname, 'src', 'client.js')],
       [(locale !== 'default') ? `globe-${locale}` : 'globe']:
         [path.resolve(__dirname, 'src', 'globe.js')],
+      [(locale !== 'default') ? `win-${locale}` : 'win']:
+        [path.resolve(__dirname, 'src', 'win.js')],
     },
 
     output: {

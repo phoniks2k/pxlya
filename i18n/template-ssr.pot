@@ -28,40 +28,40 @@ msgstr ""
 msgid "You don't have access to this channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:431
+#: src/core/ChatProvider.js:433
 msgid "Your mail has to be verified in order to chat"
 msgstr ""
 
-#: src/core/ChatProvider.js:436
+#: src/core/ChatProvider.js:438
 msgid "You are permanently muted, join our guilded to apppeal the mute"
 msgstr ""
 
-#: src/core/ChatProvider.js:441
+#: src/core/ChatProvider.js:443
 #, javascript-format
 msgid "You are muted for another ${ timeMin } minutes"
 msgstr ""
 
-#: src/core/ChatProvider.js:443
+#: src/core/ChatProvider.js:445
 msgid "You are muted for another ${ muted } seconds"
 msgstr ""
 
-#: src/core/ChatProvider.js:451
+#: src/core/ChatProvider.js:453
 msgid "Ow no! Spam protection decided to mute you"
 msgstr ""
 
-#: src/core/ChatProvider.js:462
+#: src/core/ChatProvider.js:464
 msgid "You can't send a message this long :("
 msgstr ""
 
-#: src/core/ChatProvider.js:466
+#: src/core/ChatProvider.js:468
 msgid "Please use int channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:472
+#: src/core/ChatProvider.js:475
 msgid "Your country is temporary muted from this chat channel"
 msgstr ""
 
-#: src/core/ChatProvider.js:480
+#: src/core/ChatProvider.js:483
 msgid "Stop flooding."
 msgstr ""
 
@@ -236,33 +236,6 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: src/routes/api/captcha.js:20
-msgid "No captcha text given"
-msgstr ""
-
-#: src/routes/api/captcha.js:25
-msgid "No captcha id given"
-msgstr ""
-
-#: src/routes/api/auth/register.js:54
-#: src/routes/api/captcha.js:44
-msgid "You took too long, try again."
-msgstr ""
-
-#: src/routes/api/auth/register.js:57
-#: src/routes/api/captcha.js:50
-msgid "You failed your captcha"
-msgstr ""
-
-#: src/routes/api/auth/register.js:60
-#: src/routes/api/captcha.js:56
-msgid "Unknown Captcha Error"
-msgstr ""
-
-#: src/routes/api/captcha.js:63
-msgid "Server error occured"
-msgstr ""
-
 #: src/utils/validation.js:17
 msgid "Email can't be empty."
 msgstr ""
@@ -309,6 +282,33 @@ msgstr ""
 
 #: src/utils/validation.js:59
 msgid "Password must be shorter than 60 characters."
+msgstr ""
+
+#: src/routes/api/captcha.js:20
+msgid "No captcha text given"
+msgstr ""
+
+#: src/routes/api/captcha.js:25
+msgid "No captcha id given"
+msgstr ""
+
+#: src/routes/api/auth/register.js:54
+#: src/routes/api/captcha.js:44
+msgid "You took too long, try again."
+msgstr ""
+
+#: src/routes/api/auth/register.js:57
+#: src/routes/api/captcha.js:50
+msgid "You failed your captcha"
+msgstr ""
+
+#: src/routes/api/auth/register.js:60
+#: src/routes/api/captcha.js:56
+msgid "Unknown Captcha Error"
+msgstr ""
+
+#: src/routes/api/captcha.js:63
+msgid "Server error occured"
 msgstr ""
 
 #: src/routes/api/modtools.js:53

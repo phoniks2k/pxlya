@@ -7,7 +7,7 @@ import MdLink from './MdLink';
 import MdMention from './MdMention';
 
 // eslint-disable-next-line max-len
-export const MarkdownParagraph = React.memo(({ pArray }) => pArray.map((part) => {
+export const MarkdownParagraph = React.memo(({ pArray, refEmbed }) => pArray.map((part) => {
   if (!Array.isArray(part)) {
     return part;
   }
@@ -42,7 +42,7 @@ export const MarkdownParagraph = React.memo(({ pArray }) => pArray.map((part) =>
     case 'img':
     case 'l': {
       return (
-        <MdLink href={part[2]} title={part[1]} />
+        <MdLink refEmbed={refEmbed} href={part[2]} title={part[1]} />
       );
     }
     case '@': {
