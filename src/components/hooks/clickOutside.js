@@ -17,7 +17,6 @@ export function useConditionalClickOutside(insideRefs, active, callback) {
   const handleClickOutside = useCallback((event) => {
     if (insideRefs.every((ref) => !ref.current
       || !ref.current.contains(event.target))) {
-      event.stopPropagation();
       callback();
     }
   }, [callback]);
@@ -28,12 +27,12 @@ export function useConditionalClickOutside(insideRefs, active, callback) {
 
   useLayoutEffect(() => {
     if (active) {
-      document.addEventListener('click', handleClickOutside, {
+      document.addEventListener('mousedown', handleClickOutside, {
         capture: true,
       });
       window.addEventListener('resize', handleWindowResize);
     } else {
-      document.removeEventListener('click', handleClickOutside, {
+      document.removeEventListener('mousedown', handleClickOutside, {
         capture: true,
       });
       window.removeEventListener('resize', handleWindowResize);
@@ -51,7 +50,6 @@ export function useClickOutside(insideRefs, callback) {
     const handleClickOutside = (event) => {
       if (insideRefs.every((ref) => !ref.current
         || !ref.current.contains(event.target))) {
-        event.stopPropagation();
         callback();
       }
     };
@@ -60,12 +58,12 @@ export function useClickOutside(insideRefs, callback) {
       callback();
     };
 
-    document.addEventListener('click', handleClickOutside, {
+    document.addEventListener('mousedown', handleClickOutside, {
       capture: true,
     });
     window.addEventListener('resize', handleWindowResize);
     return () => {
-      document.removeEventListener('click', handleClickOutside, {
+      document.removeEventListener('mousedown', handleClickOutside, {
         capture: true,
       });
       window.removeEventListener('resize', handleWindowResize);
