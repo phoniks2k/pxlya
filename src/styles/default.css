@@ -682,12 +682,25 @@ tr:nth-child(even) {
 .chathead {
   display: flex;
 }
+.chatflag {
+  vertical-align: middle;
+}
 .chatname {
-  padding-right: 4px;
+  padding-left: 4px;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-  max-width: 100px; 
+  max-width: 80px; 
+  vertical-align: middle;
+  overflow: hidden;
+}
+.mention, .ping {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 90px; 
+  vertical-align: middle;
+  overflow: hidden;
 }
 .chatts {
   color: #83839f;
@@ -698,7 +711,7 @@ tr:nth-child(even) {
 .chatmsg {
   font-size: 13px;
   user-select: text;
-  padding: 7px 0 0 2px;
+  padding: 2px 0 2px 2px;
 }
 .chatmsg:hover {
   background-color: #dadada;

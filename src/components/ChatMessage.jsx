@@ -47,6 +47,7 @@ function ChatMessage({
           {(!isInfo && !isEvent) && (
             <span key="name">
               <img
+                className="chatflag"
                 alt=""
                 title={country}
                 src={`${window.ssv.assetserver}/cf/${country}.gif`}
