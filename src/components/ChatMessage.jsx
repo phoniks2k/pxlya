@@ -63,6 +63,7 @@ function ChatMessage({
                   cursor: 'pointer',
                 }}
                 role="button"
+                title={name}
                 tabIndex={-1}
                 onClick={(event) => {
                   const {

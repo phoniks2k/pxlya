@@ -690,7 +690,7 @@ tr:nth-child(even) {
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-  max-width: 80px; 
+  max-width: 95px; 
   vertical-align: middle;
   overflow: hidden;
 }
@@ -698,7 +698,7 @@ tr:nth-child(even) {
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-  max-width: 90px; 
+  max-width: 85px; 
   vertical-align: middle;
   overflow: hidden;
 }
@@ -711,7 +711,7 @@ tr:nth-child(even) {
 .chatmsg {
   font-size: 13px;
   user-select: text;
-  padding: 2px 0 2px 2px;
+  padding: 3px 0 3px 2px;
 }
 .chatmsg:hover {
   background-color: #dadada;
