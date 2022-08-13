@@ -737,10 +737,6 @@ tr:nth-child(even) {
   color: #1d1c1c;
   border-radius: 6px;
 }
-.mention, .ping {
-  margin-left: 5px;
-  margin-right: 5px;
-}
 .chatlink {
   position: absolute;
   top: 5px;
