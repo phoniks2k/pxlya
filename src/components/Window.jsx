@@ -49,7 +49,7 @@ const Window = ({ id }) => {
     dispatch(cloneWindow(id));
   }, [dispatch]);
 
-  const toggleMaximize = useCallback((evt) => {
+  const toggleMaximize = useCallback(() => {
     setRender(false);
   }, [dispatch]);
 

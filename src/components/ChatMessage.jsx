@@ -42,10 +42,10 @@ function ChatMessage({
 
   return (
     <li className="chatmsg" ref={refEmbed}>
-      {(!isInfo && !isEvent)
-        && (
-          <div className="chathead" key="ch">
-            <span className="chatname">
+      <div className="msgcont">
+        <span className={className}>
+          {(!isInfo && !isEvent) && (
+            <span className="chatname" key="name">
               <img
                 alt=""
                 title={country}
@@ -78,13 +78,12 @@ function ChatMessage({
                 {name}
               </span>:
             </span>
-            <span className="chatts">
-              {getDateTimeString(ts)}
-            </span>
-          </div>
-        )}
-      <div className={className} key="cm">
-        <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
+          )}
+          <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
+        </span>
+        <span className="chatts">
+          {getDateTimeString(ts)}
+        </span>
       </div>
     </li>
   );

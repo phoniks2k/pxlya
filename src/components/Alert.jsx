@@ -59,7 +59,6 @@ const Alert = () => {
         show={show}
         onClick={close}
       />
-      (render || open) && (
       <div
         className={(show) ? 'Alert show' : 'Alert'}
         onTransitionEnd={() => {

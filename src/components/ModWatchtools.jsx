@@ -267,7 +267,7 @@ function ModWatchtools() {
       {(rows && columns && types) && (
         <React.Fragment key="pxltable">
           <div className="modaldivider" />
-          <table style={{ fontSize: 11 }} >
+          <table style={{ fontSize: 11 }}>
             <thead>
               <tr>
                 {columns.slice(1).map((col, ind) => (
