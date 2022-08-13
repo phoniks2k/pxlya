@@ -575,17 +575,6 @@ export function openWindow(
   width = null,
   height = null,
 ) {
-  /*
-   * default window size
-   */
-  if (!fullscreen
-    && (!xPos || !width || !yPos || !height)) {
-    width = 340;
-    height = 400;
-    xPos = window.innerWidth - width - 62;
-    yPos = window.innerHeight - height - 64;
-  }
-
   return {
     type: 'OPEN_WINDOW',
     windowType,
@@ -873,9 +862,18 @@ export function hideAllWindowTypes(
 }
 
 export function openChatWindow() {
+  const width = 350;
+  const height = 350;
   return openWindow(
     'CHAT',
     '',
+    null,
+    false,
+    true,
+    window.innerWidth - width - 62,
+    window.innerHeight - height - 64,
+    width,
+    height,
   );
 }
 

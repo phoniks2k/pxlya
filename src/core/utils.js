@@ -325,7 +325,7 @@ export function colorFromText(str) {
     .toString(16)
     .toUpperCase();
 
-  return `#${'00000'.substring(0, 6 - c.length)}${c}`;
+  return `#${`00000${c}`.slice(-6)}`;
 }
 
 /*
@@ -346,7 +346,10 @@ export function setBrightness(hex, dark = false) {
     g += 128;
     b += 128;
   }
-  return `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`;
+  r = `0${r.toString(16)}`.slice(-2);
+  g = `0${g.toString(16)}`.slice(-2);
+  b = `0${b.toString(16)}`.slice(-2);
+  return `#${r}${g}${b}`;
 }
 
 /*

@@ -123,30 +123,6 @@ const Chat = ({
       ref={targetRef}
       className="chat-container"
     >
-      <div
-        className="chatlink"
-        style={{
-          fontSize: btnSize,
-        }}
-      >
-        <span
-          onClick={(event) => {
-            const {
-              clientX,
-              clientY,
-            } = event;
-            dispatch(showContextMenu(
-              'CHANNEL',
-              clientX,
-              clientY,
-              { cid: chatChannel },
-            ));
-          }}
-          role="button"
-          title={t`Channel settings`}
-          tabIndex={-1}
-        >⚙</span>
-      </div>
       <ul
         className="chatarea"
         ref={listRef}
@@ -230,6 +206,30 @@ const Chat = ({
           chatChannel={chatChannel}
         />
       </form>
+      <div
+        className="chatlink"
+        style={{
+          fontSize: btnSize,
+        }}
+      >
+        <span
+          onClick={(event) => {
+            const {
+              clientX,
+              clientY,
+            } = event;
+            dispatch(showContextMenu(
+              'CHANNEL',
+              clientX,
+              clientY,
+              { cid: chatChannel },
+            ));
+          }}
+          role="button"
+          title={t`Channel settings`}
+          tabIndex={-1}
+        >⚙</span>
+      </div>
     </div>
   );
 };

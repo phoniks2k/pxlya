@@ -643,7 +643,7 @@ tr:nth-child(even) {
     max-height: none;
     outline: none;
     border: none;
-    border-radius: inherit;
+    border-radius: inherit !important;
   }
 
   .modal {

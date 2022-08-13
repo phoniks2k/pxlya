@@ -26,14 +26,15 @@ function generateWindowId(state) {
  * clamp size and position to screen borders and restrictions
  */
 function clampSize(prefWidth, prefHeight, margin = false) {
-  const width = prefWidth || 550;
-  const height = prefHeight || 330;
   let maxWidth = window.innerWidth;
   let maxHeight = window.innerHeight;
   if (margin) {
-    maxWidth = Math.floor(maxWidth * 0.75);
-    maxHeight = Math.floor(maxHeight * 0.75);
+    // same as modal in default.css
+    maxWidth = Math.floor(maxWidth * 0.70);
+    maxHeight = Math.floor(Math.min(maxHeight * 0.80, 900));
   }
+  const width = prefWidth || maxWidth;
+  const height = prefHeight || maxHeight;
   return [
     clamp(
       width,
