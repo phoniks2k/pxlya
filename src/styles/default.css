@@ -683,9 +683,11 @@ tr:nth-child(even) {
   display: flex;
 }
 .chatname {
-  font-size: 13px;
-  white-space: nowrap;
   padding-right: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 100px; 
 }
 .chatts {
   color: #83839f;

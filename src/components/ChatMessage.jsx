@@ -45,7 +45,7 @@ function ChatMessage({
       <div className="msgcont">
         <span className={className}>
           {(!isInfo && !isEvent) && (
-            <span className="chatname" key="name">
+            <span key="name">
               <img
                 alt=""
                 title={country}
@@ -55,8 +55,8 @@ function ChatMessage({
                   e.target.src = './cf/xx.gif';
                 }}
               />
-              &nbsp;
               <span
+                className="chatname"
                 style={{
                   color: setBrightness(colorFromText(name), isDarkMode),
                   cursor: 'pointer',
@@ -76,7 +76,8 @@ function ChatMessage({
                 }}
               >
                 {name}
-              </span>:
+              </span>
+              {': '}
             </span>
           )}
           <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
