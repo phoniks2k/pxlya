@@ -470,7 +470,7 @@ export default function windows(
       const showWindows = width > SCREEN_WIDTH_THRESHOLD;
 
       if (action.type === 'RECEIVE_ME') {
-        if (state.modal) {
+        if (state.modal || !showWindows) {
           // reset if out of date
           return initialState;
         }
