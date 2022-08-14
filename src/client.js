@@ -56,7 +56,6 @@ function init() {
     userId,
   ) => {
     const state = store.getState();
-    const { nameRegExp } = state.user;
 
     // assume that if one chat window is not hidden, all are
     let isRead = state.windows.showWindows
@@ -68,14 +67,15 @@ function init() {
       && state.windows.args[0].chatChannel === channelId;
 
     // TODO ping doesn't work since update
-    const isPing = (nameRegExp && text.match(nameRegExp));
+    // const { nameRegExp } = state.user;
+    // const isPing = (nameRegExp && text.match(nameRegExp));
     store.dispatch(receiveChatMessage(
       name,
       text,
       country,
       channelId,
       userId,
-      isPing,
+      false,
       !!isRead,
     ));
   });

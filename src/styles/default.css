@@ -692,7 +692,6 @@ tr:nth-child(even) {
   max-width: 95px; 
   overflow: hidden;
   vertical-align: bottom;
-  font-size: smaller;
   background-color: #ebf2f9;
 }
 .mention, .ping {
