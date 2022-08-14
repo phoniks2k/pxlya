@@ -58,13 +58,11 @@ function init() {
     const state = store.getState();
 
     // assume that if one chat window is not hidden, all are
-    let isRead = state.windows.showWindows
+    const isRead = state.windows.showWindows
       // eslint-disable-next-line max-len
-      && state.windows.windows.find((win) => win.windowType === 'CHAT' && win.hidden === false)
+      && state.windows.windows.find((win) => win.windowType === 'CHAT' && !win.hidden)
       // eslint-disable-next-line max-len
       && Object.values(state.windows.args).find((args) => args.chatChannel === channelId);
-    isRead = isRead || state.windows.modal.open
-      && state.windows.args[0].chatChannel === channelId;
 
     // TODO ping doesn't work since update
     // const { nameRegExp } = state.user;
