@@ -45,7 +45,7 @@ function ChatMessage({
       <div className="msgcont">
         <span className={className}>
           {(!isInfo && !isEvent) && (
-            <span key="name">
+            <React.Fragment key="name">
               <img
                 className="chatflag"
                 alt=""
@@ -63,6 +63,7 @@ function ChatMessage({
                   cursor: 'pointer',
                 }}
                 role="button"
+                title={name}
                 tabIndex={-1}
                 onClick={(event) => {
                   const {
@@ -79,9 +80,11 @@ function ChatMessage({
                 {name}
               </span>
               {': '}
-            </span>
+            </React.Fragment>
           )}
-          <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
+          <span>
+            <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
+          </span>
         </span>
         <span className="chatts">
           {getDateTimeString(ts)}

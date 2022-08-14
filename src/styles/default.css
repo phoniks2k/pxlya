@@ -188,7 +188,6 @@ tr:nth-child(even) {
 .win-topbar {
   display: flex;
   height: 24px;
-  vertical-align: middle;
 }
 
 .win-title {
@@ -690,16 +689,14 @@ tr:nth-child(even) {
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-  max-width: 80px; 
-  vertical-align: middle;
+  max-width: 95px; 
   overflow: hidden;
 }
 .mention, .ping {
   text-overflow: ellipsis;
   white-space: nowrap;
   display: inline-block;
-  max-width: 90px; 
-  vertical-align: middle;
+  max-width: 85px; 
   overflow: hidden;
 }
 .chatts {
@@ -711,7 +708,7 @@ tr:nth-child(even) {
 .chatmsg {
   font-size: 13px;
   user-select: text;
-  padding: 2px 0 2px 2px;
+  padding: 3px 0 3px 2px;
 }
 .chatmsg:hover {
   background-color: #dadada;
@@ -723,6 +720,10 @@ tr:nth-child(even) {
   color: #2d2d2d;
   overflow-y: clip;
   overflow-x: hidden;
+}
+.msg span {
+  display: inline-block;
+  vertical-align: middle;
 }
 .msg.info {
   color: #cc0000;
