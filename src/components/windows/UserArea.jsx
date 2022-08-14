@@ -8,8 +8,10 @@ import { t } from 'ttag';
 
 import {
   fetchStats,
+} from '../../store/actions/thunks';
+import {
   setWindowArgs,
-} from '../../store/actions';
+} from '../../store/actions/windows';
 import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';

@@ -9,29 +9,21 @@ import Window from './Window';
 import Overlay from './Overlay';
 import {
   closeFullscreenWindows,
-} from '../store/actions';
-
-// eslint-disable-next-line max-len
-const selectWindowIds = (state) => state.windows.windows.map((win) => win.windowId);
-// eslint-disable-next-line max-len
-const selectMeta = (state) => {
-  console.log('check');
-  return [
-  state.windows.showWindows, 
-  state.windows.someFullscreen,
-  state.windows.windows.some((win) => win.fullscreen && win.open && !win.hidden),
-]};
+} from '../store/actions/windows';
+import {
+  selectIfFullscreen,
+  selectActiveWindowIds,
+} from '../store/selectors/windows';
 
 const WindowManager = () => {
-  const windowIds = useSelector(selectWindowIds, shallowEqual);
+  const windowIds = useSelector(selectActiveWindowIds, shallowEqual);
   const [
-    showWindows,
-    someFullscreen,
+    fullscreenExistOrShowWindows,
     someOpenFullscreen,
-  ] = useSelector(selectMeta, shallowEqual);
+  ] = useSelector(selectIfFullscreen, shallowEqual);
   const dispatch = useDispatch();
 
-  if ((!showWindows && !someFullscreen) || !windowIds.length) {
+  if (!fullscreenExistOrShowWindows || !windowIds.length) {
     return null;
   }
 

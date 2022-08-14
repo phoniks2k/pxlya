@@ -11,11 +11,15 @@ import {
 } from '../hooks/clickOutside';
 import {
   hideContextMenu,
-  addToChatInputMessage,
+} from '../../store/actions';
+import {
   startDm,
   setUserBlock,
+} from '../../store/actions/thunks';
+import {
+  addToChatInputMessage,
   setWindowArgs,
-} from '../../store/actions';
+} from '../../store/actions/windows';
 import { escapeMd } from '../../core/utils';
 
 const UserContextMenu = () => {

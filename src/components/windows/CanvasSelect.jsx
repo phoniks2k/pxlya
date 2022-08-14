@@ -7,7 +7,8 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
 import CanvasItem from '../CanvasItem';
-import { changeWindowType, selectCanvas } from '../../store/actions';
+import { selectCanvas } from '../../store/actions';
+import { changeWindowType } from '../../store/actions/windows';
 
 
 const CanvasSelect = ({ windowId }) => {

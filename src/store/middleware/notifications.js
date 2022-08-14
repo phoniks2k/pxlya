@@ -2,14 +2,13 @@
  * Notifications
  *
  */
-
+import { t } from 'ttag';
 
 export default (store) => (next) => (action) => {
   try {
     if (!document.hasFocus()) {
       switch (action.type) {
-        case 'RECEIVE_ME':
-        case 'PLACED_PIXELS': {
+        case 'RECEIVE_ME': {
           if (window.Notification
             && Notification.permission !== 'granted'
             && Notification.permission !== 'denied'
@@ -25,17 +24,17 @@ export default (store) => (next) => (action) => {
           // do not notify if last cooldown end was <15s ago
           const { lastCoolDownEnd } = state.user;
           if (lastCoolDownEnd
-            && lastCoolDownEnd.getTime() + 15000 > Date.now()) {
+            && lastCoolDownEnd + 15000 > Date.now()) {
             break;
           }
 
           if (window.Notification && Notification.permission === 'granted') {
             // eslint-disable-next-line no-new
-            new Notification('Your next pixels are ready', {
+            new Notification(t`Your next pixels are ready`, {
               icon: '/tile.png',
               silent: false,
               vibrate: [200, 100],
-              body: 'You can now place more on pixelplanet.fun :)',
+              body: t`You can now place more on pixelplanet.fun :)`,
             });
           }
           break;
@@ -52,11 +51,11 @@ export default (store) => (next) => (action) => {
 
           if (window.Notification && Notification.permission === 'granted') {
             // eslint-disable-next-line no-new
-            new Notification(`${name} mentioned you`, {
+            new Notification(`${name} ${t`mentioned you`}`, {
               icon: '/tile.png',
               silent: false,
               vibrate: [200, 100],
-              body: 'You have new messages in chat',
+              body: t`You have new messages in chat`,
             });
           }
           break;

@@ -24,11 +24,16 @@ export default function ranks(
   action,
 ) {
   switch (action.type) {
-    case 'PLACED_PIXELS': {
+    case 'RECEIVE_PIXEL_RETURN': {
+      const {
+        rankedPxlCnt,
+      } = action;
+      if (!rankedPxlCnt) {
+        return state;
+      }
       let { totalPixels, dailyTotalPixels } = state;
-      const { amount } = action;
-      totalPixels += amount;
-      dailyTotalPixels += amount;
+      totalPixels += rankedPxlCnt;
+      dailyTotalPixels += rankedPxlCnt;
       return {
         ...state,
         totalPixels,

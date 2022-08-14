@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import useInterval from './hooks/interval';
-import { showHelpModal } from '../store/actions';
+import { showHelpModal } from '../store/actions/windows';
 import {
   largeDurationToString,
 } from '../core/utils';

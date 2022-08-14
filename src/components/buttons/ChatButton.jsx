@@ -12,7 +12,7 @@ import { t } from 'ttag';
 import {
   hideAllWindowTypes,
   openChatWindow,
-} from '../../store/actions';
+} from '../../store/actions/windows';
 
 /*
  * return [ chatOpen, chatHiden ]

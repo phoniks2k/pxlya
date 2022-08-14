@@ -73,13 +73,20 @@ function clampPos(prefXPos, prefYPos, width, height) {
  */
 function sortWindows(newState, force = false) {
   if (newState.zMax >= MAX_AMOUNT_WINDOWS * 0.5 || force) {
-    const orderedZ = newState.windows.map((win) => win.z)
+    const positions = { ...newState.positions };
+    const ids = Object.keys(positions);
+    const orderedZ = ids
+      .map((id) => positions[id].z)
       .sort((a, b) => !b || (a && a >= b));
-    newState.windows = newState.windows.map((win) => ({
-      ...win,
-      z: orderedZ.indexOf(win.z),
-    }));
+    for (let i = 0; i < ids.length; i += 1) {
+      const id = ids[i];
+      positions[id] = {
+        ...positions[id],
+        z: orderedZ.indexOf(positions[id].z),
+      };
+    }
     newState.zMax = orderedZ.length - 1;
+    newState.positions = positions;
   }
   return newState;
 }
@@ -87,8 +94,6 @@ function sortWindows(newState, force = false) {
 const initialState = {
   // if windows get shown, false on small screens
   showWindows: window.innerWidth > SCREEN_WIDTH_THRESHOLD,
-  // if at least one window is in fullscreen
-  someFullscreen: false,
   // highest zIndex of window
   zMax: 0,
   // [
@@ -97,18 +102,23 @@ const initialState = {
   //     open: boolean,
   //     hidden: boolean,
   //     fullscreen: boolean,
-  //     z: number,
   //     windowType: string,
   //     title: string,
   //       title that is additionally shown to the window-type-title
-  //     width: number,
-  //     height: number,
-  //     xPos: percentage,
-  //     yPos: percentage,
   //     cloneable: boolean,
   //   },
   // ]
   windows: [],
+  // {
+  //   windowId: {
+  //     width: number,
+  //     height: number,
+  //     xPos: percentage,
+  //     yPos: percentage,
+  //     z: number,
+  //   }
+  // }
+  positions: {},
   // {
   //   windowId: {
   //    ...
@@ -152,37 +162,36 @@ export default function windows(
       }
       const windowId = generateWindowId(state);
       const newZMax = state.zMax + 1;
-      const newWindows = [
-        ...state.windows,
-        {
-          windowId,
-          windowType,
-          open: true,
-          hidden: false,
-          fullscreen,
-          z: newZMax,
-          title,
-          width,
-          height,
-          xPos,
-          yPos,
-          cloneable,
-        },
-      ];
-
-      const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && !win.hidden,
-      );
 
       return sortWindows({
         ...state,
-        someFullscreen,
         zMax: newZMax,
-        windows: newWindows,
+        windows: [
+          ...state.windows,
+          {
+            windowId,
+            windowType,
+            open: true,
+            hidden: false,
+            fullscreen,
+            title,
+            cloneable,
+          },
+        ],
         args: {
           ...state.args,
           [windowId]: {
             ...args,
+          },
+        },
+        positions: {
+          ...state.positions,
+          [windowId]: {
+            width,
+            height,
+            xPos,
+            yPos,
+            z: newZMax,
           },
         },
       });
@@ -193,12 +202,15 @@ export default function windows(
         windowId,
       } = action;
       const args = { ...state.args };
+      const positions = { ...state.positions };
       delete args[windowId];
+      delete positions[windowId];
 
       return {
         ...state,
         windows: state.windows.filter((win) => win.windowId !== windowId),
         args,
+        positions,
       };
     }
 
@@ -215,13 +227,8 @@ export default function windows(
         };
       });
 
-      const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && !win.hidden,
-      );
-
       return {
         ...state,
-        someFullscreen,
         windows: newWindows,
       };
     }
@@ -238,13 +245,8 @@ export default function windows(
         };
       });
 
-      const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && !win.hidden,
-      );
-
       return {
         ...state,
-        someFullscreen,
         windows: newWindows,
       };
     }
@@ -272,6 +274,7 @@ export default function windows(
         windowId,
       } = action;
       const win = state.windows.find((w) => w.windowId === windowId);
+      const position = state.positions[windowId];
       const newWindowId = generateWindowId(state);
       const newZMax = state.zMax + 1;
       const {
@@ -286,15 +289,21 @@ export default function windows(
           {
             ...win,
             windowId: newWindowId,
-            xPos: Math.min(win.xPos + 15, width - SCREEN_MARGIN_EW),
-            yPos: Math.min(win.yPos + 15, height - SCREEN_MARGIN_S),
-            z: newZMax,
           },
         ],
         args: {
           ...state.args,
           [newWindowId]: {
             ...state.args[windowId],
+          },
+        },
+        positions: {
+          ...state.positions,
+          [newWindowId]: {
+            ...position,
+            xPos: Math.min(position.xPos + 15, width - SCREEN_MARGIN_EW),
+            yPos: Math.min(position.yPos + 15, height - SCREEN_MARGIN_S),
+            z: newZMax,
           },
         },
       });
@@ -321,13 +330,8 @@ export default function windows(
         };
       });
 
-      const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && !win.hidden,
-      );
-
       return {
         ...state,
-        someFullscreen,
         args,
         windows: newWindows,
       };
@@ -338,29 +342,22 @@ export default function windows(
         windowId,
       } = action;
       const {
-        windows: oldWindows, zMax,
+        zMax,
       } = state;
-
-      const newWindows = [];
-
-      for (let i = 0; i < oldWindows.length; i += 1) {
-        const win = oldWindows[i];
-        if (win.windowId !== windowId) {
-          newWindows.push(win);
-        } else {
-          if (win.z === zMax) {
-            return state;
-          }
-          newWindows.push({
-            ...win,
-            z: zMax + 1,
-          });
-        }
+      const { z } = state.positions[windowId];
+      if (z === zMax) {
+        return state;
       }
       return sortWindows({
         ...state,
         zMax: zMax + 1,
-        windows: newWindows,
+        positions: {
+          ...state.positions,
+          [windowId]: {
+            ...state.positions[windowId],
+            z: zMax + 1,
+          },
+        },
       });
     }
 
@@ -379,13 +376,8 @@ export default function windows(
         };
       });
 
-      const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && !win.hidden,
-      );
-
       return {
         ...state,
-        someFullscreen,
         windows: newWindows,
       };
     }
@@ -403,7 +395,6 @@ export default function windows(
 
       return {
         ...state,
-        someFullscreen: false,
         windows: newWindows,
       };
     }
@@ -414,23 +405,23 @@ export default function windows(
         xDiff,
         yDiff,
       } = action;
-      const newWindows = state.windows.map((win) => {
-        if (win.windowId !== windowId) return win;
-        const [xPos, yPos] = clampPos(
-          win.xPos + xDiff,
-          win.yPos + yDiff,
-          win.width,
-          win.height,
-        );
-        return {
-          ...win,
-          xPos,
-          yPos,
-        };
-      });
+      let {
+        xPos, yPos,
+      } = state.positions[windowId];
+      const {
+        width, height,
+      } = state.positions[windowId];
+      [xPos, yPos] = clampPos(xPos + xDiff, yPos + yDiff, width, height);
       return {
         ...state,
-        windows: newWindows,
+        positions: {
+          ...state.positions,
+          [windowId]: {
+            ...state.positions[windowId],
+            xPos,
+            yPos,
+          },
+        },
       };
     }
 
@@ -440,22 +431,18 @@ export default function windows(
         xDiff,
         yDiff,
       } = action;
-      const newWindows = state.windows.map((win) => {
-        if (win.windowId !== windowId) return win;
-        const [width, height] = clampSize(
-          win.width + xDiff,
-          win.height + yDiff,
-          false,
-        );
-        return {
-          ...win,
-          width: Math.max(width, SCREEN_MARGIN_EW - win.xPos),
-          height,
-        };
-      });
+      let { width, height } = state.positions[windowId];
+      [width, height] = clampSize(width + xDiff, height + yDiff, false);
       return {
         ...state,
-        windows: newWindows,
+        positions: {
+          ...state.positions,
+          [windowId]: {
+            ...state.positions[windowId],
+            width,
+            height,
+          },
+        },
       };
     }
 
@@ -466,16 +453,17 @@ export default function windows(
         innerHeight: height,
       } = window;
 
-      let { windows: newWindows, args, someFullscreen } = state;
+      let { windows: newWindows, args, positions } = state;
       const showWindows = width > SCREEN_WIDTH_THRESHOLD;
 
       if (action.type === 'RECEIVE_ME') {
-        if (state.modal) {
-          // reset if out of date
+        if (!showWindows) {
+          // reset on phones on every refresh
           return initialState;
         }
 
-        args = { ...state.args };
+        args = { ...args };
+        positions = { ...positions };
 
         newWindows = newWindows.filter((win) => {
           if (win.open && (win.fullscreen || showWindows)) {
@@ -486,12 +474,9 @@ export default function windows(
             `Cleaning up window from previous session: ${win.windowId}`,
           );
           delete args[win.windowId];
+          delete positions[win.windowId];
           return false;
         });
-
-        someFullscreen = newWindows.some(
-          (win) => win.fullscreen && !win.hidden,
-        );
       }
 
       if (!showWindows) {
@@ -499,45 +484,47 @@ export default function windows(
           ...state,
           windows: newWindows,
           showWindows,
-          someFullscreen,
           args,
+          positions,
         };
       }
 
       const xMax = width - SCREEN_MARGIN_EW;
       const yMax = height - SCREEN_MARGIN_S;
       let modified = false;
-      const fixWindows = [];
+      const newPositions = {};
 
       for (let i = 0; i < newWindows.length; i += 1) {
-        const win = newWindows[i];
+        const id = newWindows[i].windowId;
         const {
           xPos,
           yPos,
           width: winWidth,
           height: winHeight,
-        } = win;
+        } = positions[id];
         if (xPos > xMax || yPos > yMax
           || width > winWidth || height > winHeight) {
           modified = true;
-          fixWindows.push({
-            ...win,
+          newPositions[id] = {
             xPos: Math.min(xMax, xPos),
             yPos: Math.min(yMax, yPos),
             width: Math.min(winWidth, width - SCREEN_MARGIN_S),
             height: Math.min(winHeight, height - SCREEN_MARGIN_S),
-          });
+          };
         } else {
-          fixWindows.push(win);
+          newPositions[id] = positions[id];
         }
+      }
+      if (modified) {
+        positions = newPositions;
       }
 
       return {
         ...state,
-        windows: (modified) ? fixWindows : newWindows,
+        windows: newWindows,
         showWindows: true,
-        someFullscreen,
         args,
+        positions,
       };
     }
 

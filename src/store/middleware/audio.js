@@ -68,30 +68,6 @@ export default (store) => (next) => (action) => {
         break;
       }
 
-      case 'PIXEL_WAIT': {
-        /*
-         * TODO refactor other sounds also like this one
-         * i.e. gain sould ramp to 0, do oscillator first
-         */
-        const oscillatorNode = context.createOscillator();
-        const gainNode = context.createGain();
-        const { currentTime } = context;
-
-        oscillatorNode.type = 'sine';
-        oscillatorNode.start(currentTime);
-        oscillatorNode.frequency.setValueAtTime(1479.98, currentTime);
-        oscillatorNode.frequency.exponentialRampToValueAtTime(
-          493.88,
-          currentTime + 0.01,
-        );
-        oscillatorNode.stop(currentTime + 0.1);
-        gainNode.gain.setValueAtTime(0.5, currentTime);
-        gainNode.gain.setTargetAtTime(0, currentTime, 0.1);
-        oscillatorNode.connect(gainNode);
-        gainNode.connect(context.destination);
-        break;
-      }
-
       case 'ALERT': {
         const oscillatorNode = context.createOscillator();
         const gainNode = context.createGain();
@@ -143,40 +119,62 @@ export default (store) => (next) => (action) => {
         break;
       }
 
-      case 'PLACED_PIXELS': {
-        const { palette, selectedColor: color } = state.canvas;
-        const colorsAmount = palette.colors.length;
+      case 'RECEIVE_PIXEL_RETURN': {
+        switch (action.retCode) {
+          case 0: {
+            // successfully placed pixel
+            const { palette, selectedColor: color } = state.canvas;
+            const colorsAmount = palette.colors.length;
 
-        const clrFreq = 100 + Math.log(color / colorsAmount + 1) * 300;
-        const oscillatorNode = context.createOscillator();
-        const gainNode = context.createGain();
-        const { currentTime } = context;
+            const clrFreq = 100 + Math.log(color / colorsAmount + 1) * 300;
+            const oscillatorNode = context.createOscillator();
+            const gainNode = context.createGain();
+            const { currentTime } = context;
 
-        oscillatorNode.type = 'sine';
-        oscillatorNode.frequency.setValueAtTime(clrFreq, currentTime);
-        oscillatorNode.frequency.exponentialRampToValueAtTime(
-          1400,
-          currentTime + 0.2,
-        );
+            oscillatorNode.type = 'sine';
+            oscillatorNode.start(currentTime);
+            oscillatorNode.frequency.setValueAtTime(clrFreq, currentTime);
+            oscillatorNode.frequency.exponentialRampToValueAtTime(
+              1400,
+              currentTime + 0.2,
+            );
+            oscillatorNode.stop(currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.5, currentTime);
+            gainNode.gain.setTargetAtTime(0, currentTime, 0.1);
+            oscillatorNode.connect(gainNode);
+            gainNode.connect(context.destination);
+            break;
+          }
+          case 9: {
+            // pixelstack used up
+            const oscillatorNode = context.createOscillator();
+            const gainNode = context.createGain();
+            const { currentTime } = context;
 
-        gainNode.gain.setValueAtTime(0.5, currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.2,
-          currentTime + 0.1,
-        );
-
-        oscillatorNode.connect(gainNode);
-        gainNode.connect(context.destination);
-
-        oscillatorNode.start();
-        oscillatorNode.stop(currentTime + 0.1);
+            oscillatorNode.type = 'sine';
+            oscillatorNode.start(currentTime);
+            oscillatorNode.frequency.setValueAtTime(1479.98, currentTime);
+            oscillatorNode.frequency.exponentialRampToValueAtTime(
+              493.88,
+              currentTime + 0.01,
+            );
+            oscillatorNode.stop(currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.5, currentTime);
+            gainNode.gain.setTargetAtTime(0, currentTime, 0.1);
+            oscillatorNode.connect(gainNode);
+            gainNode.connect(context.destination);
+            break;
+          }
+          default:
+            // nothing
+        }
         break;
       }
 
       case 'COOLDOWN_END': {
         // do not play sound if last cooldown end was <5s ago
         const { lastCoolDownEnd } = state.user;
-        if (lastCoolDownEnd && lastCoolDownEnd.getTime() + 5000 > Date.now()) {
+        if (lastCoolDownEnd && lastCoolDownEnd + 5000 > Date.now()) {
           break;
         }
 

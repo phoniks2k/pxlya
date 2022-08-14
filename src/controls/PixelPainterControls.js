@@ -243,6 +243,7 @@ class PixelPlainterControls {
     const [i, j] = getChunkOfPixel(canvasSize, x, y);
     const offset = getOffsetOfPixel(canvasSize, x, y);
     tryPlacePixel(
+      renderer,
       store,
       i, j, offset,
       selectedColor,

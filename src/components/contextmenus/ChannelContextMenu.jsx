@@ -11,10 +11,12 @@ import {
 } from '../hooks/clickOutside';
 import {
   hideContextMenu,
-  setLeaveChannel,
   muteChatChannel,
   unmuteChatChannel,
 } from '../../store/actions';
+import {
+  setLeaveChannel,
+} from '../../store/actions/thunks';
 
 const ChannelContextMenu = () => {
   const wrapperRef = useRef(null);

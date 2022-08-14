@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { FaFlipboard } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showCanvasSelectionModal } from '../../store/actions';
+import { showCanvasSelectionModal } from '../../store/actions/windows';
 
 
 const CanvasSwitchButton = () => {

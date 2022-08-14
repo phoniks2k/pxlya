@@ -398,7 +398,7 @@ class Renderer {
       store,
     } = this;
     const {
-      requestingPixel,
+      allowSettingPixel,
     } = store.getState().user;
 
     mouse.set(
@@ -414,7 +414,7 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
-      if (!requestingPixel
+      if (!allowSettingPixel
         || target.clone().sub(camera.position).length() > 120) {
         rollOverMesh.position.y = -10;
       } else {
@@ -442,7 +442,7 @@ class Renderer {
       store,
     } = this;
     const {
-      requestingPixel,
+      allowSettingPixel,
     } = store.getState().user;
 
     mouse.set(0, 0);
@@ -454,9 +454,9 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
-      // TODO make rollOverMesh in a different color while requestingPixel false
+      // TODO make rollOverMesh in a different color while allowSettingPixel false
       // instead of hiding it.... we can now queue Voxels
-      if (!requestingPixel
+      if (!allowSettingPixel
         || target.clone().sub(camera.position).length() > 50) {
         rollOverMesh.position.y = -10;
       } else {
@@ -482,6 +482,7 @@ class Renderer {
     const [i, j] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
     tryPlacePixel(
+      this,
       store,
       i, j,
       offset,
@@ -578,10 +579,10 @@ class Renderer {
 
     const state = this.store.getState();
     const {
-      requestingPixel,
+      allowSettingPixel,
       isOnMobile,
     } = state.user;
-    if (!requestingPixel || isOnMobile) {
+    if (!allowSettingPixel || isOnMobile) {
       return;
     }
 
