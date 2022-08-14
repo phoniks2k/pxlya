@@ -136,6 +136,12 @@ tr:nth-child(even) {
   background-color: rgba(187, 187, 187, 0.75);
 }
 
+.chatname {
+  background-color: #434648;
+}
+.mention {
+  background-color: #484643;
+}
 .chatmsg:hover {
   background-color: #2525252b;
 }
