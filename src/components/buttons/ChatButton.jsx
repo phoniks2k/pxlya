@@ -15,17 +15,15 @@ import {
 } from '../../store/actions';
 
 /*
- * return [ showWindows, chatOpen, chatHiden ]
- *   showWindows: if windows are enabled (false on small screens)
+ * return [ chatOpen, chatHiden ]
  *   chatOpen: if any chat window or modal is open
  *   chatHidden: if any chat windows are hidden
  */
 const selectChatWindowStatus = (state) => [
-  state.windows.showWindows,
-  state.windows.windows.find((win) => win.windowType === 'CHAT'
-    && win.hidden === false),
-  state.windows.windows.find((win) => win.windowType === 'CHAT'
-    && win.hidden === true),
+  state.windows.windows.some((win) => win.windowType === 'CHAT'
+    && win.hidden === false && (state.windows.showWindows || win.fullscreen)),
+  state.windows.windows.some((win) => win.windowType === 'CHAT'
+    && win.hidden === true) && state.windows.showWindows,
 ];
 
 const ChatButton = () => {
@@ -33,7 +31,7 @@ const ChatButton = () => {
 
   const dispatch = useDispatch();
 
-  const [showWindows, chatOpen, chatHidden] = useSelector(
+  const [chatOpen, chatHidden] = useSelector(
     selectChatWindowStatus,
     shallowEqual,
   );
@@ -80,7 +78,7 @@ const ChatButton = () => {
       onClick={() => {
         if (chatOpen) {
           dispatch(hideAllWindowTypes('CHAT', true));
-        } else if (chatHidden && showWindows) {
+        } else if (chatHidden) {
           dispatch(hideAllWindowTypes('CHAT', false));
         } else {
           dispatch(openChatWindow());

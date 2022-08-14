@@ -77,13 +77,12 @@ const Window = ({ id }) => {
   const onTransitionEnd = useCallback(() => {
     if (hidden) {
       setRender(false);
-      return;
     }
     if (!open) {
       dispatch(removeWindow(id));
       return;
     }
-    if (!render) {
+    if (!render && !hidden) {
       dispatch(toggleMaximizeWindow(id));
       setTimeout(() => setRender(true), 10);
     }

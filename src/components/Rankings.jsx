@@ -41,7 +41,8 @@ const Rankings = () => {
       </div>
       <table style={{
         display: 'inline',
-      }}>
+      }}
+      >
         <thead>
           {(orderDaily) ? (
             <tr>

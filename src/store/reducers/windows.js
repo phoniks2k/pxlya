@@ -86,7 +86,7 @@ function sortWindows(newState, force = false) {
 
 const initialState = {
   // if windows get shown, false on small screens
-  showWindows: true,
+  showWindows: window.innerWidth > SCREEN_WIDTH_THRESHOLD,
   // if at least one window is in fullscreen
   someFullscreen: false,
   // highest zIndex of window
@@ -171,7 +171,7 @@ export default function windows(
       ];
 
       const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && win.open,
+        (win) => win.fullscreen && !win.hidden,
       );
 
       return sortWindows({
@@ -216,7 +216,7 @@ export default function windows(
       });
 
       const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && win.open,
+        (win) => win.fullscreen && !win.hidden,
       );
 
       return {
@@ -239,7 +239,7 @@ export default function windows(
       });
 
       const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && win.open,
+        (win) => win.fullscreen && !win.hidden,
       );
 
       return {
@@ -322,7 +322,7 @@ export default function windows(
       });
 
       const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && win.open,
+        (win) => win.fullscreen && !win.hidden,
       );
 
       return {
@@ -380,7 +380,7 @@ export default function windows(
       });
 
       const someFullscreen = newWindows.some(
-        (win) => win.fullscreen && win.open,
+        (win) => win.fullscreen && !win.hidden,
       );
 
       return {
@@ -466,20 +466,51 @@ export default function windows(
         innerHeight: height,
       } = window;
 
-      if (width <= SCREEN_WIDTH_THRESHOLD) {
+      let { windows: newWindows, args, someFullscreen } = state;
+      const showWindows = width > SCREEN_WIDTH_THRESHOLD;
+
+      if (action.type === 'RECEIVE_ME') {
+        if (state.modal) {
+          // reset if out of date
+          return initialState;
+        }
+
+        args = { ...state.args };
+
+        newWindows = newWindows.filter((win) => {
+          if (win.open && (win.fullscreen || showWindows)) {
+            return true;
+          }
+          // eslint-disable-next-line no-console
+          console.log(
+            `Cleaning up window from previous session: ${win.windowId}`,
+          );
+          delete args[win.windowId];
+          return false;
+        });
+
+        someFullscreen = newWindows.some(
+          (win) => win.fullscreen && !win.hidden,
+        );
+      }
+
+      if (!showWindows) {
         return {
           ...state,
-          showWindows: false,
+          windows: newWindows,
+          showWindows,
+          someFullscreen,
+          args,
         };
       }
 
       const xMax = width - SCREEN_MARGIN_EW;
       const yMax = height - SCREEN_MARGIN_S;
       let modified = false;
-      let newWindows = [];
+      const fixWindows = [];
 
-      for (let i = 0; i < state.windows.length; i += 1) {
-        const win = state.windows[i];
+      for (let i = 0; i < newWindows.length; i += 1) {
+        const win = newWindows[i];
         const {
           xPos,
           yPos,
@@ -489,7 +520,7 @@ export default function windows(
         if (xPos > xMax || yPos > yMax
           || width > winWidth || height > winHeight) {
           modified = true;
-          newWindows.push({
+          fixWindows.push({
             ...win,
             xPos: Math.min(xMax, xPos),
             yPos: Math.min(yMax, yPos),
@@ -497,39 +528,16 @@ export default function windows(
             height: Math.min(winHeight, height - SCREEN_MARGIN_S),
           });
         } else {
-          newWindows.push(win);
+          fixWindows.push(win);
         }
-      }
-
-      if (action.type === 'RECEIVE_ME') {
-        const args = { ...state.args };
-        newWindows = newWindows.filter((win) => {
-          if (win.open) return true;
-          // eslint-disable-next-line no-console
-          console.log(
-            `Cleaning up window from previous session: ${win.windowId}`,
-          );
-          delete args[win.windowId];
-          return false;
-        });
-
-        const someFullscreen = state.windows.some(
-          (win) => win.fullscreen && win.open,
-        );
-
-        return sortWindows({
-          ...state,
-          someFullscreen,
-          showWindows: true,
-          windows: newWindows,
-          args,
-        }, true);
       }
 
       return {
         ...state,
+        windows: (modified) ? fixWindows : newWindows,
         showWindows: true,
-        windows: (modified) ? newWindows : state.windows,
+        someFullscreen,
+        args,
       };
     }
 
