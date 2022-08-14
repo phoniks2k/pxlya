@@ -367,11 +367,13 @@ function ModWatchtools() {
                         case 'user': {
                           const seperator = val.lastIndexOf(',');
                           if (seperator === -1) {
-                            return (<td>{val}</td>);
+                            return (<td><span>{val}</span></td>);
                           }
                           return (
                             <td title={val.slice(seperator + 1)}>
-                              {val.slice(0, seperator)}
+                              <span>
+                                {val.slice(0, seperator)}
+                              </span>
                             </td>
                           );
                         }
