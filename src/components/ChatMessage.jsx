@@ -82,9 +82,7 @@ function ChatMessage({
               {': '}
             </React.Fragment>
           )}
-          <span>
-            <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
-          </span>
+          <MarkdownParagraph refEmbed={refEmbed} pArray={pArray} />
         </span>
         <span className="chatts">
           {getDateTimeString(ts)}

@@ -779,7 +779,7 @@ export function addToChatInputMessage(windowId, msg, focus = true) {
     inputMessage += msg;
 
     dispatch(setWindowArgs(windowId, {
-      inputMessage: msg,
+      inputMessage,
     }));
 
     if (focus) {

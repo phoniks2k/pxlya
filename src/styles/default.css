@@ -691,6 +691,7 @@ tr:nth-child(even) {
   display: inline-block;
   max-width: 95px; 
   overflow: hidden;
+  vertical-align: bottom;
 }
 .mention, .ping {
   text-overflow: ellipsis;
@@ -698,6 +699,7 @@ tr:nth-child(even) {
   display: inline-block;
   max-width: 85px; 
   overflow: hidden;
+  vertical-align: bottom;
 }
 .chatts {
   color: #83839f;
@@ -720,10 +722,6 @@ tr:nth-child(even) {
   color: #2d2d2d;
   overflow-y: clip;
   overflow-x: hidden;
-}
-.msg span {
-  display: inline-block;
-  vertical-align: middle;
 }
 .msg.info {
   color: #cc0000;
