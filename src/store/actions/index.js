@@ -769,6 +769,7 @@ export function unmuteChatChannel(cid) {
 export function addToChatInputMessage(windowId, msg, focus = true) {
   return (dispatch, getState) => {
     const args = getState().windows.args[windowId];
+    console.log(getState().windows.args, args);
     let inputMessage = args && args.inputMessage;
     if (!inputMessage) {
       inputMessage = '';
