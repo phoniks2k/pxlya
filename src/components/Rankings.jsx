@@ -19,7 +19,7 @@ const Rankings = () => {
   );
 
   return (
-    <div>
+    <>
       <div>
         <span
           role="button"
@@ -39,7 +39,9 @@ const Rankings = () => {
           onClick={() => setOrderDaily(true)}
         >{t`Daily`}</span>
       </div>
-      <table style={{ display: 'inline' }}>
+      <table style={{
+        display: 'inline',
+      }}>
         <thead>
           {(orderDaily) ? (
             <tr>
@@ -84,7 +86,7 @@ const Rankings = () => {
       <p className="modaltext">
         {t`Ranking updates every 5 min. Daily rankings get reset at midnight UTC.`}
       </p>
-    </div>
+    </>
   );
 };
 

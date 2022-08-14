@@ -357,7 +357,10 @@ function ModWatchtools() {
                               <span
                                 role="button"
                                 tabIndex={-1}
-                                style={{ cursor: 'pointer' }}
+                                style={{
+                                  cursor: 'pointer',
+                                  whiteSpace: 'initial',
+                                }}
                                 title={t`Copy to Clipboard`}
                                 onClick={() => copyTextToClipboard(val)}
                               >{val}</span>
