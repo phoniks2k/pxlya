@@ -4,7 +4,7 @@ const initialState = {
   wait: null,
   coolDown: null, // ms
   lastCoolDownEnd: null,
-  requestingPixel: true,
+  allowSettingPixel: true,
   // messages are sent by api/me, like not_verified status
   messages: [],
   mailreg: false,
@@ -35,34 +35,34 @@ export default function user(
       return {
         ...state,
         coolDown: null,
-        lastCoolDownEnd: new Date(),
+        lastCoolDownEnd: Date().now(),
         wait: null,
       };
     }
 
-    case 'SET_REQUESTING_PIXEL': {
-      const { requestingPixel } = action;
+    case 'ALLOW_SETTING_PIXEL': {
+      const { allowSettingPixel } = action;
       return {
         ...state,
-        requestingPixel,
+        allowSettingPixel,
       };
     }
 
-    case 'SET_WAIT': {
-      const { wait: duration } = action;
-      const wait = duration
-        ? new Date(Date.now() + duration)
-        : null;
+    case 'RECEIVE_PIXEL_RETURN': {
+      const {
+        wait: duration,
+      } = action;
       return {
         ...state,
-        wait,
+        wait: (duration) ? Date.now() + duration : state.wait,
+        allowSettingPixel: true,
       };
     }
 
     case 'RECEIVE_COOLDOWN': {
       const { wait: duration } = action;
       const wait = duration
-        ? new Date(Date.now() + duration)
+        ? Date.now() + duration
         : null;
       return {
         ...state,

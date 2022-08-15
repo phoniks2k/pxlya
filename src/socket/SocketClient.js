@@ -248,8 +248,7 @@ class SocketClient extends EventEmitter {
       `Socket is closed. Reconnect will be attempted in ${timeout} ms.`,
       e.reason,
     );
-
-    setTimeout(() => this.connect(), 5000);
+    setTimeout(() => this.connect(), timeout);
   }
 
   reconnect() {

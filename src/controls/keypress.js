@@ -9,9 +9,11 @@ import {
   toggleHiddenCanvases,
   togglePixelNotify,
   toggleMute,
-  notify,
   selectCanvas,
 } from '../store/actions';
+import {
+  notify,
+} from '../store/actions/thunks';
 
 const usedKeys = ['g', 'h', 'x', 'm', 'r', 'p'];
 

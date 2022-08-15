@@ -9,7 +9,7 @@ import { t } from 'ttag';
 import {
   setBlockingDm,
   setUserBlock,
-} from '../store/actions';
+} from '../store/actions/thunks';
 import MdToggleButton from './MdToggleButton';
 
 const SocialSettings = ({ done }) => {

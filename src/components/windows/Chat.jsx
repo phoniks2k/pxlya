@@ -13,13 +13,17 @@ import ChatMessage from '../ChatMessage';
 import ChannelDropDown from '../contextmenus/ChannelDropDown';
 
 import {
-  showUserAreaModal,
-  fetchChatMessages,
   showContextMenu,
-  setWindowTitle,
-  setWindowArgs,
   markChannelAsRead,
 } from '../../store/actions';
+import {
+  showUserAreaModal,
+  setWindowTitle,
+  setWindowArgs,
+} from '../../store/actions/windows';
+import {
+  fetchChatMessages,
+} from '../../store/actions/thunks';
 import SocketClient from '../../socket/SocketClient';
 
 

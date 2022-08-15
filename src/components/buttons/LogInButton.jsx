@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { showUserAreaModal } from '../../store/actions';
+import { showUserAreaModal } from '../../store/actions/windows';
 
 
 const LogInButton = () => {

@@ -9,13 +9,13 @@ export default {
     const coolDownSeconds = data.getInt16(6);
     const pxlCnt = data.getUint8(8);
     const rankedPxlCnt = data.getUint8(9);
-    return [
+    return {
       retCode,
       wait,
       coolDownSeconds,
       pxlCnt,
       rankedPxlCnt,
-    ];
+    };
   },
   dehydrate(
     retCode,

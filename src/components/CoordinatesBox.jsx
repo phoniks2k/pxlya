@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import copy from '../utils/clipboard';
-import { notify } from '../store/actions';
+import { notify } from '../store/actions/thunks';
 
 
 function renderCoordinates(cell) {

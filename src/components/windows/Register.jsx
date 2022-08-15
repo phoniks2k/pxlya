@@ -11,7 +11,8 @@ import {
 } from '../../utils/validation';
 import { requestRegistration } from '../../store/actions/fetch';
 
-import { changeWindowType, loginUser } from '../../store/actions';
+import { loginUser } from '../../store/actions';
+import { changeWindowType } from '../../store/actions/windows';
 
 
 function validate(name, email, password, confirmPassword) {

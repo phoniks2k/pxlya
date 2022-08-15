@@ -1,14 +1,5 @@
 import { t } from 'ttag';
 
-import {
-  requestStartDm,
-  requestBlock,
-  requestBlockDm,
-  requestLeaveChan,
-  requestRankings,
-  requestMe,
-} from './fetch';
-
 export function pAlert(
   title,
   message,
@@ -115,27 +106,10 @@ export function toggleOpenMenu() {
   };
 }
 
-/*
- * requestingPixel is inveted, it has the meaning of
- * "can i request a pixel"
- */
-export function setRequestingPixel(requestingPixel) {
+export function setAllowSettingPixel(allowSettingPixel) {
   return {
-    type: 'SET_REQUESTING_PIXEL',
-    requestingPixel,
-  };
-}
-
-export function setNotification(notification) {
-  return {
-    type: 'SET_NOTIFICATION',
-    notification,
-  };
-}
-
-export function unsetNotification() {
-  return {
-    type: 'UNSET_NOTIFICATION',
+    type: 'ALLOW_SETTING_PIXEL',
+    allowSettingPixel,
   };
 }
 
@@ -149,13 +123,6 @@ export function setHover(hover) {
 export function unsetHover() {
   return {
     type: 'UNSET_HOVER',
-  };
-}
-
-export function setWait(wait) {
-  return {
-    type: 'SET_WAIT',
-    wait,
   };
 }
 
@@ -183,61 +150,6 @@ export function selectCanvas(canvasId) {
   return {
     type: 'SELECT_CANVAS',
     canvasId,
-  };
-}
-
-export function placedPixels(amount) {
-  return {
-    type: 'PLACED_PIXELS',
-    amount,
-  };
-}
-
-export function pixelWait() {
-  return {
-    type: 'PIXEL_WAIT',
-  };
-}
-
-export function receiveOnline(online) {
-  return {
-    type: 'RECEIVE_ONLINE',
-    online,
-  };
-}
-
-export function receiveChatMessage(
-  name,
-  text,
-  country,
-  channel,
-  user,
-  isPing,
-  isRead,
-) {
-  return {
-    type: 'RECEIVE_CHAT_MESSAGE',
-    name,
-    text,
-    country,
-    channel,
-    user,
-    isPing,
-    isRead,
-  };
-}
-
-let lastNotify = null;
-export function notify(notification) {
-  return async (dispatch) => {
-    dispatch(setNotification(notification));
-    if (lastNotify) {
-      clearTimeout(lastNotify);
-      lastNotify = null;
-    }
-    lastNotify = setTimeout(() => {
-      dispatch(unsetNotification());
-    }, 1500);
   };
 }
 
@@ -358,51 +270,12 @@ export function receiveCoolDown(
   };
 }
 
-/*
- * draw pixel on canvas
- * @param i, j, offset Chunk and offset in chunk
- * @param color integer Color Index
- * @param notifyPxl Bool if pixel notification appears (false when my own pixel)
- */
-export function updatePixel(
-  i,
-  j,
-  offset,
-  color,
-  notifyPxl = true,
-) {
-  return {
-    type: 'UPDATE_PIXEL',
-    i,
-    j,
-    offset,
-    color,
-    notify: notifyPxl,
-  };
-}
-
-export function loginUser(
-  me,
-) {
-  return {
-    type: 'LOGIN',
-    ...me,
-  };
-}
-
 export function receiveMe(
   me,
 ) {
   return {
     type: 'RECEIVE_ME',
     ...me,
-  };
-}
-
-export function logoutUser(
-) {
-  return {
-    type: 'LOGOUT',
   };
 }
 
@@ -414,6 +287,58 @@ export function receiveStats(
     type: 'RECEIVE_STATS',
     totalRanking,
     totalDailyRanking,
+  };
+}
+
+export function receiveOnline(online) {
+  return {
+    type: 'RECEIVE_ONLINE',
+    online,
+  };
+}
+
+export function receiveChatMessage(
+  name,
+  text,
+  country,
+  channel,
+  user,
+  isPing,
+  isRead,
+) {
+  return {
+    type: 'RECEIVE_CHAT_MESSAGE',
+    name,
+    text,
+    country,
+    channel,
+    user,
+    isPing,
+    isRead,
+  };
+}
+
+/*
+ * check socket/packets/PixelReturn.js for args
+ */
+export function storeReceivePixelReturn(args) {
+  args.type = 'RECEIVE_PIXEL_RETURN';
+  return args;
+}
+
+export function logoutUser(
+) {
+  return {
+    type: 'LOGOUT',
+  };
+}
+
+export function loginUser(
+  me,
+) {
+  return {
+    type: 'LOGIN',
+    ...me,
   };
 }
 
@@ -444,77 +369,12 @@ export function remFromMessages(
   };
 }
 
-export function fetchStats() {
-  return async (dispatch) => {
-    const rankings = await requestRankings();
-    if (!rankings.errors) {
-      dispatch(receiveStats(rankings));
-    }
-  };
-}
-
-export function fetchMe() {
-  return async (dispatch) => {
-    const me = await requestMe();
-    if (!me.errors) {
-      dispatch(receiveMe(me));
-    }
-  };
-}
-
-function receiveChatHistory(
-  cid,
-  history,
-) {
-  return {
-    type: 'RECEIVE_CHAT_HISTORY',
-    cid,
-    history,
-  };
-}
-
 export function markChannelAsRead(
   cid,
 ) {
   return {
     type: 'MARK_CHANNEL_AS_READ',
     cid,
-  };
-}
-
-function setChatFetching(fetching) {
-  return {
-    type: 'SET_CHAT_FETCHING',
-    fetching,
-  };
-}
-
-function setApiFetching(fetching) {
-  return {
-    type: 'SET_API_FETCHING',
-    fetching,
-  };
-}
-
-export function fetchChatMessages(
-  cid,
-) {
-  return async (dispatch) => {
-    dispatch(setChatFetching(true));
-    const response = await fetch(`api/chathistory?cid=${cid}&limit=50`, {
-      credentials: 'include',
-    });
-
-    /*
-     * timeout in order to not spam api requests and get rate limited
-     */
-    if (response.ok) {
-      setTimeout(() => { dispatch(setChatFetching(false)); }, 500);
-      const { history } = await response.json();
-      dispatch(receiveChatHistory(cid, history));
-    } else {
-      setTimeout(() => { dispatch(setChatFetching(false)); }, 5000);
-    }
   };
 }
 
@@ -558,132 +418,6 @@ export function initTimer() {
     // something shorter than 1000 ms
     setInterval(tick, 333);
   };
-}
-
-/*
- * fullscreen means to open as modal
- * Look into store/reducers/windows.js to know what it means
- */
-export function openWindow(
-  windowType,
-  title = '',
-  args = null,
-  fullscreen = false,
-  cloneable = true,
-  xPos = null,
-  yPos = null,
-  width = null,
-  height = null,
-) {
-  return {
-    type: 'OPEN_WINDOW',
-    windowType,
-    title,
-    args,
-    fullscreen,
-    cloneable,
-    xPos,
-    yPos,
-    width,
-    height,
-  };
-}
-
-export function setWindowArgs(
-  windowId,
-  args,
-) {
-  return {
-    type: 'SET_WINDOW_ARGS',
-    windowId,
-    args,
-  };
-}
-
-function showFullscreenWindow(modalType, title) {
-  return openWindow(
-    modalType,
-    title,
-    null,
-    true,
-  );
-}
-
-export function closeFullscreenWindows() {
-  return {
-    type: 'CLOSE_FULLSCREEN_WINDOWS',
-  };
-}
-
-export function showSettingsModal() {
-  return showFullscreenWindow(
-    'SETTINGS',
-    '',
-  );
-}
-
-export function showUserAreaModal() {
-  return showFullscreenWindow(
-    'USERAREA',
-    '',
-  );
-}
-
-export function changeWindowType(
-  windowId,
-  windowType,
-  title = '',
-  args = null,
-) {
-  return {
-    type: 'CHANGE_WINDOW_TYPE',
-    windowId,
-    windowType,
-    title,
-    args,
-  };
-}
-
-export function setWindowTitle(windowId, title) {
-  return {
-    type: 'SET_WINDOW_TITLE',
-    windowId,
-    title,
-  };
-}
-
-export function showRegisterModal() {
-  return showFullscreenWindow(
-    'REGISTER',
-    t`Register New Account`,
-  );
-}
-
-export function showForgotPasswordModal() {
-  return showFullscreenWindow(
-    'FORGOT_PASSWORD',
-    t`Restore my Password`,
-  );
-}
-
-export function showHelpModal() {
-  return showFullscreenWindow(
-    'HELP',
-    t`Welcome to PixelPlanet.fun`,
-  );
-}
-export function showArchiveModal() {
-  return showFullscreenWindow(
-    'ARCHIVE',
-    t`Look at past Canvases`,
-  );
-}
-
-export function showCanvasSelectionModal() {
-  return showFullscreenWindow(
-    'CANVAS_SELECTION',
-    '',
-  );
 }
 
 export function showContextMenu(
@@ -766,213 +500,6 @@ export function unmuteChatChannel(cid) {
   };
 }
 
-export function addToChatInputMessage(windowId, msg, focus = true) {
-  return (dispatch, getState) => {
-    const args = getState().windows.args[windowId];
-    let inputMessage = args && args.inputMessage;
-    if (!inputMessage) {
-      inputMessage = '';
-    } else if (inputMessage.slice(-1) !== ' ') {
-      inputMessage += ' ';
-    }
-    inputMessage += msg;
-
-    dispatch(setWindowArgs(windowId, {
-      inputMessage,
-    }));
-
-    if (focus) {
-      const inputElem = document.getElementById(`chtipt-${windowId}`);
-      if (inputElem) {
-        inputElem.focus();
-      }
-    }
-  };
-}
-
-export function closeWindow(windowId) {
-  return {
-    type: 'CLOSE_WINDOW',
-    windowId,
-  };
-}
-
-export function removeWindow(windowId) {
-  return {
-    type: 'REMOVE_WINDOW',
-    windowId,
-  };
-}
-
-export function focusWindow(windowId) {
-  return {
-    type: 'FOCUS_WINDOW',
-    windowId,
-  };
-}
-
-export function cloneWindow(windowId) {
-  return {
-    type: 'CLONE_WINDOW',
-    windowId,
-  };
-}
-
-export function toggleMaximizeWindow(windowId) {
-  return {
-    type: 'TOGGLE_MAXIMIZE_WINDOW',
-    windowId,
-  };
-}
-
-export function moveWindow(windowId, xDiff, yDiff) {
-  return {
-    type: 'MOVE_WINDOW',
-    windowId,
-    xDiff,
-    yDiff,
-  };
-}
-
-export function resizeWindow(windowId, xDiff, yDiff) {
-  return {
-    type: 'RESIZE_WINDOW',
-    windowId,
-    xDiff,
-    yDiff,
-  };
-}
-
-export function closeAllWindowTypes(windowType) {
-  return {
-    type: 'CLOSE_ALL_WINDOW_TYPE',
-    windowType,
-  };
-}
-
-export function hideAllWindowTypes(
-  windowType,
-  hide,
-) {
-  return {
-    type: 'HIDE_ALL_WINDOW_TYPE',
-    windowType,
-    hide,
-  };
-}
-
-export function openChatWindow() {
-  const width = 350;
-  const height = 350;
-  return openWindow(
-    'CHAT',
-    '',
-    null,
-    false,
-    true,
-    window.innerWidth - width - 62,
-    window.innerHeight - height - 64,
-    width,
-    height,
-  );
-}
-
-/*
- * query with either userId or userName
- */
-export function startDm(windowId, query) {
-  return async (dispatch) => {
-    dispatch(setApiFetching(true));
-    const res = await requestStartDm(query);
-    if (typeof res === 'string') {
-      dispatch(pAlert(
-        'Direct Message Error',
-        res,
-        'error',
-        'OK',
-      ));
-    } else {
-      const cid = Number(Object.keys(res)[0]);
-      dispatch(addChatChannel(res));
-      dispatch(setWindowArgs(windowId, {
-        chatChannel: cid,
-      }));
-    }
-    dispatch(setApiFetching(false));
-  };
-}
-
-export function gotCoolDownDelta(delta) {
-  return {
-    type: 'COOLDOWN_DELTA',
-    delta,
-  };
-}
-
-export function setUserBlock(
-  userId,
-  userName,
-  block,
-) {
-  return async (dispatch) => {
-    dispatch(setApiFetching(true));
-    const res = await requestBlock(userId, block);
-    if (res) {
-      dispatch(pAlert(
-        'User Block Error',
-        res,
-        'error',
-        'OK',
-      ));
-    } else if (block) {
-      dispatch(blockUser(userId, userName));
-    } else {
-      dispatch(unblockUser(userId, userName));
-    }
-    dispatch(setApiFetching(false));
-  };
-}
-
-export function setBlockingDm(
-  block,
-) {
-  return async (dispatch) => {
-    dispatch(setApiFetching(true));
-    const res = await requestBlockDm(block);
-    if (res) {
-      dispatch(pAlert(
-        'Blocking DMs Error',
-        res,
-        'error',
-        'OK',
-      ));
-    } else {
-      dispatch(blockingDm(block));
-    }
-    dispatch(setApiFetching(false));
-  };
-}
-
-export function setLeaveChannel(
-  cid,
-) {
-  return async (dispatch) => {
-    dispatch(setApiFetching(true));
-    const res = await requestLeaveChan(cid);
-    if (res) {
-      dispatch(pAlert(
-        'Leaving Channel Error',
-        res,
-        'error',
-        'OK',
-      ));
-    } else {
-      dispatch(removeChatChannel(cid));
-    }
-    dispatch(setApiFetching(false));
-  };
-}
-
 export function hideContextMenu() {
   return {
     type: 'HIDE_CONTEXT_MENU',
@@ -1004,3 +531,4 @@ export function urlChange() {
     dispatch(reloadUrl());
   };
 }
+

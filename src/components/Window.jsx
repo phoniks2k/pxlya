@@ -3,7 +3,7 @@
  */
 
 import React, {
-  useState, useCallback, useRef, useEffect,
+  useState, useCallback, useRef, useEffect, useMemo,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
@@ -16,12 +16,14 @@ import {
   toggleMaximizeWindow,
   cloneWindow,
   focusWindow,
-} from '../store/actions';
+} from '../store/actions/windows';
+import {
+  makeSelectWindowById,
+  makeSelectWindowPosById,
+  selectShowWindows,
+} from '../store/selectors/windows';
 import useDrag from './hooks/drag';
 import COMPONENTS from './windows';
-
-// eslint-disable-next-line max-len
-const selectWindowById = (state, windowId) => state.windows.windows.find((win) => win.windowId === windowId);
 
 const Window = ({ id }) => {
   const [render, setRender] = useState(false);
@@ -29,8 +31,11 @@ const Window = ({ id }) => {
   const titleBarRef = useRef(null);
   const resizeRef = useRef(null);
 
-  const win = useSelector((state) => selectWindowById(state, id));
-  const showWindows = useSelector((state) => state.windows.showWindows);
+  const selectWindowById = useMemo(() => makeSelectWindowById(id), []);
+  const selectWIndowPosById = useMemo(() => makeSelectWindowPosById(id), []);
+  const win = useSelector(selectWindowById);
+  const position = useSelector(selectWIndowPosById);
+  const showWindows = useSelector(selectShowWindows);
 
   const dispatch = useDispatch();
 
@@ -101,12 +106,14 @@ const Window = ({ id }) => {
   }
 
   const {
-    width, height,
-    xPos, yPos,
     windowType,
-    z,
     title,
   } = win;
+  const {
+    xPos, yPos,
+    width, height,
+    z,
+  } = position;
 
   const [Content, name] = COMPONENTS[windowType];
 
@@ -153,10 +160,6 @@ const Window = ({ id }) => {
         </div>
       </div>
     );
-  }
-
-  if (!showWindows) {
-    return null;
   }
 
   return (

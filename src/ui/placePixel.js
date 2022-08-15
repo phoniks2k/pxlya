@@ -3,18 +3,19 @@
  * Always just one pixelrequest, queue additional requests to send later
  * Pixels get predicted on the client and reset if server refused
  *
+ * TODO move stuff out of here and to actions / middleware
+ * clientPredictions could be in rendererHook
+ *
  * */
 import { t } from 'ttag';
 import {
-  notify,
-  setRequestingPixel,
+  setAllowSettingPixel,
   pAlert,
-  gotCoolDownDelta,
-  setWait,
-  placedPixels,
-  pixelWait,
-  updatePixel,
+  storeReceivePixelReturn,
 } from '../store/actions';
+import {
+  notify,
+} from '../store/actions/thunks';
 import SocketClient from '../socket/SocketClient';
 
 let pixelTimeout = null;
@@ -35,8 +36,10 @@ let clientPredictions = [];
  */
 let lastRequestValues = {};
 
-
-export function requestFromQueue(store) {
+/*
+ * request pixel placement from queue
+ */
+function requestFromQueue(store) {
   if (!pixelQueue.length) {
     pixelTimeout = null;
     return;
@@ -46,7 +49,7 @@ export function requestFromQueue(store) {
   pixelTimeout = setTimeout(() => {
     pixelQueue = [];
     pixelTimeout = null;
-    store.dispatch(setRequestingPixel(true));
+    store.dispatch(setAllowSettingPixel(true));
     store.dispatch(pAlert(
       t`Error :(`,
       t`Didn't get an answer from pixelplanet. Maybe try to refresh?`,
@@ -57,11 +60,14 @@ export function requestFromQueue(store) {
   lastRequestValues = pixelQueue.shift();
   const { i, j, pixels } = lastRequestValues;
   SocketClient.requestPlacePixels(i, j, pixels);
-  store.dispatch(setRequestingPixel(false));
+  store.dispatch(setAllowSettingPixel(false));
 }
 
+/*
+ * got pixel update from websocket
+ */
 export function receivePixelUpdate(
-  store,
+  renderer,
   i,
   j,
   offset,
@@ -79,7 +85,7 @@ export function receivePixelUpdate(
       return;
     }
   }
-  store.dispatch(updatePixel(i, j, offset, color));
+  renderer.renderPixel(i, j, offset, color, true);
 }
 
 /*
@@ -87,7 +93,7 @@ export function receivePixelUpdate(
  * @param i, j, offset data of the first pixel that got rejected
  */
 function revertPredictionsAt(
-  store,
+  renderer,
   sI,
   sJ,
   sOffset,
@@ -111,14 +117,18 @@ function revertPredictionsAt(
 
   while (p < clientPredictions.length) {
     const [i, j, offset, color] = clientPredictions[p];
-    store.dispatch(updatePixel(i, j, offset, color, false));
+    renderer.renderPixel(i, j, offset, color, false);
     p += 1;
   }
 
   clientPredictions = [];
 }
 
+/*
+ * try to place a pixel
+ */
 export function tryPlacePixel(
+  renderer,
   store,
   i,
   j,
@@ -126,7 +136,7 @@ export function tryPlacePixel(
   color,
   curColor,
 ) {
-  store.dispatch(updatePixel(i, j, offset, color, false));
+  renderer.renderPixel(i, j, offset, color, false);
   clientPredictions.push([i, j, offset, curColor, color]);
 
   if (pixelQueue.length) {
@@ -150,28 +160,26 @@ export function tryPlacePixel(
   }
 }
 
+/*
+ * got return from pixel request
+ */
 export function receivePixelReturn(
   store,
-  retCode,
-  wait,
-  coolDownSeconds,
-  pxlCnt,
-  rankedPxlCnt,
+  renderer,
+  args,
 ) {
   clearTimeout(pixelTimeout);
 
-  /*
-   * the terms coolDown is used in a different meaning here
-   * coolDown is the delta seconds  of the placed pixel
-   */
-  if (wait) {
-    store.dispatch(setWait(wait));
-  }
+  store.dispatch(storeReceivePixelReturn(args));
+
+  const {
+    retCode,
+    coolDownSeconds,
+    pxlCnt,
+  } = args;
+
   if (coolDownSeconds) {
     store.dispatch(notify(coolDownSeconds));
-    if (coolDownSeconds < 0) {
-      store.dispatch(gotCoolDownDelta(coolDownSeconds));
-    }
   }
 
   if (retCode) {
@@ -181,7 +189,7 @@ export function receivePixelReturn(
      */
     const { i, j, pixels } = lastRequestValues;
     const [offset] = pixels[pxlCnt];
-    revertPredictionsAt(store, i, j, offset);
+    revertPredictionsAt(renderer, i, j, offset);
     pixelQueue = [];
   }
 
@@ -190,7 +198,6 @@ export function receivePixelReturn(
   let type = 'error';
   switch (retCode) {
     case 0:
-      store.dispatch(placedPixels(rankedPxlCnt));
       break;
     case 1:
       errorTitle = t`Invalid Canvas`;
@@ -226,7 +233,6 @@ export function receivePixelReturn(
       break;
     case 9:
       // pixestack used up
-      store.dispatch(pixelWait());
       break;
     case 10:
       errorTitle = 'Captcha';
@@ -267,11 +273,6 @@ export function receivePixelReturn(
     ));
   }
 
-  store.dispatch(setRequestingPixel(true));
-
-  if (!msg) {
-    /* start next request if queue isn't empty */
-    requestFromQueue(store);
-  }
+  requestFromQueue(store);
 }
 

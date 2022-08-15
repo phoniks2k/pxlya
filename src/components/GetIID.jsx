@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { notify } from '../store/actions';
+import { notify } from '../store/actions/thunks';
 import copyTextToClipboard from '../utils/clipboard';
 import {
   requestIID,

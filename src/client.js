@@ -4,7 +4,6 @@
 
 import createKeyPressHandler from './controls/keypress';
 import {
-  fetchMe,
   initTimer,
   urlChange,
   receiveOnline,
@@ -15,6 +14,9 @@ import {
   setMobile,
   windowResize,
 } from './store/actions';
+import {
+  fetchMe,
+} from './store/actions/thunks';
 import {
   receivePixelUpdate,
   receivePixelReturn,
@@ -36,12 +38,12 @@ function init() {
     pixels.forEach((pxl) => {
       const [offset, color] = pxl;
       // remove protection
-      receivePixelUpdate(store, i, j, offset, color & 0x7F);
+      receivePixelUpdate(getRenderer(), i, j, offset, color & 0x7F);
     });
   });
-  SocketClient.on('pixelReturn',
-    (args) => receivePixelReturn(store, ...args),
-  );
+  SocketClient.on('pixelReturn', (args) => {
+    receivePixelReturn(store, getRenderer(), args);
+  });
   SocketClient.on('cooldownPacket', (coolDown) => {
     store.dispatch(receiveCoolDown(coolDown));
   });

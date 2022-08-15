@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { FaCog } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showSettingsModal } from '../../store/actions';
+import { showSettingsModal } from '../../store/actions/windows';
 
 
 const SettingsButton = () => {

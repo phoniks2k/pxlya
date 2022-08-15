@@ -1,7 +1,15 @@
-import { applyMiddleware, createStore, compose } from 'redux';
+/*
+ * redux store
+ */
+
+/* eslint-disable no-console */
+
+import {
+  applyMiddleware, createStore, compose, combineReducers,
+} from 'redux';
 import thunk from 'redux-thunk';
-import { persistStore, persistCombineReducers } from 'redux-persist';
-import localForage from 'localforage';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 /*
  * reducers
@@ -29,12 +37,23 @@ import array from './middleware/array';
 import promise from './middleware/promise';
 import notifications from './middleware/notifications';
 import title from './middleware/title';
-import placePixelControl from './middleware/placePixelControl';
+// import placePixelControl from './middleware/placePixelControl';
 import extensions from './middleware/extensions';
 
-const reducers = persistCombineReducers({
+const CURRENT_VERSION = 3;
+
+const reducers = persistReducer({
   key: 'primary',
-  storage: localForage,
+  storage,
+  version: CURRENT_VERSION,
+  migrate: (state, version) => {
+    if (version !== CURRENT_VERSION) {
+      console.log('Newer version run, resetting store.');
+      return Promise.resolve({});
+    }
+    console.log(`Store version: ${version}`);
+    return Promise.resolve(state);
+  },
   blacklist: [
     'user',
     'canvas',
@@ -43,7 +62,7 @@ const reducers = persistCombineReducers({
     'contextMenu',
     'fetching',
   ],
-}, {
+}, combineReducers({
   audio,
   canvas,
   gui,
@@ -55,7 +74,7 @@ const reducers = persistCombineReducers({
   contextMenu,
   chatRead,
   fetching,
-});
+}));
 
 const store = createStore(
   reducers,
@@ -70,7 +89,7 @@ const store = createStore(
       title,
       socketClientHook,
       rendererHook,
-      placePixelControl,
+      // placePixelControl,
       extensions,
     ),
   ),

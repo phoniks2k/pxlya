@@ -95,7 +95,7 @@ export default (store) => (next) => (action) => {
     }
 
     case 'TOGGLE_GRID':
-    case 'SET_REQUESTING_PIXEL': {
+    case 'ALLOW_SETTING_PIXEL': {
       const renderer = getRenderer();
       renderer.forceNextSubrender = true;
       break;
@@ -108,30 +108,21 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'UPDATE_PIXEL': {
-      const {
-        i,
-        j,
-        offset,
-        color,
-        notify,
-      } = action;
-      const renderer = getRenderer();
-      renderer.renderPixel(i, j, offset, color, notify);
-      break;
-    }
-
     case 'SET_VIEW_COORDINATES': {
       const renderer = getRenderer();
       renderer.updateView(state);
       break;
     }
 
-    case 'COOLDOWN_DELTA': {
-      const { delta } = action;
+    case 'RECEIVE_PIXEL_RETURN': {
       const renderer = getRenderer();
-      if (renderer && renderer.controls && renderer.controls.gotCoolDownDelta) {
-        renderer.controls.gotCoolDownDelta(delta * -1);
+      renderer.forceNextSubrender = true;
+      const { coolDownSeconds } = action;
+      if (coolDownSeconds < 0
+        && renderer && renderer.controls
+        && renderer.controls.gotCoolDownDelta
+      ) {
+        renderer.controls.gotCoolDownDelta(coolDownSeconds * -1);
       }
       break;
     }
