@@ -95,6 +95,22 @@ msgid ""
 "one (Note: you can use those links just once)"
 msgstr ""
 
+#: src/ssr/Win.jsx:32
+msgid "PixelPlanet.Fun Window"
+msgstr ""
+
+#: src/ssr/Win.jsx:33
+msgid "PixelPlanet.Fun Windows"
+msgstr ""
+
+#: src/ssr/Main.jsx:58
+msgid "PixelPlanet.Fun"
+msgstr ""
+
+#: src/ssr/Main.jsx:59
+msgid "Place color pixels on an map styled canvas with other players online"
+msgstr ""
+
 #: src/ssr/Globe.jsx:34
 msgid "PixelPlanet.Fun 3DGlobe"
 msgstr ""
@@ -109,14 +125,6 @@ msgstr ""
 
 #: src/ssr/Globe.jsx:49
 msgid "Loading..."
-msgstr ""
-
-#: src/ssr/Main.jsx:58
-msgid "PixelPlanet.Fun"
-msgstr ""
-
-#: src/ssr/Main.jsx:59
-msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
 #: src/core/mail.js:71
@@ -236,6 +244,33 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
+#: src/routes/api/captcha.js:20
+msgid "No captcha text given"
+msgstr ""
+
+#: src/routes/api/captcha.js:25
+msgid "No captcha id given"
+msgstr ""
+
+#: src/routes/api/auth/register.js:54
+#: src/routes/api/captcha.js:44
+msgid "You took too long, try again."
+msgstr ""
+
+#: src/routes/api/auth/register.js:57
+#: src/routes/api/captcha.js:50
+msgid "You failed your captcha"
+msgstr ""
+
+#: src/routes/api/auth/register.js:60
+#: src/routes/api/captcha.js:56
+msgid "Unknown Captcha Error"
+msgstr ""
+
+#: src/routes/api/captcha.js:63
+msgid "Server error occured"
+msgstr ""
+
 #: src/utils/validation.js:17
 msgid "Email can't be empty."
 msgstr ""
@@ -284,33 +319,6 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/routes/api/captcha.js:20
-msgid "No captcha text given"
-msgstr ""
-
-#: src/routes/api/captcha.js:25
-msgid "No captcha id given"
-msgstr ""
-
-#: src/routes/api/auth/register.js:54
-#: src/routes/api/captcha.js:44
-msgid "You took too long, try again."
-msgstr ""
-
-#: src/routes/api/auth/register.js:57
-#: src/routes/api/captcha.js:50
-msgid "You failed your captcha"
-msgstr ""
-
-#: src/routes/api/auth/register.js:60
-#: src/routes/api/captcha.js:56
-msgid "Unknown Captcha Error"
-msgstr ""
-
-#: src/routes/api/captcha.js:63
-msgid "Server error occured"
-msgstr ""
-
 #: src/routes/api/modtools.js:53
 msgid "You are not logged in"
 msgstr ""
@@ -347,6 +355,27 @@ msgstr ""
 msgid "Failed to establish session after register :("
 msgstr ""
 
+#: src/routes/api/auth/change_mail.js:38
+#: src/routes/api/auth/change_passwd.js:34
+#: src/routes/api/auth/delete_account.js:34
+msgid "You are not authenticated."
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:47
+#: src/routes/api/auth/change_passwd.js:43
+#: src/routes/api/auth/delete_account.js:44
+msgid "Incorrect password!"
+msgstr ""
+
+#: src/routes/api/auth/logout.js:11
+msgid "You are not even logged in."
+msgstr ""
+
+#: src/routes/api/auth/delete_account.js:54
+#: src/routes/api/auth/logout.js:20
+msgid "Server error when logging out."
+msgstr ""
+
 #: src/routes/api/auth/verify.js:22
 #: src/routes/api/auth/verify.js:29
 msgid "Mail verification"
@@ -360,27 +389,6 @@ msgstr ""
 msgid ""
 "Your mail verification code is invalid or already expired :(, please "
 "request a new one."
-msgstr ""
-
-#: src/routes/api/auth/logout.js:11
-msgid "You are not even logged in."
-msgstr ""
-
-#: src/routes/api/auth/delete_account.js:54
-#: src/routes/api/auth/logout.js:20
-msgid "Server error when logging out."
-msgstr ""
-
-#: src/routes/api/auth/change_mail.js:38
-#: src/routes/api/auth/change_passwd.js:34
-#: src/routes/api/auth/delete_account.js:34
-msgid "You are not authenticated."
-msgstr ""
-
-#: src/routes/api/auth/change_mail.js:47
-#: src/routes/api/auth/change_passwd.js:43
-#: src/routes/api/auth/delete_account.js:44
-msgid "Incorrect password!"
 msgstr ""
 
 #: src/ssr/RedirectionPage.jsx:19
