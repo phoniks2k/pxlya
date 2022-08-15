@@ -510,6 +510,7 @@ export default function windows(
             yPos: Math.min(yMax, yPos),
             width: Math.min(winWidth, width - SCREEN_MARGIN_S),
             height: Math.min(winHeight, height - SCREEN_MARGIN_S),
+            z: positions[id].z,
           };
         } else {
           newPositions[id] = positions[id];
