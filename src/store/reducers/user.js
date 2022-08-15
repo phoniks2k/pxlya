@@ -35,7 +35,7 @@ export default function user(
       return {
         ...state,
         coolDown: null,
-        lastCoolDownEnd: Date().now(),
+        lastCoolDownEnd: Date.now(),
         wait: null,
       };
     }
