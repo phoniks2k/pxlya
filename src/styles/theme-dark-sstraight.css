@@ -108,7 +108,7 @@ tr:nth-child(even) {
   color: #f8f8f8;
 }
 
-.modaltitle {
+h3, h4 {
   color: #f38826;
 }
 

@@ -49,7 +49,7 @@ function ModIIDtools() {
 
   return (
     <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
-      <h3 className="modaltitle">{t`IID Actions`}</h3>
+      <h3>{t`IID Actions`}</h3>
       <select
         value={iIDAction}
         onChange={(e) => {

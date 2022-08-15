@@ -104,7 +104,7 @@ function Admintools() {
       )}
       <div>
         <br />
-        <h3 className="modaltitle">{t`IP Actions`}</h3>
+        <h3>{t`IP Actions`}</h3>
         <p className="modalcotext">
           {t`Do stuff with IPs (one IP per line)`}
         </p>
@@ -153,7 +153,7 @@ function Admintools() {
         </button>
         <br />
         <div className="modaldivider" />
-        <h3 className="modaltitle">{t`Manage Moderators`}</h3>
+        <h3>{t`Manage Moderators`}</h3>
         <p className="modalcotext">
           {t`Remove Moderator`}
         </p>

@@ -87,7 +87,7 @@ const Register = ({ windowId }) => {
           <p key={error} className="errormessage"><span>{t`Error`}</span>
             :&nbsp;{error}</p>
         ))}
-        <p className="modaltitle">{t`Name`}:</p>
+        <h3>{t`Name`}:</h3>
         <input
           name="name"
           className="reginput"
@@ -95,7 +95,7 @@ const Register = ({ windowId }) => {
           type="text"
           placeholder={t`Name`}
         />
-        <p className="modaltitle">{t`Email`}:</p>
+        <h3>{t`Email`}:</h3>
         <input
           name="email"
           className="reginput"
@@ -103,7 +103,7 @@ const Register = ({ windowId }) => {
           type="text"
           placeholder={t`Email`}
         />
-        <p className="modaltitle">{t`Password`}:</p>
+        <h3>{t`Password`}:</h3>
         <input
           name="password"
           className="reginput"
@@ -111,7 +111,7 @@ const Register = ({ windowId }) => {
           type="password"
           placeholder={t`Password`}
         />
-        <p className="modaltitle">{t`Confirm Password`}:</p>
+        <h3>{t`Confirm Password`}:</h3>
         <input
           name="confirmpassword"
           className="reginput"
@@ -119,7 +119,7 @@ const Register = ({ windowId }) => {
           type="password"
           placeholder={t`Confirm Password`}
         />
-        <p className="modaltitle">{t`Captcha`}:</p>
+        <h3>{t`Captcha`}:</h3>
         <Captcha autoload={false} width={60} key={captKey} />
         <button type="submit">
           {(submitting) ? '...' : t`Submit`}

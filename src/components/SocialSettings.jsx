@@ -27,15 +27,14 @@ const SocialSettings = ({ done }) => {
           margin: 10,
         }}
       >
-        <span
+        <h3
           style={{
             flex: 'auto',
             textAlign: 'left',
           }}
-          className="modaltitle"
         >
           {t`Block all Private Messages`}
-        </span>
+        </h3>
         <MdToggleButton
           value={blockDm}
           onToggle={() => {
@@ -46,13 +45,12 @@ const SocialSettings = ({ done }) => {
         />
       </div>
       <div className="modaldivider" />
-      <p
+      <h3
         style={{
           textAlign: 'left',
           marginLeft: 10,
         }}
-        className="modaltitle"
-      >{t`Unblock Users`}</p>
+      >{t`Unblock Users`}</h3>
       {
         (blocked.length) ? (
           <span

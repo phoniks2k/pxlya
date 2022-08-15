@@ -83,19 +83,19 @@ const BanInfo = ({ close }) => {
       ))}
       {(reason) && (
         <React.Fragment key="rea">
-          <h3 className="modaltitle">{t`Reason`}:</h3>
+          <h3>{t`Reason`}:</h3>
           <p className="modaltext">{reason}</p>
         </React.Fragment>
       )}
       {(mod) && (
         <React.Fragment key="mod">
-          <h3 className="modaltitle">{t`By Mod`}:</h3>
+          <h3>{t`By Mod`}:</h3>
           <p className="modaltext">{mod}</p>
         </React.Fragment>
       )}
       {(expireTs > 0) && (
         <React.Fragment key="exp">
-          <h3 className="modaltitle">{t`Duration`}:</h3>
+          <h3>{t`Duration`}:</h3>
           <p className="modaltext">
             {t`Your ban expires at `}
             <span style={{ fontWeight: 'bold' }}>{expire}</span>
@@ -110,7 +110,7 @@ const BanInfo = ({ close }) => {
       )}
       {(expireTs < 0) && (
         <React.Fragment key="nb">
-          <h3 className="modaltitle">{t`Unbanned`}:</h3>
+          <h3>{t`Unbanned`}:</h3>
           <p className="modaltext">{t`Now that you have seen this message, you are no longer banned.`}</p>
         </React.Fragment>
       )}

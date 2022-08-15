@@ -252,7 +252,7 @@ function ModCanvastools() {
         </select>
       </p>
       <div className="modaldivider" />
-      <h3 className="modaltitle">{t`Image Upload`}</h3>
+      <h3>{t`Image Upload`}</h3>
       <p className="modalcotext">{t`Upload images to canvas`}</p>
       <p className="modalcotext">
         {t`File`}:&nbsp;
@@ -316,7 +316,7 @@ function ModCanvastools() {
 
       <br />
       <div className="modaldivider" />
-      <h3 className="modaltitle">{t`Pixel Protection`}</h3>
+      <h3>{t`Pixel Protection`}</h3>
       <p className="modalcotext">
         {t`Set protection of areas \
         (if you need finer grained control, \
@@ -399,7 +399,7 @@ function ModCanvastools() {
         <div>
           <br />
           <div className="modaldivider" />
-          <h3 className="modaltitle">{t`Rollback to Date`}</h3>
+          <h3>{t`Rollback to Date`}</h3>
           <p className="modalcotext">
             {t`Rollback an area of the canvas to a set date (00:00 UTC)`}
           </p>
@@ -474,7 +474,7 @@ function ModCanvastools() {
       )}
       <br />
       <div className="modaldivider" />
-      <h3 className="modaltitle">{t`Canvas Cleaner`}</h3>
+      <h3>{t`Canvas Cleaner`}</h3>
       <p className="modalcotext">
         {t`Apply a filter to clean trash in large canvas areas.`}
       </p>

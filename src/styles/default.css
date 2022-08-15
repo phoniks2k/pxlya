@@ -176,6 +176,28 @@ h2 {
   margin-top: 12px;
 }
 
+h3 {
+  color: #4f545c;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 0;
+  margin-right: 10px;
+  overflow: hidden;
+  word-wrap: break-word;
+  margin-bottom: 0;
+}
+
+h4 {
+  color: #4f545c;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+  overflow: hidden;
+  word-wrap: break-word;
+  margin: 2px 10px 0 0;
+}
+
 tr:nth-child(even) {
   background-color: #dddddd;
 }
@@ -539,18 +561,6 @@ tr:nth-child(even) {
 .modaltext {
   margin: 0;
   padding: 0;
-}
-
-.modaltitle {
-  color: #4f545c;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  margin-left: 0;
-  margin-right: 10px;
-  overflow: hidden;
-  word-wrap: break-word;
-  margin-bottom: 0;
 }
 
 .modaldesc {

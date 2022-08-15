@@ -52,7 +52,7 @@ const SettingsItemSelect = ({
 }) => (
   <div style={itemStyles}>
     <div style={rowStyles}>
-      <h3 style={titleStyles} className="modaltitle">{title}</h3>
+      <h3 style={titleStyles}>{title}</h3>
       {(icon) && <img alt="" src={icon} />}
       <select
         value={selected}
@@ -85,7 +85,6 @@ const SettingsItem = React.memo(({
     <div style={rowStyles}>
       <h3
         style={titleStyles}
-        className="modaltitle"
       >
         {title} {keyBind && <kbd>{keyBind}</kbd>}
       </h3>
@@ -222,7 +221,7 @@ function Settings() {
       {(window.ssv && navigator.cookieEnabled && window.ssv.langs) && (
         <div style={itemStyles}>
           <div style={rowStyles}>
-            <h3 style={titleStyles} className="modaltitle">
+            <h3 style={titleStyles}>
               {t`Select Language`}
             </h3>
             <LanguageSelect />

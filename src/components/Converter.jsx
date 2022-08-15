@@ -213,7 +213,7 @@ function Converter() {
         }
         </select>
       </div>
-      <h3 className="modaltitle">{t`Palette Download`}</h3>
+      <h3>{t`Palette Download`}</h3>
       <div className="modalcotext">
         {jt`Palette for ${gimpLink}`}:&nbsp;
         <button
@@ -233,7 +233,7 @@ function Converter() {
           Download
         </button>
       </div>
-      <h3 className="modaltitle">{t`Image Converter`}</h3>
+      <h3>{t`Image Converter`}</h3>
       <p className="modalcotext">{t`Convert an image to canvas colors`}</p>
       <input
         type="file"

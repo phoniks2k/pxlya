@@ -17,7 +17,7 @@ const Archive = () => (
 Those canvases can get boring after a while and after weeks of no major change and if they really aren't worth being kept active, we decide to remove them.`}<br />
       {t`Here we collect those canvases to archive them in a proper way (which is currently just one).`}
     </p>
-    <p className="modaltitle">{t`Political Compass Canvas`}</p>
+    <h3>{t`Political Compass Canvas`}</h3>
     <img
       style={imageStyle}
       alt="political-compass"

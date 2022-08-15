@@ -22,8 +22,8 @@ const CanvasItem = ({
       alt="preview"
       src={`/preview${canvasId}.png`}
     />
-    <p className="modalcvtext">
-      <span className="modaltitle">{canvas.title}</span><br />
+    <div className="modalcvtext">
+      <h4>{canvas.title}</h4>
       {(online) && (
         <React.Fragment key="online">
           {t`Online Users`}:&nbsp;
@@ -67,7 +67,7 @@ const CanvasItem = ({
           ? <span key="voxsize"> x {THREE_CANVAS_HEIGHT} Voxels</span>
           : <span key="pxlsize"> Pixels</span>}
       </span>
-    </p>
+    </div>
   </div>
 );
 

@@ -49,15 +49,15 @@ pixels and 7s on already set pixels.`}<br />
       </p>
       <p>Guilded ({t`recommended`}): <a href="./guilded" target="_blank" rel="noopener noreferrer">pixelplanet.fun/guilded</a></p>
       <p>{t`Source on `}<a href="https://git.pixelplanet.fun" target="_blank" rel="noopener noreferrer">git.pixelplanet.fun</a></p>
-      <p className="modaltitle">{t`Map Data`}</p>
+      <h3>{t`Map Data`}</h3>
       <p className="modaltext">{t`The bare map data that we use, together with converted OpenStreetMap tiles for orientation, \
 can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLlZmKv3kEBE0HDhakTgAZZycD3ELjduajJxPGaXo">pixelplanetmap.zip</a> (422MB)</p>
-      <p className="modaltitle">{t`Banned? Detected as Proxy?`}</p>
+      <h3>{t`Banned? Detected as Proxy?`}</h3>
       <div className="modaltext">
         <p>{jt`If you got detected as proxy, but you are none, or think that you got wrongfully banned, please go to our ${guildedLink} or send us an e-mail to ${mailLink} and include the following IID:`}</p>
         <GetIID />
       </div>
-      <h3 className="modaltitle">2D {t`Controls`}</h3>
+      <h3>2D {t`Controls`}</h3>
       <div className="modaltext" style={{ lineHeight: 1.8 }}>
         {t`Click a color in palette to select it`}<br />
         {jt`Press ${bindG} to toggle grid`}<br />
@@ -74,7 +74,7 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`${mouseSymbol} Left click or ${touchSymbol} tap to place a pixel`}<br />
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
-      <h3 className="modaltitle">3D {t`Controls`}</h3>
+      <h3>3D {t`Controls`}</h3>
       <div className="modaltext" style={{ lineHeight: 1.8 }}>
         {jt`Press ${bindW}, ${bindA}, ${bindS}, ${bindD} to move`}<br />
         {jt`Press ${bindAUp}, ${bindALeft}, ${bindADown}, ${bindARight} to move`}<br />
@@ -86,7 +86,7 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`${mouseSymbol} Right click or ${touchSymbol} double-tap to remove a pixel`}<br />
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
-      <h3 className="modaltitle">Palette Credits</h3>
+      <h3>Palette Credits</h3>
       <div className="modaltext">
         {jt`We thanks those artists very much, they offered their palettes to the public on`}&nbsp;
         <a href="https://lospec.com/">lospec.com</a>
