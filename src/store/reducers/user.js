@@ -48,7 +48,7 @@ export default function user(
       };
     }
 
-    case 'RECEIVE_PIXEL_RETURN': {
+    case 'REC_PIXEL_RETURN': {
       const {
         wait: duration,
       } = action;
@@ -59,7 +59,7 @@ export default function user(
       };
     }
 
-    case 'RECEIVE_COOLDOWN': {
+    case 'REC_COOLDOWN': {
       const { wait: duration } = action;
       const wait = duration
         ? Date.now() + duration
@@ -79,7 +79,7 @@ export default function user(
       };
     }
 
-    case 'RECEIVE_ME':
+    case 'REC_ME':
     case 'LOGIN': {
       const {
         id,

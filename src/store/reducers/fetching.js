@@ -30,7 +30,7 @@ export default function fetching(
       };
     }
 
-    case 'REQUEST_BIG_CHUNK': {
+    case 'REQ_BIG_CHUNK': {
       const {
         fetchingChunks,
       } = state;
@@ -41,7 +41,7 @@ export default function fetching(
       };
     }
 
-    case 'RECEIVE_BIG_CHUNK': {
+    case 'REC_BIG_CHUNK': {
       const { fetchingChunks } = state;
 
       return {
@@ -50,7 +50,7 @@ export default function fetching(
       };
     }
 
-    case 'RECEIVE_BIG_CHUNK_FAILURE': {
+    case 'REC_BIG_CHUNK_FAILURE': {
       const { fetchingChunks } = state;
 
       return {

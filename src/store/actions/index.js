@@ -228,7 +228,7 @@ export function zoomOut(zoompoint) {
 
 export function requestBigChunk(center) {
   return {
-    type: 'REQUEST_BIG_CHUNK',
+    type: 'REQ_BIG_CHUNK',
     center,
   };
 }
@@ -247,7 +247,7 @@ export function receiveBigChunk(
   chunk,
 ) {
   return {
-    type: 'RECEIVE_BIG_CHUNK',
+    type: 'REC_BIG_CHUNK',
     center,
     chunk,
   };
@@ -255,7 +255,7 @@ export function receiveBigChunk(
 
 export function receiveBigChunkFailure(center, error) {
   return {
-    type: 'RECEIVE_BIG_CHUNK_FAILURE',
+    type: 'REC_BIG_CHUNK_FAILURE',
     center,
     error,
   };
@@ -265,7 +265,7 @@ export function receiveCoolDown(
   wait,
 ) {
   return {
-    type: 'RECEIVE_COOLDOWN',
+    type: 'REC_COOLDOWN',
     wait,
   };
 }
@@ -274,7 +274,7 @@ export function receiveMe(
   me,
 ) {
   return {
-    type: 'RECEIVE_ME',
+    type: 'REC_ME',
     ...me,
   };
 }
@@ -284,7 +284,7 @@ export function receiveStats(
 ) {
   const { ranking: totalRanking, dailyRanking: totalDailyRanking } = rankings;
   return {
-    type: 'RECEIVE_STATS',
+    type: 'REC_STATS',
     totalRanking,
     totalDailyRanking,
   };
@@ -292,7 +292,7 @@ export function receiveStats(
 
 export function receiveOnline(online) {
   return {
-    type: 'RECEIVE_ONLINE',
+    type: 'REC_ONLINE',
     online,
   };
 }
@@ -307,7 +307,7 @@ export function receiveChatMessage(
   isRead,
 ) {
   return {
-    type: 'RECEIVE_CHAT_MESSAGE',
+    type: 'REC_CHAT_MESSAGE',
     name,
     text,
     country,
@@ -322,7 +322,7 @@ export function receiveChatMessage(
  * check socket/packets/PixelReturn.js for args
  */
 export function storeReceivePixelReturn(args) {
-  args.type = 'RECEIVE_PIXEL_RETURN';
+  args.type = 'REC_PIXEL_RETURN';
   return args;
 }
 

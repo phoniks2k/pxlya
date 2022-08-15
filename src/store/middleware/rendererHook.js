@@ -49,7 +49,7 @@ export default (store) => (next) => (action) => {
   switch (type) {
     case 'RELOAD_URL':
     case 'SELECT_CANVAS':
-    case 'RECEIVE_ME': {
+    case 'REC_ME': {
       const renderer = getRenderer();
       const { is3D } = state.canvas;
 
@@ -85,10 +85,10 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'REQUEST_BIG_CHUNK':
+    case 'REQ_BIG_CHUNK':
     case 'PRE_LOADED_BIG_CHUNK':
-    case 'RECEIVE_BIG_CHUNK':
-    case 'RECEIVE_BIG_CHUNK_FAILURE': {
+    case 'REC_BIG_CHUNK':
+    case 'REC_BIG_CHUNK_FAILURE': {
       const renderer = getRenderer();
       renderer.forceNextRender = true;
       break;
@@ -114,7 +114,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'RECEIVE_PIXEL_RETURN': {
+    case 'REC_PIXEL_RETURN': {
       const renderer = getRenderer();
       renderer.forceNextSubrender = true;
       const { coolDownSeconds } = action;

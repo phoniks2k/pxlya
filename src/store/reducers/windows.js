@@ -446,7 +446,7 @@ export default function windows(
       };
     }
 
-    case 'RECEIVE_ME':
+    case 'REC_ME':
     case 'WINDOW_RESIZE': {
       const {
         innerWidth: width,
@@ -456,7 +456,7 @@ export default function windows(
       let { windows: newWindows, args, positions } = state;
       const showWindows = width > SCREEN_WIDTH_THRESHOLD;
 
-      if (action.type === 'RECEIVE_ME') {
+      if (action.type === 'REC_ME') {
         if (!showWindows) {
           // reset on phones on every refresh
           return initialState;

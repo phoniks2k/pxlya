@@ -43,7 +43,7 @@ export default () => (next) => (action) => {
       break;
     }
 
-    case 'RECEIVE_BIG_CHUNK': {
+    case 'REC_BIG_CHUNK': {
       /*
        * chunk: ChunkRGB or ChunkRGB3D object,
        *        see ui/ChunkRGB.js and ui/ChunkRGB3D.js

@@ -327,7 +327,7 @@ export default function canvasReducer(
       };
     }
 
-    case 'RECEIVE_ME': {
+    case 'REC_ME': {
       const { canvases } = action;
       let { canvasIdent, scale, view } = state;
 

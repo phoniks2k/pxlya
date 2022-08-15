@@ -24,7 +24,7 @@ export default function ranks(
   action,
 ) {
   switch (action.type) {
-    case 'RECEIVE_PIXEL_RETURN': {
+    case 'REC_PIXEL_RETURN': {
       const {
         rankedPxlCnt,
       } = action;
@@ -41,7 +41,7 @@ export default function ranks(
       };
     }
 
-    case 'RECEIVE_ONLINE': {
+    case 'REC_ONLINE': {
       const { online } = action;
       return {
         ...state,
@@ -49,7 +49,7 @@ export default function ranks(
       };
     }
 
-    case 'RECEIVE_ME':
+    case 'REC_ME':
     case 'LOGIN': {
       const {
         totalPixels,
@@ -66,7 +66,7 @@ export default function ranks(
       };
     }
 
-    case 'RECEIVE_STATS': {
+    case 'REC_STATS': {
       const { totalRanking, totalDailyRanking } = action;
       const lastFetch = Date.now();
       return {

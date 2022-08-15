@@ -19,7 +19,7 @@ class ChunkRGB {
   isBasechunk;
 
   constructor(palette, zoom = 0, cx = 0, cy = 0) {
-    // isBasechunk gets set to true by RECEIVE_BIG_CHUNK
+    // isBasechunk gets set to true by REC_BIG_CHUNK
     // if true => chunk got requested from api/chunk and
     //            receives websocket pixel updates
     // if false => chunk is an zoomed png tile

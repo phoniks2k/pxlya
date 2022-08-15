@@ -23,7 +23,7 @@ export default function chatRead(
   action,
 ) {
   switch (action.type) {
-    case 'RECEIVE_ME':
+    case 'REC_ME':
     case 'LOGIN': {
       const { channels } = action;
       const cids = Object.keys(channels);
@@ -76,7 +76,7 @@ export default function chatRead(
       };
     }
 
-    case 'RECEIVE_CHAT_MESSAGE': {
+    case 'REC_CHAT_MESSAGE': {
       const { channel: cid, isRead } = action;
       const readTs = isRead
         ? {

@@ -43,7 +43,7 @@ function receiveChatHistory(
   history,
 ) {
   return {
-    type: 'RECEIVE_CHAT_HISTORY',
+    type: 'REC_CHAT_HISTORY',
     cid,
     history,
   };

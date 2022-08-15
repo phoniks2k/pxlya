@@ -8,7 +8,7 @@ export default (store) => (next) => (action) => {
   try {
     if (!document.hasFocus()) {
       switch (action.type) {
-        case 'RECEIVE_ME': {
+        case 'REC_ME': {
           if (window.Notification
             && Notification.permission !== 'granted'
             && Notification.permission !== 'denied'
@@ -40,7 +40,7 @@ export default (store) => (next) => (action) => {
           break;
         }
 
-        case 'RECEIVE_CHAT_MESSAGE': {
+        case 'REC_CHAT_MESSAGE': {
           const state = store.getState();
           const { chatNotify } = state.audio;
           if (!chatNotify) break;

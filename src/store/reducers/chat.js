@@ -32,7 +32,7 @@ export default function chat(
   action,
 ) {
   switch (action.type) {
-    case 'RECEIVE_ME':
+    case 'REC_ME':
     case 'LOGIN': {
       // making sure object keys are numbers
       const channels = {};
@@ -136,7 +136,7 @@ export default function chat(
       };
     }
 
-    case 'RECEIVE_CHAT_MESSAGE': {
+    case 'REC_CHAT_MESSAGE': {
       const {
         name, text, country, channel, user,
       } = action;
@@ -172,7 +172,7 @@ export default function chat(
       };
     }
 
-    case 'RECEIVE_CHAT_HISTORY': {
+    case 'REC_CHAT_HISTORY': {
       const { cid, history } = action;
       for (let i = 0; i < history.length; i += 1) {
         msgId += 1;

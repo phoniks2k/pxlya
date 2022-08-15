@@ -119,7 +119,7 @@ export default (store) => (next) => (action) => {
         break;
       }
 
-      case 'RECEIVE_PIXEL_RETURN': {
+      case 'REC_PIXEL_RETURN': {
         switch (action.retCode) {
           case 0: {
             // successfully placed pixel
@@ -207,7 +207,7 @@ export default (store) => (next) => (action) => {
         break;
       }
 
-      case 'RECEIVE_CHAT_MESSAGE': {
+      case 'REC_CHAT_MESSAGE': {
         if (chatNotify) break;
 
         const { isPing, channel } = action;
