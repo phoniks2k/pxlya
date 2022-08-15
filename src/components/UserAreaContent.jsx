@@ -76,7 +76,7 @@ const UserAreaContent = () => {
         value={stats.ranking}
         rank
       />
-      <div className="modaltext">
+      <div>
         <p>{t`Your name is: ${name}`}</p>(
         <span
           role="button"

@@ -64,7 +64,7 @@ const Captcha = ({ autoload, width }) => {
 
   return (
     <>
-      <p className="modaltext">
+      <p>
         {t`Type the characters from the following image:`}
         &nbsp;
         <span style={{ fontSize: 11 }}>
@@ -120,7 +120,7 @@ const Captcha = ({ autoload, width }) => {
             </span>
           )}
       </div>
-      <p className="modaltext">
+      <p>
         {t`Can't read? Reload:`}&nbsp;
         <span
           role="button"

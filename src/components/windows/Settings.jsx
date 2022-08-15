@@ -6,8 +6,8 @@ import React from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { c, t } from 'ttag';
 
+import SettingsItem from '../SettingsItem';
 import LanguageSelect from '../LanguageSelect';
-import MdToggleButton from '../MdToggleButton';
 import {
   toggleGrid,
   togglePixelNotify,
@@ -21,38 +21,12 @@ import {
   selectStyle,
 } from '../../store/actions';
 
-
-const flexy = {
-  display: 'flex',
-  alignItems: 'stretch',
-  justifyContent: 'flex-start',
-  flexWrap: 'nowrap',
-  boxSizing: 'border-box',
-  flex: '1 1 auto',
-};
-
-const itemStyles = {
-  ...flexy,
-  flexDirection: 'column',
-  marginBottom: 20,
-};
-
-const titleStyles = {
-  flex: '1 1 auto',
-};
-
-const rowStyles = {
-  ...flexy,
-  alignItems: 'center',
-  flexDirection: 'row',
-};
-
 const SettingsItemSelect = ({
   title, values, selected, onSelect, icon, children,
 }) => (
-  <div style={itemStyles}>
-    <div style={rowStyles}>
-      <h3 style={titleStyles}>{title}</h3>
+  <div className="setitem">
+    <div className="setrow">
+      <h3 className="settitle">{title}</h3>
       {(icon) && <img alt="" src={icon} />}
       <select
         value={selected}
@@ -77,27 +51,6 @@ const SettingsItemSelect = ({
     <div className="modaldivider" />
   </div>
 );
-
-const SettingsItem = React.memo(({
-  title, keyBind, value, onToggle, children, deactivated,
-}) => (
-  <div style={itemStyles}>
-    <div style={rowStyles}>
-      <h3
-        style={titleStyles}
-      >
-        {title} {keyBind && <kbd>{keyBind}</kbd>}
-      </h3>
-      <MdToggleButton
-        value={value}
-        onToggle={onToggle}
-        deactivated={deactivated}
-      />
-    </div>
-    <div className="modaldesc">{children}</div>
-    <div className="modaldivider" />
-  </div>
-), (prevProps, nextProps) => prevProps.value === nextProps.value);
 
 function Settings() {
   const [
@@ -128,7 +81,7 @@ function Settings() {
   const audioAvailable = window.AudioContext || window.webkitAudioContext;
 
   return (
-    <div style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: 30 }}>
+    <div className="content">
       <SettingsItem
         title={t`Show Grid`}
         keyBind={c('keybinds').t`G`}
@@ -219,9 +172,9 @@ function Settings() {
         </SettingsItemSelect>
       )}
       {(window.ssv && navigator.cookieEnabled && window.ssv.langs) && (
-        <div style={itemStyles}>
-          <div style={rowStyles}>
-            <h3 style={titleStyles}>
+        <div className="setitem">
+          <div className="setrow">
+            <h3 className="settitle">
               {t`Select Language`}
             </h3>
             <LanguageSelect />

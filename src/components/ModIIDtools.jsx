@@ -97,7 +97,7 @@ function ModIIDtools() {
           </p>
         </React.Fragment>
       )}
-      <p className="modalcotext">
+      <p>
         {' IID: '}
         <input
           value={iid}

@@ -16,7 +16,7 @@ const LogInArea = ({ windowId }) => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <p className="modaltext">
+      <p>
         {t`Login to access more features and stats.`}
       </p><br />
       <h2>{t`Login with Name or Mail:`}</h2>

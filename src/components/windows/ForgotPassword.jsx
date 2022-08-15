@@ -66,8 +66,8 @@ const ForgotPassword = ({ windowId }) => {
     );
   }
   return (
-    <div style={{ paddingLeft: '5%', paddingRight: '5%', textAlign: 'center' }}>
-      <p className="modaltext">
+    <div className="content">
+      <p>
         {t`Enter your mail address and we will send you a new password:`}
       </p><br />
       <form onSubmit={handleSubmit}>

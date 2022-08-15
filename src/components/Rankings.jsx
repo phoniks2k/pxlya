@@ -84,7 +84,7 @@ const Rankings = () => {
             ))}
         </tbody>
       </table>
-      <p className="modaltext">
+      <p>
         {t`Ranking updates every 5 min. Daily rankings get reset at midnight UTC.`}
       </p>
     </>

@@ -67,7 +67,7 @@ const Alert = () => {
       >
         <h2>{title}</h2>
         {(message) && (
-        <p className="modaltext">
+        <p>
           {message}
         </p>
         )}

@@ -37,8 +37,8 @@ const Help = () => {
   const mailLink = <a href="mailto:admin@pixelplanet.fun">admin@pixelplanet.fun</a>;
 
   return (
-    <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
-      <p className="modaltext">
+    <div className="content">
+      <p>
         {t`Place color pixels on a large canvas with other players online!`}<br />
         {t`Our main canvas is a huge worldmap, you can place wherever you like, but you will have to wait a specific \
 Cooldown between pixels. You can check out the cooldown and requirements on the Canvas Selection menu (globe button on top). \
@@ -47,18 +47,18 @@ pixels and 7s on already set pixels.`}<br />
         {t`Higher zoomlevels take some time to update, the 3D globe gets updated at least once per day.`}<br />
         {t`Have fun!`}
       </p>
-      <p>Guilded ({t`recommended`}): <a href="./guilded" target="_blank" rel="noopener noreferrer">pixelplanet.fun/guilded</a></p>
-      <p>{t`Source on `}<a href="https://git.pixelplanet.fun" target="_blank" rel="noopener noreferrer">git.pixelplanet.fun</a></p>
+      <p className="modalinfo">Guilded ({t`recommended`}): <a href="./guilded" target="_blank" rel="noopener noreferrer">pixelplanet.fun/guilded</a></p>
+      <p className="modalinfo">{t`Source on `}<a href="https://git.pixelplanet.fun" target="_blank" rel="noopener noreferrer">git.pixelplanet.fun</a></p>
       <h3>{t`Map Data`}</h3>
-      <p className="modaltext">{t`The bare map data that we use, together with converted OpenStreetMap tiles for orientation, \
+      <p>{t`The bare map data that we use, together with converted OpenStreetMap tiles for orientation, \
 can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLlZmKv3kEBE0HDhakTgAZZycD3ELjduajJxPGaXo">pixelplanetmap.zip</a> (422MB)</p>
       <h3>{t`Banned? Detected as Proxy?`}</h3>
-      <div className="modaltext">
+      <div>
         <p>{jt`If you got detected as proxy, but you are none, or think that you got wrongfully banned, please go to our ${guildedLink} or send us an e-mail to ${mailLink} and include the following IID:`}</p>
         <GetIID />
       </div>
       <h3>2D {t`Controls`}</h3>
-      <div className="modaltext" style={{ lineHeight: 1.8 }}>
+      <div style={{ lineHeight: 1.5 }}>
         {t`Click a color in palette to select it`}<br />
         {jt`Press ${bindG} to toggle grid`}<br />
         {jt`Press ${bindX} to toggle showing of pixel activity`}<br />
@@ -75,7 +75,7 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
       <h3>3D {t`Controls`}</h3>
-      <div className="modaltext" style={{ lineHeight: 1.8 }}>
+      <div style={{ lineHeight: 1.5 }}>
         {jt`Press ${bindW}, ${bindA}, ${bindS}, ${bindD} to move`}<br />
         {jt`Press ${bindAUp}, ${bindALeft}, ${bindADown}, ${bindARight} to move`}<br />
         {jt`Press ${bindE} and ${bindC} to fly up and down`}<br />
@@ -87,7 +87,7 @@ can be downloaded from mega.nz here: `}<a href="https://mega.nz/#!JpkBwAbJ!EnSLl
         {jt`Click ${mouseSymbol} middle mouse button or ${touchSymbol} long-tap to select current hovering color`}<br />
       </div>
       <h3>Palette Credits</h3>
-      <div className="modaltext">
+      <div>
         {jt`We thanks those artists very much, they offered their palettes to the public on`}&nbsp;
         <a href="https://lospec.com/">lospec.com</a>
         <p>

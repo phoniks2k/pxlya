@@ -219,7 +219,7 @@ function ModCanvastools() {
       {resp && (
         <div className="respbox">
           {resp.split('\n').map((line) => (
-            <p key={line.slice(0, 3)} className="modaltext">
+            <p key={line.slice(0, 3)}>
               {line}
             </p>
           ))}
@@ -233,7 +233,7 @@ function ModCanvastools() {
           </span>
         </div>
       )}
-      <p className="modalcotext">{t`Choose Canvas`}:&nbsp;
+      <p>{t`Choose Canvas`}:&nbsp;
         <select
           value={selectedCanvas}
           onChange={(e) => {
@@ -253,8 +253,8 @@ function ModCanvastools() {
       </p>
       <div className="modaldivider" />
       <h3>{t`Image Upload`}</h3>
-      <p className="modalcotext">{t`Upload images to canvas`}</p>
-      <p className="modalcotext">
+      <p>{t`Upload images to canvas`}</p>
+      <p>
         {t`File`}:&nbsp;
         <input type="file" name="image" id="imgfile" />
       </p>
@@ -274,8 +274,8 @@ function ModCanvastools() {
           </option>
         ))}
       </select>
-      <p className="modalcotext">{descAction}</p>
-      <p className="modalcotext">
+      <p>{descAction}</p>
+      <p>
         {t`Coordinates in X_Y format:`}&nbsp;
         <input
           value={coords}
@@ -317,7 +317,7 @@ function ModCanvastools() {
       <br />
       <div className="modaldivider" />
       <h3>{t`Pixel Protection`}</h3>
-      <p className="modalcotext">
+      <p>
         {t`Set protection of areas \
         (if you need finer grained control, \
         use protect with image upload and alpha layers)`}
@@ -338,7 +338,7 @@ function ModCanvastools() {
           </option>
         ))}
       </select>
-      <p className="modalcotext">
+      <p>
         {t`Top-left corner`} (X_Y):&nbsp;
         <input
           value={tlcoords}
@@ -356,7 +356,7 @@ function ModCanvastools() {
           }}
         />
       </p>
-      <p className="modalcotext">
+      <p>
         {t`Bottom-right corner`} (X_Y):&nbsp;
         <input
           value={brcoords}
@@ -400,7 +400,7 @@ function ModCanvastools() {
           <br />
           <div className="modaldivider" />
           <h3>{t`Rollback to Date`}</h3>
-          <p className="modalcotext">
+          <p>
             {t`Rollback an area of the canvas to a set date (00:00 UTC)`}
           </p>
           <input
@@ -413,7 +413,7 @@ function ModCanvastools() {
               selectDate(evt.target.value);
             }}
           />
-          <p className="modalcotext">
+          <p>
             {t`Top-left corner`} (X_Y):&nbsp;
             <input
               value={tlrcoords}
@@ -431,7 +431,7 @@ function ModCanvastools() {
               }}
             />
           </p>
-          <p className="modalcotext">
+          <p>
             {t`Bottom-right corner`} (X_Y):&nbsp;
             <input
               value={brrcoords}
@@ -475,7 +475,7 @@ function ModCanvastools() {
       <br />
       <div className="modaldivider" />
       <h3>{t`Canvas Cleaner`}</h3>
-      <p className="modalcotext">
+      <p>
         {t`Apply a filter to clean trash in large canvas areas.`}
       </p>
       <select
@@ -494,11 +494,11 @@ function ModCanvastools() {
           </option>
         ))}
       </select>
-      <p className="modalcotext">{descCleanAction}</p>
-      <p className="modalcotext" style={{ fontWeight: 'bold' }}>
+      <p>{descCleanAction}</p>
+      <p style={{ fontWeight: 'bold' }}>
         {cleanerStatusString}
       </p>
-      <p className="modalcotext">
+      <p>
         {t`Top-left corner`} (X_Y):&nbsp;
         <input
           value={tlccoords}
@@ -516,7 +516,7 @@ function ModCanvastools() {
           }}
         />
       </p>
-      <p className="modalcotext">
+      <p>
         {t`Bottom-right corner`} (X_Y):&nbsp;
         <input
           value={brccoords}

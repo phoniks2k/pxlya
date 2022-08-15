@@ -100,7 +100,7 @@ function ModWatchtools() {
       {resp && (
         <div className="respbox">
           {resp.split('\n').map((line) => (
-            <p key={line.slice(0, 3)} className="modaltext">
+            <p key={line.slice(0, 3)}>
               {line}
             </p>
           ))}
@@ -114,8 +114,8 @@ function ModWatchtools() {
           </span>
         </div>
       )}
-      <p className="modalcotext">{t`Check who placed in an area`}</p>
-      <p className="modalcotext">{t`Canvas`}:&nbsp;
+      <p>{t`Check who placed in an area`}</p>
+      <p>{t`Canvas`}:&nbsp;
         <select
           value={selectedCanvas}
           onChange={(e) => {
@@ -165,7 +165,7 @@ function ModWatchtools() {
           }}
         />
       </p>
-      <p className="modalcotext">
+      <p>
         {t`Top-left corner`} (X_Y):&nbsp;
         <input
           value={tlcoords}
@@ -183,7 +183,7 @@ function ModWatchtools() {
           }}
         />
       </p>
-      <p className="modalcotext">
+      <p>
         {t`Bottom-right corner`} (X_Y):&nbsp;
         <input
           value={brcoords}

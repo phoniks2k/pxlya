@@ -10,7 +10,7 @@ import {
   setBlockingDm,
   setUserBlock,
 } from '../store/actions/thunks';
-import MdToggleButton from './MdToggleButton';
+import SettingsItem from './SettingsItem';
 
 const SocialSettings = ({ done }) => {
   const blocked = useSelector((state) => state.chat.blocked);
@@ -20,31 +20,15 @@ const SocialSettings = ({ done }) => {
 
   return (
     <div className="inarea">
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          margin: 10,
+      <SettingsItem
+        title={t`Block all Private Messages`}
+        value={blockDm}
+        onToggle={() => {
+          if (!fetching) {
+            dispatch(setBlockingDm(!blockDm));
+          }
         }}
-      >
-        <h3
-          style={{
-            flex: 'auto',
-            textAlign: 'left',
-          }}
-        >
-          {t`Block all Private Messages`}
-        </h3>
-        <MdToggleButton
-          value={blockDm}
-          onToggle={() => {
-            if (!fetching) {
-              dispatch(setBlockingDm(!blockDm));
-            }
-          }}
-        />
-      </div>
-      <div className="modaldivider" />
+      />
       <h3
         style={{
           textAlign: 'left',
@@ -75,7 +59,7 @@ const SocialSettings = ({ done }) => {
           </span>
         )
           : (
-            <p className="modaltext">{t`You have no users blocked`}</p>
+            <p>{t`You have no users blocked`}</p>
           )
       }
       <div className="modaldivider" />

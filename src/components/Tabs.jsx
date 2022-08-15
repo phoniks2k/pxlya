@@ -21,7 +21,7 @@ const Tabs = ({ children, activeTab, setActiveTab }) => (
         );
       })}
     </ol>
-    <div className="tab-content">
+    <div className="content">
       {children.map((child) => {
         if (!child.props || child.props.label !== activeTab) {
           return undefined;

@@ -104,7 +104,7 @@ tr:nth-child(even) {
   border-radius: 10px;
 }
 
-.modaltext, .modalcotext {
+.content {
   color: #f8f8f8;
 }
 

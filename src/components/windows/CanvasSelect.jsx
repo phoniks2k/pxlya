@@ -22,14 +22,8 @@ const CanvasSelect = ({ windowId }) => {
     [dispatch]);
 
   return (
-    <div style={{
-      textAlign: 'center',
-      paddingLeft: '5%',
-      paddingRight: '5%',
-      paddingTop: 20,
-    }}
-    >
-      <p className="modaltext">
+    <div className="content">
+      <p>
         {t`Select the canvas you want to use. \
  Every canvas is unique and has different palettes, cooldown and requirements. \
  Archive of closed canvases can be accessed here:`}&nbsp;

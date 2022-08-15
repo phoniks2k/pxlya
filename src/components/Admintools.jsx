@@ -88,7 +88,7 @@ function Admintools() {
       {resp && (
         <div className="respbox">
           {resp.split('\n').map((line) => (
-            <p key={line.slice(0, 3)} className="modaltext">
+            <p key={line.slice(0, 3)}>
               {line}
             </p>
           ))}
@@ -105,7 +105,7 @@ function Admintools() {
       <div>
         <br />
         <h3>{t`IP Actions`}</h3>
-        <p className="modalcotext">
+        <p>
           {t`Do stuff with IPs (one IP per line)`}
         </p>
         <select
@@ -154,7 +154,7 @@ function Admintools() {
         <br />
         <div className="modaldivider" />
         <h3>{t`Manage Moderators`}</h3>
-        <p className="modalcotext">
+        <p>
           {t`Remove Moderator`}
         </p>
         {(modlist.length) ? (
@@ -188,14 +188,14 @@ function Admintools() {
           </span>
         )
           : (
-            <p className="modaltext">{t`There are no mods`}</p>
+            <p>{t`There are no mods`}</p>
           )}
         <br />
 
-        <p className="modalcotext">
+        <p>
           {t`Assign new Mod`}
         </p>
-        <p className="modalcotext">
+        <p>
           {t`Enter UserName of new Mod`}:&nbsp;
           <input
             value={modName}

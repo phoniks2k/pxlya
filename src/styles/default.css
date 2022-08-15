@@ -189,7 +189,7 @@ h3 {
 }
 
 h4 {
-  color: #4f545c;
+  color: #202327;
   font-weight: 500;
   font-size: 15px;
   line-height: 22px;
@@ -548,19 +548,16 @@ tr:nth-child(even) {
   font-size: 16px;
 }
 
-.modaltext, .modalcotext {
+.content {
+  padding-left: 5%;
+  padding-right: 5%;
   color: hsla(0, 0%, 0%, 0.6);
   font-size: 14px;
   font-weight: 500;
   line-height: normal;
   position: relative;
-  text-align: inherit;
   float: none;
-}
-
-.modaltext {
-  margin: 0;
-  padding: 0;
+  text-align: center;
 }
 
 .modaldesc {
@@ -595,8 +592,6 @@ tr:nth-child(even) {
   position: relative;
   text-align: inherit;
   float: none;
-  margin: 0;
-  padding: 0;
 }
 
 .modalcvtext {
@@ -609,6 +604,35 @@ tr:nth-child(even) {
   margin-top: 3px;
   margin-bottom: 3px;
   width: 75%;
+}
+
+.setitem, .setrow {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+}
+
+.setitem h3 {
+  margin-top: 0;
+}
+
+.setitem {
+  align-items: stretch;
+  flex-direction: column;
+  text-align: initial;
+  margin-bottom: 6px;
+  margin-top: 10px;
+}
+
+.settitle {
+  flex: 1 1 auto;
+}
+
+.setrow {
+  align-items: center;
+  flex-direction: row;
 }
 
 .ModalClose, .ModalRestore {

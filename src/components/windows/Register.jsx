@@ -77,12 +77,12 @@ const Register = ({ windowId }) => {
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div className="content">
       <form
         style={{ paddingLeft: '5%', paddingRight: '5%' }}
         onSubmit={handleSubmit}
       >
-        <p className="modaltext">{t`Register new account here`}</p><br />
+        <p>{t`Register new account here`}</p>
         {errors.map((error) => (
           <p key={error} className="errormessage"><span>{t`Error`}</span>
             :&nbsp;{error}</p>

@@ -187,7 +187,7 @@ function Converter() {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <div className="modalcotext">{t`Choose Canvas`}:&nbsp;
+      <div>{t`Choose Canvas`}:&nbsp;
         <select
           value={selectedCanvas}
           onChange={(e) => {
@@ -214,7 +214,7 @@ function Converter() {
         </select>
       </div>
       <h3>{t`Palette Download`}</h3>
-      <div className="modalcotext">
+      <div>
         {jt`Palette for ${gimpLink}`}:&nbsp;
         <button
           type="button"
@@ -234,7 +234,7 @@ function Converter() {
         </button>
       </div>
       <h3>{t`Image Converter`}</h3>
-      <p className="modalcotext">{t`Convert an image to canvas colors`}</p>
+      <p>{t`Convert an image to canvas colors`}</p>
       <input
         type="file"
         id="imgfile"
@@ -253,7 +253,7 @@ function Converter() {
           setInputImageCanvas(imageData);
         }}
       />
-      <p className="modalcotext">{t`Choose Strategy`}:&nbsp;
+      <p>{t`Choose Strategy`}:&nbsp;
         <select
           value={selectedStrategy}
           onChange={(e) => {
@@ -280,7 +280,7 @@ function Converter() {
             if (!showExtraOptions) setExtraRender(false);
           }}
         >
-          <p style={{ fontHeight: 16 }} className="modalcotext">
+          <p style={{ fontHeight: 16 }}>
             <input
               type="checkbox"
               checked={serpentine}
@@ -293,7 +293,7 @@ function Converter() {
             />
             {t`Serpentine`}
           </p>
-          <span className="modalcotext">{t`Minimum Color Distance`}:&nbsp;
+          <span>{t`Minimum Color Distance`}:&nbsp;
             <input
               type="number"
               step="1"
@@ -309,7 +309,7 @@ function Converter() {
               }}
             />&nbsp;
           </span>
-          <p style={{ fontHeight: 16 }} className="modalcotext">
+          <p style={{ fontHeight: 16 }}>
             <input
               type="checkbox"
               checked={GIMPerror}
@@ -324,7 +324,7 @@ function Converter() {
           </p>
         </div>
       )}
-      <p className="modalcotext">{t`Choose Color Mode`}:&nbsp;
+      <p>{t`Choose Color Mode`}:&nbsp;
         <select
           value={selectedColorDist}
           onChange={(e) => {
@@ -342,7 +342,7 @@ function Converter() {
           }
         </select>
       </p>
-      <p style={{ fontHeight: 16 }} className="modalcotext">
+      <p style={{ fontHeight: 16 }}>
         <input
           type="checkbox"
           checked={gridEnabled}
@@ -362,7 +362,7 @@ function Converter() {
             if (!gridEnabled) setGridRender(false);
           }}
         >
-          <p style={{ fontHeight: 16 }} className="modalcotext">
+          <p style={{ fontHeight: 16 }}>
             <input
               type="checkbox"
               checked={gridLight}
@@ -375,7 +375,7 @@ function Converter() {
             />
             {t`Light Grid`}
           </p>
-          <span className="modalcotext">{t`Offset`} X:&nbsp;
+          <span>{t`Offset`} X:&nbsp;
             <input
               type="number"
               step="1"
@@ -391,7 +391,7 @@ function Converter() {
               }}
             />&nbsp;
           </span>
-          <span className="modalcotext">{t`Offset`} Y:&nbsp;
+          <span>{t`Offset`} Y:&nbsp;
             <input
               type="number"
               step="1"
@@ -409,7 +409,7 @@ function Converter() {
           </span>
         </div>
       )}
-      <p style={{ fontHeight: 16 }} className="modalcotext">
+      <p style={{ fontHeight: 16 }}>
         <input
           type="checkbox"
           checked={scalingEnabled}
@@ -431,7 +431,7 @@ function Converter() {
             if (!scalingEnabled) setScalingRender(false);
           }}
         >
-          <span className="modalcotext">{t`Width`}:&nbsp;
+          <span>{t`Width`}:&nbsp;
             <input
               type="number"
               step="1"
@@ -462,7 +462,7 @@ function Converter() {
               }}
             />&nbsp;
           </span>
-          <span className="modalcotext">{t`Height`}:&nbsp;
+          <span>{t`Height`}:&nbsp;
             <input
               type="number"
               step="1"
@@ -493,7 +493,7 @@ function Converter() {
               }}
             />
           </span>
-          <p style={{ fontHeight: 16 }} className="modalcotext">
+          <p style={{ fontHeight: 16 }}>
             <input
               type="checkbox"
               checked={selectedScaleKeepRatio}
@@ -503,7 +503,7 @@ function Converter() {
             />
             {t`Keep Ratio`}
           </p>
-          <p style={{ fontHeight: 16 }} className="modalcotext">
+          <p style={{ fontHeight: 16 }}>
             <input
               type="checkbox"
               checked={scalingAA}
