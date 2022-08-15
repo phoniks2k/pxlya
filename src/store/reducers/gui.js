@@ -28,7 +28,7 @@ export default function gui(
       };
     }
 
-    case 'TOGGLE_PIXEL_NOTIFY': {
+    case 'TOGGLE_PXL_NOTIFY': {
       return {
         ...state,
         showPixelNotify: !state.showPixelNotify,

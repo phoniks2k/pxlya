@@ -95,7 +95,7 @@ export default (store) => (next) => (action) => {
     }
 
     case 'TOGGLE_GRID':
-    case 'ALLOW_SETTING_PIXEL': {
+    case 'ALLOW_SETTING_PXL': {
       const renderer = getRenderer();
       renderer.forceNextSubrender = true;
       break;
@@ -114,7 +114,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'REC_PIXEL_RETURN': {
+    case 'REC_PXL_RETURN': {
       const renderer = getRenderer();
       renderer.forceNextSubrender = true;
       const { coolDownSeconds } = action;

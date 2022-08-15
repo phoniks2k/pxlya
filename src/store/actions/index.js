@@ -41,7 +41,7 @@ export function toggleGrid() {
 
 export function togglePixelNotify() {
   return {
-    type: 'TOGGLE_PIXEL_NOTIFY',
+    type: 'TOGGLE_PXL_NOTIFY',
   };
 }
 
@@ -106,10 +106,9 @@ export function toggleOpenMenu() {
   };
 }
 
-export function setAllowSettingPixel(allowSettingPixel) {
+export function requestPlaceTimeout() {
   return {
-    type: 'ALLOW_SETTING_PIXEL',
-    allowSettingPixel,
+    type: 'REQ_PLACE_TIMEOUT',
   };
 }
 
@@ -179,27 +178,19 @@ export function moveDirection([vx, vy]) {
 }
 
 export function moveNorth() {
-  return (dispatch) => {
-    dispatch(moveDirection([0, -1]));
-  };
+  return moveDirection([0, -1]);
 }
 
 export function moveWest() {
-  return (dispatch) => {
-    dispatch(moveDirection([-1, 0]));
-  };
+  return moveDirection([-1, 0]);
 }
 
 export function moveSouth() {
-  return (dispatch) => {
-    dispatch(moveDirection([0, 1]));
-  };
+  return moveDirection([0, 1]);
 }
 
 export function moveEast() {
-  return (dispatch) => {
-    dispatch(moveDirection([1, 0]));
-  };
+  return moveDirection([1, 0]);
 }
 
 export function setScale(scale, zoompoint) {
@@ -322,8 +313,16 @@ export function receiveChatMessage(
  * check socket/packets/PixelReturn.js for args
  */
 export function storeReceivePixelReturn(args) {
-  args.type = 'REC_PIXEL_RETURN';
+  args.type = 'REC_PXL_RETURN';
   return args;
+}
+export function requestPlacePixels(i, j, pixels) {
+  return {
+    type: 'REQ_PLACE_PXLS',
+    i,
+    j,
+    pixels,
+  };
 }
 
 export function logoutUser(

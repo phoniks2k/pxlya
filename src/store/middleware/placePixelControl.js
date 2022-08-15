@@ -10,7 +10,7 @@ export default (store) => (next) => (action) => {
   const ret = next(action);
 
   switch (action.type) {
-    case 'REC_PIXEL_RETURN': {
+    case 'REC_PXL_RETURN': {
       const renderer = getRenderer();
       const {
         retCode,

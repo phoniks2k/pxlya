@@ -9,14 +9,14 @@
  * */
 import { t } from 'ttag';
 import {
-  setAllowSettingPixel,
+  requestPlaceTimeout,
   pAlert,
   storeReceivePixelReturn,
+  requestPlacePixels,
 } from '../store/actions';
 import {
   notify,
 } from '../store/actions/thunks';
-import SocketClient from '../socket/SocketClient';
 
 let pixelTimeout = null;
 /*
@@ -49,7 +49,7 @@ function requestFromQueue(store) {
   pixelTimeout = setTimeout(() => {
     pixelQueue = [];
     pixelTimeout = null;
-    store.dispatch(setAllowSettingPixel(true));
+    store.dispatch(requestPlaceTimeout());
     store.dispatch(pAlert(
       t`Error :(`,
       t`Didn't get an answer from pixelplanet. Maybe try to refresh?`,
@@ -59,8 +59,7 @@ function requestFromQueue(store) {
 
   lastRequestValues = pixelQueue.shift();
   const { i, j, pixels } = lastRequestValues;
-  SocketClient.requestPlacePixels(i, j, pixels);
-  store.dispatch(setAllowSettingPixel(false));
+  store.dispatch(requestPlacePixels(i, j, pixels));
 }
 
 /*

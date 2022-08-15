@@ -24,7 +24,7 @@ export default function ranks(
   action,
 ) {
   switch (action.type) {
-    case 'REC_PIXEL_RETURN': {
+    case 'REC_PXL_RETURN': {
       const {
         rankedPxlCnt,
       } = action;

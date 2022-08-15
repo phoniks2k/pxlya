@@ -119,7 +119,7 @@ export default (store) => (next) => (action) => {
         break;
       }
 
-      case 'REC_PIXEL_RETURN': {
+      case 'REC_PXL_RETURN': {
         switch (action.retCode) {
           case 0: {
             // successfully placed pixel

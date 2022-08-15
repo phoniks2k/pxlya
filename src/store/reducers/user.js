@@ -40,15 +40,21 @@ export default function user(
       };
     }
 
-    case 'ALLOW_SETTING_PIXEL': {
-      const { allowSettingPixel } = action;
+    case 'REQ_PLACE_TIMEOUT': {
       return {
         ...state,
-        allowSettingPixel,
+        allowSettingPixel: true,
       };
     }
 
-    case 'REC_PIXEL_RETURN': {
+    case 'REQ_PLACE_PXLS': {
+      return {
+        ...state,
+        allowSettingPixel: false,
+      };
+    }
+
+    case 'REC_PXL_RETURN': {
       const {
         wait: duration,
       } = action;
