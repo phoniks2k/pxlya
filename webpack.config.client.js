@@ -128,7 +128,7 @@ function buildWebpackClientConfig(
           include: [
             path.resolve('src'),
             ...['image-q'].map((moduleName) => (
-              path.resolve('node_modules', moduleName)
+              path.resolve('node_modules', moduleName),
             ))
           ],
           options: {

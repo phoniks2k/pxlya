@@ -1,5 +1,5 @@
 /*
- * redux store
+ * redux store for windows / popups
  */
 
 /* eslint-disable no-console */
@@ -17,26 +17,11 @@ import storage from 'redux-persist/lib/storage';
 import audio from './reducers/audio';
 import canvas from './reducers/canvas';
 import gui from './reducers/gui';
-import windows from './reducers/windows';
-import user from './reducers/user';
-import ranks from './reducers/ranks';
-import alert from './reducers/alert';
-import chat from './reducers/chat';
-import contextMenu from './reducers/contextMenu';
-import chatRead from './reducers/chatRead';
-import fetching from './reducers/fetching';
 
 /*
  * middleware
  */
-import audiom from './middleware/audio';
-import socketClientHook from './middleware/socketClientHook';
-import rendererHook from './middleware/rendererHook';
-import array from './middleware/array';
 import promise from './middleware/promise';
-import notifications from './middleware/notifications';
-import title from './middleware/title';
-import extensions from './middleware/extensions';
 
 const CURRENT_VERSION = 3;
 
@@ -54,25 +39,12 @@ const reducers = persistReducer({
     return Promise.resolve(state);
   },
   blacklist: [
-    'user',
     'canvas',
-    'alert',
-    'chat',
-    'contextMenu',
-    'fetching',
   ],
 }, combineReducers({
   audio,
   canvas,
   gui,
-  windows,
-  user,
-  ranks,
-  alert,
-  chat,
-  contextMenu,
-  chatRead,
-  fetching,
 }));
 
 const store = createStore(
@@ -82,13 +54,6 @@ const store = createStore(
     applyMiddleware(
       thunk,
       promise,
-      array,
-      audiom,
-      notifications,
-      title,
-      socketClientHook,
-      rendererHook,
-      extensions,
     ),
   ),
 );
