@@ -8,8 +8,7 @@ import {
   getOffsetOfPixel,
 } from './utils';
 import pixelCache from './PixelCache';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 
 
 /**

@@ -16,8 +16,7 @@ import { getChunkOfPixel } from './utils';
 import Palette from './Palette';
 import { TILE_SIZE } from './constants';
 import { BACKUP_DIR } from './config';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 
 export default async function rollbackToDate(
   canvasId, // number

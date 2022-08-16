@@ -22,8 +22,7 @@ import {
   createPngBackup,
   incrementialBackupRedis,
 } from './core/tilesBackup';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './core/canvases';
 
 /*
  * use low cpu priority

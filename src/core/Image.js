@@ -11,8 +11,7 @@ import RedisCanvas from '../data/redis/RedisCanvas';
 import logger from './logger';
 import { getChunkOfPixel } from './utils';
 import { TILE_SIZE } from './constants';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 import Palette from './Palette';
 
 

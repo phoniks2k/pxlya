@@ -16,7 +16,7 @@ import captcha from './captcha';
 import resetPassword from './reset_password';
 import api from './api';
 
-import assets from './assets.json'; // eslint-disable-line import/no-unresolved
+import { assets } from '../core/assets';
 import { expressTTag } from '../core/ttag';
 import generateGlobePage from '../ssr/Globe';
 import generateWinPage from '../ssr/Win';

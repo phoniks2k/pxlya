@@ -19,8 +19,7 @@ import {
   TILE_SIZE,
 } from './constants';
 import logger from './logger';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 
 const METHODS = {
   /*

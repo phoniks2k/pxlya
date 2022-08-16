@@ -1,17 +1,22 @@
 /**
+ * webpack config for client files
  */
 
-import fs from 'fs';
-import path from 'path';
-import webpack from 'webpack';
-import AssetsPlugin from 'assets-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+const fs = require('fs');
+const path = require('path');
+const process = require('process');
+const webpack = require('webpack');
+const AssetsPlugin = require('assets-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+// make sure we build in root dir
+process.chdir(__dirname);
 
 /*
  * Emit a file with assets paths
  */
 const assetPlugin = new AssetsPlugin({
-  path: path.resolve(__dirname, 'dist'),
+  path: path.resolve('dist'),
   filename: 'assets.json',
   update: true,
   entrypoints: true,
@@ -19,7 +24,7 @@ const assetPlugin = new AssetsPlugin({
 });
 
 
-export function buildWebpackClientConfig(
+function buildWebpackClientConfig(
   development,
   analyze,
   locale,
@@ -28,14 +33,14 @@ export function buildWebpackClientConfig(
   const ttag = {
     resolve: {
       translations: (locale !== 'default')
-        ? path.resolve(__dirname, 'i18n', `${locale}.po`)
+        ? path.resolve('i18n', `${locale}.po`)
         : locale,
     },
   };
 
   if (extract) {
     ttag.extract = {
-      output: path.resolve(__dirname, 'i18n', 'template.pot'),
+      output: path.resolve('i18n', 'template.pot'),
     };
   }
 
@@ -55,21 +60,20 @@ export function buildWebpackClientConfig(
     name: 'client',
     target: 'web',
 
-    context: __dirname,
     mode: (development) ? 'development' : 'production',
     devtool: (development) ? 'eval' : false,
 
     entry: {
       [(locale !== 'default') ? `client-${locale}` : 'client']:
-        [path.resolve(__dirname, 'src', 'client.js')],
+        [path.resolve('src', 'client.js')],
       [(locale !== 'default') ? `globe-${locale}` : 'globe']:
-        [path.resolve(__dirname, 'src', 'globe.js')],
+        [path.resolve('src', 'globe.js')],
       [(locale !== 'default') ? `win-${locale}` : 'win']:
-        [path.resolve(__dirname, 'src', 'win.js')],
+        [path.resolve('src', 'win.js')],
     },
 
     output: {
-      path: path.resolve(__dirname, 'dist', 'public', 'assets'),
+      path: path.resolve('dist', 'public', 'assets'),
       publicPath: '/assets/',
       filename: '[name].[chunkhash:8].js',
       chunkFilename: (locale !== 'default')
@@ -87,7 +91,7 @@ export function buildWebpackClientConfig(
         /*
          * if we don't do that,we might load different versions of three
          */
-        three: path.resolve(__dirname, './node_modules/three'),
+        three: path.resolve('node_modules', 'three'),
       },
       extensions: ['.js', '.jsx'],
     },
@@ -122,9 +126,9 @@ export function buildWebpackClientConfig(
           test: /\.(js|jsx)$/,
           loader: 'babel-loader',
           include: [
-            path.resolve(__dirname, 'src'),
+            path.resolve('src'),
             ...['image-q'].map((moduleName) => (
-              path.resolve(__dirname + '/node_modules/' + moduleName)
+              path.resolve('node_modules', moduleName)
             ))
           ],
           options: {
@@ -188,8 +192,8 @@ export function buildWebpackClientConfig(
   };
 }
 
-export function getAllAvailableLocals() {
-  const langDir = path.resolve(__dirname, 'i18n');
+function getAllAvailableLocals() {
+  const langDir = path.resolve('i18n');
   const langs = fs.readdirSync(langDir)
     .filter((e) => (e.endsWith('.po') && !e.startsWith('ssr')))
     .map((l) => l.slice(0, -3));
@@ -223,7 +227,7 @@ function buildWebpackClientConfigAllLangs() {
  * @param analyze launch BundleAnalyzerPlugin after build
  * @return webpack configuration
  */
-export default ({
+module.exports = ({
   development, analyze, extract, locale,
 }) => {
   if (extract || analyze || locale || development) {
@@ -233,3 +237,6 @@ export default ({
   }
   return buildWebpackClientConfigAllLangs(development);
 };
+
+module.exports.buildWebpackClientConfig = buildWebpackClientConfig;
+module.exports.getAllAvailableLocals = getAllAvailableLocals;

@@ -8,8 +8,7 @@
 import { getTTag } from '../core/ttag';
 
 /* this will be set by webpack */
-// eslint-disable-next-line import/no-unresolved
-import assets from './assets.json';
+import { assets } from '../core/assets';
 import { ASSET_SERVER } from '../core/config';
 
 /*

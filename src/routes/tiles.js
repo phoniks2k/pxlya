@@ -7,8 +7,7 @@
 import fs from 'fs';
 import express from 'express';
 
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from '../core/canvases';
 import { getMaxTiledZoom } from '../core/utils';
 import { TILE_FOLDER } from '../core/config';
 

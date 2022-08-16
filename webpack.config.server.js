@@ -1,14 +1,19 @@
 /*
+ * webpack config to build server files
  */
 
-import fs from 'fs';
-import path from 'path';
-import webpack from 'webpack';
-import nodeExternals from 'webpack-node-externals';
-import GeneratePackageJsonPlugin from 'generate-package-json-webpack-plugin';
-import CopyPlugin from 'copy-webpack-plugin';
+const fs = require('fs');
+const path = require('path');
+const process = require('process');
+const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
+const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
-import pkg from './package.json';
+const pkg = require('./package.json');
+
+// make sure we build in root dir
+process.chdir(__dirname);
 
 const basePackageValues = {
   name: pkg.name,
@@ -20,19 +25,17 @@ const basePackageValues = {
   },
   dependencies: {
     mysql2: '',
-    bufferutil: '',
     'utf-8-validate': '',
     bufferutil: '',
   },
 };
 
 const ttag = {};
-
 const babelPlugins = [
   ['ttag', ttag],
 ];
 
-export default ({
+module.exports = ({
   development, extract,
 }) => {
   /*
@@ -40,7 +43,7 @@ export default ({
    */
   if (extract) {
     ttag.extract = {
-      output: path.resolve(__dirname, 'i18n', 'template-ssr.pot'),
+      output: path.resolve('i18n', 'template-ssr.pot'),
     };
     ttag.discover = ['t', 'jt'];
   }
@@ -49,7 +52,7 @@ export default ({
    * worker threads need to be their own
    * entry points
    */
-  const workersDir = path.resolve(__dirname, 'src', 'workers');
+  const workersDir = path.resolve('src', 'workers');
   const workerEntries = {};
   fs.readdirSync(workersDir)
     .filter((e) => e.endsWith('.js'))
@@ -63,19 +66,15 @@ export default ({
     name: 'server',
     target: 'node',
 
-    context: __dirname,
     mode: (development) ? 'development' : 'production',
 
     entry: {
-      server: [path.resolve(__dirname, 'src', 'server.js')],
-      backup: [path.resolve(__dirname, 'src', 'backup.js')],
+      server: [path.resolve('src', 'server.js')],
+      backup: [path.resolve('src', 'backup.js')],
       ...workerEntries,
     },
 
     output: {
-      library: {
-        type: 'commonjs2',
-      },
       clean: true,
     },
 
@@ -88,9 +87,7 @@ export default ({
         {
           test: /\.(js|jsx)$/,
           loader: 'babel-loader',
-          include: [
-            path.resolve(__dirname, 'src'),
-          ],
+          include: [ path.resolve('src') ],
           options: {
             cacheDirectory: false,
             plugins: babelPlugins,
@@ -117,11 +114,17 @@ export default ({
       ],
     },
 
+    externalsPresets: {
+      // exclude native node modules (path, fs, etc.)
+      node: true,
+    },
+
     externals: [
-      /\/canvases\.json$/,
-      /\/styleassets\.json$/,
-      /\/assets\.json$/,
-      nodeExternals(),
+      nodeExternals({
+        // passport-reddit is an ESM module
+        // bundle it, then we don't have to import it
+        allowlist: [ /^passport-/ ],
+      }),
     ],
 
     plugins: [
@@ -131,36 +134,28 @@ export default ({
       }),
       // create package.json for deployment
       new GeneratePackageJsonPlugin(basePackageValues, {
-        sourcePackageFilenames: [
-          path.resolve(__dirname, 'package.json'),
-        ],
+        sourcePackageFilenames: [ path.resolve('package.json') ],
+        // provided by node itself
+        excludeDependencies: ['node:buffer'],
       }),
       new CopyPlugin({
         patterns: [
           {
-            from: path.resolve(__dirname, 'public'),
-            to: path.resolve(__dirname, 'dist', 'public'),
+            from: path.resolve('public'),
+            to: path.resolve('dist', 'public'),
           },
-          path.resolve(__dirname, 'src', 'canvases.json'),
+          path.resolve('src', 'canvases.json'),
           {
-            from: path.resolve(
-              __dirname, 'deployment', 'example-ecosystem.yml'
-            ),
-            to: path.resolve(
-              __dirname, 'dist', 'ecosystem.yml'
-            ),
+            from: path.resolve('deployment', 'example-ecosystem.yml'),
+            to: path.resolve('dist', 'ecosystem.yml'),
           },
           {
-            from: path.resolve(
-              __dirname, 'deployment', 'example-ecosystem-backup.yml'
-            ),
-            to: path.resolve(
-              __dirname, 'dist', 'ecosystem-backup.yml'
-            ),
+            from: path.resolve('deployment', 'example-ecosystem-backup.yml'),
+            to: path.resolve('dist', 'ecosystem-backup.yml'),
           },
           {
-            from: path.resolve(__dirname, 'deployment', 'captchaFonts'),
-            to: path.resolve(__dirname, 'dist', 'captchaFonts'),
+            from: path.resolve('deployment', 'captchaFonts'),
+            to: path.resolve('dist', 'captchaFonts'),
           },
         ],
       }),
@@ -176,8 +171,8 @@ export default ({
 
     node: {
       global: false,
-      __filename: false,
       __dirname: false,
+      __filename: false,
     },
   };
 };

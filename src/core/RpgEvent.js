@@ -20,8 +20,7 @@ import { protectCanvasArea } from './Image';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE, EVENT_USER_NAME } from './constants';
 import chatProvider from './ChatProvider';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 
 // steps in minutes for event stages
 // STEPS[5] is event duration, adjusted from 10 to 8 on 2022.04.26

@@ -7,11 +7,7 @@
 
 import { langCodeToCC } from '../utils/location';
 import ttags, { getTTag } from '../core/ttag';
-/* this one is set by webpack */
-// eslint-disable-next-line import/no-unresolved
-import assets from './assets.json';
-// eslint-disable-next-line import/no-unresolved
-import styleassets from './styleassets.json';
+import { styleassets, assets } from '../core/assets';
 
 import { ASSET_SERVER, BACKUP_URL } from '../core/config';
 

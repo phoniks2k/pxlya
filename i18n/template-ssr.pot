@@ -95,36 +95,36 @@ msgid ""
 "one (Note: you can use those links just once)"
 msgstr ""
 
-#: src/ssr/Win.jsx:32
+#: src/ssr/Win.jsx:31
 msgid "PixelPlanet.Fun Window"
 msgstr ""
 
-#: src/ssr/Win.jsx:33
+#: src/ssr/Win.jsx:32
 msgid "PixelPlanet.Fun Windows"
 msgstr ""
 
-#: src/ssr/Main.jsx:58
-msgid "PixelPlanet.Fun"
-msgstr ""
-
-#: src/ssr/Main.jsx:59
-msgid "Place color pixels on an map styled canvas with other players online"
-msgstr ""
-
-#: src/ssr/Globe.jsx:34
+#: src/ssr/Globe.jsx:33
 msgid "PixelPlanet.Fun 3DGlobe"
 msgstr ""
 
-#: src/ssr/Globe.jsx:35
+#: src/ssr/Globe.jsx:34
 msgid "A 3D globe of our whole map"
 msgstr ""
 
-#: src/ssr/Globe.jsx:48
+#: src/ssr/Globe.jsx:47
 msgid "Double click on globe to go back."
 msgstr ""
 
-#: src/ssr/Globe.jsx:49
+#: src/ssr/Globe.jsx:48
 msgid "Loading..."
+msgstr ""
+
+#: src/ssr/Main.jsx:54
+msgid "PixelPlanet.Fun"
+msgstr ""
+
+#: src/ssr/Main.jsx:55
+msgid "Place color pixels on an map styled canvas with other players online"
 msgstr ""
 
 #: src/core/mail.js:71
@@ -271,6 +271,22 @@ msgstr ""
 msgid "Server error occured"
 msgstr ""
 
+#: src/routes/api/modtools.js:53
+msgid "You are not logged in"
+msgstr ""
+
+#: src/routes/api/modtools.js:65
+msgid "You are not allowed to access this page"
+msgstr ""
+
+#: src/routes/api/modtools.js:207
+msgid "Just admins can do that"
+msgstr ""
+
+#: src/routes/api/baninfo.js:24
+msgid "You are not banned"
+msgstr ""
+
 #: src/utils/validation.js:17
 msgid "Email can't be empty."
 msgstr ""
@@ -319,22 +335,6 @@ msgstr ""
 msgid "Password must be shorter than 60 characters."
 msgstr ""
 
-#: src/routes/api/modtools.js:53
-msgid "You are not logged in"
-msgstr ""
-
-#: src/routes/api/modtools.js:65
-msgid "You are not allowed to access this page"
-msgstr ""
-
-#: src/routes/api/modtools.js:207
-msgid "Just admins can do that"
-msgstr ""
-
-#: src/routes/api/baninfo.js:24
-msgid "You are not banned"
-msgstr ""
-
 #: src/routes/api/auth/register.js:26
 msgid "No Captcha given"
 msgstr ""
@@ -355,27 +355,6 @@ msgstr ""
 msgid "Failed to establish session after register :("
 msgstr ""
 
-#: src/routes/api/auth/change_mail.js:38
-#: src/routes/api/auth/change_passwd.js:34
-#: src/routes/api/auth/delete_account.js:34
-msgid "You are not authenticated."
-msgstr ""
-
-#: src/routes/api/auth/change_mail.js:47
-#: src/routes/api/auth/change_passwd.js:43
-#: src/routes/api/auth/delete_account.js:44
-msgid "Incorrect password!"
-msgstr ""
-
-#: src/routes/api/auth/logout.js:11
-msgid "You are not even logged in."
-msgstr ""
-
-#: src/routes/api/auth/delete_account.js:54
-#: src/routes/api/auth/logout.js:20
-msgid "Server error when logging out."
-msgstr ""
-
 #: src/routes/api/auth/verify.js:22
 #: src/routes/api/auth/verify.js:29
 msgid "Mail verification"
@@ -391,6 +370,27 @@ msgid ""
 "request a new one."
 msgstr ""
 
+#: src/routes/api/auth/logout.js:11
+msgid "You are not even logged in."
+msgstr ""
+
+#: src/routes/api/auth/delete_account.js:54
+#: src/routes/api/auth/logout.js:20
+msgid "Server error when logging out."
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:38
+#: src/routes/api/auth/change_passwd.js:34
+#: src/routes/api/auth/delete_account.js:34
+msgid "You are not authenticated."
+msgstr ""
+
+#: src/routes/api/auth/change_mail.js:47
+#: src/routes/api/auth/change_passwd.js:43
+#: src/routes/api/auth/delete_account.js:44
+msgid "Incorrect password!"
+msgstr ""
+
 #: src/ssr/RedirectionPage.jsx:19
 msgid "PixelPlanet.fun Accounts"
 msgstr ""
@@ -404,69 +404,69 @@ msgstr ""
 msgid "Or ${ clickHere } to go back to pixelplanet"
 msgstr ""
 
-#: src/canvasesDesc.js:18
+#: src/canvasesDesc.js:19
 msgid "Earth"
 msgstr ""
 
-#: src/canvasesDesc.js:19
+#: src/canvasesDesc.js:20
 msgid "Moon"
 msgstr ""
 
-#: src/canvasesDesc.js:20
+#: src/canvasesDesc.js:21
 msgid "3D Canvas"
 msgstr ""
 
-#: src/canvasesDesc.js:21
+#: src/canvasesDesc.js:22
 msgid "Coronavirus"
 msgstr ""
 
-#: src/canvasesDesc.js:22
+#: src/canvasesDesc.js:23
 msgid "PixelZone"
 msgstr ""
 
-#: src/canvasesDesc.js:23
+#: src/canvasesDesc.js:24
 msgid "PixelCanvas"
 msgstr ""
 
-#: src/canvasesDesc.js:24
+#: src/canvasesDesc.js:25
 msgid "1bit"
 msgstr ""
 
-#: src/canvasesDesc.js:25
+#: src/canvasesDesc.js:26
 msgid "Top10"
 msgstr ""
 
-#: src/canvasesDesc.js:28
+#: src/canvasesDesc.js:29
 msgid "Our main canvas, a huge map of the world. Place everywhere you like"
 msgstr ""
 
-#: src/canvasesDesc.js:29
+#: src/canvasesDesc.js:30
 msgid ""
 "Moon canvas. Safe space for art. No flags or large text (unless part of "
 "art) or art larger than 1.5k x 1.5k pixels."
 msgstr ""
 
-#: src/canvasesDesc.js:30
+#: src/canvasesDesc.js:31
 msgid "Place Voxels on a 3D canvas with others"
 msgstr ""
 
-#: src/canvasesDesc.js:31
+#: src/canvasesDesc.js:32
 msgid "Special canvas to spread awareness of SARS-CoV2"
 msgstr ""
 
-#: src/canvasesDesc.js:32
+#: src/canvasesDesc.js:33
 msgid "Mirror of PixelZone"
 msgstr ""
 
-#: src/canvasesDesc.js:33
+#: src/canvasesDesc.js:34
 msgid "Mirror of PixelCanvas"
 msgstr ""
 
-#: src/canvasesDesc.js:34
+#: src/canvasesDesc.js:35
 msgid "Black and White canvas"
 msgstr ""
 
-#: src/canvasesDesc.js:35
+#: src/canvasesDesc.js:36
 msgid ""
 "A canvas for the most active players from the the previous day. Daily "
 "ranking updates at 00:00 UTC."

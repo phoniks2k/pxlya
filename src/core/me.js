@@ -4,7 +4,6 @@
  * various api endpoints.
  *
  */
-// eslint-disable-next-line import/no-unresolved
 import { getLocalicedCanvases } from '../canvasesDesc';
 import { USE_MAILER } from './config';
 import chatProvider from './ChatProvider';

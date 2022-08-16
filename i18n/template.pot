@@ -54,109 +54,109 @@ msgstr ""
 msgid "Didn't get an answer from pixelplanet. Maybe try to refresh?"
 msgstr ""
 
-#: src/ui/placePixel.js:203
+#: src/ui/placePixel.js:202
 msgid "Invalid Canvas"
 msgstr ""
 
-#: src/ui/placePixel.js:204
+#: src/ui/placePixel.js:203
 msgid "This canvas doesn't exist"
 msgstr ""
 
-#: src/ui/placePixel.js:207
-#: src/ui/placePixel.js:211
-#: src/ui/placePixel.js:215
+#: src/ui/placePixel.js:206
+#: src/ui/placePixel.js:210
+#: src/ui/placePixel.js:214
 msgid "Invalid Coordinates"
 msgstr ""
 
-#: src/ui/placePixel.js:208
+#: src/ui/placePixel.js:207
 msgid "x out of bounds"
 msgstr ""
 
-#: src/ui/placePixel.js:212
+#: src/ui/placePixel.js:211
 msgid "y out of bounds"
 msgstr ""
 
-#: src/ui/placePixel.js:216
+#: src/ui/placePixel.js:215
 msgid "z out of bounds"
 msgstr ""
 
-#: src/ui/placePixel.js:219
+#: src/ui/placePixel.js:218
 msgid "Wrong Color"
 msgstr ""
 
-#: src/ui/placePixel.js:220
+#: src/ui/placePixel.js:219
 msgid "Invalid color selected"
 msgstr ""
 
-#: src/ui/placePixel.js:223
+#: src/ui/placePixel.js:222
 msgid "Just for registered Users"
 msgstr ""
 
-#: src/ui/placePixel.js:224
+#: src/ui/placePixel.js:223
 msgid "You have to be logged in to place on this canvas"
 msgstr ""
 
-#: src/ui/placePixel.js:227
+#: src/ui/placePixel.js:226
 msgid "Place more :)"
 msgstr ""
 
-#: src/ui/placePixel.js:229
+#: src/ui/placePixel.js:228
 msgid "You can not access this canvas yet. You need to place more pixels"
 msgstr ""
 
-#: src/ui/placePixel.js:232
+#: src/ui/placePixel.js:231
 msgid "Pixel protected!"
 msgstr ""
 
-#: src/ui/placePixel.js:239
+#: src/ui/placePixel.js:238
 msgid "Please prove that you are human"
 msgstr ""
 
-#: src/ui/placePixel.js:243
+#: src/ui/placePixel.js:242
 msgid "No Proxies Allowed :("
 msgstr ""
 
-#: src/ui/placePixel.js:244
+#: src/ui/placePixel.js:243
 msgid "You are using a Proxy."
 msgstr ""
 
-#: src/ui/placePixel.js:247
+#: src/ui/placePixel.js:246
 msgid "Not allowed"
 msgstr ""
 
-#: src/ui/placePixel.js:248
+#: src/ui/placePixel.js:247
 msgid "Just the Top10 of yesterday can place here"
 msgstr ""
 
-#: src/ui/placePixel.js:251
+#: src/ui/placePixel.js:250
 msgid "You are weird"
 msgstr ""
 
-#: src/ui/placePixel.js:253
+#: src/ui/placePixel.js:252
 msgid "Server got confused by your pixels. Are you playing on multiple devices?"
 msgstr ""
 
-#: src/ui/placePixel.js:256
+#: src/ui/placePixel.js:255
 msgid "Banned"
 msgstr ""
 
-#: src/ui/placePixel.js:260
+#: src/ui/placePixel.js:259
 msgid "Range Banned"
 msgstr ""
 
-#: src/ui/placePixel.js:261
+#: src/ui/placePixel.js:260
 msgid "Your Internet Provider is banned from playing this game"
 msgstr ""
 
-#: src/ui/placePixel.js:264
+#: src/ui/placePixel.js:263
 msgid "Weird"
 msgstr ""
 
-#: src/ui/placePixel.js:265
+#: src/ui/placePixel.js:264
 msgid "Couldn't set Pixel"
 msgstr ""
 
-#: src/ui/placePixel.js:270
+#: src/ui/placePixel.js:269
 #, javascript-format
 msgid "Error ${ retCode }"
 msgstr ""
@@ -261,17 +261,17 @@ msgstr ""
 msgid "Open Chat"
 msgstr ""
 
-#: src/components/buttons/CanvasSwitchButton.jsx:22
-#: src/components/windows/index.js:19
-msgid "Canvas Selection"
-msgstr ""
-
 #: src/components/buttons/ExpandMenuButton.jsx:22
 msgid "Close Menu"
 msgstr ""
 
 #: src/components/buttons/ExpandMenuButton.jsx:22
 msgid "Open Menu"
+msgstr ""
+
+#: src/components/buttons/CanvasSwitchButton.jsx:22
+#: src/components/windows/index.js:19
+msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/HistorySelect.jsx:144
@@ -311,18 +311,6 @@ msgstr ""
 msgid "Resize"
 msgstr ""
 
-#: src/components/buttons/GlobeButton.jsx:34
-msgid "Globe View"
-msgstr ""
-
-#: src/components/buttons/PalselButton.jsx:30
-msgid "Close Palette"
-msgstr ""
-
-#: src/components/buttons/PalselButton.jsx:30
-msgid "Open Palette"
-msgstr ""
-
 #: src/components/BanInfo.jsx:76
 #: src/components/buttons/HelpButton.jsx:22
 #: src/components/windows/index.js:13
@@ -341,6 +329,18 @@ msgstr ""
 
 #: src/components/buttons/DownloadButton.jsx:36
 msgid "Make Screenshot"
+msgstr ""
+
+#: src/components/buttons/GlobeButton.jsx:34
+msgid "Globe View"
+msgstr ""
+
+#: src/components/buttons/PalselButton.jsx:30
+msgid "Close Palette"
+msgstr ""
+
+#: src/components/buttons/PalselButton.jsx:30
+msgid "Open Palette"
 msgstr ""
 
 #: src/components/BanInfo.jsx:81
@@ -475,6 +475,124 @@ msgstr ""
 
 #: src/components/Captcha.jsx:138
 msgid "Enter Characters"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:86
+msgid "Show Grid"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:91
+msgid "Turn on grid to highlight pixel borders."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:94
+msgid "Show Pixel Activity"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:99
+msgid "Show circles where pixels are placed."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:102
+msgid "Disable Game Sounds"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:108
+msgid "All sound effects will be disabled."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:112
+msgid ""
+"Your Browser doesn't allow us to use AudioContext to play sounds. Do you "
+"have some privacy feature blocking us?"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:118
+msgid "Enable chat notifications"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:122
+msgid "Play a sound when new chat messages arrive"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:125
+msgid "Auto Zoom In"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:130
+msgid ""
+"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
+"small."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:133
+msgid "Compact Palette"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:138
+msgid "Display Palette in a compact form that takes less screen space."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:141
+msgid "Potato Mode"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:145
+msgid "For when you are playing on a potato."
+msgstr ""
+
+#: src/components/Converter.jsx:376
+#: src/components/windows/Settings.jsx:148
+msgid "Light Grid"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:152
+msgid "Show Grid in white instead of black."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:156
+msgid "Historical View"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:161
+msgid "Check out past versions of the canvas."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:166
+msgid "Themes"
+msgstr ""
+
+#: src/components/windows/Settings.jsx:171
+msgid "How pixelplanet should look like."
+msgstr ""
+
+#: src/components/windows/Settings.jsx:178
+msgid "Select Language"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:31
+#: src/components/windows/UserArea.jsx:50
+msgid "Profile"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:53
+msgid "Ranking"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:56
+msgid "Converter"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:62
+msgid "Modtools"
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:63
+msgid "Loading..."
+msgstr ""
+
+#: src/components/windows/UserArea.jsx:70
+msgid "Consider joining us on Guilded:"
 msgstr ""
 
 #: src/components/windows/Help.jsx:42
@@ -650,122 +768,15 @@ msgstr ""
 msgid "Credit for the Palette of the Top10 canvas goes to ${ vinikLink }."
 msgstr ""
 
-#: src/components/windows/Settings.jsx:134
-msgid "Show Grid"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:139
-msgid "Turn on grid to highlight pixel borders."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:142
-msgid "Show Pixel Activity"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:147
-msgid "Show circles where pixels are placed."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:150
-msgid "Disable Game Sounds"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:156
-msgid "All sound effects will be disabled."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:160
+#: src/components/windows/CanvasSelect.jsx:27
 msgid ""
-"Your Browser doesn't allow us to use AudioContext to play sounds. Do you "
-"have some privacy feature blocking us?"
+"Select the canvas you want to use.  Every canvas is unique and has "
+"different palettes, cooldown and requirements.  Archive of closed canvases "
+"can be accessed here:"
 msgstr ""
 
-#: src/components/windows/Settings.jsx:166
-msgid "Enable chat notifications"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:170
-msgid "Play a sound when new chat messages arrive"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:173
-msgid "Auto Zoom In"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:178
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:181
-msgid "Compact Palette"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:186
-msgid "Display Palette in a compact form that takes less screen space."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:189
-msgid "Potato Mode"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:193
-msgid "For when you are playing on a potato."
-msgstr ""
-
-#: src/components/Converter.jsx:376
-#: src/components/windows/Settings.jsx:196
-msgid "Light Grid"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:200
-msgid "Show Grid in white instead of black."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:204
-msgid "Historical View"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:209
-msgid "Check out past versions of the canvas."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:214
-msgid "Themes"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:219
-msgid "How pixelplanet should look like."
-msgstr ""
-
-#: src/components/windows/Settings.jsx:226
-msgid "Select Language"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:31
-#: src/components/windows/UserArea.jsx:50
-msgid "Profile"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:53
-msgid "Ranking"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:56
-msgid "Converter"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:62
-msgid "Modtools"
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:63
-msgid "Loading..."
-msgstr ""
-
-#: src/components/windows/UserArea.jsx:70
-msgid "Consider joining us on Guilded:"
+#: src/components/windows/CanvasSelect.jsx:35
+msgid "Archive"
 msgstr ""
 
 #: src/components/windows/Register.jsx:85
@@ -845,17 +856,6 @@ msgid ""
 "how the canvas was at that time."
 msgstr ""
 
-#: src/components/windows/CanvasSelect.jsx:33
-msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has "
-"different palettes, cooldown and requirements.  Archive of closed canvases "
-"can be accessed here:"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:41
-msgid "Archive"
-msgstr ""
-
 #: src/components/windows/Chat.jsx:143
 msgid "Start chatting here"
 msgstr ""
@@ -926,14 +926,6 @@ msgstr ""
 
 #: src/utils/validation.js:59
 msgid "Password must be shorter than 60 characters."
-msgstr ""
-
-#: src/components/GetIID.jsx:44
-msgid "Get IID"
-msgstr ""
-
-#: src/components/GetIID.jsx:53
-msgid "Copy"
 msgstr ""
 
 #: src/components/ChangeMail.jsx:91
@@ -1103,6 +1095,14 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
+#: src/components/GetIID.jsx:44
+msgid "Get IID"
+msgstr ""
+
+#: src/components/GetIID.jsx:53
+msgid "Copy"
+msgstr ""
+
 #: src/components/CanvasItem.jsx:29
 msgid "Online Users"
 msgstr ""
@@ -1208,15 +1208,15 @@ msgstr ""
 msgid "Yes, Delete My Account!"
 msgstr ""
 
-#: src/components/SocialSettings.jsx:37
+#: src/components/SocialSettings.jsx:24
 msgid "Block all Private Messages"
 msgstr ""
 
-#: src/components/SocialSettings.jsx:55
+#: src/components/SocialSettings.jsx:37
 msgid "Unblock Users"
 msgstr ""
 
-#: src/components/SocialSettings.jsx:80
+#: src/components/SocialSettings.jsx:62
 msgid "You have no users blocked"
 msgstr ""
 
@@ -1394,19 +1394,24 @@ msgid "(0 = infinite)"
 msgstr ""
 
 #: src/components/windows/Help.jsx:15
-#: src/components/windows/Settings.jsx:135
+#: src/components/windows/Settings.jsx:87
 msgctxt "keybinds"
 msgid "G"
 msgstr ""
 
 #: src/components/windows/Help.jsx:16
-#: src/components/windows/Settings.jsx:143
+#: src/components/windows/Settings.jsx:95
 msgctxt "keybinds"
 msgid "X"
 msgstr ""
 
+#: src/components/windows/Settings.jsx:103
+msgctxt "keybinds"
+msgid "M"
+msgstr ""
+
 #: src/components/windows/Help.jsx:17
-#: src/components/windows/Settings.jsx:206
+#: src/components/windows/Settings.jsx:158
 msgctxt "keybinds"
 msgid "H"
 msgstr ""
@@ -1454,9 +1459,4 @@ msgstr ""
 #: src/components/windows/Help.jsx:32
 msgctxt "keybinds"
 msgid "C"
-msgstr ""
-
-#: src/components/windows/Settings.jsx:151
-msgctxt "keybinds"
-msgid "M"
 msgstr ""

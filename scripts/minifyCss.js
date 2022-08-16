@@ -4,17 +4,16 @@
  * so files beginning with "theme-" in the src/styles folder will
  * be read and automatically added.
  *
- * @flow
  */
 
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
 
-import fs from 'fs';
-import path from 'path';
-import CleanCSS from 'clean-css';
-import crypto from 'crypto';
-import mkdirp from 'mkdirp';
+const fs = require('fs');
+const path = require('path');
+const CleanCSS = require('clean-css');
+const crypto = require('crypto');
+const mkdirp = require('mkdirp');
 
 const assetdir = path.resolve(__dirname, '..', 'dist', 'public', 'assets');
 const builddir = path.resolve(__dirname, '..', 'dist');
@@ -71,4 +70,4 @@ if (require.main === module) {
   doMinifyCss();
 }
 
-export default minifyCss;
+module.exports = minifyCss;

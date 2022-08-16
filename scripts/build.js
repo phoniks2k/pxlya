@@ -3,9 +3,10 @@
  * Lets split that here
  */
 
-import webpack from 'webpack';
-import serverConfig from '../webpack.config.server.babel.js';
-import clientConfig, {getAllAvailableLocals} from '../webpack.config.client.babel.js';
+const webpack = require('webpack');
+const serverConfig = require('../webpack.config.server.js');
+const clientConfig = require('../webpack.config.client.js');
+const { getAllAvailableLocals } = clientConfig;
 
 function compile(webpackConfig) {
   return new Promise((resolve, reject) => {

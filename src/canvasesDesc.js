@@ -4,8 +4,9 @@
  *
  */
 
-import canvases from './canvases.json';
+import canvases from './core/canvases';
 import ttag from './core/ttag';
+
 
 /* eslint-disable max-len */
 
@@ -54,7 +55,6 @@ function getCanvases(t) {
 
   return localicedCanvases;
 }
-
 
 const lCanvases = {};
 (() => {

@@ -31,8 +31,7 @@ import {
   getIPofIID,
   getIIDofIP,
 } from '../data/sql/IPInfo';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 import {
   imageABGR2Canvas,
   protectCanvasArea,

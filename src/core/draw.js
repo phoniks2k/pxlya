@@ -12,8 +12,7 @@ import {
   setPixelByCoords,
 } from './setPixel';
 import rankings from './ranking';
-// eslint-disable-next-line import/no-unresolved
-import canvases from './canvases.json';
+import canvases from './canvases';
 
 import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
 
