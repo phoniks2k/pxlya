@@ -4,12 +4,12 @@
  */
 
 import passport from 'passport';
-import { Strategy as JsonStrategy } from 'passport-json';
-import { Strategy as DiscordStrategy } from 'passport-discord';
-import { Strategy as RedditStrategy } from 'passport-reddit';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Strategy as VkontakteStrategy } from 'passport-vkontakte';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
+import JsonStrategy from 'passport-json';
+import GoogleStrategy from 'passport-google-oauth2';
+import DiscordStrategy from 'passport-discord';
+import FacebookStrategy from 'passport-facebook';
+import RedditStrategy from 'passport-reddit/lib/passport-reddit/strategy';
+import VkontakteStrategy from 'passport-vkontakte/lib/strategy';
 
 import { sanitizeName } from '../utils/validation';
 

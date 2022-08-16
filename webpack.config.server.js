@@ -89,9 +89,6 @@ module.exports = ({
           loader: 'babel-loader',
           include: [
             path.resolve('src'),
-            ...['passport-reddit'].map((moduleName) => (
-              path.resolve('node_modules', moduleName),
-            ))
           ],
           options: {
             cacheDirectory: false,
@@ -120,7 +117,7 @@ module.exports = ({
     },
 
     externalsPresets: {
-      // exclude native node modules (path, fs, etc.)
+      // exclude built-in node modules (path, fs, etc.)
       node: true,
     },
 
@@ -128,7 +125,7 @@ module.exports = ({
       nodeExternals({
         // passport-reddit is an ESM module
         // bundle it, then we don't have to import it
-        allowlist: [ 'passport-reddit' ],
+        allowlist: [ /^passport-/ ],
       }),
     ],
 
