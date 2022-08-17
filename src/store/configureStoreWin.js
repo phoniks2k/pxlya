@@ -17,6 +17,7 @@ import storage from 'redux-persist/lib/storage';
 import audio from './reducers/audio';
 import canvas from './reducers/canvas';
 import gui from './reducers/gui';
+import win from './reducers/win';
 
 /*
  * middleware
@@ -40,11 +41,13 @@ const reducers = persistReducer({
   },
   blacklist: [
     'canvas',
+    'win',
   ],
 }, combineReducers({
   audio,
   canvas,
   gui,
+  win,
 }));
 
 const store = createStore(

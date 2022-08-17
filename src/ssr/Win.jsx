@@ -5,18 +5,42 @@
 
 /* eslint-disable max-len */
 
-import { getTTag } from '../core/ttag';
+import { langCodeToCC } from '../utils/location';
+import ttags, { getTTag } from '../core/ttag';
 
 /* this will be set by webpack */
-import { assets } from '../core/assets';
-import { ASSET_SERVER } from '../core/config';
+import { styleassets, assets } from '../core/assets';
+import { ASSET_SERVER, BACKUP_URL } from '../core/config';
 
 /*
- * generates string with html of globe page
+ * generate language list
+ */
+const langs = Object.keys(ttags)
+  .map((l) => (l === 'default' ? 'en' : l))
+  .map((l) => [l, langCodeToCC(l)]);
+
+/*
+ * values that we pass to client scripts
+ */
+const ssv = {
+  assetserver: ASSET_SERVER,
+  availableStyles: styleassets,
+  langs,
+};
+if (BACKUP_URL) {
+  ssv.backupurl = BACKUP_URL;
+}
+
+/*
+ * generates string with html of win page
  * @param lang language code
  * @return html of mainpage
  */
 function generateWinPage(lang) {
+  const ssvR = {
+    ...ssv,
+    lang: lang === 'default' ? 'en' : lang,
+  };
   const script = (assets[`win-${lang}`])
     ? assets[`win-${lang}`].js
     : assets.win.js;
@@ -37,8 +61,12 @@ function generateWinPage(lang) {
         />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+        <script>window.ssv=JSON.parse('${JSON.stringify(ssvR)}')</script>
+        <link rel="stylesheet" type="text/css" id="globcss" href="${styleassets.default}" />
       </head>
       <body>
+        <div id="app">
+        </div>
         <script src="${ASSET_SERVER + script}"></script>
       </body>
     </html>

@@ -177,7 +177,3 @@ h3, h4 {
 .actionbuttons:hover, .coorbox:hover, .menu > div:hover {
   background-color: rgba(71, 71, 71, 0.8);
 }
-
-#outstreamContainer {
-  background-color: black;
-}

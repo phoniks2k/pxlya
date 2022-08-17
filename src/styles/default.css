@@ -684,6 +684,10 @@ tr:nth-child(even) {
     width: 100%;
     padding: 0;
   }
+
+  .overlay {
+    display: none;
+  }
 }
 
 .overlay {
@@ -978,19 +982,6 @@ table td span {
   -ms-transform: scale(1.10,1.10); /* IE 9 */
   -webkit-transform: scale(1.10,1.10); /* Safari */
   transform: scale(1.10,1.10); /* Standard syntax */
-}
-
-#outstreamContainer {
-  position: fixed;
-  display: none;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background-color: black;
-  z-index: 9000;
 }
 
 .grecaptcha-badge {
