@@ -16,7 +16,7 @@ export function openWindow(
   height = null,
 ) {
   return {
-    type: 'OPEN_WINDOW',
+    type: 'OPEN_WIN',
     windowType,
     title,
     args,
@@ -34,7 +34,7 @@ export function setWindowArgs(
   args,
 ) {
   return {
-    type: 'SET_WINDOW_ARGS',
+    type: 'SET_WIN_ARGS',
     windowId,
     args,
   };
@@ -51,7 +51,7 @@ function showFullscreenWindow(modalType, title) {
 
 export function closeFullscreenWindows() {
   return {
-    type: 'CLOSE_FULLSCREEN_WINDOWS',
+    type: 'CLOSE_FULLSCREEN_WINS',
   };
 }
 
@@ -76,7 +76,7 @@ export function changeWindowType(
   args = null,
 ) {
   return {
-    type: 'CHANGE_WINDOW_TYPE',
+    type: 'CHANGE_WIN_TYPE',
     windowId,
     windowType,
     title,
@@ -86,7 +86,7 @@ export function changeWindowType(
 
 export function setWindowTitle(windowId, title) {
   return {
-    type: 'SET_WINDOW_TITLE',
+    type: 'SET_WIN_TITLE',
     windowId,
     title,
   };
@@ -152,42 +152,42 @@ export function addToChatInputMessage(windowId, msg, focus = true) {
 
 export function closeWindow(windowId) {
   return {
-    type: 'CLOSE_WINDOW',
+    type: 'CLOSE_WIN',
     windowId,
   };
 }
 
 export function removeWindow(windowId) {
   return {
-    type: 'REMOVE_WINDOW',
+    type: 'REMOVE_WIN',
     windowId,
   };
 }
 
 export function focusWindow(windowId) {
   return {
-    type: 'FOCUS_WINDOW',
+    type: 'FOCUS_WIN',
     windowId,
   };
 }
 
 export function cloneWindow(windowId) {
   return {
-    type: 'CLONE_WINDOW',
+    type: 'CLONE_WIN',
     windowId,
   };
 }
 
 export function toggleMaximizeWindow(windowId) {
   return {
-    type: 'TOGGLE_MAXIMIZE_WINDOW',
+    type: 'TOGGLE_MAXIMIZE_WIN',
     windowId,
   };
 }
 
 export function moveWindow(windowId, xDiff, yDiff) {
   return {
-    type: 'MOVE_WINDOW',
+    type: 'MOVE_WIN',
     windowId,
     xDiff,
     yDiff,
@@ -196,7 +196,7 @@ export function moveWindow(windowId, xDiff, yDiff) {
 
 export function resizeWindow(windowId, xDiff, yDiff) {
   return {
-    type: 'RESIZE_WINDOW',
+    type: 'RESIZE_WIN',
     windowId,
     xDiff,
     yDiff,
@@ -205,7 +205,7 @@ export function resizeWindow(windowId, xDiff, yDiff) {
 
 export function closeAllWindowTypes(windowType) {
   return {
-    type: 'CLOSE_ALL_WINDOW_TYPE',
+    type: 'CLOSE_ALL_WIN_TYPE',
     windowType,
   };
 }
@@ -215,7 +215,7 @@ export function hideAllWindowTypes(
   hide,
 ) {
   return {
-    type: 'HIDE_ALL_WINDOW_TYPE',
+    type: 'HIDE_ALL_WIN_TYPE',
     windowType,
     hide,
   };

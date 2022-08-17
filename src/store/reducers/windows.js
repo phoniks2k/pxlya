@@ -12,7 +12,7 @@ const MIN_HEIGHT = 50;
 // allow Modals
 const SCREEN_WIDTH_THRESHOLD = 604;
 // how many windows can be open
-const MAX_AMOUNT_WINDOWS = 100;
+const MAX_AMOUNT_WINS = 100;
 
 function generateWindowId(state) {
   let windowId = Math.floor(Math.random() * 99999) + 1;
@@ -72,7 +72,7 @@ function clampPos(prefXPos, prefYPos, width, height) {
  * resort the zIndex, remove gaps
  */
 function sortWindows(newState, force = false) {
-  if (newState.zMax >= MAX_AMOUNT_WINDOWS * 0.5 || force) {
+  if (newState.zMax >= MAX_AMOUNT_WINS * 0.5 || force) {
     const positions = { ...newState.positions };
     const ids = Object.keys(positions);
     const orderedZ = ids
@@ -136,7 +136,7 @@ export default function windows(
   action,
 ) {
   switch (action.type) {
-    case 'OPEN_WINDOW': {
+    case 'OPEN_WIN': {
       /*
        * prefered xPos, yPos, height adn width
        * can be given in action (but doesn't have to)
@@ -157,7 +157,7 @@ export default function windows(
 
       const fullscreen = !state.showWindows || action.fullscreen;
 
-      if (state.windows.length >= MAX_AMOUNT_WINDOWS) {
+      if (state.windows.length >= MAX_AMOUNT_WINS) {
         return state;
       }
       const windowId = generateWindowId(state);
@@ -197,7 +197,7 @@ export default function windows(
       });
     }
 
-    case 'REMOVE_WINDOW': {
+    case 'REMOVE_WIN': {
       const {
         windowId,
       } = action;
@@ -214,7 +214,7 @@ export default function windows(
       };
     }
 
-    case 'CLOSE_WINDOW': {
+    case 'CLOSE_WIN': {
       const {
         windowId,
       } = action;
@@ -233,7 +233,7 @@ export default function windows(
       };
     }
 
-    case 'CLOSE_ALL_WINDOW_TYPE': {
+    case 'CLOSE_ALL_WIN_TYPE': {
       const {
         windowType,
       } = action;
@@ -251,7 +251,7 @@ export default function windows(
       };
     }
 
-    case 'HIDE_ALL_WINDOW_TYPE': {
+    case 'HIDE_ALL_WIN_TYPE': {
       const {
         windowType,
         hide,
@@ -269,7 +269,7 @@ export default function windows(
       };
     }
 
-    case 'CLONE_WINDOW': {
+    case 'CLONE_WIN': {
       const {
         windowId,
       } = action;
@@ -309,7 +309,7 @@ export default function windows(
       });
     }
 
-    case 'CHANGE_WINDOW_TYPE': {
+    case 'CHANGE_WIN_TYPE': {
       const {
         windowId,
         windowType,
@@ -337,7 +337,7 @@ export default function windows(
       };
     }
 
-    case 'FOCUS_WINDOW': {
+    case 'FOCUS_WIN': {
       const {
         windowId,
       } = action;
@@ -361,7 +361,7 @@ export default function windows(
       });
     }
 
-    case 'TOGGLE_MAXIMIZE_WINDOW': {
+    case 'TOGGLE_MAXIMIZE_WIN': {
       const {
         windowId,
       } = action;
@@ -382,7 +382,7 @@ export default function windows(
       };
     }
 
-    case 'CLOSE_FULLSCREEN_WINDOWS': {
+    case 'CLOSE_FULLSCREEN_WINS': {
       const newWindows = state.windows.map((win) => {
         if (win.fullscreen) {
           return {
@@ -399,7 +399,7 @@ export default function windows(
       };
     }
 
-    case 'MOVE_WINDOW': {
+    case 'MOVE_WIN': {
       const {
         windowId,
         xDiff,
@@ -425,7 +425,7 @@ export default function windows(
       };
     }
 
-    case 'RESIZE_WINDOW': {
+    case 'RESIZE_WIN': {
       const {
         windowId,
         xDiff,
@@ -447,7 +447,7 @@ export default function windows(
     }
 
     case 'REC_ME':
-    case 'WINDOW_RESIZE': {
+    case 'WIN_RESIZE': {
       const {
         innerWidth: width,
         innerHeight: height,
@@ -529,7 +529,7 @@ export default function windows(
       };
     }
 
-    case 'SET_WINDOW_TITLE': {
+    case 'SET_WIN_TITLE': {
       const {
         windowId,
         title,
@@ -547,7 +547,7 @@ export default function windows(
       };
     }
 
-    case 'SET_WINDOW_ARGS': {
+    case 'SET_WIN_ARGS': {
       const {
         windowId,
         args,

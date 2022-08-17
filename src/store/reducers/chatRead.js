@@ -97,7 +97,7 @@ export default function chatRead(
       };
     }
 
-    case 'OPEN_WINDOW': {
+    case 'OPEN_WIN': {
       const { windowType } = action;
       if (windowType !== 'CHAT') {
         return state;

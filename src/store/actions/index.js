@@ -134,7 +134,7 @@ export function setMobile(mobile) {
 
 export function windowResize() {
   return {
-    type: 'WINDOW_RESIZE',
+    type: 'WIN_RESIZE',
   };
 }
 
