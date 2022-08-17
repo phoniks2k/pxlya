@@ -72,8 +72,8 @@ function Settings() {
     state.gui.isPotato,
     state.gui.isLightGrid,
     state.gui.style,
-    state.audio.mute,
-    state.audio.chatNotify,
+    state.gui.mute,
+    state.gui.chatNotify,
     state.canvas.isHistoricalView,
   ], shallowEqual);
   const dispatch = useDispatch();

@@ -11,9 +11,6 @@ import {
 } from './fetch';
 
 import {
-  setWindowArgs,
-} from './windows';
-import {
   addChatChannel,
   pAlert,
   receiveStats,
@@ -52,7 +49,7 @@ function receiveChatHistory(
 /*
  * query with either userId or userName
  */
-export function startDm(windowId, query) {
+export function startDm(query, cb = null) {
   return async (dispatch) => {
     dispatch(setApiFetching(true));
     const res = await requestStartDm(query);
@@ -66,9 +63,9 @@ export function startDm(windowId, query) {
     } else {
       const cid = Number(Object.keys(res)[0]);
       dispatch(addChatChannel(res));
-      dispatch(setWindowArgs(windowId, {
-        chatChannel: cid,
-      }));
+      if (cb) {
+        cb(cid);
+      }
     }
     dispatch(setApiFetching(false));
   };

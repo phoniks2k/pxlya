@@ -16,10 +16,13 @@ import {
   toggleMaximizeWindow,
   cloneWindow,
   focusWindow,
+  setWindowTitle,
+  setWindowArgs,
 } from '../store/actions/windows';
 import {
   makeSelectWindowById,
   makeSelectWindowPosById,
+  makeSelectWindowArgs,
   selectShowWindows,
 } from '../store/selectors/windows';
 import useDrag from './hooks/drag';
@@ -28,16 +31,25 @@ import COMPONENTS from './windows';
 const Window = ({ id }) => {
   const [render, setRender] = useState(false);
 
-  const titleBarRef = useRef(null);
-  const resizeRef = useRef(null);
+  const titleBarRef = useRef();
+  const resizeRef = useRef();
 
   const selectWindowById = useMemo(() => makeSelectWindowById(id), []);
   const selectWIndowPosById = useMemo(() => makeSelectWindowPosById(id), []);
+  const selectWindowArgs = useMemo(() => makeSelectWindowArgs(id), []);
   const win = useSelector(selectWindowById);
   const position = useSelector(selectWIndowPosById);
   const showWindows = useSelector(selectShowWindows);
+  const args = useSelector(selectWindowArgs);
 
   const dispatch = useDispatch();
+
+  const setArgs = useCallback(
+    (newArgs) => dispatch(setWindowArgs(id, newArgs),
+    ), [dispatch]);
+  const setTitle = useCallback(
+    (title) => dispatch(setWindowTitle(id, title),
+    ), [dispatch]);
 
   const {
     open,
@@ -156,7 +168,7 @@ const Window = ({ id }) => {
           className="modal-content"
           key="content"
         >
-          <Content windowId={id} />
+          <Content args={args} setArgs={setArgs} setTitle={setTitle} />
         </div>
       </div>
     );
@@ -224,7 +236,7 @@ const Window = ({ id }) => {
         className="win-content"
         key="content"
       >
-        <Content windowId={id} />
+        <Content args={args} setArgs={setArgs} setTitle={setTitle} />
       </div>
     </div>
   );

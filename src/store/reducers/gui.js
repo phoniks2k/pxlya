@@ -7,6 +7,8 @@ const initialState = {
   isLightGrid: false,
   compactPalette: false,
   paletteOpen: true,
+  mute: false,
+  chatNotify: true,
   // top-left button menu
   menuOpen: false,
   // show online users per canvas instead of total
@@ -122,6 +124,18 @@ export default function gui(
         hover: null,
       };
     }
+
+    case 'TOGGLE_MUTE':
+      return {
+        ...state,
+        mute: !state.mute,
+      };
+
+    case 'TOGGLE_CHAT_NOTIFY':
+      return {
+        ...state,
+        chatNotify: !state.chatNotify,
+      };
 
     default:
       return state;

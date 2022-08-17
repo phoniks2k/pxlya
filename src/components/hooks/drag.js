@@ -1,8 +1,8 @@
 /*
- * @flex
- *
  * mouse draging
  */
+
+/* eslint-disable consistent-return */
 
 import { useEffect, useCallback } from 'react';
 
@@ -49,23 +49,22 @@ function useDrag(elRef, startHandler, diffHandler) {
   }, [startHandler, diffHandler]);
 
   useEffect(() => {
-    let prevCurrent = null;
+    const refElem = elRef.current;
 
-    if (elRef.current) {
-      elRef.current.addEventListener('mousedown', startDrag, {
-        passive: false,
-      });
-      elRef.current.addEventListener('touchstart', startDrag, {
-        passive: false,
-      });
-      prevCurrent = elRef.current;
+    if (!refElem) {
+      return;
     }
 
+    refElem.addEventListener('mousedown', startDrag, {
+      passive: false,
+    });
+    refElem.addEventListener('touchstart', startDrag, {
+      passive: false,
+    });
+
     return () => {
-      if (prevCurrent) {
-        prevCurrent.removeEventListener('mousedown', startDrag);
-        prevCurrent.removeEventListener('touchstart', startDrag);
-      }
+      refElem.removeEventListener('mousedown', startDrag);
+      refElem.removeEventListener('touchstart', startDrag);
     };
   }, [elRef, startDrag]);
 }

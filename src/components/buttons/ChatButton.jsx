@@ -36,7 +36,7 @@ const ChatButton = () => {
     shallowEqual,
   );
 
-  const chatNotify = useSelector((state) => state.audio.chatNotify);
+  const chatNotify = useSelector((state) => state.gui.chatNotify);
   const channels = useSelector((state) => state.chat.channels);
   const [unread, mute] = useSelector((state) => [
     state.chatRead.unread,

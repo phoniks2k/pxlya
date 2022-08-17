@@ -19,8 +19,8 @@ import WindowManager from './WindowManager';
 
 const iconContextValue = { style: { verticalAlign: 'middle' } };
 
-const App = ({ store }) => (
-  <Provider store={store}>
+const App = () => (
+  <>
     <Style />
     <IconContext.Provider value={iconContextValue}>
       <CanvasSwitchButton />
@@ -32,12 +32,16 @@ const App = ({ store }) => (
       <UI />
       <WindowManager />
     </IconContext.Provider>
-  </Provider>
+  </>
 );
 
 function renderApp(domParent, store) {
   const root = createRoot(domParent);
-  root.render(<App store={store} />);
+  root.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+  );
 }
 
 export default renderApp;

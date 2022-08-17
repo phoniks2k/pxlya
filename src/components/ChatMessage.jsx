@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { showContextMenu } from '../store/actions';
 import { MarkdownParagraph } from './Markdown';
 import {
   colorFromText,
@@ -11,19 +10,20 @@ import {
 import { parseParagraph } from '../core/MarkdownParser';
 
 
+const selectStyle = (state) => state.gui.style.indexOf('dark') !== -1;
+
 function ChatMessage({
   name,
   uid,
   country,
-  windowId,
   msg,
   ts,
+  openCm,
 }) {
-  const dispatch = useDispatch();
   const isDarkMode = useSelector(
-    (state) => state.gui.style.indexOf('dark') !== -1,
+    selectStyle,
   );
-  const refEmbed = useRef(null);
+  const refEmbed = useRef();
 
   const isInfo = (name === 'info');
   const isEvent = (name === 'event');
@@ -66,15 +66,7 @@ function ChatMessage({
                 title={name}
                 tabIndex={-1}
                 onClick={(event) => {
-                  const {
-                    clientX,
-                    clientY,
-                  } = event;
-                  dispatch(showContextMenu('USER', clientX, clientY, {
-                    windowId,
-                    uid,
-                    name,
-                  }));
+                  openCm(event.clientX, event.clientY, name, uid);
                 }}
               >
                 {name}

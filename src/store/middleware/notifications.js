@@ -42,7 +42,7 @@ export default (store) => (next) => (action) => {
 
         case 'REC_CHAT_MESSAGE': {
           const state = store.getState();
-          const { chatNotify } = state.audio;
+          const { chatNotify } = state.gui;
           if (!chatNotify) break;
 
           const { isPing } = action;

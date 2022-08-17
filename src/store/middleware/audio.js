@@ -9,7 +9,7 @@ const context = AudioContext && new AudioContext();
 
 export default (store) => (next) => (action) => {
   const state = store.getState();
-  const { mute, chatNotify } = state.audio;
+  const { mute, chatNotify } = state.gui;
 
   if (!mute && context) {
     switch (action.type) {

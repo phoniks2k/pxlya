@@ -14,7 +14,6 @@ import storage from 'redux-persist/lib/storage';
 /*
  * reducers
  */
-import audio from './reducers/audio';
 import canvas from './reducers/canvas';
 import gui from './reducers/gui';
 import win from './reducers/win';
@@ -44,7 +43,6 @@ const reducers = persistReducer({
     'win',
   ],
 }, combineReducers({
-  audio,
   canvas,
   gui,
   win,
@@ -62,6 +60,9 @@ const store = createStore(
 );
 
 
-persistStore(store);
+export const persistor = persistStore(store);
 
 export default store;
+
+
+// persistent stores: gui, windows, ranks, chatRead;

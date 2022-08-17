@@ -32,7 +32,7 @@ const ChannelDropDown = ({
   const unread = useSelector((state) => state.chatRead.unread);
   const mute = useSelector((state) => state.chatRead.mute);
   const channels = useSelector((state) => state.chat.channels);
-  const chatNotify = useSelector((state) => state.audio.chatNotify);
+  const chatNotify = useSelector((state) => state.gui.chatNotify);
 
   useEffect(() => {
     setOffset(buttonRef.current.clientHeight);

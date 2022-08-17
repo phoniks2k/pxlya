@@ -12,18 +12,22 @@ import UIWin from './UIWin';
 
 const iconContextValue = { style: { verticalAlign: 'middle' } };
 
-const AppWin = ({ store }) => (
-  <Provider store={store}>
+const AppWin = () => (
+  <>
     <Style />
     <IconContext.Provider value={iconContextValue}>
       <UIWin />
     </IconContext.Provider>
-  </Provider>
+  </>
 );
 
 function renderAppWin(domParent, store) {
   const root = createRoot(domParent);
-  root.render(<AppWin store={store} />);
+  root.render(
+    <Provider store={store}>
+      <AppWin />
+    </Provider>,
+  );
 }
 
 export default renderAppWin;

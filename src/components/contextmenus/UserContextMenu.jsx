@@ -2,57 +2,46 @@
  *
  */
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import {
-  useClickOutside,
-} from '../hooks/clickOutside';
-import {
-  hideContextMenu,
-} from '../../store/actions';
-import {
   startDm,
   setUserBlock,
 } from '../../store/actions/thunks';
-import {
-  addToChatInputMessage,
-  setWindowArgs,
-} from '../../store/actions/windows';
 import { escapeMd } from '../../core/utils';
 
-const UserContextMenu = () => {
-  const wrapperRef = useRef(null);
-
-  const { xPos, yPos, args } = useSelector((state) => state.contextMenu);
-  const { windowId, name, uid } = args;
-
+/*
+ * args: {
+ *   name,
+ *   uid,
+ *   setChannel,
+ *   addToInput,
+ * }
+ */
+const UserContextMenu = ({ args, close }) => {
   const channels = useSelector((state) => state.chat.channels);
   const fetching = useSelector((state) => state.fetching.fetchingApi);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(hideContextMenu());
 
-  useClickOutside([wrapperRef], close);
+  const {
+    name,
+    uid,
+    setChannel,
+    addToInput,
+  } = args;
 
   return (
-    <div
-      ref={wrapperRef}
-      className="contextmenu"
-      style={{
-        left: xPos,
-        top: yPos,
-      }}
-    >
+    <>
       <div
         role="button"
+        key="ping"
         tabIndex={0}
         onClick={() => {
           const ping = `@[${escapeMd(name)}](${uid})`;
-          dispatch(
-            addToChatInputMessage(windowId, ping),
-          );
+          addToInput(ping);
           close();
         }}
         style={{ borderTop: 'none' }}
@@ -61,6 +50,7 @@ const UserContextMenu = () => {
       </div>
       <div
         role="button"
+        key="dm"
         tabIndex={0}
         onClick={() => {
           /*
@@ -71,15 +61,13 @@ const UserContextMenu = () => {
           for (let i = 0; i < cids.length; i += 1) {
             const cid = cids[i];
             if (channels[cid].length === 4 && channels[cid][3] === uid) {
-              dispatch(setWindowArgs(windowId, {
-                chatChannel: cid,
-              }));
+              setChannel(cid);
               close();
               return;
             }
           }
           if (!fetching) {
-            dispatch(startDm(windowId, { userId: uid }));
+            dispatch(startDm({ userId: uid }, setChannel));
           }
           close();
         }}
@@ -87,17 +75,18 @@ const UserContextMenu = () => {
         {t`DM`}
       </div>
       <div
+        role="button"
+        key="block"
+        tabIndex={-1}
         onClick={() => {
           dispatch(setUserBlock(uid, name, true));
           close();
         }}
-        role="button"
-        tabIndex={-1}
       >
         {t`Block`}
       </div>
-    </div>
+    </>
   );
 };
 
-export default UserContextMenu;
+export default React.memo(UserContextMenu);

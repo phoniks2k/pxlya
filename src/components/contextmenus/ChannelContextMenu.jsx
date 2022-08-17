@@ -2,15 +2,11 @@
  *
  */
 
-import React, { useRef, useCallback } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import {
-  useClickOutside,
-} from '../hooks/clickOutside';
-import {
-  hideContextMenu,
   muteChatChannel,
   unmuteChatChannel,
 } from '../../store/actions';
@@ -18,31 +14,25 @@ import {
   setLeaveChannel,
 } from '../../store/actions/thunks';
 
-const ChannelContextMenu = () => {
-  const wrapperRef = useRef(null);
-
+/*
+ * args: {
+ *   cid,
+ * }
+ */
+const ChannelContextMenu = ({ args, close }) => {
   const channels = useSelector((state) => state.chat.channels);
   const muteArr = useSelector((state) => state.chatRead.mute);
-  const { xPos, yPos, args } = useSelector((state) => state.contextMenu);
+
   const { cid } = args;
   const dispatch = useDispatch();
-  const close = useCallback(() => dispatch(hideContextMenu()), [dispatch]);
-
-  useClickOutside([wrapperRef], close);
 
   const isMuted = muteArr.includes(cid);
 
   return (
-    <div
-      ref={wrapperRef}
-      className="contextmenu"
-      style={{
-        right: window.innerWidth - xPos,
-        top: yPos,
-      }}
-    >
+    <>
       <div
         role="button"
+        key="mute"
         onClick={() => {
           if (isMuted) {
             dispatch(unmuteChatChannel(cid));
@@ -58,6 +48,7 @@ const ChannelContextMenu = () => {
       {(channels[cid][1] !== 0)
         && (
         <div
+          key="leave"
           role="button"
           onClick={() => {
             dispatch(setLeaveChannel(cid));
@@ -68,7 +59,7 @@ const ChannelContextMenu = () => {
           {t`Close`}
         </div>
         )}
-    </div>
+    </>
   );
 };
 

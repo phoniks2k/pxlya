@@ -126,30 +126,6 @@ export function showCanvasSelectionModal() {
   );
 }
 
-export function addToChatInputMessage(windowId, msg, focus = true) {
-  return (dispatch, getState) => {
-    const args = getState().windows.args[windowId];
-    let inputMessage = args && args.inputMessage;
-    if (!inputMessage) {
-      inputMessage = '';
-    } else if (inputMessage.slice(-1) !== ' ') {
-      inputMessage += ' ';
-    }
-    inputMessage += msg;
-
-    dispatch(setWindowArgs(windowId, {
-      inputMessage,
-    }));
-
-    if (focus) {
-      const inputElem = document.getElementById(`chtipt-${windowId}`);
-      if (inputElem) {
-        inputElem.focus();
-      }
-    }
-  };
-}
-
 export function closeWindow(windowId) {
   return {
     type: 'CLOSE_WIN',

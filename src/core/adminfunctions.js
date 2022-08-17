@@ -328,7 +328,7 @@ export async function executeWatchAction(
     && Date.now() - ts > 5 * 60 * 1000
     && !iid
   ) {
-    return { info: 'Cann not watch so many pixels' };
+    return { info: 'Can not watch so many pixels' };
   }
 
   if (action === 'summary') {

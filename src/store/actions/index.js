@@ -419,21 +419,6 @@ export function initTimer() {
   };
 }
 
-export function showContextMenu(
-  menuType,
-  xPos,
-  yPos,
-  args,
-) {
-  return {
-    type: 'SHOW_CONTEXT_MENU',
-    menuType,
-    xPos,
-    yPos,
-    args,
-  };
-}
-
 export function openChatChannel(cid) {
   return {
     type: 'OPEN_CHAT_CHANNEL',
@@ -496,12 +481,6 @@ export function unmuteChatChannel(cid) {
   return {
     type: 'UNMUTE_CHAT_CHANNEL',
     cid,
-  };
-}
-
-export function hideContextMenu() {
-  return {
-    type: 'HIDE_CONTEXT_MENU',
   };
 }
 

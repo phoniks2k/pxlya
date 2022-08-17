@@ -44,3 +44,6 @@ export const makeSelectWindowById = (windowId) => createSelector(
  */
 // eslint-disable-next-line max-len
 export const makeSelectWindowPosById = (windowId) => (state) => state.windows.positions[windowId];
+
+// eslint-disable-next-line max-len
+export const makeSelectWindowArgs = (windowId) => (state) => state.windows.args[windowId] || {};

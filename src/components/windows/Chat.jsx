@@ -9,17 +9,15 @@ import useStayScrolled from 'react-stay-scrolled';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
+import ContextMenu from '../contextmenus';
 import ChatMessage from '../ChatMessage';
 import ChannelDropDown from '../contextmenus/ChannelDropDown';
 
 import {
-  showContextMenu,
   markChannelAsRead,
 } from '../../store/actions';
 import {
   showUserAreaModal,
-  setWindowTitle,
-  setWindowArgs,
 } from '../../store/actions/windows';
 import {
   fetchChatMessages,
@@ -28,38 +26,66 @@ import SocketClient from '../../socket/SocketClient';
 
 
 const Chat = ({
-  windowId,
+  args,
+  setArgs,
+  setTitle,
 }) => {
   const listRef = useRef();
   const targetRef = useRef();
+  const inputRef = useRef();
 
   const [blockedIds, setBlockedIds] = useState([]);
   const [btnSize, setBtnSize] = useState(20);
+  const [cmArgs, setCmArgs] = useState({});
 
   const dispatch = useDispatch();
 
-  const setChannel = useCallback((cid) => {
-    dispatch(markChannelAsRead(cid));
-    dispatch(setWindowArgs(windowId, {
-      chatChannel: Number(cid),
-    }));
-  }, [dispatch]);
-
-  const setChatInputMessage = useCallback((msg) => {
-    dispatch(setWindowArgs(windowId, {
-      inputMessage: msg,
-    }));
-  }, [dispatch]);
-
   const ownName = useSelector((state) => state.user.name);
-  // eslint-disable-next-line max-len
   const fetching = useSelector((state) => state.fetching.fetchingChat);
   const { channels, messages, blocked } = useSelector((state) => state.chat);
 
   const {
     chatChannel = 1,
-    inputMessage = '',
-  } = useSelector((state) => state.windows.args[windowId] || {});
+  } = args;
+
+  const setChannel = useCallback((cid) => {
+    dispatch(markChannelAsRead(cid));
+    setArgs({
+      chatChannel: Number(cid),
+    });
+  }, [dispatch]);
+
+  const addToInput = useCallback((msg) => {
+    const inputElem = inputRef.current;
+    if (!inputElem) {
+      return;
+    }
+    let newInputMessage = inputElem.value;
+    if (newInputMessage.slice(-1) !== ' ') {
+      newInputMessage += ' ';
+    }
+    newInputMessage += `${msg} `;
+    inputElem.value = newInputMessage;
+    inputRef.current.focus();
+  }, []);
+
+  const closeCm = useCallback(() => {
+    setCmArgs({});
+  }, []);
+
+  const openUserCm = useCallback((x, y, name, uid) => {
+    setCmArgs({
+      type: 'USER',
+      x,
+      y,
+      args: {
+        name,
+        uid,
+        setChannel,
+        addToInput,
+      },
+    });
+  }, [setChannel, addToInput]);
 
   const { stayScrolled } = useStayScrolled(listRef, {
     initialScroll: Infinity,
@@ -76,7 +102,7 @@ const Chat = ({
   useEffect(() => {
     if (channels[chatChannel]) {
       const channelName = channels[chatChannel][0];
-      dispatch(setWindowTitle(windowId, `Chan: ${channelName}`));
+      setTitle(`Chan: ${channelName}`);
     }
   }, [chatChannel]);
 
@@ -101,11 +127,11 @@ const Chat = ({
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    const inptMsg = inputMessage.trim();
+    const inptMsg = inputRef.current.value.trim();
     if (!inptMsg) return;
     // send message via websocket
     SocketClient.sendChatMessage(inptMsg, chatChannel);
-    setChatInputMessage('');
+    inputRef.current.value = '';
   }
 
   /*
@@ -127,6 +153,13 @@ const Chat = ({
       ref={targetRef}
       className="chat-container"
     >
+      <ContextMenu
+        type={cmArgs.type}
+        x={cmArgs.x}
+        y={cmArgs.y}
+        args={cmArgs.args}
+        close={closeCm}
+      />
       <ul
         className="chatarea"
         ref={listRef}
@@ -141,10 +174,9 @@ const Chat = ({
             name="info"
             country="xx"
             msg={t`Start chatting here`}
-            windowId={windowId}
           />
           )
-          }
+        }
         {
           channelMessages.map((message) => ((blockedIds.includes(message[3]))
             ? null : (
@@ -155,7 +187,7 @@ const Chat = ({
                 uid={message[3]}
                 ts={message[4]}
                 key={message[5]}
-                windowId={windowId}
+                openCm={openUserCm}
               />
             )))
         }
@@ -168,15 +200,13 @@ const Chat = ({
         }}
       >
         {(ownName) ? (
-          <React.Fragment key={`chtipt-${windowId}`}>
+          <React.Fragment key="chtipt">
             <input
               style={{
                 flexGrow: 1,
                 minWidth: 40,
               }}
-              id={`chtipt-${windowId}`}
-              value={inputMessage}
-              onChange={(e) => setChatInputMessage(e.target.value)}
+              ref={inputRef}
               autoComplete="off"
               maxLength="200"
               type="text"
@@ -193,6 +223,7 @@ const Chat = ({
         ) : (
           <div
             className="modallink"
+            key="nlipt"
             onClick={() => dispatch(showUserAreaModal())}
             style={{
               textAlign: 'center',
@@ -206,6 +237,7 @@ const Chat = ({
           </div>
         )}
         <ChannelDropDown
+          key="cdd"
           setChatChannel={setChannel}
           chatChannel={chatChannel}
         />
@@ -219,15 +251,15 @@ const Chat = ({
         <span
           onClick={(event) => {
             const {
-              clientX,
-              clientY,
+              clientX: x,
+              clientY: y,
             } = event;
-            dispatch(showContextMenu(
-              'CHANNEL',
-              clientX,
-              clientY,
-              { cid: chatChannel },
-            ));
+            setCmArgs({
+              type: 'CHANNEL',
+              x,
+              y,
+              args: { cid: chatChannel },
+            });
           }}
           role="button"
           title={t`Channel settings`}
