@@ -224,7 +224,10 @@ const Chat = ({
           <div
             className="modallink"
             key="nlipt"
-            onClick={() => dispatch(showUserAreaModal())}
+            onClick={(evt) => {
+              evt.stopPropagation();
+              dispatch(showUserAreaModal());
+            }}
             style={{
               textAlign: 'center',
               fontSize: 13,

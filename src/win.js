@@ -2,7 +2,7 @@
  * Main Script for windows (pop-ups and stuff)
  */
 
-import store from './store/configureStoreWin';
+import store from './store/storeWin';
 
 import renderAppWin from './components/AppWin';
 

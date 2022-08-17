@@ -69,6 +69,54 @@ function clampPos(prefXPos, prefYPos, width, height) {
 }
 
 /*
+ * correct window positions according to screensize
+ * to make sure that none if off-screen
+ */
+function correctPositions(state) {
+  const {
+    innerWidth: width,
+    innerHeight: height,
+  } = window;
+
+  const { windows: newWindows, positions } = state;
+  const xMax = width - SCREEN_MARGIN_EW;
+  const yMax = height - SCREEN_MARGIN_S;
+
+  let modified = false;
+  const newPositions = {};
+  for (let i = 0; i < newWindows.length; i += 1) {
+    const id = newWindows[i].windowId;
+    const {
+      xPos,
+      yPos,
+      width: winWidth,
+      height: winHeight,
+    } = positions[id];
+    if (xPos > xMax || yPos > yMax
+      || width > winWidth || height > winHeight) {
+      modified = true;
+      newPositions[id] = {
+        xPos: Math.min(xMax, xPos),
+        yPos: Math.min(yMax, yPos),
+        width: Math.min(winWidth, width - SCREEN_MARGIN_S),
+        height: Math.min(winHeight, height - SCREEN_MARGIN_S),
+        z: positions[id].z,
+      };
+    } else {
+      newPositions[id] = positions[id];
+    }
+  }
+
+  if (!modified) {
+    return state;
+  }
+  return {
+    ...state,
+    positions: newPositions,
+  };
+}
+
+/*
  * resort the zIndex, remove gaps
  */
 function sortWindows(newState, force = false) {
@@ -446,89 +494,52 @@ export default function windows(
       };
     }
 
-    case 'persist/REHYDRATE':
-    case 'WIN_RESIZE': {
-      const {
-        innerWidth: width,
-        innerHeight: height,
-      } = window;
-
-      let { windows: newWindows, args, positions } = state;
-      const showWindows = width > SCREEN_WIDTH_THRESHOLD;
-
-      if (action.type === 'persist/REHYDRATE') {
-        console.log('persist', state, action.payload);
-        if (!showWindows) {
-          // reset on phones on every refresh
-          return initialState;
-        }
-
-        args = { ...args };
-        positions = { ...positions };
-
-        newWindows = newWindows.filter((win) => {
-          if (win.open && (win.fullscreen || showWindows)) {
-            return true;
-          }
-          // eslint-disable-next-line no-console
-          console.log(
-            `Cleaning up window from previous session: ${win.windowId}`,
-          );
-          delete args[win.windowId];
-          delete positions[win.windowId];
-          return false;
-        });
+    case 'persist/REHYDRATE': {
+      const { showWindows } = state;
+      if (!showWindows) {
+        // don't persist on small screens
+        return state;
       }
 
+      const loadedState = {
+        ...state,
+        ...action.payload.windows,
+      };
+      const args = { ...loadedState.args };
+      const positions = { ...loadedState.positions };
+
+      const newWindows = loadedState.windows.filter((win) => {
+        if (win.open && (win.fullscreen || showWindows)) {
+          return true;
+        }
+        // eslint-disable-next-line no-console
+        console.log(
+          `Cleaning up window from previous session: ${win.windowId}`,
+        );
+        delete args[win.windowId];
+        delete positions[win.windowId];
+        return false;
+      });
+
+      return sortWindows(correctPositions({
+        ...loadedState,
+        windows: newWindows,
+        args,
+        positions,
+      }));
+    }
+
+    case 'WIN_RESIZE': {
+      const showWindows = window.innerWidth > SCREEN_WIDTH_THRESHOLD;
       if (!showWindows) {
         return {
           ...state,
-          windows: newWindows,
           showWindows,
-          args,
-          positions,
         };
       }
-
-      const xMax = width - SCREEN_MARGIN_EW;
-      const yMax = height - SCREEN_MARGIN_S;
-      let modified = false;
-      const newPositions = {};
-
-      for (let i = 0; i < newWindows.length; i += 1) {
-        const id = newWindows[i].windowId;
-        const {
-          xPos,
-          yPos,
-          width: winWidth,
-          height: winHeight,
-        } = positions[id];
-        if (xPos > xMax || yPos > yMax
-          || width > winWidth || height > winHeight) {
-          modified = true;
-          newPositions[id] = {
-            xPos: Math.min(xMax, xPos),
-            yPos: Math.min(yMax, yPos),
-            width: Math.min(winWidth, width - SCREEN_MARGIN_S),
-            height: Math.min(winHeight, height - SCREEN_MARGIN_S),
-            z: positions[id].z,
-          };
-        } else {
-          newPositions[id] = positions[id];
-        }
-      }
-      if (modified) {
-        positions = newPositions;
-      }
-
-      return {
-        ...state,
-        windows: newWindows,
-        showWindows: true,
-        args,
-        positions,
-      };
+      return correctPositions(state);
     }
+
 
     case 'SET_WIN_TITLE': {
       const {

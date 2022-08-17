@@ -21,7 +21,7 @@ import {
   receivePixelUpdate,
   receivePixelReturn,
 } from './ui/placePixel';
-import store from './store/configureStore';
+import store from './store/store';
 
 
 import renderApp from './components/App';
