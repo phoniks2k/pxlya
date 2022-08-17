@@ -27,7 +27,6 @@ const guiPersist = persistReducer({
   storage,
   version: CURRENT_VERSION,
   migrate,
-  blacklist: ['hover'],
 }, gui);
 
 const ranksPersist = persistReducer({

@@ -32,6 +32,7 @@ export type CanvasState = {
   historicalCanvasSize: number,
   historicalDate: string,
   historicalTime: string,
+  hover: Array,
   // object with all canvas informations from all canvases like colors and size
   canvases: Object,
   // last canvas view, scale, selectedColor and viewscale
@@ -138,6 +139,7 @@ const initialState = {
   historicalDate: null,
   historicalTime: null,
   showHiddenCanvases: false,
+  hover: null,
   prevCanvasCoords: {},
 };
 
@@ -258,6 +260,21 @@ export default function canvasReducer(
       return {
         ...state,
         selectedColor: action.color,
+      };
+    }
+
+    case 'SET_HOVER': {
+      const { hover } = action;
+      return {
+        ...state,
+        hover,
+      };
+    }
+
+    case 'UNSET_HOVER': {
+      return {
+        ...state,
+        hover: null,
       };
     }
 

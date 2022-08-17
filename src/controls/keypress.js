@@ -83,7 +83,7 @@ function createKeyPressHandler(store) {
           : t`Unmuted Sound`));
         return;
       case 'r': {
-        const { hover } = store.getState().gui;
+        const { hover } = store.getState().canvas;
         const text = hover.join('_');
         copy(text);
         store.dispatch(notify(t`Copied!`));

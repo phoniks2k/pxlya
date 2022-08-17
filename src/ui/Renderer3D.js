@@ -429,7 +429,7 @@ class Renderer {
   onDocumentMouseDownOrTouchStart() {
     this.pressTime = Date.now();
     const state = this.store.getState();
-    this.mouseMoveStart = state.gui.hover;
+    this.mouseMoveStart = state.canvas.hover;
   }
 
   onDocumentTouchMove() {
@@ -501,7 +501,7 @@ class Renderer {
     const state = store.getState();
 
     const [px, py, pz] = mouseMoveStart;
-    const [qx, qy, qz] = state.gui.hover;
+    const [qx, qy, qz] = state.canvas.hover;
     if (px !== qx || py !== qy || pz !== qz) {
       return;
     }
@@ -587,7 +587,7 @@ class Renderer {
     }
 
     const [px, py, pz] = this.mouseMoveStart;
-    const [qx, qy, qz] = state.gui.hover;
+    const [qx, qy, qz] = state.canvas.hover;
     if (px !== qx || py !== qy || pz !== qz) {
       return;
     }

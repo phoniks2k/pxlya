@@ -1,7 +1,6 @@
 const initialState = {
   showGrid: false,
   showPixelNotify: false,
-  hover: null,
   autoZoomIn: false,
   isPotato: false,
   isLightGrid: false,
@@ -107,21 +106,6 @@ export default function gui(
       return {
         ...state,
         paletteOpen,
-      };
-    }
-
-    case 'SET_HOVER': {
-      const { hover } = action;
-      return {
-        ...state,
-        hover,
-      };
-    }
-
-    case 'UNSET_HOVER': {
-      return {
-        ...state,
-        hover: null,
       };
     }
 

@@ -15,7 +15,7 @@ export function renderPlaceholder(
 ) {
   const viewportCtx = $viewport.getContext('2d');
 
-  const { hover } = state.gui;
+  const { hover } = state.canvas;
   const { palette, selectedColor } = state.canvas;
 
   const [sx, sy] = worldToScreen(state, $viewport, hover);
@@ -49,7 +49,7 @@ export function renderPotatoPlaceholder(
 ) {
   const viewportCtx = $viewport.getContext('2d');
 
-  const { hover } = state.gui;
+  const { hover } = state.canvas;
   const { palette, selectedColor } = state.canvas;
 
   const [sx, sy] = worldToScreen(state, $viewport, hover);

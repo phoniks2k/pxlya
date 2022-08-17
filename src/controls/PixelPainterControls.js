@@ -391,7 +391,7 @@ class PixelPlainterControls {
     const { deltaY } = event;
     const { store } = this;
     const state = store.getState();
-    const { hover } = state.gui;
+    const { hover } = state.canvas;
     let zoompoint = null;
     if (hover) {
       zoompoint = hover;
@@ -427,7 +427,7 @@ class PixelPlainterControls {
         lastPosY - (deltaY / scale),
       ]));
     } else {
-      const { hover } = state.gui;
+      const { hover } = state.canvas;
       const screenCoor = screenToWorld(
         state,
         this.viewport,
@@ -580,7 +580,7 @@ class PixelPlainterControls {
       case 'Control':
       case 'Shift': {
         const state = store.getState();
-        const { hover } = state.gui;
+        const { hover } = state.canvas;
         if (hover) {
           if (event.key === 'Control') {
             // ctrl

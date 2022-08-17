@@ -419,7 +419,6 @@ class Renderer {
     const {
       showGrid,
       showPixelNotify,
-      hover,
       isPotato,
       isLightGrid,
     } = state.gui;
@@ -430,6 +429,7 @@ class Renderer {
       view,
       viewscale,
       canvasSize,
+      hover,
     } = state.canvas;
 
     const [x, y] = view;

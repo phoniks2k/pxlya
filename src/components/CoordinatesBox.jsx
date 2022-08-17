@@ -17,7 +17,7 @@ function renderCoordinates(cell) {
 
 const CoordinatesBox = () => {
   const view = useSelector((state) => state.canvas.view);
-  const hover = useSelector((state) => state.gui.hover);
+  const hover = useSelector((state) => state.canvas.hover);
   const dispatch = useDispatch();
 
   return (
