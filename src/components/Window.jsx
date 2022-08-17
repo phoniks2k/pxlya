@@ -75,6 +75,32 @@ const Window = ({ id }) => {
     dispatch(closeWindow(id));
   }, [dispatch]);
 
+  const {
+    xPos, yPos,
+    width, height,
+  } = position;
+
+  const popUp = useCallback((evt) => {
+    let left;
+    let top;
+    try {
+      left = Math.round(window.top.screenX + xPos);
+      top = Math.round(window.top.screenY + yPos);
+      if (Number.isNaN(left) || Number.isNaN(top)) {
+        throw new Error('NaN');
+      }
+    } catch {
+      left = 0;
+      top = 0;
+    }
+    window.lmao = window.open(
+      './win',
+      'lol',
+      `popup=yes,width=${width},height=${height},left=${left},top=${top},toolbar=no,status=no,directories=no,menubar=no`,
+    );
+    close(evt);
+  }, [xPos, yPos, width, height]);
+
   useDrag(
     titleBarRef,
     focus,
@@ -117,15 +143,8 @@ const Window = ({ id }) => {
     return null;
   }
 
-  const {
-    windowType,
-    title,
-  } = win;
-  const {
-    xPos, yPos,
-    width, height,
-    z,
-  } = position;
+  const { title, windowType } = win;
+  const { z } = position;
 
   const [Content, name] = COMPONENTS[windowType];
 
@@ -146,17 +165,26 @@ const Window = ({ id }) => {
         <h2>{windowTitle}</h2>
         <div
           onClick={close}
-          className="ModalClose"
+          className="modal-topbtn close"
           role="button"
           label="close"
           key="closebtn"
           title={t`Close`}
           tabIndex={-1}
         >✕</div>
+        <div
+          onClick={popUp}
+          className="modal-topbtn pop"
+          role="button"
+          label="close"
+          key="popbtn"
+          title={t`PopUp`}
+          tabIndex={-1}
+        >G</div>
         {(showWindows) && (
           <div
             onClick={toggleMaximize}
-            className="ModalRestore"
+            className="modal-topbtn restore"
             key="resbtn"
             role="button"
             label="restore"
@@ -206,6 +234,13 @@ const Window = ({ id }) => {
           title={t`Move`}
         >
           {windowTitle}
+        </span>
+        <span
+          className="win-topbtn"
+          key="pobtn"
+          onClick={popUp}
+        >
+          G
         </span>
         <span
           className="win-topbtn"

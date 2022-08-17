@@ -635,7 +635,7 @@ tr:nth-child(even) {
   flex-direction: row;
 }
 
-.ModalClose, .ModalRestore {
+.modal-topbtn {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -652,15 +652,19 @@ tr:nth-child(even) {
   z-index: 5;
 }
 
-.ModalClose {
+.modal-topbtn.close {
   right: 14px;
 }
 
-.ModalRestore {
+.modal-topbtn.restore {
   right: 52px;
 }
 
-.ModalClose:hover, .ModalRestore:hover {
+.modal-topbtn.pop {
+  right: 90px;
+}
+
+.modal-topbtn:hover {
   background-color: #e3e3e4;
 }
 
@@ -677,6 +681,10 @@ tr:nth-child(even) {
     outline: none;
     border: none;
     border-radius: inherit !important;
+  }
+
+  .modal-topbtn.pop {
+    right: 52px;
   }
 
   .modal {

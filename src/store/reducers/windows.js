@@ -537,7 +537,13 @@ export default function windows(
           showWindows,
         };
       }
-      return correctPositions(state);
+      const newState = (showWindows === state.showWindows)
+        ? state
+        : {
+          ...state,
+          showWindows,
+        };
+      return correctPositions(newState);
     }
 
 

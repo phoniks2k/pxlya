@@ -496,5 +496,3 @@ export function parseInterval(interval) {
   }
   return (num * factor);
 }
-
-
