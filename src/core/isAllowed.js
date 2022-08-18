@@ -20,7 +20,11 @@ import { USE_PROXYCHECK } from './config';
  * dummy function to include if you don't want any proxycheck
  */
 async function dummy() {
-  return [false, 'dummy'];
+  return {
+    allowed: true,
+    status: 0,
+    pcheck: 'dummy',
+  };
 }
 
 /*
@@ -83,10 +87,11 @@ async function withoutCache(f, ip) {
 }
 
 /*
- * execute proxycheck without caching results for 3 days
- * do not check more than 3 at a time, do not check ip double
+ * execute proxycheck with caching results
+ * do not check ip double
  * @param f function for checking if proxy
  * @param ip IP to check
+ * @return Object as in checkIfAllowed
  * @return true if proxy or blacklisted, false if not or whitelisted
  */
 const checking = [];

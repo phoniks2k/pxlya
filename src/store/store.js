@@ -3,7 +3,7 @@
  */
 
 import {
-  applyMiddleware, createStore, compose, combineReducers,
+  applyMiddleware, createStore, combineReducers,
 } from 'redux';
 import thunk from 'redux-thunk';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -55,19 +55,16 @@ const reducers = combineReducers({
 
 const store = createStore(
   reducers,
-  undefined,
-  compose(
-    applyMiddleware(
-      thunk,
-      promise,
-      array,
-      audio,
-      notifications,
-      title,
-      socketClientHook,
-      rendererHook,
-      extensions,
-    ),
+  applyMiddleware(
+    thunk,
+    promise,
+    array,
+    audio,
+    notifications,
+    title,
+    socketClientHook,
+    rendererHook,
+    extensions,
   ),
 );
 

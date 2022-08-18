@@ -5,7 +5,7 @@
 /* eslint-disable no-console */
 
 import {
-  applyMiddleware, createStore, compose, combineReducers,
+  applyMiddleware, createStore, combineReducers,
 } from 'redux';
 import thunk from 'redux-thunk';
 import { persistStore } from 'redux-persist';
@@ -30,12 +30,9 @@ const reducers = combineReducers({
 
 const store = createStore(
   reducers,
-  undefined,
-  compose(
-    applyMiddleware(
-      thunk,
-      promise,
-    ),
+  applyMiddleware(
+    thunk,
+    promise,
   ),
 );
 

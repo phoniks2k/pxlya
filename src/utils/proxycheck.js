@@ -1,12 +1,77 @@
 /*
  * check if an ip is a proxy via proxycheck.io
  */
+import http from 'http';
+
 import { proxyLogger as logger } from '../core/logger';
 import { PROXYCHECK_KEY } from '../core/config';
+import { HOUR } from '../core/constants';
 
-const http = require('http');
 
-const pcKeys = PROXYCHECK_KEY.split(',');
+/*
+ * class to serve proxyckec.io key
+ * One paid account is allowed to have one additional free account,
+ * which is good for fallback, if something goes wrong
+ */
+class PcKeyProvider {
+  /*
+   * @param pcKeys comma seperated list of keys
+   */
+  constructor(pcKeys) {
+    let keys = (pcKeys)
+      ? pcKeys.split(',')
+      : [];
+    keys = keys.map((k) => k.trim());
+    if (keys.length) {
+      logger.info(`Loaded pc Keys: ${keys}`);
+    } else {
+      logger.info(`You have to define PROXYCHECK_KEY to use proxycheck.io`);
+    }
+    this.availableKeys = keys;
+    this.deniedKeys = [];
+    this.retryDeniedKeys = this.retryDeniedKeys.bind(this);
+    setInterval(this.retryDeniedKeys, HOUR);
+  }
+
+  /*
+   * @return random available pcKey
+   */
+  getKey() {
+    const { availableKeys: keys } = this;
+    if (!keys.length) {
+      return null;
+    }
+    return keys[Math.floor(Math.random() * keys.length)];
+  }
+
+  /*
+   * report denied key (over daily quota, rate limited, blocked,...)
+   * @param key
+   */
+  denyKey(key) {
+    const { availableKeys: keys } = this;
+    const pos = keys.indexOf(key);
+    if (~pos) {
+      keys.splice(pos, 1);
+      this.deniedKeys.push(key);
+    }
+  }
+
+  /*
+   * allow all denied keys again
+   */
+  retryDeniedKeys() {
+    const { deniedKeys } = this;
+    if (!deniedKeys.length) {
+      return;
+    }
+    logger.info(`Retry denied Keys ${deniedKeys}`);
+    this.availableKeys = this.availableKeys.concat(deniedKeys);
+    this.deniedKeys = [];
+  }
+}
+
+const pcKeyProvider = new PcKeyProvider(PROXYCHECK_KEY);
 
 /*
  * queue of ip-checking tasks
@@ -18,12 +83,17 @@ let fetching = false;
 
 function reqProxyCheck(ips) {
   return new Promise((resolve, reject) => {
+    const key = pcKeyProvider.getKey();
+    if (!key) {
+      setTimeout(
+        () => reject(new Error('No pc key available')),
+        5000,
+      );
+      return;
+    }
     const postData = `ips=${ips.join(',')}`;
+    const path = `/v2/?vpn=1&asn=1&key=${key}`;
     logger.info(`Request for ${postData}`);
-
-    let path = '/v2/?vpn=1&asn=1';
-    const key = pcKeys[Math.floor(Math.random() * pcKeys.length)];
-    if (key) path += `&key=${key}`;
 
     const options = {
       hostname: 'proxycheck.io',
@@ -65,6 +135,9 @@ function reqProxyCheck(ips) {
                 },
               });
               return;
+            }
+            if (result.status === 'denied') {
+              pcKeyProvider.denyKey(key);
             }
             if (result.status !== 'warning') {
               throw new Error(`${key}: ${result.message}`);
