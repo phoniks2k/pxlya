@@ -207,7 +207,7 @@ export default (store) => (next) => (action) => {
         break;
       }
 
-      case 'REC_CHAT_MESSAGE': {
+      case 's/REC_CHAT_MESSAGE': {
         if (chatNotify) break;
 
         const { isPing, channel } = action;

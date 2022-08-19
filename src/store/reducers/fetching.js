@@ -14,7 +14,7 @@ export default function fetching(
   action,
 ) {
   switch (action.type) {
-    case 'SET_CHAT_FETCHING': {
+    case 's/SET_CHAT_FETCHING': {
       const { fetching: fetchingChat } = action;
       return {
         ...state,

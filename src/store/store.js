@@ -31,7 +31,6 @@ import audio from './middleware/audio';
 import socketClientHook from './middleware/socketClientHook';
 import rendererHook from './middleware/rendererHook';
 import array from './middleware/array';
-import promise from './middleware/promise';
 import notifications from './middleware/notifications';
 import title from './middleware/title';
 import popUps from './middleware/popUps';
@@ -58,7 +57,6 @@ const store = createStore(
   reducers,
   applyMiddleware(
     thunk,
-    promise,
     array,
     popUps,
     audio,
@@ -70,9 +68,9 @@ const store = createStore(
   ),
 );
 
-
-persistStore(store);
-
-window.lol = store;
+export const persistor = persistStore(store, {}, () => {
+  window.addEventListener('message', store.dispatch);
+  store.dispatch({ type: 'HYDRATED' });
+});
 
 export default store;

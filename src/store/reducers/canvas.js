@@ -213,7 +213,7 @@ export default function canvasReducer(
       };
     }
 
-    case 'TOGGLE_HISTORICAL_VIEW': {
+    case 's/TGL_HISTORICAL_VIEW': {
       const {
         scale,
         viewscale,
@@ -226,7 +226,7 @@ export default function canvasReducer(
       };
     }
 
-    case 'TOGGLE_HIDDEN_CANVASES': {
+    case 's/TGL_HIDDEN_CANVASES': {
       return {
         ...state,
         showHiddenCanvases: !state.showHiddenCanvases,

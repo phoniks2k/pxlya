@@ -183,9 +183,6 @@ export default function windows(
   state = initialState,
   action,
 ) {
-  if (action.type.startsWith('persist')) {
-    console.log(action);
-  }
   switch (action.type) {
     case 'OPEN_WIN': {
       /*
@@ -412,7 +409,7 @@ export default function windows(
       });
     }
 
-    case 'TOGGLE_MAXIMIZE_WIN': {
+    case 's/TGL_MAXIMIZE_WIN': {
       const {
         windowId,
       } = action;
@@ -504,7 +501,6 @@ export default function windows(
         return state;
       }
 
-      console.log(action);
       const loadedState = {
         ...state,
         ...action.payload,

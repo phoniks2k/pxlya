@@ -61,7 +61,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'TOGGLE_HIDDEN_CANVASES': {
+    case 's/TGL_HIDDEN_CANVASES': {
       const renderer = getRenderer();
       const { is3D } = state.canvas;
       if (is3D) {
@@ -94,14 +94,14 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'TOGGLE_GRID':
+    case 's/TGL_GRID':
     case 'ALLOW_SETTING_PXL': {
       const renderer = getRenderer();
       renderer.forceNextSubrender = true;
       break;
     }
 
-    case 'TOGGLE_HISTORICAL_VIEW':
+    case 's/TGL_HISTORICAL_VIEW':
     case 'SET_SCALE': {
       const renderer = getRenderer();
       renderer.updateScale(state, prevScale);

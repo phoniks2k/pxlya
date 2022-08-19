@@ -45,7 +45,7 @@ export default function chatRead(
       };
     }
 
-    case 'ADD_CHAT_CHANNEL': {
+    case 's/ADD_CHAT_CHANNEL': {
       const [cid] = Object.keys(action.channel);
       return {
         ...state,
@@ -60,7 +60,7 @@ export default function chatRead(
       };
     }
 
-    case 'REMOVE_CHAT_CHANNEL': {
+    case 's/REMOVE_CHAT_CHANNEL': {
       const { cid } = action;
       if (!state.readTs[cid]) {
         return state;
@@ -76,7 +76,7 @@ export default function chatRead(
       };
     }
 
-    case 'REC_CHAT_MESSAGE': {
+    case 's/REC_CHAT_MESSAGE': {
       const { channel: cid, isRead } = action;
       const readTs = isRead
         ? {
@@ -131,7 +131,7 @@ export default function chatRead(
       };
     }
 
-    case 'MUTE_CHAT_CHANNEL': {
+    case 's/MUTE_CHAT_CHANNEL': {
       const { cid } = action;
       return {
         ...state,
@@ -142,7 +142,7 @@ export default function chatRead(
       };
     }
 
-    case 'UNMUTE_CHAT_CHANNEL': {
+    case 'UNs/MUTE_CHAT_CHANNEL': {
       const { cid } = action;
       const mute = state.mute.filter((id) => (id !== cid));
       return {

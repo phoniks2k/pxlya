@@ -23,73 +23,73 @@ export function closeAlert() {
 
 export function toggleHistoricalView() {
   return {
-    type: 'TOGGLE_HISTORICAL_VIEW',
+    type: 's/TGL_HISTORICAL_VIEW',
   };
 }
 
 export function toggleHiddenCanvases() {
   return {
-    type: 'TOGGLE_HIDDEN_CANVASES',
+    type: 's/TGL_HIDDEN_CANVASES',
   };
 }
 
 export function toggleGrid() {
   return {
-    type: 'TOGGLE_GRID',
+    type: 's/TGL_GRID',
   };
 }
 
 export function togglePixelNotify() {
   return {
-    type: 'TOGGLE_PXL_NOTIFY',
+    type: 's/TGL_PXL_NOTIFY',
   };
 }
 
 export function toggleAutoZoomIn() {
   return {
-    type: 'TOGGLE_AUTO_ZOOM_IN',
+    type: 's/TGL_AUTO_ZOOM_IN',
   };
 }
 
 export function toggleOnlineCanvas() {
   return {
-    type: 'TOGGLE_ONLINE_CANVAS',
+    type: 's/TGL_ONLINE_CANVAS',
   };
 }
 
 export function toggleMute() {
   return {
-    type: 'TOGGLE_MUTE',
+    type: 's/TGL_MUTE',
   };
 }
 
 export function toggleCompactPalette() {
   return {
-    type: 'TOGGLE_COMPACT_PALETTE',
+    type: 's/TGL_COMPACT_PALETTE',
   };
 }
 
 export function toggleChatNotify() {
   return {
-    type: 'TOGGLE_CHAT_NOTIFY',
+    type: 's/TGL_CHAT_NOTIFY',
   };
 }
 
 export function togglePotatoMode() {
   return {
-    type: 'TOGGLE_POTATO_MODE',
+    type: 's/TGL_POTATO_MODE',
   };
 }
 
 export function toggleLightGrid() {
   return {
-    type: 'TOGGLE_LIGHT_GRID',
+    type: 's/TGL_LIGHT_GRID',
   };
 }
 
 export function toggleOpenPalette() {
   return {
-    type: 'TOGGLE_OPEN_PALETTE',
+    type: 's/TGL_OPEN_PALETTE',
   };
 }
 
@@ -102,7 +102,7 @@ export function selectStyle(style) {
 
 export function toggleOpenMenu() {
   return {
-    type: 'TOGGLE_OPEN_MENU',
+    type: 's/TGL_OPEN_MENU',
   };
 }
 
@@ -296,7 +296,7 @@ export function receiveChatMessage(
   isRead,
 ) {
   return {
-    type: 'REC_CHAT_MESSAGE',
+    type: 's/REC_CHAT_MESSAGE',
     name,
     text,
     country,
@@ -417,23 +417,9 @@ export function initTimer() {
   };
 }
 
-export function openChatChannel(cid) {
-  return {
-    type: 'OPEN_CHAT_CHANNEL',
-    cid,
-  };
-}
-
-export function closeChatChannel(cid) {
-  return {
-    type: 'CLOSE_CHAT_CHANNEL',
-    cid,
-  };
-}
-
 export function addChatChannel(channel) {
   return {
-    type: 'ADD_CHAT_CHANNEL',
+    type: 's/ADD_CHAT_CHANNEL',
     channel,
   };
 }
@@ -463,21 +449,21 @@ export function blockingDm(blockDm) {
 
 export function removeChatChannel(cid) {
   return {
-    type: 'REMOVE_CHAT_CHANNEL',
+    type: 's/REMOVE_CHAT_CHANNEL',
     cid,
   };
 }
 
 export function muteChatChannel(cid) {
   return {
-    type: 'MUTE_CHAT_CHANNEL',
+    type: 's/MUTE_CHAT_CHANNEL',
     cid,
   };
 }
 
 export function unmuteChatChannel(cid) {
   return {
-    type: 'UNMUTE_CHAT_CHANNEL',
+    type: 'UNs/MUTE_CHAT_CHANNEL',
     cid,
   };
 }
@@ -503,8 +489,53 @@ export function selectHistoricalTime(date, time) {
 }
 
 export function urlChange() {
-  return (dispatch) => {
-    dispatch(reloadUrl());
+  return reloadUrl();
+}
+
+export function unload() {
+  return {
+    type: 't/UNLOAD',
   };
 }
 
+export function load() {
+  return {
+    type: 't/LOAD',
+  };
+}
+
+export function propagateMe(state) {
+  const {
+    id,
+    name,
+    mailreg,
+    blockDm,
+    userlvl,
+  } = state.user;
+  const { canvases } = state.canvas;
+  const {
+    blocked,
+    channels,
+  } = state.chat;
+  const {
+    ranking,
+    dailyRanking,
+    totalPixels,
+    dailyTotalPixels,
+  } = state.ranks;
+  return {
+    type: 'REC_ME',
+    blockDm,
+    blocked,
+    canvases,
+    channels,
+    dailyRanking,
+    dailyTotalPixels,
+    id,
+    mailreg,
+    name,
+    ranking,
+    totalPixels,
+    userlvl,
+  };
+}

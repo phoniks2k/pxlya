@@ -30,7 +30,7 @@ function setApiFetching(fetching) {
 
 function setChatFetching(fetching) {
   return {
-    type: 'SET_CHAT_FETCHING',
+    type: 's/SET_CHAT_FETCHING',
     fetching,
   };
 }
@@ -40,7 +40,7 @@ function receiveChatHistory(
   history,
 ) {
   return {
-    type: 'REC_CHAT_HISTORY',
+    type: 's/REC_CHAT_HISTORY',
     cid,
     history,
   };

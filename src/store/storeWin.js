@@ -20,7 +20,6 @@ import win from './reducers/win';
 /*
  * middleware
  */
-import promise from './middleware/promise';
 import parent from './middleware/parent';
 
 const reducers = combineReducers({
@@ -33,12 +32,13 @@ const store = createStore(
   reducers,
   applyMiddleware(
     thunk,
-    promise,
     parent,
   ),
 );
 
-
-export const persistor = persistStore(store);
+export const persistor = persistStore(store, {}, () => {
+  window.addEventListener('message', store.dispatch);
+  store.dispatch({ type: 'HYDRATED' });
+});
 
 export default store;

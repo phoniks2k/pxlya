@@ -1,43 +1,31 @@
 /*
  * keeping track of open popups
  */
+import { unload } from '../store/actions';
 
 class PopUps {
   constructor() {
     this.wins = [];
     this.origin = window.location.origin;
-    this.closeAll = this.closeAll.bind(this);
-    window.addEventListener('beforeunload', this.closeAll);
+    window.addEventListener('beforeunload', () => {
+      this.dispatch(unload());
+    });
   }
 
-  open(xPos, yPos, width, height) {
-    let left;
-    let top;
-    try {
-      left = Math.round(window.top.screenX + xPos);
-      top = Math.round(window.top.screenY + yPos);
-      if (Number.isNaN(left) || Number.isNaN(top)) {
-        throw new Error('NaN');
-      }
-    } catch {
-      left = 0;
-      top = 0;
+  add(win) {
+    const pos = this.wins.indexOf(win);
+    if (pos === -1) {
+      this.wins.push(win);
     }
-    try {
-      const newWindow = window.open(
-        './win',
-        'lol',
-        `popup=yes,width=${width},height=${height},left=${left},top=${top},toolbar=no,status=no,directories=no,menubar=no`,
-      );
-      this.wins.push(newWindow);
-    } catch {
-      // nothing, just don't bubble up
-    }
+  }
+
+  remove(win) {
+    const pos = this.wins.indexOf(win);
+    if (~pos) this.wins.splice(pos, 1);
   }
 
   dispatch(msg) {
     const { wins } = this;
-    console.log('sending', msg);
     try {
       for (let i = 0; i < wins.length; i += 1) {
         const win = wins[i];
@@ -63,5 +51,36 @@ class PopUps {
 }
 
 const popUps = new PopUps();
+
+export function openPopUp(xPos, yPos, width, height) {
+  let left;
+  let top;
+  try {
+    if (window.innerWidth <= 604) {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      left = window.top.screenX;
+      top = window.top.screenY;
+    } else {
+      left = Math.round(window.top.screenX + xPos);
+      top = Math.round(window.top.screenY + yPos);
+    }
+    if (Number.isNaN(left) || Number.isNaN(top)) {
+      throw new Error('NaN');
+    }
+  } catch {
+    left = 0;
+    top = 0;
+  }
+  try {
+    return window.open(
+      './win',
+      'lol',
+      `popup=yes,width=${width},height=${height},left=${left},top=${top},toolbar=no,status=no,directories=no,menubar=no`,
+    );
+  } catch {
+    return null;
+  }
+}
 
 export default popUps;

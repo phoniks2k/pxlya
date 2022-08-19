@@ -14,7 +14,7 @@ import chatRead from './reducers/chatRead';
 export const CURRENT_VERSION = 11;
 
 export const migrate = (state, version) => {
-  console.log('migrate', state, version);
+  // eslint-disable-next-line no-underscore-dangle
   if (!state || !state._persist || state._persist.version !== version) {
     console.log('Newer version run, resetting store.');
     return Promise.resolve({});

@@ -105,7 +105,7 @@ export default function chat(
       };
     }
 
-    case 'ADD_CHAT_CHANNEL': {
+    case 's/ADD_CHAT_CHANNEL': {
       const { channel } = action;
       const cid = Number(Object.keys(channel)[0]);
       if (state.channels[cid]) {
@@ -120,7 +120,7 @@ export default function chat(
       };
     }
 
-    case 'REMOVE_CHAT_CHANNEL': {
+    case 's/REMOVE_CHAT_CHANNEL': {
       const { cid } = action;
       if (!state.channels[cid]) {
         return state;
@@ -136,7 +136,7 @@ export default function chat(
       };
     }
 
-    case 'REC_CHAT_MESSAGE': {
+    case 's/REC_CHAT_MESSAGE': {
       const {
         name, text, country, channel, user,
       } = action;
@@ -172,7 +172,7 @@ export default function chat(
       };
     }
 
-    case 'REC_CHAT_HISTORY': {
+    case 's/REC_CHAT_HISTORY': {
       const { cid, history } = action;
       for (let i = 0; i < history.length; i += 1) {
         msgId += 1;

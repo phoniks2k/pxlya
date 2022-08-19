@@ -22,63 +22,63 @@ export default function gui(
   action,
 ) {
   switch (action.type) {
-    case 'TOGGLE_GRID': {
+    case 's/TGL_GRID': {
       return {
         ...state,
         showGrid: !state.showGrid,
       };
     }
 
-    case 'TOGGLE_PXL_NOTIFY': {
+    case 's/TGL_PXL_NOTIFY': {
       return {
         ...state,
         showPixelNotify: !state.showPixelNotify,
       };
     }
 
-    case 'TOGGLE_AUTO_ZOOM_IN': {
+    case 's/TGL_AUTO_ZOOM_IN': {
       return {
         ...state,
         autoZoomIn: !state.autoZoomIn,
       };
     }
 
-    case 'TOGGLE_ONLINE_CANVAS': {
+    case 's/TGL_ONLINE_CANVAS': {
       return {
         ...state,
         onlineCanvas: !state.onlineCanvas,
       };
     }
 
-    case 'TOGGLE_POTATO_MODE': {
+    case 's/TGL_POTATO_MODE': {
       return {
         ...state,
         isPotato: !state.isPotato,
       };
     }
 
-    case 'TOGGLE_LIGHT_GRID': {
+    case 's/TGL_LIGHT_GRID': {
       return {
         ...state,
         isLightGrid: !state.isLightGrid,
       };
     }
 
-    case 'TOGGLE_COMPACT_PALETTE': {
+    case 's/TGL_COMPACT_PALETTE': {
       return {
         ...state,
         compactPalette: !state.compactPalette,
       };
     }
 
-    case 'TOGGLE_OPEN_PALETTE': {
+    case 's/TGL_OPEN_PALETTE': {
       return {
         ...state,
         paletteOpen: !state.paletteOpen,
       };
     }
 
-    case 'TOGGLE_OPEN_MENU': {
+    case 's/TGL_OPEN_MENU': {
       return {
         ...state,
         menuOpen: !state.menuOpen,
@@ -109,13 +109,13 @@ export default function gui(
       };
     }
 
-    case 'TOGGLE_MUTE':
+    case 's/TGL_MUTE':
       return {
         ...state,
         mute: !state.mute,
       };
 
-    case 'TOGGLE_CHAT_NOTIFY':
+    case 's/TGL_CHAT_NOTIFY':
       return {
         ...state,
         chatNotify: !state.chatNotify,

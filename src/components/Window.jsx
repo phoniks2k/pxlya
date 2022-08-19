@@ -8,7 +8,7 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import popUps from '../core/popUps';
+import { openPopUp } from '../core/popUps';
 import {
   moveWindow,
   removeWindow,
@@ -82,7 +82,7 @@ const Window = ({ id }) => {
   } = position;
 
   const popUp = useCallback((evt) => {
-    popUps.open(xPos, yPos, width, height);
+    openPopUp(xPos, yPos, width, height);
     close(evt);
   }, [xPos, yPos, width, height]);
 

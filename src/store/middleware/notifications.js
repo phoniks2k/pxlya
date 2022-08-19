@@ -40,7 +40,7 @@ export default (store) => (next) => (action) => {
           break;
         }
 
-        case 'REC_CHAT_MESSAGE': {
+        case 's/REC_CHAT_MESSAGE': {
           const state = store.getState();
           const { chatNotify } = state.gui;
           if (!chatNotify) break;
