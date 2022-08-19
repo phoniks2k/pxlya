@@ -84,7 +84,7 @@ function Admintools() {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
+    <div className="content">
       {resp && (
         <div className="respbox">
           {resp.split('\n').map((line) => (

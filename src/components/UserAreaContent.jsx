@@ -56,7 +56,7 @@ const UserAreaContent = () => {
   const Area = AREAS[area];
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div className="content">
       <UserMessages />
       <Stat
         text={t`Todays Placed Pixels`}

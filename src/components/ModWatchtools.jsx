@@ -96,173 +96,177 @@ function ModWatchtools() {
   const cidColumn = (types) ? (types.indexOf('cid')) : -1;
 
   return (
-    <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
-      {resp && (
-        <div className="respbox">
-          {resp.split('\n').map((line) => (
-            <p key={line.slice(0, 3)}>
-              {line}
-            </p>
-          ))}
-          <span
-            role="button"
-            tabIndex={-1}
-            className="modallink"
-            onClick={() => setResp(null)}
+    <>
+      <div className="content">
+        {resp && (
+          <div className="respbox">
+            {resp.split('\n').map((line) => (
+              <p key={line.slice(0, 3)}>
+                {line}
+              </p>
+            ))}
+            <span
+              role="button"
+              tabIndex={-1}
+              className="modallink"
+              onClick={() => setResp(null)}
+            >
+              {t`Close`}
+            </span>
+          </div>
+        )}
+        <p>{t`Check who placed in an area`}</p>
+        <p>{t`Canvas`}:&nbsp;
+          <select
+            value={selectedCanvas}
+            onChange={(e) => {
+              const sel = e.target;
+              selectCanvas(sel.options[sel.selectedIndex].value);
+            }}
           >
-            {t`Close`}
-          </span>
-        </div>
-      )}
-      <p>{t`Check who placed in an area`}</p>
-      <p>{t`Canvas`}:&nbsp;
-        <select
-          value={selectedCanvas}
-          onChange={(e) => {
-            const sel = e.target;
-            selectCanvas(sel.options[sel.selectedIndex].value);
+            {Object.keys(canvases)
+              .filter((c) => !canvases[c].v)
+              .map((canvas) => (
+                <option
+                  key={canvas}
+                  value={canvas}
+                >
+                  {canvases[canvas].title}
+                </option>
+              ))}
+          </select>
+          {` ${t`Interval`}: `}
+          <input
+            value={interval}
+            style={{
+              display: 'inline-block',
+              width: '100%',
+              maxWidth: '5em',
+            }}
+            type="text"
+            placeholder="15m"
+            onChange={(evt) => {
+              const newInterval = evt.target.value.trim();
+              selectInterval(newInterval);
+              keepState.interval = newInterval;
+            }}
+          />
+          {` ${t`IID (optional)`}: `}
+          <input
+            value={iid}
+            style={{
+              display: 'inline-block',
+              width: '100%',
+              maxWidth: '10em',
+            }}
+            type="text"
+            placeholder="xxxx-xxxxx-xxxx"
+            onChange={(evt) => {
+              const newIid = evt.target.value.trim();
+              selectIid(newIid);
+              keepState.iid = newIid;
+            }}
+          />
+        </p>
+        <p>
+          {t`Top-left corner`} (X_Y):&nbsp;
+          <input
+            value={tlcoords}
+            style={{
+              display: 'inline-block',
+              width: '100%',
+              maxWidth: '15em',
+            }}
+            type="text"
+            placeholder="X_Y"
+            onChange={(evt) => {
+              const co = evt.target.value.trim();
+              selectTLCoords(co);
+              keepState.tlcoords = co;
+            }}
+          />
+        </p>
+        <p>
+          {t`Bottom-right corner`} (X_Y):&nbsp;
+          <input
+            value={brcoords}
+            style={{
+              display: 'inline-block',
+              width: '100%',
+              maxWidth: '15em',
+            }}
+            type="text"
+            placeholder="X_Y"
+            onChange={(evt) => {
+              const co = evt.target.value.trim();
+              selectBRCoords(co);
+              keepState.brcoords = co;
+            }}
+          />
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            if (submitting) {
+              return;
+            }
+            setSubmitting(true);
+            submitWatchAction(
+              'all',
+              selectedCanvas,
+              tlcoords,
+              brcoords,
+              interval,
+              iid,
+              (ret) => {
+                setSubmitting(false);
+                setResp(ret.info);
+                if (ret.rows) {
+                  setSortBy(0);
+                  setTable({
+                    columns: ret.columns,
+                    types: ret.types,
+                    rows: ret.rows,
+                  });
+                }
+              },
+            );
           }}
         >
-          {Object.keys(canvases).filter((c) => !canvases[c].v).map((canvas) => (
-            <option
-              key={canvas}
-              value={canvas}
-            >
-              {canvases[canvas].title}
-            </option>
-          ))}
-        </select>
-        {` ${t`Interval`}: `}
-        <input
-          value={interval}
-          style={{
-            display: 'inline-block',
-            width: '100%',
-            maxWidth: '5em',
+          {(submitting) ? '...' : t`Get Pixels`}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (submitting) {
+              return;
+            }
+            setSubmitting(true);
+            submitWatchAction(
+              'summary',
+              selectedCanvas,
+              tlcoords,
+              brcoords,
+              interval,
+              iid,
+              (ret) => {
+                setSubmitting(false);
+                setResp(ret.info);
+                if (ret.rows) {
+                  setSortBy(0);
+                  setTable({
+                    columns: ret.columns,
+                    types: ret.types,
+                    rows: ret.rows,
+                  });
+                }
+              },
+            );
           }}
-          type="text"
-          placeholder="15m"
-          onChange={(evt) => {
-            const newInterval = evt.target.value.trim();
-            selectInterval(newInterval);
-            keepState.interval = newInterval;
-          }}
-        />
-        {` ${t`IID (optional)`}: `}
-        <input
-          value={iid}
-          style={{
-            display: 'inline-block',
-            width: '100%',
-            maxWidth: '10em',
-          }}
-          type="text"
-          placeholder="xxxx-xxxxx-xxxx"
-          onChange={(evt) => {
-            const newIid = evt.target.value.trim();
-            selectIid(newIid);
-            keepState.iid = newIid;
-          }}
-        />
-      </p>
-      <p>
-        {t`Top-left corner`} (X_Y):&nbsp;
-        <input
-          value={tlcoords}
-          style={{
-            display: 'inline-block',
-            width: '100%',
-            maxWidth: '15em',
-          }}
-          type="text"
-          placeholder="X_Y"
-          onChange={(evt) => {
-            const co = evt.target.value.trim();
-            selectTLCoords(co);
-            keepState.tlcoords = co;
-          }}
-        />
-      </p>
-      <p>
-        {t`Bottom-right corner`} (X_Y):&nbsp;
-        <input
-          value={brcoords}
-          style={{
-            display: 'inline-block',
-            width: '100%',
-            maxWidth: '15em',
-          }}
-          type="text"
-          placeholder="X_Y"
-          onChange={(evt) => {
-            const co = evt.target.value.trim();
-            selectBRCoords(co);
-            keepState.brcoords = co;
-          }}
-        />
-      </p>
-      <button
-        type="button"
-        onClick={() => {
-          if (submitting) {
-            return;
-          }
-          setSubmitting(true);
-          submitWatchAction(
-            'all',
-            selectedCanvas,
-            tlcoords,
-            brcoords,
-            interval,
-            iid,
-            (ret) => {
-              setSubmitting(false);
-              setResp(ret.info);
-              if (ret.rows) {
-                setSortBy(0);
-                setTable({
-                  columns: ret.columns,
-                  types: ret.types,
-                  rows: ret.rows,
-                });
-              }
-            },
-          );
-        }}
-      >
-        {(submitting) ? '...' : t`Get Pixels`}
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          if (submitting) {
-            return;
-          }
-          setSubmitting(true);
-          submitWatchAction(
-            'summary',
-            selectedCanvas,
-            tlcoords,
-            brcoords,
-            interval,
-            iid,
-            (ret) => {
-              setSubmitting(false);
-              setResp(ret.info);
-              if (ret.rows) {
-                setSortBy(0);
-                setTable({
-                  columns: ret.columns,
-                  types: ret.types,
-                  rows: ret.rows,
-                });
-              }
-            },
-          );
-        }}
-      >
-        {(submitting) ? '...' : t`Get Users`}
-      </button>
+        >
+          {(submitting) ? '...' : t`Get Users`}
+        </button>
+      </div>
       <br />
       {(rows && columns && types) && (
         <React.Fragment key="pxltable">
@@ -391,7 +395,7 @@ function ModWatchtools() {
           </table>
         </React.Fragment>
       )}
-    </div>
+    </>
   );
 }
 

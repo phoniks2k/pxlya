@@ -30,7 +30,7 @@ function Modtools() {
 
   return (
     <>
-      <div style={{ textAlign: 'center' }}>
+      <div className="content">
         {parts.map((part, ind) => (
           <React.Fragment key={part}>
             <span
@@ -45,8 +45,8 @@ function Modtools() {
               && <span className="hdivider" />}
           </React.Fragment>
         ))}
+        <div className="modaldivider" />
       </div>
-      <div className="modaldivider" />
       {Content && <Content />}
     </>
   );

@@ -215,7 +215,7 @@ function ModCanvastools() {
     : `Status: ${cleanerstats.method} from ${cleanerstats.tl} to ${cleanerstats.br} on canvas ${canvases[cleanerstats.canvasId].ident} to ${cleanerstats.percent} done`;
 
   return (
-    <div style={{ textAlign: 'center', paddingLeft: '5%', paddingRight: '5%' }}>
+    <div className="content">
       {resp && (
         <div className="respbox">
           {resp.split('\n').map((line) => (

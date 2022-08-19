@@ -186,7 +186,7 @@ function Converter() {
   const gimpLink = <a href="https://www.gimp.org">GIMP</a>;
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div className="content">
       <div>{t`Choose Canvas`}:&nbsp;
         <select
           value={selectedCanvas}

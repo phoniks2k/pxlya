@@ -20,7 +20,7 @@ const Rankings = () => {
 
   return (
     <>
-      <div>
+      <div className="content">
         <span
           role="button"
           tabIndex={-1}

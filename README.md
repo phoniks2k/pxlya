@@ -116,9 +116,9 @@ Configuration takes place in the environment variables that are defined in ecosy
 Notes:
 
 - HOST / PORT is the host on which the ppfun server is listening. In example: If you have a reverse proxy on the same machine, HOST should still be unset or localhost, because it's where the proxy forwards to.
-- to be able to use USE_PROXYCHECK effectively, you have to have an account on proxycheck.io and PROXYCHECK_KEY set.
-- Admins are users with 0cd and access to `Admintools`in their User Menu for image-upload and whatever
-- You can find out the id of a user by looking into the logs (i.e. `info: {ip} / {id} wants to place 2 in (1701, -8315)`) when he places a pixel or by checking the MySql Users database
+- to be able to use USE_PROXYCHECK you have to have an account on proxycheck.io and set PROXYCHECK_KEY.
+- Admins are users with 0cd and access to `Admintools`in their User Menu
+- You can find out the id of a user by wiriting a message in chat and pinging
 - pixelplanet uses the unix command sendmail for sending verification and password reset mails. If you don't want to set up your own mail server, look into [ssmtp](https://wiki.archlinux.org/title/SSMTP), which provides a sendmail interface that forwards to other providers like gmail.
 - default configuartion values can be seen in `src/core/config.js`
 - The HTML for SocialMedia logins is in src/componets/UserAreaModal.js , delete stuff from there if you don't need it. The HTML for the Help Screen is in src/components/HelpModal.js
