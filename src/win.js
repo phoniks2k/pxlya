@@ -10,4 +10,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line no-console
   console.log('hello');
   renderAppWin(document.getElementById('app'), store);
+  window.addEventListener('message', store.dispatch);
 });

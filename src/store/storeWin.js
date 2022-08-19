@@ -21,6 +21,7 @@ import win from './reducers/win';
  * middleware
  */
 import promise from './middleware/promise';
+import parent from './middleware/parent';
 
 const reducers = combineReducers({
   ...sharedReducers,
@@ -33,6 +34,7 @@ const store = createStore(
   applyMiddleware(
     thunk,
     promise,
+    parent,
   ),
 );
 

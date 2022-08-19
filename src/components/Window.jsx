@@ -8,6 +8,7 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
+import popUps from '../core/popUps';
 import {
   moveWindow,
   removeWindow,
@@ -81,23 +82,7 @@ const Window = ({ id }) => {
   } = position;
 
   const popUp = useCallback((evt) => {
-    let left;
-    let top;
-    try {
-      left = Math.round(window.top.screenX + xPos);
-      top = Math.round(window.top.screenY + yPos);
-      if (Number.isNaN(left) || Number.isNaN(top)) {
-        throw new Error('NaN');
-      }
-    } catch {
-      left = 0;
-      top = 0;
-    }
-    window.lmao = window.open(
-      './win',
-      'lol',
-      `popup=yes,width=${width},height=${height},left=${left},top=${top},toolbar=no,status=no,directories=no,menubar=no`,
-    );
+    popUps.open(xPos, yPos, width, height);
     close(evt);
   }, [xPos, yPos, width, height]);
 

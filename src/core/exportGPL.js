@@ -1,5 +1,5 @@
 /*
- *
+ * export palette in gimp format
  */
 
 function appendNumberText(number) {

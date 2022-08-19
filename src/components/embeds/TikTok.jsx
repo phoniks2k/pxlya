@@ -18,10 +18,8 @@ const TikTok = ({ url }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const prot = window.location.protocol.startsWith('http')
-        ? window.location.protocol : 'https';
       // eslint-disable-next-line max-len
-      const tkurl = `${prot}//www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
+      const tkurl = `${window.location.protocol}//www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
       const resp = await fetch(tkurl);
       const embedData = await resp.json();
       if (embedData.html) {

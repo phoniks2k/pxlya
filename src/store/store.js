@@ -34,6 +34,7 @@ import array from './middleware/array';
 import promise from './middleware/promise';
 import notifications from './middleware/notifications';
 import title from './middleware/title';
+import popUps from './middleware/popUps';
 import extensions from './middleware/extensions';
 
 const windowsPersist = persistReducer({
@@ -59,6 +60,7 @@ const store = createStore(
     thunk,
     promise,
     array,
+    popUps,
     audio,
     notifications,
     title,

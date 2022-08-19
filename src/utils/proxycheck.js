@@ -25,7 +25,7 @@ class PcKeyProvider {
     if (keys.length) {
       logger.info(`Loaded pc Keys: ${keys}`);
     } else {
-      logger.info(`You have to define PROXYCHECK_KEY to use proxycheck.io`);
+      logger.info('You have to define PROXYCHECK_KEY to use proxycheck.io');
     }
     this.availableKeys = keys;
     this.deniedKeys = [];
@@ -93,7 +93,6 @@ function reqProxyCheck(ips) {
     }
     const postData = `ips=${ips.join(',')}`;
     const path = `/v2/?vpn=1&asn=1&key=${key}`;
-    logger.info(`Request for ${postData}`);
 
     const options = {
       hostname: 'proxycheck.io',
@@ -120,7 +119,9 @@ function reqProxyCheck(ips) {
 
       res.on('end', () => {
         try {
-          const result = JSON.parse(data.join(''));
+          const jsonString = data.join('');
+          logger.info(`${postData}: ${jsonString}`);
+          const result = JSON.parse(jsonString);
           if (result.status !== 'ok') {
             if (result.status === 'error' && ips.length === 1) {
               /*

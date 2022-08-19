@@ -150,8 +150,8 @@ function ModCanvastools() {
   const [brcoords, selectBRCoords] = useState(keptState.brcoords);
   const [tlrcoords, selectTLRCoords] = useState(keptState.tlrcoords);
   const [brrcoords, selectBRRCoords] = useState(keptState.brrcoords);
-  const [tlccoords, selectTLCCoords] = useState(keptState.tlrcoords);
-  const [brccoords, selectBRCCoords] = useState(keptState.brrcoords);
+  const [tlccoords, selectTLCCoords] = useState(keptState.tlccoords);
+  const [brccoords, selectBRCCoords] = useState(keptState.brccoords);
   const [resp, setResp] = useState(null);
   const [cleanerstats, setCleanerStats] = useState({});
   const [submitting, setSubmitting] = useState(false);

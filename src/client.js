@@ -108,6 +108,9 @@ function init() {
   window.addEventListener('resize', onWindowResize);
   onWindowResize();
 
+  // listen ofr messages from popups
+  window.addEventListener('message', store.dispatch);
+
   store.dispatch(initTimer());
 
   store.dispatch(fetchMe());

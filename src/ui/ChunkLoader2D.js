@@ -264,9 +264,9 @@ class ChunkLoader {
     try {
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
-      this.store.dispatch(receiveBigChunk(center, chunkRGB));
+      this.store.dispatch(receiveBigChunk(center));
     } catch (error) {
-      this.store.dispatch(receiveBigChunkFailure(center, error));
+      this.store.dispatch(receiveBigChunkFailure(center, error.message));
       if (historicalTime) {
         chunkRGB.empty(true);
       } else {
@@ -289,13 +289,13 @@ class ChunkLoader {
         } else {
           throw new Error('Chunk response was invalid');
         }
-        this.store.dispatch(receiveBigChunk(center, chunkRGB));
+        this.store.dispatch(receiveBigChunk(center));
       } else {
         throw new Error('Network response was not ok.');
       }
     } catch (error) {
       chunkRGB.empty();
-      this.store.dispatch(receiveBigChunkFailure(center, error));
+      this.store.dispatch(receiveBigChunkFailure(center, error.message));
     }
   }
 
@@ -306,9 +306,9 @@ class ChunkLoader {
       const url = `tiles/${this.canvasId}/${zoom}/${cx}/${cy}.webp`;
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
-      this.store.dispatch(receiveBigChunk(center, chunkRGB));
+      this.store.dispatch(receiveBigChunk(center));
     } catch (error) {
-      this.store.dispatch(receiveBigChunkFailure(center, error));
+      this.store.dispatch(receiveBigChunkFailure(center, error.message));
       chunkRGB.empty();
     }
   }
