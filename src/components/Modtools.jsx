@@ -30,7 +30,7 @@ function Modtools() {
 
   return (
     <>
-      <div className="content">
+      <div className="content" style={{ overflowWrap: 'anywhere' }}>
         {parts.map((part, ind) => (
           <React.Fragment key={part}>
             <span

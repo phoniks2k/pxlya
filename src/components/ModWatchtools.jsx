@@ -70,13 +70,9 @@ async function submitWatchAction(
 
 function ModWatchtools() {
   const [selectedCanvas, selectCanvas] = useState(0);
-  const [tlcoords, selectTLCoords] = useState(keepState.tlcoords);
-  const [brcoords, selectBRCoords] = useState(keepState.brcoords);
-  const [interval, selectInterval] = useState(keepState.interval);
   const [sortAsc, setSortAsc] = useState(true);
   const [sortBy, setSortBy] = useState(0);
   const [table, setTable] = useState({});
-  const [iid, selectIid] = useState(keepState.iid);
   const [resp, setResp] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -137,7 +133,7 @@ function ModWatchtools() {
           </select>
           {` ${t`Interval`}: `}
           <input
-            value={interval}
+            defaultValue={keepState.interval}
             style={{
               display: 'inline-block',
               width: '100%',
@@ -147,13 +143,12 @@ function ModWatchtools() {
             placeholder="15m"
             onChange={(evt) => {
               const newInterval = evt.target.value.trim();
-              selectInterval(newInterval);
               keepState.interval = newInterval;
             }}
           />
           {` ${t`IID (optional)`}: `}
           <input
-            value={iid}
+            defaultValue={keepState.iid}
             style={{
               display: 'inline-block',
               width: '100%',
@@ -163,7 +158,6 @@ function ModWatchtools() {
             placeholder="xxxx-xxxxx-xxxx"
             onChange={(evt) => {
               const newIid = evt.target.value.trim();
-              selectIid(newIid);
               keepState.iid = newIid;
             }}
           />
@@ -171,7 +165,7 @@ function ModWatchtools() {
         <p>
           {t`Top-left corner`} (X_Y):&nbsp;
           <input
-            value={tlcoords}
+            defaultValue={keepState.tlcoords}
             style={{
               display: 'inline-block',
               width: '100%',
@@ -181,7 +175,6 @@ function ModWatchtools() {
             placeholder="X_Y"
             onChange={(evt) => {
               const co = evt.target.value.trim();
-              selectTLCoords(co);
               keepState.tlcoords = co;
             }}
           />
@@ -189,7 +182,7 @@ function ModWatchtools() {
         <p>
           {t`Bottom-right corner`} (X_Y):&nbsp;
           <input
-            value={brcoords}
+            defaultValue={keepState.brcoords}
             style={{
               display: 'inline-block',
               width: '100%',
@@ -199,7 +192,6 @@ function ModWatchtools() {
             placeholder="X_Y"
             onChange={(evt) => {
               const co = evt.target.value.trim();
-              selectBRCoords(co);
               keepState.brcoords = co;
             }}
           />
@@ -214,10 +206,10 @@ function ModWatchtools() {
             submitWatchAction(
               'all',
               selectedCanvas,
-              tlcoords,
-              brcoords,
-              interval,
-              iid,
+              keepState.tlcoords,
+              keepState.brcoords,
+              keepState.interval,
+              keepState.iid,
               (ret) => {
                 setSubmitting(false);
                 setResp(ret.info);
@@ -245,10 +237,10 @@ function ModWatchtools() {
             submitWatchAction(
               'summary',
               selectedCanvas,
-              tlcoords,
-              brcoords,
-              interval,
-              iid,
+              keepState.tlcoords,
+              keepState.brcoords,
+              keepState.interval,
+              keepState.iid,
               (ret) => {
                 setSubmitting(false);
                 setResp(ret.info);

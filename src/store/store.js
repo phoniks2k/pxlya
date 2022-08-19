@@ -73,4 +73,6 @@ const store = createStore(
 
 persistStore(store);
 
+window.lol = store;
+
 export default store;

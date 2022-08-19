@@ -145,13 +145,6 @@ function ModCanvastools() {
   const [cleanAction, selectCleanAction] = useState('spare');
   const [protAction, selectProtAction] = useState('protect');
   const [date, selectDate] = useState(maxDate);
-  const [coords, selectCoords] = useState(keptState.coords);
-  const [tlcoords, selectTLCoords] = useState(keptState.tlcoords);
-  const [brcoords, selectBRCoords] = useState(keptState.brcoords);
-  const [tlrcoords, selectTLRCoords] = useState(keptState.tlrcoords);
-  const [brrcoords, selectBRRCoords] = useState(keptState.brrcoords);
-  const [tlccoords, selectTLCCoords] = useState(keptState.tlccoords);
-  const [brccoords, selectBRCCoords] = useState(keptState.brccoords);
   const [resp, setResp] = useState(null);
   const [cleanerstats, setCleanerStats] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -200,10 +193,6 @@ function ModCanvastools() {
     default:
       // nothing
   }
-
-  useEffect(() => {
-    getCleanerStats((stats) => setCleanerStats(stats));
-  }, []);
 
   useInterval(() => {
     getCleanerStats((stats) => setCleanerStats(stats));
@@ -278,7 +267,7 @@ function ModCanvastools() {
       <p>
         {t`Coordinates in X_Y format:`}&nbsp;
         <input
-          value={coords}
+          defaultValue={keptState.coords}
           style={{
             display: 'inline-block',
             width: '100%',
@@ -287,9 +276,7 @@ function ModCanvastools() {
           type="text"
           placeholder="X_Y"
           onChange={(evt) => {
-            const co = evt.target.value.trim();
-            selectCoords(co);
-            keptState.coords = co;
+            keptState.coords = evt.target.value.trim();
           }}
         />
       </p>
@@ -303,7 +290,7 @@ function ModCanvastools() {
           submitImageAction(
             imageAction,
             selectedCanvas,
-            coords,
+            keptState.coords,
             (ret) => {
               setSubmitting(false);
               setResp(ret);
@@ -341,7 +328,7 @@ function ModCanvastools() {
       <p>
         {t`Top-left corner`} (X_Y):&nbsp;
         <input
-          value={tlcoords}
+          defaultValue={keptState.tlcoords}
           style={{
             display: 'inline-block',
             width: '100%',
@@ -351,7 +338,6 @@ function ModCanvastools() {
           placeholder="X_Y"
           onChange={(evt) => {
             const co = evt.target.value.trim();
-            selectTLCoords(co);
             keptState.tlcoords = co;
           }}
         />
@@ -359,7 +345,7 @@ function ModCanvastools() {
       <p>
         {t`Bottom-right corner`} (X_Y):&nbsp;
         <input
-          value={brcoords}
+          defaultValue={keptState.brcoords}
           style={{
             display: 'inline-block',
             width: '100%',
@@ -369,7 +355,6 @@ function ModCanvastools() {
           placeholder="X_Y"
           onChange={(evt) => {
             const co = evt.target.value.trim();
-            selectBRCoords(co);
             keptState.brcoords = co;
           }}
         />
@@ -384,8 +369,8 @@ function ModCanvastools() {
           submitProtAction(
             protAction,
             selectedCanvas,
-            tlcoords,
-            brcoords,
+            keptState.tlcoords,
+            keptState.brcoords,
             (ret) => {
               setSubmitting(false);
               setResp(ret);
@@ -416,7 +401,7 @@ function ModCanvastools() {
           <p>
             {t`Top-left corner`} (X_Y):&nbsp;
             <input
-              value={tlrcoords}
+              defaultValue={keptState.tlrcoords}
               style={{
                 display: 'inline-block',
                 width: '100%',
@@ -426,7 +411,6 @@ function ModCanvastools() {
               placeholder="X_Y"
               onChange={(evt) => {
                 const co = evt.target.value.trim();
-                selectTLRCoords(co);
                 keptState.tlrcoords = co;
               }}
             />
@@ -434,7 +418,7 @@ function ModCanvastools() {
           <p>
             {t`Bottom-right corner`} (X_Y):&nbsp;
             <input
-              value={brrcoords}
+              defaultValue={keptState.brrcoords}
               style={{
                 display: 'inline-block',
                 width: '100%',
@@ -444,7 +428,6 @@ function ModCanvastools() {
               placeholder="X_Y"
               onChange={(evt) => {
                 const co = evt.target.value.trim();
-                selectBRRCoords(co);
                 keptState.brrcoords = co;
               }}
             />
@@ -459,8 +442,8 @@ function ModCanvastools() {
               submitRollback(
                 date,
                 selectedCanvas,
-                tlrcoords,
-                brrcoords,
+                keptState.tlrcoords,
+                keptState.brrcoords,
                 (ret) => {
                   setSubmitting(false);
                   setResp(ret);
@@ -501,7 +484,7 @@ function ModCanvastools() {
       <p>
         {t`Top-left corner`} (X_Y):&nbsp;
         <input
-          value={tlccoords}
+          defaultValue={keptState.tlccoords}
           style={{
             display: 'inline-block',
             width: '100%',
@@ -511,7 +494,6 @@ function ModCanvastools() {
           placeholder="X_Y"
           onChange={(evt) => {
             const co = evt.target.value.trim();
-            selectTLCCoords(co);
             keptState.tlccoords = co;
           }}
         />
@@ -519,7 +501,7 @@ function ModCanvastools() {
       <p>
         {t`Bottom-right corner`} (X_Y):&nbsp;
         <input
-          value={brccoords}
+          defaultValue={keptState.brccoords}
           style={{
             display: 'inline-block',
             width: '100%',
@@ -529,7 +511,6 @@ function ModCanvastools() {
           placeholder="X_Y"
           onChange={(evt) => {
             const co = evt.target.value.trim();
-            selectBRCCoords(co);
             keptState.brccoords = co;
           }}
         />
@@ -544,15 +525,15 @@ function ModCanvastools() {
           submitCanvasCleaner(
             cleanAction,
             selectedCanvas,
-            tlccoords,
-            brccoords,
+            keptState.tlccoords,
+            keptState.brccoords,
             (ret) => {
               setCleanerStats({
                 running: true,
                 percent: 'N/A',
                 method: cleanAction,
-                tl: tlccoords,
-                br: brccoords,
+                tl: keptState.tlccoords,
+                br: keptState.brccoords,
                 canvasId: selectedCanvas,
               });
               setSubmitting(false);

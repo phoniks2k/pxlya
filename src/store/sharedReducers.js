@@ -11,10 +11,11 @@ import gui from './reducers/gui';
 import ranks from './reducers/ranks';
 import chatRead from './reducers/chatRead';
 
-export const CURRENT_VERSION = 8;
+export const CURRENT_VERSION = 11;
 
 export const migrate = (state, version) => {
-  if (!state || version !== CURRENT_VERSION) {
+  console.log('migrate', state, version);
+  if (!state || !state._persist || state._persist.version !== version) {
     console.log('Newer version run, resetting store.');
     return Promise.resolve({});
   }

@@ -3,7 +3,7 @@ import React from 'react';
 const Tab = ({ onClick, active, label }) => {
   let className = 'tab-list-item';
   if (active) {
-    className += ' tab-list-active';
+    className += ' active';
   }
 
   return (

@@ -71,7 +71,6 @@ const Captcha = ({ autoload, width }) => {
           ({t`Tip: Not case-sensitive; I and l are the same`})
         </span>
       </p>
-      <br />
       {errors.map((error) => (
         <p key={error} className="errormessage">
           <span>{t`Error`}</span>:&nbsp;{error}
@@ -149,7 +148,6 @@ const Captcha = ({ autoload, width }) => {
         }}
       />
       <input type="hidden" name="captchaid" value={captchaData.id || '0'} />
-      <br />
     </>
   );
 };

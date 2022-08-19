@@ -64,6 +64,4 @@ class PopUps {
 
 const popUps = new PopUps();
 
-window.lol = popUps.wins;
-
 export default popUps;

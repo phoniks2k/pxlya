@@ -183,6 +183,9 @@ export default function windows(
   state = initialState,
   action,
 ) {
+  if (action.type.startsWith('persist')) {
+    console.log(action);
+  }
   switch (action.type) {
     case 'OPEN_WIN': {
       /*
@@ -496,14 +499,15 @@ export default function windows(
 
     case 'persist/REHYDRATE': {
       const { showWindows } = state;
-      if (!showWindows) {
+      if (!showWindows || action.key !== 'wind') {
         // don't persist on small screens
         return state;
       }
 
+      console.log(action);
       const loadedState = {
         ...state,
-        ...action.payload.windows,
+        ...action.payload,
       };
       const args = { ...loadedState.args };
       const positions = { ...loadedState.positions };
