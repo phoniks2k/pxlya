@@ -37,6 +37,8 @@ function orgFromWhois(whoisData) {
     || (whoisData.organisation && whoisData.organisation.OrgName)
     || (whoisData['Contact Master']
       && whoisData['Contact Master'].address.split('\n')[0])
+    || (whoisData['Contact undefined']
+      && whoisData['Contact undefined'].person)
     || whoisData.netname
     || whoisData.owner
     || 'N/A';
@@ -66,7 +68,7 @@ function parseWhois(ip, whoisData) {
     cidr: cIDRofWhois(ip, whoisData) || 'N/A',
     org: orgFromWhois(whoisData),
     descr: whoisData.descr || 'N/A',
-    asn: whoisData.asn || 'N/A',
+    asn: whoisData.asn || whoisData['aut-num'] || 'N/A',
   };
 }
 
