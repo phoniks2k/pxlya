@@ -31,5 +31,6 @@ export default (store) => (next) => (action) => {
     popUps.dispatch(action);
   }
 
+  console.log(action);
   return next(action);
 };
