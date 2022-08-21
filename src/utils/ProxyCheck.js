@@ -7,6 +7,7 @@
 import https from 'https';
 
 import { HOUR } from '../core/constants';
+import { HourlyCron } from './cron';
 
 
 /*
@@ -41,7 +42,7 @@ class PcKeyProvider {
     this.disabledKeys = [];
     this.logger = logger;
     this.getKeysUsage(keys);
-    setInterval(this.updateKeys, 1 * HOUR);
+    HourlyCron.hook(this.updateKeys);
   }
 
   /*
@@ -193,6 +194,13 @@ class PcKeyProvider {
       });
       req.end();
     });
+  }
+
+  /*
+   * wrapper to update keys
+   */
+  updateKeys() {
+    this.pcKeyProvider.updateKeys();
   }
 
   /*
