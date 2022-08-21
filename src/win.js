@@ -15,4 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line no-console
   console.log('hello');
   renderAppWin(document.getElementById('app'), store);
+
+  /*
+   * check if popup or independent window
+   */
+  if (!window.opener || window.opener.closed) {
+  }
 });

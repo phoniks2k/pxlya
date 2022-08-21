@@ -5,7 +5,7 @@
 
 import client from './client';
 
-const PREFIX = 'isal:';
+const PREFIX = 'isal';
 const CACHE_DURATION = 14 * 24 * 3600;
 
 export function cacheAllowed(ip, status) {

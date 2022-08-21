@@ -6,7 +6,6 @@
 
 import https from 'https';
 
-import { HOUR } from '../core/constants';
 import { HourlyCron } from './cron';
 
 
@@ -89,8 +88,9 @@ class PcKeyProvider {
    * @param keys Array of key strings
    */
   async getKeysUsage(keys) {
-    for (let i = 0; i < keys.length; i += 1) {
-      let key = keys[i];
+    const tmpKeys = [...keys];
+    for (let i = 0; i < tmpKeys.length; i += 1) {
+      let key = tmpKeys[i];
       if (typeof key !== 'string') {
         [key] = key;
       }
@@ -194,13 +194,6 @@ class PcKeyProvider {
       });
       req.end();
     });
-  }
-
-  /*
-   * wrapper to update keys
-   */
-  updateKeys() {
-    this.pcKeyProvider.updateKeys();
   }
 
   /*
@@ -325,6 +318,10 @@ class ProxyCheck {
       req.write(postData);
       req.end();
     });
+  }
+
+  updateKeys() {
+    return this.pcKeyProvider.updateKeys();
   }
 
   async checkFromQueue() {

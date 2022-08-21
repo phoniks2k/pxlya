@@ -7,6 +7,7 @@ const initialState = {
   windowType: 'SETTINGS',
   title: '',
   args: {},
+  isPopup: window.opener && !window.opener.closed,
 };
 
 export default function win(
