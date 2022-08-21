@@ -46,6 +46,7 @@ class PcKeyProvider {
 
   /*
    * @return random available pcKey
+   * disable key if close to daily limit
    */
   getKey() {
     const { availableKeys: keys } = this;
@@ -134,7 +135,7 @@ class PcKeyProvider {
       availableQueries = dailyLimit - queriesToday;
     }
     // eslint-disable-next-line max-len
-    this.logger.info(`PCKey: ${key}, Queries Today: ${availableQueries} / ${dailyLimit}, Burst: ${availableBurst} ${burstActive ? 'active' : 'inactive'}`);
+    this.logger.info(`PCKey: ${key}, Queries Today: ${availableQueries} / ${dailyLimit} (Burst: ${availableBurst}, ${burstActive ? 'active' : 'inactive'})`);
     const keyData = [
       key,
       availableQueries,
@@ -270,7 +271,6 @@ class ProxyCheck {
         res.on('end', () => {
           try {
             const jsonString = data.join('');
-            this.logger.info(`${postData}: ${jsonString}`);
             const result = JSON.parse(jsonString);
             if (result.status !== 'ok') {
               if (result.status === 'error' && ips.length === 1) {
@@ -347,6 +347,7 @@ class ProxyCheck {
       let pcheck = 'N/A';
 
       if (res[ip]) {
+        this.logger.info(`${ip}: ${JSON.stringify(res[ip])}`);
         const { proxy, type, city } = res[ip];
         allowed = proxy === 'no';
         status = (allowed) ? 0 : 1;
