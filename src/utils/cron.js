@@ -40,7 +40,7 @@ class Cron {
       this.lastRun = curTime;
       this.functions.forEach(async (item) => {
         try {
-          item();
+          await item();
         } catch (err) {
           logger.error(`Error on cron job: ${err.message}`);
         }
