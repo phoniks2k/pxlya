@@ -4,7 +4,7 @@
  */
 import { getIPv6Subnet } from '../utils/ip';
 import whois from '../utils/whois';
-import getProxyCheck from '../utils/proxycheck';
+import ProxyCheck from '../utils/ProxyCheck';
 import { IPInfo } from '../data/sql';
 import { isIPBanned } from '../data/sql/Ban';
 import { isWhitelisted } from '../data/sql/Whitelist';
@@ -14,18 +14,11 @@ import {
 } from '../data/redis/isAllowedCache';
 import { proxyLogger as logger } from './logger';
 
-import { USE_PROXYCHECK } from './config';
+import { USE_PROXYCHECK, PROXYCHECK_KEY } from './config';
 
-/*
- * dummy function to include if you don't want any proxycheck
- */
-async function dummy() {
-  return {
-    allowed: true,
-    status: 0,
-    pcheck: 'dummy',
-  };
-}
+const checker = (USE_PROXYCHECK && PROXYCHECK_KEY)
+  ? new ProxyCheck(PROXYCHECK_KEY, logger).checkIp
+  : () => ({ allowed: true, status: 0, pcheck: 'dummy' });
 
 /*
  * save information of ip into database
@@ -144,7 +137,6 @@ async function withCache(f, ip) {
  *   }
  */
 function checkIfAllowed(ip, disableCache = false) {
-  const checker = (USE_PROXYCHECK) ? getProxyCheck : dummy;
   if (disableCache) {
     return withoutCache(checker, ip);
   }
