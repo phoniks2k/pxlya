@@ -312,6 +312,9 @@ class ProxyCheck {
         });
       });
 
+      req.setTimeout(60000, () => {
+        req.destroy(new Error('Connection TIMEOUT'));
+      });
       req.on('error', (err) => {
         reject(err);
       });
