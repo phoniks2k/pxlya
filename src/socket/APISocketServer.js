@@ -18,22 +18,6 @@ import logger from '../core/logger';
 import { APISOCKET_KEY } from '../core/config';
 
 
-async function verifyClient(info, done) {
-  const { req } = info;
-  const { headers } = req;
-  const ip = getIPFromRequest(req);
-
-  if (!headers.authorization
-    || !APISOCKET_KEY
-    || headers.authorization !== `Bearer ${APISOCKET_KEY}`) {
-    logger.warn(`API ws request from ${ip} authenticated`);
-    return done(false);
-  }
-  logger.warn(`API ws request from ${ip} successfully authenticated`);
-  return done(true);
-}
-
-
 class APISocketServer {
   wss; // WebSocket.Server
 
@@ -47,7 +31,6 @@ class APISocketServer {
       // path: "/mcws",
       // server,
       noServer: true,
-      verifyClient,
     });
     this.wss = wss;
 
@@ -84,6 +67,24 @@ class APISocketServer {
     socketEvents.onAsync('chatMessage', this.broadcastChatMessage);
 
     setInterval(this.ping, 45 * 1000);
+  }
+
+  handleUpgrade(request, socket, head) {
+    const { headers } = request;
+    const ip = getIPFromRequest(request);
+
+    if (!headers.authorization
+      || !APISOCKET_KEY
+      || headers.authorization !== `Bearer ${APISOCKET_KEY}`) {
+      logger.warn(`API ws request from ${ip} not authenticated`);
+      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+      socket.destroy();
+    }
+    logger.warn(`API ws request from ${ip} successfully authenticated`);
+
+    this.wss.handleUpgrade(request, socket, head, (ws) => {
+      this.wss.emit('connection', ws, request);
+    });
   }
 
   broadcastChatMessage(

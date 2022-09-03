@@ -1,5 +1,5 @@
 /*
- * create html for Window page
+ * create html for popup page
  *
  */
 
@@ -36,14 +36,14 @@ if (BACKUP_URL) {
  * @param lang language code
  * @return html of mainpage
  */
-function generateWinPage(lang) {
+function generatePopUpPage(lang) {
   const ssvR = {
     ...ssv,
     lang: lang === 'default' ? 'en' : lang,
   };
-  const script = (assets[`win-${lang}`])
-    ? assets[`win-${lang}`].js
-    : assets.win.js;
+  const script = (assets[`popup-${lang}`])
+    ? assets[`popup-${lang}`].js
+    : assets.popup.js;
 
   const { t } = getTTag(lang);
 
@@ -52,8 +52,8 @@ function generateWinPage(lang) {
     <html lang="${lang}">
       <head>
         <meta charset="UTF-8" />
-        <title>${t`PixelPlanet.Fun Window`}</title>
-        <meta name="description" content="${t`PixelPlanet.Fun Windows`}" />
+        <title>${t`PixelPlanet.Fun PopUp`}</title>
+        <meta name="description" content="${t`PixelPlanet.Fun PopUp`}" />
         <meta name="google" content="nopagereadaloud" />
         <meta name="theme-color" content="#cae3ff" />
         <meta name="viewport"
@@ -75,4 +75,4 @@ function generateWinPage(lang) {
   return html;
 }
 
-export default generateWinPage;
+export default generatePopUpPage;

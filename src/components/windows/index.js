@@ -20,3 +20,9 @@ export default {
   ARCHIVE: [Archive, t`Canvas Archive`],
   /* other windows */
 };
+
+/*
+ * NOTE:
+ * set windows that should be accessable via popup / url
+ * also in ./popUpAvailable.js
+ */

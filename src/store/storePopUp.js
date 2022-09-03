@@ -1,5 +1,5 @@
 /*
- * redux store for windows / popups
+ * redux store for popups
  */
 
 /* eslint-disable no-console */
@@ -15,7 +15,7 @@ import { persistStore } from 'redux-persist';
  */
 import sharedReducers from './sharedReducers';
 import canvas from './reducers/canvas';
-import win from './reducers/win';
+import popup from './reducers/popup';
 
 /*
  * middleware
@@ -25,7 +25,7 @@ import parent from './middleware/parent';
 const reducers = combineReducers({
   ...sharedReducers,
   canvas,
-  win,
+  popup,
 });
 
 const store = createStore(

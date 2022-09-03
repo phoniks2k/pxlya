@@ -203,22 +203,6 @@ msgstr ""
 msgid "Server answered with gibberish :("
 msgstr ""
 
-#: src/store/actions/windows.js:98
-msgid "Register New Account"
-msgstr ""
-
-#: src/store/actions/windows.js:105
-msgid "Restore my Password"
-msgstr ""
-
-#: src/store/actions/windows.js:112
-msgid "Welcome to PixelPlanet.fun"
-msgstr ""
-
-#: src/store/actions/windows.js:118
-msgid "Look at past Canvases"
-msgstr ""
-
 #: src/store/middleware/notifications.js:33
 msgid "Your next pixels are ready"
 msgstr ""
@@ -237,7 +221,7 @@ msgstr ""
 
 #: src/components/Converter.jsx:561
 #: src/components/CoordinatesBox.jsx:31
-#: src/components/ModWatchtools.jsx:364
+#: src/components/ModWatchtools.jsx:360
 msgid "Copy to Clipboard"
 msgstr ""
 
@@ -251,11 +235,6 @@ msgstr ""
 
 #: src/components/OnlineBox.jsx:55
 msgid "Pixels placed"
-msgstr ""
-
-#: src/components/buttons/CanvasSwitchButton.jsx:22
-#: src/components/windows/index.js:19
-msgid "Canvas Selection"
 msgstr ""
 
 #: src/components/buttons/ChatButton.jsx:88
@@ -274,33 +253,25 @@ msgstr ""
 msgid "Open Menu"
 msgstr ""
 
-#: src/components/Admintools.jsx:101
-#: src/components/ModCanvastools.jsx:232
-#: src/components/ModWatchtools.jsx:113
-#: src/components/Window.jsx:141
-#: src/components/Window.jsx:210
-#: src/components/contextmenus/ChannelContextMenu.jsx:68
-msgid "Close"
+#: src/components/buttons/CanvasSwitchButton.jsx:22
+#: src/components/windows/index.js:19
+msgid "Canvas Selection"
 msgstr ""
 
-#: src/components/Window.jsx:151
-msgid "Restore"
+#: src/store/actions/windows.js:98
+msgid "Register New Account"
 msgstr ""
 
-#: src/components/Window.jsx:186
-msgid "Clone"
+#: src/store/actions/windows.js:105
+msgid "Restore my Password"
 msgstr ""
 
-#: src/components/Window.jsx:194
-msgid "Move"
+#: src/store/actions/windows.js:112
+msgid "Welcome to PixelPlanet.fun"
 msgstr ""
 
-#: src/components/Window.jsx:202
-msgid "Maximize"
-msgstr ""
-
-#: src/components/Window.jsx:218
-msgid "Resize"
+#: src/store/actions/windows.js:118
+msgid "Look at past Canvases"
 msgstr ""
 
 #: src/components/HistorySelect.jsx:144
@@ -309,6 +280,39 @@ msgstr ""
 
 #: src/components/HistorySelect.jsx:145
 msgid "Select Date above"
+msgstr ""
+
+#: src/components/Admintools.jsx:101
+#: src/components/ModCanvastools.jsx:221
+#: src/components/ModWatchtools.jsx:110
+#: src/components/Window.jsx:153
+#: src/components/Window.jsx:254
+#: src/components/contextmenus/ChannelContextMenu.jsx:59
+msgid "Close"
+msgstr ""
+
+#: src/components/Window.jsx:169
+msgid "PopUp"
+msgstr ""
+
+#: src/components/Window.jsx:180
+msgid "Restore"
+msgstr ""
+
+#: src/components/Window.jsx:215
+msgid "Clone"
+msgstr ""
+
+#: src/components/Window.jsx:223
+msgid "Move"
+msgstr ""
+
+#: src/components/Window.jsx:246
+msgid "Maximize"
+msgstr ""
+
+#: src/components/Window.jsx:262
+msgid "Resize"
 msgstr ""
 
 #: src/components/BanInfo.jsx:76
@@ -343,8 +347,32 @@ msgstr ""
 msgid "Open Palette"
 msgstr ""
 
+#: src/components/windows/index.js:16
+msgid "Registration"
+msgstr ""
+
+#: src/components/windows/index.js:17
+msgid "Forgot Password"
+msgstr ""
+
+#: src/components/windows/index.js:18
+msgid "Chat"
+msgstr ""
+
+#: src/components/windows/index.js:20
+msgid "Canvas Archive"
+msgstr ""
+
+#: src/components/BanInfo.jsx:67
+msgid "You are banned. You think it is unjustifed? Check out the "
+msgstr ""
+
+#: src/components/BanInfo.jsx:77
+msgid " on how to appeal."
+msgstr ""
+
 #: src/components/BanInfo.jsx:81
-#: src/components/Captcha.jsx:77
+#: src/components/Captcha.jsx:76
 #: src/components/ChangeMail.jsx:72
 #: src/components/ChangeName.jsx:58
 #: src/components/ChangePassword.jsx:79
@@ -354,28 +382,6 @@ msgstr ""
 #: src/components/windows/ForgotPassword.jsx:75
 #: src/components/windows/Register.jsx:87
 msgid "Error"
-msgstr ""
-
-#: src/components/ChangeMail.jsx:93
-#: src/components/ChangeName.jsx:70
-#: src/components/ChangePassword.jsx:115
-#: src/components/DeleteAccount.jsx:68
-#: src/components/GlobalCaptcha.jsx:47
-#: src/components/windows/ForgotPassword.jsx:88
-#: src/components/windows/Register.jsx:131
-msgid "Cancel"
-msgstr ""
-
-#: src/components/GlobalCaptcha.jsx:53
-msgid "Send"
-msgstr ""
-
-#: src/components/BanInfo.jsx:67
-msgid "You are banned. You think it is unjustifed? Check out the "
-msgstr ""
-
-#: src/components/BanInfo.jsx:77
-msgid " on how to appeal."
 msgstr ""
 
 #: src/components/BanInfo.jsx:86
@@ -412,69 +418,18 @@ msgstr ""
 msgid "Why?"
 msgstr ""
 
-#: src/components/windows/index.js:16
-msgid "Registration"
+#: src/components/ChangeMail.jsx:93
+#: src/components/ChangeName.jsx:70
+#: src/components/ChangePassword.jsx:115
+#: src/components/DeleteAccount.jsx:68
+#: src/components/GlobalCaptcha.jsx:47
+#: src/components/windows/ForgotPassword.jsx:88
+#: src/components/windows/Register.jsx:131
+msgid "Cancel"
 msgstr ""
 
-#: src/components/windows/index.js:17
-msgid "Forgot Password"
-msgstr ""
-
-#: src/components/windows/index.js:18
-msgid "Chat"
-msgstr ""
-
-#: src/components/windows/index.js:20
-msgid "Canvas Archive"
-msgstr ""
-
-#: src/components/contextmenus/UserContextMenu.jsx:60
-msgid "Ping"
-msgstr ""
-
-#: src/components/contextmenus/UserContextMenu.jsx:87
-msgid "DM"
-msgstr ""
-
-#: src/components/contextmenus/UserContextMenu.jsx:97
-msgid "Block"
-msgstr ""
-
-#: src/components/contextmenus/ChannelContextMenu.jsx:56
-msgid "Mute"
-msgstr ""
-
-#: src/components/Captcha.jsx:50
-#: src/components/Captcha.jsx:105
-msgid "Could not load captcha"
-msgstr ""
-
-#: src/components/Captcha.jsx:68
-msgid "Type the characters from the following image:"
-msgstr ""
-
-#: src/components/Captcha.jsx:71
-msgid "Tip: Not case-sensitive; I and l are the same"
-msgstr ""
-
-#: src/components/Captcha.jsx:114
-msgid "Load Captcha"
-msgstr ""
-
-#: src/components/Captcha.jsx:119
-msgid "Click to Load Captcha"
-msgstr ""
-
-#: src/components/Captcha.jsx:124
-msgid "Can't read? Reload:"
-msgstr ""
-
-#: src/components/Captcha.jsx:128
-msgid "Reload"
-msgstr ""
-
-#: src/components/Captcha.jsx:138
-msgid "Enter Characters"
+#: src/components/GlobalCaptcha.jsx:53
+msgid "Send"
 msgstr ""
 
 #: src/components/windows/Help.jsx:42
@@ -777,25 +732,14 @@ msgstr ""
 
 #: src/components/Admintools.jsx:152
 #: src/components/Admintools.jsx:236
-#: src/components/ModCanvastools.jsx:314
-#: src/components/ModCanvastools.jsx:396
-#: src/components/ModCanvastools.jsx:471
-#: src/components/ModCanvastools.jsx:564
+#: src/components/ModCanvastools.jsx:301
+#: src/components/ModCanvastools.jsx:381
+#: src/components/ModCanvastools.jsx:454
+#: src/components/ModCanvastools.jsx:545
 #: src/components/ModIIDtools.jsx:134
 #: src/components/windows/ForgotPassword.jsx:86
 #: src/components/windows/Register.jsx:125
 msgid "Submit"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:27
-msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has "
-"different palettes, cooldown and requirements.  Archive of closed canvases "
-"can be accessed here:"
-msgstr ""
-
-#: src/components/windows/CanvasSelect.jsx:35
-msgid "Archive"
 msgstr ""
 
 #: src/components/windows/UserArea.jsx:31
@@ -821,6 +765,17 @@ msgstr ""
 
 #: src/components/windows/UserArea.jsx:70
 msgid "Consider joining us on Guilded:"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:27
+msgid ""
+"Select the canvas you want to use.  Every canvas is unique and has "
+"different palettes, cooldown and requirements.  Archive of closed canvases "
+"can be accessed here:"
+msgstr ""
+
+#: src/components/windows/CanvasSelect.jsx:35
+msgid "Archive"
 msgstr ""
 
 #: src/components/windows/Archive.jsx:16
@@ -856,19 +811,19 @@ msgid ""
 "how the canvas was at that time."
 msgstr ""
 
-#: src/components/windows/Chat.jsx:143
+#: src/components/windows/Chat.jsx:176
 msgid "Start chatting here"
 msgstr ""
 
-#: src/components/windows/Chat.jsx:183
+#: src/components/windows/Chat.jsx:213
 msgid "Chat here"
 msgstr ""
 
-#: src/components/windows/Chat.jsx:205
+#: src/components/windows/Chat.jsx:239
 msgid "You must be logged in to chat"
 msgstr ""
 
-#: src/components/windows/Chat.jsx:233
+#: src/components/windows/Chat.jsx:268
 msgid "Channel settings"
 msgstr ""
 
@@ -878,6 +833,39 @@ msgstr ""
 
 #: src/components/windows/ForgotPassword.jsx:71
 msgid "Enter your mail address and we will send you a new password:"
+msgstr ""
+
+#: src/components/Captcha.jsx:50
+#: src/components/Captcha.jsx:104
+msgid "Could not load captcha"
+msgstr ""
+
+#: src/components/Captcha.jsx:68
+msgid "Type the characters from the following image:"
+msgstr ""
+
+#: src/components/Captcha.jsx:71
+msgid "Tip: Not case-sensitive; I and l are the same"
+msgstr ""
+
+#: src/components/Captcha.jsx:113
+msgid "Load Captcha"
+msgstr ""
+
+#: src/components/Captcha.jsx:118
+msgid "Click to Load Captcha"
+msgstr ""
+
+#: src/components/Captcha.jsx:123
+msgid "Can't read? Reload:"
+msgstr ""
+
+#: src/components/Captcha.jsx:127
+msgid "Reload"
+msgstr ""
+
+#: src/components/Captcha.jsx:137
+msgid "Enter Characters"
 msgstr ""
 
 #: src/utils/validation.js:17
@@ -941,51 +929,6 @@ msgstr ""
 #: src/components/ChangePassword.jsx:109
 #: src/components/LanguageSelect.jsx:73
 msgid "Save"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:29
-msgid "Online Users"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:34
-msgid "Cooldown"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:40
-msgid "Stacking till"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:42
-msgid "Ranked"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:44
-msgid "Yes"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:44
-msgid "No"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:50
-msgid "Requirements"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:53
-msgid "User Account"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:55
-#, javascript-format
-msgid "and ${ canvas.req } Pixels set"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:58
-msgid "Top 10 Daily Ranking"
-msgstr ""
-
-#: src/components/CanvasItem.jsx:64
-msgid "Dimensions"
 msgstr ""
 
 #: src/components/LogInArea.jsx:20
@@ -1070,7 +1013,7 @@ msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr ""
 
 #: src/components/Converter.jsx:190
-#: src/components/ModCanvastools.jsx:236
+#: src/components/ModCanvastools.jsx:225
 msgid "Choose Canvas"
 msgstr ""
 
@@ -1148,26 +1091,57 @@ msgstr ""
 msgid "Download Template"
 msgstr ""
 
+#: src/components/CanvasItem.jsx:29
+msgid "Online Users"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:34
+msgid "Cooldown"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:40
+msgid "Stacking till"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:42
+msgid "Ranked"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:44
+msgid "Yes"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:44
+msgid "No"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:50
+msgid "Requirements"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:53
+msgid "User Account"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:55
+#, javascript-format
+msgid "and ${ canvas.req } Pixels set"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:58
+msgid "Top 10 Daily Ranking"
+msgstr ""
+
+#: src/components/CanvasItem.jsx:64
+msgid "Dimensions"
+msgstr ""
+
 #: src/components/LogInForm.jsx:77
 msgid "Name or Email"
 msgstr ""
 
 #: src/components/LogInForm.jsx:88
 msgid "LogIn"
-msgstr ""
-
-#: src/components/UserMessages.jsx:28
-msgid ""
-"Please verify your mail address or your account could get deleted after a "
-"few days."
-msgstr ""
-
-#: src/components/UserMessages.jsx:49
-msgid "A new verification mail is getting sent to you."
-msgstr ""
-
-#: src/components/UserMessages.jsx:53
-msgid "Click here to request a new verification mail."
 msgstr ""
 
 #: src/components/ChangePassword.jsx:21
@@ -1204,6 +1178,20 @@ msgstr ""
 msgid "New Mail"
 msgstr ""
 
+#: src/components/UserMessages.jsx:28
+msgid ""
+"Please verify your mail address or your account could get deleted after a "
+"few days."
+msgstr ""
+
+#: src/components/UserMessages.jsx:49
+msgid "A new verification mail is getting sent to you."
+msgstr ""
+
+#: src/components/UserMessages.jsx:53
+msgid "Click here to request a new verification mail."
+msgstr ""
+
 #: src/components/DeleteAccount.jsx:66
 msgid "Yes, Delete My Account!"
 msgstr ""
@@ -1220,125 +1208,97 @@ msgstr ""
 msgid "You have no users blocked"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:174
+#: src/components/ModCanvastools.jsx:167
 msgid "Build image on canvas."
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:177
+#: src/components/ModCanvastools.jsx:170
 msgid "Build image and set it to protected."
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:180
+#: src/components/ModCanvastools.jsx:173
 msgid "Build image, but reset cooldown to unset-pixel cd."
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:190
+#: src/components/ModCanvastools.jsx:183
 msgid "Clean spare pixels that are surrounded by unset pixels"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:194
+#: src/components/ModCanvastools.jsx:187
 msgid ""
 "Clean spare pixels that are surrounded by unset pixels and up to 1 other "
 "set pixels"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:198
+#: src/components/ModCanvastools.jsx:191
 msgid ""
 "Clean spare pixels that are surrounded by a single other color or unset "
 "pixels (VERY AGGRESSIVE ON CANVASES THAT ALLOW UNSET PIXELS (where there "
 "are two cooldowns)!)"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:213
+#: src/components/ModCanvastools.jsx:202
 msgid "Status: Not running"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:255
+#: src/components/ModCanvastools.jsx:244
 msgid "Image Upload"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:256
+#: src/components/ModCanvastools.jsx:245
 msgid "Upload images to canvas"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:258
+#: src/components/ModCanvastools.jsx:247
 msgid "File"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:279
+#: src/components/ModCanvastools.jsx:268
 msgid "Coordinates in X_Y format:"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:319
+#: src/components/ModCanvastools.jsx:306
 msgid "Pixel Protection"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:321
+#: src/components/ModCanvastools.jsx:308
 msgid ""
 "Set protection of areas         (if you need finer grained control,         "
 "use protect with image upload and alpha layers)"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:342
-#: src/components/ModCanvastools.jsx:417
-#: src/components/ModCanvastools.jsx:502
-#: src/components/ModWatchtools.jsx:169
+#: src/components/ModCanvastools.jsx:329
+#: src/components/ModCanvastools.jsx:402
+#: src/components/ModCanvastools.jsx:485
+#: src/components/ModWatchtools.jsx:166
 msgid "Top-left corner"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:360
-#: src/components/ModCanvastools.jsx:435
-#: src/components/ModCanvastools.jsx:520
-#: src/components/ModWatchtools.jsx:187
+#: src/components/ModCanvastools.jsx:346
+#: src/components/ModCanvastools.jsx:419
+#: src/components/ModCanvastools.jsx:502
+#: src/components/ModWatchtools.jsx:183
 msgid "Bottom-right corner"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:402
+#: src/components/ModCanvastools.jsx:387
 msgid "Rollback to Date"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:404
+#: src/components/ModCanvastools.jsx:389
 msgid "Rollback an area of the canvas to a set date (00:00 UTC)"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:477
+#: src/components/ModCanvastools.jsx:460
 msgid "Canvas Cleaner"
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:479
+#: src/components/ModCanvastools.jsx:462
 msgid "Apply a filter to clean trash in large canvas areas."
 msgstr ""
 
-#: src/components/ModCanvastools.jsx:582
+#: src/components/ModCanvastools.jsx:563
 msgid "Stop Cleaner"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:45
-msgid "Interval is invalid"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:117
-msgid "Check who placed in an area"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:118
-msgid "Canvas"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:135
-msgid "Interval"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:151
-msgid "IID (optional)"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:233
-msgid "Get Pixels"
-msgstr ""
-
-#: src/components/ModWatchtools.jsx:264
-msgid "Get Users"
 msgstr ""
 
 #: src/components/Admintools.jsx:107
@@ -1373,6 +1333,34 @@ msgstr ""
 msgid "User Name"
 msgstr ""
 
+#: src/components/ModWatchtools.jsx:45
+msgid "Interval is invalid"
+msgstr ""
+
+#: src/components/ModWatchtools.jsx:114
+msgid "Check who placed in an area"
+msgstr ""
+
+#: src/components/ModWatchtools.jsx:115
+msgid "Canvas"
+msgstr ""
+
+#: src/components/ModWatchtools.jsx:134
+msgid "Interval"
+msgstr ""
+
+#: src/components/ModWatchtools.jsx:149
+msgid "IID (optional)"
+msgstr ""
+
+#: src/components/ModWatchtools.jsx:228
+msgid "Get Pixels"
+msgstr ""
+
+#: src/components/ModWatchtools.jsx:259
+msgid "Get Users"
+msgstr ""
+
 #: src/components/ModIIDtools.jsx:19
 msgid "You must enter a duration"
 msgstr ""
@@ -1391,6 +1379,22 @@ msgstr ""
 
 #: src/components/ModIIDtools.jsx:96
 msgid "(0 = infinite)"
+msgstr ""
+
+#: src/components/contextmenus/ChannelContextMenu.jsx:46
+msgid "Mute"
+msgstr ""
+
+#: src/components/contextmenus/UserContextMenu.jsx:49
+msgid "Ping"
+msgstr ""
+
+#: src/components/contextmenus/UserContextMenu.jsx:75
+msgid "DM"
+msgstr ""
+
+#: src/components/contextmenus/UserContextMenu.jsx:86
+msgid "Block"
 msgstr ""
 
 #: src/components/windows/Help.jsx:15

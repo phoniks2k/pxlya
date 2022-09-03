@@ -28,6 +28,7 @@ import {
 } from '../store/selectors/windows';
 import useDrag from './hooks/drag';
 import COMPONENTS from './windows';
+import popUpTypes, { buildPopUpUrl } from './windows/popUpAvailable';
 
 const Window = ({ id }) => {
   const [render, setRender] = useState(false);
@@ -80,11 +81,6 @@ const Window = ({ id }) => {
     xPos, yPos,
     width, height,
   } = position;
-
-  const popUp = useCallback((evt) => {
-    openPopUp(xPos, yPos, width, height);
-    close(evt);
-  }, [xPos, yPos, width, height]);
 
   useDrag(
     titleBarRef,
@@ -157,15 +153,23 @@ const Window = ({ id }) => {
           title={t`Close`}
           tabIndex={-1}
         >✕</div>
-        <div
-          onClick={popUp}
-          className="modal-topbtn pop"
-          role="button"
-          label="close"
-          key="popbtn"
-          title={t`PopUp`}
-          tabIndex={-1}
-        >G</div>
+        {(popUpTypes[windowType]) && (
+          <div
+            onClick={(evt) => {
+              openPopUp(
+                buildPopUpUrl(windowType, args),
+                xPos, yPos, width, height,
+              );
+              close(evt);
+            }}
+            className="modal-topbtn pop"
+            role="button"
+            label="close"
+            key="popbtn"
+            title={t`PopUp`}
+            tabIndex={-1}
+          >G</div>
+        )}
         {(showWindows) && (
           <div
             onClick={toggleMaximize}
@@ -220,13 +224,21 @@ const Window = ({ id }) => {
         >
           {windowTitle}
         </span>
-        <span
-          className="win-topbtn"
-          key="pobtn"
-          onClick={popUp}
-        >
-          G
-        </span>
+        {(popUpTypes[windowType]) && (
+          <span
+            className="win-topbtn"
+            key="pobtnm"
+            onClick={(evt) => {
+              openPopUp(
+                buildPopUpUrl(windowType, args),
+                xPos, yPos, width, height,
+              );
+              close(evt);
+            }}
+          >
+            G
+          </span>
+        )}
         <span
           className="win-topbtn"
           key="maxbtn"

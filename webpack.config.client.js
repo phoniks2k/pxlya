@@ -68,8 +68,8 @@ function buildWebpackClientConfig(
         [path.resolve('src', 'client.js')],
       [(locale !== 'default') ? `globe-${locale}` : 'globe']:
         [path.resolve('src', 'globe.js')],
-      [(locale !== 'default') ? `win-${locale}` : 'win']:
-        [path.resolve('src', 'win.js')],
+      [(locale !== 'default') ? `popup-${locale}` : 'popup']:
+        [path.resolve('src', 'popup.js')],
     },
 
     output: {

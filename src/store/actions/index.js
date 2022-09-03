@@ -468,12 +468,6 @@ export function unmuteChatChannel(cid) {
   };
 }
 
-export function reloadUrl() {
-  return {
-    type: 'RELOAD_URL',
-  };
-}
-
 export function onViewFinishChange() {
   return {
     type: 'ON_VIEW_FINISH_CHANGE',
@@ -489,7 +483,9 @@ export function selectHistoricalTime(date, time) {
 }
 
 export function urlChange() {
-  return reloadUrl();
+  return {
+    type: 'RELOAD_URL',
+  };
 }
 
 export function unload() {

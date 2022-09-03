@@ -52,7 +52,7 @@ class PopUps {
 
 const popUps = new PopUps();
 
-export function openPopUp(xPos, yPos, width, height) {
+export function openPopUp(url, xPos, yPos, width, height) {
   let left;
   let top;
   try {
@@ -74,8 +74,9 @@ export function openPopUp(xPos, yPos, width, height) {
   }
   try {
     return window.open(
-      './win',
-      'lol',
+      url,
+      url,
+      // eslint-disable-next-line max-len
       `popup=yes,width=${width},height=${height},left=${left},top=${top},toolbar=no,status=no,directories=no,menubar=no`,
     );
   } catch {

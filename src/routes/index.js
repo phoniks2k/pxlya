@@ -19,9 +19,10 @@ import api from './api';
 import { assets } from '../core/assets';
 import { expressTTag } from '../core/ttag';
 import generateGlobePage from '../ssr/Globe';
-import generateWinPage from '../ssr/Win';
+import generatePopUpPage from '../ssr/PopUp';
 import generateMainPage from '../ssr/Main';
 
+import AVAILABLE_POPUPS from '../components/windows/popUpAvailable';
 import { MONTH } from '../core/constants';
 import { GUILDED_INVITE } from '../core/config';
 
@@ -122,26 +123,30 @@ router.get('/globe', (req, res) => {
 });
 
 //
-// Windows (like chat pop-up etc.)
+// PopUps
 // -----------------------------------------------------------------------------
 const winEtag = etag(
-  assets.win.js,
+  assets.popup.js,
   { weak: true },
 );
-router.get('/win', async (req, res) => {
-  res.set({
-    'Cache-Control': `private, max-age=${15 * 60}`, // seconds
-    'Content-Type': 'text/html; charset=utf-8',
-    ETag: globeEtag,
-  });
 
-  if (req.headers['if-none-match'] === winEtag) {
-    res.status(304).end();
-    return;
-  }
+router.get(
+  `/:t(${AVAILABLE_POPUPS.map((p) => p.toLowerCase()).join('|')})`,
+  async (req, res) => {
+    res.set({
+      'Cache-Control': `private, max-age=${15 * 60}`, // seconds
+      'Content-Type': 'text/html; charset=utf-8',
+      ETag: winEtag,
+    });
 
-  res.status(200).send(generateWinPage(req.lang));
-});
+    if (req.headers['if-none-match'] === winEtag) {
+      res.status(304).end();
+      return;
+    }
+
+    res.status(200).send(generatePopUpPage(req.lang));
+  },
+);
 
 //
 // Main Page (react generated)

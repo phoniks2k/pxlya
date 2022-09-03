@@ -111,20 +111,17 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
+#: src/ssr/Win.jsx:55
+#: src/ssr/Win.jsx:56
+msgid "PixelPlanet.Fun PopUp"
+msgstr ""
+
 #: src/ssr/Main.jsx:54
 msgid "PixelPlanet.Fun"
 msgstr ""
 
 #: src/ssr/Main.jsx:55
 msgid "Place color pixels on an map styled canvas with other players online"
-msgstr ""
-
-#: src/ssr/Win.jsx:31
-msgid "PixelPlanet.Fun Window"
-msgstr ""
-
-#: src/ssr/Win.jsx:32
-msgid "PixelPlanet.Fun Windows"
 msgstr ""
 
 #: src/core/mail.js:71
@@ -350,26 +347,6 @@ msgid ""
 "request a new one."
 msgstr ""
 
-#: src/routes/api/auth/register.js:26
-msgid "No Captcha given"
-msgstr ""
-
-#: src/routes/api/auth/register.js:29
-msgid "E-Mail already in use."
-msgstr ""
-
-#: src/routes/api/auth/register.js:31
-msgid "Username already in use."
-msgstr ""
-
-#: src/routes/api/auth/register.js:84
-msgid "Failed to create new user :("
-msgstr ""
-
-#: src/routes/api/auth/register.js:100
-msgid "Failed to establish session after register :("
-msgstr ""
-
 #: src/routes/api/auth/logout.js:11
 msgid "You are not even logged in."
 msgstr ""
@@ -389,6 +366,26 @@ msgstr ""
 #: src/routes/api/auth/change_passwd.js:43
 #: src/routes/api/auth/delete_account.js:44
 msgid "Incorrect password!"
+msgstr ""
+
+#: src/routes/api/auth/register.js:26
+msgid "No Captcha given"
+msgstr ""
+
+#: src/routes/api/auth/register.js:29
+msgid "E-Mail already in use."
+msgstr ""
+
+#: src/routes/api/auth/register.js:31
+msgid "Username already in use."
+msgstr ""
+
+#: src/routes/api/auth/register.js:84
+msgid "Failed to create new user :("
+msgstr ""
+
+#: src/routes/api/auth/register.js:100
+msgid "Failed to establish session after register :("
 msgstr ""
 
 #: src/ssr/RedirectionPage.jsx:19
