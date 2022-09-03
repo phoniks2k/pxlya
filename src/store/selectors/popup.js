@@ -2,6 +2,6 @@
  * selectors for single window / popup
  */
 
-export const selectWindowType = (state) => state.win.windowType;
+export const selectWindowType = (state) => state.popup.windowType;
 
-export const selectWIndowArgs = (state) => state.win.args;
+export const selectWIndowArgs = (state) => state.popup.args;

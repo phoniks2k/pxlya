@@ -7,14 +7,17 @@ export const argsTypes = {
   CHAT: ['chatChannel'],
 };
 
-export function buildPopUpUrl(windowType, args) {
+export function buildPopUpUrl(windowType, argsIn) {
+  const args = { ...argsIn };
   let path = `/${windowType.toLowerCase()}`;
   const typeArr = argsTypes[windowType];
-  for (let i = 0; i < typeArr.length; i += 1) {
-    const key = typeArr[i];
-    if (args[key]) {
-      path += `/${args[key]}`;
-      delete args[key];
+  if (typeArr) {
+    for (let i = 0; i < typeArr.length; i += 1) {
+      const key = typeArr[i];
+      if (args[key]) {
+        path += `/${args[key]}`;
+        delete args[key];
+      }
     }
   }
   let searchParams = new URLSearchParams();

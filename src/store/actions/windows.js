@@ -156,7 +156,7 @@ export function cloneWindow(windowId) {
 
 export function toggleMaximizeWindow(windowId) {
   return {
-    type: 's/TGL_MAXIMIZE_WIN',
+    type: 'TGL_MAXIMIZE_WIN',
     windowId,
   };
 }

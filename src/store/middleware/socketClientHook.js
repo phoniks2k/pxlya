@@ -32,6 +32,15 @@ export default (store) => (next) => (action) => {
       break;
     }
 
+    case 's/REQ_CHAT_MESSAGE': {
+      const {
+        text,
+        channel,
+      } = action;
+      SocketClient.sendChatMessage(text, channel);
+      break;
+    }
+
     default:
     // nothing
   }
@@ -41,7 +50,7 @@ export default (store) => (next) => (action) => {
   // executed after reducers
   switch (action.type) {
     case 'RELOAD_URL':
-    case 'SELECT_CANVAS':
+    case 's/SELECT_CANVAS':
     case 'REC_ME': {
       const state = store.getState();
       const { canvasId } = state.canvas;

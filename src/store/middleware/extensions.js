@@ -10,7 +10,7 @@ const pixelPlanetEvents = new EventEmitter();
 
 export default () => (next) => (action) => {
   switch (action.type) {
-    case 'SELECT_CANVAS': {
+    case 's/SELECT_CANVAS': {
       pixelPlanetEvents.emit('selectcanvas', action.canvasId);
       break;
     }

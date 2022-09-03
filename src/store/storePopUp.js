@@ -16,16 +16,23 @@ import { persistStore } from 'redux-persist';
 import sharedReducers from './sharedReducers';
 import canvas from './reducers/canvas';
 import popup from './reducers/popup';
+import user from './reducers/user';
+import chat from './reducers/chat';
+import fetching from './reducers/fetching';
 
 /*
  * middleware
  */
 import parent from './middleware/parent';
+import titlePopUp from './middleware/titlePopUp';
 
 const reducers = combineReducers({
   ...sharedReducers,
   canvas,
   popup,
+  user,
+  chat,
+  fetching,
 });
 
 const store = createStore(
@@ -33,6 +40,7 @@ const store = createStore(
   applyMiddleware(
     thunk,
     parent,
+    titlePopUp,
   ),
 );
 

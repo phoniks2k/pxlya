@@ -48,7 +48,7 @@ export default (store) => (next) => (action) => {
 
   switch (type) {
     case 'RELOAD_URL':
-    case 'SELECT_CANVAS':
+    case 's/SELECT_CANVAS':
     case 'REC_ME': {
       const renderer = getRenderer();
       const { is3D } = state.canvas;

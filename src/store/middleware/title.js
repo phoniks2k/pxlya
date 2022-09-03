@@ -40,7 +40,7 @@ export default (store) => (next) => (action) => {
     }
 
 
-    case 'SELECT_CANVAS':
+    case 's/SELECT_CANVAS':
     case 'REC_ME':
     case 'RELOAD_URL':
     case 'ON_VIEW_FINISH_CHANGE': {

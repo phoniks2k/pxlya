@@ -142,7 +142,7 @@ export default function chatRead(
       };
     }
 
-    case 'UNs/MUTE_CHAT_CHANNEL': {
+    case 's/UNMUTE_CHAT_CHANNEL': {
       const { cid } = action;
       const mute = state.mute.filter((id) => (id !== cid));
       return {

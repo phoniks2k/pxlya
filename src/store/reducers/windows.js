@@ -409,7 +409,7 @@ export default function windows(
       });
     }
 
-    case 's/TGL_MAXIMIZE_WIN': {
+    case 'TGL_MAXIMIZE_WIN': {
       const {
         windowId,
       } = action;

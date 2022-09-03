@@ -15,6 +15,7 @@ import ChannelDropDown from '../contextmenus/ChannelDropDown';
 
 import {
   markChannelAsRead,
+  sendChatMessage,
 } from '../../store/actions';
 import {
   showUserAreaModal,
@@ -22,7 +23,6 @@ import {
 import {
   fetchChatMessages,
 } from '../../store/actions/thunks';
-import SocketClient from '../../socket/SocketClient';
 
 
 const Chat = ({
@@ -130,7 +130,7 @@ const Chat = ({
     const inptMsg = inputRef.current.value.trim();
     if (!inptMsg) return;
     // send message via websocket
-    SocketClient.sendChatMessage(inptMsg, chatChannel);
+    dispatch(sendChatMessage(inptMsg, chatChannel));
     inputRef.current.value = '';
   }
 

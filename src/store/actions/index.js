@@ -147,7 +147,7 @@ export function selectColor(color) {
 
 export function selectCanvas(canvasId) {
   return {
-    type: 'SELECT_CANVAS',
+    type: 's/SELECT_CANVAS',
     canvasId,
   };
 }
@@ -283,6 +283,17 @@ export function receiveOnline(online) {
   return {
     type: 'REC_ONLINE',
     online,
+  };
+}
+
+export function sendChatMessage(
+  text,
+  channel,
+) {
+  return {
+    type: 's/REQ_CHAT_MESSAGE',
+    text,
+    channel,
   };
 }
 
@@ -463,7 +474,7 @@ export function muteChatChannel(cid) {
 
 export function unmuteChatChannel(cid) {
   return {
-    type: 'UNs/MUTE_CHAT_CHANNEL',
+    type: 's/UNMUTE_CHAT_CHANNEL',
     cid,
   };
 }

@@ -153,7 +153,7 @@ const Window = ({ id }) => {
           title={t`Close`}
           tabIndex={-1}
         >✕</div>
-        {(popUpTypes[windowType]) && (
+        {popUpTypes.includes(windowType) && (
           <div
             onClick={(evt) => {
               openPopUp(
@@ -224,7 +224,7 @@ const Window = ({ id }) => {
         >
           {windowTitle}
         </span>
-        {(popUpTypes[windowType]) && (
+        {popUpTypes.includes(windowType) && (
           <span
             className="win-topbtn"
             key="pobtnm"

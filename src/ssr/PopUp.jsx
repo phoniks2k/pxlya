@@ -52,7 +52,7 @@ function generatePopUpPage(lang) {
     <html lang="${lang}">
       <head>
         <meta charset="UTF-8" />
-        <title>${t`PixelPlanet.Fun PopUp`}</title>
+        <title>${t`ppfun`}</title>
         <meta name="description" content="${t`PixelPlanet.Fun PopUp`}" />
         <meta name="google" content="nopagereadaloud" />
         <meta name="theme-color" content="#cae3ff" />

@@ -9,9 +9,6 @@ import { t } from 'ttag';
 import {
   fetchStats,
 } from '../../store/actions/thunks';
-import {
-  setWindowArgs,
-} from '../../store/actions/windows';
 import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';
@@ -23,20 +20,20 @@ const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ '.
 // eslint-disable-next-line max-len
 const Modtools = React.lazy(() => import(/* webpackChunkName: "modtools" */ '../Modtools'));
 
-const UserArea = ({ windowId }) => {
+const UserArea = ({ args, setArgs, setTitle }) => {
   const name = useSelector((state) => state.user.name);
   const userlvl = useSelector((state) => state.user.userlvl);
   const lastStatsFetch = useSelector((state) => state.ranks.lastFetch);
   const {
     activeTab = t`Profile`,
-  } = useSelector((state) => state.windows.args[windowId] || {});
+  } = args;
   const dispatch = useDispatch();
 
   const setActiveTab = useCallback((label) => {
-    dispatch(setWindowArgs(windowId, {
+    setArgs({
       activeTab: label,
-    }));
-  }, [dispatch]);
+    });
+  }, [setArgs]);
 
   useInterval(() => {
     if (Date.now() - 300000 > lastStatsFetch) {
@@ -48,7 +45,7 @@ const UserArea = ({ windowId }) => {
     <div style={{ textAlign: 'center' }}>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
         <div label={t`Profile`}>
-          {(name) ? <UserAreaContent /> : <LogInArea windowId={windowId} />}
+          {(name) ? <UserAreaContent /> : <LogInArea windowId="1" />}
         </div>
         <div label={t`Ranking`}>
           <Rankings />
