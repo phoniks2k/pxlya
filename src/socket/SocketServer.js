@@ -216,6 +216,7 @@ class SocketServer {
       socket.destroy();
       return;
     }
+    request.user = user;
     this.wss.handleUpgrade(request, socket, head, (ws) => {
       this.wss.emit('connection', ws, request);
     });
