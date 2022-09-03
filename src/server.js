@@ -45,13 +45,9 @@ function wsupgrade(request, socket, head) {
   const { pathname } = url.parse(request.url);
 
   if (pathname === '/ws') {
-    usersocket.wss.handleUpgrade(request, socket, head, (ws) => {
-      usersocket.wss.emit('connection', ws, request);
-    });
+    usersocket.handleUpgrade(request, socket, head);
   } else if (pathname === '/mcws') {
-    apisocket.wss.handleUpgrade(request, socket, head, (ws) => {
-      apisocket.wss.emit('connection', ws, request);
-    });
+    apisocket.handleUpgrade(request, socket, head);
   } else {
     socket.destroy();
   }

@@ -55,7 +55,6 @@ class SocketServer {
   constructor() {
     this.CHUNK_CLIENTS = new Map();
 
-    this.verifyClient = this.verifyClient.bind(this);
     this.broadcast = this.broadcast.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
@@ -73,7 +72,6 @@ class SocketServer {
       // path: "/ws",
       // server,
       noServer: true,
-      verifyClient: this.verifyClient,
     });
     this.wss = wss;
 
@@ -81,17 +79,13 @@ class SocketServer {
       logger.error(`WebSocket Server Error ${e.message}`);
     });
 
-    wss.on('connection', async (ws, req) => {
+    wss.on('connection', (ws, req) => {
       ws.timeLastMsg = Date.now();
       ws.canvasId = null;
-      const user = await authenticateClient(req);
-      if (!user) {
-        ws.close();
-        return;
-      }
+      const { user } = req;
       ws.user = user;
-      ws.chunkCnt = 0;
       ws.name = user.getName();
+      ws.chunkCnt = 0;
 
       const { ip } = user;
       isIPAllowed(ip);
@@ -178,29 +172,30 @@ class SocketServer {
     setInterval(this.checkHealth, 15 * 1000);
   }
 
-  verifyClient(info, done) {
-    const { req } = info;
-    const { headers } = req;
-
+  async handleUpgrade(request, socket, head) {
+    const { headers } = request;
     // Limiting socket connections per ip
-    const ip = getIPFromRequest(req);
-    // ratelimited
+    const ip = getIPFromRequest(request);
     const now = Date.now();
     const limiter = rateLimit.get(ip);
     if (limiter && limiter[1]) {
       if (limiter[0] > now) {
         // logger.info(`Rejected Socket-RateLimited Client ${ip}.`);
-        return done(false);
+        socket.write('HTTP/1.1 429 Too Many Requests\r\n\r\n');
+        socket.destroy();
+        return;
       }
       limiter[1] = false;
       logger.info(`Allow Socket-RateLimited Client ${ip} again.`);
     }
     // CORS
     const { origin } = headers;
-    if (!origin || !origin.endsWith(getHostFromRequest(req, false))) {
+    if (!origin || !origin.endsWith(getHostFromRequest(request, false))) {
       // eslint-disable-next-line max-len
-      logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(req, false)}`);
-      return done(false);
+      logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(request, false)}`);
+      socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+      socket.destroy();
+      return;
     }
     if (ipCounter.get(ip) > 50) {
       rateLimit.set(ip, [now + 1000 * 60 * 15, true]);
@@ -208,11 +203,22 @@ class SocketServer {
       logger.info(
         `Client ${ip} has more than 50 connections open, killed ${amount}.`,
       );
-      return done(false);
+      socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
+      socket.destroy();
+      return;
     }
 
     ipCounter.add(ip);
-    return done(true);
+
+    const user = await authenticateClient(request);
+    if (!user) {
+      socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+      socket.destroy();
+      return;
+    }
+    this.wss.handleUpgrade(request, socket, head, (ws) => {
+      this.wss.emit('connection', ws, request);
+    });
   }
 
   /**
@@ -532,7 +538,7 @@ class SocketServer {
             retCode,
           } = await drawByOffsets(
             ws.user,
-            ws.canvasId,
+            canvasId,
             i, j,
             pixels,
           );
