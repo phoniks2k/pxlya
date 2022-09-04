@@ -130,9 +130,14 @@ const winEtag = etag(
   { weak: true },
 );
 
-router.get(
-  `/:t(${AVAILABLE_POPUPS.map((p) => p.toLowerCase()).join('|')})`,
-  async (req, res) => {
+router.use(
+  AVAILABLE_POPUPS.map((p) => `/${p.toLowerCase()}`),
+  (req, res, next) => {
+    if (req.method !== 'GET') {
+      next();
+      return;
+    }
+
     res.set({
       'Cache-Control': `private, max-age=${15 * 60}`, // seconds
       'Content-Type': 'text/html; charset=utf-8',
