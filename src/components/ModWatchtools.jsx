@@ -54,7 +54,7 @@ async function submitWatchAction(
   data.append('time', time);
   data.append('iid', iid);
   try {
-    const resp = await fetch('./api/modtools', {
+    const resp = await fetch('/api/modtools', {
       credentials: 'include',
       method: 'POST',
       body: data,

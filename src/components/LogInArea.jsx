@@ -27,7 +27,7 @@ const LogInArea = () => {
       >
         {t`I forgot my Password.`}</p>
       <h2>{t`or login with:`}</h2>
-      <a href="./api/auth/discord">
+      <a href="/api/auth/discord">
         <img
           style={logoStyle}
           width={32}
@@ -35,7 +35,7 @@ const LogInArea = () => {
           alt="Discord"
         />
       </a>
-      <a href="./api/auth/google">
+      <a href="/api/auth/google">
         <img
           style={logoStyle}
           width={32}
@@ -43,7 +43,7 @@ const LogInArea = () => {
           alt="Google"
         />
       </a>
-      <a href="./api/auth/facebook">
+      <a href="/api/auth/facebook">
         <img
           style={logoStyle}
           width={32}
@@ -51,7 +51,7 @@ const LogInArea = () => {
           alt="Facebook"
         />
       </a>
-      <a href="./api/auth/vk">
+      <a href="/api/auth/vk">
         <img
           style={logoStyle}
           width={32}
@@ -59,7 +59,7 @@ const LogInArea = () => {
           alt="VK"
         />
       </a>
-      <a href="./api/auth/reddit">
+      <a href="/api/auth/reddit">
         <img
           style={logoStyle}
           width={32}

@@ -33,7 +33,7 @@ async function submitImageAction(
   data.append('image', file);
   data.append('canvasid', canvas);
   data.append('coords', coords);
-  const resp = await fetch('./api/modtools', {
+  const resp = await fetch('/api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -53,7 +53,7 @@ async function submitProtAction(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('./api/modtools', {
+  const resp = await fetch('/api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -74,7 +74,7 @@ async function submitRollback(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('./api/modtools', {
+  const resp = await fetch('/api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -94,7 +94,7 @@ async function submitCanvasCleaner(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('./api/modtools', {
+  const resp = await fetch('/api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -107,7 +107,7 @@ async function getCleanerStats(
 ) {
   const data = new FormData();
   data.append('cleanerstat', true);
-  const resp = await fetch('./api/modtools', {
+  const resp = await fetch('/api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -125,7 +125,7 @@ async function getCleanerCancel(
 ) {
   const data = new FormData();
   data.append('cleanercancel', true);
-  const resp = await fetch('./api/modtools', {
+  const resp = await fetch('/api/modtools', {
     credentials: 'include',
     method: 'POST',
     body: data,
