@@ -10,6 +10,9 @@ import storage from 'redux-persist/lib/storage';
 import gui from './reducers/gui';
 import ranks from './reducers/ranks';
 import chatRead from './reducers/chatRead';
+import user from './reducers/user';
+import chat from './reducers/chat';
+import fetching from './reducers/fetching';
 
 export const CURRENT_VERSION = 11;
 
@@ -48,4 +51,7 @@ export default {
   gui: guiPersist,
   ranks: ranksPersist,
   chatRead: chatReadPersist,
+  user,
+  chat,
+  fetching,
 };

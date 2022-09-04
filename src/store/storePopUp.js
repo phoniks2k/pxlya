@@ -8,7 +8,6 @@ import {
   applyMiddleware, createStore, combineReducers,
 } from 'redux';
 import thunk from 'redux-thunk';
-import { persistStore } from 'redux-persist';
 
 /*
  * reducers
@@ -16,9 +15,6 @@ import { persistStore } from 'redux-persist';
 import sharedReducers from './sharedReducers';
 import canvas from './reducers/canvas';
 import popup from './reducers/popup';
-import user from './reducers/user';
-import chat from './reducers/chat';
-import fetching from './reducers/fetching';
 
 /*
  * middleware
@@ -30,9 +26,6 @@ const reducers = combineReducers({
   ...sharedReducers,
   canvas,
   popup,
-  user,
-  chat,
-  fetching,
 });
 
 const store = createStore(
@@ -44,9 +37,8 @@ const store = createStore(
   ),
 );
 
-export const persistor = persistStore(store, {}, () => {
-  window.addEventListener('message', store.dispatch);
-  store.dispatch({ type: 'HYDRATED' });
-});
+/*
+ * persistStore of redux-persist is called in popup.js
+ */
 
 export default store;

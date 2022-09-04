@@ -6,7 +6,7 @@ import {
   applyMiddleware, createStore, combineReducers,
 } from 'redux';
 import thunk from 'redux-thunk';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import sharedReducers, {
@@ -19,10 +19,7 @@ import sharedReducers, {
  */
 import windows from './reducers/windows';
 import canvas from './reducers/canvas';
-import user from './reducers/user';
 import alert from './reducers/alert';
-import chat from './reducers/chat';
-import fetching from './reducers/fetching';
 
 /*
  * middleware
@@ -47,10 +44,7 @@ const reducers = combineReducers({
   ...sharedReducers,
   windows: windowsPersist,
   canvas,
-  user,
   alert,
-  chat,
-  fetching,
 });
 
 const store = createStore(
@@ -68,9 +62,8 @@ const store = createStore(
   ),
 );
 
-export const persistor = persistStore(store, {}, () => {
-  window.addEventListener('message', store.dispatch);
-  store.dispatch({ type: 'HYDRATED' });
-});
+/*
+ * persistStore of redix-persist is called in client.js
+ */
 
 export default store;

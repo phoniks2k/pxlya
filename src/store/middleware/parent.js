@@ -17,9 +17,6 @@ export default () => (next) => (action) => {
     if (action.origin !== origin) {
       return null;
     }
-    if (action.data.type === 't/UNLOAD') {
-      return null;
-    }
     console.log('GOT', action.data);
     return next(action.data);
   }

@@ -2,6 +2,8 @@
  * Entrypoint for main client script
  */
 
+import { persistStore } from 'redux-persist';
+
 import createKeyPressHandler from './controls/keypress';
 import {
   initTimer,
@@ -22,14 +24,15 @@ import {
   receivePixelReturn,
 } from './ui/placePixel';
 import store from './store/store';
-
-
 import renderApp from './components/App';
-
 import { initRenderer, getRenderer } from './ui/renderer';
 import SocketClient from './socket/SocketClient';
 
-function init() {
+persistStore(store, {}, () => {
+  window.addEventListener('message', store.dispatch);
+
+  store.dispatch({ type: 'HYDRATED' });
+
   initRenderer(store, false);
 
   SocketClient.on('pixelUpdate', ({
@@ -112,8 +115,7 @@ function init() {
 
   store.dispatch(fetchMe());
   SocketClient.connect();
-}
-init();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   renderApp(document.getElementById('app'), store);
