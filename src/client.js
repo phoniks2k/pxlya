@@ -117,7 +117,7 @@ persistStore(store, {}, () => {
   SocketClient.connect();
 });
 
-(function () {
+(function load() {
   const onLoad = () => {
     renderApp(document.getElementById('app'), store);
 

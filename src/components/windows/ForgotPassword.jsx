@@ -2,12 +2,11 @@
  * Form for requesting password-reset mail
  */
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { changeWindowType } from '../../store/actions/windows';
 import { validateEMail } from '../../utils/validation';
 import { requestNewPassword } from '../../store/actions/fetch';
+import useLink from '../hooks/link';
 
 function validate(email) {
   const errors = [];
@@ -22,14 +21,13 @@ const inputStyles = {
   maxWidth: '35em',
 };
 
-const ForgotPassword = ({ windowId }) => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
 
-  const dispatch = useDispatch();
-  const back = () => dispatch(changeWindowType(windowId, 'USERAREA'));
+  const link = useLink();
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -59,7 +57,7 @@ const ForgotPassword = ({ windowId }) => {
         <p className="modalmessage">
           {t`Sent you a mail with instructions to reset your password.`}
         </p>
-        <button type="button" onClick={back}>
+        <button type="button" onClick={() => link('USERAREA')}>
           Back
         </button>
       </div>
@@ -85,7 +83,10 @@ const ForgotPassword = ({ windowId }) => {
         <button type="submit">
           {(submitting) ? '...' : t`Submit`}
         </button>
-        <button type="button" onClick={back}>{t`Cancel`}</button>
+        <button
+          type="button"
+          onClick={() => link('USERAREA')}
+        >{t`Cancel`}</button>
       </form>
     </div>
   );

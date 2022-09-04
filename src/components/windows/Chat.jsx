@@ -3,12 +3,14 @@
  */
 
 import React, {
-  useRef, useLayoutEffect, useState, useEffect, useCallback,
+  useRef, useLayoutEffect, useState, useEffect, useCallback, useContext,
 } from 'react';
 import useStayScrolled from 'react-stay-scrolled';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
+import WindowContext from '../context/window';
+import useLink from '../hooks/link';
 import ContextMenu from '../contextmenus';
 import ChatMessage from '../ChatMessage';
 import ChannelDropDown from '../contextmenus/ChannelDropDown';
@@ -18,18 +20,11 @@ import {
   sendChatMessage,
 } from '../../store/actions';
 import {
-  showUserAreaModal,
-} from '../../store/actions/windows';
-import {
   fetchChatMessages,
 } from '../../store/actions/thunks';
 
 
-const Chat = ({
-  args,
-  setArgs,
-  setTitle,
-}) => {
+const Chat = () => {
   const listRef = useRef();
   const targetRef = useRef();
   const inputRef = useRef();
@@ -45,8 +40,16 @@ const Chat = ({
   const { channels, messages, blocked } = useSelector((state) => state.chat);
 
   const {
+    args,
+    setArgs,
+    setTitle,
+  } = useContext(WindowContext);
+
+  const {
     chatChannel = 1,
   } = args;
+
+  const link = useLink();
 
   const setChannel = useCallback((cid) => {
     dispatch(markChannelAsRead(cid));
@@ -226,7 +229,7 @@ const Chat = ({
             key="nlipt"
             onClick={(evt) => {
               evt.stopPropagation();
-              dispatch(showUserAreaModal());
+              link('USERAREA', { target: 'fullscreen' });
             }}
             style={{
               textAlign: 'center',

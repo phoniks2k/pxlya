@@ -38,6 +38,8 @@ function ChatMessage({
     className += ' redtext';
   }
 
+  console.log('RENDER MESSAGE');
+
   const pArray = parseParagraph(msg);
 
   return (

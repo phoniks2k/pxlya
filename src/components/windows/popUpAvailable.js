@@ -7,6 +7,22 @@ export const argsTypes = {
   CHAT: ['chatChannel'],
 };
 
+const availablePopups = [
+  'HELP',
+  'SETTINGS',
+  'USERAREA',
+  'CHAT',
+  'CANVAS_SELECTION',
+  'ARCHIVE',
+  'REGISTER',
+  'FORGOT_PASSWORD',
+];
+
+export function isPopUp() {
+  const fPath = window.location.pathname.split('/')[1];
+  return fPath && availablePopups.includes(fPath.toUpperCase());
+}
+
 export function buildPopUpUrl(windowType, argsIn) {
   const args = { ...argsIn };
   let path = `/${windowType.toLowerCase()}`;
@@ -33,11 +49,4 @@ export function buildPopUpUrl(windowType, argsIn) {
   return path;
 }
 
-export default [
-  'HELP',
-  'SETTINGS',
-  'USERAREA',
-  'CHAT',
-  'CANVAS_SELECTION',
-  'ARCHIVE',
-];
+export default availablePopups;

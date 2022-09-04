@@ -8,10 +8,10 @@ import { t } from 'ttag';
 
 import CanvasItem from '../CanvasItem';
 import { selectCanvas } from '../../store/actions';
-import { changeWindowType } from '../../store/actions/windows';
+import useLink from '../hooks/link';
 
 
-const CanvasSelect = ({ windowId }) => {
+const CanvasSelect = () => {
   const [canvases, showHiddenCanvases, online] = useSelector((state) => [
     state.canvas.canvases,
     state.canvas.showHiddenCanvases,
@@ -20,6 +20,8 @@ const CanvasSelect = ({ windowId }) => {
   const dispatch = useDispatch();
   const selCanvas = useCallback((canvasId) => dispatch(selectCanvas(canvasId)),
     [dispatch]);
+
+  const link = useLink();
 
   return (
     <div className="content">
@@ -31,7 +33,7 @@ const CanvasSelect = ({ windowId }) => {
           role="button"
           tabIndex={0}
           className="modallink"
-          onClick={() => dispatch(changeWindowType(windowId, 'ARCHIVE'))}
+          onClick={() => link('ARCHIVE')}
         >{t`Archive`}</span>)
       </p>
       {

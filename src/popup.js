@@ -72,7 +72,7 @@ persistStore(store, {}, () => {
   }
 });
 
-(function () {
+(function load() {
   const onLoad = () => {
     renderAppPopUp(document.getElementById('app'), store);
     document.removeEventListener('DOMContentLoaded', onLoad);

@@ -13,7 +13,6 @@ import thunk from 'redux-thunk';
  * reducers
  */
 import sharedReducers from './sharedReducers';
-import canvas from './reducers/canvas';
 import popup from './reducers/popup';
 
 /*
@@ -25,7 +24,6 @@ import title from './middleware/titlePopUp';
 
 const reducers = combineReducers({
   ...sharedReducers,
-  canvas,
   popup,
 });
 

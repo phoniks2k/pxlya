@@ -18,7 +18,6 @@ import sharedReducers, {
  * reducers
  */
 import windows from './reducers/windows';
-import canvas from './reducers/canvas';
 import alert from './reducers/alert';
 
 /*
@@ -43,7 +42,6 @@ const windowsPersist = persistReducer({
 const reducers = combineReducers({
   ...sharedReducers,
   windows: windowsPersist,
-  canvas,
   alert,
 });
 

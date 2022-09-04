@@ -15,3 +15,17 @@ export function setWindowTitle(title) {
     title,
   };
 }
+
+export function changeWindowType(
+  windowType,
+  title = '',
+  args = null,
+) {
+  return {
+    type: 'CHANGE_WIN_TYPE',
+    windowType,
+    title,
+    args,
+  };
+}
+

@@ -8,7 +8,7 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
-import { openPopUp } from '../core/popUps';
+import { openWindowPopUp } from './hooks/link';
 import {
   moveWindow,
   removeWindow,
@@ -19,6 +19,7 @@ import {
   focusWindow,
   setWindowTitle,
   setWindowArgs,
+  changeWindowType,
 } from '../store/actions/windows';
 import {
   makeSelectWindowById,
@@ -27,8 +28,9 @@ import {
   selectShowWindows,
 } from '../store/selectors/windows';
 import useDrag from './hooks/drag';
+import WindowContext from './context/window';
 import COMPONENTS from './windows';
-import popUpTypes, { buildPopUpUrl } from './windows/popUpAvailable';
+import popUpTypes from './windows/popUpAvailable';
 
 const Window = ({ id }) => {
   const [render, setRender] = useState(false);
@@ -46,12 +48,13 @@ const Window = ({ id }) => {
 
   const dispatch = useDispatch();
 
-  const setArgs = useCallback(
-    (newArgs) => dispatch(setWindowArgs(id, newArgs),
-    ), [dispatch]);
-  const setTitle = useCallback(
-    (title) => dispatch(setWindowTitle(id, title),
-    ), [dispatch]);
+  const contextData = useMemo(() => ({
+    args,
+    setArgs: (newArgs) => dispatch(setWindowArgs(id, newArgs)),
+    setTitle: (title) => dispatch(setWindowTitle(id, title)),
+    // eslint-disable-next-line max-len
+    changeType: (newType, newTitel, newArgs) => dispatch(changeWindowType(id, newType, newTitel, newArgs)),
+  }), [id, args]);
 
   const {
     open,
@@ -156,8 +159,8 @@ const Window = ({ id }) => {
         {popUpTypes.includes(windowType) && (
           <div
             onClick={(evt) => {
-              openPopUp(
-                buildPopUpUrl(windowType, args),
+              openWindowPopUp(
+                windowType, args,
                 xPos, yPos, width, height,
               );
               close(evt);
@@ -185,7 +188,9 @@ const Window = ({ id }) => {
           className="modal-content"
           key="content"
         >
-          <Content args={args} setArgs={setArgs} setTitle={setTitle} />
+          <WindowContext.Provider value={contextData}>
+            <Content />
+          </WindowContext.Provider>
         </div>
       </div>
     );
@@ -229,8 +234,8 @@ const Window = ({ id }) => {
             className="win-topbtn"
             key="pobtnm"
             onClick={(evt) => {
-              openPopUp(
-                buildPopUpUrl(windowType, args),
+              openWindowPopUp(
+                windowType, args,
                 xPos, yPos, width, height,
               );
               close(evt);
@@ -268,7 +273,9 @@ const Window = ({ id }) => {
         className="win-content"
         key="content"
       >
-        <Content args={args} setArgs={setArgs} setTitle={setTitle} />
+        <WindowContext.Provider value={contextData}>
+          <Content />
+        </WindowContext.Provider>
       </div>
     </div>
   );

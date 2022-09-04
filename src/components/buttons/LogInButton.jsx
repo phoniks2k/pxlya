@@ -3,21 +3,19 @@
  */
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { MdPerson } from 'react-icons/md';
 import { t } from 'ttag';
 
-import { showUserAreaModal } from '../../store/actions/windows';
-
+import useLink from '../hooks/link';
 
 const LogInButton = () => {
-  const dispatch = useDispatch();
+  const link = useLink();
 
   return (
     <div
       id="loginbutton"
       className="actionbuttons"
-      onClick={() => dispatch(showUserAreaModal())}
+      onClick={() => link('USERAREA', { target: 'fullscreen' })}
       role="button"
       title={t`User Area`}
       tabIndex={-1}

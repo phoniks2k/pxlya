@@ -3,11 +3,10 @@
  */
 
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import useInterval from './hooks/interval';
-import { showHelpModal } from '../store/actions/windows';
+import useLink from './hooks/link';
 import {
   largeDurationToString,
 } from '../core/utils';
@@ -22,7 +21,7 @@ const BanInfo = ({ close }) => {
   const [expire, setExpire] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const dispatch = useDispatch();
+  const link = useLink();
 
   const handleSubmit = async () => {
     if (submitting) {
@@ -70,7 +69,7 @@ const BanInfo = ({ close }) => {
           tabIndex={0}
           className="modallink"
           onClick={() => {
-            dispatch(showHelpModal());
+            link('HELP', { target: 'fullscreen' });
             close();
           }}
         >{t`Help`}</span>

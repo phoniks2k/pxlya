@@ -2,11 +2,16 @@
  * UI for single-window popUp
  */
 
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { selectWindowType, selectWIndowArgs } from '../store/selectors/popup';
-import { setWindowArgs, setWindowTitle } from '../store/actions/popup';
+import {
+  setWindowArgs,
+  setWindowTitle,
+  changeWindowType,
+} from '../store/actions/popup';
+import WindowContext from './context/window';
 import COMPONENTS from './windows';
 
 const UIPopUp = () => {
@@ -17,12 +22,13 @@ const UIPopUp = () => {
 
   const dispatch = useDispatch();
 
-  const setArgs = useCallback(
-    (newArgs) => dispatch(setWindowArgs(newArgs),
-    ), [dispatch]);
-  const setTitle = useCallback(
-    (title) => dispatch(setWindowTitle(title),
-    ), [dispatch]);
+  const contextData = useMemo(() => ({
+    args,
+    setArgs: (newArgs) => dispatch(setWindowArgs(newArgs)),
+    setTitle: (title) => dispatch(setWindowTitle(title)),
+    // eslint-disable-next-line max-len
+    changeType: (newType, newTitel, newArgs) => dispatch(changeWindowType(newType, newTitel, newArgs)),
+  }), [args]);
 
   return (
     <div
@@ -33,9 +39,11 @@ const UIPopUp = () => {
         overflow: 'auto',
       }}
     >
-      {(windowType)
-        ? <Content args={args} setArgs={setArgs} setTitle={setTitle} />
-        : <h1>Loading</h1>}
+      <WindowContext.Provider value={contextData}>
+        {(windowType)
+          ? <Content />
+          : <h1>Loading</h1>}
+      </WindowContext.Provider>
     </div>
   );
 };

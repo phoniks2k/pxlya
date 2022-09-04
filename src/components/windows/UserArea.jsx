@@ -2,13 +2,14 @@
  *
  */
 
-import React, { Suspense, useCallback } from 'react';
+import React, { Suspense, useCallback, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import {
   fetchStats,
 } from '../../store/actions/thunks';
+import WindowContext from '../context/window';
 import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';
@@ -20,10 +21,16 @@ const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ '.
 // eslint-disable-next-line max-len
 const Modtools = React.lazy(() => import(/* webpackChunkName: "modtools" */ '../Modtools'));
 
-const UserArea = ({ args, setArgs, setTitle }) => {
+const UserArea = () => {
   const name = useSelector((state) => state.user.name);
   const userlvl = useSelector((state) => state.user.userlvl);
   const lastStatsFetch = useSelector((state) => state.ranks.lastFetch);
+
+  const {
+    args,
+    setArgs,
+    setTitle,
+  } = useContext(WindowContext);
   const {
     activeTab = t`Profile`,
   } = args;
@@ -33,6 +40,7 @@ const UserArea = ({ args, setArgs, setTitle }) => {
     setArgs({
       activeTab: label,
     });
+    setTitle(label);
   }, [setArgs]);
 
   useInterval(() => {
@@ -45,7 +53,7 @@ const UserArea = ({ args, setArgs, setTitle }) => {
     <div style={{ textAlign: 'center' }}>
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab}>
         <div label={t`Profile`}>
-          {(name) ? <UserAreaContent /> : <LogInArea windowId="1" />}
+          {(name) ? <UserAreaContent /> : <LogInArea />}
         </div>
         <div label={t`Ranking`}>
           <Rankings />

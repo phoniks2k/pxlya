@@ -3,21 +3,20 @@
  */
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { FaCog } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showSettingsModal } from '../../store/actions/windows';
+import useLink from '../hooks/link';
 
 
 const SettingsButton = () => {
-  const dispatch = useDispatch();
+  const link = useLink();
 
   return (
     <div
       id="settingsbutton"
       className="actionbuttons"
-      onClick={() => dispatch(showSettingsModal())}
+      onClick={() => link('SETTINGS', { target: 'fullscreen' })}
       role="button"
       title={t`Settings`}
       tabIndex={-1}

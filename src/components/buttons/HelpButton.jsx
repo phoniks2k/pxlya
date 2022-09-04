@@ -3,21 +3,19 @@
  */
 
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { FaQuestion } from 'react-icons/fa';
 import { t } from 'ttag';
 
-import { showHelpModal } from '../../store/actions/windows';
-
+import useLink from '../hooks/link';
 
 const HelpButton = () => {
-  const dispatch = useDispatch();
+  const link = useLink();
 
   return (
     <div
       id="helpbutton"
       className="actionbuttons"
-      onClick={() => dispatch(showHelpModal())}
+      onClick={() => link('HELP', { target: 'fullscreen' })}
       role="button"
       title={t`Help`}
       tabIndex={-1}

@@ -5,14 +5,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
+
 import Captcha from '../Captcha';
 import {
   validateEMail, validateName, validatePassword,
 } from '../../utils/validation';
 import { requestRegistration } from '../../store/actions/fetch';
-
 import { loginUser } from '../../store/actions';
-import { changeWindowType } from '../../store/actions/windows';
+import useLink from '../hooks/link';
 
 
 function validate(name, email, password, confirmPassword) {
@@ -30,13 +30,15 @@ function validate(name, email, password, confirmPassword) {
   return errors;
 }
 
-const Register = ({ windowId }) => {
+const Register = () => {
   const [submitting, setSubmitting] = useState('');
   const [errors, setErrors] = useState([]);
   // used to be able to force Captcha rerender on error
   const [captKey, setCaptKey] = useState(Date.now());
 
   const dispatch = useDispatch();
+
+  const link = useLink();
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -73,7 +75,7 @@ const Register = ({ windowId }) => {
     }
 
     dispatch(loginUser(me));
-    dispatch(changeWindowType(windowId, 'USERAREA'));
+    link('USERAREA');
   };
 
   return (
@@ -126,7 +128,7 @@ const Register = ({ windowId }) => {
         </button>
         <button
           type="button"
-          onClick={() => dispatch(changeWindowType(windowId, 'USERAREA'))}
+          onClick={() => link('USERAREA')}
         >
           {t`Cancel`}
         </button>

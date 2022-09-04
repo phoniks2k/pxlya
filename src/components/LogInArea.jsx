@@ -1,18 +1,17 @@
 /*
  */
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { t } from 'ttag';
 
 import LogInForm from './LogInForm';
-import { changeWindowType } from '../store/actions/windows';
+import useLink from './hooks/link';
 
 const logoStyle = {
   marginRight: 5,
 };
 
-const LogInArea = ({ windowId }) => {
-  const dispatch = useDispatch();
+const LogInArea = () => {
+  const link = useLink();
 
   return (
     <div style={{ textAlign: 'center' }}>
@@ -23,7 +22,7 @@ const LogInArea = ({ windowId }) => {
       <LogInForm />
       <p
         className="modallink"
-        onClick={() => dispatch(changeWindowType(windowId, 'FORGOT_PASSWORD'))}
+        onClick={() => link('FORGOT_PASSWORD')}
         role="presentation"
       >
         {t`I forgot my Password.`}</p>
@@ -71,9 +70,7 @@ const LogInArea = ({ windowId }) => {
       <h2>{t`or register here:`}</h2>
       <button
         type="button"
-        onClick={
-        () => dispatch(changeWindowType(windowId, 'REGISTER'))
-      }
+        onClick={() => link('REGISTER')}
       >
         {t`Register`}
       </button>

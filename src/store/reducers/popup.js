@@ -42,7 +42,6 @@ const initialState = {
   windowType: 'SETTINGS',
   title: '',
   args: {},
-  isPopup: window.opener && !window.opener.closed,
   ...getWinDataFromURL(),
 };
 
@@ -63,6 +62,22 @@ export default function popup(
         ...state,
         args: {
           ...action.args,
+        },
+      };
+    }
+
+    case 'CHANGE_WIN_TYPE': {
+      const {
+        windowType,
+        title,
+        args,
+      } = action;
+      return {
+        ...state,
+        windowType,
+        title,
+        args: {
+          ...args,
         },
       };
     }

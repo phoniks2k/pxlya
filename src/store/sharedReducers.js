@@ -11,6 +11,7 @@ import gui from './reducers/gui';
 import ranks from './reducers/ranks';
 import chatRead from './reducers/chatRead';
 import user from './reducers/user';
+import canvas from './reducers/canvas';
 import chat from './reducers/chat';
 import fetching from './reducers/fetching';
 
@@ -52,6 +53,7 @@ export default {
   ranks: ranksPersist,
   chatRead: chatReadPersist,
   user,
+  canvas,
   chat,
   fetching,
 };

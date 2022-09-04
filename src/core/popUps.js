@@ -51,37 +51,4 @@ class PopUps {
 }
 
 const popUps = new PopUps();
-
-export function openPopUp(url, xPos, yPos, width, height) {
-  let left;
-  let top;
-  try {
-    if (window.innerWidth <= 604) {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      left = window.top.screenX;
-      top = window.top.screenY;
-    } else {
-      left = Math.round(window.top.screenX + xPos);
-      top = Math.round(window.top.screenY + yPos);
-    }
-    if (Number.isNaN(left) || Number.isNaN(top)) {
-      throw new Error('NaN');
-    }
-  } catch {
-    left = 0;
-    top = 0;
-  }
-  try {
-    return window.open(
-      url,
-      url,
-      // eslint-disable-next-line max-len
-      `popup=yes,width=${width},height=${height},left=${left},top=${top},toolbar=no,status=no,directories=no,menubar=no`,
-    );
-  } catch {
-    return null;
-  }
-}
-
 export default popUps;

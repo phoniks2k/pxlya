@@ -2,8 +2,6 @@
  * Actions that are exclusively used by windows
  */
 
-import { t } from 'ttag';
-
 export function openWindow(
   windowType,
   title = '',
@@ -40,33 +38,10 @@ export function setWindowArgs(
   };
 }
 
-function showFullscreenWindow(modalType, title) {
-  return openWindow(
-    modalType,
-    title,
-    null,
-    true,
-  );
-}
-
 export function closeFullscreenWindows() {
   return {
     type: 'CLOSE_FULLSCREEN_WINS',
   };
-}
-
-export function showSettingsModal() {
-  return showFullscreenWindow(
-    'SETTINGS',
-    '',
-  );
-}
-
-export function showUserAreaModal() {
-  return showFullscreenWindow(
-    'USERAREA',
-    '',
-  );
 }
 
 export function changeWindowType(
@@ -90,40 +65,6 @@ export function setWindowTitle(windowId, title) {
     windowId,
     title,
   };
-}
-
-export function showRegisterModal() {
-  return showFullscreenWindow(
-    'REGISTER',
-    t`Register New Account`,
-  );
-}
-
-export function showForgotPasswordModal() {
-  return showFullscreenWindow(
-    'FORGOT_PASSWORD',
-    t`Restore my Password`,
-  );
-}
-
-export function showHelpModal() {
-  return showFullscreenWindow(
-    'HELP',
-    t`Welcome to PixelPlanet.fun`,
-  );
-}
-export function showArchiveModal() {
-  return showFullscreenWindow(
-    'ARCHIVE',
-    t`Look at past Canvases`,
-  );
-}
-
-export function showCanvasSelectionModal() {
-  return showFullscreenWindow(
-    'CANVAS_SELECTION',
-    '',
-  );
 }
 
 export function closeWindow(windowId) {
