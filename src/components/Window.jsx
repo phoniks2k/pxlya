@@ -6,6 +6,7 @@ import React, {
   useState, useCallback, useRef, useEffect, useMemo,
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { BiChalkboard } from 'react-icons/bi';
 import { t } from 'ttag';
 
 import { openWindowPopUp } from './hooks/link';
@@ -171,7 +172,7 @@ const Window = ({ id }) => {
             key="popbtn"
             title={t`PopUp`}
             tabIndex={-1}
-          >G</div>
+          ><BiChalkboard /></div>
         )}
         {(showWindows) && (
           <div
@@ -241,7 +242,7 @@ const Window = ({ id }) => {
               close(evt);
             }}
           >
-            G
+            <BiChalkboard />
           </span>
         )}
         <span

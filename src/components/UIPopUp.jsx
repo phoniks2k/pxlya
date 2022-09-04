@@ -32,7 +32,7 @@ const UIPopUp = () => {
 
   return (
     <div
-      className="window show"
+      className="win-content"
       style={{
         width: '100%',
         height: '100%',
