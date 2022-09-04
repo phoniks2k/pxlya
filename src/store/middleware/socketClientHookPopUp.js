@@ -12,9 +12,9 @@ export default () => (next) => (action) => {
     }
   } else {
     switch (action.type) {
-      case 'SET_NAME':
-      case 'LOGIN':
-      case 'LOGOUT': {
+      case 's/SET_NAME':
+      case 's/LOGIN':
+      case 's/LOGOUT': {
         SocketClient.reconnect();
         break;
       }

@@ -8,7 +8,7 @@ export default (store) => (next) => (action) => {
   try {
     if (!document.hasFocus()) {
       switch (action.type) {
-        case 'REC_ME': {
+        case 's/REC_ME': {
           if (window.Notification
             && Notification.permission !== 'granted'
             && Notification.permission !== 'denied'

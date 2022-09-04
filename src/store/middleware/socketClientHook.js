@@ -17,9 +17,9 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'SET_NAME':
-    case 'LOGIN':
-    case 'LOGOUT': {
+    case 's/SET_NAME':
+    case 's/LOGIN':
+    case 's/LOGOUT': {
       SocketClient.reconnect();
       break;
     }
@@ -51,7 +51,7 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case 'RELOAD_URL':
     case 's/SELECT_CANVAS':
-    case 'REC_ME': {
+    case 's/REC_ME': {
       const state = store.getState();
       const { canvasId } = state.canvas;
       SocketClient.setCanvas(canvasId);

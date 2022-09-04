@@ -344,7 +344,7 @@ export default function canvasReducer(
       };
     }
 
-    case 'REC_ME': {
+    case 's/REC_ME': {
       const { canvases } = action;
       let { canvasIdent, scale, view } = state;
 

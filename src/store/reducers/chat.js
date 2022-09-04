@@ -32,8 +32,8 @@ export default function chat(
   action,
 ) {
   switch (action.type) {
-    case 'REC_ME':
-    case 'LOGIN': {
+    case 's/REC_ME':
+    case 's/LOGIN': {
       // making sure object keys are numbers
       const channels = {};
       const channelsJson = action.channels;
@@ -49,7 +49,7 @@ export default function chat(
       };
     }
 
-    case 'LOGOUT': {
+    case 's/LOGOUT': {
       const channels = { ...state.channels };
       const messages = { ...state.messages };
       const keys = Object.keys(channels);
@@ -68,7 +68,7 @@ export default function chat(
       };
     }
 
-    case 'BLOCK_USER': {
+    case 's/BLOCK_USER': {
       const { userId, userName } = action;
       const blocked = [
         ...state.blocked,
@@ -96,7 +96,7 @@ export default function chat(
       };
     }
 
-    case 'UNBLOCK_USER': {
+    case 's/UNBLOCK_USER': {
       const { userId } = action;
       const blocked = state.blocked.filter((bl) => (bl[0] !== userId));
       return {

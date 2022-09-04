@@ -85,8 +85,8 @@ export default function user(
       };
     }
 
-    case 'REC_ME':
-    case 'LOGIN': {
+    case 's/REC_ME':
+    case 's/LOGIN': {
       const {
         id,
         name,
@@ -106,7 +106,7 @@ export default function user(
       };
     }
 
-    case 'LOGOUT': {
+    case 's/LOGOUT': {
       return {
         ...state,
         id: null,
@@ -118,7 +118,7 @@ export default function user(
       };
     }
 
-    case 'SET_NAME': {
+    case 's/SET_NAME': {
       const { name } = action;
       return {
         ...state,
@@ -126,7 +126,7 @@ export default function user(
       };
     }
 
-    case 'SET_BLOCKING_DM': {
+    case 's/SET_BLOCKING_DM': {
       const { blockDm } = action;
       return {
         ...state,
@@ -148,7 +148,7 @@ export default function user(
       };
     }
 
-    case 'REM_FROM_MESSAGES': {
+    case 's/REM_FROM_MESSAGES': {
       const { message } = action;
       const messages = [...state.messages];
       const index = messages.indexOf(message);
@@ -161,7 +161,7 @@ export default function user(
       };
     }
 
-    case 'SET_MAILREG': {
+    case 's/SET_MAILREG': {
       const { mailreg } = action;
       return {
         ...state,

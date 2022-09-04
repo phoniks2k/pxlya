@@ -162,6 +162,7 @@ const Chat = () => {
         y={cmArgs.y}
         args={cmArgs.args}
         close={closeCm}
+        align={cmArgs.align}
       />
       <ul
         className="chatarea"
@@ -265,6 +266,7 @@ const Chat = () => {
               x,
               y,
               args: { cid: chatChannel },
+              align: 'tr',
             });
           }}
           role="button"

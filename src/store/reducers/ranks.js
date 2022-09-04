@@ -49,8 +49,8 @@ export default function ranks(
       };
     }
 
-    case 'REC_ME':
-    case 'LOGIN': {
+    case 's/REC_ME':
+    case 's/LOGIN': {
       const {
         totalPixels,
         dailyTotalPixels,

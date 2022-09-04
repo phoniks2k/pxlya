@@ -263,7 +263,7 @@ export function receiveMe(
   me,
 ) {
   return {
-    type: 'REC_ME',
+    type: 's/REC_ME',
     ...me,
   };
 }
@@ -337,7 +337,7 @@ export function requestPlacePixels(i, j, pixels) {
 export function logoutUser(
 ) {
   return {
-    type: 'LOGOUT',
+    type: 's/LOGOUT',
   };
 }
 
@@ -345,7 +345,7 @@ export function loginUser(
   me,
 ) {
   return {
-    type: 'LOGIN',
+    type: 's/LOGIN',
     ...me,
   };
 }
@@ -354,7 +354,7 @@ export function setName(
   name,
 ) {
   return {
-    type: 'SET_NAME',
+    type: 's/SET_NAME',
     name,
   };
 }
@@ -363,7 +363,7 @@ export function setMailreg(
   mailreg,
 ) {
   return {
-    type: 'SET_MAILREG',
+    type: 's/SET_MAILREG',
     mailreg,
   };
 }
@@ -372,7 +372,7 @@ export function remFromMessages(
   message,
 ) {
   return {
-    type: 'REM_FROM_MESSAGES',
+    type: 's/REM_FROM_MESSAGES',
     message,
   };
 }
@@ -437,7 +437,7 @@ export function addChatChannel(channel) {
 
 export function blockUser(userId, userName) {
   return {
-    type: 'BLOCK_USER',
+    type: 's/BLOCK_USER',
     userId,
     userName,
   };
@@ -445,7 +445,7 @@ export function blockUser(userId, userName) {
 
 export function unblockUser(userId, userName) {
   return {
-    type: 'UNBLOCK_USER',
+    type: 's/UNBLOCK_USER',
     userId,
     userName,
   };
@@ -453,7 +453,7 @@ export function unblockUser(userId, userName) {
 
 export function blockingDm(blockDm) {
   return {
-    type: 'SET_BLOCKING_DM',
+    type: 's/SET_BLOCKING_DM',
     blockDm,
   };
 }
@@ -531,7 +531,7 @@ export function propagateMe(state) {
     dailyTotalPixels,
   } = state.ranks;
   return {
-    type: 'REC_ME',
+    type: 's/REC_ME',
     blockDm,
     blocked,
     canvases,

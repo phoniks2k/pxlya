@@ -23,8 +23,8 @@ export default function chatRead(
   action,
 ) {
   switch (action.type) {
-    case 'REC_ME':
-    case 'LOGIN': {
+    case 's/REC_ME':
+    case 's/LOGIN': {
       const { channels } = action;
       const cids = Object.keys(channels);
       const readTs = {};

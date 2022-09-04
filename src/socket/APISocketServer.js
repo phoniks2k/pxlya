@@ -79,6 +79,7 @@ class APISocketServer {
       logger.warn(`API ws request from ${ip} not authenticated`);
       socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
       socket.destroy();
+      return;
     }
     logger.warn(`API ws request from ${ip} successfully authenticated`);
 
