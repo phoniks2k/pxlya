@@ -66,6 +66,14 @@ export default function popup(
       };
     }
 
+    case 'SET_WIN_TITLE': {
+      const { title } = action;
+      return {
+        ...state,
+        title,
+      };
+    }
+
     case 'CHANGE_WIN_TYPE': {
       const {
         windowType,
