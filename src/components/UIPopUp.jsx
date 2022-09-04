@@ -32,12 +32,7 @@ const UIPopUp = () => {
 
   return (
     <div
-      className="win-content"
-      style={{
-        width: '100%',
-        height: '100%',
-        overflow: 'auto',
-      }}
+      className="popup-content"
     >
       <WindowContext.Provider value={contextData}>
         {(windowType)

@@ -95,7 +95,7 @@ export function toggleOpenPalette() {
 
 export function selectStyle(style) {
   return {
-    type: 'SELECT_STYLE',
+    type: 's/SELECT_STYLE',
     style,
   };
 }

@@ -1,6 +1,9 @@
 /*
  * send and receive actions from parent window
  */
+
+/* eslint-disable no-console */
+
 import { load, unload } from '../actions';
 
 const { origin } = window.location;
@@ -41,7 +44,6 @@ export default (store) => (next) => (action) => {
         }
       }, 3000);
     }
-    console.log('GOT', action.data);
     return next(action.data);
   }
 

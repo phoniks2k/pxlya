@@ -22,21 +22,30 @@ a:hover {
   border-color: #d5d5d5;
 }
 
-.tab-list-active {
+.tab-list-item {
+  color: #e2e2e2; 
+}
+.tab-list-item.active {
   background-color: #7b7b7b;
+  color: white;
+}
+.tab-list-item:not(.active):hover {
+  background-color: #636363;
 }
 
 tr:nth-child(even) {
   background-color: #505050;
 }
 
-.window {
+.window, .popup {
   background-color: rgba(59, 59, 59, 0.98);
-  border-radius: 4px;
   color: #ff8c22;
 }
+.window {
+  border-radius: 4px;
+}
 
-.win-topbar {
+.win-topbar, .modal-topbtn {
   color: black;
 }
 
@@ -49,11 +58,11 @@ tr:nth-child(even) {
   background-color: #dedede;
 }
 
-.win-topbtn {
+.win-topbtn, .modal-topbtn {
   background-color: #a6a4a4;
 }
 
-.win-topbtn:hover {
+.win-topbtn:hover, .modal-topbtn:hover {
   background-color: #8b8b8b;
 }
 
@@ -104,7 +113,7 @@ tr:nth-child(even) {
   border-radius: 10px;
 }
 
-.content {
+.modal-content, .win-content, .popup-content {
   color: #f8f8f8;
 }
 
@@ -126,15 +135,6 @@ h3, h4 {
 
 .modalcvtext {
   color: hsla(220, 100%, 95.3%, 0.6);
-}
-
-.ModalClose, .ModalRestore {
-  background-color: #55555d;
-  border-color: #dcddde;
-}
-
-.ModalClose:hover, .ModalRestore:hover {
-  background-color: #6f6f75;
 }
 
 .overlay {

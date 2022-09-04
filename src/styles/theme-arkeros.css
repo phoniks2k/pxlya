@@ -22,7 +22,7 @@ tr:nth-child(odd) {
   color: #ff91a6;
 }
 
-.window {
+.window, .popup {
   background: linear-gradient(1deg,#61dcea ,#ffb1e1,#ecffec,#fff9b1,#61dcea);
 }
 

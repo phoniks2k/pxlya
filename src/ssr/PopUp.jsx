@@ -64,7 +64,7 @@ function generatePopUpPage(lang) {
         <link rel="stylesheet" type="text/css" id="globcss" href="${styleassets.default}" />
       </head>
       <body>
-        <div id="app">
+        <div id="app" class="popup">
         </div>
         <script src="${script}"></script>
       </body>

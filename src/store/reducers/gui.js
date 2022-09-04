@@ -85,7 +85,7 @@ export default function gui(
       };
     }
 
-    case 'SELECT_STYLE': {
+    case 's/SELECT_STYLE': {
       const { style } = action;
       return {
         ...state,

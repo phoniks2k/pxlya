@@ -523,6 +523,12 @@ tr:nth-child(even) {
   opacity: 0;
 }
 
+.popup {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(252, 252, 252, 0.95);
+}
+
 .modal-content {
   position: relative;
   width: calc(100% - 3px);
@@ -537,7 +543,13 @@ tr:nth-child(even) {
   overflow-y: auto;
 }
 
-.modal-content, .win-content {
+.popup-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.modal-content, .win-content, .popup-content {
   color: hsla(0, 0%, 0%, 0.6);
   font-size: 14px;
   font-weight: 500;

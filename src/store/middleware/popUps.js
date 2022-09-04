@@ -1,6 +1,9 @@
 /*
  * send and receive actions from popups
  */
+
+/* eslint-disable no-console */
+
 import { propagateMe } from '../actions';
 import popUps from '../../core/popUps';
 
@@ -31,6 +34,5 @@ export default (store) => (next) => (action) => {
     popUps.dispatch(action);
   }
 
-  console.log(action);
   return next(action);
 };
