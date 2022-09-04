@@ -10,7 +10,7 @@ import ttags, { getTTag } from '../core/ttag';
 
 /* this will be set by webpack */
 import { styleassets, assets } from '../core/assets';
-import { ASSET_SERVER, BACKUP_URL } from '../core/config';
+import { BACKUP_URL } from '../core/config';
 
 /*
  * generate language list
@@ -23,7 +23,6 @@ const langs = Object.keys(ttags)
  * values that we pass to client scripts
  */
 const ssv = {
-  assetserver: ASSET_SERVER,
   availableStyles: styleassets,
   langs,
 };
@@ -67,7 +66,7 @@ function generatePopUpPage(lang) {
       <body>
         <div id="app">
         </div>
-        <script src="${ASSET_SERVER + script}"></script>
+        <script src="${script}"></script>
       </body>
     </html>
   `;

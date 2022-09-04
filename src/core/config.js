@@ -20,8 +20,6 @@ export const MAIL_ADDRESS = process.env.MAIL_ADDRESS
 const TILE_FOLDER_REL = process.env.TILE_FOLDER || 'tiles';
 export const TILE_FOLDER = path.join(__dirname, `./${TILE_FOLDER_REL}`);
 
-export const ASSET_SERVER = process.env.ASSET_SERVER || '.';
-
 export const USE_XREALIP = process.env.USE_XREALIP || false;
 
 export const BACKUP_URL = process.env.BACKUP_URL || null;

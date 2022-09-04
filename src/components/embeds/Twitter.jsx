@@ -70,5 +70,5 @@ export default [
     title = title.substring(title.lastIndexOf('/') + 1);
     return title;
   },
-  `${window.ssv.assetserver}/embico/twitter.png`,
+  '/embico/twitter.png',
 ];

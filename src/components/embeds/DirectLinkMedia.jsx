@@ -48,5 +48,5 @@ export default [
     return (videoExts.includes(ext) || imageExts.includes(ext));
   },
   null,
-  `${window.ssv.assetserver}/embico/direct.png`,
+  '/embico/direct.png',
 ];

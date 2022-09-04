@@ -339,7 +339,7 @@ function ModWatchtools() {
                                 imageRendering: 'crisp-edges',
                               }}
                               alt={val}
-                              src={`${window.ssv.assetserver}/cf/${flag}.gif`}
+                              src={`/cf/${flag}.gif`}
                             /></td>
                           );
                         }

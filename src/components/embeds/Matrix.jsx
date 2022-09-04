@@ -29,5 +29,5 @@ export default [
   React.memo(Matrix),
   (url) => url.includes('?type=video') || url.includes('?type=image'),
   null,
-  `${window.ssv.assetserver}/embico/matrix.png`,
+  '/embico/matrix.png',
 ];

@@ -9,7 +9,6 @@ import { getTTag } from '../core/ttag';
 
 /* this will be set by webpack */
 import { assets } from '../core/assets';
-import { ASSET_SERVER } from '../core/config';
 
 import globeCss from '../styles/globe.css';
 
@@ -46,7 +45,7 @@ function generateGlobePage(lang) {
         <div id="coorbox">(0, 0)</div>
         <div id="info">${t`Double click on globe to go back.`}</div>
         <div id="loading">${t`Loading...`}</div>
-        ${scripts.map((script) => `<script src="${ASSET_SERVER + script}"></script>`).join('')}
+        ${scripts.map((script) => `<script src="${script}"></script>`).join('')}
       </body>
     </html>
   `;

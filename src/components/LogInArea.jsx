@@ -32,7 +32,7 @@ const LogInArea = ({ windowId }) => {
         <img
           style={logoStyle}
           width={32}
-          src={`${window.ssv.assetserver}/discordlogo.svg`}
+          src="/discordlogo.svg"
           alt="Discord"
         />
       </a>
@@ -40,7 +40,7 @@ const LogInArea = ({ windowId }) => {
         <img
           style={logoStyle}
           width={32}
-          src={`${window.ssv.assetserver}/googlelogo.svg`}
+          src="/googlelogo.svg"
           alt="Google"
         />
       </a>
@@ -48,7 +48,7 @@ const LogInArea = ({ windowId }) => {
         <img
           style={logoStyle}
           width={32}
-          src={`${window.ssv.assetserver}/facebooklogo.svg`}
+          src="/facebooklogo.svg"
           alt="Facebook"
         />
       </a>
@@ -56,7 +56,7 @@ const LogInArea = ({ windowId }) => {
         <img
           style={logoStyle}
           width={32}
-          src={`${window.ssv.assetserver}/vklogo.svg`}
+          src="/vklogo.svg"
           alt="VK"
         />
       </a>
@@ -64,7 +64,7 @@ const LogInArea = ({ windowId }) => {
         <img
           style={logoStyle}
           width={32}
-          src={`${window.ssv.assetserver}/redditlogo.svg`}
+          src="/redditlogo.svg"
           alt="Reddit"
         />
       </a>

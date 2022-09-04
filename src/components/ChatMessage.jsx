@@ -50,11 +50,7 @@ function ChatMessage({
                 className="chatflag"
                 alt=""
                 title={country}
-                src={`${window.ssv.assetserver}/cf/${country}.gif`}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = './cf/xx.gif';
-                }}
+                src={`/cf/${country}.gif`}
               />
               <span
                 className="chatname"

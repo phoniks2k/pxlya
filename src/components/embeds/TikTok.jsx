@@ -56,5 +56,5 @@ export default [
   React.memo(TikTok),
   (url) => url.includes('/video/'),
   (url) => getUserFromUrl(url),
-  `${window.ssv.assetserver}/embico/tiktok.png`,
+  '/embico/tiktok.png',
 ];

@@ -94,5 +94,5 @@ export default [
     urlPart = stripCol(stripQuery(urlPart));
     return urlPart;
   },
-  `${window.ssv.assetserver}/embico/odysee.png`,
+  '/embico/odysee.png',
 ];

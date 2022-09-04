@@ -56,7 +56,7 @@ function LanguageSelect() {
         <img
           style={{ height: '1em', imageRendering: 'crisp-edges' }}
           alt=""
-          src={`${window.ssv.assetserver}/cf/${ccSel}.gif`}
+          src={`/cf/${ccSel}.gif`}
         />
       </span>
       <button

@@ -81,7 +81,6 @@ Configuration takes place in the environment variables that are defined in ecosy
 
 | Variable          | Description                           | Example                   |
 |-------------------|:--------------------------------------|---------------------------|
-| ASSET_SERVER      | URL for assets                        | "http://localhost"        |
 | USE_PROXYCHECK    | Check users for Proxies               | 0                         |
 | PROXYCHECK_KEY    | Key for proxycheck.io                 | "asfas-xcsc-ewef-sdfsd"   |
 | APISOCKET_KEY     | Key for API Socket for SpecialAccess™ | "SDfasife3"               |

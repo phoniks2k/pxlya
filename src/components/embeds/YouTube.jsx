@@ -45,5 +45,5 @@ export default [
   React.memo(YouTube),
   getIdFromURL,
   (url) => getIdFromURL(url),
-  `${window.ssv.assetserver}/embico/youtube.png`,
+  '/embico/youtube.png',
 ];
