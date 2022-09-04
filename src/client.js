@@ -117,37 +117,41 @@ persistStore(store, {}, () => {
   SocketClient.connect();
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderApp(document.getElementById('app'), store);
+(function () {
+  const onLoad = () => {
+    renderApp(document.getElementById('app'), store);
 
-  const onKeyPress = createKeyPressHandler(store);
-  document.addEventListener('keydown', onKeyPress, false);
+    const onKeyPress = createKeyPressHandler(store);
+    document.addEventListener('keydown', onKeyPress, false);
 
-  // garbage collection
-  function runGC() {
-    const renderer = getRenderer();
+    // garbage collection
+    function runGC() {
+      const renderer = getRenderer();
 
-    const chunks = renderer.getAllChunks();
-    if (chunks) {
-      const curTime = Date.now();
-      let cnt = 0;
-      chunks.forEach((value, key) => {
-        if (curTime > value.timestamp + 300000) {
-          const [zc, xc, yc] = value.cell;
-          if (!renderer.isChunkInView(zc, xc, yc)) {
-            cnt++;
-            if (value.isBasechunk) {
-              SocketClient.deRegisterChunk([xc, yc]);
+      const chunks = renderer.getAllChunks();
+      if (chunks) {
+        const curTime = Date.now();
+        let cnt = 0;
+        chunks.forEach((value, key) => {
+          if (curTime > value.timestamp + 300000) {
+            const [zc, xc, yc] = value.cell;
+            if (!renderer.isChunkInView(zc, xc, yc)) {
+              cnt++;
+              if (value.isBasechunk) {
+                SocketClient.deRegisterChunk([xc, yc]);
+              }
+              chunks.delete(key);
+              value.destructor();
             }
-            chunks.delete(key);
-            value.destructor();
           }
-        }
-      });
-      // eslint-disable-next-line no-console
-      console.log('Garbage collection cleaned', cnt, 'chunks');
+        });
+        // eslint-disable-next-line no-console
+        console.log('Garbage collection cleaned', cnt, 'chunks');
+      }
     }
-  }
-  setInterval(runGC, 300000);
-});
+    setInterval(runGC, 300000);
 
+    document.removeEventListener('DOMContentLoaded', onLoad);
+  };
+  document.addEventListener('DOMContentLoaded', onLoad, false);
+}());

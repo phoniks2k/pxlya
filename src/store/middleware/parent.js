@@ -12,10 +12,34 @@ window.addEventListener('beforeunload', () => {
 });
 
 
-export default () => (next) => (action) => {
+export default (store) => (next) => (action) => {
   if (action instanceof MessageEvent) {
     if (action.origin !== origin) {
       return null;
+    }
+    if (action.data.type === 't/UNLOAD') {
+      setTimeout(() => {
+        if (!window.opener || window.opener.closed) {
+          console.log('Parent window closed');
+          store.dispatch({ type: 't/PARENT_CLOSED' });
+        } else {
+          console.log('Parent window refreshed');
+          /*
+           * hook to event and also send message to catch more
+           * possibilities
+           */
+          try {
+            const sendLoad = () => {
+              window.opener.postMessage({ type: 't/LOAD' }, origin);
+              window.opener.removeEventListener('DOMContentLoaded', sendLoad);
+            };
+            window.opener.addEventListener('DOMContentLoaded', sendLoad, false);
+          } catch {
+            console.log('Could not hook to parent window');
+          }
+          window.opener.postMessage({ type: 't/LOAD' }, origin);
+        }
+      }, 3000);
     }
     console.log('GOT', action.data);
     return next(action.data);

@@ -19,16 +19,7 @@ import SocketClient from './socket/SocketClient';
 import renderAppPopUp from './components/AppPopUp';
 
 persistStore(store, {}, () => {
-  window.addEventListener('message', (evt) => {
-    if (evt.data.type === 't/UNLOAD') {
-      if (!window.opener || window.opener.closed) {
-        console.log('Parent window closed');
-        SocketClient.connect();
-      }
-      return;
-    }
-    store.dispatch(evt);
-  });
+  window.addEventListener('message', store.dispatch);
 
   store.dispatch({ type: 'HYDRATED' });
 
@@ -81,8 +72,10 @@ persistStore(store, {}, () => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line no-console
-  console.log('hello');
-  renderAppPopUp(document.getElementById('app'), store);
-});
+(function () {
+  const onLoad = () => {
+    renderAppPopUp(document.getElementById('app'), store);
+    document.removeEventListener('DOMContentLoaded', onLoad);
+  };
+  document.addEventListener('DOMContentLoaded', onLoad, false);
+}());

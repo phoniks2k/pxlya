@@ -20,7 +20,8 @@ import popup from './reducers/popup';
  * middleware
  */
 import parent from './middleware/parent';
-import titlePopUp from './middleware/titlePopUp';
+import socketClientHook from './middleware/socketClientHookPopUp';
+import title from './middleware/titlePopUp';
 
 const reducers = combineReducers({
   ...sharedReducers,
@@ -33,7 +34,8 @@ const store = createStore(
   applyMiddleware(
     thunk,
     parent,
-    titlePopUp,
+    socketClientHook,
+    title,
   ),
 );
 
