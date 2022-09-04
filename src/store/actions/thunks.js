@@ -94,7 +94,7 @@ export function fetchChatMessages(
 ) {
   return async (dispatch) => {
     dispatch(setChatFetching(true));
-    const response = await fetch(`api/chathistory?cid=${cid}&limit=50`, {
+    const response = await fetch(`/api/chathistory?cid=${cid}&limit=50`, {
       credentials: 'include',
     });
 

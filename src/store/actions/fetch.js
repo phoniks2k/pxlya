@@ -108,7 +108,7 @@ async function makeAPIGETRequest(url) {
  */
 export async function requestBlock(userId, block) {
   const res = await makeAPIPOSTRequest(
-    'api/block',
+    '/api/block',
     { userId, block },
   );
   if (res.errors) {
@@ -127,7 +127,7 @@ export async function requestBlock(userId, block) {
  */
 export async function requestStartDm(query) {
   const res = await makeAPIPOSTRequest(
-    'api/startdm',
+    '/api/startdm',
     query,
   );
   if (res.errors) {
@@ -146,7 +146,7 @@ export async function requestStartDm(query) {
  */
 export async function requestBlockDm(block) {
   const res = await makeAPIPOSTRequest(
-    'api/blockdm',
+    '/api/blockdm',
     { block },
   );
   if (res.errors) {
@@ -165,7 +165,7 @@ export async function requestBlockDm(block) {
  */
 export async function requestLeaveChan(channelId) {
   const res = await makeAPIPOSTRequest(
-    'api/leavechan',
+    '/api/leavechan',
     { channelId },
   );
   if (res.errors) {
@@ -179,7 +179,7 @@ export async function requestLeaveChan(channelId) {
 
 export async function requestSolveCaptcha(text, captchaid) {
   const res = await makeAPIPOSTRequest(
-    'api/captcha',
+    '/api/captcha',
     { text, id: captchaid },
   );
   if (!res.errors && !res.success) {
@@ -214,48 +214,48 @@ export async function requestHistoricalTimes(day, canvasId) {
 
 export function requestPasswordChange(newPassword, password) {
   return makeAPIPOSTRequest(
-    'api/auth/change_passwd',
+    '/api/auth/change_passwd',
     { password, newPassword },
   );
 }
 
 export async function requestResendVerify() {
   return makeAPIGETRequest(
-    'api/auth/resend_verify',
+    '/api/auth/resend_verify',
   );
 }
 
 export async function requestLogOut() {
   const ret = makeAPIGETRequest(
-    'api/auth/logout',
+    '/api/auth/logout',
   );
   return !ret.errors;
 }
 
 export function requestNameChange(name) {
   return makeAPIPOSTRequest(
-    'api/auth/change_name',
+    '/api/auth/change_name',
     { name },
   );
 }
 
 export function requestMailChange(email, password) {
   return makeAPIPOSTRequest(
-    'api/auth/change_mail',
+    '/api/auth/change_mail',
     { email, password },
   );
 }
 
 export function requestLogin(nameoremail, password) {
   return makeAPIPOSTRequest(
-    'api/auth/local',
+    '/api/auth/local',
     { nameoremail, password },
   );
 }
 
 export function requestRegistration(name, email, password, captcha, captchaid) {
   return makeAPIPOSTRequest(
-    'api/auth/register',
+    '/api/auth/register',
     {
       name, email, password, captcha, captchaid,
     },
@@ -264,14 +264,14 @@ export function requestRegistration(name, email, password, captcha, captchaid) {
 
 export function requestNewPassword(email) {
   return makeAPIPOSTRequest(
-    'api/auth/restore_password',
+    '/api/auth/restore_password',
     { email },
   );
 }
 
 export function requestDeleteAccount(password) {
   return makeAPIPOSTRequest(
-    'api/auth/delete_account',
+    '/api/auth/delete_account',
     { password },
   );
 }
@@ -284,18 +284,18 @@ export function requestRankings() {
 
 export function requestBanInfo() {
   return makeAPIGETRequest(
-    'api/baninfo',
+    '/api/baninfo',
   );
 }
 
 export function requestMe() {
   return makeAPIGETRequest(
-    'api/me',
+    '/api/me',
   );
 }
 
 export function requestIID() {
   return makeAPIGETRequest(
-    'api/getiid',
+    '/api/getiid',
   );
 }
