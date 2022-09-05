@@ -58,7 +58,8 @@ class PcKeyProvider {
         keyData[1] = availableQueries;
         return keyData[0];
       }
-      this.logger(`PCKey: ${keyData[0]} close to daily limit, disabling it`);
+      // eslint-disable-next-line max-len
+      this.logger.warn(`PCKey: ${keyData[0]} close to daily limit, disabling it`);
       keys.splice(pos, 1);
       this.disabledKeys.push(keyData);
     }
