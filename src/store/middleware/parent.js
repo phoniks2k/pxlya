@@ -17,7 +17,9 @@ window.addEventListener('beforeunload', () => {
 
 export default (store) => (next) => (action) => {
   if (action instanceof MessageEvent) {
-    if (action.origin !== origin) {
+    if (action.origin !== origin
+      || !action.data.type
+    ) {
       return null;
     }
     if (action.data.type === 't/UNLOAD') {

@@ -9,7 +9,9 @@ import popUps from '../../core/popUps';
 
 export default (store) => (next) => (action) => {
   if (action instanceof MessageEvent) {
-    if (action.origin !== window.location.origin) {
+    if (action.origin !== window.location.origin
+      || !action.data.type
+    ) {
       return null;
     }
     if (action.data.type === 't/UNLOAD') {
@@ -23,6 +25,8 @@ export default (store) => (next) => (action) => {
       );
       popUps.add(action.source);
       console.log('popup added');
+    } else if (action.data.type.startsWith('s/')) {
+      popUps.dispatch(action.data, action.source);
     }
     return next(action.data);
   }
