@@ -8,6 +8,7 @@ import https from 'https';
 
 import { HourlyCron } from './cron';
 
+const HYSTERESIS = 60;
 
 /*
  * class to serve proxyckec.io key
@@ -54,7 +55,7 @@ class PcKeyProvider {
       const pos = Math.floor(Math.random() * keys.length);
       const keyData = keys[pos];
       const availableQueries = keyData[1] - 1;
-      if (availableQueries >= 30) {
+      if (availableQueries >= HYSTERESIS) {
         keyData[1] = availableQueries;
         return keyData[0];
       }
@@ -145,9 +146,9 @@ class PcKeyProvider {
       availableBurst,
       false,
     ];
-    if (burstActive || availableQueries > 30) {
+    if (burstActive || availableQueries > HYSTERESIS) {
       /*
-       * data is a few minutes old, stop at 30
+       * data is a few minutes old, stop at HYSTERESIS
        */
       this.availableKeys.push(keyData);
     } else {
