@@ -32,6 +32,7 @@ export default {
   'litter.catbox.moe': DirectLinkMedia,
   'files.catbox.moe': DirectLinkMedia,
   'i.redd.it': DirectLinkMedia,
+  'media.discordapp.net': DirectLinkMedia,
   'media.consumeproduct.win': DirectLinkMedia,
   't.me': Telegram,
   twitter: Twitter,
