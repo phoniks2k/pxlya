@@ -10,8 +10,9 @@ const CACHE_DURATION = 14 * 24 * 3600;
 
 export function cacheAllowed(ip, status) {
   const key = `${PREFIX}:${ip}`;
+  const expires = (status !== -2) ? CACHE_DURATION : 3600;
   return client.set(key, status, {
-    EX: CACHE_DURATION,
+    EX: expires,
   });
 }
 

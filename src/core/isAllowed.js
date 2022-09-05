@@ -63,13 +63,10 @@ async function withoutCache(f, ip) {
       status = res.status;
       allowed = res.allowed;
       pcheck = res.pcheck;
-      if (status === -2) {
-        throw new Error('Proxycheck request did not return yet');
-      }
     }
-    cacheAllowed(ipKey, status);
     whoisRet = await whois(ip);
   } finally {
+    await cacheAllowed(ipKey, status);
     await saveIPInfo(ipKey, whoisRet || {}, status, pcheck);
   }
 
