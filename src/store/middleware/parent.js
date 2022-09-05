@@ -9,7 +9,7 @@ import { load, unload } from '../actions';
 const { origin } = window.location;
 
 window.addEventListener('beforeunload', () => {
-  if (window.opener && !window.closed) {
+  if (window.opener && !window.opener.closed) {
     window.opener.postMessage(unload(), origin);
   }
 });

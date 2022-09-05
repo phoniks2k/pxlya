@@ -9,6 +9,7 @@ import { HiArrowsExpand, HiStop } from 'react-icons/hi';
 
 import { getLinkDesc } from '../core/utils';
 import EMBEDS from './embeds';
+import { isPopUp } from './windows/popUpAvailable';
 
 const titleAllowed = [
   'odysee',
@@ -27,8 +28,13 @@ const MdLink = ({ href, title, refEmbed }) => {
   // treat pixelplanet links seperately
   if (desc === window.location.hostname && href.includes('/#')) {
     const coords = href.substring(href.indexOf('/#') + 1);
+    if (isPopUp() && window.opener && !window.opener.closed) {
+      return (
+        <a href={`/${coords}`} target="main">{title || coords}</a>
+      );
+    }
     return (
-      <a href={`./${coords}`}>{title || coords}</a>
+      <a href={`/${coords}`}>{title || coords}</a>
     );
   }
 
