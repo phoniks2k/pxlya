@@ -78,7 +78,7 @@ function createKeyPressHandler(store) {
         return;
       case 'm':
         store.dispatch(toggleMute());
-        store.dispatch(notify((store.getState().audio.mute)
+        store.dispatch(notify((store.getState().gui.mute)
           ? t`Muted Sound`
           : t`Unmuted Sound`));
         return;
