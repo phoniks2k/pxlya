@@ -119,6 +119,7 @@ persistStore(store, {}, () => {
 
 (function load() {
   const onLoad = () => {
+    window.name = 'main';
     renderApp(document.getElementById('app'), store);
 
     const onKeyPress = createKeyPressHandler(store);

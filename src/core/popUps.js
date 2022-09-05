@@ -24,7 +24,11 @@ class PopUps {
     if (~pos) this.wins.splice(pos, 1);
   }
 
-  dispatch(msg) {
+  /*
+   * send message to all popups
+   * except the ignore one
+   */
+  dispatch(msg, ignore = null) {
     const { wins } = this;
     try {
       for (let i = 0; i < wins.length; i += 1) {
@@ -34,7 +38,9 @@ class PopUps {
           i -= 1;
           continue;
         }
-        win.postMessage(msg, this.origin);
+        if (win !== ignore) {
+          win.postMessage(msg, this.origin);
+        }
       }
     } catch {
       return false;
