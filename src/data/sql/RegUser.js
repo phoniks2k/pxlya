@@ -213,6 +213,7 @@ const incrementLoop = async () => {
   if (!incrementQueue.length) {
     clearInterval(pushLoop);
     pushLoop = null;
+    return;
   }
   try {
     sequelize.transaction(async (t) => {
