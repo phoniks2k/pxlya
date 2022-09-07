@@ -7,7 +7,7 @@ import {
 } from './utils';
 import logger, { pixelLogger } from './logger';
 import RedisCanvas from '../data/redis/RedisCanvas';
-import allowPlace from '../data/redis/allowPlace';
+import allowPlace from '../data/redis/cooldown';
 import {
   setPixelByOffset,
   setPixelByCoords,
@@ -70,7 +70,7 @@ export async function drawByOffsets(
   let pxlCnt = 0;
   let rankedPxlCnt = 0;
   let needProxycheck = 0;
-  const { ip } = user;
+  const { ipSub: ip } = user;
 
   try {
     const startTime = Date.now();
@@ -220,7 +220,7 @@ export async function drawByOffsets(
   }
 
   if (rankedPxlCnt) {
-    await user.incrementPixelcount(rankedPxlCnt);
+    user.incrementPixelcount(rankedPxlCnt);
   }
 
   if (retCode !== 13) {

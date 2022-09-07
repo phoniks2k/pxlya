@@ -7,11 +7,11 @@
  * */
 
 import { QueryTypes, Utils } from 'sequelize';
-import redis from './redis/client';
-import logger from '../core/logger';
 
 import sequelize from './sql/sequelize';
 import { RegUser, Channel, UserBlock } from './sql';
+import { incrementPixelcount } from './sql/RegUser';
+import { setCoolDown, getCoolDown } from './redis/cooldown';
 import { getIPv6Subnet } from '../utils/ip';
 import { ADMIN_IDS } from '../core/config';
 
@@ -171,45 +171,16 @@ class User {
     return (this.regUser) ? this.regUser.name : null;
   }
 
-  async setWait(wait, canvasId) {
-    // PX is milliseconds expire
-    await redis.set(`cd:${canvasId}:ip:${this.ipSub}`, '', {
-      PX: wait,
-    });
-    if (this.id) {
-      await redis.set(`cd:${canvasId}:id:${this.id}`, '', {
-        PX: wait,
-      });
-    }
-    return true;
+  setWait(wait, canvasId) {
+    return setCoolDown(this.ipSub, this.id, canvasId, wait);
   }
 
-  async getWait(canvasId) {
-    let ttl = await redis.pTTL(`cd:${canvasId}:ip:${this.ipSub}`);
-    if (this.id) {
-      const ttlid = await redis.pTTL(
-        `cd:${canvasId}:id:${this.id}`,
-      );
-      ttl = Math.max(ttl, ttlid);
-    }
-    logger.debug('ererer', ttl, typeof ttl);
-
-    const wait = ttl < 0 ? 0 : ttl;
-    return wait;
+  getWait(canvasId) {
+    return getCoolDown(this.ipSub, this.id, canvasId);
   }
 
-  async incrementPixelcount(amount = 1) {
-    const { id } = this;
-    if (!id) return false;
-    try {
-      await this.regUser.increment(
-        ['totalPixels', 'dailyTotalPixels'],
-        { by: amount },
-      );
-    } catch (err) {
-      return false;
-    }
-    return true;
+  incrementPixelcount(amount = 1) {
+    incrementPixelcount(this.regUser, amount);
   }
 
   async getTotalPixels() {
