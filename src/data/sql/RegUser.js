@@ -218,13 +218,11 @@ const incrementLoop = async () => {
     await sequelize.transaction(async (t) => {
       while (incrementQueue.length) {
         const [model, amount] = incrementQueue.pop();
-        if (model) {
-          // eslint-disable-next-line no-await-in-loop
-          await model.increment(
-            ['totalPixels', 'dailyTotalPixels'],
-            { by: amount, transaction: t },
-          );
-        }
+        // eslint-disable-next-line no-await-in-loop
+        await model.increment(
+          ['totalPixels', 'dailyTotalPixels'],
+          { by: amount, transaction: t },
+        );
       }
       return true;
     });
@@ -239,9 +237,6 @@ setInterval(() => {
   console.log('INCREMENTATION QUEUE SIZE', incrementQueue.length, pushLoop);
 }, 300000);
 export async function incrementPixelcount(model, amount) {
-  if (!model) {
-    return;
-  }
   const exists = incrementQueue.find((q) => q[0] === model);
   if (exists) {
     exists[1] += amount;

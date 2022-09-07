@@ -180,7 +180,9 @@ class User {
   }
 
   incrementPixelcount(amount = 1) {
-    incrementPixelcount(this.regUser, amount);
+    if (this.regUser) {
+      incrementPixelcount(this.regUser, amount);
+    }
   }
 
   async getTotalPixels() {
