@@ -211,35 +211,45 @@ const incrementQueue = [];
 let pushLoop = null;
 const incrementLoop = async () => {
   if (!incrementQueue.length) {
-    clearInterval(pushLoop);
     pushLoop = null;
     return;
   }
   try {
-    sequelize.transaction(async (t) => {
+    await sequelize.transaction(async (t) => {
       while (incrementQueue.length) {
         const [model, amount] = incrementQueue.pop();
-        // eslint-disable-next-line no-await-in-loop
-        await model.increment(
-          ['totalPixels', 'dailyTotalPixels'],
-          { by: amount, transaction: t },
-        );
+        if (model) {
+          // eslint-disable-next-line no-await-in-loop
+          await model.increment(
+            ['totalPixels', 'dailyTotalPixels'],
+            { by: amount, transaction: t },
+          );
+        }
       }
       return true;
     });
   } catch (err) {
     logger.warn(`Error on batched incrementing pixelcounts: ${err.message}`);
   }
+  pushLoop = setTimeout(incrementLoop, 50);
 };
 // TODO remove this after testing
 setInterval(() => {
   // eslint-disable-next-line no-console
-  console.log('INCREMENTATION QUEUE SIZE', incrementQueue.length);
+  console.log('INCREMENTATION QUEUE SIZE', incrementQueue.length, pushLoop);
 }, 300000);
 export async function incrementPixelcount(model, amount) {
-  incrementQueue.push([model, amount]);
+  if (!model) {
+    return;
+  }
+  const exists = incrementQueue.find((q) => q[0] === model);
+  if (exists) {
+    exists[1] += amount;
+  } else {
+    incrementQueue.push([model, amount]);
+  }
   if (!pushLoop) {
-    pushLoop = setInterval(incrementLoop, 250);
+    pushLoop = setTimeout(incrementLoop, 0);
   }
 }
 
