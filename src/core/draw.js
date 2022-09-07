@@ -206,7 +206,7 @@ export async function drawByOffsets(
     }
 
     const duration = Date.now() - startTime;
-    if (duration > 2000) {
+    if (duration > 3000) {
       logger.warn(
         // eslint-disable-next-line max-len
         `Long response time of ${duration}ms for placing ${pxlCnt} pixels for user ${user.id || user.ip}`,

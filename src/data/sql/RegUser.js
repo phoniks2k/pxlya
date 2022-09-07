@@ -210,7 +210,6 @@ export async function getNamesToIds(ids) {
  */
 const incrementQueue = [];
 let pushLoop = null;
-let lastLog = 0;
 const incrementLoop = async () => {
   if (!incrementQueue.length) {
     pushLoop = null;
@@ -248,14 +247,6 @@ const incrementLoop = async () => {
         },
         silent: true,
         raw: true,
-        // TODO: remove this after testing
-        logging: (msg) => {
-          const now = Date.now();
-          if (now - 5000 > lastLog) {
-            lastLog = now;
-            logger.warn(msg);
-          }
-        },
       });
     }
   } catch (err) {
@@ -267,11 +258,6 @@ const incrementLoop = async () => {
   }
   pushLoop = setTimeout(incrementLoop, 250);
 };
-// TODO remove this after testing
-setInterval(() => {
-  // eslint-disable-next-line no-console
-  console.log('INCREMENTATION QUEUE SIZE', incrementQueue.length, pushLoop);
-}, 300000);
 export async function incrementPixelcount(user) {
   incrementQueue.push(user);
   if (!pushLoop) {
