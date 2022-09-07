@@ -25,6 +25,12 @@
 --     5: if we have to update isAllowed( proxycheck)
 --   }
 local ret = {0, 0, 0, 0, 0}
+-- check if captcha is needed
+if KEYS[2] ~= "nope" and not redis.call('get', KEYS[2]) then
+  -- captcha
+  ret[1] = 10
+  return ret
+end
 -- check if isAllowed
 local ia = redis.call('get', KEYS[1])
 if not ia then
@@ -44,12 +50,6 @@ else
     end
     return ret
   end
-end
--- check if captcha is needed
-if KEYS[2] ~= "nope" and not redis.call('get', KEYS[2]) then
-  -- captcha
-  ret[1] = 10
-  return ret
 end
 -- get cooldown of user
 local cd = redis.call('pttl', KEYS[3])
