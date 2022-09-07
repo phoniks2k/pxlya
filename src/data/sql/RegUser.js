@@ -6,8 +6,9 @@
  */
 
 import { DataTypes, QueryTypes } from 'sequelize';
-import sequelize from './sequelize';
 
+import logger from '../../core/logger';
+import sequelize from './sequelize';
 import { generateHash } from '../../utils/hash';
 
 
@@ -201,6 +202,45 @@ export async function getNamesToIds(ids) {
     // nothing
   }
   return idToNameMap;
+}
+
+/*
+ * increment user pixelcount in a batched transaction
+ */
+const incrementQueue = [];
+let pushLoop = null;
+const incrementLoop = async () => {
+  if (!incrementQueue.length) {
+    clearInterval(pushLoop);
+    pushLoop = null;
+    return;
+  }
+  try {
+    sequelize.transaction(async (t) => {
+      while (incrementQueue.length) {
+        const [model, amount] = incrementQueue.pop();
+        // eslint-disable-next-line no-await-in-loop
+        await model.increment(
+          ['totalPixels', 'dailyTotalPixels'],
+          { by: amount, transaction: t },
+        );
+      }
+      return true;
+    });
+  } catch (err) {
+    logger.warn(`Error on batched incrementing pixelcounts: ${err.message}`);
+  }
+};
+// TODO remove this after testing
+setInterval(() => {
+  // eslint-disable-next-line no-console
+  console.log('INCREMENTATION QUEUE SIZE', incrementQueue.length);
+}, 300000);
+export async function incrementPixelcount(model, amount) {
+  incrementQueue.push([model, amount]);
+  if (!pushLoop) {
+    pushLoop = setInterval(incrementLoop, 250);
+  }
 }
 
 export default RegUser;
