@@ -180,9 +180,19 @@ class User {
   }
 
   incrementPixelcount(amount = 1) {
-    if (this.regUser) {
-      incrementPixelcount(this.regUser, amount);
+    if (!this.id) {
+      return;
     }
+    /*
+     * incrementation gets queued to be processed
+     * in batches
+     */
+    if (!this.queuedPxlIncrement) {
+      this.queuedPxlIncrement = amount;
+      incrementPixelcount(this);
+      return;
+    }
+    this.queuedPxlIncrement += amount;
   }
 
   async getTotalPixels() {
