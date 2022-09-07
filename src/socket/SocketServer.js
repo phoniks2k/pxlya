@@ -167,7 +167,7 @@ class SocketServer {
       });
     });
 
-    setInterval(this.onlineCounterBroadcast, 10 * 1000);
+    setInterval(this.onlineCounterBroadcast, 20 * 1000);
     setInterval(this.checkHealth, 15 * 1000);
   }
 
