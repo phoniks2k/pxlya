@@ -13,6 +13,8 @@ import {
 
 const TTL_CACHE = CAPTCHA_TIME * 60; // seconds
 
+export const PREFIX = 'human';
+
 /*
  * chars that are so similar that we allow them to get mixed up
  * left: captcha text
@@ -119,7 +121,7 @@ export async function checkCaptchaSolution(
         return 2;
       }
       if (!onetime) {
-        const solvkey = `human:${ipn}`;
+        const solvkey = `${PREFIX}:${ipn}`;
         await client.set(solvkey, '', {
           EX: TTL_CACHE,
         });
@@ -148,7 +150,7 @@ export async function needCaptcha(ip) {
   if (CAPTCHA_TIME < 0) {
     return false;
   }
-  const key = `human:${getIPv6Subnet(ip)}`;
+  const key = `${PREFIX}:${getIPv6Subnet(ip)}`;
   const ttl = await client.ttl(key);
   if (ttl > 0) {
     return false;
@@ -167,7 +169,7 @@ export async function forceCaptcha(ip) {
   if (CAPTCHA_TIME < 0) {
     return null;
   }
-  const key = `human:${getIPv6Subnet(ip)}`;
+  const key = `${PREFIX}:${getIPv6Subnet(ip)}`;
   const ret = await client.del(key);
   return (ret > 0);
 }

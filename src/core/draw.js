@@ -7,6 +7,7 @@ import {
 } from './utils';
 import logger, { pixelLogger } from './logger';
 import RedisCanvas from '../data/redis/RedisCanvas';
+import allowPlace from '../data/redis/allowPlace';
 import {
   setPixelByOffset,
   setPixelByCoords,
@@ -68,6 +69,7 @@ export async function drawByOffsets(
   let retCode = 0;
   let pxlCnt = 0;
   let rankedPxlCnt = 0;
+  let needProxycheck = 0;
   const { ip } = user;
 
   try {
@@ -90,8 +92,6 @@ export async function drawByOffsets(
 
     const canvasSize = canvas.size;
     const is3d = !!canvas.v;
-
-    wait = await user.getWait(canvasId);
 
     const tileSize = (is3d) ? THREE_TILE_SIZE : TILE_SIZE;
     /*
@@ -134,38 +134,34 @@ export async function drawByOffsets(
       }
     }
 
-    while (pixels.length) {
-      const [offset, color] = pixels.pop();
+    const clrIgnore = canvas.cli || 0;
+    const factor = (isAdmin || (user.userlvl > 0 && pixels[0][1] < clrIgnore))
+      ? 0.0 : coolDownFactor;
+    const bcd = canvas.bcd * factor;
+    const pcd = (canvas.pcd) ? canvas.pcd * factor : bcd;
+    const pxlOffsets = [];
 
+    /*
+     * validate pixels
+     */
+    for (let u = 0; u < pixels.length; u += 1) {
+      const [offset, color] = pixels[u];
+      pxlOffsets.push(offset);
 
       const [x, y, z] = getPixelFromChunkOffset(i, j, offset, canvasSize, is3d);
-
-      // eslint-disable-next-line no-await-in-loop
-      const setColor = await RedisCanvas.getPixelByOffset(
-        canvasId,
-        i, j,
-        offset,
-      );
-
       pixelLogger.info(
         // eslint-disable-next-line max-len
-        `${startTime} ${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color} ${setColor}`,
+        `${startTime} ${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color}`,
       );
 
-      const clrIgnore = canvas.cli || 0;
-
-      /*
-       * pixel validation
-       */
       const maxSize = (is3d) ? tileSize * tileSize * THREE_CANVAS_HEIGHT
         : tileSize * tileSize;
       if (offset >= maxSize) {
         // z out of bounds or weird stuff
         throw new Error(4);
       }
-      /*
-       * admins and mods can place unset pixels
-       */
+
+      // admins and mods can place unset pixels
       if (color >= canvas.colors.length
         || (color < clrIgnore
           && user.userlvl === 0
@@ -175,59 +171,46 @@ export async function drawByOffsets(
         throw new Error(5);
       }
 
-      if (setColor & 0x80
-        /* 3D Canvas Minecraft Avatars */
-        // && x >= 96 && x <= 128 && z >= 35 && z <= 100
-        // 96 - 128 on x
-        // 32 - 128 on z
-        || (canvas.v && i === 19 && j >= 17 && j < 20 && !isAdmin)
-      ) {
+      /* 3D Canvas Minecraft Avatars */
+      // && x >= 96 && x <= 128 && z >= 35 && z <= 100
+      // 96 - 128 on x
+      // 32 - 128 on z
+      if (canvas.v && i === 19 && j >= 17 && j < 20 && !isAdmin) {
         // protected pixel
         throw new Error(8);
       }
 
-      coolDown = ((setColor & 0x3F) >= clrIgnore && canvas.pcd)
-        ? canvas.pcd : canvas.bcd;
-      /*
-       * admins have no cooldown
-       * mods have no cooldown when placing unset pixels
-       */
-      if (isAdmin || (user.userlvl > 0 && color < clrIgnore)) {
-        coolDown = 0.0;
-      } else {
-        /*
-         * cooldown changes like from event
-         */
-        coolDown *= coolDownFactor;
-      }
-
-      wait += coolDown;
-      if (wait > canvas.cds) {
-        // cooldown stack used
-        wait -= coolDown;
-        coolDown = canvas.cds - wait - coolDown;
-        throw new Error(9);
-      }
-
-      setPixelByOffset(canvasId, color, i, j, offset);
-
-      pxlCnt += 1;
-      /*
-       * hardcode to not count pixels in antarctica
-       * do not count 0cd pixels
-       */
       // eslint-disable-next-line eqeqeq
-      if (canvas.ranked && (canvasId != 0 || y < 14450) && coolDown) {
+      if (canvas.ranked && (canvasId != 0 || y < 14450) && pcd) {
+        pixels[u].push(true);
+      }
+    }
+
+    [retCode, pxlCnt, wait, coolDown, needProxycheck] = await allowPlace(
+      ip,
+      user.id,
+      canvasId,
+      i, j,
+      clrIgnore,
+      bcd, pcd,
+      canvas.cds,
+      pxlOffsets,
+    );
+
+    for (let u = 0; u < pxlCnt; u += 1) {
+      const [offset, color, ranked] = pixels[u];
+      setPixelByOffset(canvasId, color, i, j, offset);
+      if (ranked) {
         rankedPxlCnt += 1;
       }
+    }
 
-      const duration = Date.now() - startTime;
-      if (duration > 1000) {
-        logger.warn(
-          // eslint-disable-next-line max-len
-          `Long response time of ${duration}ms for placing ${pxlCnt} pixels for user ${user.id || user.ip}`,
-        );
-      }
+    const duration = Date.now() - startTime;
+    if (duration > 1000) {
+      logger.warn(
+        // eslint-disable-next-line max-len
+        `Long response time of ${duration}ms for placing ${pxlCnt} pixels for user ${user.id || user.ip}`,
+      );
     }
   } catch (e) {
     retCode = parseInt(e.message, 10);
@@ -236,11 +219,8 @@ export async function drawByOffsets(
     }
   }
 
-  if (pxlCnt && wait) {
-    await user.setWait(wait, canvasId);
-    if (rankedPxlCnt) {
-      await user.incrementPixelcount(rankedPxlCnt);
-    }
+  if (rankedPxlCnt) {
+    await user.incrementPixelcount(rankedPxlCnt);
   }
 
   if (retCode !== 13) {
@@ -253,6 +233,7 @@ export async function drawByOffsets(
     pxlCnt,
     rankedPxlCnt,
     retCode,
+    needProxycheck,
   };
 }
 

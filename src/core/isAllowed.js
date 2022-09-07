@@ -92,16 +92,15 @@ async function withCache(f, ip) {
       status: 4,
     };
   }
-  // get from cache, if there
   const ipKey = getIPv6Subnet(ip);
-  const cache = await getCacheAllowed(ipKey);
-  if (cache) {
-    return cache;
-  }
-
-  // else make asynchronous ipcheck and assume no proxy in the meantime
-  // do not check ip that currently gets checked
   if (checking.indexOf(ipKey) === -1) {
+    // get from cache, if there
+    const cache = await getCacheAllowed(ipKey);
+    if (cache) {
+      return cache;
+    }
+    // else make asynchronous ipcheck and assume no proxy in the meantime
+    // do not check ip that currently gets checked
     checking.push(ipKey);
     withoutCache(f, ip)
       .catch((error) => {

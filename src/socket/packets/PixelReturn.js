@@ -19,10 +19,10 @@ export default {
   },
   dehydrate(
     retCode,
-    wait = 0,
-    coolDown = 0,
-    pxlCnt = 0,
-    rankedPxlCnt = 0,
+    wait,
+    coolDown,
+    pxlCnt,
+    rankedPxlCnt,
   ) {
     // Server (sender)
     const buffer = Buffer.allocUnsafe(1 + 1 + 4 + 2 + 1 + 1);

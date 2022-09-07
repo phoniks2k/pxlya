@@ -159,6 +159,10 @@ module.exports = ({
             from: path.resolve('deployment', 'captchaFonts'),
             to: path.resolve('dist', 'captchaFonts'),
           },
+          {
+            from: path.resolve('src', 'data', 'redis', 'lua', 'placePixel.lua'),
+            to: path.resolve('dist', 'workers', 'placePixel.lua'),
+          },
         ],
       }),
     ],
