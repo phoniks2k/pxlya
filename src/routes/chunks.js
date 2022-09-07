@@ -55,7 +55,7 @@ export default async (req, res, next) => {
       const stime = Date.now();
       chunk = await RedisCanvas.getChunk(c, x, y);
       const dur = Date.now() - stime;
-      if (dur > 3000) {
+      if (dur > 6000) {
         // eslint-disable-next-line max-len
         logger.warn(`Long redis response times of ${dur}ms for chunk ${c}:${x},${y}`);
       }
