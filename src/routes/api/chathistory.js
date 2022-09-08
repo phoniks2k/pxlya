@@ -23,7 +23,7 @@ async function chatHistory(req, res) {
   cid = parseInt(cid, 10);
   limit = parseInt(limit, 10);
   if (Number.isNaN(cid) || Number.isNaN(limit)
-    || limit <= 0 || limit > 300) {
+    || limit <= 0 || limit > 200) {
     res.status(400);
     res.json({
       errors: ['cid or limit not a valid value'],
