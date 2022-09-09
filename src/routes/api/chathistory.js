@@ -7,11 +7,6 @@ import chatProvider from '../../core/ChatProvider';
 
 async function chatHistory(req, res) {
   let { cid, limit } = req.query;
-  res.set({
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    Pragma: 'no-cache',
-    Expires: '0',
-  });
 
   if (!cid || !limit) {
     res.status(400);
@@ -42,19 +37,10 @@ async function chatHistory(req, res) {
     return;
   }
 
-  // try {
   const history = await chatProvider.getHistory(cid, limit);
   res.json({
     history,
   });
-  /*
-  } catch {
-    res.status(500);
-    res.json({
-      errors: ['Can not fetch messages'],
-    });
-  }
-  */
 }
 
 export default chatHistory;

@@ -3,7 +3,7 @@
  */
 
 
-import socketEvents from '../../../socket/SocketEvents';
+import socketEvents from '../../../socket/socketEvents';
 import { RegUser } from '../../../data/sql';
 import { validateName } from '../../../utils/validation';
 

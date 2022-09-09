@@ -19,7 +19,7 @@ import DeRegisterMultipleChunks from './packets/DeRegisterMultipleChunks';
 import ChangedMe from './packets/ChangedMe';
 import OnlineCounter from './packets/OnlineCounter';
 
-import socketEvents from './SocketEvents';
+import socketEvents from './socketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
 import { drawByOffsets } from '../core/draw';
@@ -111,7 +111,6 @@ class SocketServer {
       });
     });
 
-    socketEvents.on('broadcast', this.broadcast);
     socketEvents.on('onlineCounter', this.broadcast);
     socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
     socketEvents.on('reloadUser', this.reloadUser);
@@ -189,9 +188,12 @@ class SocketServer {
     }
     // CORS
     const { origin } = headers;
-    if (!origin || !origin.endsWith(getHostFromRequest(request, false))) {
+    const host = getHostFromRequest(request, false, true);
+    if (!origin
+      || !`.${origin.slice(origin.indexOf('//') + 2)}`.endsWith(host)
+    ) {
       // eslint-disable-next-line max-len
-      logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(request, false)}`);
+      logger.info(`Rejected CORS request on websocket from ${ip} via ${headers.origin}, expected ${getHostFromRequest(request, false, true)}`);
       socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
       socket.destroy();
       return;
@@ -433,9 +435,6 @@ class SocketServer {
          * if DM channel, make sure that other user has DM open
          * (needed because we allow user to leave one-sided
          *  and auto-join on message)
-         *  TODO: if we scale and have multiple websocket servers at some point
-         *  this might be an issue. We would hve to make a shared list of online
-         *  users and act based on that on 'chatMessage' event
          */
         const dmUserId = chatProvider.checkIfDm(user, channelId);
         if (dmUserId) {
@@ -443,11 +442,17 @@ class SocketServer {
           if (!dmWs
             || !chatProvider.userHasChannelAccess(dmWs.user, channelId)
           ) {
-            await ChatProvider.addUserToChannel(
-              dmUserId,
-              channelId,
-              [ws.name, 1, Date.now(), user.id],
-            );
+            // TODO this is really ugly
+            // DMS have to be rethought
+            if (!user.addedDM) user.addedDM = [];
+            if (!user.addedDM.includes(dmUserId)) {
+              await ChatProvider.addUserToChannel(
+                dmUserId,
+                channelId,
+                [ws.name, 1, Date.now(), user.id],
+              );
+              user.addedDM.push(dmUserId);
+            }
           }
         }
 

@@ -10,7 +10,7 @@ import {
 } from '../data/sql';
 import { findIdByNameOrId } from '../data/sql/RegUser';
 import ChatMessageBuffer from './ChatMessageBuffer';
-import socketEvents from '../socket/SocketEvents';
+import socketEvents from '../socket/socketEvents';
 import checkIPAllowed from './isAllowed';
 import { DailyCron } from '../utils/cron';
 import { escapeMd } from './utils';
@@ -93,6 +93,9 @@ export class ChatProvider {
   }
 
   async clearOldMessages() {
+    if (!socketEvents.amIImportant()) {
+      return;
+    }
     const ids = Object.keys(this.defaultChannels);
     for (let i = 0; i < ids.length; i += 1) {
       const cid = ids[i];

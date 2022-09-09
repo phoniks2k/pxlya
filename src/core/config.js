@@ -20,7 +20,7 @@ export const MAIL_ADDRESS = process.env.MAIL_ADDRESS
 const TILE_FOLDER_REL = process.env.TILE_FOLDER || 'tiles';
 export const TILE_FOLDER = path.join(__dirname, `./${TILE_FOLDER_REL}`);
 
-export const USE_XREALIP = process.env.USE_XREALIP || false;
+export const USE_XREALIP = !!process.env.USE_XREALIP;
 
 export const BACKUP_URL = process.env.BACKUP_URL || null;
 export const BACKUP_DIR = process.env.BACKUP_DIR || null;
@@ -30,6 +30,7 @@ export const USE_PROXYCHECK = parseInt(process.env.USE_PROXYCHECK, 10) || false;
 export const { PROXYCHECK_KEY } = process.env;
 
 export const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
+export const SHARD_NAME = process.env.SHARD_NAME || null;
 // Database
 export const MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
 export const MYSQL_DATABASE = process.env.MYSQL_DATABASE || 'pixelplanet';
@@ -51,6 +52,9 @@ export const APISOCKET_KEY = process.env.APISOCKET_KEY || null;
 // Comma seperated list of user ids of Admins
 export const ADMIN_IDS = (process.env.ADMIN_IDS)
   ? process.env.ADMIN_IDS.split(',').map((z) => parseInt(z, 10)) : [];
+
+export const CORS_HOSTS = (process.env.CORS_HOSTS)
+  ? process.env.CORS_HOSTS.split(',') : [];
 
 export const auth = {
   // https://developers.facebook.com/

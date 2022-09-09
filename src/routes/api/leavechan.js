@@ -5,7 +5,7 @@
  */
 
 import logger from '../../core/logger';
-import socketEvents from '../../socket/SocketEvents';
+import socketEvents from '../../socket/socketEvents';
 
 async function leaveChan(req, res) {
   const channelId = parseInt(req.body.channelId, 10);

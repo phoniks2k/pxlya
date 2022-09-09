@@ -4,24 +4,13 @@
 import { commandOptions } from 'redis';
 
 import { getChunkOfPixel, getOffsetOfPixel } from '../../core/utils';
+import socketEvents from '../../socket/socketEvents';
 import client from './client';
 
 
 const UINT_SIZE = 'u8';
 
 class RedisCanvas {
-  // array of callback functions that gets informed about chunk changes
-  static registerChunkChange = [];
-  static setChunkChangeCallback(cb) {
-    RedisCanvas.registerChunkChange.push(cb);
-  }
-
-  static execChunkChangeCallback(canvasId, cell) {
-    for (let i = 0; i < RedisCanvas.registerChunkChange.length; i += 1) {
-      RedisCanvas.registerChunkChange[i](canvasId, cell);
-    }
-  }
-
   /*
    * Get chunk from redis
    * canvasId integer id of canvas
@@ -56,14 +45,14 @@ class RedisCanvas {
   static async setChunk(i, j, chunk, canvasId) {
     const key = `ch:${canvasId}:${i}:${j}`;
     await client.set(key, Buffer.from(chunk.buffer));
-    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
+    socketEvents.broadcastChunkUpdate(canvasId, [i, j]);
     return true;
   }
 
   static async delChunk(i, j, canvasId) {
     const key = `ch:${canvasId}:${i}:${j}`;
     await client.del(key);
-    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
+    socketEvents.broadcastChunkUpdate(canvasId, [i, j]);
     return true;
   }
 
@@ -97,8 +86,6 @@ class RedisCanvas {
         String(color),
       ],
     );
-
-    RedisCanvas.execChunkChangeCallback(canvasId, [i, j]);
   }
 
   static flushPixels() {

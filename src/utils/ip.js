@@ -50,11 +50,18 @@ function ip4NumToStr(ipNum) {
  * @param includeProto if we include protocol (https, http)
  * @return host (like pixelplanet.fun)
  */
-export function getHostFromRequest(req, includeProto = true) {
+export function getHostFromRequest(req, includeProto = true, stripSub = false) {
   const { headers } = req;
-  const host = headers['x-forwarded-host']
+  let host = headers['x-forwarded-host']
     || headers.host
     || headers[':authority'];
+  if (stripSub) {
+    if (host.lastIndexOf('.') !== host.indexOf('.')) {
+      host = host.slice(host.indexOf('.'));
+    } else {
+      host = `.${host}`;
+    }
+  }
   if (!includeProto) {
     return host;
   }

@@ -9,6 +9,7 @@ import { t } from 'ttag';
 
 import copyTextToClipboard from '../utils/clipboard';
 import { parseInterval } from '../core/utils';
+import { shardOrigin } from '../store/actions/fetch';
 
 const keepState = {
   tlcoords: '',
@@ -54,7 +55,7 @@ async function submitWatchAction(
   data.append('time', time);
   data.append('iid', iid);
   try {
-    const resp = await fetch('/api/modtools', {
+    const resp = await fetch(`${shardOrigin}/api/modtools`, {
       credentials: 'include',
       method: 'POST',
       body: data,

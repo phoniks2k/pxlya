@@ -7,10 +7,10 @@
 
 import { langCodeToCC } from '../utils/location';
 import ttags, { getTTag } from '../core/ttag';
-
-/* this will be set by webpack */
+import socketEvents from '../socket/socketEvents';
 import { styleassets, assets } from '../core/assets';
 import { BACKUP_URL } from '../core/config';
+import { getHostFromRequest } from '../utils/ip';
 
 /*
  * generate language list
@@ -35,9 +35,13 @@ if (BACKUP_URL) {
  * @param lang language code
  * @return html of mainpage
  */
-function generatePopUpPage(lang) {
+function generatePopUpPage(req) {
+  const { lang } = req;
+  const host = getHostFromRequest(req);
   const ssvR = {
     ...ssv,
+    shard: (host.startsWith(`${socketEvents.thisShard}.`))
+      ? null : socketEvents.getLowestActiveShard(),
     lang: lang === 'default' ? 'en' : lang,
   };
   const script = (assets[`popup-${lang}`])

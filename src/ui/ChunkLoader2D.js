@@ -4,6 +4,7 @@
 
 import ChunkRGB from './ChunkRGB';
 import { TILE_SIZE, TILE_ZOOM_LEVEL } from '../core/constants';
+import { shardOrigin } from '../store/actions/fetch';
 import {
   loadingTiles,
   loadImage,
@@ -279,7 +280,7 @@ class ChunkLoader {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
     try {
-      const url = `chunks/${this.canvasId}/${cx}/${cy}.bmp`;
+      const url = `${shardOrigin}/chunks/${this.canvasId}/${cx}/${cy}.bmp`;
       const response = await fetch(url);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();
@@ -303,7 +304,8 @@ class ChunkLoader {
     const center = [zoom, cx, cy];
     this.store.dispatch(requestBigChunk(center));
     try {
-      const url = `tiles/${this.canvasId}/${zoom}/${cx}/${cy}.webp`;
+    // eslint-disable-next-line max-len
+      const url = `${shardOrigin}/tiles/${this.canvasId}/${zoom}/${cx}/${cy}.webp`;
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
       this.store.dispatch(receiveBigChunk(center));

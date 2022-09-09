@@ -2,6 +2,7 @@
  * request password change
  */
 
+import socketEvents from '../../../socket/socketEvents';
 import { RegUser } from '../../../data/sql';
 import { validatePassword } from '../../../utils/validation';
 import { compareToHash } from '../../../utils/hash';
@@ -35,7 +36,7 @@ export default async (req, res) => {
     });
     return;
   }
-  const { id } = user;
+  const { id, name } = user;
 
   const currentPassword = user.regUser.password;
   if (!currentPassword || !compareToHash(password, currentPassword)) {
@@ -57,6 +58,8 @@ export default async (req, res) => {
     }
 
     RegUser.destroy({ where: { id } });
+
+    socketEvents.reloadUser(name);
 
     res.status(200);
     res.json({

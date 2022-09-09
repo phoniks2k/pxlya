@@ -3,7 +3,7 @@
  * in bursts per chunk
  */
 
-import socketEvents from '../socket/SocketEvents';
+import socketEvents from '../socket/socketEvents';
 
 class PixelCache {
   PXL_CACHE;

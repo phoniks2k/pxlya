@@ -8,7 +8,7 @@ import { Worker } from 'worker_threads';
 
 import logger from './logger';
 import canvases from './canvases';
-import RedisCanvas from '../data/redis/RedisCanvas';
+import socketEvents from '../socket/socketEvents';
 
 import { TILE_FOLDER } from './config';
 import {
@@ -181,17 +181,16 @@ class CanvasUpdater {
   }
 }
 
-export function registerChunkChange(canvasId, chunk) {
+socketEvents.on('chunkUpdate', (canvasId, chunk) => {
   if (CanvasUpdaters[canvasId]) {
     CanvasUpdaters[canvasId].registerChunkChange(chunk);
   }
-}
-RedisCanvas.setChunkChangeCallback(registerChunkChange);
+});
 
 /*
  * starting update loops for canvases
  */
-export async function startAllCanvasLoops() {
+export default function startAllCanvasLoops() {
   if (!fs.existsSync(`${TILE_FOLDER}`)) fs.mkdirSync(`${TILE_FOLDER}`);
   const ids = Object.keys(canvases);
   for (let i = 0; i < ids.length; i += 1) {

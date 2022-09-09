@@ -17,9 +17,18 @@ import blockdm from './blockdm';
 import modtools from './modtools';
 import baninfo from './baninfo';
 import getiid from './getiid';
-
+import shards from './shards';
 
 const router = express.Router();
+
+// set cache-control
+router.use((req, res, next) => {
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    Expires: '0',
+  });
+  next();
+});
 
 router.use(express.json());
 
@@ -35,6 +44,7 @@ router.use((err, req, res, next) => {
 router.post('/captcha', captcha);
 router.get('/baninfo', baninfo);
 router.get('/getiid', getiid);
+router.get('/shards', shards);
 
 /*
  * get user session

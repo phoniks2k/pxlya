@@ -3,7 +3,7 @@
  */
 
 
-import mailProvider from '../../../core/mail';
+import mailProvider from '../../../core/MailProvider';
 import { validateEMail } from '../../../utils/validation';
 import { getHostFromRequest } from '../../../utils/ip';
 

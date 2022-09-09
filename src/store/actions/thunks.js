@@ -7,6 +7,7 @@ import {
   requestBlockDm,
   requestLeaveChan,
   requestRankings,
+  requestChatMessages,
   requestMe,
 } from './fetch';
 
@@ -89,21 +90,12 @@ export function fetchMe() {
   };
 }
 
-export function fetchChatMessages(
-  cid,
-) {
+export function fetchChatMessages(cid) {
   return async (dispatch) => {
     dispatch(setChatFetching(true));
-    const response = await fetch(`/api/chathistory?cid=${cid}&limit=50`, {
-      credentials: 'include',
-    });
-
-    /*
-     * timeout in order to not spam api requests and get rate limited
-     */
-    if (response.ok) {
+    const history = await requestChatMessages(cid);
+    if (history) {
       setTimeout(() => { dispatch(setChatFetching(false)); }, 500);
-      const { history } = await response.json();
       dispatch(receiveChatHistory(cid, history));
     } else {
       setTimeout(() => { dispatch(setChatFetching(false)); }, 5000);

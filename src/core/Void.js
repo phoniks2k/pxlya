@@ -5,7 +5,7 @@
  * if it reaches the TARGET_RADIUS size, the event is lost
  *
  */
-import socketEvents from '../socket/SocketEvents';
+import socketEvents from '../socket/socketEvents';
 import PixelUpdate from '../socket/packets/PixelUpdateServer';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE } from './constants';

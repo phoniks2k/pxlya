@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { t } from 'ttag';
 
 import { parseInterval } from '../core/utils';
+import { shardOrigin } from '../store/actions/fetch';
 
 async function submitIIDAction(
   action,
@@ -31,7 +32,7 @@ async function submitIIDAction(
   data.append('reason', reason);
   data.append('time', time);
   data.append('iid', iid);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,

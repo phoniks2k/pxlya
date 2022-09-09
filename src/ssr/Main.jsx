@@ -8,8 +8,9 @@
 import { langCodeToCC } from '../utils/location';
 import ttags, { getTTag } from '../core/ttag';
 import { styleassets, assets } from '../core/assets';
-
+import socketEvents from '../socket/socketEvents';
 import { BACKUP_URL } from '../core/config';
+import { getHostFromRequest } from '../utils/ip';
 
 /*
  * generate language list
@@ -35,14 +36,19 @@ if (BACKUP_URL) {
  * @param lang language code
  * @return html of mainpage
  */
-function generateMainPage(lang) {
+function generateMainPage(req) {
+  const { lang } = req;
+  const host = getHostFromRequest(req, false);
   const ssvR = {
     ...ssv,
+    shard: (host.startsWith(`${socketEvents.thisShard}.`))
+      ? '' : socketEvents.getLowestActiveShard(),
     lang: lang === 'default' ? 'en' : lang,
   };
   const scripts = (assets[`client-${lang}`])
     ? assets[`client-${lang}`].js
     : assets.client.js;
+
   const { t } = getTTag(lang);
 
   const html = `

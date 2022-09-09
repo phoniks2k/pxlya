@@ -160,8 +160,8 @@ module.exports = ({
             to: path.resolve('dist', 'captchaFonts'),
           },
           {
-            from: path.resolve('src', 'data', 'redis', 'lua', 'placePixel.lua'),
-            to: path.resolve('dist', 'workers', 'placePixel.lua'),
+            from: path.resolve('src', 'data', 'redis', 'lua'),
+            to: path.resolve('dist', 'workers', 'lua'),
           },
         ],
       }),

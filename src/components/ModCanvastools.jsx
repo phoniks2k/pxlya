@@ -8,6 +8,7 @@ import { t } from 'ttag';
 
 import useInterval from './hooks/interval';
 import { getToday, dateToString } from '../core/utils';
+import { shardOrigin } from '../store/actions/fetch';
 
 const keptState = {
   coords: '',
@@ -33,7 +34,7 @@ async function submitImageAction(
   data.append('image', file);
   data.append('canvasid', canvas);
   data.append('coords', coords);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -53,7 +54,7 @@ async function submitProtAction(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -74,7 +75,7 @@ async function submitRollback(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -94,7 +95,7 @@ async function submitCanvasCleaner(
   data.append('canvasid', canvas);
   data.append('ulcoor', tlcoords);
   data.append('brcoor', brcoords);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -107,7 +108,7 @@ async function getCleanerStats(
 ) {
   const data = new FormData();
   data.append('cleanerstat', true);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -125,7 +126,7 @@ async function getCleanerCancel(
 ) {
   const data = new FormData();
   data.append('cleanercancel', true);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,

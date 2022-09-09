@@ -14,6 +14,7 @@ import RegisterMultipleChunks from './packets/RegisterMultipleChunks';
 import DeRegisterChunk from './packets/DeRegisterChunk';
 import ChangedMe from './packets/ChangedMe';
 import Ping from './packets/Ping';
+import { shardHost } from '../store/actions/fetch';
 
 const chunks = [];
 
@@ -43,9 +44,10 @@ class SocketClient extends EventEmitter {
       console.log('WebSocket already open, not starting');
     }
     this.timeLastConnecting = Date.now();
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const url = `${protocol}//${window.location.hostname}${
-      window.location.port ? `:${window.location.port}` : ''
+    const url = `${
+      window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    }//${
+      shardHost || window.location.host
     }/ws`;
     this.ws = new WebSocket(url);
     this.ws.binaryType = 'arraybuffer';

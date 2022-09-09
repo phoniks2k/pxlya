@@ -2,7 +2,7 @@ import Sequelize from 'sequelize';
 
 import logger from '../../../core/logger';
 import { RegUser } from '../../../data/sql';
-import mailProvider from '../../../core/mail';
+import mailProvider from '../../../core/MailProvider';
 import getMe from '../../../core/me';
 import { getIPFromRequest, getHostFromRequest } from '../../../utils/ip';
 import {

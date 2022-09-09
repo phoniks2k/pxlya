@@ -2,7 +2,7 @@
  * request resend of verification mail
  */
 
-import mailProvider from '../../../core/mail';
+import mailProvider from '../../../core/MailProvider';
 import { getHostFromRequest } from '../../../utils/ip';
 
 export default async (req, res) => {
@@ -26,7 +26,7 @@ export default async (req, res) => {
 
   const host = getHostFromRequest(req);
 
-  const error = mailProvider.sendVerifyMail(email, name, host, lang);
+  const error = await mailProvider.sendVerifyMail(email, name, host, lang);
   if (error) {
     res.status(400);
     res.json({

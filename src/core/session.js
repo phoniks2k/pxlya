@@ -5,26 +5,36 @@ import expressSession from 'express-session';
 import RedisStore from '../utils/connectRedis';
 
 import client from '../data/redis/client';
+import { getHostFromRequest } from '../utils/ip';
 import { HOUR, COOKIE_SESSION_NAME } from './constants';
 import { SESSION_SECRET } from './config';
 
 
 export const store = new RedisStore({ client });
 
-const session = expressSession({
-  name: COOKIE_SESSION_NAME,
-  store,
-  secret: SESSION_SECRET,
-  // The best way to know is to check with your store if it implements the touch method. If it does, then you can safely set resave: false
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    path: '/',
-    httpOnly: true,
-    secure: false,
-    // not setting maxAge or expire makes it a non-persisting cookies
-    maxAge: 30 * 24 * HOUR,
-  },
-});
+/*
+ * we cache created session middlewares per domain
+ */
+const middlewareCache = {};
 
-export default session;
+export default (req, res, next) => {
+  const domain = getHostFromRequest(req, false, true);
+  let session = middlewareCache[domain];
+  if (!session) {
+    session = expressSession({
+      name: COOKIE_SESSION_NAME,
+      store,
+      secret: SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        domain,
+        httpOnly: true,
+        secure: false,
+        maxAge: 30 * 24 * HOUR,
+      },
+    });
+    middlewareCache[domain] = session;
+  }
+  return session(req, res, next);
+};

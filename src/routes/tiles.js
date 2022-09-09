@@ -19,6 +19,9 @@ const router = express.Router();
  */
 router.use('/:c([0-9]+)/:z([0-9]+)/:x([0-9]+)/:y([0-9]+).webp',
   (req, res, next) => {
+    res.set({
+      'Access-Control-allow-origin': '*',
+    });
     const { c: id } = req.params;
     const canvas = canvases[id];
     if (!canvas) {

@@ -4,7 +4,7 @@
  *
  */
 import logger from '../../core/logger';
-import socketEvents from '../../socket/SocketEvents';
+import socketEvents from '../../socket/socketEvents';
 
 async function blockdm(req, res) {
   const { block } = req.body;

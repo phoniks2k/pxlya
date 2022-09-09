@@ -9,7 +9,7 @@
 
 import WebSocket from 'ws';
 
-import socketEvents from './SocketEvents';
+import socketEvents from './socketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import { RegUser } from '../data/sql';
 import { getIPFromRequest } from '../utils/ip';
@@ -61,7 +61,6 @@ class APISocketServer {
     this.ping = this.ping.bind(this);
     this.broadcastChatMessage = this.broadcastChatMessage.bind(this);
 
-    socketEvents.onAsync('broadcast', this.broadcast);
     socketEvents.onAsync('onlineCounter', this.broadcastOnlineCounter);
     socketEvents.onAsync('pixelUpdate', this.broadcastPixelBuffer);
     socketEvents.onAsync('chatMessage', this.broadcastChatMessage);

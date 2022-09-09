@@ -5,6 +5,8 @@
 import React, { useState, useEffect } from 'react';
 import { t } from 'ttag';
 
+import { shardOrigin } from '../store/actions/fetch';
+
 async function submitIPAction(
   action,
   vallist,
@@ -13,7 +15,7 @@ async function submitIPAction(
   const data = new FormData();
   data.append('ipaction', action);
   data.append('ip', vallist);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -26,7 +28,7 @@ async function getModList(
 ) {
   const data = new FormData();
   data.append('modlist', true);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -44,7 +46,7 @@ async function submitRemMod(
 ) {
   const data = new FormData();
   data.append('remmod', userId);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,
@@ -58,7 +60,7 @@ async function submitMakeMod(
 ) {
   const data = new FormData();
   data.append('makemod', userName);
-  const resp = await fetch('/api/modtools', {
+  const resp = await fetch(`${shardOrigin}/api/modtools`, {
     credentials: 'include',
     method: 'POST',
     body: data,

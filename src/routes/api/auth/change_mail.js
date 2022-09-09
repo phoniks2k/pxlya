@@ -2,7 +2,7 @@
  * request password change
  */
 
-import mailProvider from '../../../core/mail';
+import mailProvider from '../../../core/MailProvider';
 
 import { validatePassword, validateEMail } from '../../../utils/validation';
 import { getHostFromRequest } from '../../../utils/ip';

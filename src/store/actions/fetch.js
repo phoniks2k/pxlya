@@ -8,17 +8,30 @@ import { t } from 'ttag';
 
 import { dateToString } from '../../core/utils';
 
+export const shardHost = (function getShardHost() {
+  if (!window.ssv || !window.ssv.shard) {
+    return '';
+  }
+  const hostParts = window.location.host.split('.');
+  if (hostParts.length > 2) {
+    hostParts.shift();
+  }
+  return `${window.ssv.shard}.${hostParts.join('.')}`;
+}());
+export const shardOrigin = shardHost
+  && `${window.location.protocol}//${shardHost}`;
+
 /*
  * Adds customizeable timeout to fetch
  * defaults to 8s
  */
-async function fetchWithTimeout(resource, options = {}) {
-  const { timeout = 8000 } = options;
+async function fetchWithTimeout(url, options = {}) {
+  const { timeout = 10000 } = options;
 
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
 
-  const response = await fetch(resource, {
+  const response = await fetch(url, {
     ...options,
     signal: controller.signal,
   });
@@ -62,11 +75,19 @@ async function parseAPIresponse(response) {
  * @param body Body of request
  * @return Object with response or error Array
  */
-async function makeAPIPOSTRequest(url, body) {
+async function makeAPIPOSTRequest(
+  url,
+  body,
+  credentials = true,
+  addShard = true,
+) {
+  if (addShard) {
+    url = `${shardOrigin}${url}`;
+  }
   try {
     const response = await fetchWithTimeout(url, {
       method: 'POST',
-      credentials: 'include',
+      credentials: (credentials) ? 'include' : 'omit',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -86,10 +107,17 @@ async function makeAPIPOSTRequest(url, body) {
  * @param url URL of get api endpoint
  * @return Object with response or error Array
  */
-async function makeAPIGETRequest(url) {
+async function makeAPIGETRequest(
+  url,
+  credentials = true,
+  addShard = true,
+) {
+  if (addShard) {
+    url = `${shardOrigin}${url}`;
+  }
   try {
     const response = await fetchWithTimeout(url, {
-      credentials: 'include',
+      credentials: (credentials) ? 'include' : 'omit',
     });
 
     return parseAPIresponse(response);
@@ -193,8 +221,10 @@ export async function requestSolveCaptcha(text, captchaid) {
 export async function requestHistoricalTimes(day, canvasId) {
   try {
     const date = dateToString(day);
-    const url = `history?day=${date}&id=${canvasId}`;
+    // Not going over shard url
+    const url = `/history?day=${date}&id=${canvasId}`;
     const response = await fetchWithTimeout(url, {
+      credentials: 'omit',
       timeout: 45000,
     });
     if (response.status !== 200) {
@@ -210,6 +240,19 @@ export async function requestHistoricalTimes(day, canvasId) {
   } catch {
     return [];
   }
+}
+
+export async function requestChatMessages(cid) {
+  const response = await fetch(
+    `${shardOrigin}/api/chathistory?cid=${cid}&limit=50`,
+    { credentials: 'include' },
+  );
+  // timeout in order to not spam api requests and get rate limited
+  if (response.ok) {
+    const { history } = await response.json();
+    return history;
+  }
+  return null;
 }
 
 export function requestPasswordChange(newPassword, password) {
@@ -278,7 +321,8 @@ export function requestDeleteAccount(password) {
 
 export function requestRankings() {
   return makeAPIGETRequest(
-    'ranking',
+    '/ranking',
+    false,
   );
 }
 

@@ -3,6 +3,7 @@
  *
  */
 
+import Chunk from './ChunkRGB3D';
 import {
   requestBigChunk,
   receiveBigChunk,
@@ -12,9 +13,7 @@ import {
   getChunkOfPixel,
   getOffsetOfPixel,
 } from '../core/utils';
-
-import Chunk from './ChunkRGB3D';
-
+import { shardOrigin } from '../store/actions/fetch';
 
 class ChunkLoader {
   store = null;
@@ -91,7 +90,7 @@ class ChunkLoader {
     const center = [0, cx, cz];
     this.store.dispatch(requestBigChunk(center));
     try {
-      const url = `chunks/${this.canvasId}/${cx}/${cz}.bmp`;
+      const url = `${shardOrigin}/chunks/${this.canvasId}/${cx}/${cz}.bmp`;
       const response = await fetch(url);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();

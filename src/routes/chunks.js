@@ -7,11 +7,11 @@
 import etag from 'etag';
 import RedisCanvas from '../data/redis/RedisCanvas';
 import logger from '../core/logger';
+import socketEvents from '../socket/socketEvents';
 
 const chunkEtags = new Map();
-RedisCanvas.setChunkChangeCallback((canvasId, cell) => {
-  const [x, y] = cell;
-  chunkEtags.delete(`${canvasId}:${x}:${y}`);
+socketEvents.on('chunkUpdate', (canvasId, [i, j]) => {
+  chunkEtags.delete(`${canvasId}:${i}:${j}`);
 });
 
 /*
@@ -27,6 +27,9 @@ export default async (req, res, next) => {
   const x = parseInt(paramX, 10);
   const y = parseInt(paramY, 10);
   try {
+    res.set({
+      'Access-Control-allow-origin': '*',
+    });
     // botters where using cachebreakers to update via chunk API
     // lets not allow that for now
     if (Object.keys(req.query).length !== 0) {

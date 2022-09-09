@@ -22,6 +22,21 @@ class SocketEvents extends EventEmitter {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  async initialize() {
+    // nothing, only for child classes
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getLowestActiveShard() {
+    return null;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  amIImportant() {
+    return true;
+  }
+
   /*
    * async event
    */
@@ -31,14 +46,6 @@ class SocketEvents extends EventEmitter {
         cb(...args);
       });
     });
-  }
-
-  /*
-   * broadcast message via websocket
-   * @param message Buffer Message to send
-   */
-  broadcast(message) {
-    this.emit('broadcast', message);
   }
 
   /*
@@ -52,8 +59,34 @@ class SocketEvents extends EventEmitter {
     chunkId,
     pixels,
   ) {
-    const buffer = PixelUpdate.dehydrate(chunkId, pixels);
+    const i = chunkId >> 8;
+    const j = chunkId & 0xFF;
+    const buffer = PixelUpdate.dehydrate(i, j, pixels);
     this.emit('pixelUpdate', canvasId, chunkId, buffer);
+    this.emit('chunkUpdate', canvasId, [i, j]);
+  }
+
+  /*
+   * chunk updates from event, image upload, etc.
+   * everything thats not a pixelUpdate and changes chunks
+   * @param canvasId
+   * @param chunk [i,j] chunk coordinates
+   */
+  broadcastChunkUpdate(
+    canvasId,
+    chunk,
+  ) {
+    this.emit('chunkUpdate', canvasId, chunk);
+  }
+
+  /*
+   * ask other shards to send email for us,
+   * only used when USE_MAILER is false
+   * @param type type of mail to send
+   * @param args
+   */
+  sendMail(...args) {
+    this.emit('mail', ...args);
   }
 
   /*
@@ -169,4 +202,4 @@ class SocketEvents extends EventEmitter {
   }
 }
 
-export default new SocketEvents();
+export default SocketEvents;

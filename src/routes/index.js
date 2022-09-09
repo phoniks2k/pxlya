@@ -18,6 +18,7 @@ import api from './api';
 
 import { assets } from '../core/assets';
 import { expressTTag } from '../core/ttag';
+import corsMiddleware from '../utils/corsMiddleware';
 import generateGlobePage from '../ssr/Globe';
 import generatePopUpPage from '../ssr/PopUp';
 import generateMainPage from '../ssr/Main';
@@ -29,36 +30,17 @@ import { GUILDED_INVITE } from '../core/config';
 const router = express.Router();
 
 /*
- * void info
+ * Serving Chunks
  */
-router.get('/void', voidl);
-
-/*
- * ranking of pixels placed
- * daily and total
- */
-router.get('/ranking', ranking);
-
-/*
- * give: date per query
- * returns: array of HHMM backups available
- */
-router.get('/history', history);
+router.get(
+  '/chunks/:c([0-9]+)/:x([0-9]+)/:y([0-9]+)(/)?:z([0-9]+)?.bmp',
+  chunks,
+);
 
 /*
  * zoomed tiles
  */
 router.use('/tiles', tiles);
-
-/*
- * adminapi
- */
-router.use('/adminapi', adminapi);
-
-/*
- * serve captcha
- */
-router.get('/captcha.svg', captcha);
 
 /*
  * public folder
@@ -77,28 +59,15 @@ router.use('/guilded', (req, res) => {
 });
 
 /*
- * Serving Chunks
+ * adminapi
  */
-router.get(
-  '/chunks/:c([0-9]+)/:x([0-9]+)/:y([0-9]+)(/)?:z([0-9]+)?.bmp',
-  chunks,
-);
+router.use('/adminapi', adminapi);
 
 /*
  * Following with translations
  * ---------------------------------------------------------------------------
  */
 router.use(expressTTag);
-
-/*
- * API calls
- */
-router.use('/api', api);
-
-/*
- * Password Reset Link
- */
-router.use('/reset_password', resetPassword);
 
 //
 // 3D Globe (react generated)
@@ -149,7 +118,7 @@ router.use(
       return;
     }
 
-    res.status(200).send(generatePopUpPage(req.lang));
+    res.status(200).send(generatePopUpPage(req));
   },
 );
 
@@ -173,7 +142,47 @@ router.get('/', (req, res) => {
     return;
   }
 
-  res.status(200).send(generateMainPage(req.lang));
+  res.status(200).send(generateMainPage(req));
 });
+
+
+/*
+ * Password Reset Link
+ */
+router.use('/reset_password', resetPassword);
+
+/*
+ * Following with CORS
+ * ---------------------------------------------------------------------------
+ */
+router.use(corsMiddleware);
+
+/*
+ * API calls
+ */
+router.use('/api', api);
+
+/*
+ * void info
+ */
+router.get('/void', voidl);
+
+/*
+ * ranking of pixels placed
+ * daily and total
+ */
+router.get('/ranking', ranking);
+
+/*
+ * give: date per query
+ * returns: array of HHMM backups available
+ */
+router.get('/history', history);
+
+/*
+ * serve captcha
+ */
+router.get('/captcha.svg', captcha);
+
 
 export default router;

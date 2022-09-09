@@ -17,14 +17,16 @@ import chatProvider from './core/ChatProvider';
 import rpgEvent from './core/RpgEvent';
 import canvasCleaner from './core/CanvasCleaner';
 
+import socketEvents from './socket/socketEvents';
 import SocketServer from './socket/SocketServer';
 import APISocketServer from './socket/APISocketServer';
 
-
-import { PORT, HOST, HOURLY_EVENT } from './core/config';
+import {
+  PORT, HOST, HOURLY_EVENT, SHARD_NAME,
+} from './core/config';
 import { SECOND } from './core/constants';
 
-import { startAllCanvasLoops } from './core/tileserver';
+import startAllCanvasLoops from './core/tileserver';
 
 const app = express();
 app.disable('x-powered-by');
@@ -78,15 +80,11 @@ app.use(routes);
 sequelize.sync({ alter: { drop: false } })
   // connect to redis
   .then(connectRedis)
-  .then(() => {
-    rankings.initialize();
+  .then(async () => {
     chatProvider.initialize();
     startAllCanvasLoops();
     usersocket.initialize();
     apisocket.initialize();
-    if (HOURLY_EVENT) {
-      rpgEvent.initialize();
-    }
     canvasCleaner.initialize();
     // start http server
     const startServer = () => {
@@ -108,4 +106,22 @@ sequelize.sync({ alter: { drop: false } })
         startServer();
       }, 5000);
     });
+  })
+  .then(async () => {
+    await socketEvents.initialize();
+  })
+  .then(async () => {
+    /*
+     * initializers that rely on the cluster being fully established
+     * i.e. to know if it is the shard that runs the event
+     */
+    if (socketEvents.isCluster && socketEvents.amIImportant()) {
+      logger.info('I am the main shard');
+    }
+    rankings.initialize();
+    if (HOURLY_EVENT && !SHARD_NAME) {
+      // TODO make it wok in a cluster
+      logger.info('Initializing RpgEvent');
+      rpgEvent.initialize();
+    }
   });

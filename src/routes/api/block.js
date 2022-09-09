@@ -5,7 +5,7 @@
  */
 
 import logger from '../../core/logger';
-import socketEvents from '../../socket/SocketEvents';
+import socketEvents from '../../socket/socketEvents';
 import { RegUser, UserBlock, Channel } from '../../data/sql';
 
 async function block(req, res) {

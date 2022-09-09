@@ -242,6 +242,14 @@ function addIndexedSubtiletoTile(
 function tileFileName(canvasTileFolder, cell) {
   const [z, x, y] = cell;
   const filename = `${canvasTileFolder}/${z}/${x}/${y}.webp`;
+  try {
+    const mtime = new Date(fs.statSync(filename).mtime).getTime();
+    if (Date.now() - mtime < 120000) {
+      return null;
+    }
+  } catch {
+    // file doesn't exist
+  }
   return filename;
 }
 
@@ -263,6 +271,10 @@ export async function createZoomTileFromChunk(
   const canvasSize = canvas.size;
   const [x, y] = cell;
   const maxTiledZoom = getMaxTiledZoom(canvasSize);
+
+  const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
+  if (!filename) return true;
+
   const tileRGBBuffer = new Uint8Array(
     TILE_SIZE * TILE_SIZE * TILE_ZOOM_LEVEL * TILE_ZOOM_LEVEL * 3,
   );
@@ -318,7 +330,6 @@ export async function createZoomTileFromChunk(
       );
     });
 
-    const filename = tileFileName(canvasTileFolder, [maxTiledZoom - 1, x, y]);
     try {
       await sharp(tileRGBBuffer, {
         raw: {
@@ -362,6 +373,9 @@ export async function createZoomedTile(
     TILE_SIZE * TILE_SIZE * 3,
   );
   const [z, x, y] = cell;
+
+  const filename = tileFileName(canvasTileFolder, [z, x, y]);
+  if (!filename) return true;
 
   const startTime = Date.now();
   const na = [];
@@ -409,7 +423,6 @@ export async function createZoomedTile(
       );
     });
 
-    const filename = tileFileName(canvasTileFolder, [z, x, y]);
     try {
       await sharp(tileRGBBuffer, {
         raw: {

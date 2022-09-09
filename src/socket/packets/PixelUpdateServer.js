@@ -43,8 +43,8 @@ export default {
    * @param chunkId id consisting of chunk coordinates
    * @param pixels Buffer with offset and color of one or more pixels
    */
-  dehydrate(chunkId, pixels) {
-    const index = new Uint8Array([OP_CODE, chunkId >> 8, chunkId & 0xFF]);
+  dehydrate(i, j, pixels) {
+    const index = new Uint8Array([OP_CODE, i, j]);
     return Buffer.concat([index, pixels]);
   },
 };

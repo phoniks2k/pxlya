@@ -8,7 +8,7 @@ import express from 'express';
 import logger from '../core/logger';
 import getPasswordResetHtml from '../ssr/PasswordReset';
 
-import mailProvider from '../core/mail';
+import mailProvider from '../core/MailProvider';
 import { RegUser } from '../data/sql';
 
 
