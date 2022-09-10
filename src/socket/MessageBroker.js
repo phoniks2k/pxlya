@@ -182,6 +182,9 @@ class MessageBroker extends SocketEvents {
 
   emit(key, ...args) {
     super.emit(key, ...args);
+    if (key === 'recvChatMessage') {
+      return;
+    }
     const msg = `${this.thisShard}:${key},${JSON.stringify(args)}`;
     this.publisher.publish('bc', msg);
   }

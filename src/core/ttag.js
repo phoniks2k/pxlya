@@ -37,7 +37,7 @@ export function getTTag(lang) {
  */
 export function expressTTag(req, res, next) {
   const cookies = cookie.parse(req.headers.cookie || '');
-  const language = cookies.lang || req.headers['accept-language'];
+  const language = cookies.plang || req.headers['accept-language'];
   req.lang = languageFromLocalisation(language);
   req.ttag = getTTag(req.lang);
   next();

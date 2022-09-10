@@ -8,6 +8,7 @@ import { setCaptchaSolution } from '../data/redis/captcha';
 
 export default (req, res) => {
   res.set({
+    'Access-Control-Expose-Headers': 'captcha-id',
     'Cache-Control': 'no-cache, no-store, must-revalidate',
   });
 

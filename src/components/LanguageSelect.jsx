@@ -73,7 +73,7 @@ function LanguageSelect() {
             host = `.${host}`;
           }
           // eslint-disable-next-line max-len
-          document.cookie = `lang=${langSel};expires=${d.toUTCString()};path=/;domain=${host}`;
+          document.cookie = `plang=${langSel};expires=${d.toUTCString()};path=/;domain=${host}`;
           window.location.reload();
         }}
       >
