@@ -53,8 +53,8 @@ function ip4NumToStr(ipNum) {
 export function getHostFromRequest(req, includeProto = true, stripSub = false) {
   const { headers } = req;
   let host = headers['x-forwarded-host']
-    || headers.host
-    || headers[':authority'];
+    || headers[':authority']
+    || headers.host;
   if (stripSub) {
     if (host.lastIndexOf('.') !== host.indexOf('.')) {
       host = host.slice(host.indexOf('.'));

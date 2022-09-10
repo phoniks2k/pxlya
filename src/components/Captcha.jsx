@@ -13,8 +13,7 @@ import { IoReloadCircleSharp } from 'react-icons/io5';
 import { shardOrigin } from '../store/actions/fetch';
 
 async function getUrlAndId() {
-  // const url = `${shardOrigin}/captcha.svg`;
-  const url = '/captcha.svg';
+  const url = `${shardOrigin}/captcha.svg`;
   const resp = await fetch(url, {
     cache: 'no-cache',
   });
