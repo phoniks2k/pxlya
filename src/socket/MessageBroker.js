@@ -78,6 +78,7 @@ class MessageBroker extends SocketEvents {
       }
       if (!this.shards[message]) {
         console.log(`CLUSTER: Shard ${message} connected`);
+        this.shards[message] = Date.now();
         await this.subscriber.subscribe(
           message,
           (buffer) => this.onShardBinaryMessage(buffer, message),
@@ -85,6 +86,7 @@ class MessageBroker extends SocketEvents {
         );
         // immediately give new shards informations
         this.publisher.publish('bc', this.thisShard);
+        return;
       }
       this.shards[message] = Date.now();
       return;
@@ -129,9 +131,8 @@ class MessageBroker extends SocketEvents {
   }
 
   onShardBinaryMessage(buffer, shard) {
-    if (buffer.byteLength === 0) return;
-    const opcode = buffer[0];
     try {
+      const opcode = buffer[0];
       switch (opcode) {
         case PixelUpdateMB.OP_CODE: {
           const puData = PixelUpdateMB.hydrate(buffer);
