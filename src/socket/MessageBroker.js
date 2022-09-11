@@ -129,9 +129,8 @@ class MessageBroker extends SocketEvents {
   }
 
   onShardBinaryMessage(buffer, shard) {
-    if (buffer.byteLength === 0) return;
-    const opcode = buffer[0];
     try {
+      const opcode = buffer[0];
       switch (opcode) {
         case PixelUpdateMB.OP_CODE: {
           const puData = PixelUpdateMB.hydrate(buffer);

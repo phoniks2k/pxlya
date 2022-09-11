@@ -471,10 +471,8 @@ class SocketServer {
   }
 
   async onBinaryMessage(buffer, ws) {
-    if (buffer.byteLength === 0) return;
-    const opcode = buffer[0];
-
     try {
+      const opcode = buffer[0];
       switch (opcode) {
         case PixelUpdate.OP_CODE: {
           const { canvasId, user } = ws;

@@ -12,19 +12,20 @@ export default {
    */
   hydrate(data) {
     const canvasId = data[1];
-    const chunk = [data[2], data[3]];
-    return [canvasId, chunk];
+    const i = data.readUInt8(2);
+    const j = data.readUInt8(3);
+    return [canvasId, [i, j]];
   },
   /*
    * @param canvasId,
    * chunkid id consisting of chunk coordinates
    */
   dehydrate(canvasId, [i, j]) {
-    return Buffer.from({
+    return Buffer.from([
       OP_CODE,
       canvasId,
       i,
       j,
-    });
+    ]);
   },
 };
