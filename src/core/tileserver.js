@@ -131,9 +131,11 @@ class CanvasUpdater {
     const chunkOffset = cx + cy * this.firstZoomtileWidth;
     if (~queue.indexOf(chunkOffset)) return;
     queue.push(chunkOffset);
+    /*
     logger.info(
       `Tiling: Enqueued ${cx}, ${cy} / ${this.id} for basezoom reload`,
     );
+    */
   }
 
   /*
