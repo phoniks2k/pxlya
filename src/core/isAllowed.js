@@ -47,7 +47,6 @@ async function withoutCache(f, ip) {
   let allowed = true;
   let status = -2;
   let pcheck = null;
-  let whoisRet = null;
 
   try {
     if (await isWhitelisted(ipKey)) {
@@ -64,8 +63,13 @@ async function withoutCache(f, ip) {
       allowed = res.allowed;
       pcheck = res.pcheck;
     }
-    whoisRet = await whois(ip);
   } finally {
+    let whoisRet = null;
+    try {
+      whoisRet = await whois(ip);
+    } catch (err) {
+      logger.error(`Error whois for ${ip}: ${err.message}`);
+    }
     await cacheAllowed(ipKey, status);
     await saveIPInfo(ipKey, whoisRet || {}, status, pcheck);
   }

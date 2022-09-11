@@ -38,11 +38,11 @@ class Ranks {
       // recalculate ranking column
       await sequelize.query(
         // eslint-disable-next-line max-len
-        'SET @r=0; UPDATE Users SET ranking= @r:= (@r + 1) WHERE totalPixels IS NOT NULL ORDER BY totalPixels DESC;',
+        'SET @r=0; UPDATE Users SET ranking= @r:= (@r + 1) ORDER BY totalPixels DESC;',
       );
       await sequelize.query(
         // eslint-disable-next-line max-len
-        'SET @r=0; UPDATE Users SET dailyRanking= @r:= (@r + 1) WHERE dailyTotalPixels IS NOT NULL ORDER BY dailyTotalPixels DESC;',
+        'SET @r=0; UPDATE Users SET dailyRanking= @r:= (@r + 1) ORDER BY dailyTotalPixels DESC;',
       );
     } else {
       logger.info('Get pixel rankings from SQL');
