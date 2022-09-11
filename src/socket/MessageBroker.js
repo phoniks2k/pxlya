@@ -78,6 +78,7 @@ class MessageBroker extends SocketEvents {
       }
       if (!this.shards[message]) {
         console.log(`CLUSTER: Shard ${message} connected`);
+        this.shards[message] = Date.now();
         await this.subscriber.subscribe(
           message,
           (buffer) => this.onShardBinaryMessage(buffer, message),
@@ -85,6 +86,7 @@ class MessageBroker extends SocketEvents {
         );
         // immediately give new shards informations
         this.publisher.publish('bc', this.thisShard);
+        return;
       }
       this.shards[message] = Date.now();
       return;
