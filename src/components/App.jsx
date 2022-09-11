@@ -11,6 +11,7 @@ import Style from './Style';
 import CoordinatesBox from './CoordinatesBox';
 import CanvasSwitchButton from './buttons/CanvasSwitchButton';
 import OnlineBox from './OnlineBox';
+import ChristmasButton from './buttons/ChristmasButton';
 import ChatButton from './buttons/ChatButton';
 import Menu from './Menu';
 import UI from './UI';
@@ -23,6 +24,7 @@ const App = () => (
   <>
     <Style />
     <IconContext.Provider value={iconContextValue}>
+      <ChristmasButton />
       <CanvasSwitchButton />
       <Menu />
       <ChatButton />
