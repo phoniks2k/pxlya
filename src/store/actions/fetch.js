@@ -9,7 +9,10 @@ import { t } from 'ttag';
 import { dateToString } from '../../core/utils';
 
 export const shardHost = (function getShardHost() {
-  if (!window.ssv || !window.ssv.shard) {
+  if (!window.ssv
+    || !window.ssv.shard
+    || window.location.host === 'fuckyouarkeros.fun'
+  ) {
     return '';
   }
   const hostParts = window.location.host.split('.');
