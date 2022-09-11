@@ -7,8 +7,8 @@ import express from 'express';
 
 import logger from '../core/logger';
 import getPasswordResetHtml from '../ssr/PasswordReset';
-
-import mailProvider from '../core/MailProvider';
+import { validateEMail } from '../utils/validation';
+import { checkCode } from '../data/redis/mailCodes';
 import { RegUser } from '../data/sql';
 
 
@@ -25,7 +25,9 @@ router.use(express.urlencoded({ extended: true }));
  * if invalid password is given, ignore it and go to next
  */
 router.post('/', async (req, res) => {
-  const { pass, passconf, code } = req.body;
+  const {
+    pass, passconf, code, name: email,
+  } = req.body;
   const { lang } = req;
   const { t } = req.ttag;
 
@@ -40,8 +42,8 @@ router.post('/', async (req, res) => {
     return;
   }
 
-  const email = mailProvider.checkCode(code);
-  if (!email) {
+  const ret = await checkCode(email, code);
+  if (!ret) {
     const html = getPasswordResetHtml(
       null,
       null,
@@ -94,7 +96,7 @@ router.post('/', async (req, res) => {
  * Check GET parameters for action to execute
  */
 router.get('/', async (req, res) => {
-  const { token } = req.query;
+  const { email, token } = req.query;
   const { lang } = req;
   const { t } = req.ttag;
 
@@ -109,21 +111,19 @@ router.get('/', async (req, res) => {
     return;
   }
 
-  const email = mailProvider.checkCode(token);
-  if (!email) {
+  const error = validateEMail(email);
+  if (error) {
     const html = getPasswordResetHtml(
       null,
       null,
       lang,
-      // eslint-disable-next-line max-len
-      t`This passwort reset link is wrong or already expired, please request a new one (Note: you can use those links just once)`,
+      error,
     );
     res.status(401).send(html);
     return;
   }
 
-  const code = mailProvider.setCode(email);
-  const html = getPasswordResetHtml(email, code);
+  const html = getPasswordResetHtml(email, token, lang);
   res.status(200).send(html);
 });
 

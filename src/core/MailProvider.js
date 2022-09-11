@@ -99,7 +99,7 @@ export class MailProvider {
   postPasswdResetMail(to, ip, host, lang, code) {
     const { t } = getTTag(lang);
     logger.info(`Sending Password reset mail to ${to}`);
-    const restoreUrl = `${host}/reset_password?token=${code}`;
+    const restoreUrl = `${host}/reset_password?token=${code}&email=${encodeURIComponent(to)}`;
     const subject = t`You forgot your password for PixelPlanet? Get a new one here`;
     const html = `<em>${t`Hello`}</em>,<br />
       ${t`You requested to get a new password. You can change your password within the next 30min here: `} <a href="${restoreUrl}">${t`Reset Password`}</a>. ${t`Or by copying following url:`}<br />${restoreUrl}\n<br />

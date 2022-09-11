@@ -61,6 +61,7 @@ export default function getPasswordResetHtml(name, code, lang, message = null) {
               style="max-width:35em"
             />
             <input type="hidden" name="code" value=${code} />
+            <input type="hidden" name="name" value=${name} />
             <button type="submit" name="submit">${t`Submit`}</button>
           </form>
         </body>
