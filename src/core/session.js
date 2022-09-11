@@ -19,6 +19,8 @@ const middlewareCache = {};
 
 export default (req, res, next) => {
   const domain = getHostFromRequest(req, false, true);
+  console.log('THISHTISTHIST', domain);
+  console.log(req.headers);
   let session = middlewareCache[domain];
   if (!session) {
     session = expressSession({
