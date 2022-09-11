@@ -42,7 +42,7 @@ function generateMainPage(req) {
   const ssvR = {
     ...ssv,
     shard: (host.startsWith(`${socketEvents.thisShard}.`))
-      ? '' : socketEvents.getLowestActiveShard(),
+      ? null : socketEvents.getLowestActiveShard(),
     lang: lang === 'default' ? 'en' : lang,
   };
   const scripts = (assets[`client-${lang}`])

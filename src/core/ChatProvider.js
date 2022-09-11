@@ -74,7 +74,7 @@ export class ChatProvider {
       },
     ];
     this.mutedCountries = [];
-    this.chatMessageBuffer = new ChatMessageBuffer();
+    this.chatMessageBuffer = new ChatMessageBuffer(socketEvents);
     this.clearOldMessages = this.clearOldMessages.bind(this);
 
     socketEvents.on('recvChatMessage', async (user, message, channelId) => {
@@ -503,32 +503,8 @@ export class ChatProvider {
     return null;
   }
 
-  broadcastChatMessage(
-    name,
-    message,
-    channelId,
-    id,
-    country = 'xx',
-    sendapi = true,
-  ) {
-    if (message.length > 250) {
-      return;
-    }
-    this.chatMessageBuffer.addMessage(
-      name,
-      message,
-      channelId,
-      id,
-      country,
-    );
-    socketEvents.broadcastChatMessage(
-      name,
-      message,
-      channelId,
-      id,
-      country,
-      sendapi,
-    );
+  broadcastChatMessage(...args) {
+    return this.chatMessageBuffer.broadcastChatMessage(...args);
   }
 
   static async checkIfMuted(uid) {

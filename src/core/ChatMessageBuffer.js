@@ -11,12 +11,15 @@ import { Message, Channel } from '../data/sql';
 const MAX_BUFFER_TIME = 120000;
 
 class ChatMessageBuffer {
-  constructor() {
+  constructor(socketEvents) {
     this.buffer = new Map();
     this.timestamps = new Map();
 
     this.cleanBuffer = this.cleanBuffer.bind(this);
     this.cleanLoop = setInterval(this.cleanBuffer, 3 * 60 * 1000);
+    this.addMessage = this.addMessage.bind(this);
+    this.socketEvents = socketEvents;
+    socketEvents.on('chatMessage', this.addMessage);
   }
 
   async getMessages(cid, limit = 30) {
@@ -50,13 +53,17 @@ class ChatMessageBuffer {
     );
   }
 
-  async addMessage(
+  async broadcastChatMessage(
     name,
     message,
     cid,
     uid,
-    flag,
+    flag = 'xx',
+    sendapi = true,
   ) {
+    if (message.length > 200) {
+      return;
+    }
     Message.create({
       name,
       flag,
@@ -71,6 +78,27 @@ class ChatMessageBuffer {
         id: cid,
       },
     });
+    /*
+     * goes through socket events and then comes
+     * back at addMessage
+     */
+    this.socketEvents.broadcastChatMessage(
+      name,
+      message,
+      cid,
+      uid,
+      flag,
+      sendapi,
+    );
+  }
+
+  async addMessage(
+    name,
+    message,
+    cid,
+    uid,
+    flag,
+  ) {
     const messages = this.buffer.get(cid);
     if (messages) {
       messages.push([

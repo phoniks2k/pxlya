@@ -33,17 +33,19 @@ class Ranks {
   }
 
   async updateRanking() {
-    logger.info('Update pixel rankings');
     if (socketEvents.amIImportant()) {
+      logger.info('Update pixel rankings in SQL');
       // recalculate ranking column
       await sequelize.query(
         // eslint-disable-next-line max-len
-        'SET @r=0; UPDATE Users SET ranking= @r:= (@r + 1) ORDER BY totalPixels DESC;',
+        'SET @r=0; UPDATE Users SET ranking= @r:= (@r + 1) WHERE totalPixels IS NOT NULL ORDER BY totalPixels DESC;',
       );
       await sequelize.query(
         // eslint-disable-next-line max-len
-        'SET @r=0; UPDATE Users SET dailyRanking= @r:= (@r + 1) ORDER BY dailyTotalPixels DESC;',
+        'SET @r=0; UPDATE Users SET dailyRanking= @r:= (@r + 1) WHERE dailyTotalPixels IS NOT NULL ORDER BY dailyTotalPixels DESC;',
       );
+    } else {
+      logger.info('Get pixel rankings from SQL');
     }
     // populate dictionaries
     const ranking = await RegUser.findAll({
@@ -64,7 +66,9 @@ class Ranks {
         ],
       ],
       limit: 100,
-      where: { id: { [Sequelize.Op.notIn]: [51, 1] } },
+      where: {
+        ranking: { [Sequelize.Op.not]: null },
+      },
       order: ['ranking'],
       raw: true,
     });
@@ -86,7 +90,9 @@ class Ranks {
         ],
       ],
       limit: 100,
-      where: { id: { [Sequelize.Op.notIn]: [51, 1] } },
+      where: {
+        dailyRanking: { [Sequelize.Op.not]: null },
+      },
       order: ['dailyRanking'],
       raw: true,
     });
