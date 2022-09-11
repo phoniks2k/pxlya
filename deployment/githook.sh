@@ -30,6 +30,24 @@ npm_reinstall () {
     npm install
 }
 
+copy () {
+  local TARGETDIR="${1}"
+  local REINSTALL="${2}"
+  cp -r dist/*.js "${TARGETDIR}/"
+  cp -r dist/workers "${TARGETDIR}/"
+  rm -rf "${TARGETDIR}/public/assets"
+  cp -r dist/public "${TARGETDIR}/"
+  cp -r dist/captchaFonts "${TARGETDIR}/"
+  cp -r dist/package.json "${TARGETDIR}/"
+  cp -r dist/assets.json "${TARGETDIR}/"
+  cp -r dist/styleassets.json "${TARGETDIR}/"
+  mkdir -p "${TARGETDIR}/log"
+  cd "${TARGETDIR}"
+  [ $REINSTALL -eq 0 ] && npm_reinstall
+  pm2 start ecosystem.yml
+  cd -
+}
+
 while read oldrev newrev refname
 do
     GIT_WORK_TREE="$BUILDDIR" GIT_DIR="${BUILDDIR}/.git" git fetch --all
@@ -46,20 +64,10 @@ do
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         npm run build
         echo "---RESTARTING CANVAS---"
-        cp -r dist/*.js "${PFOLDER}/"
-        cp -r dist/workers "${PFOLDER}/"
-        rm -rf "${PFOLDER}/public/assets"
-        cp -r dist/public "${PFOLDER}/"
-        cp -r dist/captchaFonts "${PFOLDER}/"
-        cp -r dist/package.json "${PFOLDER}/"
-        cp -r dist/assets.json "${PFOLDER}/"
-        cp -r dist/styleassets.json "${PFOLDER}/"
-        mkdir -p "${PFOLDER}/log"
-        cd "$PFOLDER"
         pm2 stop ppfun-server
         pm2 stop ppfun-backups
-        [ $DO_REINSTALL -eq 0 ] && npm_reinstall
-        pm2 start ecosystem.yml
+        copy "${PFOLDER}" "${DO_REINSTALL}"
+        cd "$PFOLDER"
         pm2 start ecosystem-backup.yml
     else
         echo "---UPDATING REPO ON DEV SERVER---"
@@ -73,17 +81,6 @@ do
         [ $DO_REINSTALL -eq 0 ] && npm_reinstall
         nice -n 19 npm run build:dev
         echo "---RESTARTING CANVAS---"
-        cp -r dist/*.js "${DEVFOLDER}/"
-        cp -r dist/workers "${DEVFOLDER}/"
-        rm -rf "${DEVFOLDER}/public/assets"
-        cp -r dist/public "${DEVFOLDER}/"
-        cp -r dist/captchaFonts "${DEVFOLDER}/"
-        cp -r dist/package.json "${DEVFOLDER}/"
-        cp -r dist/assets.json "${DEVFOLDER}/"
-        cp -r dist/styleassets.json "${DEVFOLDER}/"
-        mkdir -p "${PFOLDER}/log"
-        cd "$DEVFOLDER"
-        [ $DO_REINSTALL -eq 0 ] && npm_reinstall
-        pm2 start ecosystem.yml
+        copy "${DEVFOLDER}" "${DO_REINSTALL}"
     fi
 done
