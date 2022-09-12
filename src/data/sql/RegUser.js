@@ -216,7 +216,7 @@ const incrementLoop = async () => {
     pushLoop = null;
     return;
   }
-  const queue = incrementQueue;
+  let queue = incrementQueue;
   incrementQueue = {};
   const orderedCnts = {};
   idKeys.forEach((id) => {
@@ -228,14 +228,16 @@ const incrementLoop = async () => {
       orderedCnts[cnt] = [id];
     }
   });
-  Object.keys(orderedCnts).forEach(async (cnt) => {
-    const ids = orderedCnts[cnt];
+  queue = Object.keys(orderedCnts);
+  for (let u = 0; u < queue.length; u += 1) {
+    const by = queue[u];
+    const id = orderedCnts[by];
     try {
       // eslint-disable-next-line no-await-in-loop
       await RegUser.increment(['totalPixels', 'dailyTotalPixels'], {
-        by: cnt,
+        by,
         where: {
-          id: ids,
+          id,
         },
         silent: true,
         raw: true,
@@ -243,7 +245,7 @@ const incrementLoop = async () => {
     } catch (err) {
       logger.warn(`Error on pixel increment: ${err.message}`);
     }
-  });
+  }
   pushLoop = setTimeout(incrementLoop, 250);
 };
 export async function incrementPixelcount(id, by) {
