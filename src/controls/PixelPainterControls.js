@@ -225,6 +225,17 @@ class PixelPlainterControls {
     const { canvasSize } = state.canvas;
     const [x, y] = cell;
 
+    // apu link
+    // 5275_-8713
+    // 5398_-8614
+    if (x > 5275 && y > -8713 && x < 5398 && y < -8614) {
+      // eslint-disable-next-line eqeqeq
+      if (state.canvas.canvasId == 0) {
+        window.location.href = 'https://files.catbox.moe/gh2wtr.mp4';
+        return;
+      }
+    }
+
     const maxCoords = canvasSize / 2;
     if (x < -maxCoords || x >= maxCoords || y < -maxCoords || y >= maxCoords) {
       return;
