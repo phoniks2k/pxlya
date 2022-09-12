@@ -180,19 +180,10 @@ class User {
   }
 
   incrementPixelcount(amount = 1) {
-    if (!this.id) {
-      return;
+    const { id } = this;
+    if (id) {
+      incrementPixelcount(id, amount);
     }
-    /*
-     * incrementation gets queued to be processed
-     * in batches
-     */
-    if (!this.queuedPxlIncrement) {
-      this.queuedPxlIncrement = amount;
-      incrementPixelcount(this);
-      return;
-    }
-    this.queuedPxlIncrement += amount;
   }
 
   async getTotalPixels() {
