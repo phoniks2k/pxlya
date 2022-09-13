@@ -42,7 +42,12 @@ const scripts = {
         ...uids.map((a) => ((typeof a === 'string') ? a : a.toString())),
       ];
     },
-    transformReply(arr) { return arr.map((r) => Number(r)); },
+    transformReply(arr) {
+      return arr.map((r) => {
+        const rank = Number(r);
+        return rank || null;
+      });
+    },
   }),
 };
 

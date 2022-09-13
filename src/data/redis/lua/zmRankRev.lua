@@ -9,8 +9,9 @@ local ret = {}
 for c = 1,#ARGV do
   local rank = redis.call('zrevrank', KEYS[1], ARGV[c])
   if not rank then
-    rank = 0
+    ret[c] = 0
+  else
+    ret[c] = rank + 1
   end
-  ret[c] = rank
 end
 return ret

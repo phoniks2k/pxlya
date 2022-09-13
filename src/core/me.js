@@ -10,7 +10,7 @@ import chatProvider from './ChatProvider';
 
 
 export default async function getMe(user, lang = 'default') {
-  const userdata = user.getUserData();
+  const userdata = await user.getUserData();
   // sanitize data
   const {
     name, mailVerified,

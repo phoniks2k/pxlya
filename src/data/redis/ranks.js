@@ -74,7 +74,7 @@ export async function getRanks(daily, start, amount) {
       [valueName]: ranks[i].score,
       [rankName]: i + 1,
       [oValueName]: oScores[i],
-      [oRankName]: oRanks[i] + 1,
+      [oRankName]: oRanks[i],
     };
     ret.push(uob);
   }
