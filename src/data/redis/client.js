@@ -16,6 +16,13 @@ const scripts = {
       return args.map((a) => ((typeof a === 'string') ? a : a.toString()));
     },
   }),
+  allowedChat: defineScript({
+    NUMBER_OF_KEYS: 3,
+    SCRIPT: fs.readFileSync('./workers/lua/allowedChat.lua'),
+    transformArguments(...args) {
+      return args.map((a) => ((typeof a === 'string') ? a : a.toString()));
+    },
+  }),
 };
 
 const client = createClient(REDIS_URL.startsWith('redis://')
