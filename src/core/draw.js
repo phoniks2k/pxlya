@@ -12,7 +12,7 @@ import {
   setPixelByOffset,
   setPixelByCoords,
 } from './setPixel';
-import rankings from './ranking';
+import rankings from './Ranks';
 import canvases from './canvases';
 
 import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
@@ -144,6 +144,7 @@ export async function drawByOffsets(
     /*
      * validate pixels
      */
+    let ranked = canvas.ranked && user.id && pcd;
     for (let u = 0; u < pixels.length; u += 1) {
       const [offset, color] = pixels[u];
       pxlOffsets.push(offset);
@@ -180,15 +181,18 @@ export async function drawByOffsets(
         throw new Error(8);
       }
 
+      /* dont rank antarctica */
       // eslint-disable-next-line eqeqeq
-      if (canvas.ranked && (canvasId != 0 || y < 14450) && pcd) {
-        pixels[u].push(true);
+      if (canvasId == 0 && y > 14450) {
+        ranked = false;
       }
     }
 
     [retCode, pxlCnt, wait, coolDown, needProxycheck] = await allowPlace(
       ip,
       user.id,
+      user.country,
+      ranked,
       canvasId,
       i, j,
       clrIgnore,
@@ -198,11 +202,12 @@ export async function drawByOffsets(
     );
 
     for (let u = 0; u < pxlCnt; u += 1) {
-      const [offset, color, ranked] = pixels[u];
+      const [offset, color] = pixels[u];
       setPixelByOffset(canvasId, color, i, j, offset);
-      if (ranked) {
-        rankedPxlCnt += 1;
-      }
+    }
+
+    if (ranked) {
+      rankedPxlCnt = pxlCnt;
     }
 
     const duration = Date.now() - startTime;
@@ -217,10 +222,6 @@ export async function drawByOffsets(
     if (Number.isNaN(retCode)) {
       throw e;
     }
-  }
-
-  if (rankedPxlCnt) {
-    user.incrementPixelcount(rankedPxlCnt);
   }
 
   if (retCode !== 13) {

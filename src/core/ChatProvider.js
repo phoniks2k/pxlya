@@ -394,7 +394,6 @@ export class ChatProvider {
         user.ipSub,
         country,
       );
-      console.log(allowed, needProxycheck, name, id, country);
       if (allowed) {
         logger.info(
           `${name} / ${user.ip} tried to send chat message but is not allowed`,

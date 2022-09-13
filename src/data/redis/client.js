@@ -10,11 +10,12 @@ import { REDIS_URL, SHARD_NAME } from '../../core/config';
 
 const scripts = {
   placePxl: defineScript({
-    NUMBER_OF_KEYS: 5,
+    NUMBER_OF_KEYS: 8,
     SCRIPT: fs.readFileSync('./workers/lua/placePixel.lua'),
     transformArguments(...args) {
       return args.map((a) => ((typeof a === 'string') ? a : a.toString()));
     },
+    transformReply(arr) { return arr.map((r) => Number(r)); },
   }),
   allowedChat: defineScript({
     NUMBER_OF_KEYS: 3,
@@ -22,6 +23,26 @@ const scripts = {
     transformArguments(...args) {
       return args.map((a) => ((typeof a === 'string') ? a : a.toString()));
     },
+    transformReply(arr) { return arr.map((r) => Number(r)); },
+  }),
+  getUserRanks: defineScript({
+    NUMBER_OF_KEYS: 2,
+    SCRIPT: fs.readFileSync('./workers/lua/getUserRanks.lua'),
+    transformArguments(...args) {
+      return args.map((a) => ((typeof a === 'string') ? a : a.toString()));
+    },
+    transformReply(arr) { return arr.map((r) => Number(r)); },
+  }),
+  zmRankRev: defineScript({
+    NUMBER_OF_KEYS: 1,
+    SCRIPT: fs.readFileSync('./workers/lua/zmRankRev.lua'),
+    transformArguments(key, uids) {
+      return [
+        key,
+        ...uids.map((a) => ((typeof a === 'string') ? a : a.toString())),
+      ];
+    },
+    transformReply(arr) { return arr.map((r) => Number(r)); },
   }),
 };
 

@@ -10,8 +10,8 @@ import { QueryTypes, Utils } from 'sequelize';
 
 import sequelize from './sql/sequelize';
 import { RegUser, Channel, UserBlock } from './sql';
-import { incrementPixelcount } from './sql/RegUser';
 import { setCoolDown, getCoolDown } from './redis/cooldown';
+import { getUserRanks } from './redis/ranks';
 import { getIPv6Subnet } from '../utils/ip';
 import { ADMIN_IDS } from '../core/config';
 
@@ -50,7 +50,6 @@ export const regUserQueryInclude = [{
 class User {
   id; // string
   ip; // string
-  wait; // ?number
   regUser; // Object
   channels; // Object
   blocked; // Array
@@ -179,13 +178,6 @@ class User {
     return getCoolDown(this.ipSub, this.id, canvasId);
   }
 
-  incrementPixelcount(amount = 1) {
-    const { id } = this;
-    if (id) {
-      incrementPixelcount(id, amount);
-    }
-  }
-
   async getTotalPixels() {
     const { id } = this;
     if (!id) return 0;
@@ -210,6 +202,7 @@ class User {
   }
 
   async setCountry(country) {
+    this.country = country;
     if (this.regUser && this.regUser.flag !== country) {
       this.regUser.update({
         flag: country,
@@ -229,7 +222,7 @@ class User {
     return true;
   }
 
-  getUserData() {
+  async getUserData() {
     const {
       id,
       userlvl,
@@ -248,23 +241,25 @@ class User {
         name: null,
         mailVerified: false,
         blockDm: false,
-        totalPixels: 0,
-        dailyTotalPixels: 0,
-        ranking: null,
-        dailyRanking: null,
         mailreg: false,
       };
     }
     const { regUser } = this;
+    const [
+      totalPixels,
+      dailyTotalPixels,
+      ranking,
+      dailyRanking,
+    ] = await getUserRanks(id);
     return {
       ...data,
       name: regUser.name,
       mailVerified: regUser.mailVerified,
       blockDm: regUser.blockDm,
-      totalPixels: regUser.totalPixels,
-      dailyTotalPixels: regUser.dailyTotalPixels,
-      ranking: regUser.ranking,
-      dailyRanking: regUser.dailyRanking,
+      totalPixels,
+      dailyTotalPixels,
+      ranking,
+      dailyRanking,
       mailreg: !!(regUser.password),
     };
   }

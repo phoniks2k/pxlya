@@ -7,7 +7,6 @@
 
 import { DataTypes, QueryTypes } from 'sequelize';
 
-import logger from '../../core/logger';
 import sequelize from './sequelize';
 import { generateHash } from '../../utils/hash';
 
@@ -39,28 +38,6 @@ const RegUser = sequelize.define('User', {
   // null if external oauth authentification
   password: {
     type: DataTypes.CHAR(60),
-    allowNull: true,
-  },
-
-  totalPixels: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: false,
-    defaultValue: 0,
-  },
-
-  dailyTotalPixels: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: false,
-    defaultValue: 0,
-  },
-
-  ranking: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    allowNull: true,
-  },
-
-  dailyRanking: {
-    type: DataTypes.INTEGER.UNSIGNED,
     allowNull: true,
   },
 
@@ -202,61 +179,6 @@ export async function getNamesToIds(ids) {
     // nothing
   }
   return idToNameMap;
-}
-
-/*
- * increment user pixelcount in batches sequentially
- * Queue directly accesses queuedPxlIncrement in user object
- */
-let incrementQueue = {};
-let pushLoop = null;
-const incrementLoop = async () => {
-  const idKeys = Object.keys(incrementQueue);
-  if (!idKeys.length) {
-    pushLoop = null;
-    return;
-  }
-  let queue = incrementQueue;
-  incrementQueue = {};
-  const orderedCnts = {};
-  idKeys.forEach((id) => {
-    const cnt = queue[id];
-    const cntArr = orderedCnts[cnt];
-    if (cntArr) {
-      cntArr.push(id);
-    } else {
-      orderedCnts[cnt] = [id];
-    }
-  });
-  queue = Object.keys(orderedCnts);
-  for (let u = 0; u < queue.length; u += 1) {
-    const by = queue[u];
-    const id = orderedCnts[by];
-    try {
-      // eslint-disable-next-line no-await-in-loop
-      await RegUser.increment(['totalPixels', 'dailyTotalPixels'], {
-        by,
-        where: {
-          id,
-        },
-        silent: true,
-        raw: true,
-      });
-    } catch (err) {
-      logger.warn(`Error on pixel increment: ${err.message}`);
-    }
-  }
-  pushLoop = setTimeout(incrementLoop, 250);
-};
-export async function incrementPixelcount(id, by) {
-  if (incrementQueue[id]) {
-    incrementQueue[id] += by;
-  } else {
-    incrementQueue[id] = by;
-  }
-  if (!pushLoop) {
-    pushLoop = setTimeout(incrementLoop, 0);
-  }
 }
 
 export default RegUser;

@@ -9,7 +9,7 @@ import http from 'http';
 
 import forceGC from './core/forceGC';
 import logger from './core/logger';
-import rankings from './core/ranking';
+import rankings from './core/Ranks';
 import sequelize from './data/sql/sequelize';
 import { connect as connectRedis } from './data/redis/client';
 import routes from './routes';

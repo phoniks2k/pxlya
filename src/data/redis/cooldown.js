@@ -5,15 +5,18 @@
 import client from './client';
 import { PREFIX as CAPTCHA_PREFIX } from './captcha';
 import { PREFIX as ALLOWED_PREFIX } from './isAllowedCache';
+import { RANKED_KEY, DAILY_RANKED_KEY, DAILY_CRANKED_KEY } from './ranks';
 import { CAPTCHA_TIME } from '../../core/config';
 
 const PREFIX = 'cd';
 
 /*
  * checks how many of the given pixels can be set,
- * sets user cooldown and returns the number of pixels to set
+ * sets user cooldown, increments pixelcount
+ * and returns the number of pixels to set
  * @param ip ip of request
  * @param id userId
+ * @param ranked boolean if increasing rank
  * @param clrIgnore, bcd, pcd, cds incormations about canvas
  * @param i, j chunk coordinates
  * @param pxls Array with offsets of pixels
@@ -22,6 +25,8 @@ const PREFIX = 'cd';
 export default function allowPlace(
   ip,
   id,
+  country,
+  ranked,
   canvasId,
   i, j,
   clrIgnore,
@@ -35,9 +40,13 @@ export default function allowPlace(
   const ipCdKey = `${PREFIX}:${canvasId}:ip:${ip}`;
   const idCdKey = (id) ? `${PREFIX}:${canvasId}:id:${id}` : 'nope';
   const chunkKey = `ch:${canvasId}:${i}:${j}`;
+  const cc = country || 'xx';
+  const rankset = (ranked) ? RANKED_KEY : 'nope';
+  const dailyset = (ranked) ? DAILY_RANKED_KEY : 'nope';
   return client.placePxl(
-    isalKey, captKey, ipCdKey, idCdKey, chunkKey,
-    clrIgnore, bcd, pcd, cds,
+    // eslint-disable-next-line max-len
+    isalKey, captKey, ipCdKey, idCdKey, chunkKey, rankset, dailyset, DAILY_CRANKED_KEY,
+    clrIgnore, bcd, pcd, cds, id, cc,
     ...pxls,
   );
 }

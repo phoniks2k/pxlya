@@ -1,18 +1,26 @@
--- Checking requirements and calculating cooldown of user wthin
--- redis itself. Does not set pixels directly. Pixels are set in batches
+-- Checking requirements for placing pixels, calculating cooldown
+-- of user and incrementing pixel counts wthin redis itself.
+-- Does not set pixels directly. Pixels are set in batches
 -- in RedisCanvas.js
--- This script will get copied into the dist/workers directory from webpack
 -- Keys: 
 --   isAlloweed: 'isal:ip' (proxycheck, blacklist, whitelist)
---   isHuman 'human:ip' (captcha needed when expired)
+--   isHuman 'human:ip' captcha needed when expired,
+--     'nope' if no captcha should be checked
 --   ipCD: 'cd:canvasId:ip:ip'
 --   uCD: 'cd:canvasId:id:userId'
+--     'nope' if not logged in
 --   chunk: 'ch:canvasId:i:j'
+--   rankset: 'rank' sorted set of pixelcount
+--     'nope' if not increasing ranks
+--   dailyset: 'rankd' sorted set of daily pixelcount
+--   countryset: sorted set for country stats
 -- Args:
 --   clrIgnore: integer number of what colors are considered unset
 --   bcd: number baseColldown (fixed to cdFactor and 0 if admin)
 --   pcd: number set pixel cooldown  (fixed to cdFactor and 0 if admin)
 --   cds: max cooldown of canvas
+--   userId: '0' if not logged in
+--   cc country code
 --   off1, chonk offset of first pixel
 --   off2, chonk offset of second pixel
 --   ..., infinie pixels possible
@@ -21,7 +29,7 @@
 --     1: pixel return status code (check ui/placePixel.js)
 --     2: amount of successfully set pixels
 --     3: total cooldown of user
---     4: info about placed pixel cooldown (addition of last pixel)
+--     4: added cooldown of last pixel
 --     5: if we have to update isAllowed( proxycheck)
 --   }
 local ret = {0, 0, 0, 0, 0}
@@ -69,9 +77,8 @@ local cli = tonumber(ARGV[1])
 local bcd = tonumber(ARGV[2])
 local pcd = tonumber(ARGV[3])
 local cds = tonumber(ARGV[4])
-for c = 5,#ARGV do
+for c = 7,#ARGV do
   local off = tonumber(ARGV[c]) * 8
-  local clr = tonumber(ARGV[c + 1])
   -- get color of pixel on canvas
   local sclr = redis.call('bitfield', KEYS[5], 'get', 'u8', off)
   sclr = sclr[1]
@@ -88,19 +95,31 @@ for c = 5,#ARGV do
   end
   cd = cd + pxlcd
   if cd > cds then
+    -- pixelstack used up
+    -- report difference as last cd
     cd = cd - pxlcd
     pxlcd = cds - cd - pxlcd
-    -- pixelstack used up
     ret[1] = 9
     break
   end
   pxlcnt = pxlcnt + 1
 end
 
-if pxlcnt > 0 and cd > 0 then
-  redis.call('set', KEYS[3], '', 'px', cd)
-  if KEYS[4] ~= "nope" then
-    redis.call('set', KEYS[4], '', 'px', cd)
+if pxlcnt > 0 then
+  -- set cooldown
+  if cd > 0 then
+    redis.call('set', KEYS[3], '', 'px', cd)
+    if KEYS[4] ~= "nope" then
+      redis.call('set', KEYS[4], '', 'px', cd)
+    end
+  end
+  -- increment pixelcount
+  if KEYS[6] ~= 'nope' then
+    redis.call('zincrby', KEYS[6], pxlcnt, ARGV[5])
+    redis.call('zincrby', KEYS[7], pxlcnt, ARGV[5])
+    if ARGV[6] ~= 'xx' then
+      redis.call('zincrby', KEYS[8], pxlcnt, ARGV[6])
+    end
   end
 end
 
