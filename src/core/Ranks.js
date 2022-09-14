@@ -17,22 +17,28 @@ import { MINUTE } from './constants';
 import { DailyCron } from '../utils/cron';
 
 class Ranks {
-  ranks; // Array
-
   constructor() {
-    this.updateRanking = this.updateRanking.bind(this);
     this.resetDailyRanking = this.resetDailyRanking.bind(this);
-    this.prevTop = [];
     this.ranks = {
       dailyRanking: [],
       ranking: [],
+      prevTop: [],
     };
+    /*
+     * we go through socketEvents for sharding
+     */
+    socketEvents.on('rankingListUpdate', (rankings) => {
+      this.ranks = {
+        ...this.ranks,
+        ...rankings,
+      };
+    });
   }
 
   async initialize() {
-    this.prevTop = await loadDailyTop();
-    await this.updateRanking();
-    setInterval(this.updateRanking, 1 * MINUTE);
+    this.ranks.prevTop = await loadDailyTop();
+    await Ranks.updateRanking();
+    setInterval(Ranks.updateRanking, 5 * MINUTE);
     DailyCron.hook(this.resetDailyRanking);
   }
 
@@ -74,11 +80,13 @@ class Ranks {
     return rawRanks;
   }
 
-  async updateRanking() {
-    if (socketEvents.amIImportant()) {
-      // TODO do this only in main shard
+  static async updateRanking() {
+    /*
+     * only main shard updates and sends it to others
+     */
+    if (!socketEvents.amIImportant()) {
+      return;
     }
-    // populate dictionaries
     const ranking = await Ranks.populateRanking(
       await getRanks(
         false,
@@ -91,18 +99,21 @@ class Ranks {
         1,
         100,
       ));
-    this.ranks.ranking = ranking;
-    this.ranks.dailyRanking = dailyRanking;
+    socketEvents.rankingListUpdate({ ranking, dailyRanking });
   }
 
   async resetDailyRanking() {
+    /*
+     * only main shard updates and sends it to others
+     */
     if (!socketEvents.amIImportant()) {
       return;
     }
-    this.prevTop = await saveDailyTop(this.ranks.dailyRanking);
+    const prevTop = await saveDailyTop(this.ranks.dailyRanking);
+    socketEvents.rankingListUpdate({ prevTop });
     logger.info('Resetting Daily Ranking');
     await resetDailyRanks();
-    await this.updateRanking();
+    await Ranks.updateRanking();
   }
 }
 

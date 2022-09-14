@@ -70,8 +70,8 @@ class MessageBroker extends SocketEvents {
        * straight sent over websocket
        */
       if (~comma) {
-        console.log('CLUSTER: Broadcast', message);
         const key = message.slice(message.indexOf(':') + 1, comma);
+        console.log('CLUSTER: Broadcast', key);
         const val = JSON.parse(message.slice(comma + 1));
         super.emit(key, ...val);
         return;
@@ -181,6 +181,9 @@ class MessageBroker extends SocketEvents {
     this.onlineCounter = newCounter;
   }
 
+  /*
+   * intercept all events and distribute them to others
+   */
   emit(key, ...args) {
     super.emit(key, ...args);
     if (key === 'recvChatMessage') {

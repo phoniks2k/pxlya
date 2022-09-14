@@ -184,6 +184,18 @@ class SocketEvents extends EventEmitter {
   }
 
   /*
+   * broadcast ranking list updates
+   * @param {
+   *   dailyRanking?: daily pixel raking top 100,
+   *   ranking?: total pixel ranking top 100,
+   *   prevTop?: top 10 of the previous day,
+   * }
+   */
+  rankingListUpdate(rankings) {
+    this.emit('rankingListUpdate', rankings);
+  }
+
+  /*
    * reload user on websocket to get changes
    */
   reloadUser(name) {
