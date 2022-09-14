@@ -66,20 +66,20 @@ const Rankings = () => {
           {(orderDaily)
             ? totalDailyRanking.map((rank) => (
               <tr key={rank.name}>
-                <td>{rank.dailyRanking}</td>
+                <td>{rank.dr}</td>
                 <td><span>{rank.name}</span></td>
-                <td>{rank.dailyTotalPixels}</td>
-                <td>{rank.ranking}</td>
-                <td>{rank.totalPixels}</td>
+                <td>{rank.dt}</td>
+                <td>{rank.r}</td>
+                <td>{rank.t}</td>
               </tr>
             ))
             : totalRanking.map((rank) => (
               <tr key={rank.name}>
-                <td>{rank.ranking}</td>
+                <td>{rank.r}</td>
                 <td><span>{rank.name}</span></td>
-                <td>{rank.totalPixels}</td>
-                <td>{rank.dailyRanking}</td>
-                <td>{rank.dailyTotalPixels}</td>
+                <td>{rank.t}</td>
+                <td>{rank.dr}</td>
+                <td>{rank.dt}</td>
               </tr>
             ))}
         </tbody>

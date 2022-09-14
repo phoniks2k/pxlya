@@ -43,18 +43,18 @@ export async function getRanks(daily, start, amount) {
   let oRankName;
   if (daily) {
     key = DAILY_RANKED_KEY;
-    valueName = 'dailyTotalPixels';
-    rankName = 'dailyRanking';
+    valueName = 'dt';
+    rankName = 'dr';
     oKey = RANKED_KEY;
-    oValueName = 'totalPixels';
-    oRankName = 'ranking';
+    oValueName = 't';
+    oRankName = 'r';
   } else {
     key = RANKED_KEY;
-    valueName = 'totalPixels';
-    rankName = 'ranking';
+    valueName = 't';
+    rankName = 'r';
     oKey = DAILY_RANKED_KEY;
-    oValueName = 'dailyTotalPixels';
-    oRankName = 'dailyRanking';
+    oValueName = 'dt';
+    oRankName = 'dr';
   }
   /* returns { value: uid, score: pixelCnt } */
   const ranks = await client.zRangeWithScores(key, start, start + amount, {
