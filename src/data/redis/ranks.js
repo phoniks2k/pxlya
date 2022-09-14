@@ -87,10 +87,8 @@ export async function getRanks(daily, start, amount) {
  */
 export async function resetDailyRanks() {
   // store top 10
-  console.log('DAILYREDIS SAVE TOP 10');
-  await client.zRangeWithScores(PREV_DAY_TOP_KEY, DAILY_RANKED_KEY, 0, 9, {
+  await client.zRangeStore(PREV_DAY_TOP_KEY, DAILY_RANKED_KEY, 0, 9, {
     REV: true,
-    WITHSCORES: true,
   });
   // store day
   const yesterday = new Date(Date.now() - 1000 * 3600 * 24);
@@ -100,7 +98,6 @@ export async function resetDailyRanks() {
   if (month < 10) month = `0${month}`;
   const year = yesterday.getUTCFullYear();
   const dateKey = `${year}${month}${day}`;
-  console.log('DAILYREDIS', dateKey);
   await client.zUnionStore(
     `${DAY_STATS_RANKS_KEY}:${dateKey}`,
     DAILY_RANKED_KEY,
@@ -110,7 +107,6 @@ export async function resetDailyRanks() {
     DAILY_CRANKED_KEY,
   );
   // reset daily counter
-  console.log('DAILYREDIS RESET');
   await client.del(DAILY_RANKED_KEY);
   await client.del(DAILY_CRANKED_KEY);
 }
