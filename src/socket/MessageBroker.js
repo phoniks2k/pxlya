@@ -215,6 +215,14 @@ class MessageBroker extends SocketEvents {
     super.emit('chunkUpdate', canvasId, [i, j]);
   }
 
+  setCoolDownFactor(fac) {
+    if (this.amIImportant()) {
+      this.emit('setCoolDownFactor', fac);
+    } else {
+      super.emit('setCoolDownFactor', fac);
+    }
+  }
+
   broadcastChunkUpdate(
     canvasId,
     chunk,

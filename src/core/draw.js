@@ -1,5 +1,5 @@
 /*
- * draw pixel on canvas
+ * draw pixel on canvas by user
  */
 
 import {
@@ -8,6 +8,7 @@ import {
 import logger, { pixelLogger } from './logger';
 import RedisCanvas from '../data/redis/RedisCanvas';
 import allowPlace from '../data/redis/cooldown';
+import socketEvents from '../socket/socketEvents';
 import {
   setPixelByOffset,
   setPixelByCoords,
@@ -18,9 +19,9 @@ import canvases from './canvases';
 import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
 
 let coolDownFactor = 1;
-export function setCoolDownFactor(fac) {
-  coolDownFactor = fac;
-}
+socketEvents.on('setCoolDownFactor', (newFac) => {
+  coolDownFactor = newFac;
+});
 
 /*
  * IPs who are currently requesting pixels

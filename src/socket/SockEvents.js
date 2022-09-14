@@ -104,6 +104,15 @@ class SocketEvents extends EventEmitter {
   }
 
   /*
+   * set cooldownfactor
+   * (used by RpgEvent)
+   * @param fac factor by which cooldown changes globally
+   */
+  setCoolDownFactor(fac) {
+    this.emit('setCoolDownFactor', fac);
+  }
+
+  /*
    * broadcast chat message to all users in channel
    * @param name chatname
    * @param message Message to send

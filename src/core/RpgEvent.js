@@ -14,11 +14,11 @@ import {
   clearOldEvent,
   CANVAS_ID,
 } from '../data/redis/Event';
-import { setCoolDownFactor } from './draw';
 import Void from './Void';
 import { protectCanvasArea } from './Image';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE, EVENT_USER_NAME } from './constants';
+import socketEvents from '../socket/socketEvents';
 import chatProvider from './ChatProvider';
 import canvases from './canvases';
 
@@ -77,15 +77,16 @@ class RpgEvent {
   chatTimeout; // number
 
   constructor() {
-    this.eventState = -1;
-    this.eventCenterC = null;
-    this.void = null;
-    this.chatTimeout = 0;
     this.runEventLoop = this.runEventLoop.bind(this);
   }
 
-  setSuccess(success, save = true) {
+  setSuccess(success) {
     this.success = success;
+    setSuccess(success);
+    RpgEvent.setCoolDownFactorFromSuccess(success);
+  }
+
+  static setCoolDownFactorFromSuccess(success) {
     let fac = 1;
     switch (success) {
       case 1:
@@ -97,24 +98,31 @@ class RpgEvent {
       default:
         // nothing
     }
-    if (save) {
-      setSuccess(success);
-    }
-    setCoolDownFactor(fac);
+    socketEvents.setCoolDownFactor(fac);
   }
 
   async initialize() {
+    this.eventState = -1;
+    this.eventCenterC = null;
+    this.void = null;
+    this.chatTimeout = 0;
     const success = await getSuccess();
-    this.setSuccess(success, false);
-    let eventTimestamp = await nextEvent();
-    if (!eventTimestamp) {
-      eventTimestamp = await RpgEvent.setNextEvent();
+    this.success = success;
+    RpgEvent.setCoolDownFactorFromSuccess(success);
+    if (socketEvents.amIImportant()) {
+      let eventTimestamp = await nextEvent();
+      if (!eventTimestamp) {
+        eventTimestamp = await RpgEvent.setNextEvent();
+        await this.calcEventCenter();
+        const [x, y, w, h] = this.eventArea;
+        await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
+      }
+      this.eventTimestamp = eventTimestamp;
       await this.calcEventCenter();
-      const [x, y, w, h] = this.eventArea;
-      await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
+      logger.info('initialized Event');
+    } else {
+      logger.info('Loaded Event cooldown factor, but i am not running it');
     }
-    this.eventTimestamp = eventTimestamp;
-    await this.calcEventCenter();
     this.runEventLoop();
   }
 
@@ -181,6 +189,25 @@ class RpgEvent {
   }
 
   async runEventLoop() {
+    /*
+     * if we aren't the main shard, we just wait and regularly check,
+     * re-intilializing if we become it
+     */
+    if (!socketEvents.amIImportant()) {
+      this.iAmNotImportant = true;
+      if (this.void) {
+        this.void.cancel();
+        this.void = null;
+      }
+      setTimeout(this.runEventLoop, 180000);
+      return;
+    }
+    if (this.iAmNotImportant) {
+      this.iAmNotImportant = false;
+      this.initialize();
+      return;
+    }
+
     const {
       eventState,
     } = this;
@@ -338,7 +365,7 @@ class RpgEvent {
         // 32min after last Event
         // clear old event area
         // reset success state
-        logger.info('Restoring old event area');
+        logger.info('Restoring old Event area');
         await clearOldEvent();
         if (this.success === 1) {
           RpgEvent.broadcastChatMessage(

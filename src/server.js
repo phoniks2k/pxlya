@@ -119,9 +119,7 @@ sequelize.sync({ alter: { drop: false } })
       logger.info('I am the main shard');
     }
     rankings.initialize();
-    if (HOURLY_EVENT && !SHARD_NAME) {
-      // TODO make it wok in a cluster
-      logger.info('Initializing RpgEvent');
+    if (HOURLY_EVENT) {
       rpgEvent.initialize();
     }
   });
