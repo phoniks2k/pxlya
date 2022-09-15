@@ -98,10 +98,22 @@ export async function resetDailyRanks() {
   if (month < 10) month = `0${month}`;
   const year = yesterday.getUTCFullYear();
   const dateKey = `${year}${month}${day}`;
+  // TODO check if this works
+  await client.rename(
+    DAILY_RANKED_KEY,
+    `${DAY_STATS_RANKS_KEY}:${dateKey}`,
+  );
+  /*
   await client.zUnionStore(
     `${DAY_STATS_RANKS_KEY}:${dateKey}`,
     DAILY_RANKED_KEY,
   );
+  */
+  await client.rename(
+    DAILY_CRANKED_KEY,
+    `${CDAY_STATS_RANKS_KEY}:${dateKey}`,
+  );
+  /*
   await client.zUnionStore(
     `${CDAY_STATS_RANKS_KEY}:${dateKey}`,
     DAILY_CRANKED_KEY,
@@ -109,6 +121,7 @@ export async function resetDailyRanks() {
   // reset daily counter
   await client.del(DAILY_RANKED_KEY);
   await client.del(DAILY_CRANKED_KEY);
+  */
 }
 
 /*
