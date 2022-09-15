@@ -103,6 +103,7 @@ class PixelPlainterControls {
     document.activeElement.blur();
 
     if (event.button === 0) {
+      clearTimeout(this.onViewFinishChangeTimeOut);
       this.isClicking = true;
       const { clientX, clientY } = event;
       this.clickTapStartTime = Date.now();
@@ -117,13 +118,16 @@ class PixelPlainterControls {
     }
   }
 
+  /*
+   * try to avoid updating history too often
+   */
   scheduleOnViewFinishChange() {
     if (this.onViewFinishChangeTimeOut) {
       clearTimeout(this.onViewFinishChangeTimeOut);
     }
     this.onViewFinishChangeTimeOut = setTimeout(() => {
       this.store.dispatch(onViewFinishChange());
-    }, 250);
+    }, 500);
   }
 
   onMouseUp(event) {
@@ -155,7 +159,7 @@ class PixelPlainterControls {
       }
       this.viewport.style.cursor = 'auto';
     }
-    store.dispatch(onViewFinishChange());
+    this.scheduleOnViewFinishChange();
   }
 
   static getTouchCenter(event) {
@@ -267,6 +271,7 @@ class PixelPlainterControls {
     event.stopPropagation();
     document.activeElement.blur();
 
+    clearTimeout(this.onViewFinishChangeTimeOut);
     this.clickTapStartTime = Date.now();
     this.clickTapStartCoords = PixelPlainterControls.getTouchCenter(event);
     const state = this.store.getState();
@@ -324,7 +329,7 @@ class PixelPlainterControls {
         }, 500);
       }
     }
-    store.dispatch(onViewFinishChange());
+    this.scheduleOnViewFinishChange();
     this.clearTabTimeout();
   }
 

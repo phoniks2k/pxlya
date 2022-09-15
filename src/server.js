@@ -22,7 +22,7 @@ import SocketServer from './socket/SocketServer';
 import APISocketServer from './socket/APISocketServer';
 
 import {
-  PORT, HOST, HOURLY_EVENT, SHARD_NAME,
+  PORT, HOST, HOURLY_EVENT,
 } from './core/config';
 import { SECOND } from './core/constants';
 
