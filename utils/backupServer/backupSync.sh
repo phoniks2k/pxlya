@@ -11,6 +11,7 @@ if [ -d "${TMPDIR}/${DATE_YESTERDAY}" ]
     rm -rf "${TMPDIR}/${DATE_YESTERDAY}"
 fi
 
+set -e
 rsync -r ${TMPDIR}/ backup@ayylmao:/backup/pixelplanet/canvas
 
 #clear current daily folder
