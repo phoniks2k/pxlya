@@ -49,6 +49,37 @@ class SocketEvents extends EventEmitter {
   }
 
   /*
+   * requests that expect a response
+   * req(type, args) can be awaited
+   * it will return a response from whatever listenes on onReq(type, cb(args))
+   */
+  req(type, ...args) {
+    return new Promise((resolve, reject) => {
+      const chan = Math.floor(Math.random() * 100000).toString()
+        + Math.floor(Math.random() * 100000).toString();
+      const chankey = `res:${chan}`;
+      let id;
+      const callback = (ret) => {
+        clearTimeout(id);
+        resolve(ret);
+      };
+      id = setTimeout(() => {
+        this.off(chankey, callback);
+        reject(new Error(`Timeout on req ${type}`));
+      }, 45000);
+      this.once(chankey, callback);
+      this.emit(`req:${type}`, chan, ...args);
+    });
+  }
+
+  onReq(type, cb) {
+    this.on(`req:${type}`, async (chan, ...args) => {
+      const ret = await cb(...args);
+      this.emit(`res:${chan}`, ret);
+    });
+  }
+
+  /*
    * broadcast pixel message via websocket
    * @param canvasId number ident of canvas
    * @param chunkid number id consisting of i,j chunk coordinates

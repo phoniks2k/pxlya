@@ -496,3 +496,28 @@ export function parseInterval(interval) {
   }
   return (num * factor);
 }
+
+/*
+ * conbine two similar objects
+ */
+export function combineObjects(a, b) {
+  if (!b) {
+    return a;
+  }
+  if (!a) {
+    return b;
+  }
+  if (Array.isArray(a)) {
+    return a.concat(b);
+  }
+  if (typeof a === 'object') {
+    let keys = Object.keys(a);
+    keys.forEach((key) => {
+      const u = a[key];
+      const v = b[key];
+      a[key] = combineObjects(u, v);
+    });
+    return a;
+  }
+  return a + b;
+}

@@ -11,6 +11,7 @@ import Sequelize from 'sequelize';
 import isIPAllowed from './isAllowed';
 import { validateCoorRange } from '../utils/validation';
 import CanvasCleaner from './CanvasCleaner';
+import socketEvents from '../socket/socketEvents';
 import { RegUser } from '../data/sql';
 import {
   cleanCacheForIP,
@@ -36,12 +37,6 @@ import {
   imageABGR2Canvas,
   protectCanvasArea,
 } from './Image';
-import {
-  getIIDSummary,
-  getIIDPixels,
-  getSummaryFromArea,
-  getPixelsFromArea,
-} from './parsePixelLog';
 import rollbackCanvasArea from './rollback';
 
 /*
@@ -299,13 +294,17 @@ export async function executeWatchAction(
   let ret;
   if (!ulcoor && !brcoor && iid) {
     if (action === 'summary') {
-      ret = await getIIDSummary(
+      ret = await socketEvents.req(
+        'watch',
+        'getIIDSummary',
         iid,
         time,
       );
     }
     if (action === 'all') {
-      ret = await getIIDPixels(
+      ret = await socketEvents.req(
+        'watch',
+        'getIIDPixels',
         iid,
         time,
       );
@@ -332,7 +331,9 @@ export async function executeWatchAction(
   }
 
   if (action === 'summary') {
-    ret = await getSummaryFromArea(
+    ret = await socketEvents.req(
+      'watch',
+      'getSummaryFromArea',
       canvasid,
       x, y, u, v,
       time,
@@ -340,7 +341,9 @@ export async function executeWatchAction(
     );
   }
   if (action === 'all') {
-    ret = await getPixelsFromArea(
+    ret = await socketEvents.req(
+      'watch',
+      'getPixelsFromArea',
       canvasid,
       x, y, u, v,
       time,

@@ -2,6 +2,7 @@ import fs from 'fs';
 import readline from 'readline';
 
 import { PIXELLOGGER_PREFIX } from './logger';
+import socketEvents from '../socket/socketEvents';
 import { getNamesToIds } from '../data/sql/RegUser';
 import {
   getIdsToIps,
@@ -392,3 +393,16 @@ export async function getPixelsFromArea(
     rows,
   };
 }
+
+socketEvents.onReq('watch', (action, ...args) => {
+  if (action === 'getIIDSummary') {
+    return getIIDSummary(...args);
+  } if (action === 'getIIDPixels') {
+    return getIIDPixels(...args);
+  } if (action === 'getSummaryFromArea') {
+    return getSummaryFromArea(...args);
+  } if (action === 'getPixelsFromArea') {
+    return getPixelsFromArea(...args);
+  }
+  return null;
+});

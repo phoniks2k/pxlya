@@ -1,6 +1,7 @@
 /*
  * sends messages to other ppfun instances
  * to work as cluster
+ * If methods have no descriptions, they can be checked in ./SockEvents.js
  */
 
 /* eslint-disable no-console */
@@ -56,6 +57,9 @@ class MessageBroker extends SocketEvents {
     console.log('CLUSTER: Initialized message broker');
   }
 
+  /*
+   * messages on shared broadcast channels that every shard is listening to
+   */
   async onShardBCMessage(message) {
     try {
       /*
@@ -117,6 +121,48 @@ class MessageBroker extends SocketEvents {
       || this.shardOnlineCounters[0][0] === this.thisShard;
   }
 
+  /*
+   * requests that go over all shards and wait for responses from all
+   */
+  reqOnShards(type, ...args) {
+    return new Promise((resolve, reject) => {
+      const chan = Math.floor(Math.random() * 100000).toString()
+        + Math.floor(Math.random() * 100000).toString();
+      const chankey = `res:${chan}`;
+
+      let amountOtherShards = this.shardOnlineCounters.length - 1;
+      let id;
+      let ret = null;
+      await this.subscriber.subscribe(chankey, (message) => {
+        amountOtherShards -= 1;
+        const retn = JSON.parse(message);
+        combineObjects(ret, retn);
+        if (!amountOtherShards) {
+          this.subscriber.unsubscribe(chankey);
+          clearTimeout(id);
+          resolve(ret);
+        }
+      });
+      id = setTimeout(() => {
+        this.subscriber.unsubscribe(chankey);
+        reject(new Error(`Timeout on req ${type}`));
+      }, 45000);
+      this.emit(`req:${type}`, chan, ...args);
+    });
+  }
+  async reqOnShards(...args) {
+    const ret = Promise.all([
+      this.reqShard(...args),
+      super.req(...args),
+    ]);
+  }
+  onReq(type, cb) {
+    this.on(`req:${type}`, async (chan, ...args) => {
+      const ret = await cb(...args);
+      this.emit(`res:${chan}`, ret);
+    });
+  }
+
   updateShardOnlineCounter(shard, cnt) {
     const shardCounter = this.shardOnlineCounters.find(
       (c) => c[0] === shard,
@@ -130,6 +176,9 @@ class MessageBroker extends SocketEvents {
     this.sumOnlineCounters();
   }
 
+  /*
+   * messages on binary shard channels, where specific shards send from
+   */
   onShardBinaryMessage(buffer, shard) {
     try {
       const opcode = buffer[0];
@@ -186,9 +235,6 @@ class MessageBroker extends SocketEvents {
    */
   emit(key, ...args) {
     super.emit(key, ...args);
-    if (key === 'recvChatMessage') {
-      return;
-    }
     const msg = `${this.thisShard}:${key},${JSON.stringify(args)}`;
     this.publisher.publish('bc', msg);
   }
@@ -221,6 +267,14 @@ class MessageBroker extends SocketEvents {
     } else {
       super.emit('setCoolDownFactor', fac);
     }
+  }
+
+  recvChatMessage(
+    user,
+    message,
+    channelId,
+  ) {
+    super.emit('recvChatMessage', user, message, channelId);
   }
 
   broadcastChunkUpdate(
