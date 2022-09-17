@@ -12,7 +12,7 @@ import RedditStrategy from 'passport-reddit/lib/passport-reddit/strategy';
 import VkontakteStrategy from 'passport-vkontakte/lib/strategy';
 
 import { sanitizeName } from '../utils/validation';
-
+import logger from './logger';
 import { RegUser } from '../data/sql';
 import User, { regUserQueryInclude as include } from '../data/User';
 import { auth } from './config';
@@ -70,7 +70,7 @@ passport.use(new JsonStrategy({
  * OAuth SignIns, mail based
  *
  */
-async function oauthLogin(email, name, discordid = null) {
+async function oauthLogin(provider, email, name, discordid = null) {
   if (!email) {
     throw new Error('You don\'t have a mail set in your account.');
   }
@@ -94,6 +94,8 @@ async function oauthLogin(email, name, discordid = null) {
         where: { name },
       });
     }
+    // eslint-disable-next-line max-len
+    logger.info(`Create new user from ${provider} oauth login ${email} / ${name}`);
     reguser = await RegUser.create({
       email,
       name,
@@ -121,7 +123,7 @@ passport.use(new FacebookStrategy({
   try {
     const { displayName: name, emails } = profile;
     const email = emails[0].value;
-    const user = await oauthLogin(email, name);
+    const user = await oauthLogin('facebook', email, name);
     done(null, user);
   } catch (err) {
     done(err);
@@ -144,7 +146,7 @@ passport.use(new DiscordStrategy({
         'Sorry, you can not use discord login with an discord account that does not have email set.',
       );
     }
-    const user = await oauthLogin(email, name, id);
+    const user = await oauthLogin('discord', email, name, id);
     done(null, user);
   } catch (err) {
     done(err);
@@ -162,7 +164,7 @@ passport.use(new GoogleStrategy({
   try {
     const { displayName: name, emails } = profile;
     const email = emails[0].value;
-    const user = await oauthLogin(email, name);
+    const user = await oauthLogin('google', email, name);
     done(null, user);
   } catch (err) {
     done(err);
@@ -201,6 +203,8 @@ passport.use(new RedditStrategy({
           where: { name },
         });
       }
+      // eslint-disable-next-line max-len
+      logger.info(`Create new user from reddit oauth login ${name} / ${redditid}`);
       reguser = await RegUser.create({
         name,
         verified: 1,
@@ -234,7 +238,7 @@ passport.use(new VkontakteStrategy({
         'Sorry, you can not use vk login with an account that does not have a verified email set.',
       );
     }
-    const user = await oauthLogin(email, name);
+    const user = await oauthLogin('vkontakte', email, name);
     done(null, user);
   } catch (err) {
     done(err);

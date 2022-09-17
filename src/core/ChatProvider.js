@@ -363,11 +363,19 @@ export class ChatProvider {
       }
 
       case 'autoban': {
-        this.autobanPhrase = args.join(' ');
-        if (this.autobanPhrase === 'unset') {
-          this.autobanPhrase = null;
+        if (args[0]) {
+          this.autobanPhrase = args.join(' ');
+          if (this.autobanPhrase === 'unset' || this.autobanPhrase.length < 5) {
+            this.autobanPhrase = null;
+          }
+          return `Set autoban phrase on shard to ${this.autobanPhrase}`;
         }
-        return `Set autoban phrase to ${this.autobanPhrase}`;
+        // eslint-disable-next-line
+        if (this.autobanPhrase) {
+          // eslint-disable-next-line
+          return `Current autoban phrase on shard is ${this.autobanPhrase}, use "/autoban unset" to remove it`;
+        }
+        return 'Autoban phrase is currently not set on this shard';
       }
 
       default:
@@ -399,8 +407,15 @@ export class ChatProvider {
 
     if (this.autobanPhrase && message.includes(this.autobanPhrase)) {
       const { ipSub } = user;
-      banIP(ipSub, 'CHATBAN', 0, 1);
-      logger.info(`CHAT AUTOBANNED: ${ipSub}`);
+      if (!user.banned) {
+        banIP(ipSub, 'CHATBAN', 0, 1);
+        mute(id);
+        logger.info(`CHAT AUTOBANNED: ${ipSub}`);
+        user.banned = true;
+      }
+      return 'nope';
+    }
+    if (user.banned) {
       return 'nope';
     }
 
@@ -422,6 +437,8 @@ export class ChatProvider {
         } if (allowed === 101) {
           // eslint-disable-next-line max-len
           return t`You are permanently muted, join our guilded to apppeal the mute`;
+        } if (allowed === 102) {
+          return t`You must solve a captcha. Place a pixel to get one.`;
         } if (allowed === 2) {
           return t`You are banned`;
         } if (allowed === 3) {

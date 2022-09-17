@@ -18,6 +18,9 @@ async function validate(email, name, password, captcha, captchaid, t, gettext) {
   const errors = [];
   const emailerror = gettext(validateEMail(email));
   if (emailerror) errors.push(emailerror);
+  if (email.includes('emergentvillage.org') || email.includes('vintomaper')) {
+    errors.push(t`This email provider is not allowed`);
+  }
   const nameerror = validateName(name);
   if (nameerror) errors.push(nameerror);
   const passworderror = gettext(validatePassword(password));
