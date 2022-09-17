@@ -18,6 +18,7 @@ import {
   unmute,
   allowedChat,
 } from '../data/redis/chat';
+import { banIP } from '../data/sql/Ban';
 import { DailyCron } from '../utils/cron';
 import { escapeMd } from './utils';
 import ttags from './ttag';
@@ -52,6 +53,7 @@ export class ChatProvider {
     this.enChannelId = 0;
     this.infoUserId = 1;
     this.eventUserId = 1;
+    this.autobanPhrase = null;
     this.apiSocketUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
     this.cyrillic = /[\u0436-\u043B]'/;
@@ -360,6 +362,14 @@ export class ChatProvider {
         return 'No country is currently muted from this channel';
       }
 
+      case 'autoban': {
+        this.autobanPhrase = args.join(' ');
+        if (this.autobanPhrase === 'unset') {
+          this.autobanPhrase = null;
+        }
+        return `Set autoban phrase to ${this.autobanPhrase}`;
+      }
+
       default:
         return `Couln't parse command ${cmd}`;
     }
@@ -386,6 +396,13 @@ export class ChatProvider {
       return null;
     }
     const country = user.regUser.flag || 'xx';
+
+    if (this.autobanPhrase && message.includes(this.autobanPhrase)) {
+      const { ipSub } = user;
+      banIP(ipSub, 'CHATBAN', 0, 1);
+      logger.info(`CHAT AUTOBANNED: ${ipSub}`);
+      return 'nope';
+    }
 
     if (!user.userlvl) {
       const [allowed, needProxycheck] = await allowedChat(
