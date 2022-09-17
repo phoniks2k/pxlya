@@ -675,7 +675,7 @@ msgstr "Благодарности за Лунную Палитру ${ starhouse
 
 #: src/components/windows/Help.jsx:97
 msgid "Credit for the Palette of the Top10 canvas goes to ${ vinikLink }."
-msgstr "Благодарности за Палитру Топ10 ${ starhouseLink }."
+msgstr "Благодарности за Палитру Топ10 ${ vinikLink }."
 
 #: src/components/windows/Settings.jsx:134
 msgid "Show Grid"
