@@ -95,11 +95,8 @@ class MessageBroker extends SocketEvents {
         const key = message.slice(message.indexOf(':') + 1, comma);
         console.log('CLUSTER: Broadcast', key);
         const val = JSON.parse(message.slice(comma + 1));
+        /*
         if (key.startsWith('req:')) {
-          /*
-           * if its a request send the response to shard
-           * specific channel to avoid broadcast spam
-           */
           try {
             const shard = message.slice(0, message.indexOf(':'));
             const chan = val.shift();
@@ -113,6 +110,7 @@ class MessageBroker extends SocketEvents {
           }
           return;
         }
+        */
         super.emit(key, ...val);
         return;
       }
@@ -190,7 +188,10 @@ class MessageBroker extends SocketEvents {
       const callback = (retn) => {
         amountOtherShards -= 1;
         ret = combineObjects(ret, retn);
-        if (!amountOtherShards) {
+        // eslint-disable-next-line
+        console.log(`CLUSTER got res:${type} from shard, ${amountOtherShards} still left`);
+        if (amountOtherShards <= 0) {
+          console.log(`CLUSTER res:${type} finished`);
           this.off(chankey, callback);
           clearTimeout(id);
           resolve(ret);
@@ -281,11 +282,6 @@ class MessageBroker extends SocketEvents {
    */
   emit(key, ...args) {
     super.emit(key, ...args);
-    if (key.startsWith('res:')) {
-      // responses of requests are handled specifically
-      // and not broadcasted
-      return;
-    }
     const msg = `${this.thisShard}:${key},${JSON.stringify(args)}`;
     this.publisher.publish(BROADCAST_CHAN, msg);
   }

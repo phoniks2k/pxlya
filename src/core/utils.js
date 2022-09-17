@@ -498,6 +498,50 @@ export function parseInterval(interval) {
 }
 
 /*
+ * combines tables
+ * a tables is an object with {
+ *   columns: Array,
+ *   types: Array,
+ *   rows: Array,
+ * }
+ */
+export function combineTables(a, b) {
+  if (a.columns.length === b.columns.length) {
+    a.rows = a.rows.concat(b.rows);
+    return a;
+  }
+  let bTable;
+  let sTable;
+  if (a.columns.length < b.columns.length) {
+    bTable = b;
+    sTable = a;
+  } else {
+    bTable = a;
+    sTable = b;
+  }
+  if (!sTable.rows.length) {
+    return bTable;
+  }
+  const newRows = [];
+  for (let i = 0; i < sTable.rows.length; i += 1) {
+    newRows.push([]);
+  }
+  for (let i = 0; i < bTable.columns.length; i += 1) {
+    const colInd = sTable.columns.indexOf(bTable.columns[i]);
+    if (~colInd) {
+      for (let u = 0; u < sTable.rows.length; u += 1) {
+        newRows[u].push(sTable.rows[u][colInd]);
+      }
+    }
+    for (let u = 0; u < sTable.rows.length; u += 1) {
+      newRows[u].push(null);
+    }
+  }
+  bTable.rows = bTable.rows.concat(newRows);
+  return bTable;
+}
+
+/*
  * conbine two similar objects
  */
 export function combineObjects(a, b) {
@@ -512,6 +556,9 @@ export function combineObjects(a, b) {
   }
   if (typeof a === 'object') {
     const keys = Object.keys(a);
+    if (keys.includes('columns')) {
+      return combineTables(a, b);
+    }
     keys.forEach((key) => {
       const u = a[key];
       const v = b[key];
