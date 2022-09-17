@@ -16,9 +16,16 @@ import { proxyLogger as logger } from './logger';
 
 import { USE_PROXYCHECK, PROXYCHECK_KEY } from './config';
 
-const checker = (USE_PROXYCHECK && PROXYCHECK_KEY)
-  ? new ProxyCheck(PROXYCHECK_KEY, logger).checkIp
-  : () => ({ allowed: true, status: 0, pcheck: 'dummy' });
+// checker for IP address validity (proxy or vpn or not)
+let checker = () => ({ allowed: true, status: 0, pcheck: 'dummy' });
+// checker for mail address (disposable or not)
+let mailChecker = () => false;
+
+if (USE_PROXYCHECK && PROXYCHECK_KEY) {
+  const pc = new ProxyCheck(PROXYCHECK_KEY, logger);
+  checker = pc.checkIp;
+  mailChecker = pc.checkEmail;
+}
 
 /*
  * save information of ip into database
@@ -125,7 +132,7 @@ async function withCache(f, ip) {
  * check if ip is allowed
  * @param ip IP
  * @param disableCache if we fetch result from cache
- * @return {
+ * @return Promise {
  *     allowed: boolean if allowed to use site
  * ,   status:  -2: not yet checked
  *              -1: whitelisted
@@ -141,6 +148,18 @@ function checkIfAllowed(ip, disableCache = false) {
     return withoutCache(checker, ip);
   }
   return withCache(checker, ip);
+}
+
+/*
+ * check if email is disposable
+ * @param email
+ * @return Promise
+ *   null: some error occured
+ *   false: legit provider
+ *   true: disposable
+ */
+export function checkIfMailDisposable(email) {
+  return mailChecker(email);
 }
 
 export default checkIfAllowed;

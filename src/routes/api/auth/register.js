@@ -5,6 +5,7 @@ import { RegUser } from '../../../data/sql';
 import mailProvider from '../../../core/MailProvider';
 import getMe from '../../../core/me';
 import { getIPFromRequest, getHostFromRequest } from '../../../utils/ip';
+import { checkIfMailDisposable } from '../../../core/isAllowed';
 import {
   validateEMail,
   validateName,
@@ -17,8 +18,9 @@ import {
 async function validate(email, name, password, captcha, captchaid, t, gettext) {
   const errors = [];
   const emailerror = gettext(validateEMail(email));
-  if (emailerror) errors.push(emailerror);
-  if (email.includes('emergentvillage.org') || email.includes('vintomaper')) {
+  if (emailerror) {
+    errors.push(emailerror);
+  } else if (await checkIfMailDisposable(email)) {
     errors.push(t`This email provider is not allowed`);
   }
   const nameerror = validateName(name);
