@@ -511,7 +511,7 @@ export function combineObjects(a, b) {
     return a.concat(b);
   }
   if (typeof a === 'object') {
-    let keys = Object.keys(a);
+    const keys = Object.keys(a);
     keys.forEach((key) => {
       const u = a[key];
       const v = b[key];

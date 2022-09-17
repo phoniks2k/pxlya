@@ -52,6 +52,7 @@ class SocketEvents extends EventEmitter {
    * requests that expect a response
    * req(type, args) can be awaited
    * it will return a response from whatever listenes on onReq(type, cb(args))
+   * Keep the arguments serializable for shard support
    */
   req(type, ...args) {
     return new Promise((resolve, reject) => {
