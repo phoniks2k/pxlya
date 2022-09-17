@@ -18,6 +18,7 @@ import {
   unmute,
   allowedChat,
 } from '../data/redis/chat';
+import { banIP } from '../data/sql/Ban';
 import { DailyCron } from '../utils/cron';
 import { escapeMd } from './utils';
 import ttags from './ttag';
@@ -52,6 +53,7 @@ export class ChatProvider {
     this.enChannelId = 0;
     this.infoUserId = 1;
     this.eventUserId = 1;
+    this.autobanPhrase = null;
     this.apiSocketUserId = 1;
     this.caseCheck = /^[A-Z !.]*$/;
     this.cyrillic = /[\u0436-\u043B]'/;
@@ -360,6 +362,22 @@ export class ChatProvider {
         return 'No country is currently muted from this channel';
       }
 
+      case 'autoban': {
+        if (args[0]) {
+          this.autobanPhrase = args.join(' ');
+          if (this.autobanPhrase === 'unset' || this.autobanPhrase.length < 5) {
+            this.autobanPhrase = null;
+          }
+          return `Set autoban phrase on shard to ${this.autobanPhrase}`;
+        }
+        // eslint-disable-next-line
+        if (this.autobanPhrase) {
+          // eslint-disable-next-line
+          return `Current autoban phrase on shard is ${this.autobanPhrase}, use "/autoban unset" to remove it`;
+        }
+        return 'Autoban phrase is currently not set on this shard';
+      }
+
       default:
         return `Couln't parse command ${cmd}`;
     }
@@ -387,6 +405,20 @@ export class ChatProvider {
     }
     const country = user.regUser.flag || 'xx';
 
+    if (this.autobanPhrase && message.includes(this.autobanPhrase)) {
+      const { ipSub } = user;
+      if (!user.banned) {
+        banIP(ipSub, 'CHATBAN', 0, 1);
+        mute(id);
+        logger.info(`CHAT AUTOBANNED: ${ipSub}`);
+        user.banned = true;
+      }
+      return 'nope';
+    }
+    if (user.banned) {
+      return 'nope';
+    }
+
     if (!user.userlvl) {
       const [allowed, needProxycheck] = await allowedChat(
         channelId,
@@ -405,6 +437,8 @@ export class ChatProvider {
         } if (allowed === 101) {
           // eslint-disable-next-line max-len
           return t`You are permanently muted, join our guilded to apppeal the mute`;
+        } if (allowed === 102) {
+          return t`You must solve a captcha. Place a pixel to get one.`;
         } if (allowed === 2) {
           return t`You are banned`;
         } if (allowed === 3) {

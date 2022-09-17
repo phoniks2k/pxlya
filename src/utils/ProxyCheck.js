@@ -157,6 +157,7 @@ class PcKeyProvider {
   }
 
   /*
+   * TODO: proxycheck added the used burst token to API
    * query the API for limits
    * @param key
    */
@@ -229,7 +230,7 @@ class ProxyCheck {
      * queue of ip-checking tasks
      * [[ip, callbackFunction],...]
      */
-    this.ipQueue = [];
+    this.queue = [];
     this.fetching = false;
     this.checkFromQueue = this.checkFromQueue.bind(this);
     this.checkIp = this.checkIp.bind(this);
@@ -237,7 +238,7 @@ class ProxyCheck {
     this.logger = logger;
   }
 
-  reqProxyCheck(ips) {
+  reqProxyCheck(values) {
     return new Promise((resolve, reject) => {
       const key = this.pcKeyProvider.getKey();
       if (!key) {
@@ -247,7 +248,7 @@ class ProxyCheck {
         );
         return;
       }
-      const postData = `ips=${ips.join(',')}`;
+      const postData = `ips=${values.join(',')}`;
 
       const options = {
         hostname: 'proxycheck.io',
@@ -276,16 +277,17 @@ class ProxyCheck {
             const jsonString = data.join('');
             const result = JSON.parse(jsonString);
             if (result.status !== 'ok') {
-              if (result.status === 'error' && ips.length === 1) {
+              if (result.status === 'error' && values.length === 1) {
                 /*
                  * invalid ip, like a link local address
                  * Error is either thrown in the top, when requesting only one ip
                  * or in the ip-part as "error": "No valid.." when multiple
                  * */
                 resolve({
-                  [ips[0]]: {
+                  [values[0]]: {
                     proxy: 'yes',
                     type: 'Invalid IP',
+                    disposable: 'yes',
                   },
                 });
                 return;
@@ -299,11 +301,12 @@ class ProxyCheck {
                 this.logger.warn(`Warning: ${key}: ${result.message}`);
               }
             }
-            ips.forEach((ip) => {
-              if (result[ip] && result[ip].error) {
-                result[ip] = {
+            values.forEach((value) => {
+              if (result[value] && result[value].error) {
+                result[value] = {
                   proxy: 'yes',
                   type: 'Invalid IP',
+                  disposable: 'yes',
                 };
               }
             });
@@ -330,45 +333,57 @@ class ProxyCheck {
   }
 
   async checkFromQueue() {
-    const { ipQueue } = this;
-    if (!ipQueue.length) {
+    const { queue } = this;
+    if (!queue.length) {
       this.fetching = false;
       return;
     }
     this.fetching = true;
-    const tasks = ipQueue.slice(0, 50);
-    const ips = tasks.map((i) => i[0]);
+    const tasks = queue.slice(0, 50);
+    const values = tasks.map((i) => i[0]);
     let res = {};
     try {
-      res = await this.reqProxyCheck(ips);
+      res = await this.reqProxyCheck(values);
     } catch (err) {
       this.logger.error(`Eroor: ${err.message}`);
     }
     for (let i = 0; i < tasks.length; i += 1) {
       const task = tasks[i];
 
-      const pos = ipQueue.indexOf(task);
-      if (~pos) ipQueue.splice(pos, 1);
+      const pos = queue.indexOf(task);
+      if (~pos) queue.splice(pos, 1);
 
-      const [ip, cb] = task;
+      const [value, cb] = task;
 
-      let allowed = true;
-      let status = -2;
-      let pcheck = 'N/A';
+      if (~value.indexOf('@')) {
+        // email check
+        let disposable = null;
 
-      if (res[ip]) {
-        this.logger.info(`${ip}: ${JSON.stringify(res[ip])}`);
-        const { proxy, type, city } = res[ip];
-        allowed = proxy === 'no';
-        status = (allowed) ? 0 : 1;
-        pcheck = `${type},${city}`;
+        if (res[value]) {
+          disposable = !!res[value].disposable;
+        }
+
+        cb(disposable);
+      } else {
+        // ip check
+        let allowed = true;
+        let status = -2;
+        let pcheck = 'N/A';
+
+        if (res[value]) {
+          this.logger.info(`${value}: ${JSON.stringify(res[value])}`);
+          const { proxy, type, city } = res[value];
+          allowed = proxy === 'no';
+          status = (allowed) ? 0 : 1;
+          pcheck = `${type},${city}`;
+        }
+
+        cb({
+          allowed,
+          status,
+          pcheck,
+        });
       }
-
-      cb({
-        allowed,
-        status,
-        pcheck,
-      });
     }
     setTimeout(this.checkFromQueue, 10);
   }
@@ -385,7 +400,26 @@ class ProxyCheck {
    */
   checkIp(ip) {
     return new Promise((resolve) => {
-      this.ipQueue.push([ip, resolve]);
+      this.queue.push([ip, resolve]);
+      if (!this.fetching) {
+        this.checkFromQueue();
+      }
+    });
+  }
+
+  /*
+   * same as for ip
+   * TODO: cache for mail providers, remember
+   * a disposable provider for an hour or so
+   * @param email
+   * @return Promise that resolves to
+   *  null: failure
+   *  false: is legit provider
+   *  true: is disposable provider
+   */
+  checkEmail(email) {
+    return new Promise((resolve) => {
+      this.queue.push([email, resolve]);
       if (!this.fetching) {
         this.checkFromQueue();
       }
