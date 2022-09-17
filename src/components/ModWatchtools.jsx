@@ -60,7 +60,12 @@ async function submitWatchAction(
       method: 'POST',
       body: data,
     });
-    const ret = await resp.json();
+    let ret;
+    try {
+      ret = await resp.json();
+    } catch {
+      throw new Error(await resp.text());
+    }
     callback(await ret);
   } catch (err) {
     callback({

@@ -234,6 +234,7 @@ class ProxyCheck {
     this.fetching = false;
     this.checkFromQueue = this.checkFromQueue.bind(this);
     this.checkIp = this.checkIp.bind(this);
+    this.checkEmail = this.checkEmail.bind(this);
     this.pcKeyProvider = new PcKeyProvider(pcKeys, logger);
     this.logger = logger;
   }
@@ -360,6 +361,7 @@ class ProxyCheck {
         let disposable = null;
 
         if (res[value]) {
+          this.logger.info(`Email ${value}: ${JSON.stringify(res[value])}`);
           disposable = !!res[value].disposable;
         }
 
@@ -371,7 +373,7 @@ class ProxyCheck {
         let pcheck = 'N/A';
 
         if (res[value]) {
-          this.logger.info(`${value}: ${JSON.stringify(res[value])}`);
+          this.logger.info(`IP ${value}: ${JSON.stringify(res[value])}`);
           const { proxy, type, city } = res[value];
           allowed = proxy === 'no';
           status = (allowed) ? 0 : 1;

@@ -32,6 +32,12 @@ import {
   getIPofIID,
   getIIDofIP,
 } from '../data/sql/IPInfo';
+import {
+  getIIDSummary,
+  getIIDPixels,
+  getSummaryFromArea,
+  getPixelsFromArea,
+} from './parsePixelLog';
 import canvases from './canvases';
 import {
   imageABGR2Canvas,
@@ -257,6 +263,22 @@ export async function executeImageAction(
     return [400, 'Can not read image file'];
   }
 }
+
+/*
+ * retgister responses on socket for Watch Actions
+ */
+socketEvents.onReq('watch', (action, ...args) => {
+  if (action === 'getIIDSummary') {
+    return getIIDSummary(...args);
+  } if (action === 'getIIDPixels') {
+    return getIIDPixels(...args);
+  } if (action === 'getSummaryFromArea') {
+    return getSummaryFromArea(...args);
+  } if (action === 'getPixelsFromArea') {
+    return getPixelsFromArea(...args);
+  }
+  return null;
+});
 
 /*
  * Check who placed on a canvas area

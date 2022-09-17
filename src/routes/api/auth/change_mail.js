@@ -7,14 +7,19 @@ import mailProvider from '../../../core/MailProvider';
 import { validatePassword, validateEMail } from '../../../utils/validation';
 import { getHostFromRequest } from '../../../utils/ip';
 import { compareToHash } from '../../../utils/hash';
+import { checkIfMailDisposable } from '../../../core/isAllowed';
 
-function validate(email, password, gettext) {
+async function validate(email, password, t, gettext) {
   const errors = [];
 
   const passerror = gettext(validatePassword(password));
   if (passerror) errors.push(passerror);
   const mailerror = gettext(validateEMail(email));
-  if (mailerror) errors.push(mailerror);
+  if (mailerror) {
+    errors.push(mailerror);
+  } else if (await checkIfMailDisposable(email)) {
+    errors.push(t`This email provider is not allowed`);
+  }
 
   return errors;
 }
@@ -22,7 +27,7 @@ function validate(email, password, gettext) {
 export default async (req, res) => {
   const { email, password } = req.body;
   const { t, gettext } = req.ttag;
-  const errors = validate(email, password, gettext);
+  const errors = await validate(email, password, t, gettext);
   if (errors.length > 0) {
     res.status(400);
     res.json({
