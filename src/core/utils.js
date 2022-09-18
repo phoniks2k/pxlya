@@ -532,9 +532,10 @@ export function combineTables(a, b) {
       for (let u = 0; u < sTable.rows.length; u += 1) {
         newRows[u].push(sTable.rows[u][colInd]);
       }
-    }
-    for (let u = 0; u < sTable.rows.length; u += 1) {
-      newRows[u].push(null);
+    } else {
+      for (let u = 0; u < sTable.rows.length; u += 1) {
+        newRows[u].push(null);
+      }
     }
   }
   bTable.rows = bTable.rows.concat(newRows);
