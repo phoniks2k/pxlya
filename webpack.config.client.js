@@ -9,7 +9,9 @@ const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-// make sure we build in root dir
+/*
+ * make sure we build in root dir
+ */
 process.chdir(__dirname);
 
 /*
