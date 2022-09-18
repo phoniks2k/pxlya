@@ -299,6 +299,9 @@ function ModWatchtools() {
                 .map((row) => (
                   <tr key={row[0]}>
                     {row.slice(1).map((val, ind) => {
+                      if (val === null) {
+                        return (<td>N/A</td>);
+                      }
                       const type = types[ind + 1];
                       switch (type) {
                         case 'ts': {

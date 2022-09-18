@@ -362,7 +362,7 @@ class ProxyCheck {
 
         if (res[value]) {
           this.logger.info(`Email ${value}: ${JSON.stringify(res[value])}`);
-          disposable = !!res[value].disposable;
+          disposable = res[value].disposable === 'yes';
         }
 
         cb(disposable);
