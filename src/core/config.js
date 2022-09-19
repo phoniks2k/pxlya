@@ -25,6 +25,8 @@ export const USE_XREALIP = !!process.env.USE_XREALIP;
 export const BACKUP_URL = process.env.BACKUP_URL || null;
 export const BACKUP_DIR = process.env.BACKUP_DIR || null;
 
+export const OUTGOING_ADDRESS = process.env.OUTGOING_ADDRESS || null;
+
 // Proxycheck
 export const USE_PROXYCHECK = parseInt(process.env.USE_PROXYCHECK, 10) || false;
 export const { PROXYCHECK_KEY } = process.env;
