@@ -23,7 +23,9 @@ const keepState = {
  */
 function compare(a, b, asc) {
   if (typeof a === 'string' && typeof b === 'string') {
-    return a.localeCompare(b);
+    let ret = a.localeCompare(b);
+    if (asc) ret *= -1;
+    return ret;
   }
   if (!a || a === 'N/A') a = 0;
   if (!b || b === 'N/A') b = 0;
