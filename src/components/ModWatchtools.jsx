@@ -25,8 +25,8 @@ function compare(a, b, asc) {
   if (typeof a === 'string' && typeof b === 'string') {
     return a.localeCompare(b);
   }
-  if (a === 'N/A') a = 0;
-  if (b === 'N/A') b = 0;
+  if (!a || a === 'N/A') a = 0;
+  if (!b || b === 'N/A') b = 0;
   if (a < b) return (asc) ? -1 : 1;
   if (a > b) return (asc) ? 1 : -1;
   return 0;
