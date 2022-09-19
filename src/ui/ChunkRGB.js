@@ -79,7 +79,6 @@ class ChunkRGB {
   fromImage(img) {
     this.ready = true;
     const ctx = this.image.getContext('2d');
-    ctx.filter = 'contrast(1.5) brightness(0.5)';
     ctx.drawImage(img, 0, 0);
   }
 
