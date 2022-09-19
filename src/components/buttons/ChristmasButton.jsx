@@ -4,16 +4,12 @@
  */
 
 import React, { useState } from 'react';
-import { GiPineTree } from 'react-icons/gi';
+import { AiOutlineThunderbolt } from 'react-icons/ai';
 
 import SnowStorm from '../../ui/snow';
 
 const videoIds = [
-  'bMPpZlok6aU',
-  'xcrYffFhTlw',
-  'lCZ5kIFz-h8',
-  'XSpYaEdpKxY',
-  'dTX-6WdiXx8',
+  'mJ2FURhZgy8',
 ];
 
 const snowStorm = new SnowStorm(window, document);
@@ -41,7 +37,7 @@ const ChristmasButton = () => {
           : '0 0 9px 6px rgba(189, 0, 0, 0.8)',
       }}
     >
-      <GiPineTree />
+      <AiOutlineThunderbolt />
       {(playing) && (
         <embed
           style={{
