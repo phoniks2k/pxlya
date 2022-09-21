@@ -11,124 +11,146 @@ const WHOIS_PORT = 43;
 const QUERY_SUFFIX = '\r\n';
 const WHOIS_TIMEOUT = 30000;
 
-function splitStringBy(string, by) {
-  return [string.slice(0, by), string.slice(by + 1)];
-}
-
+/*
+ * parse whois return into fields
+ */
 function parseSimpleWhois(whois) {
-  const data = {};
-  const text = [];
-
-  const renameLabels = {
-    NetRange: 'range',
-    inetnum: 'range',
-    CIDR: 'route',
-    origin: 'asn',
-    OriginAS: 'asn',
-  };
-  const lineToGroup = {
-    contact: 'contact',
-    OrgName: 'organisation',
-    organisation: 'organisation',
-    OrgAbuseHandle: 'contactAbuse',
-    irt: 'contactAbuse',
-    RAbuseHandle: 'contactAbuse',
-    OrgTechHandle: 'contactTechnical',
-    RTechHandle: 'contactTechnical',
-    OrgNOCHandle: 'contactNoc',
-    RNOCHandle: 'contactNoc',
+  let data = {
+    groups: {},
   };
 
-  if (whois.includes('returned 0 objects') || whois.includes('No match found')) {
-    return data;
-  }
-
-  let resultNum = 0;
   const groups = [{}];
+  const text = [];
+  const lines = whois.split('\n');
   let lastLabel;
 
-  whois.split('\n').forEach((line) => {
-    // catch comment lines
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i].trim();
     if (line.startsWith('%') || line.startsWith('#')) {
-      // detect if an ASN or IP has multiple WHOIS results
-      if (line.includes('# start')) {
-        // nothing
-      } else if (line.includes('# end')) {
-        resultNum++;
-      } else {
+      /*
+       * detect if an ASN or IP has multiple WHOIS results,
+       * and only care about first one
+       */
+      if (line.includes('# end')) {
+        break;
+      } else if (!lines.includes('# start')) {
         text.push(line);
       }
-    } else if (resultNum === 0) {
-      // for the moment, parse only first WHOIS result
-
-      if (line) {
-        if (line.includes(':')) {
-          const [label, value] = splitStringBy(line, line.indexOf(':')).map((info) => info.trim());
-          lastLabel = label;
-
-          // 1) Filter out unnecessary info, 2) then detect if the label is already added to group
-          if (value.includes('---')) {
-            // do nothing with useless data
-          } else if (groups[groups.length - 1][label]) {
-            groups[groups.length - 1][label] += `\n${value}`;
-          } else {
-            groups[groups.length - 1][label] = value;
-          }
+      continue;
+    }
+    if (line) {
+      const sep = line.indexOf(':');
+      if (~sep) {
+        const label = line.slice(0, sep).toLowerCase();
+        lastLabel = label;
+        const value = line.slice(sep + 1).trim();
+        // 1) Filter out unnecessary info, 2) then detect if the label is already added to group
+        if (value.includes('---')) {
+          // do nothing with useless data
+        } else if (groups[groups.length - 1][label]) {
+          groups[groups.length - 1][label] += `\n${value}`;
         } else {
-          groups[groups.length - 1][lastLabel] += `\n${line.trim()}`;
+          groups[groups.length - 1][label] = value;
         }
-      } else if (Object.keys(groups[groups.length - 1]).length) {
-        // if empty line, means another info group starts
-        groups.push({});
+      } else {
+        groups[groups.length - 1][lastLabel] += `\n${line}`;
       }
+    } else if (Object.keys(groups[groups.length - 1]).length) {
+      // if empty line, means another info group starts
+      groups.push({});
+    }
+  }
+
+  groups.forEach((group) => {
+    if (group.role) {
+      const role = group.role.replaceAll(' ', '-').toLowerCase();
+      delete group.role;
+      data.groups[role] = group;
+    } else {
+      data = {
+        ...group,
+        ...data,
+      };
     }
   });
 
-  groups
-    .filter((group) => Object.keys(group).length)
-    .forEach((group) => {
-      const groupLabels = Object.keys(group);
-      let isGroup = false;
-
-      // check if a label is marked as group
-      groupLabels.forEach((groupLabel) => {
-        if (!isGroup && Object.keys(lineToGroup).includes(groupLabel)) {
-          isGroup = lineToGroup[groupLabel];
-        }
-      });
-
-      // check if a info group is a Contact in APNIC result
-      // @Link https://www.apnic.net/manage-ip/using-whois/guide/role/
-      if (!isGroup && groupLabels.includes('role')) {
-        isGroup = `Contact ${group.role.split(' ')[1]}`;
-      } else if (!isGroup && groupLabels.includes('person')) {
-        isGroup = `Contact ${group['nic-hdl']}`;
-      }
-
-      if (isGroup === 'contact') {
-        data.contacts = data.contacts || {};
-        data.contacts[group.contact] = group;
-      } else if (isGroup) {
-        data[isGroup] = group;
-      } else {
-        groupLabels.forEach((key) => {
-          const label = renameLabels[key] || key;
-          data[label] = group[key];
-        });
-      }
-    });
-
-  // Append the WHOIS comments
-  data.text = text;
+  data.text = text.join('\n');
 
   return data;
 }
 
-function whoisQuery(
-  host = null,
-  query = '',
+/*
+ * parse whois return
+ * @param ip ip string
+ * @param whois whois return
+ * @return object with whois data
+ */
+function parseWhois(ip, whoisReturn) {
+  const whoisData = parseSimpleWhois(whoisReturn);
+
+  let cidr;
+  if (isIPv6(ip)) {
+    const range = whoisData.inet6num || whoisData.netrange || whoisData.inetnum
+      || whoisData.route || whoisData.cidr;
+    cidr = range && !range.includes('-') && range;
+  } else {
+    const range = whoisData.inetnum || whoisData.netrange
+      || whoisData.route || whoisData.cidr;
+    if (range) {
+      if (range.includes('/') && !range.includes('-')) {
+        cidr = range;
+      } else {
+        cidr = ip4InRangeToCIDR(ip, range);
+      }
+    }
+  }
+
+  let org = whoisData['org-name']
+    || whoisData.organization
+    || whoisData.orgname
+    || whoisData.descr
+    || whoisData['mnt-by'];
+  if (!org) {
+    const contactGroup = Object.keys(whoisData.groups).find(
+      (g) => whoisData.groups[g].address,
+    );
+    if (contactGroup) {
+      [org] = whoisData.groups[contactGroup].address.split('\n');
+    } else {
+      org = whoisData.owner || whoisData['mnt-by'] || 'N/A';
+    }
+  }
+  const descr = whoisData.netname || whoisData.descr || 'N/A';
+  const asn = whoisData.asn
+    || whoisData.origin
+    || whoisData.originas
+    || whoisData['aut-num'] || 'N/A';
+  let country = whoisData.country
+    || (whoisData.organisation && whoisData.organisation.Country)
+    || 'xx';
+  if (country.length > 2) {
+    country = country.slice(0, 2);
+  }
+
+  return {
+    ip,
+    cidr: cidr || 'N/A',
+    org,
+    country,
+    asn,
+    descr,
+  };
+}
+
+/*
+ * send a raw whois query to server
+ * @param query
+ * @param host
+ */
+function singleWhoisQuery(
+  query,
+  host,
 ) {
-  console.log('whois with query', query, 'for host', host);
   return new Promise((resolve, reject) => {
     let data = '';
     const socket = net.createConnection({
@@ -144,126 +166,76 @@ function whoisQuery(
   });
 }
 
-async function whoisIp(query) {
-  query = String(query);
-
-  // find WHOIS server for IP
-  let whoisResult = await whoisQuery('whois.iana.org', query);
-  whoisResult = parseSimpleWhois(whoisResult);
-  const host = whoisResult.whois;
-
-  if (!host) {
-    throw new Error(`No WHOIS server for "${query}"`);
-  }
-
-  // hardcoded custom queries..
-  console.log('HOST', host);
-  if (host === 'whois.arin.net') {
-    query = `+ n ${query}`;
-  } else if (host === 'whois.ripe.net') {
-    /*
-     * flag to not return personal informations, otherwise
-     * RIPE is gonne rate limit and ban
-     */
-    query = `-r ${query}`;
-  }
-
-  const rawResult = await whoisQuery(host, query);
-  console.log(rawResult);
-  const data = parseSimpleWhois(rawResult);
-
-  return data;
-}
-
 /*
- * get CIDR of ip from whois return
- * @param ip ip string
- * @param whois whois return
- * @return cidr string
+ * check if whois result is refering us to
+ * a different whois server
  */
-function cIDRofWhois(ip, whoisData) {
-  if (isIPv6(ip)) {
-    return whoisData.inet6num
-      || (whoisData.range && !whoisData.range.includes('-') && whoisData.range)
-      || whoisData.route
-      || null;
-  }
-  const { range } = whoisData;
-  if (range && range.includes('/') && !range.includes('-')) {
-    return range;
-  }
-  return ip4InRangeToCIDR(ip, range) || null;
-}
-
-/*
- * get organisation from whois return
- * @param whois whois return
- * @return organisation string
- */
-function orgFromWhois(whoisData) {
-  return (whoisData.organisation && whoisData.organisation['org-name'])
-    || (whoisData.organisation && whoisData.organisation.OrgName)
-    || (whoisData['Contact Master']
-      && whoisData['Contact Master'].address.split('\n')[0])
-    || (whoisData['Contact undefined']
-      && whoisData['Contact undefined'].person)
-    || whoisData.netname
-    || whoisData.owner
-    || 'N/A';
-}
-
-/*
- * get counry from whois return
- * @param whois whois return
- * @return organisation string
- */
-function countryFromWhois(whoisData) {
-  return whoisData.country
-    || (whoisData.organisation && whoisData.organisation.Country)
-    || 'xx';
-}
-
-/*
- * parse whois return
- * @param ip ip string
- * @param whois whois return
- * @return object with whois data
- */
-function parseWhois(ip, whoisData) {
-  return {
-    ip,
-    country: countryFromWhois(whoisData),
-    cidr: cIDRofWhois(ip, whoisData) || 'N/A',
-    org: orgFromWhois(whoisData),
-    descr: whoisData.descr || 'N/A',
-    asn: whoisData.asn || whoisData['aut-num'] || 'N/A',
-  };
-}
-
-export default async function whoiser(ip) {
-  const whoisData = await whoisIp(ip);
-  if (whoisData.ReferralServer) {
-    let referral = whoisData.ReferralServer;
-    const prot = referral.indexOf('://');
-    if (prot !== -1) {
-      referral = referral.slice(prot + 3);
-    }
-    try {
-      /*
-       * if referral whois server produces any error
-       * fallback to initial one
-       */
-      const refWhoisData = await whoisIp(ip, {
-        host: referral,
-      });
-      const refParsedData = parseWhois(ip, refWhoisData);
-      if (refParsedData.cidr !== 'N/A') {
-        return refParsedData;
+const referralKeys = [
+  'whois:',
+  'refer:',
+  'ReferralServer:',
+];
+function checkForReferral(
+  whoisResult,
+) {
+  for (let u = 0; u < referralKeys.length; u += 1) {
+    const key = referralKeys[u];
+    const pos = whoisResult.indexOf(key);
+    if (~pos) {
+      const line = whoisResult.slice(
+        whoisResult.lastIndexOf('\n', pos) + 1,
+        whoisResult.indexOf('\n', pos),
+      ).trim();
+      if (!line.startsWith(key)) {
+        continue;
       }
-    } catch {
-      // nothing
+      let value = line.slice(line.indexOf(':') + 1).trim();
+      const prot = value.indexOf('://');
+      if (~prot) {
+        value = value.slice(prot + 3);
+      }
+      return value;
     }
   }
-  console.log(whoisData);
-  return parseWhois(ip, whoisData);
+  return null;
+}
+
+/*
+ * whois ip
+ */
+export default async function whoisIp(
+  ip,
+  host = null,
+) {
+  let useHost = host || 'whois.iana.org';
+  let whoisResult = '';
+  let refCnt = 0;
+  while (refCnt < 5) {
+    let queryPrefix = '';
+    if (useHost === 'whois.arin.net') {
+      queryPrefix = '+ n';
+    } else if (useHost === 'whois.ripe.net') {
+      /*
+       * flag to not return personal informations, otherwise
+       * RIPE is gonne rate limit and ban
+       */
+      // queryPrefix = '-r';
+    }
+
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      whoisResult = await singleWhoisQuery(`${queryPrefix} ${ip}`, useHost);
+      const ref = checkForReferral(whoisResult);
+      if (!ref) {
+        break;
+      }
+      useHost = ref;
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(`Error on WHOIS ${ip} ${useHost}: ${err.message}`);
+      break;
+    }
+    refCnt += 1;
+  }
+  return parseWhois(ip, whoisResult);
 }

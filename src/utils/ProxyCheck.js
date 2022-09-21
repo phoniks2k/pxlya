@@ -245,7 +245,7 @@ class ProxyCheck {
       if (!key) {
         setTimeout(
           () => reject(new Error('No pc key available')),
-          5000,
+          2000,
         );
         return;
       }
@@ -318,7 +318,7 @@ class ProxyCheck {
         });
       });
 
-      req.setTimeout(60000, () => {
+      req.setTimeout(30000, () => {
         req.destroy(new Error('Connection TIMEOUT'));
       });
       req.on('error', (err) => {

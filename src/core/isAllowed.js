@@ -44,13 +44,13 @@ async function saveIPInfo(ip, whoisRet, allowed, info) {
 }
 
 /*
- * execute proxycheck without caring about cache
- * @param f function for checking if proxy
- * @param ip IP to check
- * @return true if proxy or blacklisted, false if not or whitelisted
+ * execute proxycheck and blacklist whitelist check
+ * @param f proxycheck function
+ * @param ip full ip
+ * @param ipKey
+ * @return [ allowed, status, pcheck ]
  */
-async function withoutCache(f, ip) {
-  const ipKey = getIPv6Subnet(ip);
+async function checkPCAndLists(f, ip, ipKey) {
   let allowed = true;
   let status = -2;
   let pcheck = null;
@@ -70,16 +70,33 @@ async function withoutCache(f, ip) {
       allowed = res.allowed;
       pcheck = res.pcheck;
     }
-  } finally {
-    let whoisRet = null;
-    try {
-      whoisRet = await whois(ip);
-    } catch (err) {
-      logger.error(`Error whois for ${ip}: ${err.message}`);
-    }
-    await cacheAllowed(ipKey, status);
-    await saveIPInfo(ipKey, whoisRet || {}, status, pcheck);
+  } catch (err) {
+    logger.error(`Error checkAllowed for ${ip}: ${err.message}`);
   }
+  return [allowed, status, pcheck];
+}
+
+/*
+ * execute proxycheck and whois and save result into cache
+ * @param f function for checking if proxy
+ * @param ip IP to check
+ * @return checkifAllowed return
+ */
+async function withoutCache(f, ip) {
+  const ipKey = getIPv6Subnet(ip);
+
+  const [
+    [allowed, status, pcheck],
+    whoisRet,
+  ] = await Promise.all([
+    checkPCAndLists(f, ip, ipKey),
+    whois(ip),
+  ]);
+
+  await Promise.all([
+    cacheAllowed(ipKey, status),
+    saveIPInfo(ipKey, whoisRet, status, pcheck),
+  ]);
 
   return {
     allowed,

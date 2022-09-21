@@ -22,7 +22,7 @@ import OnlineCounter from './packets/OnlineCounter';
 import socketEvents from './socketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
-import { drawByOffsets } from '../core/draw';
+import drawByOffsets from '../core/draw';
 import isIPAllowed from '../core/isAllowed';
 
 
@@ -87,7 +87,6 @@ class SocketServer {
       ws.chunkCnt = 0;
 
       const { ip } = user;
-      isIPAllowed(ip);
 
       ws.send(OnlineCounter.dehydrate(socketEvents.onlineCounter));
 
@@ -174,6 +173,7 @@ class SocketServer {
     const { headers } = request;
     // Limiting socket connections per ip
     const ip = getIPFromRequest(request);
+    isIPAllowed(ip);
     const now = Date.now();
     const limiter = rateLimit.get(ip);
     if (limiter && limiter[1]) {
@@ -506,17 +506,12 @@ class SocketServer {
             pxlCnt,
             rankedPxlCnt,
             retCode,
-            needProxycheck,
           } = await drawByOffsets(
             ws.user,
             canvasId,
             i, j,
             pixels,
           );
-
-          if (needProxycheck) {
-            isIPAllowed(ip);
-          }
 
           if (retCode > 9 && retCode !== 13) {
             const now = Date.now();

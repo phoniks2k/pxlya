@@ -5,7 +5,7 @@
  *
  */
 
-import { DataTypes, QueryTypes } from 'sequelize';
+import Sequelize, { DataTypes, QueryTypes } from 'sequelize';
 
 import sequelize from './sequelize';
 import { generateHash } from '../../utils/hash';
@@ -179,6 +179,44 @@ export async function getNamesToIds(ids) {
     // nothing
   }
   return idToNameMap;
+}
+
+/*
+ * take array of {id: useId, ...} object and resolve
+ * user informations
+ */
+export async function populateRanking(rawRanks) {
+  if (!rawRanks.length) {
+    return rawRanks;
+  }
+  const uids = rawRanks.map((r) => r.id);
+  const userData = await RegUser.findAll({
+    attributes: [
+      'id',
+      'name',
+      [
+        Sequelize.fn(
+          'DATEDIFF',
+          Sequelize.literal('CURRENT_TIMESTAMP'),
+          Sequelize.col('createdAt'),
+        ),
+        'age',
+      ],
+    ],
+    where: {
+      id: uids,
+    },
+    raw: true,
+  });
+  for (let i = 0; i < userData.length; i += 1) {
+    const { id, name, age } = userData[i];
+    const dat = rawRanks.find((r) => r.id === id);
+    if (dat) {
+      dat.name = name;
+      dat.age = age;
+    }
+  }
+  return rawRanks;
 }
 
 export default RegUser;

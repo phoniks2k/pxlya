@@ -2,8 +2,7 @@
  * timers and cron for account related actions
  */
 
-import Sequelize from 'sequelize';
-import RegUser from '../data/sql/RegUser';
+import { populateRanking } from '../data/sql/RegUser';
 import {
   getRanks,
   resetDailyRanks,
@@ -42,44 +41,6 @@ class Ranks {
     DailyCron.hook(this.resetDailyRanking);
   }
 
-  /*
-   * take array of {useId: score} and resolve
-   * user informations
-   */
-  static async populateRanking(rawRanks) {
-    if (!rawRanks.length) {
-      return rawRanks;
-    }
-    const uids = rawRanks.map((r) => r.id);
-    const userData = await RegUser.findAll({
-      attributes: [
-        'id',
-        'name',
-        [
-          Sequelize.fn(
-            'DATEDIFF',
-            Sequelize.literal('CURRENT_TIMESTAMP'),
-            Sequelize.col('createdAt'),
-          ),
-          'age',
-        ],
-      ],
-      where: {
-        id: uids,
-      },
-      raw: true,
-    });
-    for (let i = 0; i < userData.length; i += 1) {
-      const { id, name, age } = userData[i];
-      const dat = rawRanks.find((r) => r.id === id);
-      if (dat) {
-        dat.name = name;
-        dat.age = age;
-      }
-    }
-    return rawRanks;
-  }
-
   static async updateRanking() {
     /*
      * only main shard updates and sends it to others
@@ -87,13 +48,13 @@ class Ranks {
     if (!socketEvents.amIImportant()) {
       return;
     }
-    const ranking = await Ranks.populateRanking(
+    const ranking = await populateRanking(
       await getRanks(
         false,
         1,
         100,
       ));
-    const dailyRanking = await Ranks.populateRanking(
+    const dailyRanking = await populateRanking(
       await getRanks(
         true,
         1,
