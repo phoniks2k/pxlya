@@ -37,7 +37,7 @@ const floatStyle = {
  * autoload: Load captcha immediately and autofocus input textbox
  * width: width of the captcha image
  */
-const Captcha = ({ autoload, width }) => {
+const Captcha = ({ autoload, width, setLegit }) => {
   const [captchaData, setCaptchaData] = useState({});
   const [errors, setErrors] = useState([]);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -141,6 +141,7 @@ const Captcha = ({ autoload, width }) => {
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck="false"
+        onChange={() => setLegit && setLegit(true)}
         autoFocus={autoload}
         style={{
           width: '6em',

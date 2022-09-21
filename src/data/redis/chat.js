@@ -3,8 +3,6 @@
  */
 import client from './client';
 import { PREFIX as ALLOWED_PREFIX } from './isAllowedCache';
-import { PREFIX as CAPTCHA_PREFIX } from './captcha';
-import { CAPTCHA_TIME } from '../../core/config';
 
 const MUTE_PREFIX = 'MUTE_PREFIX';
 const MUTEC_PREFIX = 'MUTE_PREFIXc';
@@ -24,9 +22,8 @@ export async function allowedChat(
   const mutecKey = `${MUTEC_PREFIX}:${channelId}`;
   const muteKey = `${MUTE_PREFIX}:${userId}`;
   const isalKey = `${ALLOWED_PREFIX}:${ip}`;
-  const captKey = (CAPTCHA_TIME >= 0) ? `${CAPTCHA_PREFIX}:${ip}` : 'nope';
   return client.allowedChat(
-    mutecKey, muteKey, isalKey, captKey,
+    mutecKey, muteKey, isalKey,
     cc,
   );
 }

@@ -18,6 +18,7 @@ import modtools from './modtools';
 import baninfo from './baninfo';
 import getiid from './getiid';
 import shards from './shards';
+import banme from './banme';
 
 const router = express.Router();
 
@@ -96,6 +97,8 @@ router.post('/blockdm', blockdm);
 router.get('/chathistory', chatHistory);
 
 router.get('/me', me);
+
+router.get('/banme', banme);
 
 router.use('/auth', auth);
 

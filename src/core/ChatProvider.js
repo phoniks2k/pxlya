@@ -437,8 +437,6 @@ export class ChatProvider {
         } if (allowed === 101) {
           // eslint-disable-next-line max-len
           return t`You are permanently muted, join our guilded to apppeal the mute`;
-        } if (allowed === 102) {
-          return t`You must solve a captcha. Place a pixel to get one.`;
         } if (allowed === 2) {
           return t`You are banned`;
         } if (allowed === 3) {

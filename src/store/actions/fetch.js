@@ -346,3 +346,9 @@ export function requestIID() {
     '/api/getiid',
   );
 }
+
+export function requestBanMe(code) {
+  return makeAPIGETRequest(
+    `/api/banme?code=${code}`,
+  );
+}

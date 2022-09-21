@@ -8,10 +8,14 @@ import React, { useState } from 'react';
 import { t } from 'ttag';
 
 import Captcha from './Captcha';
-import { requestSolveCaptcha } from '../store/actions/fetch';
+import {
+  requestSolveCaptcha,
+  requestBanMe,
+} from '../store/actions/fetch';
 
 const GlobalCaptcha = ({ close }) => {
   const [errors, setErrors] = useState([]);
+  const [legit, setLegit] = useState(false);
   // used to be able to force Captcha rerender on error
   const [captKey, setCaptKey] = useState(Date.now());
 
@@ -19,6 +23,12 @@ const GlobalCaptcha = ({ close }) => {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+        // ----
+        const test = document.getElementById('void-bot');
+        if (!legit || test) {
+          await requestBanMe((legit) ? 1 : 2);
+        }
+        // ----
         const text = e.target.captcha.value;
         const captchaid = e.target.captchaid.value;
         const { errors: resErrors } = await requestSolveCaptcha(
@@ -38,7 +48,7 @@ const GlobalCaptcha = ({ close }) => {
           <span>{t`Error`}</span>:&nbsp;{error}
         </p>
       ))}
-      <Captcha autoload key={captKey} />
+      <Captcha autoload key={captKey} setLegit={setLegit} />
       <p>
         <button
           type="button"

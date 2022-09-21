@@ -3,7 +3,6 @@
 --   mutecKey: 'mutec:cid' hash of channel for country mutes
 --   muteKey: 'mute:uid' key for user mute
 --   isalKey: 'isal:ip' (proxycheck, blacklist, whitelist)
---   ishuman: 'human:ip' if captcha needed
 -- Args:
 --   cc: two letter country code of user
 -- Returns:
@@ -27,12 +26,6 @@ end
 local ttl = redis.call('ttl', KEYS[2])
 if ttl == -1 then
   ret[1] = 101
-  return ret
-end
--- check if captcha is needed
-if KEYS[4] ~= "nope" and not redis.call('get', KEYS[4]) then
-  -- captcha
-  ret[1] = 102
   return ret
 end
 if ttl > 0 then

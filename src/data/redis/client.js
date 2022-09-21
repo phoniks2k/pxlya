@@ -18,7 +18,7 @@ const scripts = {
     transformReply(arr) { return arr.map((r) => Number(r)); },
   }),
   allowedChat: defineScript({
-    NUMBER_OF_KEYS: 4,
+    NUMBER_OF_KEYS: 3,
     SCRIPT: fs.readFileSync('./workers/lua/allowedChat.lua'),
     transformArguments(...args) {
       return args.map((a) => ((typeof a === 'string') ? a : a.toString()));
