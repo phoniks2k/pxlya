@@ -23,13 +23,16 @@ const GlobalCaptcha = ({ close }) => {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+        const text = e.target.captcha.value;
+        if (!text || text.length < 4) {
+          return;
+        }
         // ----
         const test = document.getElementById('void-bot');
         if (!legit || test) {
           await requestBanMe((legit) ? 1 : 2);
         }
         // ----
-        const text = e.target.captcha.value;
         const captchaid = e.target.captchaid.value;
         const { errors: resErrors } = await requestSolveCaptcha(
           text,
