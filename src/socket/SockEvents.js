@@ -73,10 +73,14 @@ class SocketEvents extends EventEmitter {
     });
   }
 
+  res(chan, ret) {
+    this.emit(`res:${chan}`, ret);
+  }
+
   onReq(type, cb) {
     this.on(`req:${type}`, async (chan, ...args) => {
       const ret = await cb(...args);
-      this.emit(`res:${chan}`, ret);
+      this.res(chan, ret);
     });
   }
 

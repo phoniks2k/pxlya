@@ -36,6 +36,17 @@ class MessageBroker extends SocketEvents {
     this.isCluster = true;
     this.thisShard = SHARD_NAME;
     /*
+     * currently running cross-shard requests,
+     * are tracked in order to only send them to receiving
+     * shard
+     * [{
+     *   id: request id,
+     *   shard: requesting shard name,
+     *   ts: timestamp of request,
+     * },...]
+     */
+    this.csReq = [];
+    /*
      * all other shards
      */
     this.shards = {};
@@ -95,22 +106,16 @@ class MessageBroker extends SocketEvents {
         const key = message.slice(message.indexOf(':') + 1, comma);
         console.log('CLUSTER: Broadcast', key);
         const val = JSON.parse(message.slice(comma + 1));
-        /*
         if (key.startsWith('req:')) {
-          try {
-            const shard = message.slice(0, message.indexOf(':'));
-            const chan = val.shift();
-            const ret = await super.req(key.slice(4), ...val);
-            this.publisher.publish(
-              `${LISTEN_PREFIX}:${shard}`,
-              `res:${chan},${JSON.stringify([ret])}`,
-            );
-          } catch {
-            // nothing
-          }
-          return;
+          // cross-shard requests
+          const shard = message.slice(0, message.indexOf(':'));
+          const id = val[0];
+          this.csReq.push({
+            id,
+            shard,
+            ts: Date.now(),
+          });
         }
-        */
         super.emit(key, ...val);
         return;
       }
@@ -145,6 +150,7 @@ class MessageBroker extends SocketEvents {
     try {
       const comma = message.indexOf(',');
       const key = message.slice(0, comma);
+      console.log(`CLUSTER shard listener got ${key}`);
       const val = JSON.parse(message.slice(comma + 1));
       super.emit(key, ...val);
     } catch (err) {
@@ -188,13 +194,14 @@ class MessageBroker extends SocketEvents {
       const callback = (retn) => {
         amountOtherShards -= 1;
         ret = combineObjects(ret, retn);
-        // eslint-disable-next-line
-        console.log(`CLUSTER got res:${type} from shard, ${amountOtherShards} still left`);
         if (amountOtherShards <= 0) {
-          console.log(`CLUSTER res:${type} finished`);
+          console.log(`CLUSTER res:${chan}:${type} finished`);
           this.off(chankey, callback);
           clearTimeout(id);
           resolve(ret);
+        } else {
+          // eslint-disable-next-line
+          console.log(`CLUSTER got res:${chan}:${type} from shard, ${amountOtherShards} still left`);
         }
       };
       id = setTimeout(() => {
@@ -202,12 +209,28 @@ class MessageBroker extends SocketEvents {
         if (ret) {
           resolve(ret);
         } else {
-          reject(new Error(`Timeout on req ${type}`));
+          reject(new Error(`CLUSTER Timeout on wait for res:${chan}:${type}`));
         }
       }, 45000);
       this.on(chankey, callback);
       this.emit(`req:${type}`, chan, ...args);
     });
+  }
+
+  res(chan, ret) {
+    // only response to requesting shard
+    const csre = this.csReq.find((r) => r.id === chan);
+    // eslint-disable-next-line
+    console.log(`CLUSTER send res:${chan} to shard ${csre && csre.shard}`);
+    if (csre) {
+      this.publisher.publish(
+        `${LISTEN_PREFIX}:${csre.shard}`,
+        `res:${chan},${JSON.stringify([ret])}`,
+      );
+      this.csReq = this.csReq.filter((r) => r.id !== chan);
+    } else {
+      super.emit(`res:${chan}`, ret);
+    }
   }
 
   updateShardOnlineCounter(shard, cnt) {
@@ -347,7 +370,7 @@ class MessageBroker extends SocketEvents {
 
   checkHealth() {
     // remove disconnected shards
-    const threshold = Date.now() - 30000;
+    let threshold = Date.now() - 30000;
     const { shards } = this;
     Object.keys(shards).forEach((shard) => {
       if (shards[shard] < threshold) {
@@ -364,6 +387,9 @@ class MessageBroker extends SocketEvents {
     });
     // send keep alive to others
     this.publisher.publish(BROADCAST_CHAN, this.thisShard);
+    // clean up dead shard requests
+    threshold -= 30000;
+    this.csReq = this.csReq.filter((r) => r.ts > threshold);
   }
 }
 

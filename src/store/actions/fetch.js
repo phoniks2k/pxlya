@@ -348,7 +348,8 @@ export function requestIID() {
 }
 
 export function requestBanMe(code) {
-  return makeAPIGETRequest(
-    `/api/banme?code=${code}`,
+  return makeAPIPOSTRequest(
+    '/api/banme',
+    { code },
   );
 }

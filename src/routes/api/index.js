@@ -98,7 +98,7 @@ router.get('/chathistory', chatHistory);
 
 router.get('/me', me);
 
-router.get('/banme', banme);
+router.post('/banme', banme);
 
 router.use('/auth', auth);
 

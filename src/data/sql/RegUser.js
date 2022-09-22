@@ -56,7 +56,7 @@ const RegUser = sequelize.define('User', {
   },
 
   discordid: {
-    type: DataTypes.CHAR(18),
+    type: DataTypes.CHAR(20),
     allowNull: true,
   },
 
