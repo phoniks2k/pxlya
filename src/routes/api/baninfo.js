@@ -9,6 +9,10 @@ import {
   getBanInfo,
   unbanIP,
 } from '../../data/sql/Ban';
+import {
+  getCacheAllowed,
+  cleanCacheForIP,
+} from '../../data/redis/isAllowedCache';
 
 async function baninfo(req, res, next) {
   try {
@@ -21,6 +25,10 @@ async function baninfo(req, res, next) {
     const info = await getBanInfo(ip);
 
     if (!info) {
+      const cache = await getCacheAllowed(ip);
+      if (cache && cache.status === 2) {
+        cleanCacheForIP(ip);
+      }
       throw new Error(t`You are not banned`);
     }
     let sleft = (info.expires)
