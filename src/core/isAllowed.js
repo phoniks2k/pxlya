@@ -73,7 +73,8 @@ async function checkPCAndLists(f, ip, ipKey) {
   } catch (err) {
     logger.error(`Error checkAllowed for ${ip}: ${err.message}`);
   }
-  return [allowed, status, pcheck];
+  const caPromise = cacheAllowed(ipKey, status);
+  return [allowed, status, pcheck, caPromise];
 }
 
 /*
@@ -86,7 +87,7 @@ async function withoutCache(f, ip) {
   const ipKey = getIPv6Subnet(ip);
 
   const [
-    [allowed, status, pcheck],
+    [allowed, status, pcheck, caPromise],
     whoisRet,
   ] = await Promise.all([
     checkPCAndLists(f, ip, ipKey),
@@ -94,7 +95,7 @@ async function withoutCache(f, ip) {
   ]);
 
   await Promise.all([
-    cacheAllowed(ipKey, status),
+    caPromise,
     saveIPInfo(ipKey, whoisRet, status, pcheck),
   ]);
 
