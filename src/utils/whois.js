@@ -222,7 +222,7 @@ export default async function whoisIp(
        * flag to not return personal informations, otherwise
        * RIPE is gonne rate limit and ban
        */
-      // queryPrefix = '-r';
+      queryPrefix = '-r';
     }
 
     try {
