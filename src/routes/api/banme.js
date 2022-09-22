@@ -12,6 +12,15 @@ async function banme(req, res) {
   if (code === '1') {
     reason = 'Userscript Bot';
   } else if (code === '2') {
+    const ua = req.headers['user-agent'];
+    if (ua && ua.includes('OPR/')
+      && (ua.includes('Android') || ua.includes('iPhone'))
+    ) {
+      res.json({
+        status: 'nope',
+      });
+      return;
+    }
     reason = 'Captcha Solving Script';
   }
   const ip = getIPFromRequest(req);

@@ -151,6 +151,9 @@ function singleWhoisQuery(
   query,
   host,
 ) {
+  if (host.endsWith(':4321')) {
+    throw new Error('no rwhois support');
+  }
   return new Promise((resolve, reject) => {
     let data = '';
     const socket = net.createConnection({
