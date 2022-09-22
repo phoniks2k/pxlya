@@ -13,9 +13,7 @@ async function banme(req, res) {
     reason = 'Userscript Bot';
   } else if (code === '2') {
     const ua = req.headers['user-agent'];
-    if (ua && (
-      (ua.includes('OPR/') && ua.includes('Android')) || ua.includes('iPhone')
-    )) {
+    if (ua && (ua.includes('Android') || ua.includes('iPhone'))) {
       res.json({
         status: 'nope',
       });

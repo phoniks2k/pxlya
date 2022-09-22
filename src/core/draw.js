@@ -200,7 +200,10 @@ export default async function drawByOffsets(
     );
 
     if (needProxycheck) {
-      await isIPAllowed(ip, true);
+      const pc = await isIPAllowed(ip, true);
+      if (pc.status > 0) {
+        throw new Error(11);
+      }
     }
 
     for (let u = 0; u < pxlCnt; u += 1) {
