@@ -38,7 +38,15 @@ export default function allowPlace(
   const isalKey = `${ALLOWED_PREFIX}:${ip}`;
   const captKey = (CAPTCHA_TIME >= 0) ? `${CAPTCHA_PREFIX}:${ip}` : 'nope';
   const ipCdKey = `${PREFIX}:${canvasId}:ip:${ip}`;
-  const idCdKey = (id) ? `${PREFIX}:${canvasId}:id:${id}` : 'nope';
+  let idCdKey;
+  if (id) {
+    idCdKey = `${PREFIX}:${canvasId}:id:${id}`;
+  } else if (ip.includes('.')) {
+    const ips = ip.slice(0, ip.lastIndexOf('.'));
+    idCdKey = `${PREFIX}:${canvasId}:ips:${ips}`;
+  } else {
+    idCdKey = 'nope';
+  }
   const chunkKey = `ch:${canvasId}:${i}:${j}`;
   const cc = country || 'xx';
   const rankset = (ranked) ? RANKED_KEY : 'nope';
@@ -66,6 +74,10 @@ export async function getCoolDown(
   let ttl = await client.pTTL(`${PREFIX}:${canvasId}:ip:${ip}`);
   if (id) {
     const ttlid = await client.pTTL(`${PREFIX}:${canvasId}:id:${id}`);
+    ttl = Math.max(ttl, ttlid);
+  } else if (ip.includes('.')) {
+    const ips = ip.slice(0, ip.lastIndexOf('.'));
+    const ttlid = await client.pTTL(`${PREFIX}:${canvasId}:ips:${ips}`);
     ttl = Math.max(ttl, ttlid);
   }
   const cooldown = ttl < 0 ? 0 : ttl;

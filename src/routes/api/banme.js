@@ -22,7 +22,8 @@ async function banme(req, res) {
     reason = 'Captcha Solving Script';
   }
   const ip = getIPFromRequest(req);
-  logger.info(`AUTOBAN ${ip} of user ${req.user.id}`);
+  // eslint-disable-next-line max-len
+  logger.info(`AUTOBAN ${code}${ip} of user ${req.user.id} with ua "${req.headers['user-agent']}"`);
   await banIP(
     getIPv6Subnet(ip),
     reason,
