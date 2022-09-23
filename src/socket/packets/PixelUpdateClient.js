@@ -51,7 +51,9 @@ export default {
      * 1 byte color
      */
     let cnt = 2;
-    for (let p = 0; p < pixels.length; p += 1) {
+    let p = pixels.length;
+    while (p) {
+      p -= 1;
       const [offset, color] = pixels[p];
       view.setUint8(cnt += 1, offset >>> 16);
       view.setUint16(cnt += 1, offset & 0x00FFFF);
