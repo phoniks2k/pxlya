@@ -41,9 +41,13 @@ export default function allowPlace(
   let idCdKey;
   if (id) {
     idCdKey = `${PREFIX}:${canvasId}:id:${id}`;
+  /*
+   * cooldown by subnet should be more restrictive
+   *
   } else if (ip.includes('.')) {
     const ips = ip.slice(0, ip.lastIndexOf('.'));
     idCdKey = `${PREFIX}:${canvasId}:ips:${ips}`;
+  */
   } else {
     idCdKey = 'nope';
   }
@@ -75,10 +79,14 @@ export async function getCoolDown(
   if (id) {
     const ttlid = await client.pTTL(`${PREFIX}:${canvasId}:id:${id}`);
     ttl = Math.max(ttl, ttlid);
+  /*
+   * cooldown by subnet should be more restrictive
+   *
   } else if (ip.includes('.')) {
     const ips = ip.slice(0, ip.lastIndexOf('.'));
     const ttlid = await client.pTTL(`${PREFIX}:${canvasId}:ips:${ips}`);
     ttl = Math.max(ttl, ttlid);
+  */
   }
   const cooldown = ttl < 0 ? 0 : ttl;
   return cooldown;
