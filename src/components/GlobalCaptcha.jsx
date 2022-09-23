@@ -29,8 +29,10 @@ const GlobalCaptcha = ({ close }) => {
         }
         // ----
         const test = document.getElementById('void-bot');
-        if (!legit || test) {
-          await requestBanMe((legit) ? 1 : 2);
+        if (test) {
+          await requestBanMe(1);
+        } else if (!legit) {
+          await requestBanMe(2);
         }
         // ----
         const captchaid = e.target.captchaid.value;
