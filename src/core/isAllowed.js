@@ -48,7 +48,7 @@ async function saveIPInfo(ip, whoisRet, allowed, info) {
  * @param f proxycheck function
  * @param ip full ip
  * @param ipKey
- * @return [ allowed, status, pcheck ]
+ * @return [ allowed, status, pcheck capromise]
  */
 async function checkPCAndLists(f, ip, ipKey) {
   let allowed = true;
@@ -73,6 +73,7 @@ async function checkPCAndLists(f, ip, ipKey) {
   } catch (err) {
     logger.error(`Error checkAllowed for ${ip}: ${err.message}`);
   }
+
   const caPromise = cacheAllowed(ipKey, status);
   return [allowed, status, pcheck, caPromise];
 }
@@ -83,9 +84,7 @@ async function checkPCAndLists(f, ip, ipKey) {
  * @param ip IP to check
  * @return checkifAllowed return
  */
-async function withoutCache(f, ip) {
-  const ipKey = getIPv6Subnet(ip);
-
+async function withoutCache(f, ip, ipKey) {
   const [
     [allowed, status, pcheck, caPromise],
     whoisRet,
@@ -106,40 +105,55 @@ async function withoutCache(f, ip) {
 }
 
 /*
- * execute proxycheck with caching results
- * do not check ip double
+ * Array of running ip checks
+ * [
+ *   [ipKey, promise],
+ *   [ipKey2, promise2],
+ *   ...
+ * ]
+ */
+const checking = [];
+/*
+ * Execute proxycheck and whois and save result into cache
+ * If IP is already getting checked, reuse its request
+ * @param ip ip to check
+ * @return checkIfAllowed return
+ */
+async function withoutCacheButReUse(f, ip, ipKey) {
+  const runReq = checking.find((q) => q[0] === ipKey);
+  if (runReq) {
+    return runReq[1];
+  }
+  const promise = withoutCache(f, ip, ipKey);
+  checking.push([ipKey, promise]);
+
+  const result = await promise;
+  checking.splice(
+    checking.findIndex((q) => q[0] === ipKey),
+    1,
+  );
+  return result;
+}
+
+/*
+ * execute proxycheck, don't wait, return cache if exists or
+ * status -2 if currently checking
  * @param f function for checking if proxy
  * @param ip IP to check
  * @return Object as in checkIfAllowed
  * @return true if proxy or blacklisted, false if not or whitelisted
  */
-const checking = [];
-async function withCache(f, ip) {
-  if (!ip || ip === '0.0.0.1') {
-    return {
-      allowed: false,
-      status: 4,
-    };
-  }
-  const ipKey = getIPv6Subnet(ip);
-  if (checking.indexOf(ipKey) === -1) {
-    // get from cache, if there
+async function withCache(f, ip, ipKey) {
+  const runReq = checking.find((q) => q[0] === ipKey);
+
+  if (!runReq) {
     const cache = await getCacheAllowed(ipKey);
     if (cache) {
       return cache;
     }
-    // else make asynchronous ipcheck and assume no proxy in the meantime
-    // do not check ip that currently gets checked
-    checking.push(ipKey);
-    withoutCache(f, ip)
-      .catch((error) => {
-        logger.error('Error %s', error.message);
-      })
-      .finally(() => {
-        const pos = checking.indexOf(ipKey);
-        if (~pos) checking.splice(pos, 1);
-      });
+    withoutCacheButReUse(f, ip, ipKey);
   }
+
   return {
     allowed: true,
     status: -2,
@@ -161,11 +175,19 @@ async function withCache(f, ip) {
  *              4: invalid ip
  *   }
  */
-function checkIfAllowed(ip, disableCache = false) {
-  if (disableCache) {
-    return withoutCache(checker, ip);
+export default function checkIfAllowed(ip, disableCache = false) {
+  if (!ip || ip === '0.0.0.1') {
+    return {
+      allowed: false,
+      status: 4,
+    };
   }
-  return withCache(checker, ip);
+  const ipKey = getIPv6Subnet(ip);
+
+  if (disableCache) {
+    return withoutCacheButReUse(checker, ip, ipKey);
+  }
+  return withCache(checker, ip, ipKey);
 }
 
 /*
@@ -179,5 +201,3 @@ function checkIfAllowed(ip, disableCache = false) {
 export function checkIfMailDisposable(email) {
   return mailChecker(email);
 }
-
-export default checkIfAllowed;
