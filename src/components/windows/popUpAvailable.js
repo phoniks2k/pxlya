@@ -31,7 +31,7 @@ export function buildPopUpUrl(windowType, argsIn) {
     for (let i = 0; i < typeArr.length; i += 1) {
       const key = typeArr[i];
       if (args[key]) {
-        path += `/${args[key]}`;
+        path += `/${encodeURIComponent(args[key])}`;
         delete args[key];
       }
     }

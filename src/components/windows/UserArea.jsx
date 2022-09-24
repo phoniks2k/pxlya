@@ -14,8 +14,9 @@ import useInterval from '../hooks/interval';
 import LogInArea from '../LogInArea';
 import Tabs from '../Tabs';
 import UserAreaContent from '../UserAreaContent';
-import Rankings from '../Rankings';
 
+// eslint-disable-next-line max-len
+const Rankings = React.lazy(() => import(/* webpackChunkName: "stats" */ '../Rankings'));
 // eslint-disable-next-line max-len
 const Converter = React.lazy(() => import(/* webpackChunkName: "converter" */ '../Converter'));
 // eslint-disable-next-line max-len
@@ -55,8 +56,10 @@ const UserArea = () => {
         <div label={t`Profile`}>
           {(name) ? <UserAreaContent /> : <LogInArea />}
         </div>
-        <div label={t`Ranking`}>
-          <Rankings />
+        <div label={t`Statistics`}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Rankings />
+          </Suspense>
         </div>
         <div label={t`Converter`}>
           <Suspense fallback={<div>Loading...</div>}>

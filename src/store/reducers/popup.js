@@ -20,7 +20,7 @@ function getWinDataFromURL() {
     let i = Math.min(typeArr.length, argsArr.length);
     while (i > 0) {
       i -= 1;
-      args[typeArr[i]] = argsArr[i];
+      args[typeArr[i]] = decodeURIComponent(argsArr[i]);
     }
   }
   /*
