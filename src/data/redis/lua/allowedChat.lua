@@ -36,7 +36,7 @@ end
 local ia = redis.call('get', KEYS[3])
 if not ia then
   ret[2] = 1
-else
+elseif tonumber(ia) > 0 then
   ret[1] = tonumber(ia)
 end
 return ret

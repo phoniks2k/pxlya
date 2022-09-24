@@ -4,8 +4,8 @@
 import client from './client';
 import { PREFIX as ALLOWED_PREFIX } from './isAllowedCache';
 
-const MUTE_PREFIX = 'MUTE_PREFIX';
-const MUTEC_PREFIX = 'MUTE_PREFIXc';
+const MUTE_PREFIX = 'mute';
+const MUTEC_PREFIX = 'mutec';
 
 /*
  * check if user can send chat message in channel
