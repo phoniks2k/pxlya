@@ -122,7 +122,7 @@ export async function getTopDailyHistory() {
   for (let c = 0; c < 14; c += 1) {
     if (!ts) {
       ts = Date.now();
-      key = DAY_STATS_RANKS_KEY;
+      key = DAILY_RANKED_KEY;
     } else {
       ts -= 1000 * 3600 * 24;
       const dateKey = getDateKeyOfTs(ts);
@@ -160,7 +160,7 @@ export async function getCountryDailyHistory() {
   for (let c = 0; c < 14; c += 1) {
     if (!ts) {
       ts = Date.now();
-      key = CDAY_STATS_RANKS_KEY;
+      key = DAILY_CRANKED_KEY;
     } else {
       ts -= 1000 * 3600 * 24;
       const dateKey = getDateKeyOfTs(ts);
