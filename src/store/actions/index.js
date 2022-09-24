@@ -271,11 +271,24 @@ export function receiveMe(
 export function receiveStats(
   rankings,
 ) {
-  const { ranking: totalRanking, dailyRanking: totalDailyRanking } = rankings;
+  const {
+    ranking: totalRanking,
+    dailyRanking: totalDailyRanking,
+    dailyCRanking,
+    prevTop,
+    onlineStats,
+    cHistStats,
+    histStats,
+  } = rankings;
   return {
     type: 'REC_STATS',
     totalRanking,
     totalDailyRanking,
+    dailyCRanking,
+    prevTop,
+    onlineStats,
+    cHistStats,
+    histStats,
   };
 }
 
