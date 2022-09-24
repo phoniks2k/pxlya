@@ -5,18 +5,23 @@
 /* eslint-disable max-len */
 
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { t } from 'ttag';
+
+import { selectStats } from '../store/selectors/ranks';
 
 
 const Rankings = () => {
-  const [orderDaily, setOrderDaily] = useState(false);
-  const totalRanking = useSelector(
-    (state) => state.ranks.totalRanking,
-  );
-  const totalDailyRanking = useSelector(
-    (state) => state.ranks.totalDailyRanking,
-  );
+  const [area, setArea] = useState('total');
+  const [
+    totalRanking,
+    totalDailyRanking,
+    dailyCRanking,
+    prevTop,
+    onlineStats,
+    cHistStats,
+    histStats,
+  ] = useSelector(selectStats, shallowEqual);
 
   return (
     <>
@@ -25,65 +30,124 @@ const Rankings = () => {
           role="button"
           tabIndex={-1}
           className={
-            (!orderDaily) ? 'modallink selected' : 'modallink'
+            (area === 'total') ? 'modallink selected' : 'modallink'
           }
-          onClick={() => setOrderDaily(false)}
+          onClick={() => setArea('total')}
         >{t`Total`}</span>
         <span className="hdivider" />
         <span
           role="button"
           tabIndex={-1}
           className={
-            (orderDaily) ? 'modallink selected' : 'modallink'
+            (area === 'today') ? 'modallink selected' : 'modallink'
           }
-          onClick={() => setOrderDaily(true)}
-        >{t`Daily`}</span>
+          onClick={() => setArea('today')}
+        >{t`Today`}</span>
+        <span className="hdivider" />
+        <span
+          role="button"
+          tabIndex={-1}
+          className={
+            (area === 'yesterday') ? 'modallink selected' : 'modallink'
+          }
+          onClick={() => setArea('yesterday')}
+        >{t`Yesterday`}</span>
+        <span className="hdivider" />
+        <span
+          role="button"
+          tabIndex={-1}
+          className={
+            (area === 'countries') ? 'modallink selected' : 'modallink'
+          }
+          onClick={() => setArea('countries')}
+        >{t`Countries Today`}</span>
       </div>
-      <table style={{
-        display: 'inline',
-      }}
-      >
-        <thead>
-          {(orderDaily) ? (
-            <tr>
-              <th>#</th>
-              <th>user</th>
-              <th>Pixels</th>
-              <th># Total</th>
-              <th>Total Pixels</th>
-            </tr>
-          ) : (
-            <tr>
-              <th>#</th>
-              <th>user</th>
-              <th>Pixels</th>
-              <th># Today</th>
-              <th>Pixels Today</th>
-            </tr>
-          )}
-        </thead>
-        <tbody>
-          {(orderDaily)
-            ? totalDailyRanking.map((rank) => (
-              <tr key={rank.name}>
-                <td>{rank.dr}</td>
-                <td><span>{rank.name}</span></td>
-                <td>{rank.dt}</td>
-                <td>{rank.r}</td>
-                <td>{rank.t}</td>
-              </tr>
-            ))
-            : totalRanking.map((rank) => (
-              <tr key={rank.name}>
-                <td>{rank.r}</td>
-                <td><span>{rank.name}</span></td>
-                <td>{rank.t}</td>
-                <td>{rank.dr}</td>
-                <td>{rank.dt}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {(['total', 'today', 'yesterday', 'countries'].includes(area)) && (
+        <table style={{
+          display: 'inline',
+        }}
+        >
+          <thead>
+            {{
+              total: (
+                <tr>
+                  <th>#</th>
+                  <th>{t`User`}</th>
+                  <th>Pixels</th>
+                  <th># Today</th>
+                  <th>Pixels Today</th>
+                </tr>
+              ),
+              today: (
+                <tr>
+                  <th>#</th>
+                  <th>{t`User`}</th>
+                  <th>Pixels</th>
+                  <th># Total</th>
+                  <th>Total Pixels</th>
+                </tr>
+              ),
+              yesterday: (
+                <tr>
+                  <th>#</th>
+                  <th>{t`User`}</th>
+                  <th>Pixels</th>
+                </tr>
+              ),
+              countries: (
+                <tr>
+                  <th>#</th>
+                  <th>{t`Country`}</th>
+                  <th>Pixels</th>
+                </tr>
+              ),
+            }[area]}
+          </thead>
+          <tbody>
+            {{
+              total: totalRanking.map((rank) => (
+                <tr key={rank.name}>
+                  <td>{rank.r}</td>
+                  <td><span>{rank.name}</span></td>
+                  <td>{rank.t}</td>
+                  <td>{rank.dr}</td>
+                  <td>{rank.dt}</td>
+                </tr>
+              )),
+              today: totalDailyRanking.map((rank) => (
+                <tr key={rank.name}>
+                  <td>{rank.dr}</td>
+                  <td><span>{rank.name}</span></td>
+                  <td>{rank.dt}</td>
+                  <td>{rank.r}</td>
+                  <td>{rank.t}</td>
+                </tr>
+              )),
+              yesterday: prevTop.map((rank, ind) => (
+                <tr key={rank.name}>
+                  <td>{ind + 1}</td>
+                  <td><span>{rank.name}</span></td>
+                  <td>{rank.px}</td>
+                </tr>
+              )),
+              countries: prevTop.map((rank, ind) => (
+                <tr key={rank.name}>
+                  <td>{ind + 1}</td>
+                  <td title={rank.cc}><img
+                    style={{
+                      height: '1em',
+                      imageRendering: 'crisp-edges',
+                    }}
+                    alt={rank.cc}
+                    src={`/cf/${rank.cc}.gif`}
+                  /></td>
+                  <td>{rank.px}</td>
+                </tr>
+              )),
+            }[area]}
+          </tbody>
+        </table>
+      )}
       <p>
         {t`Ranking updates every 5 min. Daily rankings get reset at midnight UTC.`}
       </p>

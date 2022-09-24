@@ -17,6 +17,11 @@ const initialState = {
   },
   totalRanking: [],
   totalDailyRanking: [],
+  dailyCRanking: [],
+  prevTop: [],
+  onlineStats: [],
+  cHistStats: [],
+  histStats: [],
 };
 
 export default function ranks(
@@ -70,13 +75,26 @@ export default function ranks(
     }
 
     case 'REC_STATS': {
-      const { totalRanking, totalDailyRanking } = action;
+      const {
+        totalRanking,
+        totalDailyRanking,
+        dailyCRanking,
+        prevTop,
+        onlineStats,
+        cHistStats,
+        histStats,
+      } = action;
       const lastFetch = Date.now();
       return {
         ...state,
         lastFetch,
         totalRanking,
         totalDailyRanking,
+        dailyCRanking,
+        prevTop,
+        onlineStats,
+        cHistStats,
+        histStats,
       };
     }
 

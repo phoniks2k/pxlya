@@ -10,6 +10,7 @@ import {
   getOnlineUserStats,
   storeOnlinUserAmount,
   getCountryDailyHistory,
+  getCountryRanks,
   getTopDailyHistory,
 } from '../data/redis/ranks';
 import socketEvents from '../socket/socketEvents';
@@ -23,6 +24,7 @@ class Ranks {
     this.ranks = {
       dailyRanking: [],
       ranking: [],
+      dailyCRanking: [],
       prevTop: [],
       onlineStats: [],
       cHistStats: [],
@@ -78,9 +80,11 @@ class Ranks {
         1,
         100,
       ));
+    const dailyCRanking = await getCountryRanks(1, 100);
     const ret = {
       ranking,
       dailyRanking,
+      dailyCRanking,
     };
     socketEvents.rankingListUpdate(ret);
     return ret;

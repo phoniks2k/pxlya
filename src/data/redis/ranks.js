@@ -81,6 +81,21 @@ export async function getRanks(daily, start, amount) {
 }
 
 /*
+ * get daily country ranking
+ */
+export async function getCountryRanks(start, amount) {
+  let ranks = await client.zRangeWithScores(
+    DAILY_CRANKED_KEY, start, start + amount, {
+      REV: true,
+    });
+  ranks = ranks.map((r) => ({
+    cc: r.value,
+    px: Number(r.score),
+  }));
+  return ranks;
+}
+
+/*
  * get top 10 from previous day
  */
 export async function getPrevTop() {
