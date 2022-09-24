@@ -573,3 +573,16 @@ export function combineObjects(a, b) {
   }
   return a + b;
 }
+
+/*
+ * get YYYYMMDD of timestamp
+ */
+export function getDateKeyOfTs(ts) {
+  const date = new Date(ts);
+  let day = date.getUTCDate();
+  if (day < 10) day = `0${day}`;
+  let month = date.getUTCMonth() + 1;
+  if (month < 10) month = `0${month}`;
+  const year = date.getUTCFullYear();
+  return `${year}${month}${day}`;
+}

@@ -125,7 +125,9 @@ export default async function drawByOffsets(
           throw new Error(7);
         }
       }
-      if (canvas.req === 'top' && !rankings.ranks.prevTop.includes(user.id)) {
+      if (canvas.req === 'top'
+        && !rankings.ranks.prevTop.find((r) => r.id === user.id)
+      ) {
         // not in top ten
         throw new Error(12);
       }

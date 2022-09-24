@@ -2,8 +2,7 @@
  * counter for daily and total pixels and ranking
  */
 import client from './client';
-
-import logger from '../../core/logger';
+import { getDateKeyOfTs } from '../../core/utils';
 
 export const RANKED_KEY = 'rank';
 export const DAILY_RANKED_KEY = 'rankd';
@@ -11,7 +10,7 @@ export const DAILY_CRANKED_KEY = 'crankd';
 const PREV_DAY_TOP_KEY = 'prankd';
 const DAY_STATS_RANKS_KEY = 'ds';
 const CDAY_STATS_RANKS_KEY = 'cds';
-const PREV_DAILY_TOP_KEY = 'prevtop';
+const ONLINE_CNTR_KEY = 'tonl';
 
 /*
  * get pixelcount and ranking
@@ -82,6 +81,105 @@ export async function getRanks(daily, start, amount) {
 }
 
 /*
+ * get top 10 from previous day
+ */
+export async function getPrevTop() {
+  let prevTop = await client.zRangeWithScores(PREV_DAY_TOP_KEY, 0, 9, {
+    REV: true,
+  });
+  prevTop = prevTop.map((r) => ({
+    id: Number(r.value),
+    px: Number(r.score),
+  }));
+  return prevTop;
+}
+
+/*
+ * store amount of online Users
+ */
+export async function storeOnlinUserAmount(amount) {
+  await client.lPush(ONLINE_CNTR_KEY, String(amount));
+  await client.lTrim(ONLINE_CNTR_KEY, 0, 14 * 24);
+}
+
+/*
+ * get list of online counters
+ */
+export async function getOnlineUserStats() {
+  const onlineStats = await client.lRange(ONLINE_CNTR_KEY, 0, -1);
+  console.log('STAAATTTSS', onlineStats);
+  return onlineStats;
+}
+
+/*
+ * get top 10 of daily pixels over the past days
+ */
+export async function getTopDailyHistory() {
+  const stats = [];
+  const users = [];
+  let ts;
+  let key;
+  for (let c = 0; c < 14; c += 1) {
+    if (!ts) {
+      ts = Date.now();
+      key = DAY_STATS_RANKS_KEY;
+    } else {
+      ts -= 1000 * 3600 * 24;
+      const dateKey = getDateKeyOfTs(ts);
+      key = `${DAY_STATS_RANKS_KEY}:${dateKey}`;
+    }
+    // eslint-disable-next-line no-await-in-loop
+    let dData = await client.zRangeWithScores(key, 0, 9, {
+      REV: true,
+    });
+    dData = dData.map((r) => {
+      const id = Number(r.value);
+      if (!users.some((q) => q.id === id)) {
+        users.push({ id });
+      }
+      return {
+        id,
+        px: Number(r.score),
+      };
+    });
+    stats.push(dData);
+  }
+  return {
+    users,
+    stats,
+  };
+}
+
+/*
+ * get top 10 countries over the past days
+ */
+export async function getCountryDailyHistory() {
+  const ret = [];
+  let ts;
+  let key;
+  for (let c = 0; c < 14; c += 1) {
+    if (!ts) {
+      ts = Date.now();
+      key = CDAY_STATS_RANKS_KEY;
+    } else {
+      ts -= 1000 * 3600 * 24;
+      const dateKey = getDateKeyOfTs(ts);
+      key = `${CDAY_STATS_RANKS_KEY}:${dateKey}`;
+    }
+    // eslint-disable-next-line no-await-in-loop
+    let dData = await client.zRangeWithScores(key, 0, 9, {
+      REV: true,
+    });
+    dData = dData.map((r) => ({
+      cc: r.value,
+      px: Number(r.score),
+    }));
+    ret.push(dData);
+  }
+  return ret;
+}
+
+/*
  * reset daily ranks
  * @return boolean for success
  */
@@ -91,57 +189,15 @@ export async function resetDailyRanks() {
     REV: true,
   });
   // store day
-  const yesterday = new Date(Date.now() - 1000 * 3600 * 24);
-  let day = yesterday.getUTCDate();
-  if (day < 10) day = `0${day}`;
-  let month = yesterday.getUTCMonth() + 1;
-  if (month < 10) month = `0${month}`;
-  const year = yesterday.getUTCFullYear();
-  const dateKey = `${year}${month}${day}`;
-  // TODO check if this works
+  const dateKey = getDateKeyOfTs(
+    Date.now() - 1000 * 3600 * 24,
+  );
   await client.rename(
     DAILY_RANKED_KEY,
     `${DAY_STATS_RANKS_KEY}:${dateKey}`,
   );
-  /*
-  await client.zUnionStore(
-    `${DAY_STATS_RANKS_KEY}:${dateKey}`,
-    DAILY_RANKED_KEY,
-  );
-  */
   await client.rename(
     DAILY_CRANKED_KEY,
     `${CDAY_STATS_RANKS_KEY}:${dateKey}`,
   );
-  /*
-  await client.zUnionStore(
-    `${CDAY_STATS_RANKS_KEY}:${dateKey}`,
-    DAILY_CRANKED_KEY,
-  );
-  // reset daily counter
-  await client.del(DAILY_RANKED_KEY);
-  await client.del(DAILY_CRANKED_KEY);
-  */
-}
-
-/*
- * saves the top 10 into redis
- * @param dailyRanking Array of dailyRanking
- */
-export async function saveDailyTop(dailyRanking) {
-  const top10 = dailyRanking.slice(0, 10).map((user) => user.id);
-  const jsonTop = JSON.stringify(top10);
-  logger.info(`Saving current daily top 10 into redis: ${jsonTop}`);
-  await client.set(PREV_DAILY_TOP_KEY, jsonTop);
-  return top10;
-}
-
-/*
- * load top10 from redis
- * @return Promis<Array> Array of user IDs of the top 10
- */
-export async function loadDailyTop() {
-  const jsonTop = await client.get(PREV_DAILY_TOP_KEY);
-  logger.info(`Loaded current daily top 10 into redis: ${jsonTop}`);
-  return (jsonTop) ? JSON.parse(jsonTop) : [];
 }
