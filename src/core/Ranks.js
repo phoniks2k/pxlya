@@ -53,17 +53,14 @@ class Ranks {
       };
       await Ranks.updateRanking();
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(`Error initialize ranks: ${err.message}`);
     }
     setInterval(Ranks.updateRanking, 5 * MINUTE);
+    HourlyCron.hook(Ranks.setHourlyRanking);
     DailyCron.hook(Ranks.setDailyRanking);
-    setInterval(Ranks.setHourlyRanking, 5 * MINUTE);
-    //HourlyCron.hook(Ranks.setHourlyRanking);
   }
 
-  /*
-   * get daily and total ranking from database
-   */
   static async updateRanking() {
     // only main shard does it
     if (!socketEvents.amIImportant()) {
@@ -89,14 +86,11 @@ class Ranks {
     return ret;
   }
 
-  /*
-   * get online counter stats,
-   * list of users online per hour
-   */
   static async hourlyUpdateRanking() {
     const onlineStats = await getOnlineUserStats();
     const cHistStats = await getCountryDailyHistory();
     const histStats = await getTopDailyHistory();
+    histStats.users = await populateRanking(histStats.users);
     const ret = {
       onlineStats,
       cHistStats,
@@ -109,9 +103,6 @@ class Ranks {
     return ret;
   }
 
-  /*
-   * get prevTop from database
-   */
   static async dailyUpdateRanking() {
     const prevTop = await populateRanking(
       await getPrevTop(),
@@ -126,21 +117,13 @@ class Ranks {
     return ret;
   }
 
-  /*
-   * get and store amount of online users into stats
-   */
   static async setHourlyRanking() {
     if (!socketEvents.amIImportant()) {
       return;
     }
-    let amount;
-    try {
-      amount = socketEvents.onlineCounter.total;
-      await storeOnlinUserAmount(amount);
-      await Ranks.hourlyUpdateRanking();
-    } catch (err) {
-      console.error(`error on hourly ranking: ${err.message} / ${amount}`);
-    }
+    const amount = socketEvents.onlineCounter.total;
+    await storeOnlinUserAmount(amount);
+    await Ranks.hourlyUpdateRanking();
   }
 
   /*

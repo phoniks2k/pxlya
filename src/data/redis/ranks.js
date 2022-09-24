@@ -106,8 +106,8 @@ export async function storeOnlinUserAmount(amount) {
  * get list of online counters
  */
 export async function getOnlineUserStats() {
-  const onlineStats = await client.lRange(ONLINE_CNTR_KEY, 0, -1);
-  console.log('STAAATTTSS', onlineStats);
+  let onlineStats = await client.lRange(ONLINE_CNTR_KEY, 0, -1);
+  onlineStats = onlineStats.map((s) => Number(s));
   return onlineStats;
 }
 
