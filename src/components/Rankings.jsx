@@ -130,7 +130,7 @@ const Rankings = () => {
                   <td>{rank.px}</td>
                 </tr>
               )),
-              countries: prevTop.map((rank, ind) => (
+              countries: dailyCRanking.map((rank, ind) => (
                 <tr key={rank.name}>
                   <td>{ind + 1}</td>
                   <td title={rank.cc}><img

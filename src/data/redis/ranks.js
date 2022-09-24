@@ -84,6 +84,8 @@ export async function getRanks(daily, start, amount) {
  * get daily country ranking
  */
 export async function getCountryRanks(start, amount) {
+  start -= 1;
+  amount -= 1;
   let ranks = await client.zRangeWithScores(
     DAILY_CRANKED_KEY, start, start + amount, {
       REV: true,
