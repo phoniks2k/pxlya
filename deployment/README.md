@@ -4,6 +4,9 @@ Files here might be very specific to the setup of pixelplanet.fun and might not 
 ## exalple-ecosystem-x.yml and captchaFonts
 Examples of configurations, will be copied into ./dist on build
 
+# nginx
+example nginx config
+
 ## updtmsg
 Basic nodejs script to print a message and a youtube video, used as a message while updating
 
