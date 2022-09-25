@@ -29,7 +29,7 @@ export const shardOrigin = shardHost
  * defaults to 8s
  */
 async function fetchWithTimeout(url, options = {}) {
-  const { timeout = 10000 } = options;
+  const { timeout = 30000 } = options;
 
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
