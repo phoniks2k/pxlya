@@ -324,7 +324,7 @@ export function requestDeleteAccount(password) {
 
 export function requestRankings() {
   return makeAPIGETRequest(
-    '/ranking',
+    'https://pixelplanet.fun/ranking',
     false,
   );
 }
