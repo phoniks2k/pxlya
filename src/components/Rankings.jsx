@@ -17,11 +17,24 @@ import {
   Tooltip,
   Legend,
   LineController,
+  ArcElement,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line, Pie } from 'react-chartjs-2';
 
+import { selectIsDarkMode } from '../store/selectors/gui';
 import { selectStats } from '../store/selectors/ranks';
-import { colorFromText } from '../core/utils';
+import {
+  getCHistChartOpts,
+  getCHistChartData,
+  getOnlineStatsOpts,
+  getOnlineStatsData,
+  getHistChartOpts,
+  getHistChartData,
+  getCPieOpts,
+  getCPieData,
+  getPDailyStatsOpts,
+  getPDailyStatsData,
+} from '../core/chartSettings';
 
 ChartJS.register(
   CategoryScale,
@@ -32,87 +45,9 @@ ChartJS.register(
   Tooltip,
   Legend,
   LineController,
+  // for pie chart
+  ArcElement,
 );
-
-const options = {
-  responsive: true,
-  aspectRatio: 1.2,
-  color: '#e6e6e6',
-  scales: {
-    x: {
-      grid: {
-        drawBorder: false,
-        color: '#656565',
-      },
-      ticks: {
-        color: '#e6e6e6',
-      },
-    },
-    y: {
-      grid: {
-        drawBorder: false,
-        color: '#656565',
-      },
-      ticks: {
-        color: '#e6e6e6',
-      },
-    },
-  },
-  interaction: {
-    mode: 'index',
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      color: '#e6e6e6',
-      text: 'Top 10 Countries [pxls / day]',
-    },
-  },
-};
-
-const onlineStatsOptions = {
-  responsive: true,
-  color: '#e6e6e6',
-  scales: {
-    x: {
-      grid: {
-        drawBorder: false,
-        color: '#656565',
-      },
-      ticks: {
-        color: '#e6e6e6',
-      },
-    },
-    y: {
-      grid: {
-        drawBorder: false,
-        color: '#656565',
-      },
-      ticks: {
-        color: '#e6e6e6',
-      },
-    },
-  },
-  interaction: {
-    mode: 'index',
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      color: '#e6e6e6',
-      text: 'Players Online per full hour',
-    },
-  },
-};
-
 
 const Rankings = () => {
   const [area, setArea] = useState('total');
@@ -124,81 +59,79 @@ const Rankings = () => {
     onlineStats,
     cHistStats,
     histStats,
+    pDailyStats,
   ] = useSelector(selectStats, shallowEqual);
+  const isDarkMode = useSelector(selectIsDarkMode);
 
   const cHistData = useMemo(() => {
     if (area !== 'charts') {
       return null;
     }
-    const dataPerCountry = {};
-    const labels = [];
-    let ts = Date.now();
-    let c = cHistStats.length;
-    while (c) {
-      const dAmount = cHistStats.length - c;
-      c -= 1;
-      // x label
-      const date = new Date(ts);
-      labels.unshift(`${date.getUTCMonth() + 1} / ${date.getUTCDate()}`);
-      ts -= 1000 * 3600 * 24;
-      // y data per country
-      const dailyRanks = cHistStats[c];
-      for (let i = 0; i < dailyRanks.length; i += 1) {
-        const { cc, px } = dailyRanks[i];
-        if (!dataPerCountry[cc]) {
-          dataPerCountry[cc] = [];
-        }
-        const countryDat = dataPerCountry[cc];
-        while (countryDat.length < dAmount) {
-          countryDat.push(null);
-        }
-        countryDat.push(px);
-      }
-    }
-    console.log(dataPerCountry);
-    const countries = Object.keys(dataPerCountry);
-    const datasets = countries.map((cc) => {
-      const color = colorFromText(`${cc}${cc}${cc}${cc}${cc}`);
-      return {
-        label: cc,
-        data: dataPerCountry[cc],
-        borderColor: color,
-        backgroundColor: color,
-      };
-    });
-    return {
-      labels,
-      datasets,
-    };
+    return getCHistChartData(cHistStats);
   }, [area, cHistStats]);
+
+  const cHistOpts = useMemo(() => {
+    if (area !== 'charts') {
+      return null;
+    }
+    return getCHistChartOpts(isDarkMode);
+  }, [area, isDarkMode]);
 
   const onlineData = useMemo(() => {
     if (area !== 'charts') {
       return null;
     }
-    const labels = [];
-    const data = [];
-    let ts = Date.now();
-    let c = onlineStats.length;
-    while (c) {
-      c -= 1;
-      const date = new Date(ts);
-      const hours = date.getHours();
-      const key = hours || `${date.getMonth() + 1} / ${date.getDate()}`;
-      labels.unshift(String(key));
-      ts -= 1000 * 3600;
-      data.push(onlineStats[c]);
-    }
-    return {
-      labels,
-      datasets: [{
-        label: 'Players',
-        data,
-        borderColor: '#3fadda',
-        backgroundColor: '#3fadda',
-      }],
-    };
+    return getOnlineStatsData(onlineStats);
   }, [area, onlineStats]);
+
+  const onlineOpts = useMemo(() => {
+    if (area !== 'charts') {
+      return null;
+    }
+    return getOnlineStatsOpts(isDarkMode);
+  }, [area, isDarkMode]);
+
+  const histData = useMemo(() => {
+    if (area !== 'charts') {
+      return null;
+    }
+    return getHistChartData(histStats);
+  }, [area, histStats]);
+
+  const histOpts = useMemo(() => {
+    if (area !== 'charts') {
+      return null;
+    }
+    return getHistChartOpts(isDarkMode);
+  }, [area, isDarkMode]);
+
+  const pDailyData = useMemo(() => {
+    if (area !== 'charts') {
+      return null;
+    }
+    return getPDailyStatsData(pDailyStats);
+  }, [area, pDailyStats]);
+
+  const pDailyOpts = useMemo(() => {
+    if (area !== 'charts') {
+      return null;
+    }
+    return getPDailyStatsOpts(isDarkMode);
+  }, [area, isDarkMode]);
+
+  const cPieData = useMemo(() => {
+    if (area !== 'countries') {
+      return null;
+    }
+    return getCPieData(dailyCRanking);
+  }, [area, dailyCRanking]);
+
+  const cPieOpts = useMemo(() => {
+    if (area !== 'countries') {
+      return null;
+    }
+    return getCPieOpts(isDarkMode);
+  }, [area, isDarkMode]);
 
   return (
     <>
@@ -210,7 +143,7 @@ const Rankings = () => {
             (area === 'total') ? 'modallink selected' : 'modallink'
           }
           onClick={() => setArea('total')}
-        >{t`Total`}</span>
+        > {t`Total`}</span>
         <span className="hdivider" />
         <span
           role="button"
@@ -219,7 +152,7 @@ const Rankings = () => {
             (area === 'today') ? 'modallink selected' : 'modallink'
           }
           onClick={() => setArea('today')}
-        >{t`Today`}</span>
+        > {t`Today`}</span>
         <span className="hdivider" />
         <span
           role="button"
@@ -228,7 +161,7 @@ const Rankings = () => {
             (area === 'yesterday') ? 'modallink selected' : 'modallink'
           }
           onClick={() => setArea('yesterday')}
-        >{t`Yesterday`}</span>
+        > {t`Yesterday`}</span>
         <span className="hdivider" />
         <span
           role="button"
@@ -237,7 +170,7 @@ const Rankings = () => {
             (area === 'countries') ? 'modallink selected' : 'modallink'
           }
           onClick={() => setArea('countries')}
-        >{t`Countries Today`}</span>
+        > {t`Countries Today`}</span>
         <span className="hdivider" />
         <span
           role="button"
@@ -246,8 +179,15 @@ const Rankings = () => {
             (area === 'charts') ? 'modallink selected' : 'modallink'
           }
           onClick={() => setArea('charts')}
-        >{t`Chart`}</span>
+        > {t`Charts`}</span>
       </div>
+      <br />
+      {(area === 'countries') && (
+        <>
+          <Pie options={cPieOpts} data={cPieData} />
+          <br />
+        </>
+      )}
       {(['total', 'today', 'yesterday', 'countries'].includes(area)) && (
         <table style={{
           display: 'inline',
@@ -336,8 +276,10 @@ const Rankings = () => {
       )}
       {(area === 'charts') && (
         <>
-          <Line options={options} data={cHistData} />
-          <Line options={onlineStatsOptions} data={onlineData} />
+          <Line options={cHistOpts} data={cHistData} />
+          <Line options={onlineOpts} data={onlineData} />
+          <Line options={pDailyOpts} data={pDailyData} />
+          <Line options={histOpts} data={histData} />
         </>
       )}
       <p>

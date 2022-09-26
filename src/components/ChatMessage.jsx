@@ -7,10 +7,10 @@ import {
   setBrightness,
   getDateTimeString,
 } from '../core/utils';
+import { selectIsDarkMode } from '../store/selectors/gui';
 import { parseParagraph } from '../core/MarkdownParser';
 
 
-const selectStyle = (state) => state.gui.style.indexOf('dark') !== -1;
 
 function ChatMessage({
   name,
@@ -20,9 +20,7 @@ function ChatMessage({
   ts,
   openCm,
 }) {
-  const isDarkMode = useSelector(
-    selectStyle,
-  );
+  const isDarkMode = useSelector(selectIsDarkMode);
   const refEmbed = useRef();
 
   const isInfo = (name === 'info');

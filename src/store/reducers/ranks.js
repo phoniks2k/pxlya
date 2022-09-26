@@ -21,7 +21,9 @@ const initialState = {
   prevTop: [],
   onlineStats: [],
   cHistStats: [],
-  histStats: [],
+  histStats: { users: [], stats: [] },
+  pDailyStats: [],
+  pHourlyStats: [],
 };
 
 export default function ranks(
@@ -83,11 +85,10 @@ export default function ranks(
         onlineStats,
         cHistStats,
         histStats,
+        pDailyStats,
+        pHourlyStats,
       } = action;
-      const lastFetch = Date.now();
-      return {
-        ...state,
-        lastFetch,
+      const newStats = {
         totalRanking,
         totalDailyRanking,
         dailyCRanking,
@@ -95,6 +96,14 @@ export default function ranks(
         onlineStats,
         cHistStats,
         histStats,
+        pDailyStats,
+        pHourlyStats,
+      };
+      const lastFetch = Date.now();
+      return {
+        ...state,
+        lastFetch,
+        ...newStats,
       };
     }
 

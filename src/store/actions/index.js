@@ -279,6 +279,8 @@ export function receiveStats(
     onlineStats,
     cHistStats,
     histStats,
+    pDailyStats,
+    pHourlyStats,
   } = rankings;
   return {
     type: 'REC_STATS',
@@ -289,6 +291,8 @@ export function receiveStats(
     onlineStats,
     cHistStats,
     histStats,
+    pDailyStats,
+    pHourlyStats,
   };
 }
 

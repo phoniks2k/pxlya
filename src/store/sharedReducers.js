@@ -15,7 +15,7 @@ import canvas from './reducers/canvas';
 import chat from './reducers/chat';
 import fetching from './reducers/fetching';
 
-export const CURRENT_VERSION = 12;
+export const CURRENT_VERSION = 14;
 
 export const migrate = (state, version) => {
   // eslint-disable-next-line no-underscore-dangle

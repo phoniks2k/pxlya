@@ -11,6 +11,9 @@ const PREV_DAY_TOP_KEY = 'prankd';
 const DAY_STATS_RANKS_KEY = 'ds';
 const CDAY_STATS_RANKS_KEY = 'cds';
 const ONLINE_CNTR_KEY = 'tonl';
+const PREV_HOURLY_PLACED_KEY = 'tmph';
+const HOURLY_PXL_CNTR_KEY = 'thpx';
+const DAILY_PXL_CNTR_KEY = 'tdpx';
 
 /*
  * get pixelcount and ranking
@@ -116,16 +119,73 @@ export async function getPrevTop() {
  */
 export async function storeOnlinUserAmount(amount) {
   await client.lPush(ONLINE_CNTR_KEY, String(amount));
-  await client.lTrim(ONLINE_CNTR_KEY, 0, 14 * 24);
+  await client.lTrim(ONLINE_CNTR_KEY, 0, 7 * 24);
 }
 
 /*
- * get list of online counters
+ * get list of online counters per hour
  */
 export async function getOnlineUserStats() {
   let onlineStats = await client.lRange(ONLINE_CNTR_KEY, 0, -1);
   onlineStats = onlineStats.map((s) => Number(s));
   return onlineStats;
+}
+
+/*
+ * calculate sum of scores of zset
+ * do NOT use it for large seets
+ */
+async function sumZSet(key) {
+  const ranks = await client.zRangeWithScores(key, 0, -1);
+  let total = 0;
+  ranks.forEach((r) => { total += Number(r.score); });
+  return total;
+}
+
+/*
+ * save hourly pixels placed by substracting
+ * the current daily total pixels set with the ones of an hour ago
+ */
+export async function storeHourlyPixelsPlaced() {
+  const tsNow = Date.now();
+  const prevData = await client.get(PREV_HOURLY_PLACED_KEY);
+  let prevTs;
+  let prevSum;
+  if (prevData) {
+    [prevTs, prevSum] = prevData.split(',').map((z) => Number(z));
+  }
+
+  let curSum = await sumZSet(DAILY_CRANKED_KEY);
+  await client.set(PREV_HOURLY_PLACED_KEY, `${tsNow},${curSum}`);
+
+  if (prevTs && prevTs > tsNow - 1000 * 3600 * 1.5) {
+    if (prevSum > curSum) {
+      // assume day change, add amount of yesterday
+      const dateKey = getDateKeyOfTs(tsNow - 1000 * 3600 * 24);
+      curSum += await sumZSet(`${CDAY_STATS_RANKS_KEY}:${dateKey}`);
+    }
+    const hourlyPixels = curSum - prevSum;
+    await client.lPush(HOURLY_PXL_CNTR_KEY, String(hourlyPixels));
+    await client.lTrim(HOURLY_PXL_CNTR_KEY, 0, 7 * 24);
+  }
+}
+
+/*
+ * get list of pixels placed per hour
+ */
+export async function getHourlyPixelStats() {
+  let pxlStats = await client.lRange(HOURLY_PXL_CNTR_KEY, 0, -1);
+  pxlStats = pxlStats.map((s) => Number(s));
+  return pxlStats;
+}
+
+/*
+ * get list of pixels placed per day
+ */
+export async function getDailyPixelStats() {
+  let pxlStats = await client.lRange(DAILY_PXL_CNTR_KEY, 0, -1);
+  pxlStats = pxlStats.map((s) => Number(s));
+  return pxlStats;
 }
 
 /*
@@ -165,6 +225,20 @@ export async function getTopDailyHistory() {
     users,
     stats,
   };
+}
+
+/*
+ * for populating past daily totals
+ */
+export async function populateDailyTotal() {
+  await client.del(DAILY_PXL_CNTR_KEY);
+  for (let i = 14; i > 0; i -= 1) {
+    const ts = Date.now() - 1000 * 3600 * 24 * i;
+    const key = `${CDAY_STATS_RANKS_KEY}:${getDateKeyOfTs(ts)}`;
+    // eslint-disable-next-line no-await-in-loop
+    const sum = await sumZSet(key);
+    client.lPush(DAILY_PXL_CNTR_KEY, String(sum));
+  }
 }
 
 /*
@@ -209,12 +283,24 @@ export async function resetDailyRanks() {
   const dateKey = getDateKeyOfTs(
     Date.now() - 1000 * 3600 * 24,
   );
+  // daily user rank
   await client.rename(
     DAILY_RANKED_KEY,
     `${DAY_STATS_RANKS_KEY}:${dateKey}`,
   );
+  // daily country rank
   await client.rename(
     DAILY_CRANKED_KEY,
     `${CDAY_STATS_RANKS_KEY}:${dateKey}`,
   );
+  // daily pixel counter
+  const sum = await sumZSet(`${CDAY_STATS_RANKS_KEY}:${dateKey}`);
+  await client.lPush(DAILY_PXL_CNTR_KEY, String(sum));
+  await client.lTrim(DAILY_PXL_CNTR_KEY, 0, 28);
+  // purge old data
+  const purgeDateKey = getDateKeyOfTs(
+    Date.now() - 1000 * 3600 * 24 * 21,
+  );
+  await client.del(`${DAY_STATS_RANKS_KEY}:${purgeDateKey}`);
+  await client.del(`${CDAY_STATS_RANKS_KEY}:${purgeDateKey}`);
 }

@@ -12,6 +12,10 @@ import {
   getCountryDailyHistory,
   getCountryRanks,
   getTopDailyHistory,
+  storeHourlyPixelsPlaced,
+  getHourlyPixelStats,
+  getDailyPixelStats,
+  populateDailyTotal,
 } from '../data/redis/ranks';
 import socketEvents from '../socket/socketEvents';
 import logger from './logger';
@@ -22,13 +26,24 @@ import { DailyCron, HourlyCron } from '../utils/cron';
 class Ranks {
   constructor() {
     this.ranks = {
+      // ranking today of users by pixels
       dailyRanking: [],
+      // ranking of users by pixels
       ranking: [],
+      // ranking today of countries by pixels
       dailyCRanking: [],
+      // yesterdays ranking of users by pixels
       prevTop: [],
+      // online user amount by hour
       onlineStats: [],
+      // ranking of countries by day
       cHistStats: [],
+      // ranking of users by day
       histStats: [],
+      // pixels placed by hour
+      pHourlyStats: [],
+      // pixels placed by day
+      pDailyStats: [],
     };
     /*
      * we go through socketEvents for sharding
@@ -42,6 +57,7 @@ class Ranks {
   }
 
   async initialize() {
+    await populateDailyTotal();
     try {
       let someRanks = await Ranks.dailyUpdateRanking();
       this.ranks = {
@@ -95,10 +111,12 @@ class Ranks {
     const cHistStats = await getCountryDailyHistory();
     const histStats = await getTopDailyHistory();
     histStats.users = await populateRanking(histStats.users);
+    const pHourlyStats = await getHourlyPixelStats();
     const ret = {
       onlineStats,
       cHistStats,
       histStats,
+      pHourlyStats,
     };
     if (socketEvents.amIImportant()) {
       // only main shard sends to others
@@ -111,8 +129,10 @@ class Ranks {
     const prevTop = await populateRanking(
       await getPrevTop(),
     );
+    const pDailyStats = await getDailyPixelStats();
     const ret = {
       prevTop,
+      pDailyStats,
     };
     if (socketEvents.amIImportant()) {
       // only main shard sends to others
@@ -127,6 +147,7 @@ class Ranks {
     }
     const amount = socketEvents.onlineCounter.total;
     await storeOnlinUserAmount(amount);
+    await storeHourlyPixelsPlaced();
     await Ranks.hourlyUpdateRanking();
   }
 
