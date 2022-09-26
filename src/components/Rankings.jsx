@@ -60,6 +60,7 @@ const Rankings = () => {
     cHistStats,
     histStats,
     pDailyStats,
+    pHourlyStats,
   ] = useSelector(selectStats, shallowEqual);
   const isDarkMode = useSelector(selectIsDarkMode);
 
@@ -81,7 +82,7 @@ const Rankings = () => {
     if (area !== 'charts') {
       return null;
     }
-    return getOnlineStatsData(onlineStats);
+    return getOnlineStatsData(onlineStats, pHourlyStats);
   }, [area, onlineStats]);
 
   const onlineOpts = useMemo(() => {
@@ -183,10 +184,9 @@ const Rankings = () => {
       </div>
       <br />
       {(area === 'countries') && (
-        <>
+        <div style={{ height: 300, paddingBottom: 16 }}>
           <Pie options={cPieOpts} data={cPieData} />
-          <br />
-        </>
+        </div>
       )}
       {(['total', 'today', 'yesterday', 'countries'].includes(area)) && (
         <table style={{

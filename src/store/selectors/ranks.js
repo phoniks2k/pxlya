@@ -13,4 +13,5 @@ export const selectStats = (state) => [
   state.ranks.cHistStats,
   state.ranks.histStats,
   state.ranks.pDailyStats,
+  state.ranks.pHourlyStats,
 ];

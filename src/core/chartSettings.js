@@ -4,7 +4,7 @@ import { colorFromText } from './utils';
 export function getCHistChartOpts(isDarkMode) {
   const options = {
     responsive: true,
-    aspectRatio: 1.2,
+    aspectRatio: 1.4,
     scales: {
       x: {
         grid: {
@@ -99,7 +99,16 @@ export function getOnlineStatsOpts(isDarkMode) {
           drawBorder: false,
         },
       },
-      y: {
+      A: {
+        type: 'linear',
+        position: 'left',
+        grid: {
+          drawBorder: false,
+        },
+      },
+      B: {
+        type: 'linear',
+        position: 'right',
         grid: {
           drawBorder: false,
         },
@@ -115,7 +124,7 @@ export function getOnlineStatsOpts(isDarkMode) {
       },
       title: {
         display: true,
-        text: t`Players Online per full hour`,
+        text: t`Players and Pixels per hour`,
       },
     },
   };
@@ -127,20 +136,25 @@ export function getOnlineStatsOpts(isDarkMode) {
       color: sColor,
     };
     options.scales.x.grid.color = lColor;
-    options.scales.y.ticks = {
+    options.scales.A.ticks = {
       color: sColor,
     };
-    options.scales.y.grid.color = lColor;
+    options.scales.A.grid.color = lColor;
+    options.scales.B.ticks = {
+      color: sColor,
+    };
+    options.scales.B.grid.color = lColor;
     options.plugins.title.color = sColor;
   }
   return options;
 }
 
-export function getOnlineStatsData(onlineStats) {
+export function getOnlineStatsData(onlineStats, pHourlyStats) {
   const labels = [];
-  const data = [];
+  const onData = [];
+  const pxlData = [];
   let ts = Date.now();
-  let c = onlineStats.length;
+  let c = Math.max(onlineStats.length, pHourlyStats.length);
   while (c) {
     c -= 1;
     const date = new Date(ts);
@@ -148,15 +162,31 @@ export function getOnlineStatsData(onlineStats) {
     const key = hours || `${date.getMonth() + 1} / ${date.getDate()}`;
     labels.unshift(String(key));
     ts -= 1000 * 3600;
-    data.push(onlineStats[c]);
+    if (onlineStats.length > c) {
+      onData.push(onlineStats[c]);
+    } else {
+      onData.push(null);
+    }
+    if (pHourlyStats.length > c) {
+      pxlData.push(pHourlyStats[c]);
+    } else {
+      pxlData.push(null);
+    }
   }
   return {
     labels,
     datasets: [{
+      yAxisID: 'A',
       label: 'Players',
-      data,
+      data: onData,
       borderColor: '#3fadda',
       backgroundColor: '#3fadda',
+    }, {
+      yAxisID: 'B',
+      label: 'Pixels',
+      data: pxlData,
+      borderColor: '#d067b6',
+      backgroundColor: '#d067b6',
     }],
   };
 }
@@ -164,7 +194,7 @@ export function getOnlineStatsData(onlineStats) {
 export function getHistChartOpts(isDarkMode) {
   const options = {
     responsive: true,
-    aspectRatio: 1.4,
+    aspectRatio: 1.5,
     scales: {
       x: {
         grid: {
@@ -255,6 +285,7 @@ export function getHistChartData(histStats) {
 export function getCPieOpts(isDarkMode) {
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
