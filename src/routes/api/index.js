@@ -14,6 +14,7 @@ import startDm from './startdm';
 import leaveChan from './leavechan';
 import block from './block';
 import blockdm from './blockdm';
+import privatize from './privatize';
 import modtools from './modtools';
 import baninfo from './baninfo';
 import getiid from './getiid';
@@ -93,6 +94,8 @@ router.post('/leavechan', leaveChan);
 router.post('/block', block);
 
 router.post('/blockdm', blockdm);
+
+router.post('/privatize', privatize);
 
 router.get('/chathistory', chatHistory);
 

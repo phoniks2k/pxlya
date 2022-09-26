@@ -3,32 +3,52 @@
  */
 
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { t } from 'ttag';
 
 import {
   setBlockingDm,
+  setPrivatize,
   setUserBlock,
 } from '../store/actions/thunks';
 import SettingsItem from './SettingsItem';
 
+const selectBlocks = (state) => [
+  state.chat.blocked,
+  state.user.blockDm,
+  state.user.priv,
+  state.fetching.fetchingApi,
+];
+
 const SocialSettings = ({ done }) => {
-  const blocked = useSelector((state) => state.chat.blocked);
-  const blockDm = useSelector((state) => state.user.blockDm);
-  const fetching = useSelector((state) => state.fetching.fetchingApi);
+  const [
+    blocked,
+    blockDm,
+    priv,
+    fetching,
+  ] = useSelector(selectBlocks, shallowEqual);
   const dispatch = useDispatch();
 
   return (
     <div className="inarea">
       <SettingsItem
-        title={t`Block all Private Messages`}
+        title={t`Block DMs`}
         value={blockDm}
         onToggle={() => {
           if (!fetching) {
             dispatch(setBlockingDm(!blockDm));
           }
         }}
-      />
+      >{t`Block all Private Messages`}</SettingsItem>
+      <SettingsItem
+        title={t`Private`}
+        value={priv}
+        onToggle={() => {
+          if (!fetching) {
+            dispatch(setPrivatize(!priv));
+          }
+        }}
+      >{t`Don't show me in global stats`}</SettingsItem>
       <h3
         style={{
           textAlign: 'left',

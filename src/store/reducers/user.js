@@ -10,6 +10,8 @@ const initialState = {
   mailreg: false,
   // blocking all Dms
   blockDm: false,
+  // privile is private
+  priv: false,
   // if user is using touchscreen
   isOnMobile: false,
   // small notifications for received cooldown
@@ -92,6 +94,7 @@ export default function user(
         name,
         mailreg,
         blockDm,
+        priv,
         userlvl,
       } = action;
       const messages = (action.messages) ? action.messages : [];
@@ -102,6 +105,7 @@ export default function user(
         messages,
         mailreg,
         blockDm,
+        priv,
         userlvl,
       };
     }
@@ -114,6 +118,7 @@ export default function user(
         messages: [],
         mailreg: false,
         blockDm: false,
+        priv: false,
         userlvl: 0,
       };
     }
@@ -131,6 +136,14 @@ export default function user(
       return {
         ...state,
         blockDm,
+      };
+    }
+
+    case 's/SET_PRIVATE': {
+      const { priv } = action;
+      return {
+        ...state,
+        priv,
       };
     }
 

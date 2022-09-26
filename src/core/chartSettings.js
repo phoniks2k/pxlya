@@ -246,8 +246,7 @@ export function getHistChartData(histStats) {
   const labels = [];
   let ts = Date.now();
   let c = stats.length;
-  // skipping todays dataset
-  while (c > 1) {
+  while (c) {
     const dAmount = stats.length - c;
     c -= 1;
     // x label

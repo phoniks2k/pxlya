@@ -241,6 +241,7 @@ class User {
         name: null,
         mailVerified: false,
         blockDm: false,
+        priv: false,
         mailreg: false,
       };
     }
@@ -256,6 +257,7 @@ class User {
       name: regUser.name,
       mailVerified: regUser.mailVerified,
       blockDm: regUser.blockDm,
+      priv: regUser.priv,
       totalPixels,
       dailyTotalPixels,
       ranking,

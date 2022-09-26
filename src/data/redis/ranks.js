@@ -194,17 +194,11 @@ export async function getDailyPixelStats() {
 export async function getTopDailyHistory() {
   const stats = [];
   const users = [];
-  let ts;
-  let key;
-  for (let c = 0; c < 14; c += 1) {
-    if (!ts) {
-      ts = Date.now();
-      key = DAILY_RANKED_KEY;
-    } else {
-      ts -= 1000 * 3600 * 24;
-      const dateKey = getDateKeyOfTs(ts);
-      key = `${DAY_STATS_RANKS_KEY}:${dateKey}`;
-    }
+  let ts = Date.now();
+  for (let c = 0; c < 13; c += 1) {
+    ts -= 1000 * 3600 * 24;
+    const dateKey = getDateKeyOfTs(ts);
+    const key = `${DAY_STATS_RANKS_KEY}:${dateKey}`;
     // eslint-disable-next-line no-await-in-loop
     let dData = await client.zRangeWithScores(key, 0, 9, {
       REV: true,

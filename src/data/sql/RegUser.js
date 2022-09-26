@@ -28,17 +28,27 @@ const RegUser = sequelize.define('User', {
     allowNull: false,
   },
 
-  // currently just moderator
-  roles: {
-    type: DataTypes.TINYINT,
+  /*
+   * if account is private,
+   * exclude it from statistics etc.
+   */
+  priv: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: false,
   },
 
   // null if external oauth authentification
   password: {
     type: DataTypes.CHAR(60),
     allowNull: true,
+  },
+
+  // currently just moderator
+  roles: {
+    type: DataTypes.TINYINT,
+    allowNull: false,
+    defaultValue: 0,
   },
 
   // mail and Minecraft verified
@@ -205,6 +215,7 @@ export async function populateRanking(rawRanks) {
     ],
     where: {
       id: uids,
+      priv: false,
     },
     raw: true,
   });
@@ -216,7 +227,7 @@ export async function populateRanking(rawRanks) {
       dat.age = age;
     }
   }
-  return rawRanks;
+  return rawRanks.filter((r) => r.name);
 }
 
 export default RegUser;

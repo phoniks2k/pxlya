@@ -107,13 +107,10 @@ class Ranks {
   static async hourlyUpdateRanking() {
     const onlineStats = await getOnlineUserStats();
     const cHistStats = await getCountryDailyHistory();
-    const histStats = await getTopDailyHistory();
-    histStats.users = await populateRanking(histStats.users);
     const pHourlyStats = await getHourlyPixelStats();
     const ret = {
       onlineStats,
       cHistStats,
-      histStats,
       pHourlyStats,
     };
     if (socketEvents.amIImportant()) {
@@ -128,9 +125,15 @@ class Ranks {
       await getPrevTop(),
     );
     const pDailyStats = await getDailyPixelStats();
+    const histStats = await getTopDailyHistory();
+    histStats.users = await populateRanking(histStats.users);
+    histStats.stats = histStats.stats.map((day) => day.filter(
+      (r) => histStats.users.some((u) => u.id === r.id),
+    ));
     const ret = {
       prevTop,
       pDailyStats,
+      histStats,
     };
     if (socketEvents.amIImportant()) {
       // only main shard sends to others

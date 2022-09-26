@@ -5,6 +5,7 @@ import {
   requestStartDm,
   requestBlock,
   requestBlockDm,
+  requestPrivatize,
   requestLeaveChan,
   requestRankings,
   requestChatMessages,
@@ -19,6 +20,7 @@ import {
   blockUser,
   unblockUser,
   blockingDm,
+  privatize,
   removeChatChannel,
 } from './index';
 
@@ -127,9 +129,7 @@ export function setUserBlock(
   };
 }
 
-export function setBlockingDm(
-  block,
-) {
+export function setBlockingDm(block) {
   return async (dispatch) => {
     dispatch(setApiFetching(true));
     const res = await requestBlockDm(block);
@@ -146,6 +146,25 @@ export function setBlockingDm(
     dispatch(setApiFetching(false));
   };
 }
+
+export function setPrivatize(priv) {
+  return async (dispatch) => {
+    dispatch(setApiFetching(true));
+    const res = await requestPrivatize(priv);
+    if (res) {
+      dispatch(pAlert(
+        'Setting User Private Error',
+        res,
+        'error',
+        'OK',
+      ));
+    } else {
+      dispatch(privatize(priv));
+    }
+    dispatch(setApiFetching(false));
+  };
+}
+
 
 export function setLeaveChannel(
   cid,

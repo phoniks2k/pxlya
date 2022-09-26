@@ -475,6 +475,13 @@ export function blockingDm(blockDm) {
   };
 }
 
+export function privatize(priv) {
+  return {
+    type: 's/SET_PRIVATE',
+    priv,
+  };
+}
+
 export function removeChatChannel(cid) {
   return {
     type: 's/REMOVE_CHAT_CHANNEL',
