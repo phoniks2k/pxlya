@@ -228,20 +228,6 @@ export async function getTopDailyHistory() {
 }
 
 /*
- * for populating past daily totals
- */
-export async function populateDailyTotal() {
-  await client.del(DAILY_PXL_CNTR_KEY);
-  for (let i = 14; i > 0; i -= 1) {
-    const ts = Date.now() - 1000 * 3600 * 24 * i;
-    const key = `${CDAY_STATS_RANKS_KEY}:${getDateKeyOfTs(ts)}`;
-    // eslint-disable-next-line no-await-in-loop
-    const sum = await sumZSet(key);
-    client.lPush(DAILY_PXL_CNTR_KEY, String(sum));
-  }
-}
-
-/*
  * get top 10 countries over the past days
  */
 export async function getCountryDailyHistory() {

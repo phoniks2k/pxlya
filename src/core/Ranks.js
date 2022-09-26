@@ -15,7 +15,6 @@ import {
   storeHourlyPixelsPlaced,
   getHourlyPixelStats,
   getDailyPixelStats,
-  populateDailyTotal,
 } from '../data/redis/ranks';
 import socketEvents from '../socket/socketEvents';
 import logger from './logger';
@@ -39,7 +38,7 @@ class Ranks {
       // ranking of countries by day
       cHistStats: [],
       // ranking of users by day
-      histStats: [],
+      histStats: { users: [], stats: [] },
       // pixels placed by hour
       pHourlyStats: [],
       // pixels placed by day
@@ -57,7 +56,6 @@ class Ranks {
   }
 
   async initialize() {
-    await populateDailyTotal();
     try {
       let someRanks = await Ranks.dailyUpdateRanking();
       this.ranks = {
