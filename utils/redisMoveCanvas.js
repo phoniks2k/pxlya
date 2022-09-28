@@ -1,32 +1,36 @@
-// this script moves chunks of a canvas, i.e. to center it after changing size
+/*
+ * move 3d canvas chunks from one redis instance to another
+ */
+import { createClient, commandOptions } from 'redis';
 
-import { createClient } from 'redis';
-
-//ATTENTION Make suer to set the rdis URLs right!!!
-const url = "redis://localhost:6379";
-const redisc = createClient({ url });
+const urlc = "redis://localhost:6380";
+const redisc = createClient({ url: urlc });
+const urlt = "redis://localhost:6379";
+const redist = createClient({ url: urlt });
 
 const CANVAS_SIZE = 1024;
-const TILE_SIZE = 256;
-const offset = (2048 - 1024) / 2 / 256;
+const THREE_TILE_SIZE = 32;
 
-const CHUNKS_XY = CANVAS_SIZE / TILE_SIZE;
+const CHUNKS_XY = CANVAS_SIZE / THREE_TILE_SIZE;
 
 async function move() {
+  await redisc.connect();
+  await redist.connect();
+  console.log('Moving chunks...');
   for (let x = CHUNKS_XY - 1; x >= 0; x--) {
     for (let y = CHUNKS_XY - 1; y >= 0; y--) {
-      const key = `ch:8:${x}:${y}`;
-      const chunk = await redisc.get(key, { returnBuffers: true });
+      const key = `ch:2:${x}:${y}`;
+      const chunk = await redisc.get(
+        commandOptions({ returnBuffers: true }),
+        key,
+      );
       if (chunk) {
-        const newKey = `ch:8:${x + offset}:${y + offset}`
-        await redisc.set(newKey, chunk);
-        await redisc.del(key);
-        console.log('Moved Chunk ', key, ' to ', newKey);
+        const ret = await redist.set(key, Buffer.from(chunk.buffer));
+        console.log('Moved Chunk ', key, ' to other redis', ret);
       }
     }
   }
   console.log("done");
 }
 
-redisc.connect()
-  .then(() => move());
+move();
