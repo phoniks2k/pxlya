@@ -103,6 +103,7 @@ class Renderer {
   }
 
   resizeHandle() {
+    console.log('WIN RESIZED', window.innerWidth, window.innerHeight);
     this.viewport.width = window.innerWidth;
     this.viewport.height = window.innerHeight;
     this.forceNextRender = true;
