@@ -106,7 +106,6 @@ persistStore(store, {}, () => {
   // listen for resize
   //
   function onWindowResize() {
-    console.log('WINDOW RESIZED');
     store.dispatch(windowResize());
   }
   window.addEventListener('resize', onWindowResize);

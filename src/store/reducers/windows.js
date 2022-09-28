@@ -81,6 +81,7 @@ function correctPositions(state) {
   const { windows: newWindows, positions } = state;
   const xMax = width - SCREEN_MARGIN_EW;
   const yMax = height - SCREEN_MARGIN_S;
+  const yMin = 0;
 
   let modified = false;
   const newPositions = {};
@@ -92,12 +93,14 @@ function correctPositions(state) {
       width: winWidth,
       height: winHeight,
     } = positions[id];
+    const xMin = SCREEN_MARGIN_EW - winWidth;
     if (xPos > xMax || yPos > yMax
+      || xPos < xMin || yPos < yMin
       || width > winWidth || height > winHeight) {
       modified = true;
       newPositions[id] = {
-        xPos: Math.min(xMax, xPos),
-        yPos: Math.min(yMax, yPos),
+        xPos: clamp(xPos, xMin, xMax),
+        yPos: clamp(yPos, yMin, yMax),
         width: Math.min(winWidth, width - SCREEN_MARGIN_S),
         height: Math.min(winHeight, height - SCREEN_MARGIN_S),
         z: positions[id].z,

@@ -18,20 +18,8 @@ import {
 } from './render2Delements';
 import PixelPainterControls from '../controls/PixelPainterControls';
 
-
 import ChunkLoader from './ChunkLoader2D';
 import pixelNotify from './PixelNotify';
-
-// dimensions of offscreen canvas NOT whole canvas
-// eslint-disable-next-line max-len
-const CANVAS_WIDTH = 2 * Math.ceil(window.screen.width / 2) + TILE_ZOOM_LEVEL * TILE_SIZE;
-// eslint-disable-next-line max-len
-const CANVAS_HEIGHT = 2 * Math.ceil(window.screen.height / 2) + TILE_ZOOM_LEVEL * TILE_SIZE;
-const SCALE_THREASHOLD = Math.min(
-  CANVAS_WIDTH / TILE_SIZE / 3,
-  CANVAS_HEIGHT / TILE_SIZE / 3,
-);
-
 
 class Renderer {
   is3D = false;
@@ -61,6 +49,7 @@ class Renderer {
     this.canvasMaxTiledZoom = 0;
     this.historicalCanvasMaxTiledZoom = 0;
     this.hover = false;
+    this.scaleThreshold = 1;
     //--
     this.forceNextRender = true;
     this.forceNextSubrender = true;
@@ -68,29 +57,26 @@ class Renderer {
     this.oldHistoricalTime = null;
     //--
     const viewport = document.createElement('canvas');
-    viewport.width = window.innerWidth;
-    viewport.height = window.innerHeight;
     viewport.className = 'viewport';
     this.viewport = viewport;
-    document.body.appendChild(this.viewport);
-    //--
-    this.resizeHandle = this.resizeHandle.bind(this);
-    window.addEventListener('resize', this.resizeHandle);
     //--
     this.canvas = document.createElement('canvas');
-    this.canvas.width = CANVAS_WIDTH;
-    this.canvas.height = CANVAS_HEIGHT;
+    this.onWindowResize();
+    document.body.appendChild(this.viewport);
+    //--
+    this.onWindowResize = this.onWindowResize.bind(this);
+    window.addEventListener('resize', this.onWindowResize);
 
     const context = this.canvas.getContext('2d');
     context.fillStyle = '#000000';
-    context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     //--
     this.setStore(store);
   }
 
   destructor() {
     this.controls.dispose();
-    window.removeEventListener('resize', this.resizeHandle);
+    window.removeEventListener('resize', this.onWindowResize);
     this.viewport.remove();
   }
 
@@ -102,10 +88,26 @@ class Renderer {
     return this.chunkLoader.getAllChunks();
   }
 
-  resizeHandle() {
-    console.log('WIN RESIZED', window.innerWidth, window.innerHeight);
+  onWindowResize() {
     this.viewport.width = window.innerWidth;
     this.viewport.height = window.innerHeight;
+    // dimensions of offscreen canvas NOT whole canvas
+    const canvasWidth = 2 * Math.ceil(window.screen.width / 2)
+      + TILE_ZOOM_LEVEL * TILE_SIZE;
+    const canvasHeight = 2 * Math.ceil(window.screen.height / 2)
+      + TILE_ZOOM_LEVEL * TILE_SIZE;
+    if (this.canvas.width !== canvasWidth
+      || this.canvas.height !== canvasHeight
+    ) {
+      // eslint-disable-next-line no-console
+      console.log(`Noticed screen: ${canvasWidth} / ${canvasHeight}`);
+      this.canvas.width = canvasWidth;
+      this.canvas.height = canvasHeight;
+      this.scaleThreshold = Math.min(
+        canvasWidth / TILE_SIZE / 3,
+        canvasHeight / TILE_SIZE / 3,
+      );
+    }
     this.forceNextRender = true;
   }
 
@@ -199,7 +201,7 @@ class Renderer {
     this.relScale = relScale;
     this.updateView(state);
     if (prevScale === null
-      || viewscale < SCALE_THREASHOLD || prevScale < SCALE_THREASHOLD) {
+      || viewscale < this.scaleThreshold || prevScale < this.scaleThreshold) {
       this.forceNextRender = true;
     } else {
       this.forceNextSubrender = true;
@@ -249,7 +251,7 @@ class Renderer {
     this.chunkLoader.getPixelUpdate(i, j, offset, color);
 
     if (scale < 0.8 || isHistoricalView) return;
-    const scaleM = (scale > SCALE_THREASHOLD) ? 1 : scale;
+    const scaleM = (scale > this.scaleThreshold) ? 1 : scale;
 
     const context = this.canvas.getContext('2d');
     if (!context) return;
@@ -258,10 +260,11 @@ class Renderer {
 
     const [canX, canY] = this.centerChunk
       .map((z) => (z + 0.5) * TILE_SIZE - canvasSize / 2);
-    const px = ((x - canX) * scaleM) + (CANVAS_WIDTH / 2);
-    const py = ((y - canY) * scaleM) + (CANVAS_HEIGHT / 2);
+    const { width: canvasWidth, height: canvasHeight } = this.canvas;
+    const px = ((x - canX) * scaleM) + (canvasWidth / 2);
+    const py = ((y - canY) * scaleM) + (canvasHeight / 2);
     // if not part of our current canvas, do not render
-    if (px < 0 || px >= CANVAS_WIDTH || py < 0 || py >= CANVAS_HEIGHT) return;
+    if (px < 0 || px >= canvasWidth || py < 0 || py >= canvasHeight) return;
 
     context.fillStyle = palette.colors[color];
     context.fillRect(px, py, scaleM, scaleM);
@@ -337,7 +340,7 @@ class Renderer {
     const CHUNK_RENDER_RADIUS_Y = Math.ceil(height / TILE_SIZE / 2 / relScale);
     // If scale is so large that neighbouring chunks wouldn't fit in canvas,
     // do scale = 1 and scale in render()
-    if (scale > SCALE_THREASHOLD) relScale = 1.0;
+    if (scale > this.scaleThreshold) relScale = 1.0;
     // scale
     context.save();
     context.fillStyle = '#C4C4C4';
@@ -350,8 +353,8 @@ class Renderer {
       touch = true;
     }
 
-    const xOffset = CANVAS_WIDTH / 2 / relScale - TILE_SIZE / 2;
-    const yOffset = CANVAS_HEIGHT / 2 / relScale - TILE_SIZE / 2;
+    const xOffset = this.canvas.width / 2 / relScale - TILE_SIZE / 2;
+    const yOffset = this.canvas.height / 2 / relScale - TILE_SIZE / 2;
 
     const [xc, yc] = chunkPosition; // center chunk
     // CLEAN margin
@@ -494,24 +497,24 @@ class Renderer {
     // If scale is so large that neighbouring chunks wouldn't fit in offscreen
     // canvas, do scale = 1 in renderChunks and scale in render()
     const canvasCenter = canvasSize / 2;
-    if (viewscale > SCALE_THREASHOLD) {
+    if (viewscale > this.scaleThreshold) {
       viewportCtx.save();
       viewportCtx.scale(viewscale, viewscale);
       viewportCtx.drawImage(
         this.canvas,
-        width / 2 / viewscale - CANVAS_WIDTH / 2 + (
+        width / 2 / viewscale - this.canvas.width / 2 + (
           (cx + 0.5) * TILE_SIZE - canvasCenter - x),
-        height / 2 / viewscale - CANVAS_HEIGHT / 2 + (
+        height / 2 / viewscale - this.canvas.height / 2 + (
           (cy + 0.5) * TILE_SIZE - canvasCenter - y),
       );
       viewportCtx.restore();
     } else {
       viewportCtx.drawImage(
         this.canvas,
-        Math.floor(width / 2 - CANVAS_WIDTH / 2
+        Math.floor(width / 2 - this.canvas.width / 2
           + ((cx + 0.5) * TILE_SIZE / this.tiledScale
           - canvasCenter - x) * viewscale),
-        Math.floor(height / 2 - CANVAS_HEIGHT / 2
+        Math.floor(height / 2 - this.canvas.height / 2
           + ((cy + 0.5) * TILE_SIZE / this.tiledScale
           - canvasCenter - y) * viewscale),
       );
@@ -563,7 +566,7 @@ class Renderer {
       context.imageSmoothingEnabled = true;
     }
 
-    const scale = (viewscale > SCALE_THREASHOLD) ? 1.0 : viewscale;
+    const scale = (viewscale > this.scaleThreshold) ? 1.0 : viewscale;
     // define how many chunks we will render
     // don't render chunks outside of viewport
     const { width, height } = viewport;
@@ -574,7 +577,7 @@ class Renderer {
     context.fillStyle = '#C4C4C4';
     // clear canvas and do nothing if no time selected
     if (!historicalDate || !historicalTime) {
-      context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      context.fillRect(0, 0, this.canvas.width, this.canvas.height);
       context.restore();
       return;
     }
@@ -588,8 +591,8 @@ class Renderer {
       touch = true;
     }
 
-    const xOffset = CANVAS_WIDTH / 2 / scale - TILE_SIZE / 2;
-    const yOffset = CANVAS_HEIGHT / 2 / scale - TILE_SIZE / 2;
+    const xOffset = this.canvas.width / 2 / scale - TILE_SIZE / 2;
+    const yOffset = this.canvas.height / 2 / scale - TILE_SIZE / 2;
 
     const [xc, yc] = chunkPosition; // center chunk
     // CLEAN margin
@@ -701,24 +704,24 @@ class Renderer {
     // If scale is so large that neighbouring chunks wouldn't fit in offscreen
     // canvas, do scale = 1 in renderChunks and scale in render()
     const canvasCenter = historicalCanvasSize / 2;
-    if (viewscale > SCALE_THREASHOLD) {
+    if (viewscale > this.scaleThreshold) {
       viewportCtx.save();
       viewportCtx.scale(viewscale, viewscale);
       viewportCtx.drawImage(
         this.canvas,
         // eslint-disable-next-line max-len
-        width / 2 / viewscale - CANVAS_WIDTH / 2 + ((cx + 0.5) * TILE_SIZE - canvasCenter - x),
+        width / 2 / viewscale - this.canvas.width / 2 + ((cx + 0.5) * TILE_SIZE - canvasCenter - x),
         // eslint-disable-next-line max-len
-        height / 2 / viewscale - CANVAS_HEIGHT / 2 + ((cy + 0.5) * TILE_SIZE - canvasCenter - y),
+        height / 2 / viewscale - this.canvas.height / 2 + ((cy + 0.5) * TILE_SIZE - canvasCenter - y),
       );
       viewportCtx.restore();
     } else {
       viewportCtx.drawImage(
         this.canvas,
         // eslint-disable-next-line max-len
-        Math.floor(width / 2 - CANVAS_WIDTH / 2 + ((cx + 0.5) * TILE_SIZE - canvasCenter - x) * viewscale),
+        Math.floor(width / 2 - this.canvas.width / 2 + ((cx + 0.5) * TILE_SIZE - canvasCenter - x) * viewscale),
         // eslint-disable-next-line max-len
-        Math.floor(height / 2 - CANVAS_HEIGHT / 2 + ((cy + 0.5) * TILE_SIZE - canvasCenter - y) * viewscale),
+        Math.floor(height / 2 - this.canvas.height / 2 + ((cy + 0.5) * TILE_SIZE - canvasCenter - y) * viewscale),
       );
     }
 
