@@ -44,29 +44,19 @@ class Ranks {
       // pixels placed by day
       pDailyStats: [],
     };
+    this.prevTopIds = [];
     /*
      * we go through socketEvents for sharding
      */
     socketEvents.on('rankingListUpdate', (rankings) => {
-      this.ranks = {
-        ...this.ranks,
-        ...rankings,
-      };
+      this.mergeIntoRanks(rankings);
     });
   }
 
   async initialize() {
     try {
-      let someRanks = await Ranks.dailyUpdateRanking();
-      this.ranks = {
-        ...this.ranks,
-        ...someRanks,
-      };
-      someRanks = await Ranks.hourlyUpdateRanking();
-      this.ranks = {
-        ...this.ranks,
-        ...someRanks,
-      };
+      this.mergeIntoRanks(await Ranks.dailyUpdateRanking());
+      this.mergeIntoRanks(await Ranks.hourlyUpdateRanking());
       await Ranks.updateRanking();
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -75,6 +65,21 @@ class Ranks {
     setInterval(Ranks.updateRanking, 5 * MINUTE);
     HourlyCron.hook(Ranks.setHourlyRanking);
     DailyCron.hook(Ranks.setDailyRanking);
+  }
+
+  mergeIntoRanks(newRanks) {
+    if (!newRanks) {
+      return;
+    }
+    const { prevTopIds } = newRanks;
+    if (prevTopIds) {
+      this.prevTopIds = prevTopIds;
+      delete newRanks.prevTopIds;
+    }
+    this.ranks = {
+      ...this.ranks,
+      ...newRanks,
+    };
   }
 
   static async updateRanking() {
@@ -121,9 +126,9 @@ class Ranks {
   }
 
   static async dailyUpdateRanking() {
-    const prevTop = await populateRanking(
-      await getPrevTop(),
-    );
+    const prevTopData = await getPrevTop();
+    const prevTopIds = prevTopData.map((d) => d.id);
+    const prevTop = await populateRanking(prevTopData);
     const pDailyStats = await getDailyPixelStats();
     const histStats = await getTopDailyHistory();
     histStats.users = await populateRanking(histStats.users);
@@ -134,6 +139,7 @@ class Ranks {
       prevTop,
       pDailyStats,
       histStats,
+      prevTopIds,
     };
     if (socketEvents.amIImportant()) {
       // only main shard sends to others
