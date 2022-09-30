@@ -44,7 +44,6 @@ class Ranks {
       // pixels placed by day
       pDailyStats: [],
     };
-    this.prevTopIds = [];
     /*
      * we go through socketEvents for sharding
      */
@@ -70,11 +69,6 @@ class Ranks {
   mergeIntoRanks(newRanks) {
     if (!newRanks) {
       return;
-    }
-    const { prevTopIds } = newRanks;
-    if (prevTopIds) {
-      this.prevTopIds = prevTopIds;
-      delete newRanks.prevTopIds;
     }
     this.ranks = {
       ...this.ranks,
@@ -126,9 +120,9 @@ class Ranks {
   }
 
   static async dailyUpdateRanking() {
-    const prevTopData = await getPrevTop();
-    const prevTopIds = prevTopData.map((d) => d.id);
-    const prevTop = await populateRanking(prevTopData);
+    const prevTop = await populateRanking(
+      await getPrevTop(),
+    );
     const pDailyStats = await getDailyPixelStats();
     const histStats = await getTopDailyHistory();
     histStats.users = await populateRanking(histStats.users);
@@ -139,7 +133,6 @@ class Ranks {
       prevTop,
       pDailyStats,
       histStats,
-      prevTopIds,
     };
     if (socketEvents.amIImportant()) {
       // only main shard sends to others

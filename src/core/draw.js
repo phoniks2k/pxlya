@@ -10,7 +10,6 @@ import allowPlace from '../data/redis/cooldown';
 import socketEvents from '../socket/socketEvents';
 import { setPixelByOffset } from './setPixel';
 import isIPAllowed from './isAllowed';
-import rankings from './Ranks';
 import canvases from './canvases';
 
 import { THREE_CANVAS_HEIGHT, THREE_TILE_SIZE, TILE_SIZE } from './constants';
@@ -112,27 +111,7 @@ export default async function drawByOffsets(
      *   2: mod
      */
     const isAdmin = (user.userlvl === 1);
-
-    if (canvas.req !== undefined && !isAdmin) {
-      if (user.id === null) {
-        // not logged in
-        throw new Error(6);
-      }
-      if (canvas.req > 0) {
-        const totalPixels = await user.getTotalPixels();
-        if (totalPixels < canvas.req) {
-          // not enough pixels placed yet
-          throw new Error(7);
-        }
-      }
-      if (canvas.req === 'top'
-        && !rankings.prevTopIds.includes(user.id)
-      ) {
-        // not in top ten
-        throw new Error(12);
-      }
-    }
-
+    const req = (isAdmin) ? null : canvas.req;
     const clrIgnore = canvas.cli || 0;
     const factor = (isAdmin || (user.userlvl > 0 && pixels[0][1] < clrIgnore))
       ? 0.0 : coolDownFactor;
@@ -187,6 +166,7 @@ export default async function drawByOffsets(
       }
     }
 
+
     let needProxycheck;
     [retCode, pxlCnt, wait, coolDown, needProxycheck] = await allowPlace(
       ip,
@@ -196,6 +176,7 @@ export default async function drawByOffsets(
       canvasId,
       i, j,
       clrIgnore,
+      req,
       bcd, pcd,
       canvas.cds,
       pxlOffsets,

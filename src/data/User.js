@@ -186,6 +186,7 @@ class User {
       return this.regUser.totalPixels;
     }
     try {
+      // TODO does not work anymore
       const userq = await sequelize.query(
         'SELECT totalPixels FROM Users WHERE id = $1',
         {

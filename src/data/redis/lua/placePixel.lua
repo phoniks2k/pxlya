@@ -11,9 +11,10 @@
 --     'nope' if not logged in
 --   chunk: 'ch:canvasId:i:j'
 --   rankset: 'rank' sorted set of pixelcount
---     'nope' if not increasing ranks
 --   dailyset: 'rankd' sorted set of daily pixelcount
+--     'nope' if not increasing ranks
 --   countryset: sorted set for country stats
+--   prevTop: sorted set of yesterdays top 10
 -- Args:
 --   clrIgnore: integer number of what colors are considered unset
 --   bcd: number baseColldown (fixed to cdFactor and 0 if admin)
@@ -21,6 +22,8 @@
 --   cds: max cooldown of canvas
 --   userId: '0' if not logged in
 --   cc country code
+--   req: requirements of canvas
+--     'nope', unsigned integer or 'top'
 --   off1, chonk offset of first pixel
 --   off2, chonk offset of second pixel
 --   ..., infinie pixels possible
@@ -59,6 +62,32 @@ else
     return ret
   end
 end
+-- check if requirements for canvas met
+if ARGV[7] ~= "nope" then
+  if ARGV[5] == "0" then
+    -- not logged in
+    ret[1] = 6
+    return ret;
+  end
+  if ARGV[7] == "top" then
+    local pr = redis.call('zrank', KEYS[9], ARGV[5])
+    if not pr or pr > 9 then
+      -- not in yesterdays top 10
+      ret[1] = 12;
+      return ret;
+    end
+  else
+    local req = tonumber(ARGV[7])
+    if req > 0 then
+      local sc = tonumber(redis.call('zscore', KEYS[6], ARGV[5]))
+      if not sc or sc < req then
+        -- not enough pxls placed
+        ret[1] = 7;
+        return ret
+      end
+    end
+  end
+end
 -- get cooldown of user
 local cd = redis.call('pttl', KEYS[3])
 if cd < 0 then
@@ -77,7 +106,7 @@ local cli = tonumber(ARGV[1])
 local bcd = tonumber(ARGV[2])
 local pcd = tonumber(ARGV[3])
 local cds = tonumber(ARGV[4])
-for c = 7,#ARGV do
+for c = 8,#ARGV do
   local off = tonumber(ARGV[c]) * 8
   -- get color of pixel on canvas
   local sclr = redis.call('bitfield', KEYS[5], 'get', 'u8', off)
@@ -114,7 +143,7 @@ if pxlcnt > 0 then
     end
   end
   -- increment pixelcount
-  if KEYS[6] ~= 'nope' then
+  if KEYS[7] ~= 'nope' then
     redis.call('zincrby', KEYS[6], pxlcnt, ARGV[5])
     redis.call('zincrby', KEYS[7], pxlcnt, ARGV[5])
     if ARGV[6] ~= 'xx' then

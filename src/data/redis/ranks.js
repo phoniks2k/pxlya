@@ -7,7 +7,7 @@ import { getDateKeyOfTs } from '../../core/utils';
 export const RANKED_KEY = 'rank';
 export const DAILY_RANKED_KEY = 'rankd';
 export const DAILY_CRANKED_KEY = 'crankd';
-const PREV_DAY_TOP_KEY = 'prankd';
+export const PREV_DAY_TOP_KEY = 'prankd';
 const DAY_STATS_RANKS_KEY = 'ds';
 const CDAY_STATS_RANKS_KEY = 'cds';
 const ONLINE_CNTR_KEY = 'tonl';

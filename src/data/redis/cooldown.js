@@ -5,7 +5,12 @@
 import client from './client';
 import { PREFIX as CAPTCHA_PREFIX } from './captcha';
 import { PREFIX as ALLOWED_PREFIX } from './isAllowedCache';
-import { RANKED_KEY, DAILY_RANKED_KEY, DAILY_CRANKED_KEY } from './ranks';
+import {
+  RANKED_KEY,
+  DAILY_RANKED_KEY,
+  DAILY_CRANKED_KEY,
+  PREV_DAY_TOP_KEY,
+} from './ranks';
 import { CAPTCHA_TIME } from '../../core/config';
 
 const PREFIX = 'cd';
@@ -30,6 +35,7 @@ export default function allowPlace(
   canvasId,
   i, j,
   clrIgnore,
+  req,
   bcd,
   pcd,
   cds,
@@ -51,14 +57,17 @@ export default function allowPlace(
   } else {
     idCdKey = 'nope';
   }
+  if (!req && req !== 0) {
+    req = 'nope';
+  }
   const chunkKey = `ch:${canvasId}:${i}:${j}`;
   const cc = country || 'xx';
-  const rankset = (ranked) ? RANKED_KEY : 'nope';
+  const rankset = RANKED_KEY;
   const dailyset = (ranked) ? DAILY_RANKED_KEY : 'nope';
   return client.placePxl(
     // eslint-disable-next-line max-len
-    isalKey, captKey, ipCdKey, idCdKey, chunkKey, rankset, dailyset, DAILY_CRANKED_KEY,
-    clrIgnore, bcd, pcd, cds, id, cc,
+    isalKey, captKey, ipCdKey, idCdKey, chunkKey, rankset, dailyset, DAILY_CRANKED_KEY, PREV_DAY_TOP_KEY,
+    clrIgnore, bcd, pcd, cds, id, cc, req,
     ...pxls,
   );
 }
