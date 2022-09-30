@@ -4,6 +4,7 @@
 
 import { persistStore } from 'redux-persist';
 
+import { parentExists } from './core/utils';
 import store from './store/storePopUp';
 import {
   urlChange,
@@ -66,7 +67,7 @@ persistStore(store, {}, () => {
     store.dispatch(addChatChannel(channel));
   });
 
-  if (!window.opener || window.opener.closed) {
+  if (!parentExists()) {
     store.dispatch(fetchMe());
     SocketClient.connect();
   }

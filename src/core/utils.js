@@ -586,3 +586,22 @@ export function getDateKeyOfTs(ts) {
   const year = date.getUTCFullYear();
   return `${year}${month}${day}`;
 }
+
+/*
+ * check if parent window exists and
+ * is accessible
+ */
+export function parentExists() {
+  try {
+    if (!window.opener
+      || window.opener.closed
+      || !window.opener.location
+      || window.opener.location.origin !== window.location.origin
+    ) {
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
