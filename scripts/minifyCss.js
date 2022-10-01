@@ -13,7 +13,6 @@ const fs = require('fs');
 const path = require('path');
 const CleanCSS = require('clean-css');
 const crypto = require('crypto');
-const mkdirp = require('mkdirp');
 
 const assetdir = path.resolve(__dirname, '..', 'dist', 'public', 'assets');
 const builddir = path.resolve(__dirname, '..', 'dist');
@@ -57,7 +56,7 @@ async function minifyCss() {
 
 async function doMinifyCss() {
   try {
-    mkdirp.sync(assetdir);
+    fs.mkdirSync(assetdir, { recursive: true });
     await minifyCss();
   } catch (e) {
     console.log('ERROR while minifying css', e);
