@@ -138,6 +138,7 @@ async function dailyBackup() {
     await updateBackupRedis(canvasRedis, backupRedis, canvases);
     await createPngBackup(backupRedis, canvases, backupDir);
   } catch (e) {
+    fs.rmSync(backupDir, { recursive: true });
     console.log('Error occured during daily backup', e);
   }
   console.log('Daily full backup done');
