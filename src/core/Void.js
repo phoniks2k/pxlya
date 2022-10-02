@@ -6,7 +6,9 @@
  *
  */
 import socketEvents from '../socket/socketEvents';
-import PixelUpdate from '../socket/packets/PixelUpdateServer';
+import {
+  hydratePixelUpdate,
+} from '../socket/packets/server';
 import { setPixelByOffset } from './setPixel';
 import { TILE_SIZE } from './constants';
 import { CANVAS_ID } from '../data/redis/Event';
@@ -177,7 +179,7 @@ class Void {
       i: pi,
       j: pj,
       pixels,
-    } = PixelUpdate.hydrate(buffer);
+    } = hydratePixelUpdate(buffer);
     const { i, j } = this;
     // 3x3 chunk area (this is hardcoded on multiple places)
     if (pi >= i - 1 && pi <= i + 1 && pj >= j - 1 && pj <= j + 1) {

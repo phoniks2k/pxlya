@@ -5,10 +5,10 @@
 
 import SocketClient from '../../socket/SocketClient';
 
-export default () => (next) => (action) => {
+export default (store) => (next) => (action) => {
   if (SocketClient.readyState === WebSocket.CLOSED) {
     if (action.type === 't/PARENT_CLOSED') {
-      SocketClient.connect();
+      SocketClient.initialize(store);
     }
   } else {
     switch (action.type) {

@@ -69,7 +69,7 @@ persistStore(store, {}, () => {
 
   if (!parentExists()) {
     store.dispatch(fetchMe());
-    SocketClient.connect();
+    SocketClient.initialize(store);
   }
 });
 

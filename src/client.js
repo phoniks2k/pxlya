@@ -114,7 +114,7 @@ persistStore(store, {}, () => {
   store.dispatch(initTimer());
 
   store.dispatch(fetchMe());
-  SocketClient.connect();
+  SocketClient.initialize(store);
 });
 
 (function load() {

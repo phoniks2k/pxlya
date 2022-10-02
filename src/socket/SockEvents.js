@@ -3,9 +3,10 @@
  */
 import EventEmitter from 'events';
 
-import OnlineCounter from './packets/OnlineCounter';
-import PixelUpdate from './packets/PixelUpdateServer';
-
+import {
+  dehydrateOnlineCounter,
+  dehydratePixelUpdate,
+} from './packets/server';
 
 class SocketEvents extends EventEmitter {
   constructor() {
@@ -97,7 +98,7 @@ class SocketEvents extends EventEmitter {
   ) {
     const i = chunkId >> 8;
     const j = chunkId & 0xFF;
-    const buffer = PixelUpdate.dehydrate(i, j, pixels);
+    const buffer = dehydratePixelUpdate(i, j, pixels);
     this.emit('pixelUpdate', canvasId, chunkId, buffer);
     this.emit('chunkUpdate', canvasId, [i, j]);
   }
@@ -254,7 +255,7 @@ class SocketEvents extends EventEmitter {
    */
   broadcastOnlineCounter(online) {
     this.onlineCounter = online;
-    const buffer = OnlineCounter.dehydrate(online);
+    const buffer = dehydrateOnlineCounter(online);
     this.emit('onlineCounter', buffer);
   }
 }

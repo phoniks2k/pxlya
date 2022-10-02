@@ -148,7 +148,7 @@ export function selectColor(color) {
 export function selectCanvas(canvasId) {
   return {
     type: 's/SELECT_CANVAS',
-    canvasId,
+    canvasId: String(canvasId),
   };
 }
 

@@ -1,19 +1,28 @@
-
 // allow the websocket to be noisy on the console
 /* eslint-disable no-console */
 
 import EventEmitter from 'events';
 
-import CoolDownPacket from './packets/CoolDownPacket';
-import PixelUpdate from './packets/PixelUpdateClient';
-import PixelReturn from './packets/PixelReturn';
-import OnlineCounter from './packets/OnlineCounter';
-import RegisterCanvas from './packets/RegisterCanvas';
-import RegisterChunk from './packets/RegisterChunk';
-import RegisterMultipleChunks from './packets/RegisterMultipleChunks';
-import DeRegisterChunk from './packets/DeRegisterChunk';
-import ChangedMe from './packets/ChangedMe';
-import Ping from './packets/Ping';
+import {
+  hydratePixelUpdate,
+  hydratePixelReturn,
+  hydrateOnlineCounter,
+  hydrateCoolDown,
+  dehydrateRegCanvas,
+  dehydrateRegChunk,
+  dehydrateRegMChunks,
+  dehydrateDeRegChunk,
+  dehydrateCaptchaSolution,
+  dehydratePixelUpdate,
+  dehydratePing,
+} from './packets/client';
+import {
+  PIXEL_UPDATE_OP,
+  PIXEL_RETURN_OP,
+  ONLINE_COUNTER_OP,
+  COOLDOWN_OP,
+  CHANGE_ME_OP,
+} from './packets/op';
 import { shardHost } from '../store/actions/fetch';
 
 const chunks = [];
@@ -22,8 +31,8 @@ class SocketClient extends EventEmitter {
   constructor() {
     super();
     console.log('Creating WebSocketClient');
+    this.store = null;
     this.ws = null;
-    this.canvasId = 0;
     this.channelId = 0;
     /*
      * properties set in connect and open:
@@ -36,6 +45,11 @@ class SocketClient extends EventEmitter {
 
     this.checkHealth = this.checkHealth.bind(this);
     setInterval(this.checkHealth, 2000);
+  }
+
+  initialize(store) {
+    this.store = store;
+    return this.connect();
   }
 
   async connect() {
@@ -70,7 +84,7 @@ class SocketClient extends EventEmitter {
       }
       if (now - 23000 > this.timeLastSent) {
         // make sure we send something at least all 25s
-        this.send(Ping.dehydrate());
+        this.send(dehydratePing());
         this.timeLastSent = now;
       }
     }
@@ -110,31 +124,28 @@ class SocketClient extends EventEmitter {
 
     this.emit('open', {});
     this.readyState = WebSocket.OPEN;
-    this.send(RegisterCanvas.dehydrate(this.canvasId));
+    this.send(dehydrateRegCanvas(
+      this.store.getState().canvas,
+    ));
     console.log(`Register ${chunks.length} chunks`);
-    this.send(RegisterMultipleChunks.dehydrate(chunks));
+    this.send(dehydrateRegMChunks(chunks));
     this.processMsgQueue();
   }
 
   setCanvas(canvasId) {
-    /* canvasId can be string or integer, thanks to
-     * JSON not allowing integer keys
-     */
-    // eslint-disable-next-line eqeqeq
-    if (this.canvasId == canvasId || canvasId === null) {
+    if (canvasId === null) {
       return;
     }
     console.log('Notify websocket server that we changed canvas');
-    this.canvasId = canvasId;
     chunks.length = 0;
-    this.send(RegisterCanvas.dehydrate(this.canvasId));
+    this.send(dehydrateRegCanvas(canvasId));
   }
 
   registerChunk(cell) {
     const [i, j] = cell;
     const chunkid = (i << 8) | j;
     chunks.push(chunkid);
-    const buffer = RegisterChunk.dehydrate(chunkid);
+    const buffer = dehydrateRegChunk(chunkid);
     if (this.readyState === WebSocket.OPEN) {
       this.send(buffer);
     }
@@ -143,13 +154,19 @@ class SocketClient extends EventEmitter {
   deRegisterChunk(cell) {
     const [i, j] = cell;
     const chunkid = (i << 8) | j;
-    const buffer = DeRegisterChunk.dehydrate(chunkid);
+    const buffer = dehydrateDeRegChunk(chunkid);
     if (this.readyState === WebSocket.OPEN) {
       this.send(buffer);
     }
     const pos = chunks.indexOf(chunkid);
     if (~pos) chunks.splice(pos, 1);
   }
+
+  /*
+  sendCaptchaSolution(solution) {
+    const buffer = dehydrateCaptchaSolution(solution);
+  }
+  */
 
   /*
    * Send pixel request
@@ -160,7 +177,7 @@ class SocketClient extends EventEmitter {
     i, j,
     pixels,
   ) {
-    const buffer = PixelUpdate.dehydrate(i, j, pixels);
+    const buffer = dehydratePixelUpdate(i, j, pixels);
     this.sendWhenReady(buffer);
   }
 
@@ -196,7 +213,6 @@ class SocketClient extends EventEmitter {
             name, text, country, Number(channelId), userId);
           return;
         }
-
         case 2: {
           // signal
           const [signal, args] = data;
@@ -217,19 +233,19 @@ class SocketClient extends EventEmitter {
     this.timeLastPing = Date.now();
 
     switch (opcode) {
-      case PixelUpdate.OP_CODE:
-        this.emit('pixelUpdate', PixelUpdate.hydrate(data));
+      case PIXEL_UPDATE_OP:
+        this.emit('pixelUpdate', hydratePixelUpdate(data));
         break;
-      case PixelReturn.OP_CODE:
-        this.emit('pixelReturn', PixelReturn.hydrate(data));
+      case PIXEL_RETURN_OP:
+        this.emit('pixelReturn', hydratePixelReturn(data));
         break;
-      case OnlineCounter.OP_CODE:
-        this.emit('onlineCounter', OnlineCounter.hydrate(data));
+      case ONLINE_COUNTER_OP:
+        this.emit('onlineCounter', hydrateOnlineCounter(data));
         break;
-      case CoolDownPacket.OP_CODE:
-        this.emit('cooldownPacket', CoolDownPacket.hydrate(data));
+      case COOLDOWN_OP:
+        this.emit('cooldownPacket', hydrateCoolDown(data));
         break;
-      case ChangedMe.OP_CODE:
+      case CHANGE_ME_OP:
         console.log('Websocket requested api/me reload');
         this.emit('changedMe');
         this.reconnect();

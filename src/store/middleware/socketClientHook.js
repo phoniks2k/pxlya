@@ -41,26 +41,25 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    default:
-    // nothing
-  }
-
-  const ret = next(action);
-
-  // executed after reducers
-  switch (action.type) {
     case 'RELOAD_URL':
     case 's/SELECT_CANVAS':
     case 's/REC_ME': {
+      const prevState = store.getState();
+      const ret = next(action);
       const state = store.getState();
       const { canvasId } = state.canvas;
-      SocketClient.setCanvas(canvasId);
-      break;
+      if (prevState.canvas.canvasId === canvasId) {
+        // TODO see if this is the case anywhere
+        console.log('Not triggering change canvas');
+      } else {
+        SocketClient.setCanvas(canvasId);
+      }
+      return ret;
     }
 
     default:
     // nothing
   }
 
-  return ret;
+  return next(action);
 };

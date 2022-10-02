@@ -8,10 +8,20 @@
 
 import { SHARD_NAME } from '../core/config';
 import SocketEvents from './SockEvents';
-import OnlineCounter from './packets/OnlineCounter';
-import PixelUpdate from './packets/PixelUpdateServer';
-import PixelUpdateMB from './packets/PixelUpdateMB';
-import ChunkUpdate from './packets/ChunkUpdate';
+import {
+  ONLINE_COUNTER_OP,
+  PIXEL_UPDATE_MB_OP,
+  CHUNK_UPDATE_MB_OP,
+} from './packets/op';
+import {
+  hydrateOnlineCounter,
+  hydratePixelUpdateMB,
+  hydrateChunkUpdateMB,
+  dehydratePixelUpdate,
+  dehydrateOnlineCounter,
+  dehydratePixelUpdateMB,
+  dehydrateChunkUpdateMB,
+} from './packets/server';
 import { pubsub } from '../data/redis/client';
 import { combineObjects } from '../core/utils';
 
@@ -253,25 +263,25 @@ class MessageBroker extends SocketEvents {
     try {
       const opcode = buffer[0];
       switch (opcode) {
-        case PixelUpdateMB.OP_CODE: {
-          const puData = PixelUpdateMB.hydrate(buffer);
+        case PIXEL_UPDATE_MB_OP: {
+          const puData = hydratePixelUpdateMB(buffer);
           super.emit('pixelUpdate', ...puData);
           const chunkId = puData[1];
           const chunk = [chunkId >> 8, chunkId & 0xFF];
           super.emit('chunkUpdate', puData[0], chunk);
           break;
         }
-        case ChunkUpdate.OP_CODE: {
-          super.emit('chunkUpdate', ...ChunkUpdate.hydrate(buffer));
+        case CHUNK_UPDATE_MB_OP: {
+          super.emit('chunkUpdate', ...hydrateChunkUpdateMB(buffer));
           break;
         }
-        case OnlineCounter.OP_CODE: {
+        case ONLINE_COUNTER_OP: {
           const data = new DataView(
             buffer.buffer,
             buffer.byteOffset,
             buffer.length,
           );
-          const cnt = OnlineCounter.hydrate(data);
+          const cnt = hydrateOnlineCounter(data);
           this.updateShardOnlineCounter(shard, cnt);
           break;
         }
@@ -324,9 +334,9 @@ class MessageBroker extends SocketEvents {
     const j = chunkId & 0xFF;
     this.publisher.publish(
       this.thisShard,
-      PixelUpdateMB.dehydrate(canvasId, i, j, pixels),
+      dehydratePixelUpdateMB(canvasId, i, j, pixels),
     );
-    const buffer = PixelUpdate.dehydrate(i, j, pixels);
+    const buffer = dehydratePixelUpdate(i, j, pixels);
     super.emit('pixelUpdate', canvasId, chunkId, buffer);
     super.emit('chunkUpdate', canvasId, [i, j]);
   }
@@ -353,18 +363,18 @@ class MessageBroker extends SocketEvents {
   ) {
     this.publisher.publish(
       this.thisShard,
-      ChunkUpdate.dehydrate(canvasId, chunk),
+      dehydrateChunkUpdateMB(canvasId, chunk),
     );
     super.emit('chunkUpdate', canvasId, chunk);
   }
 
   broadcastOnlineCounter(online) {
     this.updateShardOnlineCounter(this.thisShard, online);
-    let buffer = OnlineCounter.dehydrate(online);
     // send our online counter to other shards
+    let buffer = dehydrateOnlineCounter(online);
     this.publisher.publish(this.thisShard, buffer);
     // send total counter to our players
-    buffer = OnlineCounter.dehydrate(this.onlineCounter);
+    buffer = dehydrateOnlineCounter(this.onlineCounter);
     super.emit('onlineCounter', buffer);
   }
 

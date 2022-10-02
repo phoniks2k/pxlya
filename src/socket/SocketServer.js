@@ -7,18 +7,28 @@ import logger from '../core/logger';
 import canvases from '../core/canvases';
 import Counter from '../utils/Counter';
 import { getIPFromRequest, getHostFromRequest } from '../utils/ip';
-
-import CoolDownPacket from './packets/CoolDownPacket';
-import PixelUpdate from './packets/PixelUpdateServer';
-import PixelReturn from './packets/PixelReturn';
-import RegisterCanvas from './packets/RegisterCanvas';
-import RegisterChunk from './packets/RegisterChunk';
-import RegisterMultipleChunks from './packets/RegisterMultipleChunks';
-import DeRegisterChunk from './packets/DeRegisterChunk';
-import DeRegisterMultipleChunks from './packets/DeRegisterMultipleChunks';
-import ChangedMe from './packets/ChangedMe';
-import OnlineCounter from './packets/OnlineCounter';
-
+import {
+  REG_CANVAS_OP,
+  PIXEL_UPDATE_OP,
+  REG_CHUNK_OP,
+  REG_MCHUNKS_OP,
+  DEREG_CHUNK_OP,
+  DEREG_MCHUNKS_OP,
+} from './packets/op';
+import {
+  hydrateRegCanvas,
+  hydrateRegChunk,
+  hydrateDeRegChunk,
+  hydrateRegMChunks,
+  hydrateDeRegMChunks,
+  hydrateCaptchaSolution,
+  hydratePixelUpdate,
+  dehydrateChangeMe,
+  dehydrateOnlineCounter,
+  dehydratePixelUpdate,
+  dehydrateCoolDown,
+  dehydratePixelReturn,
+} from './packets/server';
 import socketEvents from './socketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
@@ -88,7 +98,7 @@ class SocketServer {
 
       const { ip } = user;
 
-      ws.send(OnlineCounter.dehydrate(socketEvents.onlineCounter));
+      ws.send(dehydrateOnlineCounter(socketEvents.onlineCounter));
 
       ws.on('error', (e) => {
         logger.error(`WebSocket Client Error for ${ws.name}: ${e.message}`);
@@ -341,7 +351,7 @@ class SocketServer {
       if (ws.name === name) {
         await ws.user.reload();
         ws.name = ws.user.getName();
-        const buffer = ChangedMe.dehydrate();
+        const buffer = dehydrateChangeMe();
         ws.send(buffer);
       }
     });
@@ -474,7 +484,7 @@ class SocketServer {
     try {
       const opcode = buffer[0];
       switch (opcode) {
-        case PixelUpdate.OP_CODE: {
+        case PIXEL_UPDATE_OP: {
           const { canvasId, user } = ws;
           const { ip } = user;
 
@@ -499,7 +509,7 @@ class SocketServer {
 
           const {
             i, j, pixels,
-          } = PixelUpdate.hydrate(buffer);
+          } = hydratePixelUpdate(buffer);
           const {
             wait,
             coolDown,
@@ -522,7 +532,7 @@ class SocketServer {
             }
           }
 
-          ws.send(PixelReturn.dehydrate(
+          ws.send(dehydratePixelReturn(
             retCode,
             wait,
             coolDown,
@@ -531,42 +541,38 @@ class SocketServer {
           ));
           break;
         }
-        case RegisterCanvas.OP_CODE: {
-          const canvasId = RegisterCanvas.hydrate(buffer);
+        case REG_CANVAS_OP: {
+          const canvasId = hydrateRegCanvas(buffer);
           if (!canvases[canvasId]) return;
           if (ws.canvasId !== null && ws.canvasId !== canvasId) {
             this.deleteAllChunks(ws);
           }
           ws.canvasId = canvasId;
           const wait = await ws.user.getWait(canvasId);
-          ws.send(CoolDownPacket.dehydrate(wait));
+          ws.send(dehydrateCoolDown(wait));
           break;
         }
-        case RegisterChunk.OP_CODE: {
-          const chunkid = RegisterChunk.hydrate(buffer);
+        case REG_CHUNK_OP: {
+          const chunkid = hydrateRegChunk(buffer);
           this.pushChunk(chunkid, ws);
           break;
         }
-        case RegisterMultipleChunks.OP_CODE: {
+        case REG_MCHUNKS_OP: {
           this.deleteAllChunks(ws);
-          let posu = 2;
-          while (posu < buffer.length) {
-            const chunkid = buffer[posu++] | buffer[posu++] << 8;
+          hydrateRegMChunks(buffer, (chunkid) => {
             this.pushChunk(chunkid, ws);
-          }
+          });
           break;
         }
-        case DeRegisterChunk.OP_CODE: {
-          const chunkidn = DeRegisterChunk.hydrate(buffer);
-          this.deleteChunk(chunkidn, ws);
+        case DEREG_CHUNK_OP: {
+          const chunkid = hydrateDeRegChunk(buffer);
+          this.deleteChunk(chunkid, ws);
           break;
         }
-        case DeRegisterMultipleChunks.OP_CODE: {
-          let posl = 2;
-          while (posl < buffer.length) {
-            const chunkid = buffer[posl++] | buffer[posl++] << 8;
+        case DEREG_MCHUNKS_OP: {
+          hydrateDeRegMChunks(buffer, (chunkid) => {
             this.deleteChunk(chunkid, ws);
-          }
+          });
           break;
         }
         default:
