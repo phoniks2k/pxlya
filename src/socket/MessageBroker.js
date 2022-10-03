@@ -276,12 +276,7 @@ class MessageBroker extends SocketEvents {
           break;
         }
         case ONLINE_COUNTER_OP: {
-          const data = new DataView(
-            buffer.buffer,
-            buffer.byteOffset,
-            buffer.length,
-          );
-          const cnt = hydrateOnlineCounter(data);
+          const cnt = hydrateOnlineCounter(buffer);
           this.updateShardOnlineCounter(shard, cnt);
           break;
         }
