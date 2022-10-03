@@ -1,8 +1,6 @@
 // allow the websocket to be noisy on the console
 /* eslint-disable no-console */
 
-import EventEmitter from 'events';
-
 import {
   hydratePixelUpdate,
   hydratePixelReturn,
@@ -37,12 +35,12 @@ import {
   fetchMe,
 } from '../store/actions/thunks';
 import { shardHost } from '../store/actions/fetch';
+import pixelTransferController from '../ui/PixelTransferController';
 
 const chunks = [];
 
-class SocketClient extends EventEmitter {
+class SocketClient {
   constructor() {
-    super();
     console.log('Creating WebSocketClient');
     this.store = null;
     this.ws = null;
@@ -186,8 +184,8 @@ class SocketClient extends EventEmitter {
   sendCaptchaSolution(solution, captchaid) {
     return new Promise((resolve, reject) => {
       let id;
-      const queueObj = ['cs', (args) => {
-        resolve(args);
+      const queueObj = ['cs', (arg) => {
+        resolve(arg);
         clearTimeout(id);
       }];
       this.reqQueue.push(queueObj);
@@ -207,12 +205,21 @@ class SocketClient extends EventEmitter {
    * @param i, j chunk coordinates
    * @param pixel Array of [[offset, color],...]  pixels within chunk
    */
-  requestPlacePixels(
-    i, j,
-    pixels,
-  ) {
-    const buffer = dehydratePixelUpdate(i, j, pixels);
-    this.sendWhenReady(buffer);
+  sendPixelUpdate(i, j, pixels) {
+    return new Promise((resolve, reject) => {
+      let id;
+      const queueObj = ['pu', (arg) => {
+        resolve(arg);
+        clearTimeout(id);
+      }];
+      this.reqQueue.push(queueObj);
+      id = setTimeout(() => {
+        const pos = this.reqQueue.indexOf(queueObj);
+        if (~pos) this.reqQueue.splice(pos, 1);
+        reject(new Error('Timeout'));
+      }, 20000);
+      this.sendWhenReady(dehydratePixelUpdate(i, j, pixels));
+    });
   }
 
   sendChatMessage(message, channelId) {
@@ -267,11 +274,15 @@ class SocketClient extends EventEmitter {
 
     switch (opcode) {
       case PIXEL_UPDATE_OP:
-        this.emit('pixelUpdate', hydratePixelUpdate(data));
+        pixelTransferController.receivePixelUpdate(hydratePixelUpdate(data));
         break;
-      case PIXEL_RETURN_OP:
-        this.emit('pixelReturn', hydratePixelReturn(data));
+      case PIXEL_RETURN_OP: {
+        const pos = this.reqQueue.findIndex((q) => q[0] === 'pu');
+        if (~pos) {
+          this.reqQueue.splice(pos, 1)[0][1](hydratePixelReturn(data));
+        }
         break;
+      }
       case ONLINE_COUNTER_OP:
         this.store.dispatch(receiveOnline(hydrateOnlineCounter(data)));
         break;

@@ -14,14 +14,11 @@ import {
 import {
   fetchMe,
 } from './store/actions/thunks';
-import {
-  receivePixelUpdate,
-  receivePixelReturn,
-} from './ui/placePixel';
+import pixelTransferController from './ui/PixelTransferController';
 import store from './store/store';
 import renderApp from './components/App';
 import { initRenderer, getRenderer } from './ui/renderer';
-import SocketClient from './socket/SocketClient';
+import socketClient from './socket/SocketClient';
 
 persistStore(store, {}, () => {
   window.addEventListener('message', store.dispatch);
@@ -30,32 +27,19 @@ persistStore(store, {}, () => {
 
   initRenderer(store, false);
 
-  SocketClient.on('pixelUpdate', ({
-    i, j, pixels,
-  }) => {
-    pixels.forEach((pxl) => {
-      const [offset, color] = pxl;
-      // remove protection
-      receivePixelUpdate(getRenderer(), i, j, offset, color & 0x7F);
-    });
-  });
-  SocketClient.on('pixelReturn', (args) => {
-    receivePixelReturn(store, getRenderer(), args);
-  });
+  pixelTransferController.initialize(store, socketClient, getRenderer);
 
   window.addEventListener('hashchange', () => {
     store.dispatch(urlChange());
   });
 
   // check if on mobile
-  //
   function checkMobile() {
     store.dispatch(setMobile(true));
   }
   document.addEventListener('touchstart', checkMobile, { once: true });
 
   // listen for resize
-  //
   function onWindowResize() {
     store.dispatch(windowResize());
   }
@@ -65,7 +49,8 @@ persistStore(store, {}, () => {
   store.dispatch(initTimer());
 
   store.dispatch(fetchMe());
-  SocketClient.initialize(store);
+
+  socketClient.initialize(store);
 });
 
 (function load() {
@@ -90,7 +75,7 @@ persistStore(store, {}, () => {
             if (!renderer.isChunkInView(zc, xc, yc)) {
               cnt++;
               if (value.isBasechunk) {
-                SocketClient.deRegisterChunk([xc, yc]);
+                socketClient.deRegisterChunk([xc, yc]);
               }
               chunks.delete(key);
               value.destructor();

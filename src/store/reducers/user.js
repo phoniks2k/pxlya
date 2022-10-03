@@ -4,7 +4,6 @@ const initialState = {
   wait: null,
   coolDown: null, // ms
   lastCoolDownEnd: null,
-  allowSettingPixel: true,
   // messages are sent by api/me, like not_verified status
   messages: [],
   mailreg: false,
@@ -42,28 +41,13 @@ export default function user(
       };
     }
 
-    case 'REQ_PLACE_TIMEOUT': {
-      return {
-        ...state,
-        allowSettingPixel: true,
-      };
-    }
-
-    case 'REQ_PLACE_PXLS': {
-      return {
-        ...state,
-        allowSettingPixel: false,
-      };
-    }
-
-    case 'REC_PXL_RETURN': {
+    case 'REC_SET_PXLS': {
       const {
         wait: duration,
       } = action;
       return {
         ...state,
         wait: (duration) ? Date.now() + duration : state.wait,
-        allowSettingPixel: true,
       };
     }
 

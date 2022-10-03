@@ -20,9 +20,7 @@ import {
   moveEast,
   onViewFinishChange,
 } from '../store/actions';
-import {
-  tryPlacePixel,
-} from '../ui/placePixel';
+import pixelTransferController from '../ui/PixelTransferController';
 import {
   screenToWorld,
   getChunkOfPixel,
@@ -245,9 +243,7 @@ class PixelPlainterControls {
     }
     const [i, j] = getChunkOfPixel(canvasSize, x, y);
     const offset = getOffsetOfPixel(canvasSize, x, y);
-    tryPlacePixel(
-      renderer,
-      store,
+    pixelTransferController.tryPlacePixel(
       i, j, offset,
       selectedColor,
       curColor,

@@ -106,12 +106,6 @@ export function toggleOpenMenu() {
   };
 }
 
-export function requestPlaceTimeout() {
-  return {
-    type: 'REQ_PLACE_TIMEOUT',
-  };
-}
-
 export function setHover(hover) {
   return {
     type: 'SET_HOVER',
@@ -295,22 +289,6 @@ export function sendChatMessage(
     type: 's/REQ_CHAT_MESSAGE',
     text,
     channel,
-  };
-}
-
-/*
- * check socket/packets/PixelReturn.js for args
- */
-export function storeReceivePixelReturn(args) {
-  args.type = 'REC_PXL_RETURN';
-  return args;
-}
-export function requestPlacePixels(i, j, pixels) {
-  return {
-    type: 'REQ_PLACE_PXLS',
-    i,
-    j,
-    pixels,
   };
 }
 

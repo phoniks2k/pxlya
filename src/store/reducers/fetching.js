@@ -6,6 +6,7 @@
 const initialState = {
   fetchingChunks: 0,
   fetchingChat: false,
+  fetchingPixel: false,
   fetchinApi: false,
 };
 
@@ -56,6 +57,14 @@ export default function fetching(
       return {
         ...state,
         fetchingChunks: fetchingChunks - 1,
+      };
+    }
+
+    case 'SET_PXLS_FETCHING': {
+      const { fetching: fetchingPixel } = action;
+      return {
+        ...state,
+        fetchingPixel,
       };
     }
 

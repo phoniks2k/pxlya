@@ -23,11 +23,17 @@ export function receiveChatMessage(
   return (dispatch, getState) => {
     channel = Number(channel);
     const state = getState();
-    const isRead = state.windows.showWindows
-      // eslint-disable-next-line max-len
-      && state.windows.windows.find((win) => win.windowType === 'CHAT' && !win.hidden)
-      // eslint-disable-next-line max-len
-      && Object.values(state.windows.args).find((args) => args.chatChannel === channel);
+    let isRead = false;
+    if (state.windows) {
+      isRead = state.windows.windows.some(
+        (win) => win.windowType === 'CHAT' && !win.hidden,
+      ) && Object.values(state.windows.args).some(
+        (args) => args.chatChannel === channel,
+      );
+    } else {
+      isRead = state.popup.windowType === 'CHAT'
+        || state.popup.args.chatChannel === channel;
+    }
 
     // TODO ping doesn't work since update
     // const { nameRegExp } = state.user;
@@ -40,7 +46,7 @@ export function receiveChatMessage(
       channel,
       user,
       isPing: false,
-      isRead: !!isRead,
+      isRead,
     });
   };
 }
@@ -71,4 +77,16 @@ export function removeChatChannel(cid) {
     type: 's/REMOVE_CHAT_CHANNEL',
     cid,
   };
+}
+
+export function setPixelsFetching(fetching) {
+  return {
+    type: 'SET_PXLS_FETCHING',
+    fetching,
+  };
+}
+
+export function receivePlacePixels(args) {
+  args.type = 'REC_SET_PXLS';
+  return args;
 }

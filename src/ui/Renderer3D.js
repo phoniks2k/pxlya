@@ -20,8 +20,7 @@ import {
   setHover,
   selectColor,
 } from '../store/actions';
-import { tryPlacePixel } from './placePixel';
-
+import pixelTransferController from './PixelTransferController';
 
 const renderDistance = 150;
 
@@ -398,8 +397,8 @@ class Renderer {
       store,
     } = this;
     const {
-      allowSettingPixel,
-    } = store.getState().user;
+      fetchingPixel,
+    } = store.getState().fetching;
 
     mouse.set(
       (clientX / innerWidth) * 2 - 1,
@@ -414,7 +413,7 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
-      if (!allowSettingPixel
+      if (fetchingPixel
         || target.clone().sub(camera.position).length() > 120) {
         rollOverMesh.position.y = -10;
       } else {
@@ -442,8 +441,8 @@ class Renderer {
       store,
     } = this;
     const {
-      allowSettingPixel,
-    } = store.getState().user;
+      fetchingPixel,
+    } = store.getState().fetching;
 
     mouse.set(0, 0);
     raycaster.setFromCamera(mouse, camera);
@@ -454,9 +453,9 @@ class Renderer {
         .add(intersect.face.normal.multiplyScalar(0.5))
         .floor()
         .addScalar(0.5);
-      // TODO make rollOverMesh in a different color while allowSettingPixel false
+      // TODO make rollOverMesh in a different color while fetchingPixel
       // instead of hiding it.... we can now queue Voxels
-      if (!allowSettingPixel
+      if (fetchingPixel
         || target.clone().sub(camera.position).length() > 50) {
         rollOverMesh.position.y = -10;
       } else {
@@ -481,9 +480,7 @@ class Renderer {
     const curColor = (chClr === 0) ? this.chunkLoader.getVoxel(x, y, z) : 0;
     const [i, j] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
-    tryPlacePixel(
-      this,
-      store,
+    pixelTransferController.tryPlacePixel(
       i, j,
       offset,
       chClr,
@@ -579,10 +576,12 @@ class Renderer {
 
     const state = this.store.getState();
     const {
-      allowSettingPixel,
       isOnMobile,
     } = state.user;
-    if (!allowSettingPixel || isOnMobile) {
+    const {
+      fetchingPixel,
+    } = state.fetching;
+    if (fetchingPixel || isOnMobile) {
       return;
     }
 

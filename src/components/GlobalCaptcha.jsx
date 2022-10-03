@@ -42,7 +42,6 @@ const GlobalCaptcha = ({ close }) => {
           setSubmitting(true);
           const retCode = await socketClient
             .sendCaptchaSolution(text, captchaid);
-          console.log('Captcha return:', retCode);
           switch (retCode) {
             case 0:
               close();

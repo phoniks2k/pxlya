@@ -114,7 +114,7 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'REC_PXL_RETURN': {
+    case 'REC_SET_PXLS': {
       const renderer = getRenderer();
       renderer.forceNextSubrender = true;
       const { coolDownSeconds } = action;

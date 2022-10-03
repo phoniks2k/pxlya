@@ -24,14 +24,6 @@ export default (store) => (next) => (action) => {
       break;
     }
 
-    case 'REQ_PLACE_PXLS': {
-      const {
-        i, j, pixels,
-      } = action;
-      SocketClient.requestPlacePixels(i, j, pixels);
-      break;
-    }
-
     case 's/REQ_CHAT_MESSAGE': {
       const {
         text,
