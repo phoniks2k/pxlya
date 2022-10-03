@@ -68,20 +68,14 @@ function evaluateResult(captchaText, userText) {
  * set captcha solution
  *
  * @param text Solution of captcha
- * @param ip
  * @param captchaid
  */
 export async function setCaptchaSolution(
   text,
-  ip,
-  captchaid = null,
+  captchaid,
 ) {
-  let key = `capt:${ip}`;
-  if (captchaid) {
-    key += `:${captchaid}`;
-  }
   try {
-    await client.set(key, text, {
+    await client.set(`capt:${captchaid}`, text, {
       EX: CAPTCHA_TIMEOUT,
     });
   } catch (error) {
@@ -105,22 +99,24 @@ export async function setCaptchaSolution(
 export async function checkCaptchaSolution(
   text,
   ip,
-  onetime = false,
-  captchaid = null,
+  onetime,
+  captchaid,
   wrongCallback = null,
 ) {
-  const ipn = getIPv6Subnet(ip);
-  let key = `capt:${ip}`;
-  if (captchaid) {
-    key += `:${captchaid}`;
+  if (!text || text.length > 10) {
+    return 3;
   }
-  const solution = await client.get(key);
+  if (!captchaid) {
+    return 4;
+  }
+  const solution = await client.get(`capt:${captchaid}`);
   if (solution) {
     if (evaluateResult(solution, text)) {
       if (Math.random() < 0.1) {
         return 2;
       }
       if (!onetime) {
+        const ipn = getIPv6Subnet(ip);
         const solvkey = `${PREFIX}:${ipn}`;
         await client.set(solvkey, '', {
           EX: TTL_CACHE,

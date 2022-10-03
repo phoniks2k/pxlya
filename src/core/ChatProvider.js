@@ -268,7 +268,7 @@ export class ChatProvider {
     const cmdArr = message.split(' ');
     const cmd = cmdArr[0].substring(1);
     const args = cmdArr.slice(1);
-    const initiator = `@[${escapeMd(user.getName())}](${user.id})`;
+    const initiator = `@[${escapeMd(user.name)}](${user.id})`;
     switch (cmd) {
       case 'mute': {
         const timeMin = Number(args.slice(-1));
@@ -398,7 +398,7 @@ export class ChatProvider {
   ) {
     const { id } = user;
     const { t } = user.ttag;
-    const name = user.getName();
+    const { name } = user;
 
     if (!name || !id) {
       return null;

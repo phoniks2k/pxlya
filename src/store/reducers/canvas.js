@@ -17,7 +17,7 @@ import {
 
 /*
 export type CanvasState = {
-  canvasId: number,
+  canvasId: string,
   canvasIdent: string,
   selectedColor: number,
   is3D: boolean,

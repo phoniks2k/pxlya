@@ -26,7 +26,7 @@ async function blockdm(req, res) {
   }
 
   logger.info(
-    `User ${user.getName()} (un)blocked all dms`,
+    `User ${user.name} (un)blocked all dms`,
   );
 
   await user.regUser.update({

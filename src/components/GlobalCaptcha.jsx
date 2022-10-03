@@ -8,13 +8,14 @@ import React, { useState } from 'react';
 import { t } from 'ttag';
 
 import Captcha from './Captcha';
+import socketClient from '../socket/SocketClient';
 import {
-  requestSolveCaptcha,
   requestBanMe,
 } from '../store/actions/fetch';
 
 const GlobalCaptcha = ({ close }) => {
-  const [errors, setErrors] = useState([]);
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
   const [legit, setLegit] = useState(false);
   // used to be able to force Captcha rerender on error
   const [captKey, setCaptKey] = useState(Date.now());
@@ -24,7 +25,7 @@ const GlobalCaptcha = ({ close }) => {
       onSubmit={async (e) => {
         e.preventDefault();
         const text = e.target.captcha.value.slice(0, 6);
-        if (!text || text.length < 4) {
+        if (submitting || !text) {
           return;
         }
         // ----
@@ -36,23 +37,44 @@ const GlobalCaptcha = ({ close }) => {
         }
         // ----
         const captchaid = e.target.captchaid.value;
-        const { errors: resErrors } = await requestSolveCaptcha(
-          text,
-          captchaid,
-        );
-        if (resErrors) {
-          setCaptKey(Date.now());
-          setErrors(resErrors);
-        } else {
-          close();
+        let errorText;
+        try {
+          setSubmitting(true);
+          const retCode = await socketClient
+            .sendCaptchaSolution(text, captchaid);
+          console.log('Captcha return:', retCode);
+          switch (retCode) {
+            case 0:
+              close();
+              return;
+            case 1:
+              errorText = t`You took too long, try again.`;
+              break;
+            case 2:
+              errorText = t`You failed your captcha`;
+              break;
+            case 3:
+              errorText = t`No or invalid captcha text`;
+              break;
+            case 4:
+              errorText = t`No captcha id given`;
+              break;
+            default:
+              errorText = t`Unknown Captcha Error`;
+          }
+        } catch (err) {
+          errorText = `${err.message}`;
         }
+        setSubmitting(false);
+        setCaptKey(Date.now());
+        setError(errorText);
       }}
     >
-      {errors.map((error) => (
+      {(error) && (
         <p key={error} className="errormessage">
           <span>{t`Error`}</span>:&nbsp;{error}
         </p>
-      ))}
+      )}
       <Captcha autoload key={captKey} setLegit={setLegit} />
       <p>
         <button
@@ -65,7 +87,7 @@ const GlobalCaptcha = ({ close }) => {
         <button
           type="submit"
         >
-          {t`Send`}
+          {(submitting) ? '...' : t`Send`}
         </button>
       </p>
     </form>

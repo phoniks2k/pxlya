@@ -250,15 +250,6 @@ export function receiveBigChunkFailure(center, error) {
   };
 }
 
-export function receiveCoolDown(
-  wait,
-) {
-  return {
-    type: 'REC_COOLDOWN',
-    wait,
-  };
-}
-
 export function receiveMe(
   me,
 ) {
@@ -296,13 +287,6 @@ export function receiveStats(
   };
 }
 
-export function receiveOnline(online) {
-  return {
-    type: 'REC_ONLINE',
-    online,
-  };
-}
-
 export function sendChatMessage(
   text,
   channel,
@@ -311,27 +295,6 @@ export function sendChatMessage(
     type: 's/REQ_CHAT_MESSAGE',
     text,
     channel,
-  };
-}
-
-export function receiveChatMessage(
-  name,
-  text,
-  country,
-  channel,
-  user,
-  isPing,
-  isRead,
-) {
-  return {
-    type: 's/REC_CHAT_MESSAGE',
-    name,
-    text,
-    country,
-    channel,
-    user,
-    isPing,
-    isRead,
   };
 }
 
@@ -445,13 +408,6 @@ export function initTimer() {
   };
 }
 
-export function addChatChannel(channel) {
-  return {
-    type: 's/ADD_CHAT_CHANNEL',
-    channel,
-  };
-}
-
 export function blockUser(userId, userName) {
   return {
     type: 's/BLOCK_USER',
@@ -479,13 +435,6 @@ export function privatize(priv) {
   return {
     type: 's/SET_PRIVATE',
     priv,
-  };
-}
-
-export function removeChatChannel(cid) {
-  return {
-    type: 's/REMOVE_CHAT_CHANNEL',
-    cid,
   };
 }
 

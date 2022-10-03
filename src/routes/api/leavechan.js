@@ -57,7 +57,7 @@ async function leaveChan(req, res) {
   }
 
   logger.info(
-    `Removing user ${user.getName()} from channel ${channel.name || channelId}`,
+    `Removing user ${user.name} from channel ${channel.name || channelId}`,
   );
 
   user.regUser.removeChannel(channel);

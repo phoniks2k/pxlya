@@ -371,11 +371,10 @@ class MessageBroker extends SocketEvents {
   broadcastOnlineCounter(online) {
     this.updateShardOnlineCounter(this.thisShard, online);
     // send our online counter to other shards
-    let buffer = dehydrateOnlineCounter(online);
+    const buffer = dehydrateOnlineCounter(online);
     this.publisher.publish(this.thisShard, buffer);
     // send total counter to our players
-    buffer = dehydrateOnlineCounter(this.onlineCounter);
-    super.emit('onlineCounter', buffer);
+    super.emit('onlineCounter', this.onlineCounter);
   }
 
   checkHealth() {

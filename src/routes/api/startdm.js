@@ -108,7 +108,7 @@ async function startDm(req, res) {
     ChatProvider.addUserToChannel(
       userId,
       ChannelId,
-      [user.getName(), 1, curTime, user.id],
+      [user.name, 1, curTime, user.id],
     ),
   ];
   await Promise.all(promises);

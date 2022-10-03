@@ -9,6 +9,7 @@ import {
   COOLDOWN_OP,
   PIXEL_RETURN_OP,
   CHUNK_UPDATE_MB_OP,
+  CAPTCHA_RETURN_OP,
 } from './op';
 
 /*
@@ -78,13 +79,6 @@ export function hydrateDeRegMChunks(data, cb) {
     const chunkid = data[posl++] | data[posl++] << 8;
     cb(chunkid);
   }
-}
-
-/*
-* @return captcha solution
-*/
-export function hydrateCaptchaSolution(data) {
-  return data.toString('utf8', 1);
 }
 
 /*
@@ -223,6 +217,10 @@ export function dehydratePixelReturn(
   buffer.writeUInt8(pxlCnt, 8);
   buffer.writeUInt8(rankedPxlCnt, 9);
   return buffer;
+}
+
+export function dehydrateCaptchaReturn(retCode) {
+  return Buffer.from([CAPTCHA_RETURN_OP, retCode]);
 }
 
 /*

@@ -48,10 +48,7 @@ export default (store) => (next) => (action) => {
       const ret = next(action);
       const state = store.getState();
       const { canvasId } = state.canvas;
-      if (prevState.canvas.canvasId === canvasId) {
-        // TODO see if this is the case anywhere
-        console.log('Not triggering change canvas');
-      } else {
+      if (prevState.canvas.canvasId !== canvasId) {
         SocketClient.setCanvas(canvasId);
       }
       return ret;

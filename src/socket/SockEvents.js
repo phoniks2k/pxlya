@@ -4,7 +4,6 @@
 import EventEmitter from 'events';
 
 import {
-  dehydrateOnlineCounter,
   dehydratePixelUpdate,
 } from './packets/server';
 
@@ -255,8 +254,7 @@ class SocketEvents extends EventEmitter {
    */
   broadcastOnlineCounter(online) {
     this.onlineCounter = online;
-    const buffer = dehydrateOnlineCounter(online);
-    this.emit('onlineCounter', buffer);
+    this.emit('onlineCounter', online);
   }
 }
 

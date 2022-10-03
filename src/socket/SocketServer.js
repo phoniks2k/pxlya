@@ -21,19 +21,19 @@ import {
   hydrateDeRegChunk,
   hydrateRegMChunks,
   hydrateDeRegMChunks,
-  hydrateCaptchaSolution,
   hydratePixelUpdate,
   dehydrateChangeMe,
   dehydrateOnlineCounter,
-  dehydratePixelUpdate,
   dehydrateCoolDown,
   dehydratePixelReturn,
+  dehydrateCaptchaReturn,
 } from './packets/server';
 import socketEvents from './socketEvents';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
 import drawByOffsets from '../core/draw';
 import isIPAllowed from '../core/isAllowed';
+import { checkCaptchaSolution } from '../data/redis/captcha';
 
 
 const ipCounter = new Counter();
@@ -64,7 +64,6 @@ class SocketServer {
   constructor() {
     this.CHUNK_CLIENTS = new Map();
 
-    this.broadcast = this.broadcast.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.reloadUser = this.reloadUser.bind(this);
     this.onlineCounterBroadcast = this.onlineCounterBroadcast.bind(this);
@@ -93,7 +92,6 @@ class SocketServer {
       ws.canvasId = null;
       const { user } = req;
       ws.user = user;
-      ws.name = user.getName();
       ws.chunkCnt = 0;
 
       const { ip } = user;
@@ -101,7 +99,8 @@ class SocketServer {
       ws.send(dehydrateOnlineCounter(socketEvents.onlineCounter));
 
       ws.on('error', (e) => {
-        logger.error(`WebSocket Client Error for ${ws.name}: ${e.message}`);
+        // eslint-disable-next-line max-len
+        logger.error(`WebSocket Client Error for ${ws.user.name}: ${e.message}`);
       });
 
       ws.on('close', () => {
@@ -120,7 +119,10 @@ class SocketServer {
       });
     });
 
-    socketEvents.on('onlineCounter', this.broadcast);
+    socketEvents.on('onlineCounter', (online) => {
+      const onlineBuffer = dehydrateOnlineCounter(online);
+      this.broadcast(onlineBuffer);
+    });
     socketEvents.on('pixelUpdate', this.broadcastPixelBuffer);
     socketEvents.on('reloadUser', this.reloadUser);
 
@@ -132,8 +134,10 @@ class SocketServer {
       id,
       country,
     ) => {
+      const text = `cm,${JSON.stringify(
+        [name, message, country, channelId, id],
+      )}`;
       this.findAllWsByUerId(userId).forEach((ws) => {
-        const text = JSON.stringify([name, message, country, channelId, id]);
         ws.send(text);
       });
     });
@@ -145,7 +149,9 @@ class SocketServer {
       id,
       country,
     ) => {
-      const text = JSON.stringify([name, message, country, channelId, id]);
+      const text = `cm,${JSON.stringify(
+        [name, message, country, channelId, id],
+      )}`;
       const clientArray = [];
       this.wss.clients.forEach((ws) => {
         if (ws.user && chatProvider.userHasChannelAccess(ws.user, channelId)) {
@@ -158,11 +164,9 @@ class SocketServer {
     socketEvents.on('addChatChannel', (userId, channelId, channelArray) => {
       this.findAllWsByUerId(userId).forEach((ws) => {
         ws.user.addChannel(channelId, channelArray);
-        const text = JSON.stringify([
-          'addch', {
-            [channelId]: channelArray,
-          },
-        ]);
+        const text = `ac,${JSON.stringify({
+          [channelId]: channelArray,
+        })}`;
         ws.send(text);
       });
     });
@@ -170,7 +174,7 @@ class SocketServer {
     socketEvents.on('remChatChannel', (userId, channelId) => {
       this.findAllWsByUerId(userId).forEach((ws) => {
         ws.user.removeChannel(channelId);
-        const text = JSON.stringify(['remch', channelId]);
+        const text = `rc,${JSON.stringify(channelId)}`;
         ws.send(text);
       });
     });
@@ -348,9 +352,8 @@ class SocketServer {
 
   reloadUser(name) {
     this.wss.clients.forEach(async (ws) => {
-      if (ws.name === name) {
+      if (ws.user.name === name) {
         await ws.user.reload();
-        ws.name = ws.user.getName();
         const buffer = dehydrateChangeMe();
         ws.send(buffer);
       }
@@ -419,64 +422,66 @@ class SocketServer {
      * chat messages in [message, channelId] format
      */
     try {
-      let message;
-      let channelId;
-      try {
-        const data = JSON.parse(text);
-        [message, channelId] = data;
-        channelId = Number(channelId);
-        if (Number.isNaN(channelId)) {
-          throw new Error('NaN');
-        }
-      } catch {
-        logger.warn(
-          `Received unparseable message from ${ws.name} on websocket: ${text}`,
-        );
-        return;
+      const comma = text.indexOf(',');
+      if (comma === -1) {
+        throw new Error('No comma');
       }
-      message = message.trim();
-
-      /*
-       * just if logged in
-       */
-      if (ws.name && message) {
-        const { user } = ws;
-        /*
-         * if DM channel, make sure that other user has DM open
-         * (needed because we allow user to leave one-sided
-         *  and auto-join on message)
-         */
-        const dmUserId = chatProvider.checkIfDm(user, channelId);
-        if (dmUserId) {
-          const dmWs = this.findWsByUserId(dmUserId);
-          if (!dmWs
-            || !chatProvider.userHasChannelAccess(dmWs.user, channelId)
-          ) {
-            // TODO this is really ugly
-            // DMS have to be rethought
-            if (!user.addedDM) user.addedDM = [];
-            if (!user.addedDM.includes(dmUserId)) {
-              await ChatProvider.addUserToChannel(
-                dmUserId,
-                channelId,
-                [ws.name, 1, Date.now(), user.id],
-              );
-              user.addedDM.push(dmUserId);
+      const key = text.slice(0, comma);
+      const val = JSON.parse(text.slice(comma + 1));
+      const { user } = ws;
+      switch (key) {
+        case 'cm': {
+          // chat message
+          const message = val[0].trim();
+          if (!user.isRegistered || !message) {
+            return;
+          }
+          const channelId = val[1];
+          /*
+           * if DM channel, make sure that other user has DM open
+           * (needed because we allow user to leave one-sided
+           *  and auto-join on message)
+           */
+          const dmUserId = chatProvider.checkIfDm(user, channelId);
+          if (dmUserId) {
+            const dmWs = this.findWsByUserId(dmUserId);
+            if (!dmWs
+              || !chatProvider.userHasChannelAccess(dmWs.user, channelId)
+            ) {
+              // TODO this is really ugly
+              // DMS have to be rethought
+              if (!user.addedDM) user.addedDM = [];
+              if (!user.addedDM.includes(dmUserId)) {
+                await ChatProvider.addUserToChannel(
+                  dmUserId,
+                  channelId,
+                  [user.name, 1, Date.now(), user.id],
+                );
+                user.addedDM.push(dmUserId);
+              }
             }
           }
+          socketEvents.recvChatMessage(user, message, channelId);
+          break;
         }
-
-        /*
-         * send chat message
-         */
-        socketEvents.recvChatMessage(user, message, channelId);
-      } else {
-        logger.info('Got empty message or message from unidentified ws');
+        case 'cs': {
+          // captcha solution
+          const [solution, captchaid] = val;
+          const ret = await checkCaptchaSolution(
+            solution,
+            user.ip,
+            false,
+            captchaid,
+          );
+          ws.send(dehydrateCaptchaReturn(ret));
+          break;
+        }
+        default:
+          throw new Error('Unknown key');
       }
-    } catch (error) {
-      logger.error('Got invalid ws text message');
-      logger.error(error.message);
-      logger.error(error.stack);
+    } catch (err) {
+      // eslint-disable-next-line max-len
+      logger.error(`Got invalid ws text message ${text}, with error: ${err.message}`);
     }
   }
 

@@ -8,11 +8,6 @@ import createKeyPressHandler from './controls/keypress';
 import {
   initTimer,
   urlChange,
-  receiveOnline,
-  receiveCoolDown,
-  receiveChatMessage,
-  addChatChannel,
-  removeChatChannel,
   setMobile,
   windowResize,
 } from './store/actions';
@@ -46,50 +41,6 @@ persistStore(store, {}, () => {
   });
   SocketClient.on('pixelReturn', (args) => {
     receivePixelReturn(store, getRenderer(), args);
-  });
-  SocketClient.on('cooldownPacket', (coolDown) => {
-    store.dispatch(receiveCoolDown(coolDown));
-  });
-  SocketClient.on('onlineCounter', (online) => {
-    store.dispatch(receiveOnline(online));
-  });
-  SocketClient.on('chatMessage', (
-    name,
-    text,
-    country,
-    channelId,
-    userId,
-  ) => {
-    const state = store.getState();
-
-    // assume that if one chat window is not hidden, all are
-    const isRead = state.windows.showWindows
-      // eslint-disable-next-line max-len
-      && state.windows.windows.find((win) => win.windowType === 'CHAT' && !win.hidden)
-      // eslint-disable-next-line max-len
-      && Object.values(state.windows.args).find((args) => args.chatChannel === channelId);
-
-    // TODO ping doesn't work since update
-    // const { nameRegExp } = state.user;
-    // const isPing = (nameRegExp && text.match(nameRegExp));
-    store.dispatch(receiveChatMessage(
-      name,
-      text,
-      country,
-      channelId,
-      userId,
-      false,
-      !!isRead,
-    ));
-  });
-  SocketClient.on('changedMe', () => {
-    store.dispatch(fetchMe());
-  });
-  SocketClient.on('remch', (cid) => {
-    store.dispatch(removeChatChannel(cid));
-  });
-  SocketClient.on('addch', (channel) => {
-    store.dispatch(addChatChannel(channel));
   });
 
   window.addEventListener('hashchange', () => {

@@ -7,7 +7,6 @@ import {
   DEREG_CHUNK_OP,
   REG_MCHUNKS_OP,
   DEREG_MCHUNKS_OP,
-  CAPTCHA_SOLUTION_OP,
   PING_OP,
   PIXEL_UPDATE_OP,
 } from './op';
@@ -70,7 +69,6 @@ export function hydrateCoolDown(data) {
  * @return see ui/placePixels
  */
 export function hydratePixelReturn(data) {
-  // Client (receiver)
   const retCode = data.getUint8(1);
   const wait = data.getUint32(2);
   const coolDownSeconds = data.getInt16(6);
@@ -83,6 +81,13 @@ export function hydratePixelReturn(data) {
     pxlCnt,
     rankedPxlCnt,
   };
+}
+
+/*
+ * @return code of captcha success
+ */
+export function hydrateCaptchaReturn(data) {
+  return data.getUint8(1);
 }
 
 /*
@@ -150,18 +155,6 @@ export function dehydrateDeRegMChunks(chunks) {
     view[cnt + 1] = chunks[cnt];
   }
   return buffer;
-}
-
-/*
- * @param solution string of entered captcha
- */
-export function dehydrateCaptchaSolution(solution) {
-  const encoder = new TextEncoder();
-  const view = encoder.encode(solution);
-  const buffer = new Uint8Array(view.byteLength + 1);
-  buffer[0] = CAPTCHA_SOLUTION_OP;
-  buffer.set(view, 1);
-  return buffer.buffer;
 }
 
 export function dehydratePing() {

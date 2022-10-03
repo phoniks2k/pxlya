@@ -15,16 +15,6 @@ export default async (req, res) => {
 
   try {
     const { text, id } = req.body;
-    if (!text) {
-      res.status(400)
-        .json({ errors: [t`No captcha text given`] });
-      return;
-    }
-    if (!id) {
-      res.status(400)
-        .json({ errors: [t`No captcha id given`] });
-      return;
-    }
 
     const ret = await checkCaptchaSolution(
       text,
@@ -46,15 +36,19 @@ export default async (req, res) => {
         break;
       case 2:
         res.status(422)
-          .json({
-            errors: [t`You failed your captcha`],
-          });
+          .json({ errors: [t`You failed your captcha`] });
+        break;
+      case 3:
+        res.status(400)
+          .json({ errors: [t`No captcha text given`] });
+        break;
+      case 4:
+        res.status(400)
+          .json({ errors: [t`No captcha id given`] });
         break;
       default:
         res.status(422)
-          .json({
-            errors: [t`Unknown Captcha Error`],
-          });
+          .json({ errors: [t`Unknown Captcha Error`] });
     }
   } catch (error) {
     logger.error('CAPTCHA', error);

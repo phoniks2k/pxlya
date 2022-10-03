@@ -233,8 +233,7 @@ class PixelPlainterControls {
     // 5275_-8713
     // 5398_-8614
     if (x > 5275 && y > -8713 && x < 5398 && y < -8614) {
-      // eslint-disable-next-line eqeqeq
-      if (state.canvas.canvasId == 0) {
+      if (state.canvas.canvasId === '0') {
         window.location.href = 'https://files.catbox.moe/gh2wtr.mp4';
         return;
       }

@@ -8,11 +8,11 @@ import {
   hydratePixelReturn,
   hydrateOnlineCounter,
   hydrateCoolDown,
+  hydrateCaptchaReturn,
   dehydrateRegCanvas,
   dehydrateRegChunk,
   dehydrateRegMChunks,
   dehydrateDeRegChunk,
-  dehydrateCaptchaSolution,
   dehydratePixelUpdate,
   dehydratePing,
 } from './packets/client';
@@ -22,7 +22,20 @@ import {
   ONLINE_COUNTER_OP,
   COOLDOWN_OP,
   CHANGE_ME_OP,
+  CAPTCHA_RETURN_OP,
 } from './packets/op';
+import {
+  socketOpen,
+  socketClose,
+  receiveOnline,
+  receiveCoolDown,
+  receiveChatMessage,
+  addChatChannel,
+  removeChatChannel,
+} from '../store/actions/socket';
+import {
+  fetchMe,
+} from '../store/actions/thunks';
 import { shardHost } from '../store/actions/fetch';
 
 const chunks = [];
@@ -42,6 +55,7 @@ class SocketClient extends EventEmitter {
      */
     this.readyState = WebSocket.CLOSED;
     this.msgQueue = [];
+    this.reqQueue = [];
 
     this.checkHealth = this.checkHealth.bind(this);
     setInterval(this.checkHealth, 2000);
@@ -122,10 +136,10 @@ class SocketClient extends EventEmitter {
     this.timeLastPing = now;
     this.timeLastSent = now;
 
-    this.emit('open', {});
+    this.store.dispatch(socketOpen());
     this.readyState = WebSocket.OPEN;
     this.send(dehydrateRegCanvas(
-      this.store.getState().canvas,
+      this.store.getState().canvas.canvasId,
     ));
     console.log(`Register ${chunks.length} chunks`);
     this.send(dehydrateRegMChunks(chunks));
@@ -136,7 +150,9 @@ class SocketClient extends EventEmitter {
     if (canvasId === null) {
       return;
     }
-    console.log('Notify websocket server that we changed canvas');
+    console.log(
+      `Notify websocket server that we changed canvas to ${canvasId}`,
+    );
     chunks.length = 0;
     this.send(dehydrateRegCanvas(canvasId));
   }
@@ -163,10 +179,28 @@ class SocketClient extends EventEmitter {
   }
 
   /*
-  sendCaptchaSolution(solution) {
-    const buffer = dehydrateCaptchaSolution(solution);
+   * send captcha solution
+   * @param solution text
+   * @return promise that resolves when response arrives
+   */
+  sendCaptchaSolution(solution, captchaid) {
+    return new Promise((resolve, reject) => {
+      let id;
+      const queueObj = ['cs', (args) => {
+        resolve(args);
+        clearTimeout(id);
+      }];
+      this.reqQueue.push(queueObj);
+      id = setTimeout(() => {
+        const pos = this.reqQueue.indexOf(queueObj);
+        if (~pos) this.reqQueue.splice(pos, 1);
+        reject(new Error('Timeout'));
+      }, 20000);
+      this.sendWhenReady(
+        `cs,${JSON.stringify([solution, captchaid])}`,
+      );
+    });
   }
-  */
 
   /*
    * Send pixel request
@@ -182,7 +216,9 @@ class SocketClient extends EventEmitter {
   }
 
   sendChatMessage(message, channelId) {
-    this.sendWhenReady(JSON.stringify([message, channelId]));
+    this.sendWhenReady(
+      `cm,${JSON.stringify([message, channelId])}`,
+    );
   }
 
   onMessage({ data: message }) {
@@ -201,27 +237,24 @@ class SocketClient extends EventEmitter {
   }
 
   onTextMessage(message) {
-    if (!message) return;
-    const data = JSON.parse(message);
-
-    if (Array.isArray(data)) {
-      switch (data.length) {
-        case 5: {
-          // chat message
-          const [name, text, country, channelId, userId] = data;
-          this.emit('chatMessage',
-            name, text, country, Number(channelId), userId);
-          return;
-        }
-        case 2: {
-          // signal
-          const [signal, args] = data;
-          this.emit(signal, args);
-          break;
-        }
-        default:
-          // nothing
-      }
+    const comma = message.indexOf(',');
+    if (comma === -1) {
+      return;
+    }
+    const key = message.slice(0, comma);
+    const val = JSON.parse(message.slice(comma + 1));
+    switch (key) {
+      case 'cm':
+        this.store.dispatch(receiveChatMessage(...val));
+        break;
+      case 'ac':
+        this.store.dispatch(addChatChannel(val));
+        break;
+      case 'rc':
+        this.store.dispatch(removeChatChannel(val));
+        break;
+      default:
+        // nothing
     }
   }
 
@@ -240,16 +273,23 @@ class SocketClient extends EventEmitter {
         this.emit('pixelReturn', hydratePixelReturn(data));
         break;
       case ONLINE_COUNTER_OP:
-        this.emit('onlineCounter', hydrateOnlineCounter(data));
+        this.store.dispatch(receiveOnline(hydrateOnlineCounter(data)));
         break;
       case COOLDOWN_OP:
-        this.emit('cooldownPacket', hydrateCoolDown(data));
+        this.store.dispatch(receiveCoolDown(hydrateCoolDown(data)));
         break;
       case CHANGE_ME_OP:
         console.log('Websocket requested api/me reload');
-        this.emit('changedMe');
+        this.store.dispatch(fetchMe());
         this.reconnect();
         break;
+      case CAPTCHA_RETURN_OP: {
+        const pos = this.reqQueue.findIndex((q) => q[0] === 'cs');
+        if (~pos) {
+          this.reqQueue.splice(pos, 1)[0][1](hydrateCaptchaReturn(data));
+        }
+        break;
+      }
       default:
         console.error(`Unknown op_code ${opcode} received`);
         break;
@@ -257,7 +297,7 @@ class SocketClient extends EventEmitter {
   }
 
   onClose(e) {
-    this.emit('close');
+    this.store.dispatch(socketClose());
     this.ws = null;
     this.readyState = WebSocket.CONNECTING;
     // reconnect in 1s if last connect was longer than 7s ago, else 5s

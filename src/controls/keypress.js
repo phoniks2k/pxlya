@@ -35,8 +35,7 @@ function createKeyPressHandler(store) {
       const canvasIds = Object.keys(canvases).filter((id) => !canvases[id].hid);
       if (num <= canvasIds.length) {
         const canvasId = canvasIds[num - 1];
-        // eslint-disable-next-line eqeqeq
-        if (canvasId != curCanvasId) {
+        if (canvasId !== curCanvasId) {
           store.dispatch(selectCanvas(canvasId));
           const canvasName = canvases[canvasId].title;
           store.dispatch(notify(t`Switched to ${canvasName}`));

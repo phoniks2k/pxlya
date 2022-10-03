@@ -10,6 +10,7 @@
 import WebSocket from 'ws';
 
 import socketEvents from './socketEvents';
+import { dehydrateOnlineCounter } from './packets/server';
 import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import { RegUser } from '../data/sql';
 import { getIPFromRequest } from '../utils/ip';
@@ -55,7 +56,6 @@ class APISocketServer {
       });
     });
 
-    this.broadcast = this.broadcast.bind(this);
     this.broadcastOnlineCounter = this.broadcastOnlineCounter.bind(this);
     this.broadcastPixelBuffer = this.broadcastPixelBuffer.bind(this);
     this.ping = this.ping.bind(this);
@@ -155,8 +155,9 @@ class APISocketServer {
     }
   }
 
-  broadcastOnlineCounter(data) {
-    this.broadcast(data, (client) => client.subOnline);
+  broadcastOnlineCounter(online) {
+    const buffer = dehydrateOnlineCounter(online);
+    this.broadcast(buffer, (client) => client.subOnline);
   }
 
   broadcastPixelBuffer(canvasId, chunkid, buffer) {

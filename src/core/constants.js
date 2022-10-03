@@ -11,7 +11,7 @@ export const DEFAULT_SCALE = 3;
 
 // default canvas that is first assumed, before real canvas data
 // gets fetched via api/me
-export const DEFAULT_CANVAS_ID = 0;
+export const DEFAULT_CANVAS_ID = '0';
 export const DEFAULT_CANVASES = {
   0: {
     ident: 'd',

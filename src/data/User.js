@@ -158,16 +158,20 @@ class User {
     this.setRegUser(this.regUser);
   }
 
+  get name() {
+    return (this.regUser) ? this.regUser.name : null;
+  }
+
+  get isRegistered() {
+    return !!this.id;
+  }
+
   addChannel(cid, channelArray) {
     this.channels[cid] = channelArray;
   }
 
   removeChannel(cid) {
     delete this.channels[cid];
-  }
-
-  getName() {
-    return (this.regUser) ? this.regUser.name : null;
   }
 
   setWait(wait, canvasId) {

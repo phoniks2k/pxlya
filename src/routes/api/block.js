@@ -119,7 +119,7 @@ async function block(req, res) {
       errors: ['Could not (un)block user'],
     });
     logger.info(
-      `User ${user.getName()} (un)blocked ${userName}`,
+      `User ${user.name} (un)blocked ${userName}`,
     );
   }
 }

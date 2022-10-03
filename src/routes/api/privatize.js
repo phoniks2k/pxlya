@@ -25,7 +25,7 @@ async function privatize(req, res) {
   }
 
   logger.info(
-    `User ${user.getName()} set private status to ${priv}`,
+    `User ${user.name} set private status to ${priv}`,
   );
 
   await user.regUser.update({

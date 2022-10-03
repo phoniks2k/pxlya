@@ -11,9 +11,7 @@ import {
   requestChatMessages,
   requestMe,
 } from './fetch';
-
 import {
-  addChatChannel,
   pAlert,
   receiveStats,
   receiveMe,
@@ -21,8 +19,11 @@ import {
   unblockUser,
   blockingDm,
   privatize,
-  removeChatChannel,
 } from './index';
+import {
+  addChatChannel,
+  removeChatChannel,
+} from './socket';
 
 function setApiFetching(fetching) {
   return {
