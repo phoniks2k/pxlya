@@ -7,7 +7,6 @@ import User from '../../data/User';
 import { getIPFromRequest } from '../../utils/ip';
 
 import me from './me';
-import captcha from './captcha';
 import auth from './auth';
 import chatHistory from './chathistory';
 import startDm from './startdm';
@@ -43,7 +42,6 @@ router.use((err, req, res, next) => {
 });
 
 // routes that don't need a user
-router.post('/captcha', captcha);
 router.get('/baninfo', baninfo);
 router.get('/getiid', getiid);
 router.get('/shards', shards);
