@@ -305,7 +305,7 @@ class ChunkLoader {
     this.store.dispatch(requestBigChunk(center));
     try {
     // eslint-disable-next-line max-len
-      const url = `${shardOrigin}/tiles/${this.canvasId}/${zoom}/${cx}/${cy}.webp`;
+      const url = `/tiles/${this.canvasId}/${zoom}/${cx}/${cy}.webp`;
       const img = await loadImage(url);
       chunkRGB.fromImage(img);
       this.store.dispatch(receiveBigChunk(center));
