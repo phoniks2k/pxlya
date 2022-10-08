@@ -22,6 +22,9 @@ import socketEvents from '../socket/socketEvents';
 import chatProvider from './ChatProvider';
 import canvases from './canvases';
 
+// if there are more than USER_THRESHOLD users,
+// void will not appear
+const USER_THRESHOLD = 2000;
 // steps in minutes for event stages
 // STEPS[5] is event duration, adjusted from 10 to 8 on 2022.04.26
 const STEPS = [30, 10, 2, 1, 0, -8, -15, -40, -60];
@@ -381,11 +384,12 @@ class RpgEvent {
     } else {
       // 52min after last Event / 1h before next Event
       // define and protect it
-      this.eventTimestamp = await RpgEvent.setNextEvent();
-      await this.calcEventCenter();
-      const [x, y, w, h] = this.eventArea;
-      await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
-
+      if (socketEvents.onlineCounter.total < USER_THRESHOLD) {
+        this.eventTimestamp = await RpgEvent.setNextEvent();
+        await this.calcEventCenter();
+        const [x, y, w, h] = this.eventArea;
+        await protectCanvasArea(CANVAS_ID, x, y, w, h, true);
+      }
       setTimeout(this.runEventLoop, 60000);
     }
   }
