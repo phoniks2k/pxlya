@@ -185,7 +185,20 @@ export default async function drawByOffsets(
     if (needProxycheck) {
       const pc = await isIPAllowed(ip, true);
       if (pc.status > 0) {
-        throw new Error(11);
+        pxlCnt = 0;
+        switch (pc.status) {
+          case 1:
+            // proxy
+            throw new Error(11);
+          case 2:
+            // banned
+            throw new Error(14);
+          case 3:
+            // range banned
+            throw new Error(15);
+          default:
+            // nothing
+        }
       }
     }
 
