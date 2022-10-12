@@ -76,7 +76,7 @@ class PixelTransferController {
       store.dispatch(notify(coolDownSeconds));
     }
 
-    if (retCode) {
+    if (pxlCnt < pixels.length) {
       /*
        * one or more pixels didn't get set,
        * revert predictions and clean queue
