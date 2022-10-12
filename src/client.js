@@ -18,6 +18,7 @@ import pixelTransferController from './ui/PixelTransferController';
 import store from './store/store';
 import renderApp from './components/App';
 import { initRenderer, getRenderer } from './ui/renderer';
+import { requestBanMe } from './store/actions/fetch';
 import socketClient from './socket/SocketClient';
 
 persistStore(store, {}, () => {
@@ -62,9 +63,8 @@ persistStore(store, {}, () => {
     document.addEventListener('keydown', onKeyPress, false);
 
     // garbage collection
-    function runGC() {
+    setInterval(() => {
       const renderer = getRenderer();
-
       const chunks = renderer.getAllChunks();
       if (chunks) {
         const curTime = Date.now();
@@ -85,8 +85,16 @@ persistStore(store, {}, () => {
         // eslint-disable-next-line no-console
         console.log('Garbage collection cleaned', cnt, 'chunks');
       }
-    }
-    setInterval(runGC, 300000);
+    }, 300000);
+
+    // detect bot script
+    setTimeout(() => {
+      document.querySelectorAll('body > div > span').forEach((e) => {
+        if (e.innerText.includes('Void')) {
+          requestBanMe(1);
+        }
+      });
+    }, 40000);
 
     document.removeEventListener('DOMContentLoaded', onLoad);
   };

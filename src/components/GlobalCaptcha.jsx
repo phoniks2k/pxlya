@@ -28,11 +28,8 @@ const GlobalCaptcha = ({ close }) => {
         if (submitting || !text) {
           return;
         }
-        // ----
-        const test = document.getElementById('void-bot');
-        if (test) {
-          await requestBanMe(1);
-        } else if (!legit) {
+        // detect suspiciously solved captcha
+        if (!legit) {
           await requestBanMe(2);
         }
         // ----
