@@ -481,7 +481,7 @@ class SocketServer {
       }
     } catch (err) {
       // eslint-disable-next-line max-len
-      logger.error(`Got invalid ws text message ${text}, with error: ${err.message}`);
+      logger.error(`Got invalid ws text message ${text} from ${ws.user.ip}, with error: ${err.message}`);
     }
   }
 

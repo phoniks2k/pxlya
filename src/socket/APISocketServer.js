@@ -11,12 +11,13 @@ import WebSocket from 'ws';
 
 import socketEvents from './socketEvents';
 import { dehydrateOnlineCounter } from './packets/server';
-import chatProvider, { ChatProvider } from '../core/ChatProvider';
+import chatProvider from '../core/ChatProvider';
 import { RegUser } from '../data/sql';
 import { getIPFromRequest } from '../utils/ip';
 import { setPixelByCoords } from '../core/setPixel';
 import logger from '../core/logger';
 import { APISOCKET_KEY } from '../core/config';
+import { checkIfMuted } from '../data/redis/chat';
 
 
 class APISocketServer {
@@ -243,7 +244,7 @@ class APISocketServer {
         /*
          * don't send if muted
          */
-        const mutedTtl = await ChatProvider.checkIfMuted(uid);
+        const mutedTtl = await checkIfMuted(uid);
         if (mutedTtl !== -2) {
           return;
         }
