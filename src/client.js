@@ -87,13 +87,26 @@ persistStore(store, {}, () => {
       }
     }, 300000);
 
-    // detect bot script
+    // detect bot scripts
     setTimeout(() => {
-      document.querySelectorAll('body > div > span').forEach((e) => {
-        if (e.innerText.includes('Void')) {
+      let elList = document.querySelectorAll('body > div > span');
+      for (let i = 0; i < elList.length; i += 1) {
+        if (elList[i].innerText.includes('Void')) {
           requestBanMe(1);
+          return;
         }
-      });
+      }
+      elList = document.querySelectorAll('option');
+      for (let i = 0; i < elList.length; i += 1) {
+        const el = elList[i];
+        if (el.value === 'random') {
+          const parentEl = el.parentElement.parentElement;
+          if (parentEl && parentEl.innerText.startsWith('Strategy')) {
+            requestBanMe(1);
+            return;
+          }
+        }
+      }
     }, 40000);
 
     document.removeEventListener('DOMContentLoaded', onLoad);
