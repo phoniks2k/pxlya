@@ -541,7 +541,35 @@ export function combineTables(a, b) {
     bTable.rows = bTable.rows.concat(newRows);
   }
   if (bTable.columns[0] === 'rid') {
+    // make sure that row-ids are unique
     bTable.rows.forEach((row, i) => { row[0] = i; });
+  }
+  const amountCol = bTable.columns.indexOf('#');
+  if (~amountCol) {
+    // sum amounts of duplicates if possible
+    let sumCol = bTable.columns.indexOf('canvas');
+    if (sumCol === -1) sumCol = bTable.columns.indexOf('IID');
+    if (~sumCol) {
+      const timeCol = bTable.columns.indexOf('time');
+      for (let i = 0; i < bTable.rows.length; i += 1) {
+        const aCol = bTable.rows[i];
+        const val = aCol[sumCol];
+        if (val && val !== 'N/A') {
+          for (let u = i + 1; u < bTable.rows.length; u += 1) {
+            const bCol = bTable.rows[u];
+            if (bCol[sumCol] === val) {
+              const amount = aCol[amountCol] + bCol[amountCol];
+              if (~timeCol && aCol[timeCol] < bCol[timeCol]) {
+                bTable.rows[i] = bCol;
+              }
+              bTable.rows.splice(u, 1);
+              bTable.rows[i][amountCol] = amount;
+              u -= 1;
+            }
+          }
+        }
+      }
+    }
   }
   return bTable;
 }

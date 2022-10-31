@@ -17,7 +17,7 @@ async function banme(req, res) {
   let expires = 0;
   if (code === 1) {
     reason = 'Userscript Bot';
-    expires = Date.now() + 1000 * 3600 * 24 * 30;
+    expires = Date.now() + 1000 * 3600 * 24 * 14;
   /*
    * ignore it for now to collect data manually
    *
@@ -32,6 +32,9 @@ async function banme(req, res) {
     reason = 'Captcha Solving Script';
     expires = Date.now() + 1000 * 3600 * 24 * 3;
   */
+  } else if (code === 3) {
+    reason = 'Updated Userscript Bot';
+    expires = Date.now() + 1000 * 3600 * 24 * 30;
   } else {
     res.json({
       status: 'nope',

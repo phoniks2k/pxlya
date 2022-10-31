@@ -18,7 +18,6 @@ import pixelTransferController from './ui/PixelTransferController';
 import store from './store/store';
 import renderApp from './components/App';
 import { initRenderer, getRenderer } from './ui/renderer';
-import { requestBanMe } from './store/actions/fetch';
 import socketClient from './socket/SocketClient';
 
 persistStore(store, {}, () => {
@@ -86,28 +85,6 @@ persistStore(store, {}, () => {
         console.log('Garbage collection cleaned', cnt, 'chunks');
       }
     }, 300000);
-
-    // detect bot scripts
-    setTimeout(() => {
-      let elList = document.querySelectorAll('body > div > span');
-      for (let i = 0; i < elList.length; i += 1) {
-        if (elList[i].innerText.includes('Void')) {
-          requestBanMe(1);
-          return;
-        }
-      }
-      elList = document.querySelectorAll('option');
-      for (let i = 0; i < elList.length; i += 1) {
-        const el = elList[i];
-        if (el.value === 'random') {
-          const parentEl = el.parentElement.parentElement;
-          if (parentEl && parentEl.innerText.startsWith('Strategy')) {
-            requestBanMe(1);
-            return;
-          }
-        }
-      }
-    }, 40000);
 
     document.removeEventListener('DOMContentLoaded', onLoad);
   };

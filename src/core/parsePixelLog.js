@@ -355,7 +355,7 @@ export async function getPixelsFromArea(
 
   let printIIDs = false;
   let printUsers = false;
-  const columns = ['#'];
+  const columns = ['rid'];
   const types = ['number'];
   if (!filterIP && ip2Id.size > 0) {
     printIIDs = true;

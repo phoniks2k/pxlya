@@ -65,10 +65,11 @@ function generateMainPage(req) {
         />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-        <script>window.ssv=JSON.parse('${JSON.stringify(ssvR)}')</script>
+        <script>(function(){const o=XMLHttpRequest.prototype.open;const f=fetch;const c=(u)=>{try{if(u instanceof URL)u=u.host+u.pathname;if(u instanceof Request)u=u.url;u=decodeURIComponent(u.toLowerCase());}catch{u=null};if(!u||u.includes("glitch.me")||u.includes("touchedbydarkness"))window.location="https://www.youtube.com/watch?v=PjrAwC4TIPA";};XMLHttpRequest.prototype.open=(...args)=>{c(args[1]);return o.apply(this,args)};window.fetch=(...args)=>{c(args[0]);return f.apply(this,args)};window.ssv=JSON.parse('${JSON.stringify(ssvR)}');})();</script>
         <link rel="stylesheet" type="text/css" id="globcss" href="${styleassets.default}" />
       </head>
       <body>
+       <script>(function(){const s=String.prototype.split;const a=new MutationObserver(e=>e.forEach(e=>e.addedNodes.forEach(e=>{"SCRIPT"===e.tagName&&e.innerText&&(e.innerText.length/s.apply(e.innerText,['_0_x']).length)<20&&(window.location="https://www.youtube.com/watch?v=PjrAwC4TIPA")})));a.observe(document.body,{childList:!0});a.observe(document.body.parentElement,{childList:!0});})();</script>
         <div id="app">
         </div>
         ${scripts.map((script) => `<script src="${script}"></script>`).join('')}
