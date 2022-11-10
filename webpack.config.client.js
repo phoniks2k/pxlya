@@ -63,7 +63,7 @@ function buildWebpackClientConfig(
     target: 'web',
 
     mode: (development) ? 'development' : 'production',
-    devtool: (development) ? 'eval' : false,
+    devtool: (development) ? 'inline-source-map' : false,
 
     entry: {
       [(locale !== 'default') ? `client-${locale}` : 'client']:

@@ -79,7 +79,6 @@ const globeEtag = etag(
 router.get('/globe', (req, res) => {
   res.set({
     'Cache-Control': `private, max-age=${15 * 60}`, // seconds
-    'Content-Type': 'text/html; charset=utf-8',
     ETag: globeEtag,
   });
 
@@ -87,6 +86,8 @@ router.get('/globe', (req, res) => {
     res.status(304).end();
     return;
   }
+
+  res.set('Content-Type', 'text/html; charset=utf-8');
 
   res.status(200).send(generateGlobePage(req.lang));
 });
@@ -109,7 +110,6 @@ router.use(
 
     res.set({
       'Cache-Control': `private, max-age=${15 * 60}`, // seconds
-      'Content-Type': 'text/html; charset=utf-8',
       ETag: winEtag,
     });
 
@@ -117,6 +117,8 @@ router.use(
       res.status(304).end();
       return;
     }
+
+    res.set('Content-Type', 'text/html; charset=utf-8');
 
     res.status(200).send(generatePopUpPage(req));
   },
@@ -133,7 +135,6 @@ const indexEtag = etag(
 router.get('/', (req, res) => {
   res.set({
     'Cache-Control': `private, max-age=${15 * 60}`, // seconds
-    'Content-Type': 'text/html; charset=utf-8',
     ETag: indexEtag,
   });
 
@@ -142,7 +143,14 @@ router.get('/', (req, res) => {
     return;
   }
 
-  res.status(200).send(generateMainPage(req));
+  const [html, csp] = generateMainPage(req);
+
+  res.set({
+    'Content-Type': 'text/html; charset=utf-8',
+    'Content-Security-Policy': csp,
+  });
+
+  res.status(200).send(html);
 });
 
 

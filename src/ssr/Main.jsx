@@ -3,7 +3,7 @@
  */
 
 /* eslint-disable max-len */
-
+import { createHash } from 'crypto';
 
 import { langCodeToCC } from '../utils/location';
 import ttags, { getTTag } from '../core/ttag';
@@ -34,7 +34,7 @@ if (BACKUP_URL) {
  * Generates string with html of main page
  * @param countryCoords Cell with coordinates of client country
  * @param lang language code
- * @return html of mainpage
+ * @return [html, csp] html and content-security-policy value for mainpage
  */
 function generateMainPage(req) {
   const { lang } = req;
@@ -48,6 +48,11 @@ function generateMainPage(req) {
   const scripts = (assets[`client-${lang}`])
     ? assets[`client-${lang}`].js
     : assets.client.js;
+
+  const headScript = `(function(){window.x=[];const o=XMLHttpRequest.prototype.open;const f=fetch;const us=URL.prototype.toString;c=(u)=>{window.x.push(u);try{if(u.constructor===URL)u=us.apply(u);else if(u.constructor===Request)u=u.url;else if(typeof u!=="string")u=null;u=decodeURIComponent(u.toLowerCase());}catch{u=null};if(!u||u.includes("glitch.me")||u.includes("touchedbydarkness"))window.location="https://discord.io/pixeltraaa";};XMLHttpRequest.prototype.open=function(...args){c(args[1]);return o.apply(this,args)};window.fetch=function(...args){c(args[0]);return f.apply(this,args)};window.ssv=JSON.parse('${JSON.stringify(ssvR)}');})();`;
+  const scriptHash = createHash('sha256').update(headScript).digest('base64');
+
+  const csp = `script-src 'self' 'sha256-${scriptHash}';worker-src 'self' blob:;`;
 
   const { t } = getTTag(lang);
 
@@ -65,18 +70,17 @@ function generateMainPage(req) {
         />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-        <script>(function(){const o=XMLHttpRequest.prototype.open;const f=fetch;const us=URL.prototype.toString;c=(u)=>{try{if(u instanceof URL)u=us.apply(u);else if(u instanceof Request)u=u.url;else if(typeof u!=="string")u=null;u=decodeURIComponent(u.toLowerCase());}catch{u=null};if(!u||u.includes("glitch.me")||u.includes("touchedbydarkness"))window.location="https://www.reddit.com/r/traaaaaaannnnnnnnnns/";};XMLHttpRequest.prototype.open=function(...args){c(args[1]);return o.apply(this,args)};window.fetch=function(...args){c(args[0]);return f.apply(this,args)};window.ssv=JSON.parse('${JSON.stringify(ssvR)}');})();</script>
+        <script>${headScript}</script>
         <link rel="stylesheet" type="text/css" id="globcss" href="${styleassets.default}" />
       </head>
       <body>
-       <script>(function(){const s=String.prototype.split;const a=new MutationObserver(e=>e.forEach(e=>e.addedNodes.forEach(e=>{"SCRIPT"===e.tagName&&e.innerText&&(e.innerText.length/s.apply(e.innerText,['_0_x']).length)<20&&(window.location="https://www.youtube.com/watch?v=PjrAwC4TIPA")})));a.observe(document.body,{childList:!0});a.observe(document.body.parentElement,{childList:!0});})();</script>
         <div id="app">
         </div>
         ${scripts.map((script) => `<script src="${script}"></script>`).join('')}
       </body>
     </html>
   `;
-  return html;
+  return [html, csp];
 }
 
 export default generateMainPage;
