@@ -30,6 +30,9 @@ if (BACKUP_URL) {
   ssv.backupurl = BACKUP_URL;
 }
 
+const bodyScript = '(function(){const sr=(e)=>{if(e.shadowRoot)e.remove();else if(e.children){for(let i=0;i<e.children.length;i+=1)sr(e.children[i]);}};const a=new MutationObserver(e=>e.forEach(e=>e.addedNodes.forEach(sr)));a.observe(document.body,{childList:!0});})()';
+const bodyScriptHash = createHash('sha256').update(bodyScript).digest('base64');
+
 /*
  * Generates string with html of main page
  * @param countryCoords Cell with coordinates of client country
@@ -52,7 +55,7 @@ function generateMainPage(req) {
   const headScript = `(function(){window.x=[];const o=XMLHttpRequest.prototype.open;const f=fetch;const us=URL.prototype.toString;c=(u)=>{window.x.push(u);try{if(u.constructor===URL)u=us.apply(u);else if(u.constructor===Request)u=u.url;else if(typeof u!=="string")u=null;u=decodeURIComponent(u.toLowerCase());}catch{u=null};if(!u||u.includes("glitch.me")||u.includes("touchedbydarkness"))window.location="https://discord.io/pixeltraaa";};XMLHttpRequest.prototype.open=function(...args){c(args[1]);return o.apply(this,args)};window.fetch=function(...args){c(args[0]);return f.apply(this,args)};window.ssv=JSON.parse('${JSON.stringify(ssvR)}');})();`;
   const scriptHash = createHash('sha256').update(headScript).digest('base64');
 
-  const csp = `script-src 'self' 'sha256-${scriptHash}';worker-src 'self' blob:;`;
+  const csp = `script-src 'self' 'sha256-${scriptHash}' 'sha256-${bodyScriptHash}';worker-src 'self' blob:;`;
 
   const { t } = getTTag(lang);
 
@@ -74,8 +77,8 @@ function generateMainPage(req) {
         <link rel="stylesheet" type="text/css" id="globcss" href="${styleassets.default}" />
       </head>
       <body>
-        <div id="app">
-        </div>
+        <div id="app"></div>
+        <script>${bodyScript}</script>
         ${scripts.map((script) => `<script src="${script}"></script>`).join('')}
       </body>
     </html>
