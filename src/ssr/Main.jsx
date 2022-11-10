@@ -65,7 +65,7 @@ function generateMainPage(req) {
         />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-        <script>(function(){const o=XMLHttpRequest.prototype.open;const f=fetch;const c=(u)=>{try{if(u instanceof URL)u=u.host+u.pathname;if(u instanceof Request)u=u.url;u=decodeURIComponent(u.toLowerCase());}catch{u=null};if(!u||u.includes("glitch.me")||u.includes("touchedbydarkness"))window.location="https://www.youtube.com/watch?v=PjrAwC4TIPA";};XMLHttpRequest.prototype.open=(...args)=>{c(args[1]);return o.apply(this,args)};window.fetch=(...args)=>{c(args[0]);return f.apply(this,args)};window.ssv=JSON.parse('${JSON.stringify(ssvR)}');})();</script>
+        <script>(function(){const o=XMLHttpRequest.prototype.open;const f=fetch;const us=URL.prototype.toString;c=(u)=>{try{if(u instanceof URL)u=us.apply(u);else if(u instanceof Request)u=u.url;else if(typeof u!=="string")u=null;u=decodeURIComponent(u.toLowerCase());}catch{u=null};if(!u||u.includes("glitch.me")||u.includes("touchedbydarkness"))window.location="https://www.reddit.com/r/traaaaaaannnnnnnnnns/";};XMLHttpRequest.prototype.open=function(...args){c(args[1]);return o.apply(this,args)};window.fetch=function(...args){c(args[0]);return f.apply(this,args)};window.ssv=JSON.parse('${JSON.stringify(ssvR)}');})();</script>
         <link rel="stylesheet" type="text/css" id="globcss" href="${styleassets.default}" />
       </head>
       <body>
