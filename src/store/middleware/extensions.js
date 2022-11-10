@@ -1,6 +1,8 @@
 /*
  * sends events via window.pixelPlanetEvents to potential
  * Extensions and Userscripts
+ * Also check out ui/PixelTransferController.js, which sends received
+ * pixels to a window.registerPixelUpdates callback
  *
  */
 

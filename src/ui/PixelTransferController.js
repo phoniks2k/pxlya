@@ -28,6 +28,13 @@ class PixelTransferController {
      * [[i, j, offset, colorold, colornew], ...]
      */
     this.clientPredictions = [];
+    /*
+     * allow extensions to hook into pixel updates
+     */
+    this.extension = null;
+    window.registerPixelUpdates = (cb) => {
+      this.extension = cb;
+    };
   }
 
   initialize(store, socketClient, getRenderer) {
@@ -211,6 +218,9 @@ class PixelTransferController {
     j,
     pixels,
   }) {
+    if (this.extension) {
+      this.extension(i, j, pixels);
+    }
     pixels.forEach((pxl) => {
       const [offset, color] = pxl;
       const { clientPredictions } = this;
