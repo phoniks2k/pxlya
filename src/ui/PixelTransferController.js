@@ -207,7 +207,7 @@ class PixelTransferController {
       p += 1;
     }
 
-    this.clientPredictions = [];
+    this.clientPredictions.splice(p);
   }
 
   /*
@@ -260,8 +260,8 @@ class PixelTransferController {
       if (i === lastI && j === lastJ) {
         /* append to last request in queue if same chunk */
         lastReq.pixels.push([offset, color]);
+        return;
       }
-      return;
     }
 
     pixelQueue.push({
