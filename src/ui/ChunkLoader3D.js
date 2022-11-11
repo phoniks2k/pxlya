@@ -109,16 +109,6 @@ class ChunkLoader {
       this.store.dispatch(receiveBigChunkFailure(center, error));
     }
   }
-
-  /*
-  // sine environment creation for load tests
-  async fetchChunk(xc, zc, chunk) {
-    const { key } = chunk;
-    console.log(`Fetch chunk ${key}`);
-    await chunk.generateSin();
-    this.store.dispatch(receiveBigChunk(key));
-  }
-  */
 }
 
 export default ChunkLoader;

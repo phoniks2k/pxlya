@@ -229,10 +229,12 @@ export function preLoadedBigChunk(
 
 export function receiveBigChunk(
   center,
+  chunk,
 ) {
   return {
     type: 'REC_BIG_CHUNK',
     center,
+    chunk,
   };
 }
 
