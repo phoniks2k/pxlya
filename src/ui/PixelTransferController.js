@@ -201,13 +201,14 @@ class PixelTransferController {
       p += 1;
     }
 
+    const spliceIndex = p;
     while (p < clientPredictions.length) {
       const [i, j, offset, color] = clientPredictions[p];
       renderer.renderPixel(i, j, offset, color, false);
       p += 1;
     }
 
-    this.clientPredictions.splice(p);
+    this.clientPredictions.splice(spliceIndex);
   }
 
   /*
@@ -232,6 +233,8 @@ class PixelTransferController {
         ) {
           if (predPxl[4] === color) {
             clientPredictions.splice(p, 1);
+          } else {
+            predPxl[3] = color;
           }
           return;
         }
