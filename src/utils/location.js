@@ -43,6 +43,7 @@ const lang2CC = {
   uk: 'ua',
   ca: 'ct',
   sr: 'rs',
+  be: 'by',
 };
 export function langCodeToCC(lang) {
   return lang2CC[lang] || lang;
