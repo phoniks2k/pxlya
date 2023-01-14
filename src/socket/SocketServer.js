@@ -185,22 +185,48 @@ class SocketServer {
 
   async handleUpgrade(request, socket, head) {
     const { headers } = request;
-    // Limiting socket connections per ip
     const ip = getIPFromRequest(request);
+    // trigger proxycheck
     isIPAllowed(ip);
+    /*
+     * rate limiter
+     */
     const now = Date.now();
     const limiter = rateLimit.get(ip);
-    if (limiter && limiter[1]) {
-      if (limiter[0] > now) {
-        // logger.info(`Rejected Socket-RateLimited Client ${ip}.`);
+    // rate limit socket requests
+    if (limiter && limiter[0] > now) {
+      /*
+       * reject if rate limiter triggered
+       */
+      if (limiter[1]) {
         socket.write('HTTP/1.1 429 Too Many Requests\r\n\r\n');
         socket.destroy();
         return;
       }
-      limiter[1] = false;
-      logger.info(`Allow Socket-RateLimited Client ${ip} again.`);
+      /*
+       * add +3s to limiter per connection attempt,
+       * trigger limiter if time is 60s in the future,
+       */
+      limiter[0] += 3000;
+      if (limiter[0] > Date.now() + 60000) {
+        limiter[1] = true;
+        // block for 15min
+        limiter[0] += 1000 * 60 * 15;
+        const amount = this.killAllWsByUerIp(ip);
+        logger.warn(
+          // eslint-disable-next-line max-len
+          `Client ${ip} triggered Socket-RateLimit by connection attempts, killed ${amount} connections.`,
+        );
+        socket.write('HTTP/1.1 429 Too Many Requests\r\n\r\n');
+        socket.destroy();
+        return;
+      }
+    } else {
+      rateLimit.set(ip, [now + 3000, false]);
     }
-    // CORS
+    /*
+     * enforce CORS
+     */
     const { origin } = headers;
     const host = getHostFromRequest(request, false, true);
     if (!origin
@@ -212,7 +238,14 @@ class SocketServer {
       socket.destroy();
       return;
     }
+    /*
+     * Limiting socket connections per ip
+     */
     if (ipCounter.get(ip) > 50) {
+      /*
+       * setting rate limit to not allow reconnection within 15min,
+       * and kill all sockets of this IP
+       */
       rateLimit.set(ip, [now + 1000 * 60 * 15, true]);
       const amount = this.killAllWsByUerIp(ip);
       logger.info(
@@ -222,7 +255,6 @@ class SocketServer {
       socket.destroy();
       return;
     }
-
     ipCounter.add(ip);
 
     const user = await authenticateClient(request);
@@ -487,24 +519,32 @@ class SocketServer {
 
   async onBinaryMessage(buffer, ws) {
     try {
+      const { ip } = ws.user;
+      const now = Date.now();
+      let limiter = rateLimit.get(ip);
+      if (limiter && limiter[0] > now) {
+        if (limiter[1]) {
+          return;
+        }
+        if (limiter[0] > Date.now() + 60000) {
+          limiter[1] = true;
+          limiter[0] += 1000 * 60 * 60;
+          const amount = this.killAllWsByUerIp(ip);
+          logger.warn(
+            // eslint-disable-next-line max-len
+            `Client ${ip} triggered Socket-RateLimit by binary requests, killed ${amount} connections`,
+          );
+        }
+        limiter[0] += 200;
+      } else {
+        limiter = [now + 200, false];
+        rateLimit.set(ip, limiter);
+      }
+
       const opcode = buffer[0];
       switch (opcode) {
         case PIXEL_UPDATE_OP: {
-          const { canvasId, user } = ws;
-          const { ip } = user;
-
-          const limiter = rateLimit.get(ip);
-          if (limiter) {
-            if (limiter[0] > Date.now() + 60000) {
-              limiter[1] = true;
-              limiter[0] += 1000 * 60 * 15;
-              logger.warn(`Client ${ip} triggered Socket-RateLimit.`);
-            }
-            if (limiter[1]) {
-              ws.terminate();
-              return;
-            }
-          }
+          const { canvasId } = ws;
 
           if (canvasId === null) {
             logger.info(`Closing websocket without canvas from ${ip}`);
@@ -529,12 +569,7 @@ class SocketServer {
           );
 
           if (retCode > 9 && retCode !== 13) {
-            const now = Date.now();
-            if (limiter && limiter[0] > now) {
-              limiter[0] += 1000;
-            } else {
-              rateLimit.set(ip, [now + 1000, false]);
-            }
+            limiter[0] += 800;
           }
 
           ws.send(dehydratePixelReturn(
