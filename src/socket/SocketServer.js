@@ -5,6 +5,7 @@ import WebSocket from 'ws';
 
 import logger from '../core/logger';
 import canvases from '../core/canvases';
+import MassRateLimiter from '../utils/MassRateLimiter';
 import Counter from '../utils/Counter';
 import { getIPFromRequest, getHostFromRequest } from '../utils/ip';
 import {
@@ -33,27 +34,12 @@ import chatProvider, { ChatProvider } from '../core/ChatProvider';
 import authenticateClient from './authenticateClient';
 import drawByOffsets from '../core/draw';
 import isIPAllowed from '../core/isAllowed';
+import { HOUR } from '../core/constants';
 import { checkCaptchaSolution } from '../data/redis/captcha';
 
 
 const ipCounter = new Counter();
-// key: ip: string
-// value: [rlTimestamp, triggered]
-const rateLimit = new Map();
-
-setInterval(() => {
-  // clean old ratelimiter data
-  const now = Date.now();
-  const ips = [...rateLimit.keys()];
-  for (let i = 0; i < ips.length; i += 1) {
-    const ip = ips[i];
-    const limiter = rateLimit.get(ip);
-    if (limiter && now > limiter[0]) {
-      rateLimit.delete(ip);
-    }
-  }
-}, 30 * 1000);
-
+const rateLimiter = new MassRateLimiter(HOUR);
 
 class SocketServer {
   // WebSocket.Server
@@ -179,8 +165,23 @@ class SocketServer {
       });
     });
 
+    socketEvents.on('rateLimitTrigger', (ip, blockTime) => {
+      rateLimiter.forceTrigger(ip, blockTime);
+      const amount = this.killAllWsByUerIp(ip);
+      if (amount) {
+        logger.warn(`Killed ${amount} connections for RateLimit`);
+      }
+    });
+
     setInterval(this.onlineCounterBroadcast, 20 * 1000);
     setInterval(this.checkHealth, 15 * 1000);
+  }
+
+  static async onRateLimitTrigger(ip, blockTime, reason) {
+    logger.warn(
+      `Client ${ip} triggered Socket-RateLimit by ${reason}.`,
+    );
+    socketEvents.broadcastRateLimitTrigger(ip, blockTime);
   }
 
   async handleUpgrade(request, socket, head) {
@@ -189,40 +190,18 @@ class SocketServer {
     // trigger proxycheck
     isIPAllowed(ip);
     /*
-     * rate limiter
+     * rate limit
      */
-    const now = Date.now();
-    const limiter = rateLimit.get(ip);
-    // rate limit socket requests
-    if (limiter && limiter[0] > now) {
-      /*
-       * reject if rate limiter triggered
-       */
-      if (limiter[1]) {
-        socket.write('HTTP/1.1 429 Too Many Requests\r\n\r\n');
-        socket.destroy();
-        return;
-      }
-      /*
-       * add +3s to limiter per connection attempt,
-       * trigger limiter if time is 60s in the future,
-       */
-      limiter[0] += 3000;
-      if (limiter[0] > Date.now() + 60000) {
-        limiter[1] = true;
-        // block for 15min
-        limiter[0] += 1000 * 60 * 15;
-        const amount = this.killAllWsByUerIp(ip);
-        logger.warn(
-          // eslint-disable-next-line max-len
-          `Client ${ip} triggered Socket-RateLimit by connection attempts, killed ${amount} connections.`,
-        );
-        socket.write('HTTP/1.1 429 Too Many Requests\r\n\r\n');
-        socket.destroy();
-        return;
-      }
-    } else {
-      rateLimit.set(ip, [now + 3000, false]);
+    const isLimited = rateLimiter.tick(
+      ip,
+      3000,
+      'connection attempts',
+      SocketServer.onRateLimitTrigger,
+    );
+    if (isLimited) {
+      socket.write('HTTP/1.1 429 Too Many Requests\r\n\r\n');
+      socket.destroy();
+      return;
     }
     /*
      * enforce CORS
@@ -242,11 +221,7 @@ class SocketServer {
      * Limiting socket connections per ip
      */
     if (ipCounter.get(ip) > 50) {
-      /*
-       * setting rate limit to not allow reconnection within 15min,
-       * and kill all sockets of this IP
-       */
-      rateLimit.set(ip, [now + 1000 * 60 * 15, true]);
+      rateLimiter.forceTrigger(ip, HOUR);
       const amount = this.killAllWsByUerIp(ip);
       logger.info(
         `Client ${ip} has more than 50 connections open, killed ${amount}.`,
@@ -449,10 +424,18 @@ class SocketServer {
   }
 
   async onTextMessage(text, ws) {
-    /*
-     * all client -> server text messages are
-     * chat messages in [message, channelId] format
-     */
+    const { ip } = ws.user;
+    // rate limit
+    const isLimited = rateLimiter.tick(
+      ip,
+      1000,
+      'text message spam',
+      SocketServer.onRateLimitTrigger,
+    );
+    if (isLimited) {
+      return;
+    }
+    // ---
     try {
       const comma = text.indexOf(',');
       if (comma === -1) {
@@ -501,7 +484,7 @@ class SocketServer {
           const [solution, captchaid] = val;
           const ret = await checkCaptchaSolution(
             solution,
-            user.ip,
+            ip,
             false,
             captchaid,
           );
@@ -520,28 +503,29 @@ class SocketServer {
   async onBinaryMessage(buffer, ws) {
     try {
       const { ip } = ws.user;
-      const now = Date.now();
-      let limiter = rateLimit.get(ip);
-      if (limiter && limiter[0] > now) {
-        if (limiter[1]) {
-          return;
-        }
-        if (limiter[0] > Date.now() + 60000) {
-          limiter[1] = true;
-          limiter[0] += 1000 * 60 * 60;
-          const amount = this.killAllWsByUerIp(ip);
-          logger.warn(
-            // eslint-disable-next-line max-len
-            `Client ${ip} triggered Socket-RateLimit by binary requests, killed ${amount} connections`,
-          );
-        }
-        limiter[0] += 200;
-      } else {
-        limiter = [now + 200, false];
-        rateLimit.set(ip, limiter);
-      }
-
       const opcode = buffer[0];
+
+      // rate limit
+      let limiterDeltaTime = 200;
+      let reason = 'socket spam';
+      if (opcode === REG_CHUNK_OP) {
+        limiterDeltaTime = 50;
+        reason = 'register chunk spam';
+      } else if (opcode === DEREG_CHUNK_OP) {
+        limiterDeltaTime = 10;
+        reason = 'deregister chunk spam';
+      }
+      const isLimited = rateLimiter.tick(
+        ip,
+        limiterDeltaTime,
+        reason,
+        SocketServer.onRateLimitTrigger,
+      );
+      if (isLimited) {
+        return;
+      }
+      // ----
+
       switch (opcode) {
         case PIXEL_UPDATE_OP: {
           const { canvasId } = ws;
@@ -569,7 +553,7 @@ class SocketServer {
           );
 
           if (retCode > 9 && retCode !== 13) {
-            limiter[0] += 800;
+            rateLimiter.add(ip, 800);
           }
 
           ws.send(dehydratePixelReturn(
@@ -595,7 +579,6 @@ class SocketServer {
         case REG_CHUNK_OP: {
           const chunkid = hydrateRegChunk(buffer);
           this.pushChunk(chunkid, ws);
-          limiter[0] -= 150;
           break;
         }
         case REG_MCHUNKS_OP: {
@@ -608,7 +591,6 @@ class SocketServer {
         case DEREG_CHUNK_OP: {
           const chunkid = hydrateDeRegChunk(buffer);
           this.deleteChunk(chunkid, ws);
-          limiter[0] -= 190;
           break;
         }
         case DEREG_MCHUNKS_OP: {

@@ -229,6 +229,15 @@ class SocketEvents extends EventEmitter {
   }
 
   /*
+   * trigger rate limit of ip
+   * @param ip
+   * @param blockTime in ms
+   */
+  broadcastRateLimitTrigger(ip, blockTime) {
+    this.emit('rateLimitTrigger', ip, blockTime);
+  }
+
+  /*
    * broadcast ranking list updates
    * @param {
    *   dailyRanking?: daily pixel raking top 100,
