@@ -595,6 +595,7 @@ class SocketServer {
         case REG_CHUNK_OP: {
           const chunkid = hydrateRegChunk(buffer);
           this.pushChunk(chunkid, ws);
+          limiter[0] -= 150;
           break;
         }
         case REG_MCHUNKS_OP: {
@@ -607,6 +608,7 @@ class SocketServer {
         case DEREG_CHUNK_OP: {
           const chunkid = hydrateDeRegChunk(buffer);
           this.deleteChunk(chunkid, ws);
+          limiter[0] -= 190;
           break;
         }
         case DEREG_MCHUNKS_OP: {
