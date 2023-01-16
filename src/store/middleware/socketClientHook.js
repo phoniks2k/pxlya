@@ -9,11 +9,21 @@ export default (store) => (next) => (action) => {
   switch (action.type) {
     case 'REC_BIG_CHUNK':
     case 'REC_BIG_CHUNK_FAILURE': {
-      if (!action.center) {
-        break;
+      const { chunk } = action;
+      if (chunk.recUpdates) {
+        SocketClient.registerChunk(action.chunk.id);
       }
-      const [, cx, cy] = action.center;
-      SocketClient.registerChunk([cx, cy]);
+      break;
+    }
+
+    case 'REMOVE_CHUNKS': {
+      const { chunks } = action;
+      const ids = chunks
+        .filter((chunk) => chunk.recUpdates)
+        .map((chunk) => chunk.id);
+      if (ids.length) {
+        SocketClient.deRegisterChunks(ids);
+      }
       break;
     }
 

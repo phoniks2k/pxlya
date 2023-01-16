@@ -3,37 +3,21 @@
  *
  */
 
-import Chunk from './ChunkRGB3D';
-import {
-  requestBigChunk,
-  receiveBigChunk,
-  receiveBigChunkFailure,
-} from '../store/actions';
+import ChunkLoader from './ChunkLoader';
+import Chunk from './Chunk3D';
 import {
   getChunkOfPixel,
   getOffsetOfPixel,
 } from '../core/utils';
 import { shardOrigin } from '../store/actions/fetch';
 
-class ChunkLoader {
-  store = null;
-  canvasId;
+class ChunkLoader3D extends ChunkLoader {
   palette;
-  chunks; // Map<string, Chunk>
 
   constructor(store, canvasId, palette, canvasSize) {
-    this.store = store;
-    this.canvasId = canvasId;
+    super(store, canvasId);
     this.palette = palette;
     this.canvasSize = canvasSize;
-    this.chunks = new Map();
-  }
-
-  destructor() {
-    this.chunks.forEach((chunk) => {
-      chunk.destructor();
-    });
-    this.chunks = new Map();
   }
 
   getVoxel(x, y, z) {
@@ -41,16 +25,12 @@ class ChunkLoader {
     const [xc, zc] = getChunkOfPixel(canvasSize, x, y, z);
     const offset = getOffsetOfPixel(canvasSize, x, y, z);
     const key = `${xc}:${zc}`;
-    const chunk = this.chunks.get(key);
+    const chunk = this.cget(key);
     if (chunk) {
       const clr = chunk.getVoxelByOffset(offset);
       return clr;
     }
     return 0;
-  }
-
-  getAllChunks() {
-    return this.chunks;
   }
 
   getVoxelUpdate(
@@ -60,7 +40,7 @@ class ChunkLoader {
     color,
   ) {
     const key = `${xc}:${zc}`;
-    const chunk = this.chunks.get(key);
+    const chunk = this.cget(key);
     if (chunk) {
       chunk.setVoxelByOffset(offset, color);
     }
@@ -69,10 +49,10 @@ class ChunkLoader {
   getChunk(xc, zc, fetch) {
     const chunkKey = `${xc}:${zc}`;
     // console.log(`Get chunk ${chunkKey}`);
-    let chunk = this.chunks.get(chunkKey);
+    let chunk = this.cget(chunkKey);
     if (chunk) {
       if (chunk.ready) {
-        chunk.timestamp = Date.now();
+        chunk.touch();
         return chunk.mesh;
       }
       return null;
@@ -80,15 +60,14 @@ class ChunkLoader {
     if (fetch) {
       // fetch chunk
       chunk = new Chunk(this.palette, chunkKey, xc, zc);
-      this.chunks.set(chunkKey, chunk);
+      this.cset(chunkKey, chunk);
       this.fetchChunk(xc, zc, chunk);
     }
     return null;
   }
 
   async fetchChunk(cx, cz, chunk) {
-    const center = [0, cx, cz];
-    this.store.dispatch(requestBigChunk(center));
+    this.bcReqChunk(chunk);
     try {
       const url = `${shardOrigin}/chunks/${this.canvasId}/${cx}/${cz}.bmp`;
       const response = await fetch(url);
@@ -100,15 +79,15 @@ class ChunkLoader {
         } else {
           throw new Error('Chunk response was invalid');
         }
-        this.store.dispatch(receiveBigChunk(center, chunk));
+        this.bcRecChunk(chunk);
       } else {
         throw new Error('Network response was not ok.');
       }
     } catch (error) {
       chunk.empty();
-      this.store.dispatch(receiveBigChunkFailure(center, error));
+      this.bcReqChunkFail(chunk, error);
     }
   }
 }
 
-export default ChunkLoader;
+export default ChunkLoader3D;

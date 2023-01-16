@@ -17,8 +17,9 @@ import {
 import pixelTransferController from './ui/PixelTransferController';
 import store from './store/store';
 import renderApp from './components/App';
-import { initRenderer, getRenderer } from './ui/renderer';
+import { initRenderer, getRenderer } from './ui/rendererFactory';
 import socketClient from './socket/SocketClient';
+import { GC_INTERVAL } from './core/constants';
 
 persistStore(store, {}, () => {
   window.addEventListener('message', store.dispatch);
@@ -50,7 +51,7 @@ persistStore(store, {}, () => {
 
   store.dispatch(fetchMe());
 
-  socketClient.initialize(store);
+  socketClient.initialize(store, pixelTransferController, getRenderer);
 });
 
 (function load() {
@@ -64,27 +65,8 @@ persistStore(store, {}, () => {
     // garbage collection
     setInterval(() => {
       const renderer = getRenderer();
-      const chunks = renderer.getAllChunks();
-      if (chunks) {
-        const curTime = Date.now();
-        let cnt = 0;
-        chunks.forEach((value, key) => {
-          if (curTime > value.timestamp + 300000) {
-            const [zc, xc, yc] = value.cell;
-            if (!renderer.isChunkInView(zc, xc, yc)) {
-              cnt++;
-              if (value.isBasechunk) {
-                socketClient.deRegisterChunk([xc, yc]);
-              }
-              chunks.delete(key);
-              value.destructor();
-            }
-          }
-        });
-        // eslint-disable-next-line no-console
-        console.log('Garbage collection cleaned', cnt, 'chunks');
-      }
-    }, 300000);
+      renderer.gc();
+    }, GC_INTERVAL);
 
     document.removeEventListener('DOMContentLoaded', onLoad);
   };

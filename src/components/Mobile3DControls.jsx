@@ -5,7 +5,7 @@
 
 import React from 'react';
 
-import { getRenderer } from '../ui/renderer';
+import { getRenderer } from '../ui/rendererFactory';
 
 const btnStyle = {
   fontSize: 34,

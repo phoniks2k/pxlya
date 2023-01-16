@@ -8,7 +8,7 @@ import { MdFileDownload } from 'react-icons/md';
 import fileDownload from 'js-file-download';
 import { t } from 'ttag';
 
-import { getRenderer } from '../../ui/renderer';
+import { getRenderer } from '../../ui/rendererFactory';
 
 /**
  * https://jsfiddle.net/AbdiasSoftware/7PRNN/

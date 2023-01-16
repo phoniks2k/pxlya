@@ -42,15 +42,7 @@ export default function fetching(
       };
     }
 
-    case 'REC_BIG_CHUNK': {
-      const { fetchingChunks } = state;
-
-      return {
-        ...state,
-        fetchingChunks: fetchingChunks - 1,
-      };
-    }
-
+    case 'REC_BIG_CHUNK':
     case 'REC_BIG_CHUNK_FAILURE': {
       const { fetchingChunks } = state;
 

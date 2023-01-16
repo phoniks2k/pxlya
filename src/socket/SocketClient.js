@@ -10,7 +10,7 @@ import {
   dehydrateRegCanvas,
   dehydrateRegChunk,
   dehydrateRegMChunks,
-  dehydrateDeRegChunk,
+  dehydrateDeRegMChunks,
   dehydratePixelUpdate,
   dehydratePing,
 } from './packets/client';
@@ -35,15 +35,15 @@ import {
   fetchMe,
 } from '../store/actions/thunks';
 import { shardHost } from '../store/actions/fetch';
-import pixelTransferController from '../ui/PixelTransferController';
-
-const chunks = [];
 
 class SocketClient {
+  store = null;
+  pixelTransferController = null;
+  ws = null;
+  getRenderer;
+
   constructor() {
     console.log('Creating WebSocketClient');
-    this.store = null;
-    this.ws = null;
     this.channelId = 0;
     /*
      * properties set in connect and open:
@@ -59,12 +59,18 @@ class SocketClient {
     setInterval(this.checkHealth, 2000);
   }
 
-  initialize(store) {
+  initialize(store, pixelTransferController, getRenderer) {
     this.store = store;
+    if (pixelTransferController) {
+      this.pixelTransferController = pixelTransferController;
+    }
+    if (getRenderer) {
+      this.getRenderer = getRenderer;
+    }
     return this.connect();
   }
 
-  async connect() {
+  connect() {
     this.readyState = WebSocket.CONNECTING;
     if (this.ws) {
       console.log('WebSocket already open, not starting');
@@ -139,8 +145,13 @@ class SocketClient {
     this.send(dehydrateRegCanvas(
       this.store.getState().canvas.canvasId,
     ));
-    console.log(`Register ${chunks.length} chunks`);
-    this.send(dehydrateRegMChunks(chunks));
+    // register chunks
+    const chunkids = this.getRenderer().recChunkIds;
+    if (chunkids.length) {
+      console.log(`Register ${chunkids.length} chunks`);
+      this.send(dehydrateRegMChunks(chunkids));
+    }
+    // flush queue
     this.processMsgQueue();
   }
 
@@ -151,29 +162,21 @@ class SocketClient {
     console.log(
       `Notify websocket server that we changed canvas to ${canvasId}`,
     );
-    chunks.length = 0;
     this.send(dehydrateRegCanvas(canvasId));
   }
 
-  registerChunk(cell) {
-    const [i, j] = cell;
-    const chunkid = (i << 8) | j;
-    chunks.push(chunkid);
+  registerChunk(chunkid) {
     const buffer = dehydrateRegChunk(chunkid);
     if (this.readyState === WebSocket.OPEN) {
       this.send(buffer);
     }
   }
 
-  deRegisterChunk(cell) {
-    const [i, j] = cell;
-    const chunkid = (i << 8) | j;
-    const buffer = dehydrateDeRegChunk(chunkid);
+  deRegisterChunks(chunkids) {
+    const buffer = dehydrateDeRegMChunks(chunkids);
     if (this.readyState === WebSocket.OPEN) {
       this.send(buffer);
     }
-    const pos = chunks.indexOf(chunkid);
-    if (~pos) chunks.splice(pos, 1);
   }
 
   /*
@@ -274,7 +277,11 @@ class SocketClient {
 
     switch (opcode) {
       case PIXEL_UPDATE_OP:
-        pixelTransferController.receivePixelUpdate(hydratePixelUpdate(data));
+        if (this.pixelTransferController) {
+          this.pixelTransferController.receivePixelUpdate(
+            hydratePixelUpdate(data),
+          );
+        }
         break;
       case PIXEL_RETURN_OP: {
         const pos = this.reqQueue.findIndex((q) => q[0] === 'pu');

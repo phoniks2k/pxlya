@@ -96,3 +96,8 @@ export const MAX_CHAT_MESSAGES = 100;
 export const EVENT_USER_NAME = 'event';
 export const INFO_USER_NAME = 'info';
 export const APISOCKET_USER_NAME = 'apisocket';
+
+// maximum chunks to subscribe to
+export const MAX_LOADED_CHUNKS = 2000;
+export const MAX_CHUNK_AGE = 300000;
+export const GC_INTERVAL = 300000;

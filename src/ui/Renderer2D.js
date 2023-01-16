@@ -18,14 +18,14 @@ import {
 } from './render2Delements';
 import PixelPainterControls from '../controls/PixelPainterControls';
 
+import Renderer from './Renderer';
 import ChunkLoader from './ChunkLoader2D';
 import pixelNotify from './PixelNotify';
 
-class Renderer {
+class Renderer2D extends Renderer {
   is3D = false;
   //
   canvasId = null;
-  chunkLoader = null;
   //--
   centerChunk;
   tiledScale;
@@ -33,7 +33,6 @@ class Renderer {
   hover;
   //--
   viewport = null;
-  store;
   //--
   forceNextRender;
   forceNextSubrender;
@@ -43,6 +42,7 @@ class Renderer {
   oldHistoricalTime;
 
   constructor(store) {
+    super(store);
     this.centerChunk = [null, null];
     this.tiledScale = 0;
     this.tiledZoom = 4;
@@ -71,21 +71,21 @@ class Renderer {
     context.fillStyle = '#000000';
     context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     //--
-    this.setStore(store);
+    const state = store.getState();
+    this.updateCanvasData(state);
+    this.updateScale(state);
+    this.controls = new PixelPainterControls(this, this.viewport, store);
   }
 
   destructor() {
     this.controls.dispose();
     window.removeEventListener('resize', this.onWindowResize);
     this.viewport.remove();
+    super.destructor();
   }
 
   getViewport() {
     return this.viewport;
-  }
-
-  getAllChunks() {
-    return this.chunkLoader.getAllChunks();
   }
 
   onWindowResize() {
@@ -109,15 +109,6 @@ class Renderer {
       );
     }
     this.forceNextRender = true;
-  }
-
-  // HAS to be set before any rendering can happen
-  setStore(store) {
-    this.store = store;
-    const state = store.getState();
-    this.updateCanvasData(state);
-    this.updateScale(state);
-    this.controls = new PixelPainterControls(this, this.viewport, store);
   }
 
   updateCanvasData(state) {
@@ -732,4 +723,4 @@ class Renderer {
 }
 
 
-export default Renderer;
+export default Renderer2D;

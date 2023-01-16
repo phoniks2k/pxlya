@@ -8,6 +8,7 @@
 
 import * as THREE from 'three';
 
+import Chunk from './Chunk';
 import {
   THREE_TILE_SIZE,
   THREE_CANVAS_HEIGHT,
@@ -73,8 +74,7 @@ const material = new THREE.MeshLambertMaterial({
 });
 
 
-class Chunk {
-  cell; // Array
+class Chunk3D extends Chunk {
   key; // string
   ready = false;
   palette; // Object
@@ -83,13 +83,12 @@ class Chunk {
   faceCnt; // number
   lastPixel; //  number
   heightMap; // Array
-  timestamp; // number
 
   constructor(palette, key, xc, zc) {
-    this.cell = [0, xc, zc];
+    super(0, xc, zc);
+    this.recUpdates = true;
     this.key = key;
     this.palette = palette;
-    this.timestamp = Date.now();
   }
 
   destructor() {
@@ -106,7 +105,7 @@ class Chunk {
     if (y < 0) return 1;
     // z and y are swapped in api/pixel for compatibility
     // with 2D canvas
-    const offset = Chunk.getOffsetOfVoxel(x, y, z);
+    const offset = Chunk3D.getOffsetOfVoxel(x, y, z);
     return this.buffer[offset];
   }
 
@@ -139,7 +138,7 @@ class Chunk {
       }
     }
     console.log(`Created buffer with ${cnt} voxels`);
-    const [faceCnt, lastPixel, heightMap] = Chunk.calculateMetaData(this.buffer);
+    const [faceCnt, lastPixel, heightMap] = Chunk3D.calculateMetaData(this.buffer);
     this.faceCnt = faceCnt;
     this.lastPixel = lastPixel;
     this.heightMap = heightMap;
@@ -196,7 +195,7 @@ class Chunk {
         if (heighestPixel > totalHeight) {
           // last total pixel
           totalHeight = heighestPixel;
-          lastPixel = Chunk.getOffsetOfVoxel(x, heighestPixel, z);
+          lastPixel = Chunk3D.getOffsetOfVoxel(x, heighestPixel, z);
         }
       }
     }
@@ -233,7 +232,7 @@ class Chunk {
   }
 
   setVoxel(x, y, z, clr) {
-    const offset = Chunk.getOffsetOfVoxel(x, y, z);
+    const offset = Chunk3D.getOffsetOfVoxel(x, y, z);
     this.setVoxelByOffset(offset, clr);
   }
 
@@ -247,7 +246,7 @@ class Chunk {
       chunkBuffer.set(chunkBufferInpt);
     }
     this.buffer = chunkBuffer;
-    const [faceCnt, lastPixel, heightMap] = Chunk.calculateMetaData(
+    const [faceCnt, lastPixel, heightMap] = Chunk3D.calculateMetaData(
       chunkBuffer,
     );
     this.faceCnt = faceCnt;
@@ -383,4 +382,4 @@ class Chunk {
   }
 }
 
-export default Chunk;
+export default Chunk3D;

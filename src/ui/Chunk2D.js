@@ -1,47 +1,30 @@
 import { TILE_SIZE } from '../core/constants';
+import Chunk from './Chunk';
 
 
-class ChunkRGB {
-  // array of coords [zoom, cx, cy]
-  //  just an identifier, could be removed
-  cell;
+class Chunk2D extends Chunk {
   // HTMLCanvasElement of chunk
   image;
   // boolean if chunk loeaded (request done)
   ready;
   // boolean if chunk is empty
   isEmpty;
-  // number timestamp of last load for garbage collection
-  timestamp;
   // palette of canvas
   palette;
-  // boolean if it is basechunk, rather than zoomtile
-  isBasechunk;
 
   constructor(palette, zoom = 0, cx = 0, cy = 0) {
-    // isBasechunk gets set to true by REC_BIG_CHUNK
-    // if true => chunk got requested from api/chunk and
-    //            receives websocket pixel updates
-    // if false => chunk is an zoomed png tile
-    this.isBasechunk = false;
+    super(zoom, cx, cy);
     this.palette = palette;
     this.image = document.createElement('canvas');
     this.image.width = TILE_SIZE;
     this.image.height = TILE_SIZE;
-    this.cell = [zoom, cx, cy];
     this.ready = false;
     this.isEmpty = false;
-    this.timestamp = Date.now();
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  destructor() {
-    return null;
   }
 
   // from Uint8Array
   fromBuffer(chunkBuffer) {
-    this.isBasechunk = true;
+    this.recUpdates = true;
     const imageData = new ImageData(TILE_SIZE, TILE_SIZE);
     const imageView = new Uint32Array(imageData.data.buffer);
     const { abgr } = this.palette;
@@ -110,7 +93,7 @@ class ChunkRGB {
   }
 
   hasColorIn(cell, color) {
-    const index = ChunkRGB.getIndexFromCell(cell);
+    const index = Chunk2D.getIndexFromCell(cell);
 
     const ctx = this.image.getContext('2d');
     const imageData = ctx.getImageData(0, 0, TILE_SIZE, TILE_SIZE);
@@ -128,4 +111,4 @@ class ChunkRGB {
   }
 }
 
-export default ChunkRGB;
+export default Chunk2D;

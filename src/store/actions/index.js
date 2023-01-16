@@ -218,30 +218,31 @@ export function requestBigChunk(center) {
   };
 }
 
-export function preLoadedBigChunk(
-  center,
-) {
+export function removeChunks(chunks) {
+  return {
+    type: 'REMOVE_CHUNKS',
+    chunks,
+  };
+}
+
+export function preLoadedBigChunk(center) {
   return {
     type: 'PRE_LOADED_BIG_CHUNK',
     center,
   };
 }
 
-export function receiveBigChunk(
-  center,
-  chunk,
-) {
+export function receiveBigChunk(chunk) {
   return {
     type: 'REC_BIG_CHUNK',
-    center,
     chunk,
   };
 }
 
-export function receiveBigChunkFailure(center, error) {
+export function receiveBigChunkFailure(chunk, error) {
   return {
     type: 'REC_BIG_CHUNK_FAILURE',
-    center,
+    chunk,
     error,
   };
 }

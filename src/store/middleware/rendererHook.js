@@ -9,7 +9,7 @@
 import {
   getRenderer,
   initRenderer,
-} from '../../ui/renderer';
+} from '../../ui/rendererFactory';
 
 export default (store) => (next) => (action) => {
   const { type } = action;

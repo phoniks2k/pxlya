@@ -8,6 +8,7 @@ import Sky from './Sky';
 
 import InfiniteGridHelper from './InfiniteGridHelper';
 import VoxelPainterControls from '../controls/VoxelPainterControls';
+import Renderer from './Renderer';
 import ChunkLoader from './ChunkLoader3D';
 import {
   getChunkOfPixel,
@@ -24,10 +25,8 @@ import pixelTransferController from './PixelTransferController';
 
 const renderDistance = 150;
 
-class Renderer {
+class Renderer3D extends Renderer {
   is3D = true;
-  //--
-  store;
   //--
   scene;
   camera;
@@ -48,14 +47,12 @@ class Renderer {
   pressCdTime;
   multitap;
   //--
-  chunkLoader = null;
   forceNextRender = false;
 
   constructor(store) {
-    this.store = store;
+    super(store);
     const state = store.getState();
     this.objects = [];
-    this.chunkLoader = null;
 
     // camera
     const camera = new THREE.PerspectiveCamera(
@@ -212,9 +209,7 @@ class Renderer {
     const { domElement } = this.threeRenderer;
     this.threeRenderer = null;
     domElement.remove();
-    if (this.chunkLoader) {
-      this.chunkLoader.destructor();
-    }
+    super.destructor();
   }
 
   updateView() {
@@ -264,11 +259,6 @@ class Renderer {
   // eslint-disable-next-line class-methods-use-this
   updateScale() {
     return null;
-  }
-
-  // TODO check if GC even works on 3D canvas
-  getAllChunks() {
-    return this.chunkLoader.getAllChunks();
   }
 
   renderPixel(
@@ -669,4 +659,4 @@ class Renderer {
   }
 }
 
-export default Renderer;
+export default Renderer3D;

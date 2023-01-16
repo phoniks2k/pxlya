@@ -219,6 +219,30 @@ msgstr ""
 msgid "You are not banned"
 msgstr ""
 
+#: src/routes/api/auth/logout.js:11
+msgid "You are not even logged in."
+msgstr ""
+
+#: src/routes/api/auth/delete_account.js:55
+#: src/routes/api/auth/logout.js:20
+msgid "Server error when logging out."
+msgstr ""
+
+#: src/routes/api/auth/verify.js:26
+#: src/routes/api/auth/verify.js:35
+msgid "Mail verification"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:27
+msgid "You are now verified :)"
+msgstr ""
+
+#: src/routes/api/auth/verify.js:35
+msgid ""
+"Your mail verification code is invalid or already expired :(, please "
+"request a new one."
+msgstr ""
+
 #: src/routes/api/auth/change_mail.js:21
 #: src/routes/api/auth/register.js:24
 msgid "This email provider is not allowed"
@@ -256,15 +280,6 @@ msgstr ""
 msgid "Failed to establish session after register :("
 msgstr ""
 
-#: src/routes/api/auth/logout.js:11
-msgid "You are not even logged in."
-msgstr ""
-
-#: src/routes/api/auth/delete_account.js:55
-#: src/routes/api/auth/logout.js:20
-msgid "Server error when logging out."
-msgstr ""
-
 #: src/routes/api/auth/change_mail.js:43
 #: src/routes/api/auth/change_passwd.js:34
 #: src/routes/api/auth/delete_account.js:35
@@ -275,21 +290,6 @@ msgstr ""
 #: src/routes/api/auth/change_passwd.js:43
 #: src/routes/api/auth/delete_account.js:45
 msgid "Incorrect password!"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:26
-#: src/routes/api/auth/verify.js:35
-msgid "Mail verification"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:27
-msgid "You are now verified :)"
-msgstr ""
-
-#: src/routes/api/auth/verify.js:35
-msgid ""
-"Your mail verification code is invalid or already expired :(, please "
-"request a new one."
 msgstr ""
 
 #: src/ssr/RedirectionPage.jsx:19

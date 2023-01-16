@@ -7,17 +7,12 @@
 
 import { t } from 'ttag';
 
+import Renderer from './Renderer';
 import Renderer2D from './Renderer2D';
 import { pAlert } from '../store/actions';
 import { isWebGL2Available } from '../core/utils';
 
-const dummyRenderer = {
-  is3D: null,
-  render: () => null,
-  destructor: () => null,
-  renderPixel: () => null,
-  updateCanvasData: () => null,
-};
+const dummyRenderer = new Renderer();
 
 let renderer = dummyRenderer;
 
