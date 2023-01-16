@@ -221,11 +221,7 @@ class SocketServer {
      * Limiting socket connections per ip
      */
     if (ipCounter.get(ip) > 50) {
-      rateLimiter.forceTrigger(ip, HOUR);
-      const amount = this.killAllWsByUerIp(ip);
-      logger.info(
-        `Client ${ip} has more than 50 connections open, killed ${amount}.`,
-      );
+      SocketServer.onRateLimitTrigger(ip, HOUR, 'too many connections');
       socket.write('HTTP/1.1 403 Forbidden\r\n\r\n');
       socket.destroy();
       return;
@@ -331,8 +327,18 @@ class SocketServer {
   }
 
   killAllWsByUerIp(ip) {
+    let amount = ipCounter.get(ip);
+    if (!amount) return 0;
+    // eslint-disable-next-line
+    for (const [chunkid, clients] of this.CHUNK_CLIENTS.entries()) {
+      const newClients = clients.filter((ws) => ws.user.ip === ip);
+      if (clients.length !== newClients.length) {
+        this.CHUNK_CLIENTS.set(chunkid, newClients);
+      }
+    }
+
     const it = this.wss.clients.keys();
-    let amount = 0;
+    amount = 0;
     let client = it.next();
     while (!client.done) {
       const ws = client.value;
@@ -340,6 +346,12 @@ class SocketServer {
         && ws.user
         && ws.user.ip === ip
       ) {
+        /*
+         * we deleted all registered chunks above
+         * have to reset it to avoid onClose to
+         * do it again.
+         */
+        ws.chunkCnt = 0;
         ws.terminate();
         amount += 1;
       }
@@ -509,7 +521,7 @@ class SocketServer {
       let limiterDeltaTime = 200;
       let reason = 'socket spam';
       if (opcode === REG_CHUNK_OP) {
-        limiterDeltaTime = 50;
+        limiterDeltaTime = 40;
         reason = 'register chunk spam';
       } else if (opcode === DEREG_CHUNK_OP) {
         limiterDeltaTime = 10;
@@ -609,16 +621,17 @@ class SocketServer {
   }
 
   pushChunk(chunkid, ws) {
+    if (ws.chunkCnt === 20000) {
+      const { ip } = ws.user;
+      SocketServer.onRateLimitTrigger(ip, HOUR, 'too much subscribed');
+      return;
+    }
     ws.chunkCnt += 1;
-    if (ws.chunkCnt === 25000) {
-      logger.info(
-        `Client ${ws.user.ip} subscribed to 25k chunks`,
-      );
+    let clients = this.CHUNK_CLIENTS.get(chunkid);
+    if (!clients) {
+      clients = [];
+      this.CHUNK_CLIENTS.set(chunkid, clients);
     }
-    if (!this.CHUNK_CLIENTS.has(chunkid)) {
-      this.CHUNK_CLIENTS.set(chunkid, []);
-    }
-    const clients = this.CHUNK_CLIENTS.get(chunkid);
     const pos = clients.indexOf(ws);
     if (~pos) return;
     clients.push(ws);
@@ -633,11 +646,16 @@ class SocketServer {
   }
 
   deleteAllChunks(ws) {
-    this.CHUNK_CLIENTS.forEach((client) => {
-      if (!client) return;
+    if (!ws.chunkCnt) return;
+    // eslint-disable-next-line
+    for (const client of this.CHUNK_CLIENTS.values()) {
       const pos = client.indexOf(ws);
-      if (~pos) client.splice(pos, 1);
-    });
+      if (~pos) {
+        client.splice(pos, 1);
+        ws.chunkCnt -= 1;
+        if (!ws.chunkCnt) return;
+      }
+    }
   }
 }
 
