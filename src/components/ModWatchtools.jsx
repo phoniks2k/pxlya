@@ -301,17 +301,17 @@ function ModWatchtools() {
                 .map((row) => (
                   <tr key={row[0]}>
                     {row.slice(1).map((val, ind) => {
-                      if (val === null) {
-                        return (<td>N/A</td>);
-                      }
                       const type = types[ind + 1];
+                      if (val === null) {
+                        return (<td key={type}>N/A</td>);
+                      }
                       switch (type) {
                         case 'ts': {
                           const date = new Date(val);
                           let minutes = date.getMinutes();
                           if (minutes < 10) minutes = `0${minutes}`;
                           return (
-                            <td title={date.toLocaleDateString()}>
+                            <td key={type} title={date.toLocaleDateString()}>
                               {`${date.getHours()}:${minutes}`}
                             </td>
                           );
@@ -323,11 +323,14 @@ function ModWatchtools() {
                           && canvases[cid].colors
                           && canvases[cid].colors[val];
                           if (!rgb) {
-                            return (<td>{val}</td>);
+                            return (<td key={type}>{val}</td>);
                           }
                           const color = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
                           return (
-                            <td style={{ backgroundColor: color }}>{val}</td>
+                            <td
+                              key={type}
+                              style={{ backgroundColor: color }}
+                            >{val}</td>
                           );
                         }
                         case 'coord': {
@@ -336,7 +339,7 @@ function ModWatchtools() {
                           const ident = canvases[cid] && canvases[cid].ident;
                           const coords = `./#${ident},${val},47`;
                           return (
-                            <td>
+                            <td key={type}>
                               <a href={coords}>{val}</a>
                             </td>
                           );
@@ -344,7 +347,7 @@ function ModWatchtools() {
                         case 'flag': {
                           const flag = val.toLowerCase();
                           return (
-                            <td title={val}><img
+                            <td key={type} title={val}><img
                               style={{
                                 height: '1em',
                                 imageRendering: 'crisp-edges',
@@ -356,11 +359,11 @@ function ModWatchtools() {
                         }
                         case 'cid': {
                           const ident = canvases[val] && canvases[val].ident;
-                          return (<td>{ident}</td>);
+                          return (<td key={type}>{ident}</td>);
                         }
                         case 'uuid': {
                           return (
-                            <td>
+                            <td key={type}>
                               <span
                                 role="button"
                                 tabIndex={-1}
@@ -377,10 +380,10 @@ function ModWatchtools() {
                         case 'user': {
                           const seperator = val.lastIndexOf(',');
                           if (seperator === -1) {
-                            return (<td><span>{val}</span></td>);
+                            return (<td key={type}><span>{val}</span></td>);
                           }
                           return (
-                            <td title={val.slice(seperator + 1)}>
+                            <td key={type} title={val.slice(seperator + 1)}>
                               <span>
                                 {val.slice(0, seperator)}
                               </span>
@@ -388,7 +391,7 @@ function ModWatchtools() {
                           );
                         }
                         default: {
-                          return (<td>{val}</td>);
+                          return (<td key={type}>{val}</td>);
                         }
                       }
                     })}

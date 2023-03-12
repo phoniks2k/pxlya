@@ -202,6 +202,7 @@ function Converter() {
               ? null
               : (
                 <option
+                  key={canvas}
                   value={canvas}
                 >
                   {
