@@ -372,9 +372,9 @@ class SocketServer {
   reloadUser(name) {
     this.wss.clients.forEach(async (ws) => {
       if (ws.user.name === name) {
+        await ws.user.reload();
         const buffer = dehydrateChangeMe();
         ws.send(buffer);
-        await ws.user.reload();
       }
     });
   }

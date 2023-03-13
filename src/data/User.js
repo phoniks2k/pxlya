@@ -61,14 +61,9 @@ class User {
   userlvl; // number
 
   constructor() {
-    // if id = 0 -> unregistered
-    this.id = 0;
-    this.regUser = null;
+    this.resetRegUser();
     this.ip = '127.0.0.1';
     this.ipSub = this.ip;
-    this.channels = {};
-    this.blocked = [];
-    this.userlvl = 0;
   }
 
   async initialize(id, ip = null, regUser = null) {
@@ -89,6 +84,15 @@ class User {
         this.id = id;
       }
     }
+  }
+
+  resetRegUser() {
+    // if id = 0 -> unregistered
+    this.id = 0;
+    this.regUser = null;
+    this.channels = {};
+    this.blocked = [];
+    this.userlvl = 0;
   }
 
   setRegUser(reguser) {
@@ -154,7 +158,13 @@ class User {
 
   async reload() {
     if (!this.regUser) return;
-    await this.regUser.reload();
+    try {
+      await this.regUser.reload();
+    } catch (e) {
+      // user got deleted
+      this.resetRegUser();
+      return;
+    }
     this.setRegUser(this.regUser);
   }
 
