@@ -272,20 +272,31 @@ class Renderer2D extends Renderer {
     cx,
     cy,
   ) {
-    if (cz !== this.tiledZoom) {
+    const { tiledZoom } = this;
+    if (cz > tiledZoom + 1) {
       return false;
     }
+
+    let [xc, yc] = this.centerChunk;
+    let { relScale } = this;
+    // adjust for tiledZoom differences
+    if (cz !== tiledZoom) {
+      const zFac = TILE_ZOOM_LEVEL ** (cz - tiledZoom);
+      xc = Math.floor(xc * zFac);
+      yc = Math.floor(yc * zFac);
+      relScale *= zFac;
+    }
+
     const { width, height } = this.viewport;
     const CHUNK_RENDER_RADIUS_X = Math.ceil(
-      width / TILE_SIZE / 2 / this.relScale,
+      width / TILE_SIZE / 2 / relScale,
     );
     const CHUNK_RENDER_RADIUS_Y = Math.ceil(
-      height / TILE_SIZE / 2 / this.relScale,
+      height / TILE_SIZE / 2 / relScale,
     );
-    const [xc, yc] = this.centerChunk;
-    if (Math.abs(cx - xc)
-      <= CHUNK_RENDER_RADIUS_X && Math.abs(cy - yc)
-      <= CHUNK_RENDER_RADIUS_Y
+
+    if (Math.abs(cx - xc) <= CHUNK_RENDER_RADIUS_X
+      && Math.abs(cy - yc) <= CHUNK_RENDER_RADIUS_Y
     ) {
       return true;
     }
