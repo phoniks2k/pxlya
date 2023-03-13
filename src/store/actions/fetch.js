@@ -25,7 +25,7 @@ export const shardOrigin = shardHost
   && `${window.location.protocol}//${shardHost}`;
 
 /*
- * Adds customizeable timeout to fetch
+ * Adds customizable timeout to fetch
  * defaults to 8s
  */
 async function fetchWithTimeout(url, options = {}) {
@@ -152,7 +152,7 @@ export async function requestBlock(userId, block) {
 }
 
 /*
- * set / unset provile as private
+ * set / unset profile as private
  * @param priv
  * @return error string or null if successful
  */
@@ -210,7 +210,7 @@ export async function requestBlockDm(block) {
 
 /*
  * leaving Chat Channel (i.e. DM channel)
- * @param channelId 8nteger id of channel
+ * @param channelId integer id of channel
  * @return error string or null if successful
  */
 export async function requestLeaveChan(channelId) {

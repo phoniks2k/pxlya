@@ -27,7 +27,7 @@ import {
   getOffsetOfPixel,
 } from '../core/utils';
 
-class PixelPlainterControls {
+class PixelPainterControls {
   constructor(renderer, viewport, curStore) {
     this.store = curStore;
     this.renderer = renderer;
@@ -67,7 +67,7 @@ class PixelPlainterControls {
      * 2: right shift
      */
     this.holdPainting = 0;
-    // if we are waiting before placeing pixel via holdPainting again
+    // if we are waiting before placing pixel via holdPainting again
     this.coolDownDelta = false;
 
     document.addEventListener('keydown', this.onKeyDown, false);
@@ -149,7 +149,7 @@ class PixelPlainterControls {
           this.viewport,
           [clientX, clientY],
         );
-        PixelPlainterControls.placePixel(
+        PixelPainterControls.placePixel(
           store,
           this.renderer,
           cell,
@@ -268,13 +268,13 @@ class PixelPlainterControls {
 
     clearTimeout(this.onViewFinishChangeTimeOut);
     this.clickTapStartTime = Date.now();
-    this.clickTapStartCoords = PixelPlainterControls.getTouchCenter(event);
+    this.clickTapStartCoords = PixelPainterControls.getTouchCenter(event);
     const state = this.store.getState();
     this.clickTapStartView = state.canvas.view;
 
     if (event.touches.length > 1) {
       this.tapStartScale = state.canvas.scale;
-      this.tapStartDist = PixelPlainterControls.getMultiTouchDistance(event);
+      this.tapStartDist = PixelPainterControls.getMultiTouchDistance(event);
       this.isMultiTab = true;
       this.clearTabTimeout();
     } else {
@@ -282,7 +282,7 @@ class PixelPlainterControls {
       this.isMultiTab = false;
       this.tapTimeout = setTimeout(() => {
         // check for longer tap to select taped color
-        PixelPlainterControls.selectColor(
+        PixelPainterControls.selectColor(
           this.store,
           this.viewport,
           this.renderer,
@@ -314,7 +314,7 @@ class PixelPlainterControls {
           viewport,
           [pageX, pageY],
         );
-        PixelPlainterControls.placePixel(
+        PixelPainterControls.placePixel(
           store,
           this.renderer,
           cell,
@@ -334,7 +334,7 @@ class PixelPlainterControls {
 
     const multiTouch = (event.touches.length > 1);
 
-    const [clientX, clientY] = PixelPlainterControls.getTouchCenter(event);
+    const [clientX, clientY] = PixelPainterControls.getTouchCenter(event);
     const { store } = this;
     const state = store.getState();
     if (this.isMultiTab !== multiTouch) {
@@ -342,7 +342,7 @@ class PixelPlainterControls {
       this.isMultiTab = multiTouch;
       this.clickTapStartCoords = [clientX, clientY];
       this.clickTapStartView = state.canvas.view;
-      this.tapStartDist = PixelPlainterControls.getMultiTouchDistance(event);
+      this.tapStartDist = PixelPainterControls.getMultiTouchDistance(event);
       this.tapStartScale = state.canvas.scale;
     } else {
       // pan
@@ -413,7 +413,7 @@ class PixelPlainterControls {
     const state = store.getState();
     if (isClicking) {
       if (Date.now() < this.clickTapStartTime + 100) {
-        // 100ms treshold till starting to pan
+        // 100ms threshold till starting to pan
         return;
       }
       const { clickTapStartView, clickTapStartCoords } = this;
@@ -454,7 +454,7 @@ class PixelPlainterControls {
           switch (this.holdPainting) {
             case 1: {
               /* left shift: from selected color */
-              PixelPlainterControls.placePixel(
+              PixelPainterControls.placePixel(
                 store,
                 this.renderer,
                 screenCoor,
@@ -466,7 +466,7 @@ class PixelPlainterControls {
               const colorIndex = this.renderer
                 .getColorIndexOfPixel(x, y, true);
               if (colorIndex !== null) {
-                PixelPlainterControls.placePixel(
+                PixelPainterControls.placePixel(
                   store,
                   this.renderer,
                   screenCoor,
@@ -510,7 +510,7 @@ class PixelPlainterControls {
     }
     event.preventDefault();
 
-    PixelPlainterControls.selectColor(
+    PixelPainterControls.selectColor(
       this.store,
       this.viewport,
       this.renderer,
@@ -590,7 +590,7 @@ class PixelPlainterControls {
           if (event.location === KeyboardEvent.DOM_KEY_LOCATION_LEFT) {
             // left shift
             this.holdPainting = 1;
-            PixelPlainterControls.placePixel(store, this.renderer, hover);
+            PixelPainterControls.placePixel(store, this.renderer, hover);
             return;
           }
           if (event.location === KeyboardEvent.DOM_KEY_LOCATION_RIGHT) {
@@ -599,7 +599,7 @@ class PixelPlainterControls {
             const colorIndex = this.renderer
               .getColorIndexOfPixel(...hover, true);
             if (colorIndex !== null) {
-              PixelPlainterControls.placePixel(
+              PixelPainterControls.placePixel(
                 store,
                 this.renderer,
                 hover,
@@ -615,4 +615,4 @@ class PixelPlainterControls {
   }
 }
 
-export default PixelPlainterControls;
+export default PixelPainterControls;

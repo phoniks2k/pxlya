@@ -167,7 +167,7 @@ class RpgEvent {
     // make sure that its the center of a 3x3 area
     const i = Math.floor(Math.random() * (canvasSize / TILE_SIZE - 2)) + 1;
     const j = Math.floor(Math.random() * (canvasSize / TILE_SIZE - 2)) + 1;
-    // backup it and schedul next event in 1h
+    // backup it and schedule next event in 1h
     await setNextEvent(EVENT_GAP_MIN, i, j);
     const timestamp = await nextEvent();
     const x = i * TILE_SIZE - canvasSize / 2;
@@ -194,7 +194,7 @@ class RpgEvent {
   async runEventLoop() {
     /*
      * if we aren't the main shard, we just wait and regularly check,
-     * re-intilializing if we become it
+     * re-initializing if we become it
      */
     if (!socketEvents.amIImportant()) {
       this.iAmNotImportant = true;
@@ -281,7 +281,7 @@ class RpgEvent {
       }
       setTimeout(this.runEventLoop, 1000);
     } else if (eventMinutes > STEPS[4]) {
-      // 1min till Event: blinking solid cross red small fase
+      // 1min till Event: blinking solid cross red small faze
       if (eventState !== 9 && eventState !== 10) {
         this.eventState = 9;
         RpgEvent.broadcastChatMessage(

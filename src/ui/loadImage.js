@@ -50,8 +50,7 @@ class LoadingTiles {
       return;
     }
     this.tiles[canvasId] = null;
-    const img = await loadImage(`./loading${canvasId}.png`);
-    this.tiles[canvasId] = img;
+    this.tiles[canvasId] = await loadImage(`./loading${canvasId}.png`);
   }
 }
 

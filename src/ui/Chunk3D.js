@@ -116,7 +116,7 @@ class Chunk3D extends Chunk {
   }
 
   /*
-  // Test Sin encironment creation for load tests
+  // Test Sin environment creation for load tests
   async generateSin() {
     let cnt = 0;
     this.buffer = new Uint8Array(THREE_TILE_SIZE * THREE_TILE_SIZE * THREE_CANVAS_HEIGHT);
@@ -156,13 +156,13 @@ class Chunk3D extends Chunk {
     let faceCnt = 0;
     for (let z = THREE_TILE_SIZE - 1; z >= 0; --z) {
       for (let x = THREE_TILE_SIZE - 1; x >= 0; --x) {
-        let heighestPixel = 0;
+        let highestPixel = 0;
         const startOffset = x + z * THREE_TILE_SIZE;
         let u = startOffset;
         for (let y = 0; y < THREE_CANVAS_HEIGHT; ++y) {
           if (buffer[u] !== 0) {
-            // heighest pixel fo x,z in heightmap
-            heighestPixel = y;
+            // highest pixel fo x,z in heightmap
+            highestPixel = y;
             // number of faces to render
             if (x === 0
               || buffer[u - 1] === 0) {
@@ -191,11 +191,11 @@ class Chunk3D extends Chunk {
           }
           u += rowVolume;
         }
-        heightMap[startOffset] = heighestPixel;
-        if (heighestPixel > totalHeight) {
+        heightMap[startOffset] = highestPixel;
+        if (highestPixel > totalHeight) {
           // last total pixel
-          totalHeight = heighestPixel;
-          lastPixel = Chunk3D.getOffsetOfVoxel(x, heighestPixel, z);
+          totalHeight = highestPixel;
+          lastPixel = Chunk3D.getOffsetOfVoxel(x, highestPixel, z);
         }
       }
     }
@@ -281,7 +281,7 @@ class Chunk3D extends Chunk {
     const colors = new Uint8Array(faceCnt * 4 * 3);
     const indices = new Uint32Array(faceCnt * 6);
     const { rgb } = this.palette;
-    // just render faces that do not have an adjescent voxel
+    // just render faces that do not have an adjacent voxel
     for (let z = 0; z < THREE_TILE_SIZE; ++z) {
       for (let x = 0; x < THREE_TILE_SIZE; ++x) {
         const startOffset = x + z * THREE_TILE_SIZE;

@@ -16,7 +16,7 @@ import Palette from './Palette';
 
 
 /*
- * Load iamge from ABGR buffer onto canvas
+ * Load image from ABGR buffer onto canvas
  * (be aware that tis function does no validation of arguments)
  * @param canvasId numerical ID of canvas
  * @param x X coordinate on canvas
@@ -103,7 +103,7 @@ export async function imageABGR2Canvas(
 
 
 /*
- * Load iamgemask from ABGR buffer and execute function for each black pixel
+ * Load imagemask from ABGR buffer and execute function for each black pixel
  * (be aware that tis function does no validation of arguments)
  * @param canvasId numerical ID of canvas
  * @param x X coordinate on canvas

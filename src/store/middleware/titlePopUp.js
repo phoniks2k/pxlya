@@ -1,5 +1,5 @@
 /*
- * set URL and querys in pupup window
+ * set URL and queries in popup window
  */
 import { buildPopUpUrl } from '../../components/windows/popUpAvailable';
 

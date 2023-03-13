@@ -1,5 +1,5 @@
 /*
- * espand menu / show other menu buttons
+ * expand menu / show other menu buttons
  *
  */
 

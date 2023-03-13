@@ -296,8 +296,7 @@ export function getCPieOpts(isDarkMode) {
     },
   };
   if (isDarkMode) {
-    const sColor = '#e6e6e6';
-    options.plugins.title.color = sColor;
+    options.plugins.title.color = '#e6e6e6';
   }
   return options;
 }

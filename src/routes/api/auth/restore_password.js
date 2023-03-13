@@ -1,5 +1,5 @@
 /*
- * request passowrd reset mail
+ * request password reset mail
  */
 
 

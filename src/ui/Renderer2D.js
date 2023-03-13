@@ -415,7 +415,7 @@ class Renderer2D extends Renderer {
 
 
   // keep in mind that everything we got here gets executed 60 times per second
-  // avoiding unneccessary stuff is important
+  // avoiding unnecessary stuff is important
   renderMain(
     state,
   ) {
@@ -631,7 +631,7 @@ class Renderer2D extends Renderer {
           } else {
             context.fillRect(x, y, TILE_SIZE, TILE_SIZE);
           }
-          // incremential chunks
+          // incremental chunks
           if (historicalTime === '0000') continue;
           chunk = this.chunkLoader
             .getHistoricalChunk(cx, cy, true, historicalDate, historicalTime);
@@ -666,7 +666,7 @@ class Renderer2D extends Renderer {
 
 
   // keep in mind that everything we got here gets executed 60 times per second
-  // avoiding unneccessary stuff is important
+  // avoiding unnecessary stuff is important
   renderHistorical(
     state,
   ) {

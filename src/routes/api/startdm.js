@@ -78,8 +78,8 @@ async function startDm(req, res) {
   /*
    * start DM session
    */
-  let dmu1id = null;
-  let dmu2id = null;
+  let dmu1id;
+  let dmu2id;
   if (user.id > userId) {
     dmu1id = userId;
     dmu2id = user.id;

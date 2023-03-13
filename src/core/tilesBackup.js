@@ -17,7 +17,7 @@ import { TILE_SIZE } from './constants';
  * Copy canvases from one redis instance to another
  * @param canvasRedis redis from where to get the data
  * @param backupRedis redis where to write the data to
- * @param canvases Object with all canvas informations
+ * @param canvases Object with all canvas information
  */
 export async function updateBackupRedis(canvasRedis, backupRedis, canvases) {
   const ids = Object.keys(canvases);
@@ -25,7 +25,7 @@ export async function updateBackupRedis(canvasRedis, backupRedis, canvases) {
     const id = ids[i];
     const canvas = canvases[id];
     if (canvas.v || canvas.hid) {
-      // ignore 3D and hiddedn canvases
+      // ignore 3D and hidden canvases
       continue;
     }
     const chunksXY = (canvas.size / TILE_SIZE);
@@ -70,12 +70,12 @@ export async function updateBackupRedis(canvasRedis, backupRedis, canvases) {
 
 
 /*
- * Create incremential PNG tile backup between two redis canvases
+ * Create incremental PNG tile backup between two redis canvases
  * @param canvasRedis redis from where to get the data
  * @param backupRedis redis where to write the data to
- * @param canvases Object with all canvas informations
+ * @param canvases Object with all canvas information
  */
-export async function incrementialBackupRedis(
+export async function incrementalBackupRedis(
   canvasRedis,
   backupRedis,
   canvases,
@@ -108,7 +108,7 @@ export async function incrementialBackupRedis(
 
     const palette = new Palette(canvas.colors);
     const chunksXY = (canvas.size / TILE_SIZE);
-    console.log('Creating Incremential Backup...');
+    console.log('Creating Incremental Backup...');
     const startTime = Date.now();
     let amount = 0;
     for (let x = 0; x < chunksXY; x++) {
@@ -198,7 +198,7 @@ export async function incrementialBackupRedis(
         } catch (error) {
           console.error(
             // eslint-disable-next-line max-len
-            new Error(`Could not populate incremential backup data of chunk ${key}: ${error.message}`),
+            new Error(`Could not populate incremental backup data of chunk ${key}: ${error.message}`),
           );
           continue;
         }
@@ -223,15 +223,14 @@ export async function incrementialBackupRedis(
         } catch (error) {
           console.error(
             // eslint-disable-next-line max-len
-            new Error(`Could not save incremential backup of chunk ${key}: ${error.message}`),
+            new Error(`Could not save incremental backup of chunk ${key}: ${error.message}`),
           );
-          continue;
         }
       }
     }
     const time = Date.now() - startTime;
     console.log(
-      `Finished Incremential backup of ${amount} chunks in ${time}ms.`,
+      `Finished Incremental backup of ${amount} chunks in ${time}ms.`,
     );
   }
 }
@@ -273,7 +272,7 @@ function buffer2RGB(palette, chunkBuffer) {
 /*
  * Backup all tiles as PNG files into folder
  * @param redisClient RedisClient
- * @param canvases Object with the informations to all canvases
+ * @param canvases Object with the information to all canvases
  * @param backupDir directory where to save png tiles
  */
 export async function createPngBackup(

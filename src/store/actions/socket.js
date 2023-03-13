@@ -23,7 +23,7 @@ export function receiveChatMessage(
   return (dispatch, getState) => {
     channel = Number(channel);
     const state = getState();
-    let isRead = false;
+    let isRead;
     if (state.windows) {
       isRead = state.windows.windows.some(
         (win) => win.windowType === 'CHAT' && !win.hidden,

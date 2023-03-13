@@ -1,5 +1,5 @@
 /**
- * set URL in adress bar, theme-color and title
+ * set URL in address bar, theme-color and title
  */
 
 import {

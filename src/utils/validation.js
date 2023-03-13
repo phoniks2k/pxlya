@@ -94,7 +94,7 @@ export function validateCoorRange(ulcoor, brcoor, canvasSize) {
   } else if (Number.isNaN(v)) {
     error = 'y of bottom-right corner is not a valid number';
   } else if (u < x || v < y) {
-    error = 'Corner coordinates are alligned wrong';
+    error = 'Corner coordinates are aligned wrong';
   }
   if (error !== null) {
     return error;

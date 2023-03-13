@@ -5,7 +5,7 @@
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectWindowType, selectWIndowArgs } from '../store/selectors/popup';
+import { selectWindowType, selectWindowArgs } from '../store/selectors/popup';
 import {
   setWindowArgs,
   setWindowTitle,
@@ -16,7 +16,7 @@ import COMPONENTS from './windows';
 
 const UIPopUp = () => {
   const windowType = useSelector(selectWindowType);
-  const args = useSelector(selectWIndowArgs);
+  const args = useSelector(selectWindowArgs);
 
   const [Content] = COMPONENTS[windowType];
 
@@ -27,7 +27,7 @@ const UIPopUp = () => {
     setArgs: (newArgs) => dispatch(setWindowArgs(newArgs)),
     setTitle: (title) => dispatch(setWindowTitle(title)),
     // eslint-disable-next-line max-len
-    changeType: (newType, newTitel, newArgs) => dispatch(changeWindowType(newType, newTitel, newArgs)),
+    changeType: (newType, newTitle, newArgs) => dispatch(changeWindowType(newType, newTitle, newArgs)),
   }), [args]);
 
   return (

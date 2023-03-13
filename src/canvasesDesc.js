@@ -39,21 +39,21 @@ function getCanvases(t) {
    * no edit below here needed when adding/removing canvas
    */
 
-  const localicedCanvases = {};
+  const localizedCanvases = {};
   const canvasKeys = Object.keys(canvases);
 
   for (let i = 0; i < canvasKeys.length; i += 1) {
     const key = canvasKeys[i];
-    localicedCanvases[key] = { ...canvases[key] };
-    localicedCanvases[key].desc = canvasDesc[key]
+    localizedCanvases[key] = { ...canvases[key] };
+    localizedCanvases[key].desc = canvasDesc[key]
       || canvases[key].desc
       || `Canvas ${key}`;
-    localicedCanvases[key].title = canvasTitles[key]
+    localizedCanvases[key].title = canvasTitles[key]
       || canvases[key].title
       || `Canvas ${key}`;
   }
 
-  return localicedCanvases;
+  return localizedCanvases;
 }
 
 const lCanvases = {};
@@ -64,7 +64,7 @@ const lCanvases = {};
   });
 })();
 
-export function getLocalicedCanvases(lang) {
+export function getLocalizedCanvases(lang) {
   return lCanvases[lang] || lCanvases.default;
 }
 

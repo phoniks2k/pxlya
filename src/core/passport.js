@@ -40,7 +40,7 @@ passport.use(new JsonStrategy({
   usernameProp: 'nameoremail',
   passwordProp: 'password',
 }, async (nameoremail, password, done) => {
-  // Decide if email or name by the occurance of @
+  // Decide if email or name by the occurrence of @
   // this is why we don't allow @ in usernames
   // NOTE: could allow @ in the future by making an OR query,
   // but i guess nobody really cares.

@@ -58,8 +58,9 @@ server.on('upgrade', wsupgrade);
 
 /*
  * use gzip compression for following calls
-/* level from -1 (default, 6) to 0 (no) from 1 (fastest) to 9 (best)
- * Set custon filter to make sure that .bmp files get compressed
+ * level from -1 (default, 6) to 0 (no) from 1 (fastest) to 9 (best)
+ *
+ * Set custom filter to make sure that .bmp files get compressed
  */
 app.use(compression({
   level: 3,
@@ -99,7 +100,7 @@ sequelize.sync({ alter: { drop: false } })
     // catch errors of server
     server.on('error', (e) => {
       logger.error(
-        `HTTP Server Error ${e.code} occured, trying again in 5s...`,
+        `HTTP Server Error ${e.code} occurred, trying again in 5s...`,
       );
       setTimeout(() => {
         server.close();

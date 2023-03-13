@@ -1,6 +1,6 @@
 /**
  *
- * basic functions to get data fromheaders and parse IPs
+ * basic functions to get data from headers and parse IPs
  */
 
 import { USE_XREALIP } from '../core/config';
@@ -23,11 +23,10 @@ function ip4ToNum(ipString) {
   )) {
     return null;
   }
-  const ipNum = (ipArr[0] << 24)
+  return (ipArr[0] << 24)
     + (ipArr[1] << 16)
     + (ipArr[2] << 8)
     + ipArr[3];
-  return ipNum;
 }
 
 /*
@@ -106,7 +105,7 @@ export function isIPv6(ip) {
 
 /*
  * Set last digits of IPv6 to zero,
- * needed because IPv6 assignes subnets to customers, we don't want to
+ * needed because IPv6 assigns subnets to customers, we don't want to
  * mess with individual ips
  * @param ip ip as string (v4 or v6)
  * @return ip as string, and if v6, the last digits set to 0
@@ -114,15 +113,16 @@ export function isIPv6(ip) {
 export function getIPv6Subnet(ip) {
   if (isIPv6(ip)) {
     // eslint-disable-next-line max-len
-    const ipv6sub = `${ip.split(':').slice(0, 4).join(':')}:0000:0000:0000:0000`;
-    return ipv6sub;
+    return `${ip.split(':')
+      .slice(0, 4)
+      .join(':')}:0000:0000:0000:0000`;
   }
   return ip;
 }
 
 /*
  * Get numerical start and end of range
- * @param range sring of range in the format 'xxx.xxx.xxx.xxx - xxx.xxx.xxx.xxx'
+ * @param range string of range in the format 'xxx.xxx.xxx.xxx - xxx.xxx.xxx.xxx'
  * @return [start, end] with numerical IPs (32bit integer)
  */
 function ip4RangeStrToRangeNum(range) {
@@ -161,7 +161,7 @@ function ip4RangeNumToCIDR([start, end]) {
 
 /*
  * Get Array of CIDRs for an IPv4 range
- * @param range sring of range in the format 'xxx.xxx.xxx.xxx - xxx.xxx.xxx.xxx'
+ * @param range string of range in the format 'xxx.xxx.xxx.xxx - xxx.xxx.xxx.xxx'
  * @return Array of CIDR strings
  */
 export function ip4RangeToCIDR(range) {

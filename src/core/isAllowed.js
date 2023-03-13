@@ -194,7 +194,7 @@ export default function checkIfAllowed(ip, disableCache = false) {
  * check if email is disposable
  * @param email
  * @return Promise
- *   null: some error occured
+ *   null: some error occurred
  *   false: legit provider
  *   true: disposable
  */

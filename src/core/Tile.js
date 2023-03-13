@@ -1,5 +1,5 @@
 /*
- * basic functions for creating zommed tiles
+ * basic functions for creating zoomed tiles
  * Used by tilewriter worker thread, so dont import too much.
  *
  * */
@@ -492,7 +492,7 @@ async function createEmptyTile(
 
 /*
  * created 4096x4096 texture of default canvas
- * @param canvasId numberical Id of canvas
+ * @param canvasId numerical Id of canvas
  * @param canvas canvas data
  * @param canvasTileFolder root folder where to save texture
  *

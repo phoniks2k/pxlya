@@ -48,7 +48,7 @@ import rollbackCanvasArea from './rollback';
 /*
  * Execute IP based actions (banning, whitelist, etc.)
  * @param action what to do with the ip
- * @param ip already sanizized ip
+ * @param ip already sanitized ip
  * @return text of success
  */
 export async function executeIPAction(action, ips, logger = null) {
@@ -79,7 +79,7 @@ export async function executeIPAction(action, ips, logger = null) {
 /*
  * Execute IID based actions
  * @param action what to do with the iid
- * @param iid already sanizized iid
+ * @param iid already sanitized iid
  * @return text of success
  */
 export async function executeIIDAction(
@@ -265,7 +265,7 @@ export async function executeImageAction(
 }
 
 /*
- * retgister responses on socket for Watch Actions
+ * register responses on socket for Watch Actions
  */
 socketEvents.onReq('watch', (action, ...args) => {
   if (action === 'getIIDSummary') {
@@ -466,7 +466,7 @@ export async function executeProtAction(
   const width = u - x + 1;
   const height = v - y + 1;
   if (width * height > 10000000) {
-    return [403, 'Can not set protection to more than 10m pixels at onec'];
+    return [403, 'Can not set protection to more than 10m pixels at once'];
   }
   const protect = action === 'protect';
   const pxlCount = await protectCanvasArea(

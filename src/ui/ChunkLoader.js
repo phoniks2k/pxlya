@@ -56,7 +56,7 @@ class ChunkLoader {
 
   cset(key, chunk) {
     /*
-     * chunks are not neccessarily fully loaded here,
+     * chunks are not necessarily fully loaded here,
      * but they are in bcRecChunk
     */
     this.#chunks.set(key, chunk);

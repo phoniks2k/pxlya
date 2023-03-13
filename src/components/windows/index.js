@@ -23,6 +23,6 @@ export default {
 
 /*
  * NOTE:
- * set windows that should be accessable via popup / url
+ * set windows that should be accessible via popup / url
  * also in ./popUpAvailable.js
  */

@@ -61,7 +61,7 @@ const store = createStore(
 );
 
 /*
- * persistStore of redix-persist is called in client.js
+ * persistStore of redux-persist is called in client.js
  */
 
 export default store;

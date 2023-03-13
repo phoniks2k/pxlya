@@ -7,7 +7,7 @@ const initialState = {
   fetchingChunks: 0,
   fetchingChat: false,
   fetchingPixel: false,
-  fetchinApi: false,
+  fetchingApi: false,
 };
 
 export default function fetching(
@@ -24,10 +24,10 @@ export default function fetching(
     }
 
     case 'SET_API_FETCHING': {
-      const { fetching: fetchinApi } = action;
+      const { fetching: fetchingApi } = action;
       return {
         ...state,
-        fetchinApi,
+        fetchingApi,
       };
     }
 

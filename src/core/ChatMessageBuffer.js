@@ -1,6 +1,6 @@
 /*
  * Buffer for chatMessages for the server
- * it just buffers the msot recent 200 messages for each channel
+ * it just buffers the most recent 200 messages for each channel
  *
  */
 import Sequelize from 'sequelize';

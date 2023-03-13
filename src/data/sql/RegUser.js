@@ -38,7 +38,7 @@ const RegUser = sequelize.define('User', {
     defaultValue: false,
   },
 
-  // null if external oauth authentification
+  // null if external oauth authentication
   password: {
     type: DataTypes.CHAR(60),
     allowNull: true,
@@ -193,7 +193,7 @@ export async function getNamesToIds(ids) {
 
 /*
  * take array of {id: useId, ...} object and resolve
- * user informations
+ * user information
  */
 export async function populateRanking(rawRanks) {
   if (!rawRanks.length) {

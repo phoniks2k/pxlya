@@ -173,7 +173,7 @@ export async function getIIDPixels(
 /*
  * Get summary of users placing in area of current day
  * @param canvasId id of canvas
- * @param xUL, yUL, xBR, yBR area of canvs
+ * @param xUL, yUL, xBR, yBR area of canvas
  * @param time timestamp of when to start
  * @param iid Limit on one user (optional)
  * @return array of parsed pixel log lines
@@ -266,9 +266,9 @@ export async function getSummaryFromArea(
       } else {
         let { pcheck } = ipInfo;
         if (pcheck) {
-          const seperator = pcheck.indexOf(',');
-          if (seperator !== -1) {
-            pcheck = pcheck.slice(0, seperator);
+          const separator = pcheck.indexOf(',');
+          if (separator !== -1) {
+            pcheck = pcheck.slice(0, separator);
           }
         }
         row.push(

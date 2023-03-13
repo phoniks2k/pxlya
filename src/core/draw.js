@@ -43,13 +43,13 @@ setInterval(() => {
 
 /**
  *
- * By Offset is prefered on server side
+ * By Offset is preferred on server side
  * This gets used by websocket pixel placing requests
  * @param user user that can be registered, but doesn't have to
  * @param canvasId
  * @param i Chunk coordinates
  * @param j
- * @param pixels Array of indiviual pixels within the chunk, with:
+ * @param pixels Array of individual pixels within the chunk, with:
  *           [[offset, color], [offset2, color2],...]
  *           Offset is the offset of the pixel within the chunk
  * @return Promise<Object>
@@ -74,7 +74,7 @@ export default async function drawByOffsets(
     if (curReqIPs.has(ip)) {
       // already setting a pixel somewhere
       logger.warn(
-        `Got simultanious requests from ${user.ip}`,
+        `Got simultaneous requests from ${user.ip}`,
       );
       throw new Error(13);
     }
@@ -95,12 +95,12 @@ export default async function drawByOffsets(
      */
     if (i >= canvasSize / tileSize) {
       // x out of bounds
-      // (we don't have to check for <0 becaue it is received as uint)
+      // (we don't have to check for <0 because it is received as uint)
       throw new Error(2);
     }
     if (j >= canvasSize / tileSize) {
       // y out of bounds
-      // (we don't have to check for <0 becaue it is received as uint)
+      // (we don't have to check for <0 because it is received as uint)
       throw new Error(3);
     }
 

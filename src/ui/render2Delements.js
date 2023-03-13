@@ -1,5 +1,5 @@
 /*
- * placeholder that shows underneach cursor
+ * placeholder that shows underneath cursor
  *
  */
 

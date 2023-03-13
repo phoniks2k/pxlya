@@ -60,7 +60,7 @@ router.use(session);
 
 /*
  * passport authenticate
- * and deserlialize
+ * and deserialize
  * (makes that sql request to map req.user.regUser)
  * After this point it is assumes that user.regUser is set if user.id is too
  */

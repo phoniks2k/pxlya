@@ -1,6 +1,6 @@
 /*
  * Odysee oembed API does not allow CORS request,
- * therefor we can't use it right now.
+ * therefore we can't use it right now.
  * Still keeping this here in case that the policy changes in the future
  */
 import React from 'react';
@@ -18,7 +18,7 @@ function stripCol(str) {
 const urlStr = '/@';
 
 const Odysee = ({ url }) => {
-  let oid = null;
+  let oid;
   let posA = url.indexOf(urlStr);
   if (posA !== -1) {
     oid = url.substring(url.indexOf('/', posA + urlStr.length) + 1);
@@ -60,10 +60,7 @@ export default [
         return false;
       }
       posA = urlPart.indexOf('/', posA + urlStr.length);
-      if (posA === -1 || posA + 2 >= urlPart.length) {
-        return false;
-      }
-      return true;
+      return !(posA === -1 || posA + 2 >= urlPart.length);
     }
     // https://odysee.com/why-we-were-wrong-about-ukraine:6bd300b38bf1b30fa56e53c191b0652682c2ae6f
     posA = urlPart.indexOf('//');
@@ -71,10 +68,7 @@ export default [
       posA = 0;
     }
     posA = urlPart.indexOf('/', posA + 2);
-    if (posA === -1 || posA + 2 >= urlPart.length) {
-      return false;
-    }
-    return true;
+    return !(posA === -1 || posA + 2 >= urlPart.length);
   },
   (url) => {
     let urlPart = stripQuery(url);

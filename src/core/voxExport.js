@@ -1,10 +1,10 @@
 /*
  * .vox file exporter for 3D canvas
  * .vox is the Magica Voxel file format that is also compatible with
- * other vodel editors like Goxel.
+ * other voxel editors like Goxel.
  * A object in a .vox file can have a max dimension of 128x128 and 256 height
  * As of the latest release with 0.99.5 4/5/2020 this limit is now 256x256x256,
- * however, lets keep with the old restreints for support of other software.
+ * however, lets keep with the old restraints for support of other software.
  * In .vox, 0,0 is the corner of the model and coordinates are unsigned int,
  * the z dimension is the height, contrarian to pixelplanet with y.
  *
@@ -15,7 +15,7 @@
 
 /*
  * THIS IS JUST THE START, I WONT CONTINUE IT ANYTIME SOON SO ITS ALREADY
- * COMMITED AS A REFERENCE AND IDEA
+ * COMMITTED AS A REFERENCE AND IDEA
  * The idea is to export a 128x128 area around the focal point of where the user
  * is currently looking at as .vox. The file should just have one model.
  */
@@ -101,12 +101,12 @@ async function exportVox(
   // Main Chunk
   // 4 bytes MAIN
   // 4 bytes size (0)
-  // 4 bythes  size children chnks
+  // 4 bytes size children chunks
   const mainChildrenChunkSize = sizeChunkLength
     + xyziChunkLength + rgbaChunkLength;
   const mainChunkLength = 4 + 4 + 4 + mainChildrenChunkSize;
   // 4 bytes 'VOX '
-  // 4 bythes version number
+  // 4 bytes version number
   const fileLength = 4 + 4 + mainChunkLength;
 
   const voxFile = new ArrayBuffer(fileLength);
@@ -164,7 +164,7 @@ async function exportVox(
 
   return voxFile;
   // can then be saved from the UI with react-file-downloader
-  // aka js-file-doanloader
+  // aka js-file-downloader
 }
 
 export default exportVox;

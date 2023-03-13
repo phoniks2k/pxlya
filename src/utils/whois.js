@@ -170,7 +170,7 @@ function singleWhoisQuery(
 }
 
 /*
- * check if whois result is refering us to
+ * check if whois result is referring us to
  * a different whois server
  */
 const referralKeys = [
@@ -219,8 +219,8 @@ export default async function whoisIp(
       queryPrefix = '+ n';
     } else if (useHost === 'whois.ripe.net') {
       /*
-       * flag to not return personal informations, otherwise
-       * RIPE is gonne rate limit and ban
+       * flag to not return personal information, otherwise
+       * RIPE is gonna rate limit and ban
        */
       queryPrefix = '-r';
     }

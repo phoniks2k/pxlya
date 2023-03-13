@@ -11,13 +11,13 @@ import { HourlyCron } from './cron';
 const HYSTERESIS = 60;
 
 /*
- * class to serve proxyckec.io key
+ * class to serve proxycheck.io key
  * One paid account is allowed to have one additional free account,
  * which is good for fallback, if something goes wrong
  */
 class PcKeyProvider {
   /*
-   * @param pcKeys comma seperated list of keys
+   * @param pcKeys comma separated list of keys
    */
   constructor(pcKeys, logger) {
     const keys = (pcKeys)
@@ -86,7 +86,7 @@ class PcKeyProvider {
   }
 
   /*
-   * get usage data of array of keys and put them into available / diabledKeys
+   * get usage data of array of keys and put them into available / disabledKeys
    * @param keys Array of key strings
    */
   async getKeysUsage(keys) {
@@ -346,7 +346,7 @@ class ProxyCheck {
     try {
       res = await this.reqProxyCheck(values);
     } catch (err) {
-      this.logger.error(`Eroor: ${err.message}`);
+      this.logger.error(`Error: ${err.message}`);
     }
     for (let i = 0; i < tasks.length; i += 1) {
       const task = tasks[i];

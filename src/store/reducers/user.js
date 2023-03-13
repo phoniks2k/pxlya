@@ -9,7 +9,7 @@ const initialState = {
   mailreg: false,
   // blocking all Dms
   blockDm: false,
-  // privile is private
+  // profile is private
   priv: false,
   // if user is using touchscreen
   isOnMobile: false,

@@ -1,5 +1,5 @@
 /*
- * report that user shouldbe banned
+ * report that user should be banned
  */
 
 import logger from '../../core/logger';

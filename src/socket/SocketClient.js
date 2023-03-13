@@ -240,7 +240,7 @@ class SocketClient {
       }
     } catch (err) {
       console.log(
-        `An error occured while parsing websocket message ${message}`,
+        `An error occurred while parsing websocket message ${message}`,
         err,
       );
     }

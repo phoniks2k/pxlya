@@ -4,7 +4,7 @@
  * various api endpoints.
  *
  */
-import { getLocalicedCanvases } from '../canvasesDesc';
+import { getLocalizedCanvases } from '../canvasesDesc';
 import { USE_MAILER } from './config';
 import chatProvider from './ChatProvider';
 
@@ -25,7 +25,7 @@ export default async function getMe(user, lang = 'default') {
   }
   delete userdata.mailVerified;
 
-  userdata.canvases = getLocalicedCanvases(lang);
+  userdata.canvases = getLocalizedCanvases(lang);
   userdata.channels = {
     ...chatProvider.getDefaultChannels(lang),
     ...userdata.channels,

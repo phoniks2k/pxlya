@@ -5,7 +5,7 @@ import Chunk from './Chunk';
 class Chunk2D extends Chunk {
   // HTMLCanvasElement of chunk
   image;
-  // boolean if chunk loeaded (request done)
+  // boolean if chunk loaded (request done)
   ready;
   // boolean if chunk is empty
   isEmpty;

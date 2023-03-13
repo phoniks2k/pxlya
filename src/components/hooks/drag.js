@@ -1,5 +1,5 @@
 /*
- * mouse draging
+ * mouse dragging
  */
 
 /* eslint-disable consistent-return */
@@ -9,7 +9,7 @@ import { useEffect, useCallback } from 'react';
 /*
  * @param elRef element reference from useRef
  * @param startHandler function called on start of drag
- * @param diffHandler functio that is called with dragged distance
+ * @param diffHandler function that is called with dragged distance
  */
 function useDrag(elRef, startHandler, diffHandler) {
   const startDrag = useCallback((event) => {

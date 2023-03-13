@@ -241,11 +241,8 @@ export class ChatProvider {
       return true;
     }
     const { lang } = user;
-    if (this.langChannels[lang]
-      && this.langChannels[lang].id === cid) {
-      return true;
-    }
-    return false;
+    return !!(this.langChannels[lang]
+      && this.langChannels[lang].id === cid);
   }
 
   checkIfDm(user, cid) {
@@ -308,7 +305,7 @@ export class ChatProvider {
             return 'No legit country defined';
           }
           if (!ret) {
-            return `Cuntry ${cc} is already muted`;
+            return `Country ${cc} is already muted`;
           }
           if (ret) {
             this.broadcastChatMessage(
@@ -331,7 +328,7 @@ export class ChatProvider {
             return 'No legit country defined';
           }
           if (!ret) {
-            return `Cuntry ${cc} is not muted`;
+            return `Country ${cc} is not muted`;
           }
           this.broadcastChatMessage(
             'info',
@@ -379,7 +376,7 @@ export class ChatProvider {
       }
 
       default:
-        return `Couln't parse command ${cmd}`;
+        return `Couldn't parse command ${cmd}`;
     }
   }
 
@@ -436,7 +433,7 @@ export class ChatProvider {
           return t`Your country is temporary muted from this chat channel`;
         } if (allowed === 101) {
           // eslint-disable-next-line max-len
-          return t`You are permanently muted, join our guilded to apppeal the mute`;
+          return t`You are permanently muted, join our guilded to appeal the mute`;
         } if (allowed === 2) {
           return t`You are banned`;
         } if (allowed === 3) {
@@ -474,14 +471,14 @@ export class ChatProvider {
     let displayCountry = country;
     if (user.userlvl !== 0) {
       displayCountry = 'zz';
-    /*
-     * meme names disabled for now
-     * TODO think about activating it again after fixing accounts and
-     * mute evasions
-     *
-    } else if (name.endsWith('berg') || name.endsWith('stein')) {
-      displayCountry = 'il';
-    / */
+      /*
+       * meme names disabled for now
+       * TODO think about activating it again after fixing accounts and
+       * mute evasions
+       *
+       } else if (name.endsWith('berg') || name.endsWith('stein')) {
+         displayCountry = 'il';
+       / */
     } else if (user.id === 2927) {
       /*
        * hard coded flag for Manchukuo_1940
@@ -495,8 +492,8 @@ export class ChatProvider {
     }
 
     for (let i = 0; i < this.substitutes.length; i += 1) {
-      const subsitute = this.substitutes[i];
-      message = message.replace(subsitute.regexp, subsitute.replace);
+      const substitute = this.substitutes[i];
+      message = message.replace(substitute.regexp, substitute.replace);
     }
 
     if (message.length > 200) {

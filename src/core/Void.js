@@ -29,7 +29,7 @@ class Void {
   // Uint8Array to log pixels in area
   area;
   userArea;
-  // current numberical data
+  // current numerical data
   curRadius;
   curAngle;
   curAngleDelta;
@@ -129,7 +129,7 @@ class Void {
       while (true) {
         this.curAngle += this.curAngleDelta;
         if (this.curAngle > 2 * Math.PI) {
-          // it does skip some pixel, but thats ok
+          // it does skip some pixel, but that's ok
           this.curRadius += 1;
           if (this.curRadius > TARGET_RADIUS) {
             this.cancel();

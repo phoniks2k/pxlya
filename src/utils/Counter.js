@@ -10,8 +10,7 @@ export default class Counter {
   }
 
   get(item) {
-    const count = this.map.get(item) || 0;
-    return count;
+    return this.map.get(item) || 0;
   }
 
   add(item) {

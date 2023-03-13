@@ -11,7 +11,7 @@
  * as well, there is no chance for this to be merged upstream
  *
  * Links:
- *   express-session readmy with Session Store Implementation section:
+ *   express-session readme with Session Store Implementation section:
  *     https://github.com/expressjs/session#readme
  *
  */

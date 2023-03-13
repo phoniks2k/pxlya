@@ -3,8 +3,8 @@
  *
  * We do not support all markdown, but do additionally parse extra
  * stuff like pixelplanet coords and usernames and bare links.
- * This code is written in preparation for a possible imporementation in
- * WebAssambly, so it's all in a big loop
+ * This code is written in preparation for a possible implementation in
+ * WebAssembly, so it's all in a big loop
  */
 
 import MString from './MString';
@@ -142,7 +142,7 @@ function parseMParagraph(text, opts, breakChar) {
 /*
  * parse Code Block
  * start is first character after the initializing ```
- * we just parse till the ending occures
+ * we just parse till the ending occurs
  */
 function parseCodeBlock(text) {
   text.skipSpaces(false);
@@ -183,7 +183,7 @@ function parseQuote(text, opts) {
  * parses Section (contains paragraphs, lists, etc. but no headings or quotes)
  * @param text MString
  * @param headingLevel the number of heading headingLevels we are in
- * @param indent ndentation that should be considered (when inside list)
+ * @param indent indentation that should be considered (when inside list)
  * returns when encountering heading of <= headingLevel (iter is at # position)
  *   or heading-cancel with three spaces (iter is past newlines)
  *   or ident is smaller than given
@@ -264,7 +264,7 @@ function parseMSection(
         curIndent + 1,
       );
       childMdArray = ['-', childMdArray];
-      // lists are encapsuled
+      // lists are encapsulated
       const capsule = (isUnorderedList) ? 'ul' : 'ol';
       if (!mdArray.length || mdArray[mdArray.length - 1][0] !== capsule) {
         mdArray.push([capsule, [childMdArray]]);

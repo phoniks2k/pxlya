@@ -85,7 +85,7 @@ router.post('/checklogin', async (req, res) => {
 
   if (!compareToHash(password, reguser.password)) {
     logger.info(
-      `ADMINAPI: User ${reguser.name} / ${reguser.id} entered wronng password`,
+      `ADMINAPI: User ${reguser.name} / ${reguser.id} entered wrong password`,
     );
     res.json({
       success: false,

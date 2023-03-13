@@ -9,7 +9,7 @@ import { getTTag } from '../core/ttag';
 export default function getPasswordResetHtml(name, code, lang, message = null) {
   const { t } = getTTag(lang);
 
-  let html = '';
+  let html;
 
   if (message) {
     html = `

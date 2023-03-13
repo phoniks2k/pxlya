@@ -141,7 +141,7 @@ class MessageBroker extends SocketEvents {
           (buffer) => this.onShardBinaryMessage(buffer, message),
           true,
         );
-        // immediately give new shards informations
+        // immediately give new shards information
         this.publisher.publish(BROADCAST_CHAN, this.thisShard);
         return;
       }
@@ -285,7 +285,7 @@ class MessageBroker extends SocketEvents {
       }
     } catch (err) {
       // eslint-disable-next-line max-len
-      console.error(`CLUSTER: Error on binery message of shard ${shard}: ${err.message}`);
+      console.error(`CLUSTER: Error on binary message of shard ${shard}: ${err.message}`);
     }
   }
 

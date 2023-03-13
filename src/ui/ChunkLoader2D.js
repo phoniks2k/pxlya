@@ -71,8 +71,8 @@ class ChunkLoader2D extends ChunkLoader {
 
   /*
    * Get color of pixel in current historical view
-   * (has to account for canvs size changes in the past
-   * @param x, y world coordiantes of pixel
+   * (has to account for canvas size changes in the past
+   * @param x, y world coordinates of pixel
    * @return ColorIndex or null if chunks not loaded or historical view not set
    */
   getHistoricalIndexOfPixel(
@@ -91,13 +91,13 @@ class ChunkLoader2D extends ChunkLoader {
 
     if (historicalTime && historicalTime !== '0000') {
       // eslint-disable-next-line max-len
-      const incrementialChunkKey = `${historicalDate}${historicalTime}:${cx}:${cy}`;
-      const incrementialChunk = this.cget(incrementialChunkKey);
-      if (incrementialChunk) {
-        const incrementialColor = incrementialChunk.getColorIndex(px, false);
-        incrementialChunk.timestamp = curTime;
-        if (incrementialColor !== null) {
-          return incrementialColor;
+      const incrementalChunkKey = `${historicalDate}${historicalTime}:${cx}:${cy}`;
+      const incrementalChunk = this.cget(incrementalChunkKey);
+      if (incrementalChunk) {
+        const incrementalColor = incrementalChunk.getColorIndex(px, false);
+        incrementalChunk.timestamp = curTime;
+        if (incrementalColor !== null) {
+          return incrementalColor;
         }
       }
     }
@@ -146,7 +146,7 @@ class ChunkLoader2D extends ChunkLoader {
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.warn(`Error occured while preloading for ${zoom}:${cx}:${cy}`,
+      console.warn(`Error occurred while preloading for ${zoom}:${cx}:${cy}`,
         error);
       return null;
     }
@@ -234,7 +234,7 @@ class ChunkLoader2D extends ChunkLoader {
     // eslint-disable-next-line max-len
     let url = `${window.ssv.backupurl}/${historicalDate.slice(0, 4)}/${historicalDate.slice(4, 6)}/${historicalDate.slice(6)}/`;
     if (historicalTime) {
-      // incremential tiles
+      // incremental tiles
       url += `${canvasId}/${historicalTime}/${cx}/${cy}.png`;
     } else {
       // full tiles

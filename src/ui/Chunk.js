@@ -8,10 +8,10 @@ class Chunk {
   // if chunk receives updates via websocket
   recUpdates = false;
   // timestamp of last touch,
-  // mustbe regularly updated for GC,
+  // must be regularly updated for GC,
   // either by touch() or by setting directly
   timestamp;
-  // coordiantes
+  // coordinates
   z;
   i;
   j;

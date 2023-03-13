@@ -222,7 +222,7 @@ class APISocketServer {
         } else if (even === 'online') {
           ws.subOnline = true;
         } else {
-          logger.info(`APISocket wanted to sub to unexisting  ${even}`);
+          logger.info(`APISocket wanted to sub to nonexistent  ${even}`);
         }
         logger.info(`APISocket client subscribed to ${even}`);
         return;

@@ -81,12 +81,12 @@ router.post('/', async (req, res) => {
   }
   await reguser.update({ password: pass });
 
-  logger.info(`Changed password of ${email} via passowrd reset form`);
+  logger.info(`Changed password of ${email} via password reset form`);
   const html = getPasswordResetHtml(
     null,
     null,
     lang,
-    t`Passowrd successfully changed.`,
+    t`Password successfully changed.`,
   );
   res.status(200).send(html);
 });

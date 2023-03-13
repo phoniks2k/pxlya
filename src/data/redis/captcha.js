@@ -159,7 +159,7 @@ export async function needCaptcha(ip) {
  * force ip to get captcha
  * @param ip
  * @return true if we triggered captcha
- *         false if user would have gotton one anyway
+ *         false if user would have gotten one anyway
  */
 export async function forceCaptcha(ip) {
   if (CAPTCHA_TIME < 0) {

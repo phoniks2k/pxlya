@@ -60,13 +60,11 @@ function initializeDailyCron() {
   const lastRun = now.getTime()
     - now.getUTCHours() * HOUR
     - (now.getUTCMinutes() * 60 + now.getUTCSeconds()) * 1000;
-  const cron = new Cron(24, lastRun);
-  return cron;
+  return new Cron(24, lastRun);
 }
 
 function initializeHourlyCron() {
-  const cron = new Cron(1);
-  return cron;
+  return new Cron(1);
 }
 
 export const DailyCron = initializeDailyCron();

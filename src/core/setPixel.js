@@ -13,8 +13,9 @@ import canvases from './canvases';
 
 /**
  *
- * By Offset is prefered on server side
+ * By Offset is preferred on server side
  * @param canvasId
+ * @param color Pixel color
  * @param i Chunk coordinates
  * @param j
  * @param offset Offset of pixel withing chunk

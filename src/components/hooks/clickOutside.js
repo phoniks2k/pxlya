@@ -10,7 +10,7 @@ import { useEffect, useLayoutEffect, useCallback } from 'react';
  * Keeps listening to outside clicks or window resize
  * as long as active is true
  * @param insideRefs references to elements that are considered inside
- * @param calback function that gets fired on click outside
+ * @param callback function that gets fired on click outside
  * @param active boolean if we should listen or not
  */
 export function useConditionalClickOutside(insideRefs, active, callback) {

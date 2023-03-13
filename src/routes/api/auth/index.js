@@ -63,9 +63,9 @@ router.get('/reddit/return', passport.authenticate('reddit', {
 // eslint-disable-next-line no-unused-vars
 router.use((err, req, res, next) => {
   const host = getHostFromRequest(req);
-  logger.info(`Authentification error: ${err.message}`);
+  logger.info(`Authentication error: ${err.message}`);
   const index = getHtml(
-    'OAuth Authentification',
+    'OAuth Authentication',
     err.message, host, req.lang,
   );
   res.status(400).send(index);

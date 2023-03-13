@@ -15,7 +15,7 @@ import {
 } from '../../store/actions/windows';
 
 /*
- * return [ chatOpen, chatHiden ]
+ * return [ chatOpen, chatHidden ]
  *   chatOpen: if any chat window or modal is open
  *   chatHidden: if any chat windows are hidden
  */

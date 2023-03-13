@@ -69,7 +69,7 @@ function clampPos(prefXPos, prefYPos, width, height) {
 }
 
 /*
- * correct window positions according to screensize
+ * correct window positions according to screen size
  * to make sure that none if off-screen
  */
 function correctPositions(state) {
@@ -189,7 +189,7 @@ export default function windows(
   switch (action.type) {
     case 'OPEN_WIN': {
       /*
-       * prefered xPos, yPos, height adn width
+       * preferred xPos, yPos, height adn width
        * can be given in action (but doesn't have to)
        */
       const {

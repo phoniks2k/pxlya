@@ -18,9 +18,9 @@ import { createClient } from 'redis';
 
 
 import {
-  updateBackupRedis,
   createPngBackup,
-  incrementialBackupRedis,
+  incrementalBackupRedis,
+  updateBackupRedis,
 } from './core/tilesBackup';
 import canvases from './core/canvases';
 
@@ -122,8 +122,7 @@ function getDateFolder() {
   if (month < 10) month = `0${month}`;
   if (day < 10) day = `0${day}`;
   const dayDir = `${date.getUTCFullYear()}/${month}/${day}`;
-  const backupDir = `${dir}/${dayDir}`;
-  return backupDir;
+  return `${dir}/${dayDir}`;
 }
 
 async function dailyBackup() {
@@ -139,25 +138,25 @@ async function dailyBackup() {
     await createPngBackup(backupRedis, canvases, backupDir);
   } catch (e) {
     fs.rmSync(backupDir, { recursive: true });
-    console.log('Error occured during daily backup', e);
+    console.log('Error occurred during daily backup', e);
   }
   console.log('Daily full backup done');
 }
 
-async function incrementialBackup() {
+async function incrementalBackup() {
   const backupDir = getDateFolder();
   if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true });
   }
   try {
-    await incrementialBackupRedis(
+    await incrementalBackupRedis(
       canvasRedis,
       backupRedis,
       canvases,
       backupDir,
     );
   } catch (e) {
-    console.log('Error occured during incremential backup', e);
+    console.log('Error occurred during incremental backup', e);
   }
 }
 
@@ -166,7 +165,7 @@ async function trigger() {
   if (!fs.existsSync(backupDir)) {
     await dailyBackup();
   } else {
-    await incrementialBackup();
+    await incrementalBackup();
   }
   if (CMD) {
     runCmd(CMD);

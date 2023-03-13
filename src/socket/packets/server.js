@@ -2,14 +2,14 @@
  * server package hydration
  */
 import {
-  CHANGE_ME_OP,
-  ONLINE_COUNTER_OP,
-  PIXEL_UPDATE_OP,
-  PIXEL_UPDATE_MB_OP,
-  COOLDOWN_OP,
-  PIXEL_RETURN_OP,
-  CHUNK_UPDATE_MB_OP,
   CAPTCHA_RETURN_OP,
+  CHANGE_ME_OP,
+  CHUNK_UPDATE_MB_OP,
+  COOLDOWN_OP,
+  ONLINE_COUNTER_OP,
+  PIXEL_RETURN_OP,
+  PIXEL_UPDATE_MB_OP,
+  PIXEL_UPDATE_OP,
 } from './op';
 
 /*
@@ -20,8 +20,7 @@ import {
 * @return canvasId
 */
 export function hydrateRegCanvas(data) {
-  const canvasId = data[1];
-  return canvasId;
+  return data[1];
 }
 
 /*
@@ -47,16 +46,14 @@ export function hydrateOnlineCounter(data) {
 * @return chunkId
 */
 export function hydrateRegChunk(data) {
-  const i = data[1] << 8 | data[2];
-  return i;
+  return data[1] << 8 | data[2];
 }
 
 /*
 * @return chunkId
 */
 export function hydrateDeRegChunk(data) {
-  const i = data[1] << 8 | data[2];
-  return i;
+  return data[1] << 8 | data[2];
 }
 
 /*

@@ -1,5 +1,5 @@
 /*
- * Control in- and outcomming pixels,
+ * Control incoming and outgoing pixels,
  * do client prediction, send to draw on renderer
  */
 import { t } from 'ttag';
@@ -132,7 +132,7 @@ class PixelTransferController {
         store.dispatch(notify(t`Pixel protected!`));
         break;
       case 9:
-        // pixestack used up
+        // pixelstack used up
         break;
       case 10:
         errorTitle = 'Captcha';

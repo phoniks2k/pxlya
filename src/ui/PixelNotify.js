@@ -66,8 +66,8 @@ class PixelNotify {
     while (index > 0) {
       index--;
       const [setTime, x, y] = this.pixelList[index];
-      const timePasseded = curTime - setTime;
-      if (timePasseded > PixelNotify.NOTIFICATION_TIME) {
+      const timePassed = curTime - setTime;
+      if (timePassed > PixelNotify.NOTIFICATION_TIME) {
         this.pixelList.pop();
         continue;
       }
@@ -75,7 +75,7 @@ class PixelNotify {
         .map((z) => z + this.scale / 2);
 
       // eslint-disable-next-line max-len
-      const notRadius = timePasseded / PixelNotify.NOTIFICATION_TIME * this.notificationRadius;
+      const notRadius = timePassed / PixelNotify.NOTIFICATION_TIME * this.notificationRadius;
       const circleScale = notRadius / 100;
       viewportCtx.save();
       viewportCtx.scale(circleScale, circleScale);

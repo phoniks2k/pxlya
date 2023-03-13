@@ -495,7 +495,7 @@ class Renderer3D extends Renderer {
 
     switch (multitap) {
       case 1: {
-        // singel tap
+        // single tap
         // Place Voxel
         if (this.rollOverMesh.position.y < 0) {
           return;

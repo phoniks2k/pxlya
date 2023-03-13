@@ -18,7 +18,7 @@ const Ban = sequelize.define('Ban', {
   },
 
   /*
-   * wpiration time,
+   * expiration time,
    * NULL if infinite
    */
   expires: {

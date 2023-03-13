@@ -3,7 +3,7 @@
  *
  */
 
-const TIME_DIFF_THREASHOLD = 15000;
+const TIME_DIFF_THRESHOLD = 15000;
 
 const initialState = {
   // channels that are muted
@@ -81,8 +81,8 @@ export default function chatRead(
       const readTs = isRead
         ? {
           ...state.readTs,
-          // 15s treshold for desync
-          [cid]: Date.now() + TIME_DIFF_THREASHOLD,
+          // 15s threshold for desync
+          [cid]: Date.now() + TIME_DIFF_THRESHOLD,
         } : state.readTs;
       const unread = isRead
         ? state.unread
@@ -107,7 +107,7 @@ export default function chatRead(
         ...state,
         readTs: {
           ...state.readTs,
-          [cid]: Date.now() + TIME_DIFF_THREASHOLD,
+          [cid]: Date.now() + TIME_DIFF_THRESHOLD,
         },
         unread: {
           ...state.unread,
@@ -122,7 +122,7 @@ export default function chatRead(
         ...state,
         readTs: {
           ...state.readTs,
-          [cid]: Date.now() + TIME_DIFF_THREASHOLD,
+          [cid]: Date.now() + TIME_DIFF_THRESHOLD,
         },
         unread: {
           ...state.unread,

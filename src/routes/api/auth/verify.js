@@ -18,8 +18,8 @@ export default async (req, res) => {
   if (!error) {
     const name = await MailProvider.verify(email, token);
     if (name) {
-      // notify websoecket to reconnect user
-      // thats a bit counter productive because it directly links to the websocket
+      // notify websocket to reconnect user
+      // that's a bit counter productive because it directly links to the websocket
       socketEvents.reloadUser(name);
       // ---
       const index = getHtml(

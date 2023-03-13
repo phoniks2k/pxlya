@@ -51,7 +51,7 @@ class SocketEvents extends EventEmitter {
   /*
    * requests that expect a response
    * req(type, args) can be awaited
-   * it will return a response from whatever listenes on onReq(type, cb(args))
+   * it will return a response from whatever listens on onReq(type, cb(args))
    * Keep the arguments serializable for shard support
    */
   req(type, ...args) {
@@ -104,7 +104,7 @@ class SocketEvents extends EventEmitter {
 
   /*
    * chunk updates from event, image upload, etc.
-   * everything thats not a pixelUpdate and changes chunks
+   * everything that's not a pixelUpdate and changes chunks
    * @param canvasId
    * @param chunk [i,j] chunk coordinates
    */
@@ -152,8 +152,8 @@ class SocketEvents extends EventEmitter {
    * broadcast chat message to all users in channel
    * @param name chatname
    * @param message Message to send
-   * @param sendapi If chat message should get boradcasted to api websockets
-   *                (usefull if the api is supposed to not answer to its own messages)
+   * @param sendapi If chat message should get broadcasted to api websockets
+   *                (useful if the api is supposed to not answer to its own messages)
    */
   broadcastChatMessage(
     name,

@@ -63,7 +63,7 @@ const BanInfo = ({ close }) => {
   return (
     <div style={{ userSelect: 'text' }}>
       <p>
-        {t`You are banned. You think it is unjustifed? Check out the `}
+        {t`You are banned. You think it is unjustified? Check out the `}
         <span
           role="button"
           tabIndex={0}

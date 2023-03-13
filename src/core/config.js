@@ -51,7 +51,7 @@ export const HOURLY_EVENT = parseInt(process.env.HOURLY_EVENT, 10) || false;
 
 // Accounts
 export const APISOCKET_KEY = process.env.APISOCKET_KEY || null;
-// Comma seperated list of user ids of Admins
+// Comma separated list of user ids of Admins
 export const ADMIN_IDS = (process.env.ADMIN_IDS)
   ? process.env.ADMIN_IDS.split(',').map((z) => parseInt(z, 10)) : [];
 

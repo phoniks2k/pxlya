@@ -1,5 +1,5 @@
 /*
- * Actions taht are used only within popup
+ * Actions that are used only within popup
  */
 
 export function setWindowArgs(args) {

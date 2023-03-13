@@ -2,7 +2,7 @@
  */
 
 // canvas size (width and height) MUST be 256 * 4^n to be able to stick
-// to established tiling convetions.
+// to established tiling conventions.
 // (basically by sticking to that, we keep ourself many options open for the future)
 // see OSM tiling: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 export const MAX_SCALE = 40; // 52 in log2

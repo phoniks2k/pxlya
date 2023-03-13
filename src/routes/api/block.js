@@ -63,7 +63,7 @@ async function block(req, res) {
   userId = targetUser.id;
   userName = targetUser.name;
 
-  let ret = null;
+  let ret;
   if (blocking) {
     ret = await UserBlock.findOrCreate({
       where: {
@@ -85,8 +85,8 @@ async function block(req, res) {
   /*
    * delete possible dm channel
    */
-  let dmu1id = null;
-  let dmu2id = null;
+  let dmu1id;
+  let dmu2id;
   if (user.id > userId) {
     dmu1id = userId;
     dmu2id = user.id;

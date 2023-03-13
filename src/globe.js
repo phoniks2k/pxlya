@@ -143,8 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     width = window.innerWidth;
     height = window.innerHeight;
     renderer.setSize(width, height);
-    const aspect = width / height;
-    camera.aspect = aspect;
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
     if (controls) controls.handleResize();
   }

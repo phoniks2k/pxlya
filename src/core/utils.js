@@ -63,7 +63,7 @@ export function getToday() {
 }
 
 // z is assumed to be height here
-// in ui and rendeer, y is height
+// in ui and renderer, y is height
 export function getChunkOfPixel(
   canvasSize,
   x,
@@ -95,10 +95,9 @@ export function getTileOfPixel(
   pixel,
   canvasSize = null,
 ) {
-  const target = pixel.map(
+  return pixel.map(
     (x) => Math.floor((x + canvasSize / 2) / TILE_SIZE * tileScale),
   );
-  return target;
 }
 
 export function getMaxTiledZoom(canvasSize) {
@@ -131,7 +130,7 @@ export function getCanvasBoundaries(canvasSize) {
 }
 
 // z is assumed to be height here
-// in ui and rendeer, y is height
+// in ui and renderer, y is height
 export function getOffsetOfPixel(
   canvasSize,
   x,
@@ -167,7 +166,7 @@ export function getIdFromObject(obj, ident) {
 }
 
 // z is returned as height here
-// in ui and rendeer, y is height
+// in ui and renderer, y is height
 export function getPixelFromChunkOffset(
   i,
   j,
@@ -575,7 +574,7 @@ export function combineTables(a, b) {
 }
 
 /*
- * conbine two similar objects
+ * combine two similar objects
  */
 export function combineObjects(a, b) {
   if (!b) {
@@ -621,14 +620,10 @@ export function getDateKeyOfTs(ts) {
  */
 export function parentExists() {
   try {
-    if (!window.opener
+    return !(!window.opener
       || window.opener.closed
       || !window.opener.location
-      || window.opener.location.origin !== window.location.origin
-    ) {
-      return false;
-    }
-    return true;
+      || window.opener.location.origin !== window.location.origin);
   } catch {
     return false;
   }

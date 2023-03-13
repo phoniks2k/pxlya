@@ -1,9 +1,9 @@
 -- Checking requirements for placing pixels, calculating cooldown
--- of user and incrementing pixel counts wthin redis itself.
+-- of user and incrementing pixel counts within redis itself.
 -- Does not set pixels directly. Pixels are set in batches
 -- in RedisCanvas.js
--- Keys: 
---   isAlloweed: 'isal:ip' (proxycheck, blacklist, whitelist)
+-- Keys:
+--   isAllowed: 'isal:ip' (proxycheck, blacklist, whitelist)
 --   isHuman 'human:ip' captcha needed when expired,
 --     'nope' if no captcha should be checked
 --   ipCD: 'cd:canvasId:ip:ip'
@@ -17,16 +17,16 @@
 --   prevTop: sorted set of yesterdays top 10
 -- Args:
 --   clrIgnore: integer number of what colors are considered unset
---   bcd: number baseColldown (fixed to cdFactor and 0 if admin)
+--   bcd: number baseCooldown (fixed to cdFactor and 0 if admin)
 --   pcd: number set pixel cooldown  (fixed to cdFactor and 0 if admin)
 --   cds: max cooldown of canvas
 --   userId: '0' if not logged in
 --   cc country code
 --   req: requirements of canvas
 --     'nope', unsigned integer or 'top'
---   off1, chonk offset of first pixel
---   off2, chonk offset of second pixel
---   ..., infinie pixels possible
+--   off1, chunk offset of first pixel
+--   off2, chunk offset of second pixel
+--   ..., infinite pixels possible
 -- Returns:
 --   {
 --     1: pixel return status code (check ui/placePixel.js)

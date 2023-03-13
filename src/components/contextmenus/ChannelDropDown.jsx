@@ -73,7 +73,7 @@ const ChannelDropDown = ({
     }
     // latest lastTs first
     sortChansNew.sort((c1, c2) => {
-      // determins if default channels get sorted too
+      // determines if default channels get sorted too
       if (c1[3] === 0 || c2[3] === 0) return 0;
       if (c1[4] > c2[4]) return -1;
       if (c2[4] > c1[4]) return 1;

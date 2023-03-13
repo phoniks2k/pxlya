@@ -4,4 +4,4 @@
 
 export const selectWindowType = (state) => state.popup.windowType;
 
-export const selectWIndowArgs = (state) => state.popup.args;
+export const selectWindowArgs = (state) => state.popup.args;

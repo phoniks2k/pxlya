@@ -63,10 +63,10 @@ export class MailProvider {
     const { t } = getTTag(lang);
     logger.info(`Sending verification mail to ${to} / ${name}`);
     const verifyUrl = `${host}/api/auth/verify?token=${code}&email=${encodeURIComponent(to)}`;
-    const subject = t`Welcome ${name} to PixelPlanet, plese verify your mail`;
+    const subject = t`Welcome ${name} to PixelPlanet, please verify your mail`;
     const html = `<em>${t`Hello ${name}`}</em>,<br />
       ${t`welcome to our little community of pixelplacers, to use your account, you have to verify your mail. You can do that here: `} <a href="${verifyUrl}">${t`Click to Verify`}</a>. ${t`Or by copying following url:`}<br />${verifyUrl}\n<br />
-      ${t`Have fun and don't hesitate to contact us if you encouter any problems :)`}<br />
+      ${t`Have fun and don't hesitate to contact us if you encounter any problems :)`}<br />
       ${t`Thanks`}<br /><br />
       <img alt="" src="https://assets.pixelplanet.fun/tile.png" style="height:64px; width:64px" />`;
     this.sendMail(to, subject, html);
@@ -132,7 +132,7 @@ export class MailProvider {
 
     /*
      * not sure if this is needed yet
-     * does it matter if spaming password reset mails or verifications mails?
+     * does it matter if spamming password reset mails or verifications mails?
      *
     if(!reguser.verified) {
       logger.info(`Password reset mail for ${to} requested by ${ip} - mail not verified`);
@@ -169,7 +169,7 @@ export class MailProvider {
   /*
    * we do not use this right now
   static cleanUsers() {
-    // delete users that requier verification for more than 4 days
+    // delete users that require verification for more than 4 days
     RegUser.destroy({
       where: {
         verificationReqAt: {

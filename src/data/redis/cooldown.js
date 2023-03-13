@@ -22,7 +22,7 @@ const PREFIX = 'cd';
  * @param ip ip of request
  * @param id userId
  * @param ranked boolean if increasing rank
- * @param clrIgnore, bcd, pcd, cds incormations about canvas
+ * @param clrIgnore, bcd, pcd, cds information about canvas
  * @param i, j chunk coordinates
  * @param pxls Array with offsets of pixels
  * @return see lua/placePixel.lua

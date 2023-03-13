@@ -33,7 +33,7 @@ export type CanvasState = {
   historicalDate: string,
   historicalTime: string,
   hover: Array,
-  // object with all canvas informations from all canvases like colors and size
+  // object with all canvas information from all canvases like colors and size
   canvases: Object,
   // last canvas view, scale, selectedColor and viewscale
   // just used to get back to the previous coordinates when switching
@@ -46,7 +46,7 @@ export type CanvasState = {
 
 /*
  * parse url hash and sets view to coordinates
- * @param canvases Object with all canvas informations
+ * @param canvases Object with all canvas information
  * @return view, viewscale and scale for state
  */
 function getViewFromURL(canvases) {
@@ -331,7 +331,7 @@ export default function canvasReducer(
         scale,
         isHistoricalView,
         historicalCanvasSize,
-        // rember view, scale and viewscale
+        // remember view, scale and viewscale
         prevCanvasCoords: {
           ...state.prevCanvasCoords,
           [prevCanvasId]: {

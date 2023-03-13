@@ -40,10 +40,10 @@ const Window = ({ id }) => {
   const resizeRef = useRef();
 
   const selectWindowById = useMemo(() => makeSelectWindowById(id), []);
-  const selectWIndowPosById = useMemo(() => makeSelectWindowPosById(id), []);
+  const selectWindowPosById = useMemo(() => makeSelectWindowPosById(id), []);
   const selectWindowArgs = useMemo(() => makeSelectWindowArgs(id), []);
   const win = useSelector(selectWindowById);
-  const position = useSelector(selectWIndowPosById);
+  const position = useSelector(selectWindowPosById);
   const showWindows = useSelector(selectShowWindows);
   const args = useSelector(selectWindowArgs);
 
@@ -54,7 +54,7 @@ const Window = ({ id }) => {
     setArgs: (newArgs) => dispatch(setWindowArgs(id, newArgs)),
     setTitle: (title) => dispatch(setWindowTitle(id, title)),
     // eslint-disable-next-line max-len
-    changeType: (newType, newTitel, newArgs) => dispatch(changeWindowType(id, newType, newTitel, newArgs)),
+    changeType: (newType, newTitle, newArgs) => dispatch(changeWindowType(id, newType, newTitle, newArgs)),
   }), [id, args]);
 
   const {

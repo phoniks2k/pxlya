@@ -59,7 +59,7 @@ const UserAreaContent = () => {
     <div className="content">
       <UserMessages />
       <Stat
-        text={t`Todays Placed Pixels`}
+        text={t`Today Placed Pixels`}
         value={stats.dailyTotalPixels}
       />
       <Stat

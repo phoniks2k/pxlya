@@ -40,7 +40,7 @@ function getStylesByWindowSize(
     paletteCols = 5;
     flexDirection = 'row';
   } else {
-    // ordinary palette (one or two colums)
+    // ordinary palette (one or two columns)
     spanSize = 24;
     paletteCols = (windowHeight < 801) ? 2 : 1;
     flexDirection = 'column';

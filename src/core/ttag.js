@@ -33,7 +33,7 @@ export function getTTag(lang) {
 /*
  * express middleware for getting language
  * It checks the lang cookie, and if not present,
- * the Accept-Lanuage header
+ * the Accept-Language header
  */
 export function expressTTag(req, res, next) {
   const cookies = cookie.parse(req.headers.cookie || '');

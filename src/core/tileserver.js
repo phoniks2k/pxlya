@@ -120,7 +120,7 @@ class CanvasUpdater {
   }
 
   /*
-   * register changed chunk, queue corespongind tile to reload
+   * register changed chunk, queue corresponding tile to reload
    * @param chunk Chunk coordinates
    */
   registerChunkChange(chunk) {

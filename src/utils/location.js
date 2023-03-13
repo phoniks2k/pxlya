@@ -3,7 +3,7 @@
  */
 
 /*
- * gets prefered language out of localisation string
+ * gets preferred language out of localisation string
  * @param location string (like from accept-language header)
  * @return language code
  */
@@ -45,6 +45,7 @@ const lang2CC = {
   sr: 'rs',
   be: 'by',
   kk: 'kz',
+  da: 'dk',
 };
 export function langCodeToCC(lang) {
   return lang2CC[lang] || lang;
