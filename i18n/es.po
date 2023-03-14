@@ -742,7 +742,7 @@ msgstr ""
 "la medianoche UTC."
 
 #: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Píxeles Colocados Hoy"
 
 #: src/components/UserArea.jsx:61

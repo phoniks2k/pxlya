@@ -42,7 +42,7 @@ msgid "Your mail has to be verified in order to chat"
 msgstr "E-Mail muss verifiziert sein um Nachrichten zu senden"
 
 #: src/core/ChatProvider.js:436
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr ""
 "Du bsit permanent stummgeschaltet, gehe zu unser guilded um dagegen "
 "einzusprechen"
@@ -93,7 +93,7 @@ msgid "User doesn't exist in our database :("
 msgstr "Spieler existiert nicht in unserer Datenbank :("
 
 #: src/routes/reset_password.js:87
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "Passwort erfolgreich geändert."
 
 #: src/routes/reset_password.js:106
@@ -142,7 +142,7 @@ msgstr ""
 "in ${ minLeft } minuten anfordern."
 
 #: src/core/mail.js:78
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr ""
 "Willkommen ${ name } auf PixelPlanet, bitte verifiziere deine Mail Adresse"
 
@@ -170,7 +170,7 @@ msgstr "Oder kopiere den folgenden Link:"
 
 #: src/core/mail.js:81
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr ""
 "Viel Spaß und scheue dich nicht uns zu kontaktieren, falls du Probleme "
 "hast :)"

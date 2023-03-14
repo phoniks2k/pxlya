@@ -922,7 +922,7 @@ msgid "Register"
 msgstr "Registra't"
 
 #: src/components/UserAreaContent.jsx:63
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Píxels col·locats avui"
 
 #: src/components/UserAreaContent.jsx:67

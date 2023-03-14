@@ -30,7 +30,7 @@ msgid "Your mail has to be verified in order to chat"
 msgstr "Onaylı bir E-Posta adresin olmadan sohbete katılamazsın"
 
 #: src/core/ChatProvider.js:409
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr "Kalıcı olarak susturuldun, kaldırmak için Guilded sunucumuza katıl"
 
 #: src/core/ChatProvider.js:414
@@ -79,7 +79,7 @@ msgid "User doesn't exist in our database :("
 msgstr "Kullanıcı veri tabanımızda bulunamadı :("
 
 #: src/routes/reset_password.js:90
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "Parolanız başarılı bir şekilde değiştirildi."
 
 #: src/routes/reset_password.js:109
@@ -129,7 +129,7 @@ msgstr ""
 "talep edebilirsiniz."
 
 #: src/core/mail.js:75
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr "PixelPlanet'e hoş geldin ${ name }, lütfen mail adresini doğrula"
 
 #: src/core/mail.js:77
@@ -155,7 +155,7 @@ msgstr "Veya bağlantıyı kopyalayarak:"
 
 #: src/core/mail.js:79
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr "Eğlenmene bak ve problem yaşarsan bize ulaşmaktan çekinme :)"
 
 #: src/core/mail.js:80 src/core/mail.js:130

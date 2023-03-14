@@ -401,7 +401,7 @@ msgid "Send"
 msgstr "Жіберу"
 
 #: src/components/BanInfo.jsx:66
-msgid "You are banned. You think it is unjustifed? Check out the "
+msgid "You are banned. You think it is unjustified? Check out the "
 msgstr "Сіз бұғатталғансыз. Сізді әділетсіз бұғаттады деп ойласаңыз, "
 
 #: src/components/BanInfo.jsx:76
@@ -996,7 +996,7 @@ msgid "Register"
 msgstr "Тіркелу"
 
 #: src/components/UserAreaContent.jsx:62
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Бүгін салған пикселдерім"
 
 #: src/components/UserAreaContent.jsx:66

@@ -12,7 +12,7 @@ msgid "Your country is temporary muted from this chat channel"
 msgstr ""
 
 #: src/core/ChatProvider.js:439
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr ""
 
 #: src/core/ChatProvider.js:441
@@ -74,7 +74,7 @@ msgid "User doesn't exist in our database :("
 msgstr ""
 
 #: src/routes/reset_password.js:89
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr ""
 
 #: src/routes/reset_password.js:108
@@ -375,7 +375,7 @@ msgstr ""
 
 #: src/core/MailProvider.js:66
 #, javascript-format
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr ""
 
 #: src/core/MailProvider.js:67
@@ -398,7 +398,7 @@ msgid "Or by copying following url:"
 msgstr ""
 
 #: src/core/MailProvider.js:69
-msgid "Have fun and don't hesitate to contact us if you encouter any problems :)"
+msgid "Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr ""
 
 #: src/core/MailProvider.js:70

@@ -35,7 +35,7 @@ msgid "Your mail has to be verified in order to chat"
 msgstr "Дæ пост æвæццæгæн басгæрст, цæмæй чаты æмхиц уын"
 
 #: src/core/ChatProvider.js:331
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr "Дæ Фæсмынæг, баиу махæн ырдæм цæмæй аппелиацийы хъалон"
 
 #: src/core/ChatProvider.js:336
@@ -108,7 +108,7 @@ msgid "User doesn't exist in our database :("
 msgstr "Пайдагæнæг æнæ фæлдис нæ бындуры бæрæггæнæнтæ :("
 
 #: src/routes/reset_password.js:108
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "Парол æнтыстджынæй ивыдзинад."
 
 #: src/routes/reset_password.js:127
@@ -133,7 +133,7 @@ msgstr ""
 "минуты фæстæ."
 
 #: src/core/mail.js:75
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr "Æгас цу ${ name } PixelPlanet'мæ, табуафси сфидар дæ пост"
 
 #: src/core/mail.js:77
@@ -159,7 +159,7 @@ msgstr "Кæнæ къопи ис ма фæдылдзог URL:"
 
 #: src/core/mail.js:79
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr "Ивхæрс æмæ æфсæрмы нæй баздæх махæн, ды савзæр куы рæдыдтæ :)"
 
 #: src/core/mail.js:80 src/core/mail.js:130

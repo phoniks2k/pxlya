@@ -924,7 +924,7 @@ msgid "Register"
 msgstr "Kayıt Ol"
 
 #: src/components/UserAreaContent.jsx:63
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Bugün Atılan Pikseller"
 
 #: src/components/UserAreaContent.jsx:67

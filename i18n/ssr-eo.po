@@ -34,7 +34,7 @@ msgid "Your mail has to be verified in order to chat"
 msgstr "Vian retpostadreson devas esti verigita por babili"
 
 #: src/core/ChatProvider.js:331
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr "Vi estas silentata senfine, eniru je l' guilded por malfari ĝi"
 
 #: src/core/ChatProvider.js:336
@@ -107,7 +107,7 @@ msgid "User doesn't exist in our database :("
 msgstr "Uzanto ne ekzistas ŭwŭ"
 
 #: src/routes/reset_password.js:108
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "Pasvorton Malerare Ŝanĝita."
 
 #: src/routes/reset_password.js:127
@@ -132,7 +132,7 @@ msgstr ""
 "en ${ minLeft } minutoj."
 
 #: src/core/mail.js:75
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr "Bonvenon ${ name } to PixelPlanet, bonvolu verigi vian retpostadreson"
 
 #: src/core/mail.js:77
@@ -158,7 +158,7 @@ msgstr "Aŭ kopianta la URL:"
 
 #: src/core/mail.js:79
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr "Amuziĝu kaj ne heziti kontakti nin se renkontus ajna problemojn ŭwŭ"
 
 #: src/core/mail.js:80 src/core/mail.js:130
