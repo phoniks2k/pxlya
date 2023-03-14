@@ -652,7 +652,7 @@ msgid "You must be logged in to chat"
 msgstr "Դուք պետք է մուտք գործեք զրուցելու համար"
 
 #: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Այսօր տեղադրված պիքսելներ"
 
 #: src/components/UserArea.jsx:61

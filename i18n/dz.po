@@ -605,7 +605,7 @@ msgid "LogIn"
 msgstr ""
 
 #: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr ""
 
 #: src/components/UserArea.jsx:61

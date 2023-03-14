@@ -737,7 +737,7 @@ msgstr ""
 "noči UTC."
 
 #: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Danes Postavljeni Pixli"
 
 #: src/components/UserArea.jsx:61

@@ -975,7 +975,7 @@ msgstr ""
 "recommence à minuit TUC."
 
 #: src/components/UserAreaContent.jsx:63
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Pixels placés aujourd'hui"
 
 #: src/components/UserAreaContent.jsx:67

@@ -712,7 +712,7 @@ msgid "LogIn"
 msgstr "Бацу"
 
 #: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Абонон Равæрды Пикселтæ"
 
 #: src/components/UserArea.jsx:61

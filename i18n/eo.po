@@ -722,7 +722,7 @@ msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
 msgstr "Rangigas ĉiu 5 minutoj. Hodiaŭa rangojn nuligas je meznokto UTC."
 
 #: src/components/UserArea.jsx:57
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Hodiaŭa Metitaj Pikseloj"
 
 #: src/components/UserArea.jsx:61

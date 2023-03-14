@@ -37,7 +37,7 @@ msgid "Your mail has to be verified in order to chat"
 msgstr "Vaš E-naslov mora biti preverjen zato, da lahko klepetate"
 
 #: src/core/ChatProvider.js:331
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr ""
 "Za vedno ste utišani, pridružite se guilded, da se pritožite na utišavo "
 
@@ -113,7 +113,7 @@ msgid "User doesn't exist in our database :("
 msgstr "Uporabnik ne obstaja v naši podatkovni bazi :("
 
 #: src/routes/reset_password.js:108
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "Geslo je bilo uspešno spremenjeno."
 
 #: src/routes/reset_password.js:127
@@ -138,7 +138,7 @@ msgstr ""
 "čez ${ minLeft } minut."
 
 #: src/core/mail.js:75
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr "${ name } dobrodošel na PixelPlanetu, prosim potrdite vaš E-naslov"
 
 #: src/core/mail.js:77
@@ -165,7 +165,7 @@ msgstr "Ali pa tako, da kopirate naslednji naslov:"
 
 #: src/core/mail.js:79
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr ""
 "Imejte se lepo in ne bojte se nas kontaktirati če pridete, do kakšnih "
 "težav :)"

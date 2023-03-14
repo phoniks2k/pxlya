@@ -400,7 +400,7 @@ msgid "Send"
 msgstr "Адправіць"
 
 #: src/components/BanInfo.jsx:66
-msgid "You are banned. You think it is unjustifed? Check out the "
+msgid "You are banned. You think it is unjustified? Check out the "
 msgstr "Вы забанены. Лічыце, што гэта неапраўдана? Прачытайце "
 
 #: src/components/BanInfo.jsx:76
@@ -999,7 +999,7 @@ msgid "Register"
 msgstr "Зарэгістравацца"
 
 #: src/components/UserAreaContent.jsx:62
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Пікселяў Размешчана Сёння"
 
 #: src/components/UserAreaContent.jsx:66

@@ -344,7 +344,7 @@ msgid "Canvas Archive"
 msgstr "Arhiva kanvasa"
 
 #: src/components/BanInfo.jsx:67
-msgid "You are banned. You think it is unjustifed? Check out the "
+msgid "You are banned. You think it is unjustified? Check out the "
 msgstr "Banovani ste. Da li mislite da ovo nije fer? Pogledajte"
 
 #: src/components/BanInfo.jsx:77
@@ -983,7 +983,7 @@ msgid "Register"
 msgstr "Registruj se"
 
 #: src/components/UserAreaContent.jsx:62
-msgid "Todays Placed Pixels"
+msgid "Today Placed Pixels"
 msgstr "Današnji postavljeni pikseli"
 
 #: src/components/UserAreaContent.jsx:66

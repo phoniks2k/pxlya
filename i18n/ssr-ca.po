@@ -30,7 +30,7 @@ msgid "Your mail has to be verified in order to chat"
 msgstr "El teu correu electrònic ha de ser verificat per poder xatejar"
 
 #: src/core/ChatProvider.js:366
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr ""
 "Estàs permanentment silenciat, uneix-te al nostre Guilded per apel·lar el "
 "mute"
@@ -81,7 +81,7 @@ msgid "User doesn't exist in our database :("
 msgstr "L'usuari no existeix a la nostra base de dades :("
 
 #: src/routes/reset_password.js:90
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "La contrasenya s'ha canviat exitosament."
 
 #: src/routes/reset_password.js:109
@@ -133,7 +133,7 @@ msgstr ""
 "ne un altre en ${ minLeft } minuts."
 
 #: src/core/mail.js:75
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr ""
 "Benvingut ${ name } a PixelPlanet, si us plau verifica el teu correu "
 "electrònic"
@@ -162,7 +162,7 @@ msgstr "O copiant la següent URL:"
 
 #: src/core/mail.js:79
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr ""
 "Diverteix-te i no dubtis de contactar amb nosaltres si tens cap problema :)"
 

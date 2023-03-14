@@ -21,7 +21,7 @@ msgid "Your country is temporary muted from this chat channel"
 msgstr "Осы арнада бүкіл еліңіздің жазу рұқсаты уақытша шектелген"
 
 #: src/core/ChatProvider.js:439
-msgid "You are permanently muted, join our guilded to apppeal the mute"
+msgid "You are permanently muted, join our guilded to appeal the mute"
 msgstr ""
 "Жазу рұқсатыңыз мерзімсіз шектелген, шағым беру үшін біздің guilded-ке "
 "қосылыңыз"
@@ -86,7 +86,7 @@ msgid "User doesn't exist in our database :("
 msgstr "Біздің дерекқорда мұндай қолданушы жоқ :("
 
 #: src/routes/reset_password.js:89
-msgid "Passowrd successfully changed."
+msgid "Password successfully changed."
 msgstr "Құпиясөз сәтті өзгертілді."
 
 #: src/routes/reset_password.js:108
@@ -396,7 +396,7 @@ msgstr ""
 
 #: src/core/MailProvider.js:66
 #, javascript-format
-msgid "Welcome ${ name } to PixelPlanet, plese verify your mail"
+msgid "Welcome ${ name } to PixelPlanet, please verify your mail"
 msgstr "${ name }, PixelPlanet-ке қош келдіңіз, эл. поштаңызды растаңыз"
 
 #: src/core/MailProvider.js:67
@@ -422,7 +422,7 @@ msgstr "Немесе осы сілтемені көшіріп алыңыз:"
 
 #: src/core/MailProvider.js:69
 msgid ""
-"Have fun and don't hesitate to contact us if you encouter any problems :)"
+"Have fun and don't hesitate to contact us if you encounter any problems :)"
 msgstr ""
 "Уақытты жақсы өткізуіңізді тілейміз! Қандай да бір мәселелер болса, бізге "
 "қысылмай хабарласыңыз :)"
