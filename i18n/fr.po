@@ -835,7 +835,7 @@ msgstr "Le nom doit avoir moins de 26 caractères"
 
 #: src/utils/validation.js:39
 msgid "Name contains invalid character like @, /, \\ or #"
-msgstr "Le nom contient un caractère non valide comme @, /, \\ ou $"
+msgstr "Le nom contient un caractère non valide comme @, /, \\ ou #"
 
 #: src/utils/validation.js:54
 msgid "No password given."
