@@ -96,7 +96,9 @@ function ModWatchtools() {
     selectCanvas(canvasId);
   }, [canvasId]);
 
-  const { columns, types, rows } = table;
+  const {
+    columns, types, rows, ts,
+  } = table;
   const cidColumn = (types) ? (types.indexOf('cid')) : -1;
 
   return (
@@ -227,6 +229,7 @@ function ModWatchtools() {
                     columns: ret.columns,
                     types: ret.types,
                     rows: ret.rows,
+                    ts: Date.now(),
                   });
                 }
               },
@@ -258,6 +261,7 @@ function ModWatchtools() {
                     columns: ret.columns,
                     types: ret.types,
                     rows: ret.rows,
+                    ts: Date.now(),
                   });
                 }
               },
@@ -269,7 +273,7 @@ function ModWatchtools() {
       </div>
       <br />
       {(rows && columns && types) && (
-        <React.Fragment key="pxltable">
+        <React.Fragment key={ts}>
           <div className="modaldivider" />
           <table style={{ fontSize: 11 }}>
             <thead>
