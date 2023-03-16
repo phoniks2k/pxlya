@@ -244,7 +244,7 @@ export async function getSummaryFromArea(
   if (ip2Info.size > 0) {
     printIIDs = true;
     columns.push('IID', 'ct', 'cidr', 'org', 'pc');
-    types.push('uuid', 'flag', 'string', 'string', 'string');
+    types.push('uuid', 'flag', 'cidr', 'string', 'string');
   }
   if (uid2Name.size > 0) {
     printUsers = true;

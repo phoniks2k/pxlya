@@ -362,8 +362,26 @@ function ModWatchtools() {
                           );
                         }
                         case 'cid': {
-                          const ident = canvases[val] && canvases[val].ident;
+                          const ident = canvases?.ident;
                           return (<td key={type}>{ident}</td>);
+                        }
+                        case 'cidr': {
+                          return (
+                            <td key={type}>
+                              <span
+                                role="button"
+                                tabIndex={-1}
+                                style={{
+                                  cursor: 'pointer',
+                                  whiteSpace: 'initial',
+                                }}
+                                title={t`Copy to Clipboard`}
+                                onClick={() => copyTextToClipboard(
+                                  val.slice(0, val.indexOf('/')),
+                                )}
+                              >{val}</span>
+                            </td>
+                          );
                         }
                         case 'uuid': {
                           return (
