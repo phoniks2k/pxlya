@@ -386,15 +386,6 @@ class CanvasCleaner {
               `Couldn't load chunk ch:${canvasId}:${iAbs}:${jAbs}: ${error.message}}`,
             );
           }
-          if (!chunk || !chunk.length) {
-            chunk = null;
-            if (chunk) {
-              this.logger(
-                // eslint-disable-next-line max-len
-                `Chunk ch:${canvasId}:${iAbs}:${jAbs} has invalid size ${chunk.length}.`,
-              );
-            }
-          }
         }
         newChunks[jRel + 1][iRel + 1] = chunk;
       }

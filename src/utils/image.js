@@ -176,39 +176,50 @@ function quantizePointContainer(colors, pointContainer, opts) {
     // construct color distance calculator
     let distCalc;
     switch (colorDist) {
-      case 'Euclidean':
+      case 'Euclidean': {
         distCalc = new distance.Euclidean();
         break;
-      case 'Manhattan':
+      }
+      case 'Manhattan': {
         distCalc = new distance.Manhattan();
         break;
-      case 'CIEDE2000':
+      }
+      case 'CIEDE2000': {
         distCalc = new distance.CIEDE2000();
         break;
-      case 'CIE94Textiles':
+      }
+      case 'CIE94Textiles': {
         distCalc = new distance.CIE94Textiles();
         break;
-      case 'CIE94GraphicArts':
+      }
+      case 'CIE94GraphicArts': {
         distCalc = new distance.CIE94GraphicArts();
         break;
-      case 'EuclideanBT709NoAlpha':
+      }
+      case 'EuclideanBT709NoAlpha': {
         distCalc = new distance.EuclideanBT709NoAlpha();
         break;
-      case 'EuclideanBT709':
+      }
+      case 'EuclideanBT709': {
         distCalc = new distance.EuclideanBT709();
         break;
-      case 'ManhattanBT709':
+      }
+      case 'ManhattanBT709': {
         distCalc = new distance.ManhattanBT709();
         break;
-      case 'CMetric':
+      }
+      case 'CMetric': {
         distCalc = new distance.CMetric();
         break;
-      case 'PNGQuant':
+      }
+      case 'PNGQuant': {
         distCalc = new distance.PNGQuant();
         break;
-      case 'ManhattanNommyde':
+      }
+      case 'ManhattanNommyde': {
         distCalc = new distance.ManhattanNommyde();
         break;
+      }
       default:
         distCalc = new distance.Euclidean();
     }
