@@ -146,8 +146,8 @@ class SocketClient {
       this.store.getState().canvas.canvasId,
     ));
     // register chunks
-    const chunkids = this.getRenderer().recChunkIds;
-    if (chunkids.length) {
+    const chunkids = this.getRenderer?.().recChunkIds;
+    if (chunkids?.length) {
       console.log(`Register ${chunkids.length} chunks`);
       this.send(dehydrateRegMChunks(chunkids));
     }
