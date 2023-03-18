@@ -343,14 +343,16 @@ class SocketServer {
     while (!client.done) {
       const ws = client.value;
       if (ws.readyState === WebSocket.OPEN
-        && ws.user
-        && ws.user.ip === ip
+        && ws.user?.ip === ip
       ) {
         /*
          * we deleted all registered chunks above
          * have to reset it to avoid onClose to
          * do it again.
          */
+        if (ws.user.id === 1) {
+          console.log('DEBUG killAllWsByUerIp for hf');
+        }
         ws.chunkCnt = 0;
         ws.terminate();
         amount += 1;
@@ -637,6 +639,9 @@ class SocketServer {
   }
 
   deleteChunk(chunkid, ws) {
+    if (ws.user.id === 1) {
+      console.log('DEBUG delete chunk for hf', chunkid);
+    }
     ws.chunkCnt -= 1;
     if (!this.CHUNK_CLIENTS.has(chunkid)) return;
     const clients = this.CHUNK_CLIENTS.get(chunkid);
@@ -646,6 +651,9 @@ class SocketServer {
 
   deleteAllChunks(ws) {
     if (!ws.chunkCnt) return;
+    if (ws.user.id === 1) {
+      console.log('DEBUG delete all chunk for hf');
+    }
     // eslint-disable-next-line
     for (const client of this.CHUNK_CLIENTS.values()) {
       const pos = client.indexOf(ws);
