@@ -28,6 +28,7 @@
     "function-call-argument-newline":"off",
     "max-len": [1, 80, 2, {"ignoreComments": true}],
     "no-bitwise": 0,
+    "no-restricted-syntax": 0,
     "no-plusplus" : "off",
     "no-param-reassign": "off",
     "no-mixed-operators":"off",

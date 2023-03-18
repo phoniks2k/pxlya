@@ -329,9 +329,9 @@ class SocketServer {
   killAllWsByUerIp(ip) {
     let amount = ipCounter.get(ip);
     if (!amount) return 0;
-    // eslint-disable-next-line
+
     for (const [chunkid, clients] of this.CHUNK_CLIENTS.entries()) {
-      const newClients = clients.filter((ws) => ws.user.ip === ip);
+      const newClients = clients.filter((ws) => ws.user.ip !== ip);
       if (clients.length !== newClients.length) {
         this.CHUNK_CLIENTS.set(chunkid, newClients);
       }
@@ -650,11 +650,13 @@ class SocketServer {
   }
 
   deleteAllChunks(ws) {
-    if (!ws.chunkCnt) return;
+    if (!ws.chunkCnt) {
+      return;
+    }
     if (ws.user.id === 1) {
       console.log('DEBUG delete all chunk for hf');
     }
-    // eslint-disable-next-line
+
     for (const client of this.CHUNK_CLIENTS.values()) {
       const pos = client.indexOf(ws);
       if (~pos) {
