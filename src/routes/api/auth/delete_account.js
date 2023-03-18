@@ -5,6 +5,7 @@
 import socketEvents from '../../../socket/socketEvents';
 import { RegUser } from '../../../data/sql';
 import { validatePassword } from '../../../utils/validation';
+import { checkIfMuted } from '../../../data/redis/chat';
 import { compareToHash } from '../../../utils/hash';
 
 function validate(password, gettext) {
@@ -37,6 +38,15 @@ export default async (req, res) => {
     return;
   }
   const { id, name } = user;
+
+  const mutedTtl = await checkIfMuted(id);
+  if (mutedTtl !== -2) {
+    res.status(403);
+    res.json({
+      errors: [t`Muted users can not delete their account.`],
+    });
+    return;
+  }
 
   const currentPassword = user.regUser.password;
   if (!currentPassword || !compareToHash(password, currentPassword)) {

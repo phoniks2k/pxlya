@@ -7,6 +7,7 @@ import mailProvider from '../../../core/MailProvider';
 import { validatePassword, validateEMail } from '../../../utils/validation';
 import { getHostFromRequest } from '../../../utils/ip';
 import { compareToHash } from '../../../utils/hash';
+import { checkIfMuted } from '../../../data/redis/chat';
 import { checkIfMailDisposable } from '../../../core/isAllowed';
 
 async function validate(email, password, t, gettext) {
@@ -50,6 +51,15 @@ export default async (req, res) => {
     res.status(400);
     res.json({
       errors: [t`Incorrect password!`],
+    });
+    return;
+  }
+
+  const mutedTtl = await checkIfMuted(user.id);
+  if (mutedTtl !== -2) {
+    res.status(403);
+    res.json({
+      errors: [t`Muted users can not do this.`],
     });
     return;
   }
