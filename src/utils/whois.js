@@ -210,7 +210,16 @@ export default async function whoisIp(
   ip,
   host = null,
 ) {
-  let useHost = host || 'whois.iana.org';
+  let useHost;
+  if (!host) {
+    if (Math.random() > 0.5) {
+      useHost = 'whois.arin.net';
+    } else {
+      useHost = 'whois.iana.org';
+    }
+  } else {
+    useHost = host;
+  }
   let whoisResult = '';
   let refCnt = 0;
   while (refCnt < 5) {
