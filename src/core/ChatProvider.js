@@ -402,7 +402,9 @@ export class ChatProvider {
     }
     const country = user.regUser.flag || 'xx';
 
-    if (this.autobanPhrase && message.includes(this.autobanPhrase)) {
+    if (name.trim() === ''
+      || (this.autobanPhrase && message.includes(this.autobanPhrase))
+    ) {
       const { ipSub } = user;
       if (!user.banned) {
         banIP(ipSub, 'CHATBAN', 0, 1);
