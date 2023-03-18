@@ -160,8 +160,7 @@ export default async function drawByOffsets(
       }
 
       /* dont rank antarctica */
-      // eslint-disable-next-line eqeqeq
-      if (canvasId == 0 && y > 14450) {
+      if (canvasId === 0 && y > 14450) {
         ranked = false;
       }
     }

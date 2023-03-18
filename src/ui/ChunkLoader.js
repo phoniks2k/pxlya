@@ -122,7 +122,9 @@ class ChunkLoader {
         }
       }
     });
-    this.bcRemoveChunks(remChunks);
+    if (remChunks.length) {
+      this.bcRemoveChunks(remChunks);
+    }
     // eslint-disable-next-line no-console,max-len
     console.log(`GC cleaned ${remChunks.length} / ${chunks.size + remChunks.length} chunks`);
   }

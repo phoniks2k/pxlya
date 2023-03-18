@@ -363,8 +363,7 @@ class SocketServer {
   broadcastPixelBuffer(canvasId, chunkid, data) {
     if (this.CHUNK_CLIENTS.has(chunkid)) {
       const clients = this.CHUNK_CLIENTS.get(chunkid)
-        // eslint-disable-next-line eqeqeq
-        .filter((ws) => ws.canvasId == canvasId);
+        .filter((ws) => ws.canvasId === canvasId);
       SocketServer.broadcastSelected(clients, data);
     }
   }
@@ -408,9 +407,9 @@ class SocketServer {
       while (!client.done) {
         const ws = client.value;
         if (ws.readyState === WebSocket.OPEN
-          && ws.user
+          && ws.user && ws.canvasId !== null
         ) {
-          const canvasId = ws.canvasId || 0;
+          const { canvasId } = ws;
           const { ip } = ws.user;
           // only count unique IPs per canvas
           if (!ipsPerCanvas[canvasId]) {
@@ -580,7 +579,7 @@ class SocketServer {
         case REG_CANVAS_OP: {
           const canvasId = hydrateRegCanvas(buffer);
           if (!canvases[canvasId]) return;
-          if (ws.canvasId !== null && ws.canvasId !== canvasId) {
+          if (ws.canvasId !== canvasId) {
             this.deleteAllChunks(ws);
           }
           ws.canvasId = canvasId;
