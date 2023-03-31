@@ -403,7 +403,7 @@ export class ChatProvider {
     const country = user.regUser.flag || 'xx';
 
     if (name.trim() === ''
-      || (Number(channelId) === 4374 && message.includes('discord'))
+    //  || (Number(channelId) === 4374 && message.includes('discord'))
       || (this.autobanPhrase && message.includes(this.autobanPhrase))
     ) {
       const { ipSub } = user;
