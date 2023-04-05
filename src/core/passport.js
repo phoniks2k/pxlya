@@ -161,8 +161,6 @@ passport.use(new GoogleStrategy({
   callbackURL: '/api/auth/google/return',
   proxy: true,
 }, async (accessToken, refreshToken, profile, done) => {
-  done(new Error('Google login temporarily disabled'));
-  return;
   try {
     const { displayName: name, emails } = profile;
     const email = emails[0].value;
