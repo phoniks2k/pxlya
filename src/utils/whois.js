@@ -160,6 +160,7 @@ function singleWhoisQuery(
       host,
       port: WHOIS_PORT,
       localAddress: OUTGOING_ADDRESS,
+      family: 4,
       timeout: WHOIS_TIMEOUT,
     }, () => socket.write(query + QUERY_SUFFIX));
     socket.on('data', (chunk) => { data += chunk; });
