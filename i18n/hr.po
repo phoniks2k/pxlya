@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Language-Team: \n"
-"MIME-Version: 1.0\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
 "Last-Translator: Fontan 030 <pomanfedurin@gmail.com>\n"
+"Language-Team: \n"
 "Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: src/controls/keypress.js:41
 #, javascript-format
@@ -41,8 +41,7 @@ msgstr "Zvuk ugašen"
 msgid "Unmuted Sound"
 msgstr "Zvuk upaljen"
 
-#: src/components/CoordinatesBox.jsx:28 src/components/GetIID.jsx:51
-#: src/controls/keypress.js:88
+#: src/components/CoordinatesBox.jsx:28 src/components/GetIID.jsx:51 src/controls/keypress.js:88
 msgid "Copied!"
 msgstr "Kopirano!"
 
@@ -70,8 +69,7 @@ msgstr "Nevažeće platno"
 msgid "This canvas doesn't exist"
 msgstr "Ovo platno ne postoji"
 
-#: src/ui/PixelTransferController.js:100 src/ui/PixelTransferController.js:104
-#: src/ui/PixelTransferController.js:108
+#: src/ui/PixelTransferController.js:100 src/ui/PixelTransferController.js:104 src/ui/PixelTransferController.js:108
 msgid "Invalid Coordinates"
 msgstr "Nevažeće koordinate"
 
@@ -117,7 +115,7 @@ msgstr "Pixel zaštićen!"
 
 #: src/ui/PixelTransferController.js:132
 msgid "Please prove that you are human"
-msgstr "Molimo dokažite da ste čovjek."
+msgstr "Molimo dokažite da ste čovjek"
 
 #: src/ui/PixelTransferController.js:136
 msgid "No Proxies Allowed :("
@@ -160,9 +158,7 @@ msgid "Timeout"
 msgstr "Pauzirani ste"
 
 #: src/ui/PixelTransferController.js:159
-msgid ""
-"Didn't get an answer from pixelplanet. Maybe try to refresh if problem "
-"persists?"
+msgid "Didn't get an answer from pixelplanet. Maybe try to refresh if problem persists?"
 msgstr "Niste dobili odgovor od pixelplaneta? Pokušajte osvježiti stranicu"
 
 #: src/ui/PixelTransferController.js:162
@@ -171,7 +167,7 @@ msgstr "Čudno"
 
 #: src/ui/PixelTransferController.js:163
 msgid "Couldn't set Pixel"
-msgstr "Ne može se postaviti pixel."
+msgstr "Ne može se postaviti pixel"
 
 #: src/ui/PixelTransferController.js:168
 #, javascript-format
@@ -197,7 +193,7 @@ msgstr "Poslali ste previše zahtjeva"
 #: src/store/actions/fetch.js:59
 #, javascript-format
 msgid "try again after ${ ti }min"
-msgstr "Pokušajte opet nakon ${ ti } minuta"
+msgstr "pokušajte opet nakon ${ ti } minuta"
 
 #: src/store/actions/fetch.js:70
 msgid "Connection error ${ code } :("
@@ -207,8 +203,7 @@ msgstr "Greška u povezivanju ${ code } :("
 msgid "Could not connect to server, please try again later :("
 msgstr "Nije moguće povezati se s poslužiteljem, pokušajte ponovno kasnije :("
 
-#: src/store/actions/fetch.js:151 src/store/actions/fetch.js:170
-#: src/store/actions/fetch.js:189 src/store/actions/fetch.js:208
+#: src/store/actions/fetch.js:151 src/store/actions/fetch.js:170 src/store/actions/fetch.js:189 src/store/actions/fetch.js:208
 #: src/store/actions/fetch.js:227
 msgid "Unknown Error"
 msgstr "Nepoznata pogreška"
@@ -233,8 +228,7 @@ msgstr "vas je spomenuo"
 msgid "You have new messages in chat"
 msgstr "Imate nove poruke u chatu"
 
-#: src/components/Converter.jsx:561 src/components/CoordinatesBox.jsx:31
-#: src/components/ModWatchtools.jsx:371
+#: src/components/Converter.jsx:561 src/components/CoordinatesBox.jsx:31 src/components/ModWatchtools.jsx:371
 msgid "Copy to Clipboard"
 msgstr "Kopirati u međuspremnik"
 
@@ -258,8 +252,7 @@ msgstr "Zatvori chat"
 msgid "Open Chat"
 msgstr "Otvori chat"
 
-#: src/components/buttons/CanvasSwitchButton.jsx:20
-#: src/components/windows/index.js:19
+#: src/components/buttons/CanvasSwitchButton.jsx:20 src/components/windows/index.js:19
 msgid "Canvas Selection"
 msgstr "Odabir platna"
 
@@ -279,10 +272,8 @@ msgstr "Жүктелуде"
 msgid "Select Date above"
 msgstr "Odaberi datum gore"
 
-#: src/components/Admintools.jsx:103 src/components/ModCanvastools.jsx:222
-#: src/components/ModWatchtools.jsx:118 src/components/Window.jsx:157
-#: src/components/Window.jsx:260
-#: src/components/contextmenus/ChannelContextMenu.jsx:59
+#: src/components/Admintools.jsx:103 src/components/ModCanvastools.jsx:222 src/components/ModWatchtools.jsx:118 src/components/Window.jsx:157
+#: src/components/Window.jsx:260 src/components/contextmenus/ChannelContextMenu.jsx:59
 msgid "Close"
 msgstr "Zatvori"
 
@@ -330,13 +321,11 @@ msgstr "Otvori paletu"
 msgid "Globe View"
 msgstr "Globus pogled"
 
-#: src/components/BanInfo.jsx:75 src/components/buttons/HelpButton.jsx:20
-#: src/components/windows/index.js:13
+#: src/components/BanInfo.jsx:75 src/components/buttons/HelpButton.jsx:20 src/components/windows/index.js:13
 msgid "Help"
 msgstr "Pomoć"
 
-#: src/components/buttons/SettingsButton.jsx:21
-#: src/components/windows/index.js:14
+#: src/components/buttons/SettingsButton.jsx:21 src/components/windows/index.js:14
 msgid "Settings"
 msgstr "Postavke"
 
@@ -376,20 +365,14 @@ msgstr "Nije naveden captcha ID"
 msgid "Unknown Captcha Error"
 msgstr "Nepoznata Captcha pogreška"
 
-#: src/components/BanInfo.jsx:80 src/components/Captcha.jsx:77
-#: src/components/ChangeMail.jsx:72 src/components/ChangeName.jsx:58
-#: src/components/ChangePassword.jsx:79 src/components/DeleteAccount.jsx:55
-#: src/components/GlobalCaptcha.jsx:71 src/components/LogInForm.jsx:70
-#: src/components/windows/ForgotPassword.jsx:73
-#: src/components/windows/Register.jsx:89
+#: src/components/BanInfo.jsx:80 src/components/Captcha.jsx:77 src/components/ChangeMail.jsx:72 src/components/ChangeName.jsx:58
+#: src/components/ChangePassword.jsx:79 src/components/DeleteAccount.jsx:55 src/components/GlobalCaptcha.jsx:71 src/components/LogInForm.jsx:70
+#: src/components/windows/ForgotPassword.jsx:73 src/components/windows/Register.jsx:89
 msgid "Error"
 msgstr "Pogreška"
 
-#: src/components/ChangeMail.jsx:93 src/components/ChangeName.jsx:70
-#: src/components/ChangePassword.jsx:115 src/components/DeleteAccount.jsx:68
-#: src/components/GlobalCaptcha.jsx:80
-#: src/components/windows/ForgotPassword.jsx:89
-#: src/components/windows/Register.jsx:133
+#: src/components/ChangeMail.jsx:93 src/components/ChangeName.jsx:70 src/components/ChangePassword.jsx:115 src/components/DeleteAccount.jsx:68
+#: src/components/GlobalCaptcha.jsx:80 src/components/windows/ForgotPassword.jsx:89 src/components/windows/Register.jsx:133
 msgid "Cancel"
 msgstr "Otkaži"
 
@@ -411,7 +394,7 @@ msgstr "Razlog"
 
 #: src/components/BanInfo.jsx:91
 msgid "By Mod"
-msgstr "Od moderatora."
+msgstr "Od moderatora"
 
 #: src/components/BanInfo.jsx:97 src/components/ModIIDtools.jsx:84
 msgid "Duration"
@@ -427,7 +410,7 @@ msgstr " koji je u "
 
 #: src/components/BanInfo.jsx:112
 msgid "Unbanned"
-msgstr "nezabranjen"
+msgstr "Nezabranjen"
 
 #: src/components/BanInfo.jsx:113
 msgid "Now that you have seen this message, you are no longer banned."
@@ -443,27 +426,17 @@ msgstr "Postavite pixele u boji na veliko platno s drugim igračima na mreži!"
 
 #: src/components/windows/Help.jsx:43
 msgid ""
-"Our main canvas is a huge worldmap, you can place wherever you like, but you "
-"will have to wait a specific Cooldown between pixels. You can check out the "
-"cooldown and requirements on the Canvas Selection menu (globe button on top). "
-"Some canvases have a different cooldown for replacing a user-set pixels than "
-"placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels and 7s on "
-"already set pixels."
+"Our main canvas is a huge worldmap, you can place wherever you like, but you will have to wait a specific Cooldown between pixels. You can check out the "
+"cooldown and requirements on the Canvas Selection menu (globe button on top). Some canvases have a different cooldown for replacing a user-set pixels "
+"than placing on a unset pixel. i.e. 4s/7s means 4s on fresh pixels and 7s on already set pixels."
 msgstr ""
-"Naše glavno platno je ogromna karta svijeta koju možete postaviti gdje god želite, ali vi "
-"ćete morati pričekati određeno hlađenje između pxsela. Možete provjeriti "
-"hlađenje i zahtjeve na izborniku Canvas Selection (gumb globusa na vrhu)."
-"Neka platna imaju drugačije vrijeme hlađenja za zamjenu pixela koje postavlja korisnik "
-"postavljanje na nepostavljeni pixel. tj. 4s/7s znači 4s na svježim pixelima i 7s na "
-"već postavljenih pixela."
+"Naše glavno platno je ogromna karta svijeta koju možete postaviti gdje god želite, ali vi ćete morati pričekati određeno hlađenje između pxsela. Možete "
+"provjeriti hlađenje i zahtjeve na izborniku Canvas Selection (gumb globusa na vrhu).Neka platna imaju drugačije vrijeme hlađenja za zamjenu pixela koje "
+"postavlja korisnik postavljanje na nepostavljeni pixel. tj. 4s/7s znači 4s na svježim pixelima i 7s na već postavljenih pixela."
 
 #: src/components/windows/Help.jsx:47
-msgid ""
-"Higher zoomlevels take some time to update, the 3D globe gets updated at "
-"least once...per day."
-msgstr ""
-"Za ažuriranje viših razina zumiranja potrebno je neko vrijeme, 3D globus se ažurira "
-"najmanje jednom svaki dan."
+msgid "Higher zoomlevels take some time to update, the 3D globe gets updated at least once...per day."
+msgstr "Za ažuriranje viših razina zumiranja potrebno je neko vrijeme, 3D globus se ažurira najmanje jednom svaki dan."
 
 #: src/components/windows/Help.jsx:48
 msgid "Have fun!"
@@ -471,7 +444,7 @@ msgstr "Zabavite se!"
 
 #: src/components/windows/Help.jsx:50
 msgid "recommended"
-msgstr "Preporučeno"
+msgstr "preporučeno"
 
 #: src/components/windows/Help.jsx:51
 msgid "Source on "
@@ -482,12 +455,8 @@ msgid "Map Data"
 msgstr "Podaci karte"
 
 #: src/components/windows/Help.jsx:53
-msgid ""
-"The bare map data that we use, together with converted OpenStreetMap tiles "
-"for orientation, can be downloaded from mega.nz here: "
-msgstr ""
-"Goli kartografski podaci koje koristimo, zajedno s konvertiranim OpenStreetMap pločicama "
-"za orijentaciju, možete preuzeti s mega.nz ovdje: "
+msgid "The bare map data that we use, together with converted OpenStreetMap tiles for orientation, can be downloaded from mega.nz here: "
+msgstr "Goli kartografski podaci koje koristimo, zajedno s konvertiranim OpenStreetMap pločicama za orijentaciju, možete preuzeti s mega.nz ovdje: "
 
 #: src/components/windows/Help.jsx:55
 msgid "Banned? Detected as Proxy?"
@@ -496,12 +465,10 @@ msgstr "Zabranjen? Otkriven kao proxy?"
 #: src/components/windows/Help.jsx:57
 #, javascript-format
 msgid ""
-"If you got detected as proxy, but you are none, or think that you got "
-"wrongfully banned, please go to our ${ guildedLink } or send us an e-mail to "
+"If you got detected as proxy, but you are none, or think that you got wrongfully banned, please go to our ${ guildedLink } or send us an e-mail to "
 "${ mailLink } and include the following IID:"
 msgstr ""
-"Ako ste otkriveni kao proxy, ali niste ništa ili mislite da jeste "
-"nepravedno zabranjen, idite na naš ${ guildedLink } ili nam pošaljite e-poštu na "
+"Ako ste otkriveni kao proxy, ali niste ništa ili mislite da jeste nepravedno zabranjen, idite na naš ${ guildedLink } ili nam pošaljite e-poštu na "
 "${ mailLink } i uključite sljedeći IID:"
 
 #: src/components/windows/Help.jsx:60 src/components/windows/Help.jsx:77
@@ -542,49 +509,35 @@ msgstr "Pritisnite ${ bindW }, ${ bindA }, ${ bindS }, ${ bindD } za pomicanje"
 
 #: src/components/windows/Help.jsx:69 src/components/windows/Help.jsx:80
 #, javascript-format
-msgid ""
-"Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
-msgstr ""
-"Pritisnite ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } za pomicanje"
+msgid "Press ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } to move"
+msgstr "Pritisnite ${ bindAUp }, ${ bindALeft }, ${ bindADown }, ${ bindARight } za pomicanje"
 
 #: src/components/windows/Help.jsx:70
 msgid "Drag ${ mouseSymbol } mouse or ${ touchSymbol } pan to move"
-msgstr ""
-"Povucite ${ mouseSymbol } mišem ili ${ touchSymbol } pan za pomicanje "
+msgstr "Povucite ${ mouseSymbol } mišem ili ${ touchSymbol } pan za pomicanje"
 
 #: src/components/windows/Help.jsx:71
 #, javascript-format
 msgid "Scroll ${ mouseSymbol } mouse wheel or ${ touchSymbol } pinch to zoom"
-msgstr ""
-"Pomičite ${ mouseSymbol } kotačić miša ili ${ touchSymbol } stisnite za zumiranje "
+msgstr "Pomičite ${ mouseSymbol } kotačić miša ili ${ touchSymbol } stisnite za zumiranje"
 
 #: src/components/windows/Help.jsx:72
 msgid "Hold left ${ bindShift } for placing while moving mouse"
-msgstr ""
-"Držite lijevo ${ bindShift } za postavljanje dok pomičete miš"
+msgstr "Držite lijevo ${ bindShift } za postavljanje dok pomičete miš"
 
 #: src/components/windows/Help.jsx:73
 #, javascript-format
-msgid ""
-"Hold right ${ bindShift } for placing while moving mouse according to "
-"historical view"
-msgstr ""
-"Držite desno ${ bindShift } za postavljanje dok pomičete miš prema "
-"povijesni pogled ${ bindShift }"
+msgid "Hold right ${ bindShift } for placing while moving mouse according to historical view"
+msgstr "Držite desno ${ bindShift } za postavljanje dok pomičete miš prema povijesni pogled ${ bindShift }"
 
 #: src/components/windows/Help.jsx:74 src/components/windows/Help.jsx:85
 #, javascript-format
 msgid "${ mouseSymbol } Left click or ${ touchSymbol } tap to place a pixel"
-msgstr ""
-"${ mouseSymbol } Lijevi klik ili ${ touchSymbol } dodirnite za postavljanje pixela"
+msgstr "${ mouseSymbol } Lijevi klik ili ${ touchSymbol } dodirnite za postavljanje pixela"
 
 #: src/components/windows/Help.jsx:75 src/components/windows/Help.jsx:87
-msgid ""
-"Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to "
-"select current hovering color"
-msgstr ""
-"Pritisnite ${ mouseSymbol } srednju tipku miša ili ${ touchSymbol } dugo dodirnite za "
-"odaberite trenutnu lebdeću boju"
+msgid "Click ${ mouseSymbol } middle mouse button or ${ touchSymbol } long-tap to select current hovering color"
+msgstr "Pritisnite ${ mouseSymbol } srednju tipku miša ili ${ touchSymbol } dugo dodirnite za odaberite trenutnu lebdeću boju"
 
 #: src/components/windows/Help.jsx:81
 msgid "Press ${ bindE } and ${ bindC } to fly up and down"
@@ -593,17 +546,12 @@ msgstr "Pritisnite ${ bindE } i ${ bindC } da letite gore-dolje"
 #: src/components/windows/Help.jsx:82
 #, javascript-format
 msgid "${ mouseSymbol } Hold left mouse button and drag mouse to rotate"
-msgstr ""
-"${ mouseSymbol } Držite lijevu tipku miša i povucite miš za rotiranje"
+msgstr "${ mouseSymbol } Držite lijevu tipku miša i povucite miš za rotiranje"
 
 #: src/components/windows/Help.jsx:83
 #, javascript-format
-msgid ""
-"${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse "
-"button and drag to zoom"
-msgstr ""
-"${ mouseSymbol } Pomaknite kotačić miša ili držite ${ mouseSymbol } srednji miš "
-"i povucite za zumiranje"
+msgid "${ mouseSymbol } Scroll mouse wheel or hold ${ mouseSymbol } middle mouse button and drag to zoom"
+msgstr "${ mouseSymbol } Pomaknite kotačić miša ili držite ${ mouseSymbol } srednji miš i povucite za zumiranje"
 
 #: src/components/windows/Help.jsx:84
 msgid "${ mouseSymbol } Right click and drag mouse to pan"
@@ -611,18 +559,12 @@ msgstr "${ mouseSymbol } Desni klik i povlačenje miša za pomicanje"
 
 #: src/components/windows/Help.jsx:86
 #, javascript-format
-msgid ""
-"${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
-msgstr ""
-"${ mouseSymbol } Desni klik ili ${ touchSymbol } dvaput dodirnite za uklanjanje pixela"
+msgid "${ mouseSymbol } Right click or ${ touchSymbol } double-tap to remove a pixel"
+msgstr "${ mouseSymbol } Desni klik ili ${ touchSymbol } dvaput dodirnite za uklanjanje pixela"
 
 #: src/components/windows/Help.jsx:91
-msgid ""
-"We thanks those artists very much, they offered their palettes to the public "
-"on"
-msgstr ""
-"Veliko hvala tim umjetnicima koji su ponudili svoje palete javnosti "
-"na"
+msgid "We thanks those artists very much, they offered their palettes to the public on"
+msgstr "Veliko hvala tim umjetnicima koji su ponudili svoje palete javnosti na"
 
 #: src/components/windows/Help.jsx:94
 #, javascript-format
@@ -665,20 +607,16 @@ msgstr "Registrirajte novi račun ovdje"
 msgid "Name"
 msgstr "Ime"
 
-#: src/components/windows/ForgotPassword.jsx:80
-#: src/components/windows/Register.jsx:100
-#: src/components/windows/Register.jsx:106
+#: src/components/windows/ForgotPassword.jsx:80 src/components/windows/Register.jsx:100 src/components/windows/Register.jsx:106
 msgid "Email"
 msgstr "E-pošta"
 
-#: src/components/ChangeMail.jsx:80 src/components/DeleteAccount.jsx:62
-#: src/components/LogInForm.jsx:84 src/components/windows/Register.jsx:108
+#: src/components/ChangeMail.jsx:80 src/components/DeleteAccount.jsx:62 src/components/LogInForm.jsx:84 src/components/windows/Register.jsx:108
 #: src/components/windows/Register.jsx:114
 msgid "Password"
 msgstr "Lozinka"
 
-#: src/components/windows/Register.jsx:116
-#: src/components/windows/Register.jsx:122
+#: src/components/windows/Register.jsx:116 src/components/windows/Register.jsx:122
 msgid "Confirm Password"
 msgstr "Potvrdite lozinku"
 
@@ -686,12 +624,9 @@ msgstr "Potvrdite lozinku"
 msgid "Captcha"
 msgstr "Captcha"
 
-#: src/components/Admintools.jsx:154 src/components/Admintools.jsx:238
-#: src/components/ModCanvastools.jsx:302 src/components/ModCanvastools.jsx:382
-#: src/components/ModCanvastools.jsx:455 src/components/ModCanvastools.jsx:546
-#: src/components/ModIIDtools.jsx:135
-#: src/components/windows/ForgotPassword.jsx:84
-#: src/components/windows/Register.jsx:127
+#: src/components/Admintools.jsx:154 src/components/Admintools.jsx:238 src/components/ModCanvastools.jsx:302 src/components/ModCanvastools.jsx:382
+#: src/components/ModCanvastools.jsx:455 src/components/ModCanvastools.jsx:546 src/components/ModIIDtools.jsx:135
+#: src/components/windows/ForgotPassword.jsx:84 src/components/windows/Register.jsx:127
 msgid "Submit"
 msgstr "Podnesi"
 
@@ -720,12 +655,8 @@ msgid "All sound effects will be disabled."
 msgstr "Svi zvučni efekti bit će onemogućeni."
 
 #: src/components/windows/Settings.jsx:112
-msgid ""
-"Your Browser doesn't allow us to use AudioContext to play sounds. Do you have "
-"some privacy feature blocking us?"
-msgstr ""
-"Vaš nam preglednik ne dopušta korištenje AudioContexta za reprodukciju zvukova. Imate li "
-"upaljenu neku značajku privatnosti koja nas blokira?"
+msgid "Your Browser doesn't allow us to use AudioContext to play sounds. Do you have some privacy feature blocking us?"
+msgstr "Vaš nam preglednik ne dopušta korištenje AudioContexta za reprodukciju zvukova. Imate li upaljenu neku značajku privatnosti koja nas blokira?"
 
 #: src/components/windows/Settings.jsx:118
 msgid "Enable chat notifications"
@@ -740,11 +671,8 @@ msgid "Auto Zoom In"
 msgstr "Automatsko povećanje"
 
 #: src/components/windows/Settings.jsx:130
-msgid ""
-"Zoom in instead of placing a pixel when you tap the canvas and your zoom is "
-"small."
-msgstr ""
-"Povećajte umjesto postavljanja pixela kada dodirnete platno i vaše je zumiranje malo."
+msgid "Zoom in instead of placing a pixel when you tap the canvas and your zoom is small."
+msgstr "Povećajte umjesto postavljanja pixela kada dodirnete platno i vaše je zumiranje malo."
 
 #: src/components/windows/Settings.jsx:133
 msgid "Compact Palette"
@@ -792,8 +720,7 @@ msgstr "Odaberi jezik"
 
 #: src/components/windows/CanvasSelect.jsx:29
 msgid ""
-"Select the canvas you want to use.  Every canvas is unique and has different "
-"palettes, cooldown and requirements.  Archive of closed canvases can be "
+"Select the canvas you want to use.  Every canvas is unique and has different palettes, cooldown and requirements.  Archive of closed canvases can be "
 "accessed here:"
 msgstr ""
 "Odaberite platno koje želite koristiti. Svako je platno jedinstveno i ima različite palete, vrijeme hlađenja i zahtjeve. Arhivi zatvorenih platna može se "
@@ -805,22 +732,15 @@ msgstr "Arhiva"
 
 #: src/components/windows/Archive.jsx:16
 msgid ""
-"While we tend to not delete canvases, some canvases are started for fun or as "
-"a request by users who currently like a meme. Those canvases can get boring "
-"after a while and after weeks of no major change and if they really aren't "
-"worth being kept active, we decide to remove them."
+"While we tend to not delete canvases, some canvases are started for fun or as a request by users who currently like a meme. Those canvases can get boring "
+"after a while and after weeks of no major change and if they really aren't worth being kept active, we decide to remove them."
 msgstr ""
-"Iako obično ne brišemo platna, neka se platna pokreću iz zabave ili kao "
-"zahtjev korisnika koji trenutno vole meme. Ta platna mogu dosaditi "
-"nakon nekog vremena i nakon tjedana bez većih promjena i ako doista nisu "
-"vrijedno ostati aktivnima, odlučujemo ih ukloniti."
+"Iako obično ne brišemo platna, neka se platna pokreću iz zabave ili kao zahtjev korisnika koji trenutno vole meme. Ta platna mogu dosaditi nakon nekog "
+"vremena i nakon tjedana bez većih promjena i ako doista nisu vrijedno ostati aktivnima, odlučujemo ih ukloniti."
 
 #: src/components/windows/Archive.jsx:18
-msgid ""
-"Here we collect those canvases to archive them in a proper way (which is "
-"currently just one)."
-msgstr ""
-"Ovdje skupljamo ta platna da ih arhiviramo na pravi način (što je trenutno samo jedno)"
+msgid "Here we collect those canvases to archive them in a proper way (which is currently just one)."
+msgstr "Ovdje skupljamo ta platna da ih arhiviramo na pravi način (što je trenutno samo jedno)"
 
 #: src/components/windows/Archive.jsx:20
 msgid "Political Compass Canvas"
@@ -828,25 +748,19 @@ msgstr "Platno političkog kompasa"
 
 #: src/components/windows/Archive.jsx:27
 msgid ""
-"This canvas got requested during a time of political conflicts on the main "
-"Earth canvas. It was a 1024x1024 representation of the political compass with "
-"a 5s cooldown and 60s stacking. It got launched on May 11th and remained "
-"active for months till it got shut down on November 30th."
+"This canvas got requested during a time of political conflicts on the main Earth canvas. It was a 1024x1024 representation of the political compass with "
+"a 5s cooldown and 60s stacking. It got launched on May 11th and remained active for months till it got shut down on November 30th."
 msgstr ""
-"Ovo je platno traženo u vrijeme političkih sukoba na glavnoj pozornici "
-"Zemljano platno. Bio je to 1024x1024 prikaz političkog kompasa sa "
-"hlađenje od 5 s i slaganje od 60 s. Lansiran je 11. svibnja i ostao je "
-"aktivan mjesecima dok nije ugašen 30. studenog."
+"Ovo je platno traženo u vrijeme političkih sukoba na glavnoj pozornici Zemljano platno. Bio je to 1024x1024 prikaz političkog kompasa sa hlađenje od 5 s "
+"i slaganje od 60 s. Lansiran je 11. svibnja i ostao je aktivan mjesecima dok nije ugašen 30. studenog."
 
 #: src/components/windows/Archive.jsx:28
 msgid ""
-"We decided to archive it as a timelapse with lossless encoded webm. Taking a "
-"screenshot from the timelapse results in a perfect 1:1 representation of how "
+"We decided to archive it as a timelapse with lossless encoded webm. Taking a screenshot from the timelapse results in a perfect 1:1 representation of how "
 "the canvas was at that time."
 msgstr ""
-"Odlučili smo ga arhivirati kao timelapse s kodiranim webmom bez gubitaka. Uzimanje "
-"snimke zaslona iz timelapse-a rezultira savršenim prikazom 1:1 kako "
-"je izgledalo platno u to vrijeme."
+"Odlučili smo ga arhivirati kao timelapse s kodiranim webmom bez gubitaka. Uzimanje snimke zaslona iz timelapse-a rezultira savršenim prikazom 1:1 kako je "
+"izgledalo platno u to vrijeme."
 
 #: src/components/windows/Chat.jsx:180
 msgid "Start chatting here"
@@ -1126,8 +1040,7 @@ msgstr "Zemlje danas"
 msgid "Charts"
 msgstr "Karte"
 
-#: src/components/Rankings.jsx:201 src/components/Rankings.jsx:210
-#: src/components/Rankings.jsx:219
+#: src/components/Rankings.jsx:201 src/components/Rankings.jsx:210 src/components/Rankings.jsx:219
 msgid "User"
 msgstr "Korisnik"
 
@@ -1137,11 +1050,9 @@ msgstr "Država"
 
 #: src/components/Rankings.jsx:286
 msgid "Ranking updates every 5 min. Daily rankings get reset at midnight UTC."
-msgstr ""
-"Poredak se ažurira svakih 5 minuta. Dnevni poredak se poništava u ponoć UTC."
+msgstr "Poredak se ažurira svakih 5 minuta. Dnevni poredak se poništava u ponoć UTC."
 
-#: src/components/ChangeMail.jsx:91 src/components/ChangeName.jsx:68
-#: src/components/ChangePassword.jsx:109 src/components/LanguageSelect.jsx:80
+#: src/components/ChangeMail.jsx:91 src/components/ChangeName.jsx:68 src/components/ChangePassword.jsx:109 src/components/LanguageSelect.jsx:80
 msgid "Save"
 msgstr "Spremi"
 
@@ -1239,9 +1150,7 @@ msgid "Confirm New Password"
 msgstr "Potvrdi novu lozinku"
 
 #: src/components/UserMessages.jsx:28
-msgid ""
-"Please verify your mail address or your account could get deleted after a few "
-"days."
+msgid "Please verify your mail address or your account could get deleted after a few days."
 msgstr "Potvrdite svoju adresu e-pošte ili bi vaš račun mogao biti izbrisan nakon nekoliko dana."
 
 #: src/components/UserMessages.jsx:49
@@ -1253,12 +1162,8 @@ msgid "Click here to request a new verification mail."
 msgstr "Kliknite ovdje da zatražite novu e-poštu za potvrdu."
 
 #: src/components/ChangeMail.jsx:59
-msgid ""
-"Changed Mail successfully. We sent you a verification mail,             "
-"please verify your new mail address."
-msgstr ""
-"Mail je uspješno promijenjen. Poslali smo vam e-poruku za potvrdu, "
-"potvrdite svoju novu adresu e-pošte."
+msgid "Changed Mail successfully. We sent you a verification mail,             please verify your new mail address."
+msgstr "Mail je uspješno promijenjen. Poslali smo vam e-poruku za potvrdu, potvrdite svoju novu adresu e-pošte."
 
 #: src/components/ChangeMail.jsx:87
 msgid "New Mail"
@@ -1289,21 +1194,16 @@ msgid "Clean spare pixels that are surrounded by unset pixels"
 msgstr "Očistite rezervne pixele koji su okruženi nepostavljenim pixelima"
 
 #: src/components/ModCanvastools.jsx:188
-msgid ""
-"Clean spare pixels that are surrounded by unset pixels and up to 1 other set "
-"pixels"
-msgstr ""
-"Očistite rezervne pixele koji su okruženi nepostavljenim pixelima i do 1 drugim skupom "
-"pixela"
+msgid "Clean spare pixels that are surrounded by unset pixels and up to 1 other set pixels"
+msgstr "Očistite rezervne pixele koji su okruženi nepostavljenim pixelima i do 1 drugim skupom pixela"
 
 #: src/components/ModCanvastools.jsx:192
 msgid ""
-"Clean spare pixels that are surrounded by a single other color or unset "
-"pixels (VERY AGGRESSIVE ON CANVASES THAT ALLOW UNSET PIXELS (where there are "
-"two cooldowns)!)"
+"Clean spare pixels that are surrounded by a single other color or unset pixels (VERY AGGRESSIVE ON CANVASES THAT ALLOW UNSET PIXELS (where there are two "
+"cooldowns)!)"
 msgstr ""
-"Očistite rezervne pixele koji su okruženi jednom drugom bojom ili nisu postavljeni "
-"pixeli (VRLO AGRESIVNO NA PLATNIMA KOJA DOPUŠTAJU NEPOSTAVLJENE PIXELE (gdje postoje dva hlađenja)!)"
+"Očistite rezervne pixele koji su okruženi jednom drugom bojom ili nisu postavljeni pixeli (VRLO AGRESIVNO NA PLATNIMA KOJA DOPUŠTAJU NEPOSTAVLJENE PIXELE "
+"(gdje postoje dva hlađenja)!)"
 
 #: src/components/ModCanvastools.jsx:203
 msgid "Status: Not running"
@@ -1330,20 +1230,14 @@ msgid "Pixel Protection"
 msgstr "Zaštita pixela"
 
 #: src/components/ModCanvastools.jsx:309
-msgid ""
-"Set protection of areas         (if you need finer grained control,         "
-"use protect with image upload and alpha layers)"
-msgstr ""
-"Postavite zaštitu područja (ako vam je potrebna finija kontrola,"
-"koristite zaštitu s prijenosom slika i alfa slojevima)"
+msgid "Set protection of areas         (if you need finer grained control,         use protect with image upload and alpha layers)"
+msgstr "Postavite zaštitu područja (ako vam je potrebna finija kontrola,koristite zaštitu s prijenosom slika i alfa slojevima)"
 
-#: src/components/ModCanvastools.jsx:330 src/components/ModCanvastools.jsx:403
-#: src/components/ModCanvastools.jsx:486 src/components/ModWatchtools.jsx:174
+#: src/components/ModCanvastools.jsx:330 src/components/ModCanvastools.jsx:403 src/components/ModCanvastools.jsx:486 src/components/ModWatchtools.jsx:174
 msgid "Top-left corner"
 msgstr "Gornji lijevi kut"
 
-#: src/components/ModCanvastools.jsx:347 src/components/ModCanvastools.jsx:420
-#: src/components/ModCanvastools.jsx:503 src/components/ModWatchtools.jsx:191
+#: src/components/ModCanvastools.jsx:347 src/components/ModCanvastools.jsx:420 src/components/ModCanvastools.jsx:503 src/components/ModWatchtools.jsx:191
 msgid "Bottom-right corner"
 msgstr "Donji desni kut"
 
@@ -1413,7 +1307,7 @@ msgstr "Privatno"
 
 #: src/components/SocialSettings.jsx:51
 msgid "Don't show me in global stats"
-msgstr "Ne pokazuj me na globalnim ljestvicama "
+msgstr "Ne pokazuj me na globalnim ljestvicama"
 
 #: src/components/SocialSettings.jsx:57
 msgid "Unblock Users"
