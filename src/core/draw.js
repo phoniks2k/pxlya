@@ -115,9 +115,11 @@ export default async function drawByOffsets(
     const clrIgnore = canvas.cli || 0;
     let factor = (isAdmin || (user.userlvl > 0 && pixels[0][1] < clrIgnore))
       ? 0.0 : coolDownFactor;
+    /*
     if (user.country === 'tr') {
       factor *= 1.5;
     }
+    */
     const bcd = canvas.bcd * factor;
     const pcd = (canvas.pcd) ? canvas.pcd * factor : bcd;
     const pxlOffsets = [];
