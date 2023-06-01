@@ -34,6 +34,7 @@ export default {
   'i.redd.it': DirectLinkMedia,
   'media.discordapp.net': DirectLinkMedia,
   'media.consumeproduct.win': DirectLinkMedia,
+  'cdn.discord.com': DirectLinkMedia,
   't.me': Telegram,
   twitter: Twitter,
   'nitter.net': Twitter,
