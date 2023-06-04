@@ -613,8 +613,7 @@ class SocketServer {
           break;
       }
     } catch (e) {
-      logger.info('Got invalid ws binary message');
-      throw e;
+      logger.error(`WebSocket Client Binary Message Error: ${e.message}`);
     }
   }
 
