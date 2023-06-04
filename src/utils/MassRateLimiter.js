@@ -78,10 +78,18 @@ class MassRateLimiter {
   }
 
   /*
-   * add to deltaTime without checking
+   * add to deltaTime
    */
   add(identifier, deltaTime) {
-    this.triggers.get(identifier)[0] += deltaTime;
+    const limiter = this.triggers.get(identifier);
+    if (limiter) {
+      limiter[0] += deltaTime;
+    } else {
+      this.triggers.set(
+        identifier,
+        [Date.now() + deltaTime, false],
+      );
+    }
   }
 }
 
