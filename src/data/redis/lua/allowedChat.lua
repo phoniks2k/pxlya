@@ -18,7 +18,7 @@
 --   }
 local ret = {0, 0}
 -- check country mute
-if redis.call('hget', KEYS[1], ARGV[1]) then
+if ARGV[1] ~= "nope" and redis.call('hget', KEYS[1], ARGV[1]) then
   ret[1] = 100
   return ret
 end
