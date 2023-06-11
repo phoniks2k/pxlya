@@ -424,7 +424,7 @@ export class ChatProvider {
         channelId,
         id,
         user.ipSub,
-        (id > 5000) ? country : 'nope',
+        country,
       );
       if (allowed) {
         logger.info(

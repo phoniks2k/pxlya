@@ -16,15 +16,15 @@ export async function allowedChat(
   ip,
   cc,
 ) {
-  if (!cc || cc.length !== 2) {
-    return [0, 0];
-  }
   const mutecKey = `${MUTEC_PREFIX}:${channelId}`;
   const muteKey = `${MUTE_PREFIX}:${userId}`;
   const isalKey = `${ALLOWED_PREFIX}:${ip}`;
+  const country = (cc?.length !== 2 || userId < 5000) ? 'nope' : cc;
   return client.allowedChat(
-    mutecKey, muteKey, isalKey,
-    cc,
+    mutecKey,
+    muteKey,
+    isalKey,
+    country,
   );
 }
 
