@@ -45,12 +45,18 @@ const usersocket = new SocketServer();
 const apisocket = new APISocketServer();
 function wsupgrade(request, socket, head) {
   const { pathname } = url.parse(request.url);
-
-  if (pathname === '/ws') {
-    usersocket.handleUpgrade(request, socket, head);
-  } else if (pathname === '/mcws') {
-    apisocket.handleUpgrade(request, socket, head);
-  } else {
+  try {
+    if (pathname === '/ws') {
+      usersocket.handleUpgrade(request, socket, head);
+    } else if (pathname === '/mcws') {
+      apisocket.handleUpgrade(request, socket, head);
+    } else {
+      socket.write('HTTP/1.1 404 Not found\r\n\r\n');
+      socket.destroy();
+    }
+  } catch (err) {
+    logger.error(`WebSocket upgrade error: ${err.message}`);
+    socket.write('HTTP/1.1 503 Service Unavailable\r\n\r\n');
     socket.destroy();
   }
 }
