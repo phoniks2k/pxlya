@@ -117,7 +117,7 @@ export default async function drawByOffsets(
       ? 0.0 : coolDownFactor;
 
     if (user.country === 'tr') {
-      factor *= 1.2;
+      factor *= 1.4;
     }
 
     const bcd = canvas.bcd * factor;
