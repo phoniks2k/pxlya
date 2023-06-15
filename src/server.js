@@ -43,11 +43,11 @@ const server = http.createServer(app);
 // -----------------------------------------------------------------------------
 const usersocket = new SocketServer();
 const apisocket = new APISocketServer();
-function wsupgrade(request, socket, head) {
+async function wsupgrade(request, socket, head) {
   const { pathname } = url.parse(request.url);
   try {
     if (pathname === '/ws') {
-      usersocket.handleUpgrade(request, socket, head);
+      await usersocket.handleUpgrade(request, socket, head);
     } else if (pathname === '/mcws') {
       apisocket.handleUpgrade(request, socket, head);
     } else {
