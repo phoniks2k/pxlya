@@ -1,6 +1,7 @@
 # ocean tiles
-In order to have the ocean and land on the canvas, or any other background pic, we have to create tiles that we can later upload to the canvas with drawOcean.js.
-Those are the commands to create tiles in subfolders:
+In order to have the ocean and land on the canvas, we have to scale up the ocean.png, create tiles and then upload them to the canvas with drawOcean.js.
+
+Execute those shell commands in this folder (utils/ocean-tiles). Imagemagick needs to be installed.
 
 - create folder for tiles:
 
@@ -33,12 +34,8 @@ for i in {0..31}; do mkdir $i; done
 ```
 for file in ./ocean_tiles*.png; do NUM=`echo $file | sed -e 's/.*ocean_tiles//' -e 's/.png//'`; Y=$(expr $NUM / 32); X=$(expr $NUM % 32); newfile="$X/$Y.png"; mv $file $newfile; done
 ```
-
-- to remove the subfolders again
+- Draws the 2048x2048 tiles from the ./ocean directory on the canvas. Uses localhost:6379 as redis url, if you need a different one, edit it in the drawOcean.js file.
 
 ```
-for i in {0..31}; do rm -r $i; done
+npm run babel-node ./utils/ocean-tiles/drawOcean.js
 ```
-
-# createOceanTiles.js
-createOceanTiles is splitting the generated ocean tiles into 256x256 tiles, skipping the ones that are empty (aka all ocean).
