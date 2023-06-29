@@ -75,6 +75,7 @@ class SocketServer {
 
     wss.on('connection', (ws, req) => {
       ws.timeLastMsg = Date.now();
+      ws.connectedTs = ws.timeLastMsg;
       ws.canvasId = null;
       const { user } = req;
       ws.user = user;
@@ -538,7 +539,7 @@ class SocketServer {
 
       switch (opcode) {
         case PIXEL_UPDATE_OP: {
-          const { canvasId } = ws;
+          const { canvasId, connectedTs } = ws;
 
           if (canvasId === null) {
             logger.info(`Closing websocket without canvas from ${ip}`);
@@ -560,6 +561,7 @@ class SocketServer {
             canvasId,
             i, j,
             pixels,
+            connectedTs,
           );
 
           if (retCode > 9 && retCode !== 13) {

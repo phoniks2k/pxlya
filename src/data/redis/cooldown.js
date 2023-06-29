@@ -39,6 +39,7 @@ export default function allowPlace(
   bcd,
   pcd,
   cds,
+  cdIfNull,
   pxls,
 ) {
   const isalKey = `${ALLOWED_PREFIX}:${ip}`;
@@ -67,7 +68,7 @@ export default function allowPlace(
   return client.placePxl(
     // eslint-disable-next-line max-len
     isalKey, captKey, ipCdKey, idCdKey, chunkKey, rankset, dailyset, DAILY_CRANKED_KEY, PREV_DAY_TOP_KEY,
-    clrIgnore, bcd, pcd, cds, id, cc, req,
+    clrIgnore, bcd, pcd, cds, cdIfNull, id, cc, req,
     ...pxls,
   );
 }

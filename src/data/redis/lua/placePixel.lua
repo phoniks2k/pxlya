@@ -20,10 +20,10 @@
 --   bcd: number baseCooldown (fixed to cdFactor and 0 if admin)
 --   pcd: number set pixel cooldown  (fixed to cdFactor and 0 if admin)
 --   cds: max cooldown of canvas
+--   cdIfNull: cooldown to use when no cooldown is stored
 --   userId: '0' if not logged in
 --   cc country code
---   req: requirements of canvas
---     'nope', unsigned integer or 'top'
+--   req: requirements of canvas ('nope', unsigned integer or 'top')
 --   off1, chunk offset of first pixel
 --   off2, chunk offset of second pixel
 --   ..., infinite pixels possible
@@ -63,23 +63,23 @@ else
   end
 end
 -- check if requirements for canvas met
-if ARGV[7] ~= "nope" then
-  if ARGV[5] == "0" then
+if ARGV[8] ~= "nope" then
+  if ARGV[6] == "0" then
     -- not logged in
     ret[1] = 6
     return ret;
   end
-  if ARGV[7] == "top" then
-    local pr = redis.call('zrank', KEYS[9], ARGV[5])
+  if ARGV[8] == "top" then
+    local pr = redis.call('zrank', KEYS[9], ARGV[6])
     if not pr or pr > 9 then
       -- not in yesterdays top 10
       ret[1] = 12;
       return ret;
     end
   else
-    local req = tonumber(ARGV[7])
+    local req = tonumber(ARGV[8])
     if req > 0 then
-      local sc = tonumber(redis.call('zscore', KEYS[6], ARGV[5]))
+      local sc = tonumber(redis.call('zscore', KEYS[6], ARGV[6]))
       if not sc or sc < req then
         -- not enough pxls placed
         ret[1] = 7;
@@ -91,7 +91,7 @@ end
 -- get cooldown of user
 local cd = redis.call('pttl', KEYS[3])
 if cd < 0 then
-  cd = 0
+  cd = tonumber(ARGV[5])
 end
 if KEYS[4] ~= "nope" then
   local icd = redis.call('pttl', KEYS[4])
@@ -106,7 +106,7 @@ local cli = tonumber(ARGV[1])
 local bcd = tonumber(ARGV[2])
 local pcd = tonumber(ARGV[3])
 local cds = tonumber(ARGV[4])
-for c = 8,#ARGV do
+for c = 9,#ARGV do
   local off = tonumber(ARGV[c]) * 8
   -- get color of pixel on canvas
   local sclr = redis.call('bitfield', KEYS[5], 'get', 'u8', off)
@@ -144,10 +144,11 @@ if pxlcnt > 0 then
   end
   -- increment pixelcount
   if KEYS[7] ~= 'nope' then
-    redis.call('zincrby', KEYS[6], pxlcnt, ARGV[5])
-    redis.call('zincrby', KEYS[7], pxlcnt, ARGV[5])
-    if ARGV[6] ~= 'xx' then
-      redis.call('zincrby', KEYS[8], pxlcnt, ARGV[6])
+    redis.call('zincrby', KEYS[6], pxlcnt, ARGV[6])
+    redis.call('zincrby', KEYS[7], pxlcnt, ARGV[6])
+    -- increase country stats only by registered users
+    if ARGV[7] ~= 'xx' then
+      redis.call('zincrby', KEYS[8], pxlcnt, ARGV[7])
     end
   end
 end

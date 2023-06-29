@@ -50,8 +50,12 @@ setInterval(() => {
  * @param i Chunk coordinates
  * @param j
  * @param pixels Array of individual pixels within the chunk, with:
- *           [[offset, color], [offset2, color2],...]
- *           Offset is the offset of the pixel within the chunk
+ *        [[offset, color], [offset2, color2],...]
+ *        Offset is the offset of the pixel within the chunk
+ * @param connectedTs Timestamp when connection got established.
+ *        if the connection is younger than the cooldown of the canvas,
+ *        we fill up the cd on first pixel to nerf one-connection
+ *        ip-changing cheaters
  * @return Promise<Object>
  */
 export default async function drawByOffsets(
@@ -60,6 +64,7 @@ export default async function drawByOffsets(
   i,
   j,
   pixels,
+  connectedTs,
 ) {
   let wait = 0;
   let coolDown = 0;
@@ -122,12 +127,13 @@ export default async function drawByOffsets(
 
     const bcd = canvas.bcd * factor;
     const pcd = (canvas.pcd) ? canvas.pcd * factor : bcd;
+    const userId = user.id;
     const pxlOffsets = [];
 
     /*
      * validate pixels
      */
-    let ranked = canvas.ranked && user.id && pcd;
+    let ranked = canvas.ranked && userId && pcd;
     for (let u = 0; u < pixels.length; u += 1) {
       const [offset, color] = pixels[u];
       pxlOffsets.push(offset);
@@ -135,7 +141,7 @@ export default async function drawByOffsets(
       const [x, y, z] = getPixelFromChunkOffset(i, j, offset, canvasSize, is3d);
       pixelLogger.info(
         // eslint-disable-next-line max-len
-        `${startTime} ${user.ip} ${user.id} ${canvasId} ${x} ${y} ${z} ${color}`,
+        `${startTime} ${user.ip} ${userId} ${canvasId} ${x} ${y} ${z} ${color}`,
       );
 
       const maxSize = (is3d) ? tileSize * tileSize * THREE_CANVAS_HEIGHT
@@ -170,11 +176,17 @@ export default async function drawByOffsets(
       }
     }
 
+    const { cds } = canvas;
+    // start with almost filled cd on new connections
+    let cdIfNull = cds - pcd + 1000 - startTime + connectedTs;
+    if (cdIfNull < 0 || userId || bcd === 0) {
+      cdIfNull = 0;
+    }
 
     let needProxycheck;
     [retCode, pxlCnt, wait, coolDown, needProxycheck] = await allowPlace(
       ip,
-      user.id,
+      userId,
       user.country,
       ranked,
       canvasId,
@@ -182,7 +194,8 @@ export default async function drawByOffsets(
       clrIgnore,
       req,
       bcd, pcd,
-      canvas.cds,
+      cds,
+      cdIfNull,
       pxlOffsets,
     );
 
