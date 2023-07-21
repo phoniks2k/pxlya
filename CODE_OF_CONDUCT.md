@@ -9,7 +9,7 @@ This CoC is derived from the [SQLite Code of Ethics](https://sqlite.org/codeofet
 
 ## Our Pledge
 
-The founder of pixelplanet, and developers at the time when this document was derived, have pledged to try to govern their interactions with each other, with their clients, and with the larger pixelplanet user community in accordance with the “Tools of good works” from chapter 4 of [The Rule of St. Benedict](https://theruleofbenedict.com/) (hereafter: **“The Rule“**). They view *The Rule* as their promise to all pixelplanet users of how the developers are expected to behave. This is a one-way promise, or covenant. In other words, the developers are saying: “We will treat you this way regardless of how you treat us.”
+The founder of pixelplanet, and developers at the time when this document was derived (21.07.2023), have pledged to try to govern their interactions with each other, with their clients, and with the larger pixelplanet user community in accordance with the “Tools of good works” from chapter 4 of [The Rule of St. Benedict](https://theruleofbenedict.com/) (hereafter: **“The Rule“**). They view *The Rule* as their promise to all pixelplanet users of how the developers are expected to behave. This is a one-way promise, or covenant. In other words, the developers are saying: “We will treat you this way regardless of how you treat us.”
 
 This rule has proven its mettle in thousands of diverse communities for over 1,500 years, and has served as a baseline for many civil law codes since the time of Charlemagne.
 
