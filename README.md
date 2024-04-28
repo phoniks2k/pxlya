@@ -1,19 +1,16 @@
-# PixelPlanet.fun
+# Pixelya.fun
 
-
-[![Guilded](https://img.shields.io/badge/Discord-Support-blue.svg)](https://pixelplanet.fun/guilded)
-
-Official  repository of [pixelplanet.fun](http://www.pixelplanet.fun).
+Official  repository of [pixelya.fun](http://www.pixelya.fun).
 
 ![videothumb](promotion/videothumb.gif)
 
-> **TRANSLATORS NEEDED** If you want to help us translate pixelplanet.fun, look into [i18n](./i18n)
+Place color pixels on a large canvas with other players online!
+Our main canvas is a huge worldmap, you can place wherever you like, but you will have to wait a specific \
+Cooldown between pixels. You can check out the cooldown and requirements on the Canvas Selection menu (map button on top). \
+Some canvases have a different cooldown for replacing a user-set pixels than placing on a unset pixel. i.e. 2s/4s means 4s on fresh \
+pixels and 4s on already set pixels.
 
-To the 2nd anniversary of r/space, pixelplanet takes pixelgames to a new level. Place pixels, create pixelart and fight faction wars on pixelplanet.fun.
-Pixelplanet is a 65k x 65k large canvas that is a map of the world and can also be seen as 3d globe, you can place pixels where ever you want, build an island, take over another country with a flag or just create pixelart.
-30 well chosen colors (decided by polls within the community) are available and you can place a pixel every 3s on an empty space, and 5s on an already set pixel. But pixels can be stacked up to a minute, so you don't have to wait every time.
-
-Pixelplanet receives regular updates and launches events, like a zero second cooldown day on r/place anniversary. We are driven by our community, because placing pixels is more fun together.
+Pixelya receives regular updates and launches events, like a 30 minutes pixelstack on comemorative dates. 
 
 Controls:
 W, A, S, D, click and drag or pan: Move
@@ -31,8 +28,8 @@ Click or tab: Place Pixel
 Checkout repository
 
 ```
-git clone https://git.pixelplanet.fun/ppfun/pixelplanet.git
-cd pixelplanet
+git clone https://github.com/phoniks2k/pxlya.git
+cd pxlya
 ```
 
 Install packages and build
@@ -43,7 +40,7 @@ npm run build
 ```
 
 
-All needed files to run it got created in `./dist`. You can copy it to wherever you want to run pixelplanet.
+All needed files to run it got created in `./dist`. You can copy it to wherever you want to run pixelya.
 
 Notes:
 
@@ -60,7 +57,7 @@ git config --global url.https://github.com/.insteadOf git://github.com/
 - nodejs environment with [npm](https://www.npmjs.com/get-npm) (>=16)
 - [pm2](https://github.com/Unitech/pm2) (`npm install -g pm2`) as process manager and for logging
 - [redis](https://redis.io/) as database for storìng the canvas
-- mysql or mariadb ([setup own user](https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql) and [create database](https://www.w3schools.com/SQl/sql_create_db.asp) for pixelplanet) for storing additional data like IP blacklist
+- mysql or mariadb ([setup own user](https://www.digitalocean.com/community/tutorials/how-to-create-a-new-user-and-grant-permissions-in-mysql) and [create database](https://www.w3schools.com/SQl/sql_create_db.asp) for pixelya) for storing additional data like IP blacklist
 
 ### Configuration
 Configuration takes place in the environment variables that are defined in ecosystem.yml.
@@ -94,7 +91,7 @@ Configuration takes place in the environment variables that are defined in ecosy
 | BACKUP_DIR        | mounted directory of backup server    | "/mnt/backup/"            |
 | HOURLY_EVENT      | run hourly void event on main canvas  | 1                         |
 | USE_MAILER        | enable to use mail sevicse            | 0                         |
-| MAIL_ADDRESS      | email address for sending mails       | "noreply@pixelplanet.fun" |
+| MAIL_ADDRESS      | email address for sending mails       | "noreply@youremail.fun" |
 
 #### Social Media Configuration
 
@@ -118,7 +115,7 @@ Notes:
 - to be able to use USE_PROXYCHECK you have to have an account on proxycheck.io and set PROXYCHECK_KEY.
 - Admins are users with 0cd and access to `Admintools`in their User Menu
 - You can find out the id of a user by wiriting a message in chat and pinging
-- pixelplanet uses the unix command sendmail for sending verification and password reset mails. If you don't want to set up your own mail server, look into [ssmtp](https://wiki.archlinux.org/title/SSMTP), which provides a sendmail interface that forwards to other providers like gmail.
+- Pixelya uses the unix command sendmail for sending verification and password reset mails. If you don't want to set up your own mail server, look into [ssmtp](https://wiki.archlinux.org/title/SSMTP), which provides a sendmail interface that forwards to other providers like gmail.
 - default configuartion values can be seen in `src/core/config.js`
 - The HTML for SocialMedia logins is in src/componets/UserAreaModal.js , delete stuff from there if you don't need it. The HTML for the Help Screen is in src/components/HelpModal.js
 
@@ -187,7 +184,7 @@ you can flush the logs with
 pm2 log flush
 ```
 
-Pixel placing logs are in `./log/pixels.log`and proxycheck logs in `./log/proxies.log` in the directory where you start pixelplaent. They get rotated daily and deleted if >14d old.
+Pixel placing logs are in `./log/pixels.log`and proxycheck logs in `./log/proxies.log` in the directory where you start pixelya. They get rotated daily and deleted if >14d old.
 
 ### Stopping
 ```
@@ -196,7 +193,7 @@ pm2 stop ppfun-server
 
 ### If using reverse Proxy
 
-If USE\_XREALIP is set, we take the IP from the X-Real-Ip header. Use this if you have pixelplanet running behind a reverse proxy like nginx (recommended). Use the nginx set\_realip module to give us the client ip on the X-Real-Ip header (and set it up so that just cloudflare are trusted proxy IPs, if you use them, or else players could fake their IP). And be sure to also set X-Forwarded-Host, X-Forwarded-Port and set X-Forwarded-Proto, because we use it for CORS and redirecion.
+If USE\_XREALIP is set, we take the IP from the X-Real-Ip header. Use this if you have pixelya running behind a reverse proxy like nginx (recommended). Use the nginx set\_realip module to give us the client ip on the X-Real-Ip header (and set it up so that just cloudflare are trusted proxy IPs, if you use them, or else players could fake their IP). And be sure to also set X-Forwarded-Host, X-Forwarded-Port and set X-Forwarded-Proto, because we use it for CORS and redirecion.
 
 ### Auto-Start
 To have the canvas with all it's components autostart at systemstart,
@@ -205,9 +202,9 @@ And then setup pm2 startup with:
 ```
 pm2 startup
 ```
-(execute as the user that is running pixelplanet)
+(execute as the user that is running pixelya)
 And follow the printed steps if needed. This will generate a systemctl service file `/etc/systemd/system/pm2-pixelplanet.service` and enable it. You will have to run `pm2 save` while the canvas is running to let pm2 know what to start.
-To make sure that mysql and redis are up when pixelplanet starts, edit this service file and modify the lines:
+To make sure that mysql and redis are up when pixelya starts, edit this service file and modify the lines:
 ```
 Wants=network-online.target
 After=network.target mysql.service redis.service
@@ -219,11 +216,11 @@ Hourly event is an MMORPG style event that launches once in two hours where user
 
 ## Backups and Historical View
 
-PixelPlanet includes a backup script that creates full canvas backups daily in the form of PNG tile files and incremential backups all 15min (or whatever you define) that saves PNG tiles with just the differences since the last full daily backup.
+pixelya includes a backup script that creates full canvas backups daily in the form of PNG tile files and incremential backups all 15min (or whatever you define) that saves PNG tiles with just the differences since the last full daily backup.
 
 It requires a [second running redis instance](https://www.digitalocean.com/community/questions/multiple-redis-instances-on-ubuntu-16-04).
 
-The backup script gets built when building pixelplanet and also gets copied to `dist/` directory. You can run it with:
+The backup script gets built when building pixelya and also gets copied to `dist/` directory. You can run it with:
 
 ```
 node backup.js REDIS_URL_CANVAS REDIS_URL_BACKUP BACKUP_DIRECTORY [INTERVAL] [COMMAND]
@@ -233,7 +230,7 @@ Make sure to get the order right, because the backup redis instance will be over
 Interval is the time in minutes between incremential backups. If interval is undefined, it will just make one backup and then exit.
 If command is defined, it will be executed after every backup (just one command, with no arguments, like "dosomething.sh"), this is useful for synchronisation with a storage server i.e.. Look into `utils/backupServer` for some scripts and info on how to run it.
 
-You can run it with pm2, just like pixelplanet. An example ecosystem-backup.example.yml file will be located in the dist directory.
+You can run it with pm2, just like pixelya. An example ecosystem-backup.example.yml file will be located in the dist directory.
 
 Note:
 
@@ -241,7 +238,7 @@ Note:
 
 ![historicalview](promotion/historicalview.gif)
 
-Pixelplanet is able to let the user browse through the past with those backups. For this you need to define `BACKUP_URL` and `BACKUP_DIR` in your ecosystem.yml for pixelplanet.
+pixelya is able to let the user browse through the past with those backups. For this you need to define `BACKUP_URL` and `BACKUP_DIR` in your ecosystem.yml for pixelya.
 `BACKUP_URL` is the URL where the backup folder is available. You have to let another server serve those files or use nginx.
 `BACKUP_DIR` is the full path of the local directory where the backup is located (whats set as `BACKUP_DIRECTORY` in the command of the backup.js).
 
