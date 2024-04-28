@@ -1,5 +1,5 @@
 a:link {
-  color: #91ffe0;
+  color: #0080a7;
 }
 
 a:visited {
@@ -39,10 +39,10 @@ tr:nth-child(even) {
 
 .window, .popup {
   background-color: rgba(59, 59, 59, 0.98);
-  color: #ff8c22;
+  color: #0080a7;
 }
 .window {
-  border-radius: 4px;
+  border-radius: 50px 0 50px 0;
 }
 
 .win-topbar, .modal-topbtn {
@@ -51,7 +51,7 @@ tr:nth-child(even) {
 
 .win-title {
   background-color: #c1c1c1;
-  color: #8a5007;
+  color: #0080a7;
 }
 
 .win-title:hover {
@@ -69,7 +69,7 @@ tr:nth-child(even) {
 .channeldd, .contextmenu {
   background-color: #353535;
   color: #efefef;
-  border-radius: 4px;
+  border-radius: 50px 0 50px 0;
 }
 
 .chntop {
@@ -88,29 +88,29 @@ tr:nth-child(even) {
 .actionbuttons, .coorbox, .onlinebox, .cooldownbox, #historyselect {
   background-color: rgba(27, 27, 27, 0.8);
   color: #ffd4ae;
-  border-radius: 15px;
+  border-radius: 20%;
 }
 
 .menu > div {
   z-index: 1;
-  background-color: #000000d1;
+  background-color: #101010;
 }
 
 .contextmenu > div {
-  border-top: thin solid #ffa14c;
+  border-top: thin solid #0080a7;
 }
 
 .modal, .Alert {
-  background: #262626 none repeat scroll 0 0;;
-  color: #ff8c22;
+  background: #101010 none repeat scroll 0 0;;
+  color: #0080a7;
 }
 
 .modal {
-  border-radius: 15px;
+  border-radius: 50px 0 50px 0;
 }
 
 .Alert {
-  border-radius: 10px;
+  border-radius: 50px 0 50px 0;
 }
 
 .modal-content, .win-content, .popup-content {
@@ -118,7 +118,7 @@ tr:nth-child(even) {
 }
 
 h3, h4 {
-  color: #f38826;
+  color: #92003f;
 }
 
 .modaldesc {
@@ -148,7 +148,7 @@ h3, h4 {
   background-color: #4a4642;
 }
 .chatmsg:hover {
-  background-color: #2525252b;
+  background-color: #101010;
 }
 .msg {
   color: #f3f3f3;
@@ -175,5 +175,5 @@ h3, h4 {
 }
 
 .actionbuttons:hover, .coorbox:hover, .menu > div:hover {
-  background-color: rgba(71, 71, 71, 0.8);
+  background-color: #101010;
 }

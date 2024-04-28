@@ -5,7 +5,7 @@ apps:
     env:
       PORT: 80
       HOST: "localhost"
-      REDIS_URL: 'redis://localhost:6379'
+      REDIS_URL: 'redis-16199.c281.us-east-1-2.ec2.cloud.redislabs.com:16199'
       MYSQL_HOST: "localhost"
       MYSQL_USER: "pixelplanet"
       MYSQL_DATABASE: "pixelplanet"
